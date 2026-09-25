@@ -210,6 +210,37 @@ public final class DoubleAABBImpl implements DoubleAABB {
         return d;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s3d3223e4_c0(DoubleAABBImpl _dst, double _t34, double _t18, double _t28, double _t35, double _r15, double _t20, double _t29, double _t36, double _r16, double _t22, double _t30, double _t37, double _r17) {
+        _dst.minX = _t34 < 0.0 ? Double.POSITIVE_INFINITY : Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, _r15)));
+        _dst.minY = _t34 < 0.0 ? Double.POSITIVE_INFINITY : Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, _r16)));
+        _dst.minZ = _t34 < 0.0 ? Double.POSITIVE_INFINITY : Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, _r17)));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s3d3223e4_c1(DoubleAABBImpl _dst, double _t34, double _t18, double _t28, double _t35, double _r15, double _t20, double _t29, double _t36, double _r16, double _t22, double _t30, double _t37, double _r17) {
+        _dst.maxX = _t34 < 0.0 ? Double.NEGATIVE_INFINITY : Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, _r15)));
+        _dst.maxY = _t34 < 0.0 ? Double.NEGATIVE_INFINITY : Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, _r16)));
+        _dst.maxZ = _t34 < 0.0 ? Double.NEGATIVE_INFINITY : Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, _r17)));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s3d3223e4_tail(DoubleAABBImpl _dst, double _r3, double _r2, double _r6, double _t12, double _r7, double _r8, double _r9, double _t13, double _r10, double _r11, double _r12, double _r13, double _r14, double _t9, double _t10, double _t11, double _r15, double _r16, double _r17) {
+        double _t14 = _r3 + _r2;
+        double _t18 = _r6 * _t12;
+        double _t20 = _r7 * _t12;
+        double _t22 = _r8 * _t12;
+        double _t28 = Math.fma(_r9, _t13, _r10 * _t14);
+        double _t29 = Math.fma(_r11, _t13, _r12 * _t14);
+        double _t30 = Math.fma(_r13, _t13, _r14 * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(_r6), Math.fma(_t9, Math.abs(_r9), _t10 * Math.abs(_r10)));
+        double _t36 = Math.fma(_t11, Math.abs(_r7), Math.fma(_t9, Math.abs(_r11), _t10 * Math.abs(_r12)));
+        double _t37 = Math.fma(_t11, Math.abs(_r8), Math.fma(_t9, Math.abs(_r13), _t10 * Math.abs(_r14)));
+        transform_s3d3223e4_c0(_dst, _t34, _t18, _t28, _t35, _r15, _t20, _t29, _t36, _r16, _t22, _t30, _t37, _r17);
+        transform_s3d3223e4_c1(_dst, _t34, _t18, _t28, _t35, _r15, _t20, _t29, _t36, _r16, _t22, _t30, _t37, _r17);
+    }
+
 
     /**
      * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
@@ -221,38 +252,62 @@ public final class DoubleAABBImpl implements DoubleAABB {
      */
     public DoubleAABB transform(Double3x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        double _t9 = this.maxX - this.minX;
-        double _t10 = this.maxY - this.minY;
-        double _t11 = this.maxZ - this.minZ;
-        double _t12 = this.minZ + this.maxZ;
-        double _t13 = this.minX + this.maxX;
-        double _t14 = this.minY + this.maxY;
-        double _t18 = m.m02() * _t12;
-        double _t20 = m.m12() * _t12;
-        double _t22 = m.m22() * _t12;
-        double _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
-        double _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
-        double _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
-        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
-        double _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
-        double _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
-        double _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
-        if (_t34 < 0.0) {
-            d.minX = Double.POSITIVE_INFINITY;
-            d.minY = Double.POSITIVE_INFINITY;
-            d.minZ = Double.POSITIVE_INFINITY;
-            d.maxX = Double.NEGATIVE_INFINITY;
-            d.maxY = Double.NEGATIVE_INFINITY;
-            d.maxZ = Double.NEGATIVE_INFINITY;
-        } else {
-            d.minX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, m.m03())));
-            d.minY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, m.m13())));
-            d.minZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, m.m23())));
-            d.maxX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, m.m03())));
-            d.maxY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, m.m13())));
-            d.maxZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, m.m23())));
-        }
+        double _r0 = this.maxX;
+        double _r1 = this.minX;
+        double _r2 = this.maxY;
+        double _r3 = this.minY;
+        double _r4 = this.maxZ;
+        double _r5 = this.minZ;
+        double _r6 = m.m02();
+        double _r7 = m.m12();
+        double _r8 = m.m22();
+        double _r9 = m.m00();
+        double _r10 = m.m01();
+        double _r11 = m.m10();
+        double _r12 = m.m11();
+        double _r13 = m.m20();
+        double _r14 = m.m21();
+        double _r15 = m.m03();
+        double _r16 = m.m13();
+        double _r17 = m.m23();
+        double _t9 = _r0 - _r1;
+        double _t10 = _r2 - _r3;
+        double _t11 = _r4 - _r5;
+        double _t12 = _r5 + _r4;
+        double _t13 = _r1 + _r0;
+        transform_s3d3223e4_tail(d, _r3, _r2, _r6, _t12, _r7, _r8, _r9, _t13, _r10, _r11, _r12, _r13, _r14, _t9, _t10, _t11, _r15, _r16, _r17);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s456263c3_c0(DoubleAABBImpl _dst, double _t34, double _t18, double _t28, double _t35, double _r15, double _t20, double _t29, double _t36, double _r16, double _t22, double _t30, double _t37, double _r17) {
+        _dst.minX = _t34 < 0.0 ? Double.POSITIVE_INFINITY : Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, _r15)));
+        _dst.minY = _t34 < 0.0 ? Double.POSITIVE_INFINITY : Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, _r16)));
+        _dst.minZ = _t34 < 0.0 ? Double.POSITIVE_INFINITY : Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, _r17)));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s456263c3_c1(DoubleAABBImpl _dst, double _t34, double _t18, double _t28, double _t35, double _r15, double _t20, double _t29, double _t36, double _r16, double _t22, double _t30, double _t37, double _r17) {
+        _dst.maxX = _t34 < 0.0 ? Double.NEGATIVE_INFINITY : Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, _r15)));
+        _dst.maxY = _t34 < 0.0 ? Double.NEGATIVE_INFINITY : Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, _r16)));
+        _dst.maxZ = _t34 < 0.0 ? Double.NEGATIVE_INFINITY : Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, _r17)));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s456263c3_tail(DoubleAABBImpl _dst, double _r3, double _r2, double _r6, double _t12, double _r7, double _r8, double _r9, double _t13, double _r10, double _r11, double _r12, double _r13, double _r14, double _t9, double _t10, double _t11, double _r15, double _r16, double _r17) {
+        double _t14 = _r3 + _r2;
+        double _t18 = _r6 * _t12;
+        double _t20 = _r7 * _t12;
+        double _t22 = _r8 * _t12;
+        double _t28 = Math.fma(_r9, _t13, _r10 * _t14);
+        double _t29 = Math.fma(_r11, _t13, _r12 * _t14);
+        double _t30 = Math.fma(_r13, _t13, _r14 * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(_r6), Math.fma(_t9, Math.abs(_r9), _t10 * Math.abs(_r10)));
+        double _t36 = Math.fma(_t11, Math.abs(_r7), Math.fma(_t9, Math.abs(_r11), _t10 * Math.abs(_r12)));
+        double _t37 = Math.fma(_t11, Math.abs(_r8), Math.fma(_t9, Math.abs(_r13), _t10 * Math.abs(_r14)));
+        transform_s456263c3_c0(_dst, _t34, _t18, _t28, _t35, _r15, _t20, _t29, _t36, _r16, _t22, _t30, _t37, _r17);
+        transform_s456263c3_c1(_dst, _t34, _t18, _t28, _t35, _r15, _t20, _t29, _t36, _r16, _t22, _t30, _t37, _r17);
     }
 
 
@@ -269,37 +324,30 @@ public final class DoubleAABBImpl implements DoubleAABB {
      */
     public DoubleAABB transform(Double4x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        double _t9 = this.maxX - this.minX;
-        double _t10 = this.maxY - this.minY;
-        double _t11 = this.maxZ - this.minZ;
-        double _t12 = this.minZ + this.maxZ;
-        double _t13 = this.minX + this.maxX;
-        double _t14 = this.minY + this.maxY;
-        double _t18 = m.m02() * _t12;
-        double _t20 = m.m12() * _t12;
-        double _t22 = m.m22() * _t12;
-        double _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
-        double _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
-        double _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
-        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
-        double _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
-        double _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
-        double _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
-        if (_t34 < 0.0) {
-            d.minX = Double.POSITIVE_INFINITY;
-            d.minY = Double.POSITIVE_INFINITY;
-            d.minZ = Double.POSITIVE_INFINITY;
-            d.maxX = Double.NEGATIVE_INFINITY;
-            d.maxY = Double.NEGATIVE_INFINITY;
-            d.maxZ = Double.NEGATIVE_INFINITY;
-        } else {
-            d.minX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, m.m03())));
-            d.minY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, m.m13())));
-            d.minZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, m.m23())));
-            d.maxX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, m.m03())));
-            d.maxY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, m.m13())));
-            d.maxZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, m.m23())));
-        }
+        double _r0 = this.maxX;
+        double _r1 = this.minX;
+        double _r2 = this.maxY;
+        double _r3 = this.minY;
+        double _r4 = this.maxZ;
+        double _r5 = this.minZ;
+        double _r6 = m.m02();
+        double _r7 = m.m12();
+        double _r8 = m.m22();
+        double _r9 = m.m00();
+        double _r10 = m.m01();
+        double _r11 = m.m10();
+        double _r12 = m.m11();
+        double _r13 = m.m20();
+        double _r14 = m.m21();
+        double _r15 = m.m03();
+        double _r16 = m.m13();
+        double _r17 = m.m23();
+        double _t9 = _r0 - _r1;
+        double _t10 = _r2 - _r3;
+        double _t11 = _r4 - _r5;
+        double _t12 = _r5 + _r4;
+        double _t13 = _r1 + _r0;
+        transform_s456263c3_tail(d, _r3, _r2, _r6, _t12, _r7, _r8, _r9, _t13, _r10, _r11, _r12, _r13, _r14, _t9, _t10, _t11, _r15, _r16, _r17);
         return d;
     }
 

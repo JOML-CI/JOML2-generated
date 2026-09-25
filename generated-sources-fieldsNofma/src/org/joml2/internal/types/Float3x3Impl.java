@@ -976,6 +976,14 @@ public class Float3x3Impl implements Float3x3 {
         return d;
     }
 
+    /** Private store group 0 of {@code getNormalizedRotation_translation}: computes and stores it; reached only through it. */
+    private void getNormalizedRotation_translation_s6f858fd1_c0(FloatQuatImpl _dst, float _t15, float _sp0, float _t23, float _t12, float _t8, float _t20, float _t7, float _sp1, float _t24, float _t22, float _t25, float _t26, float _t21, float _t19) {
+        _dst.x = _t15 > 0.0f ? -(_sp0 * _t23) : _t12 > _t8 ? 0.5f * (float) Math.sqrt(_t20) : 1.0f > _t7 ? 0.0f : _sp1 * _t24;
+        _dst.y = _t15 > 0.0f ? _sp1 * _t23 : _t12 > _t8 ? 0.0f : 1.0f > _t7 ? 0.5f * (float) Math.sqrt(_t22) : _sp0 * _t24;
+        _dst.z = _t15 > 0.0f ? 0.0f : _t12 > _t8 ? _sp1 * _t25 : 1.0f > _t7 ? _sp0 * _t26 : 0.5f * (float) Math.sqrt(_t21);
+        _dst.w = _t15 > 0.0f ? 0.5f * (float) Math.sqrt(_t19) : _t12 > _t8 ? -(_sp0 * _t25) : 1.0f > _t7 ? _sp1 * _t26 : 0.0f;
+    }
+
 
     /**
      * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
@@ -983,14 +991,16 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatQuat getNormalizedRotation_translation(@Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t3 = this.m02 * this.m02 + (this.m12 * this.m12 + 1.0f);
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _t3 = _r0 * _r0 + (_r1 * _r1 + 1.0f);
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
         float _t7 = _t3 != 0.0f ? _t4 : 0.0f;
         float _t8 = Math.max(1.0f, _t7);
         float _sp0, _sp1;
         if (_t3 != 0.0f) {
-            _sp0 = 0.5f * this.m12 * _t4;
-            _sp1 = 0.5f * this.m02 * _t4;
+            _sp0 = 0.5f * _r1 * _t4;
+            _sp1 = 0.5f * _r0 * _t4;
         } else {
             _sp0 = 0.5f * 0.0f;
             _sp1 = 0.5f * 0.0f;
@@ -1006,72 +1016,41 @@ public class Float3x3Impl implements Float3x3 {
         float _t24 = (1.0f / (float) Math.sqrt(_t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t20));
         float _t26 = (1.0f / (float) Math.sqrt(_t22));
-        if (_t15 > 0.0f) {
-            d.x = -(_sp0 * _t23);
-            d.y = _sp1 * _t23;
-            d.z = 0.0f;
-            d.w = 0.5f * (float) Math.sqrt(_t19);
-        } else {
-            if (_t12 > _t8) {
-                d.x = 0.5f * (float) Math.sqrt(_t20);
-                d.y = 0.0f;
-                d.z = _sp1 * _t25;
-                d.w = -(_sp0 * _t25);
-            } else {
-                if (1.0f > _t7) {
-                    d.x = 0.0f;
-                    d.y = 0.5f * (float) Math.sqrt(_t22);
-                    d.z = _sp0 * _t26;
-                    d.w = _sp1 * _t26;
-                } else {
-                    d.x = _sp1 * _t24;
-                    d.y = _sp0 * _t24;
-                    d.z = 0.5f * (float) Math.sqrt(_t21);
-                    d.w = 0.0f;
-                }
-            }
-        }
+        getNormalizedRotation_translation_s6f858fd1_c0(d, _t15, _sp0, _t23, _t12, _t8, _t20, _t7, _sp1, _t24, _t22, _t25, _t26, _t21, _t19);
         return d;
     }
 
+    /** Private store group 0 of {@code getNormalizedRotation_general}: computes and stores it; reached only through it. */
+    private void getNormalizedRotation_general_s6f858fd1_c0(FloatQuatImpl _dst, float _t66, float _sp0, float _t45, float _t57, float _t46, float _t71, float _t27, float _t28, float _sp1, float _t61, float _sp2, float _t63, float _t64, float _sp3, float _t72, float _t48, float _t65, float _t73, float _t70) {
+        _dst.x = _t66 > 0.0f ? _sp0 * _t45 : _t57 > _t46 ? 0.5f * (float) Math.sqrt(_t71) : _t27 > _t28 ? _sp1 * _t61 : _sp2 * _t63;
+        _dst.y = _t66 > 0.0f ? _sp0 * _t64 : _t57 > _t46 ? _sp3 * _t61 : _t27 > _t28 ? 0.5f * (float) Math.sqrt(_t72) : _sp2 * _t48;
+        _dst.z = _t66 > 0.0f ? _sp0 * _t65 : _t57 > _t46 ? _sp3 * _t63 : _t27 > _t28 ? _sp1 * _t48 : 0.5f * (float) Math.sqrt(_t73);
+        _dst.w = _t66 > 0.0f ? 0.5f * (float) Math.sqrt(_t70) : _t57 > _t46 ? _sp3 * _t45 : _t27 > _t28 ? _sp1 * _t64 : _sp2 * _t65;
+    }
 
-    /**
-     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
-     * reached only through the public {@code getNormalizedRotation} dispatcher.
-     */
-    private FloatQuat getNormalizedRotation_general(@Mutated FloatQuat dest) {
-        FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t14));
-        float _t27, _t29, _t33;
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s6f858fd1_tail(FloatQuatImpl _dst, float _t12, float _r2, float _t15, float _t13, float _r4, float _t16, float _t14, float _r6, float _t17, float _r3, float _r0, float _r7, float _r8, float _t27, float _t28) {
+        float _t29, _t33;
         if (_t12 != 0.0f) {
-            _t27 = this.m11 * _t15;
-            _t29 = this.m21 * _t15;
-            _t33 = this.m01 * _t15;
+            _t29 = _r2 * _t15;
+            _t33 = _r0 * _t15;
         } else {
-            _t27 = 0.0f;
             _t29 = 0.0f;
             _t33 = 0.0f;
         }
-        float _t28, _t30, _t32;
+        float _t30, _t32;
         if (_t13 != 0.0f) {
-            _t28 = this.m22 * _t16;
-            _t30 = this.m12 * _t16;
-            _t32 = this.m02 * _t16;
+            _t30 = _r4 * _t16;
+            _t32 = _r3 * _t16;
         } else {
-            _t28 = 0.0f;
             _t30 = 0.0f;
             _t32 = 0.0f;
         }
         float _t31, _t34, _t35;
         if (_t14 != 0.0f) {
-            _t31 = this.m00 * _t17;
-            _t34 = this.m10 * _t17;
-            _t35 = this.m20 * _t17;
+            _t31 = _r6 * _t17;
+            _t34 = _r7 * _t17;
+            _t35 = _r8 * _t17;
         } else {
             _t31 = 0.0f;
             _t34 = 0.0f;
@@ -1081,6 +1060,11 @@ public class Float3x3Impl implements Float3x3 {
         float _t46 = Math.max(_t27, _t28);
         float _t48 = _t29 + _t30;
         float _t56 = (_t27 * _t28 - _t29 * _t30) * _t31 + (_t29 * _t32 - _t33 * _t28) * _t34 + (_t33 * _t30 - _t27 * _t32) * _t35;
+        getNormalizedRotation_general_s6f858fd1_tail2(_dst, _t56, _t31, _t34, _t35, _t27, _t33, _t32, _t28, _t45, _t46, _t48);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s6f858fd1_tail2(FloatQuatImpl _dst, float _t56, float _t31, float _t34, float _t35, float _t27, float _t33, float _t32, float _t28, float _t45, float _t46, float _t48) {
         float _t57, _t58, _t59;
         if (_t56 < 0.0f) {
             _t57 = -_t31;
@@ -1105,31 +1089,34 @@ public class Float3x3Impl implements Float3x3 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t72));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t71));
-        if (_t66 > 0.0f) {
-            d.x = _sp0 * _t45;
-            d.y = _sp0 * _t64;
-            d.z = _sp0 * _t65;
-            d.w = 0.5f * (float) Math.sqrt(_t70);
-        } else {
-            if (_t57 > _t46) {
-                d.x = 0.5f * (float) Math.sqrt(_t71);
-                d.y = _sp3 * _t61;
-                d.z = _sp3 * _t63;
-                d.w = _sp3 * _t45;
-            } else {
-                if (_t27 > _t28) {
-                    d.x = _sp1 * _t61;
-                    d.y = 0.5f * (float) Math.sqrt(_t72);
-                    d.z = _sp1 * _t48;
-                    d.w = _sp1 * _t64;
-                } else {
-                    d.x = _sp2 * _t63;
-                    d.y = _sp2 * _t48;
-                    d.z = 0.5f * (float) Math.sqrt(_t73);
-                    d.w = _sp2 * _t65;
-                }
-            }
-        }
+        getNormalizedRotation_general_s6f858fd1_c0(_dst, _t66, _sp0, _t45, _t57, _t46, _t71, _t27, _t28, _sp1, _t61, _sp2, _t63, _t64, _sp3, _t72, _t48, _t65, _t73, _t70);
+    }
+
+
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
+    private FloatQuat getNormalizedRotation_general(@Mutated FloatQuat dest) {
+        FloatQuatImpl d = (FloatQuatImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t17 = (1.0f / (float) Math.sqrt(_t14));
+        float _t27 = _t12 != 0.0f ? _r1 * _t15 : 0.0f;
+        float _t28 = _t13 != 0.0f ? _r5 * _t16 : 0.0f;
+        getNormalizedRotation_general_s6f858fd1_tail(d, _t12, _r2, _t15, _t13, _r4, _t16, _t14, _r6, _t17, _r3, _r0, _r7, _r8, _t27, _t28);
         return d;
     }
 
@@ -1153,55 +1140,37 @@ public class Float3x3Impl implements Float3x3 {
         return getNormalizedRotation_general(dest);
     }
 
+    /** Private store group 0 of {@code getNormalizedRotation}: computes and stores it; reached only through it. */
+    private void getNormalizedRotation_s62e3ac38_c0(DoubleQuatImpl _dst, float _t66, float _sp0, float _t45, float _t57, float _t46, float _t71, float _t27, float _t28, float _sp1, float _t61, float _sp2, float _t63, float _t64, float _sp3, float _t72, float _t48, float _t65, float _t73, float _t70) {
+        _dst.x = _t66 > 0.0f ? _sp0 * _t45 : _t57 > _t46 ? 0.5f * (float) Math.sqrt(_t71) : _t27 > _t28 ? _sp1 * _t61 : _sp2 * _t63;
+        _dst.y = _t66 > 0.0f ? _sp0 * _t64 : _t57 > _t46 ? _sp3 * _t61 : _t27 > _t28 ? 0.5f * (float) Math.sqrt(_t72) : _sp2 * _t48;
+        _dst.z = _t66 > 0.0f ? _sp0 * _t65 : _t57 > _t46 ? _sp3 * _t63 : _t27 > _t28 ? _sp1 * _t48 : 0.5f * (float) Math.sqrt(_t73);
+        _dst.w = _t66 > 0.0f ? 0.5f * (float) Math.sqrt(_t70) : _t57 > _t46 ? _sp3 * _t45 : _t27 > _t28 ? _sp1 * _t64 : _sp2 * _t65;
+    }
 
-    /**
-     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
-     * unit length) and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of each column must lie roughly between
-     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleQuat getNormalizedRotation(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t14));
-        float _t27, _t29, _t33;
+    /** Private tail of {@code getNormalizedRotation}; reached only through it. */
+    private void getNormalizedRotation_s62e3ac38_tail(DoubleQuatImpl _dst, float _t12, float _r2, float _t15, float _t13, float _r4, float _t16, float _t14, float _r6, float _t17, float _r3, float _r0, float _r7, float _r8, float _t27, float _t28) {
+        float _t29, _t33;
         if (_t12 != 0.0f) {
-            _t27 = this.m11 * _t15;
-            _t29 = this.m21 * _t15;
-            _t33 = this.m01 * _t15;
+            _t29 = _r2 * _t15;
+            _t33 = _r0 * _t15;
         } else {
-            _t27 = 0.0f;
             _t29 = 0.0f;
             _t33 = 0.0f;
         }
-        float _t28, _t30, _t32;
+        float _t30, _t32;
         if (_t13 != 0.0f) {
-            _t28 = this.m22 * _t16;
-            _t30 = this.m12 * _t16;
-            _t32 = this.m02 * _t16;
+            _t30 = _r4 * _t16;
+            _t32 = _r3 * _t16;
         } else {
-            _t28 = 0.0f;
             _t30 = 0.0f;
             _t32 = 0.0f;
         }
         float _t31, _t34, _t35;
         if (_t14 != 0.0f) {
-            _t31 = this.m00 * _t17;
-            _t34 = this.m10 * _t17;
-            _t35 = this.m20 * _t17;
+            _t31 = _r6 * _t17;
+            _t34 = _r7 * _t17;
+            _t35 = _r8 * _t17;
         } else {
             _t31 = 0.0f;
             _t34 = 0.0f;
@@ -1211,6 +1180,11 @@ public class Float3x3Impl implements Float3x3 {
         float _t46 = Math.max(_t27, _t28);
         float _t48 = _t29 + _t30;
         float _t56 = (_t27 * _t28 - _t29 * _t30) * _t31 + (_t29 * _t32 - _t33 * _t28) * _t34 + (_t33 * _t30 - _t27 * _t32) * _t35;
+        getNormalizedRotation_s62e3ac38_tail2(_dst, _t56, _t31, _t34, _t35, _t27, _t33, _t32, _t28, _t45, _t46, _t48);
+    }
+
+    /** Private tail of {@code getNormalizedRotation}; reached only through it. */
+    private void getNormalizedRotation_s62e3ac38_tail2(DoubleQuatImpl _dst, float _t56, float _t31, float _t34, float _t35, float _t27, float _t33, float _t32, float _t28, float _t45, float _t46, float _t48) {
         float _t57, _t58, _t59;
         if (_t56 < 0.0f) {
             _t57 = -_t31;
@@ -1235,31 +1209,45 @@ public class Float3x3Impl implements Float3x3 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t72));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t71));
-        if (_t66 > 0.0f) {
-            d.x = _sp0 * _t45;
-            d.y = _sp0 * _t64;
-            d.z = _sp0 * _t65;
-            d.w = 0.5f * (float) Math.sqrt(_t70);
-        } else {
-            if (_t57 > _t46) {
-                d.x = 0.5f * (float) Math.sqrt(_t71);
-                d.y = _sp3 * _t61;
-                d.z = _sp3 * _t63;
-                d.w = _sp3 * _t45;
-            } else {
-                if (_t27 > _t28) {
-                    d.x = _sp1 * _t61;
-                    d.y = 0.5f * (float) Math.sqrt(_t72);
-                    d.z = _sp1 * _t48;
-                    d.w = _sp1 * _t64;
-                } else {
-                    d.x = _sp2 * _t63;
-                    d.y = _sp2 * _t48;
-                    d.z = 0.5f * (float) Math.sqrt(_t73);
-                    d.w = _sp2 * _t65;
-                }
-            }
-        }
+        getNormalizedRotation_s62e3ac38_c0(_dst, _t66, _sp0, _t45, _t57, _t46, _t71, _t27, _t28, _sp1, _t61, _sp2, _t63, _t64, _sp3, _t72, _t48, _t65, _t73, _t70);
+    }
+
+
+    /**
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat getNormalizedRotation(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t17 = (1.0f / (float) Math.sqrt(_t14));
+        float _t27 = _t12 != 0.0f ? _r1 * _t15 : 0.0f;
+        float _t28 = _t13 != 0.0f ? _r5 * _t16 : 0.0f;
+        getNormalizedRotation_s62e3ac38_tail(d, _t12, _r2, _t15, _t13, _r4, _t16, _t14, _r6, _t17, _r3, _r0, _r7, _r8, _t27, _t28);
         return d;
     }
 
@@ -1540,6 +1528,14 @@ public class Float3x3Impl implements Float3x3 {
         return d;
     }
 
+    /** Private store group 0 of {@code getUnnormalizedRotation_orthogonal}: computes and stores it; reached only through it. */
+    private void getUnnormalizedRotation_orthogonal_s6f858fd1_c0(FloatQuatImpl _dst, float _t6, float _sp0, float _t14, float _r3, float _t0, float _t11, float _r2, float _sp2, float _t15, float _sp1, float _t16, float _t17, float _t12, float _sp3, float _t13, float _t10) {
+        _dst.x = _t6 > 0.0f ? -(_sp0 * _t14) : _r3 > _t0 ? 0.5f * (float) Math.sqrt(_t11) : _r2 > 1.0f ? _sp2 * _t15 : _sp1 * _t16;
+        _dst.y = _t6 > 0.0f ? _sp1 * _t14 : _r3 > _t0 ? _sp2 * _t17 : _r2 > 1.0f ? 0.5f * (float) Math.sqrt(_t12) : _sp0 * _t16;
+        _dst.z = _t6 > 0.0f ? _sp3 * _t14 : _r3 > _t0 ? _sp1 * _t17 : _r2 > 1.0f ? _sp0 * _t15 : 0.5f * (float) Math.sqrt(_t13);
+        _dst.w = _t6 > 0.0f ? 0.5f * (float) Math.sqrt(_t10) : _r3 > _t0 ? -(_sp0 * _t17) : _r2 > 1.0f ? _sp1 * _t15 : _sp3 * _t16;
+    }
+
 
     /**
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
@@ -1547,51 +1543,43 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatQuat getUnnormalizedRotation_orthogonal(@Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _sp1 = 0.5f * this.m02;
-        float _sp0 = 0.5f * this.m12;
-        float _t0 = Math.max(this.m11, 1.0f);
-        float _t3 = this.m00 + this.m11;
-        float _sp2 = 0.5f * (this.m01 + this.m10);
-        float _sp3 = 0.5f * (this.m10 - this.m01);
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _r2 = this.m11;
+        float _r3 = this.m00;
+        float _r4 = this.m01;
+        float _r5 = this.m10;
+        float _sp1 = 0.5f * _r0;
+        float _sp0 = 0.5f * _r1;
+        float _t0 = Math.max(_r2, 1.0f);
+        float _t3 = _r3 + _r2;
+        float _sp2 = 0.5f * (_r4 + _r5);
+        float _sp3 = 0.5f * (_r5 - _r4);
         float _t6 = 1.0f + _t3;
         float _t10 = 1.0f + _t6;
-        float _t11 = 1.0f + (this.m00 - (1.0f + this.m11));
-        float _t12 = 1.0f + (this.m11 - (1.0f + this.m00));
+        float _t11 = 1.0f + (_r3 - (1.0f + _r2));
+        float _t12 = 1.0f + (_r2 - (1.0f + _r3));
         float _t13 = 1.0f + (1.0f - _t3);
         float _t14 = (1.0f / (float) Math.sqrt(_t10));
         float _t15 = (1.0f / (float) Math.sqrt(_t12));
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
         float _t17 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t6 > 0.0f) {
-            float _buf0 = -(_sp0 * _t14);
-            d.y = _sp1 * _t14;
-            d.z = _sp3 * _t14;
-            d.w = 0.5f * (float) Math.sqrt(_t10);
-            d.x = _buf0;
-        } else {
-            if (this.m00 > _t0) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t11);
-                d.y = _sp2 * _t17;
-                d.z = _sp1 * _t17;
-                d.w = -(_sp0 * _t17);
-                d.x = _buf0;
-            } else {
-                if (this.m11 > 1.0f) {
-                    float _buf0 = _sp2 * _t15;
-                    d.y = 0.5f * (float) Math.sqrt(_t12);
-                    d.z = _sp0 * _t15;
-                    d.w = _sp1 * _t15;
-                    d.x = _buf0;
-                } else {
-                    float _buf0 = _sp1 * _t16;
-                    d.y = _sp0 * _t16;
-                    d.z = 0.5f * (float) Math.sqrt(_t13);
-                    d.w = _sp3 * _t16;
-                    d.x = _buf0;
-                }
-            }
-        }
+        getUnnormalizedRotation_orthogonal_s6f858fd1_c0(d, _t6, _sp0, _t14, _r3, _t0, _t11, _r2, _sp2, _t15, _sp1, _t16, _t17, _t12, _sp3, _t13, _t10);
         return d;
+    }
+
+    /** Private store group 0 of {@code getUnnormalizedRotation_general}: computes and stores it; reached only through it. */
+    private void getUnnormalizedRotation_general_s6f858fd1_c0(FloatQuatImpl _dst, float _t10, float _sp0, float _t1, float _r0, float _t2, float _t15, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.x = _t10 > 0.0f ? _sp0 * _t1 : _r0 > _t2 ? 0.5f * (float) Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0f ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0f ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code getUnnormalizedRotation_general}; reached only through it. */
+    private void getUnnormalizedRotation_general_s6f858fd1_tail(FloatQuatImpl _dst, float _t15, float _t10, float _sp0, float _t1, float _r0, float _t2, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        getUnnormalizedRotation_general_s6f858fd1_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -1601,52 +1589,32 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatQuat getUnnormalizedRotation_general(@Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t0 = this.m00 + this.m11;
-        float _t1 = this.m21 - this.m12;
-        float _t2 = Math.max(this.m11, this.m22);
-        float _t4 = this.m01 + this.m10;
-        float _t6 = this.m02 + this.m20;
-        float _t7 = this.m02 - this.m20;
-        float _t8 = this.m12 + this.m21;
-        float _t9 = this.m10 - this.m01;
-        float _t10 = this.m22 + _t0;
+        float _r0 = this.m00;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m12;
+        float _r4 = this.m22;
+        float _r5 = this.m01;
+        float _r6 = this.m10;
+        float _r7 = this.m02;
+        float _r8 = this.m20;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t2 = Math.max(_r1, _r4);
+        float _t4 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r6 - _r5;
+        float _t10 = _r4 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (this.m00 - (this.m11 + this.m22));
-        float _t16 = 1.0f + (this.m11 - (this.m00 + this.m22));
-        float _t17 = 1.0f + (this.m22 - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r4));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r4));
+        float _t17 = 1.0f + (_r4 - _t0);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            float _buf0 = _sp0 * _t1;
-            d.y = _sp0 * _t7;
-            d.z = _sp0 * _t9;
-            d.w = 0.5f * (float) Math.sqrt(_t14);
-            d.x = _buf0;
-        } else {
-            if (this.m00 > _t2) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                d.y = _sp3 * _t4;
-                d.z = _sp3 * _t6;
-                d.w = _sp3 * _t1;
-                d.x = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    float _buf0 = _sp1 * _t4;
-                    d.y = 0.5f * (float) Math.sqrt(_t16);
-                    d.z = _sp1 * _t8;
-                    d.w = _sp1 * _t7;
-                    d.x = _buf0;
-                } else {
-                    float _buf0 = _sp2 * _t6;
-                    d.y = _sp2 * _t8;
-                    d.z = 0.5f * (float) Math.sqrt(_t17);
-                    d.w = _sp2 * _t9;
-                    d.x = _buf0;
-                }
-            }
-        }
+        getUnnormalizedRotation_general_s6f858fd1_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
 
@@ -1666,6 +1634,20 @@ public class Float3x3Impl implements Float3x3 {
         return getUnnormalizedRotation_general(dest);
     }
 
+    /** Private store group 0 of {@code getUnnormalizedRotation}: computes and stores it; reached only through it. */
+    private void getUnnormalizedRotation_s62e3ac38_c0(DoubleQuatImpl _dst, float _t10, float _sp0, float _t1, float _r0, float _t2, float _t15, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.x = _t10 > 0.0f ? _sp0 * _t1 : _r0 > _t2 ? 0.5f * (float) Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0f ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0f ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code getUnnormalizedRotation}; reached only through it. */
+    private void getUnnormalizedRotation_s62e3ac38_tail(DoubleQuatImpl _dst, float _t15, float _t10, float _sp0, float _t1, float _r0, float _t2, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        getUnnormalizedRotation_s62e3ac38_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+    }
+
 
     /**
      * Extract the rotation of this matrix as a quaternion directly from the linear block without
@@ -1679,52 +1661,32 @@ public class Float3x3Impl implements Float3x3 {
      */
     public DoubleQuat getUnnormalizedRotation(@Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t0 = this.m00 + this.m11;
-        float _t1 = this.m21 - this.m12;
-        float _t2 = Math.max(this.m11, this.m22);
-        float _t4 = this.m01 + this.m10;
-        float _t6 = this.m02 + this.m20;
-        float _t7 = this.m02 - this.m20;
-        float _t8 = this.m12 + this.m21;
-        float _t9 = this.m10 - this.m01;
-        float _t10 = this.m22 + _t0;
+        float _r0 = this.m00;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m12;
+        float _r4 = this.m22;
+        float _r5 = this.m01;
+        float _r6 = this.m10;
+        float _r7 = this.m02;
+        float _r8 = this.m20;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t2 = Math.max(_r1, _r4);
+        float _t4 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r6 - _r5;
+        float _t10 = _r4 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (this.m00 - (this.m11 + this.m22));
-        float _t16 = 1.0f + (this.m11 - (this.m00 + this.m22));
-        float _t17 = 1.0f + (this.m22 - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r4));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r4));
+        float _t17 = 1.0f + (_r4 - _t0);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            float _buf0 = _sp0 * _t1;
-            d.y = _sp0 * _t7;
-            d.z = _sp0 * _t9;
-            d.w = 0.5f * (float) Math.sqrt(_t14);
-            d.x = _buf0;
-        } else {
-            if (this.m00 > _t2) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                d.y = _sp3 * _t4;
-                d.z = _sp3 * _t6;
-                d.w = _sp3 * _t1;
-                d.x = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    float _buf0 = _sp1 * _t4;
-                    d.y = 0.5f * (float) Math.sqrt(_t16);
-                    d.z = _sp1 * _t8;
-                    d.w = _sp1 * _t7;
-                    d.x = _buf0;
-                } else {
-                    float _buf0 = _sp2 * _t6;
-                    d.y = _sp2 * _t8;
-                    d.z = 0.5f * (float) Math.sqrt(_t17);
-                    d.w = _sp2 * _t9;
-                    d.x = _buf0;
-                }
-            }
-        }
+        getUnnormalizedRotation_s62e3ac38_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
 
@@ -5746,6 +5708,22 @@ public class Float3x3Impl implements Float3x3 {
         return d;
     }
 
+    /** Private store group 0 of {@code toDualQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void toDualQuat_orthogonal_s416ccfb5_c0(FloatDualQuatImpl _dst, float _t8, float _sp0, float _t14, float _r3, float _t0, float _t11, float _r2, float _sp2, float _t15, float _sp1, float _t16, float _t17, float _t12, float _sp3, float _t13, float _t10) {
+        _dst.rX = _t8 > 0.0f ? -(_sp0 * _t14) : _r3 > _t0 ? 0.5f * (float) Math.sqrt(_t11) : _r2 > 1.0f ? _sp2 * _t15 : _sp1 * _t16;
+        _dst.rY = _t8 > 0.0f ? _sp1 * _t14 : _r3 > _t0 ? _sp2 * _t17 : _r2 > 1.0f ? 0.5f * (float) Math.sqrt(_t12) : _sp0 * _t16;
+        _dst.rZ = _t8 > 0.0f ? _sp3 * _t14 : _r3 > _t0 ? _sp1 * _t17 : _r2 > 1.0f ? _sp0 * _t15 : 0.5f * (float) Math.sqrt(_t13);
+        _dst.rW = _t8 > 0.0f ? 0.5f * (float) Math.sqrt(_t10) : _r3 > _t0 ? -(_sp0 * _t17) : _r2 > 1.0f ? _sp1 * _t15 : _sp3 * _t16;
+    }
+
+    /** Private store group 1 of {@code toDualQuat_orthogonal}: computes and stores it; reached only through it. */
+    private void toDualQuat_orthogonal_s416ccfb5_c1(FloatDualQuatImpl _dst) {
+        _dst.dX = 0.0f;
+        _dst.dY = 0.0f;
+        _dst.dZ = 0.0f;
+        _dst.dW = 0.0f;
+    }
+
 
     /**
      * Private body of {@code toDualQuat}, specialized by runtime matrix properties; reached only
@@ -5753,55 +5731,53 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatDualQuat toDualQuat_orthogonal(@Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _sp1 = 0.5f * this.m02;
-        float _sp0 = 0.5f * this.m12;
-        float _t0 = Math.max(this.m11, 1.0f);
-        float _t2 = 1.0f - this.m00;
-        float _sp2 = 0.5f * (this.m01 + this.m10);
-        float _sp3 = 0.5f * (this.m10 - this.m01);
-        float _t8 = 1.0f + (this.m00 + this.m11);
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _r2 = this.m11;
+        float _r3 = this.m00;
+        float _r4 = this.m01;
+        float _r5 = this.m10;
+        float _sp1 = 0.5f * _r0;
+        float _sp0 = 0.5f * _r1;
+        float _t0 = Math.max(_r2, 1.0f);
+        float _t2 = 1.0f - _r3;
+        float _sp2 = 0.5f * (_r4 + _r5);
+        float _sp3 = 0.5f * (_r5 - _r4);
+        float _t8 = 1.0f + (_r3 + _r2);
         float _t10 = 1.0f + _t8;
-        float _t11 = this.m00 + (1.0f - this.m11 - 1.0f);
-        float _t12 = this.m11 + (_t2 - 1.0f);
-        float _t13 = 1.0f + (_t2 - this.m11);
+        float _t11 = _r3 + (1.0f - _r2 - 1.0f);
+        float _t12 = _r2 + (_t2 - 1.0f);
+        float _t13 = 1.0f + (_t2 - _r2);
         float _t14 = (1.0f / (float) Math.sqrt(_t10));
         float _t15 = (1.0f / (float) Math.sqrt(_t12));
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
         float _t17 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t8 > 0.0f) {
-            float _buf0 = -(_sp0 * _t14);
-            d.rY = _sp1 * _t14;
-            d.rZ = _sp3 * _t14;
-            d.rW = 0.5f * (float) Math.sqrt(_t10);
-            d.rX = _buf0;
-        } else {
-            if (this.m00 > _t0) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t11);
-                d.rY = _sp2 * _t17;
-                d.rZ = _sp1 * _t17;
-                d.rW = -(_sp0 * _t17);
-                d.rX = _buf0;
-            } else {
-                if (this.m11 > 1.0f) {
-                    float _buf0 = _sp2 * _t15;
-                    d.rY = 0.5f * (float) Math.sqrt(_t12);
-                    d.rZ = _sp0 * _t15;
-                    d.rW = _sp1 * _t15;
-                    d.rX = _buf0;
-                } else {
-                    float _buf0 = _sp1 * _t16;
-                    d.rY = _sp0 * _t16;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t13);
-                    d.rW = _sp3 * _t16;
-                    d.rX = _buf0;
-                }
-            }
-        }
-        d.dX = 0.0f;
-        d.dY = 0.0f;
-        d.dZ = 0.0f;
-        d.dW = 0.0f;
+        toDualQuat_orthogonal_s416ccfb5_c0(d, _t8, _sp0, _t14, _r3, _t0, _t11, _r2, _sp2, _t15, _sp1, _t16, _t17, _t12, _sp3, _t13, _t10);
+        toDualQuat_orthogonal_s416ccfb5_c1(d);
         return d;
+    }
+
+    /** Private store group 0 of {@code toDualQuat_general}: computes and stores it; reached only through it. */
+    private void toDualQuat_general_s416ccfb5_c0(FloatDualQuatImpl _dst, float _t13, float _sp0, float _t3, float _r0, float _t4, float _t15, float _r3, float _r4, float _sp1, float _t5, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.rX = _t13 > 0.0f ? _sp0 * _t3 : _r0 > _t4 ? 0.5f * (float) Math.sqrt(_t15) : _r3 > _r4 ? _sp1 * _t5 : _sp2 * _t6;
+        _dst.rY = _t13 > 0.0f ? _sp0 * _t7 : _r0 > _t4 ? _sp3 * _t5 : _r3 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.rZ = _t13 > 0.0f ? _sp0 * _t9 : _r0 > _t4 ? _sp3 * _t6 : _r3 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.rW = _t13 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t4 ? _sp3 * _t3 : _r3 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private store group 1 of {@code toDualQuat_general}: computes and stores it; reached only through it. */
+    private void toDualQuat_general_s416ccfb5_c1(FloatDualQuatImpl _dst) {
+        _dst.dX = 0.0f;
+        _dst.dY = 0.0f;
+        _dst.dZ = 0.0f;
+        _dst.dW = 0.0f;
+    }
+
+    /** Private tail of {@code toDualQuat_general}; reached only through it. */
+    private void toDualQuat_general_s416ccfb5_tail(FloatDualQuatImpl _dst, float _t15, float _t13, float _sp0, float _t3, float _r0, float _t4, float _r3, float _r4, float _sp1, float _t5, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        toDualQuat_general_s416ccfb5_c0(_dst, _t13, _sp0, _t3, _r0, _t4, _t15, _r3, _r4, _sp1, _t5, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+        toDualQuat_general_s416ccfb5_c1(_dst);
     }
 
 
@@ -5811,56 +5787,32 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatDualQuat toDualQuat_general(@Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _t1 = 1.0f - this.m00;
-        float _t3 = this.m21 - this.m12;
-        float _t4 = Math.max(this.m11, this.m22);
-        float _t5 = this.m01 + this.m10;
-        float _t6 = this.m02 + this.m20;
-        float _t7 = this.m02 - this.m20;
-        float _t8 = this.m12 + this.m21;
-        float _t9 = this.m10 - this.m01;
-        float _t13 = this.m22 + (this.m00 + this.m11);
+        float _r0 = this.m00;
+        float _r1 = this.m21;
+        float _r2 = this.m12;
+        float _r3 = this.m11;
+        float _r4 = this.m22;
+        float _r5 = this.m01;
+        float _r6 = this.m10;
+        float _r7 = this.m02;
+        float _r8 = this.m20;
+        float _t1 = 1.0f - _r0;
+        float _t3 = _r1 - _r2;
+        float _t4 = Math.max(_r3, _r4);
+        float _t5 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r2 + _r1;
+        float _t9 = _r6 - _r5;
+        float _t13 = _r4 + (_r0 + _r3);
         float _t14 = 1.0f + _t13;
-        float _t15 = this.m00 + (1.0f - this.m11 - this.m22);
-        float _t16 = this.m11 + (_t1 - this.m22);
-        float _t17 = this.m22 + (_t1 - this.m11);
+        float _t15 = _r0 + (1.0f - _r3 - _r4);
+        float _t16 = _r3 + (_t1 - _r4);
+        float _t17 = _r4 + (_t1 - _r3);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t13 > 0.0f) {
-            float _buf0 = _sp0 * _t3;
-            d.rY = _sp0 * _t7;
-            d.rZ = _sp0 * _t9;
-            d.rW = 0.5f * (float) Math.sqrt(_t14);
-            d.rX = _buf0;
-        } else {
-            if (this.m00 > _t4) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                d.rY = _sp3 * _t5;
-                d.rZ = _sp3 * _t6;
-                d.rW = _sp3 * _t3;
-                d.rX = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    float _buf0 = _sp1 * _t5;
-                    d.rY = 0.5f * (float) Math.sqrt(_t16);
-                    d.rZ = _sp1 * _t8;
-                    d.rW = _sp1 * _t7;
-                    d.rX = _buf0;
-                } else {
-                    float _buf0 = _sp2 * _t6;
-                    d.rY = _sp2 * _t8;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t17);
-                    d.rW = _sp2 * _t9;
-                    d.rX = _buf0;
-                }
-            }
-        }
-        d.dX = 0.0f;
-        d.dY = 0.0f;
-        d.dZ = 0.0f;
-        d.dW = 0.0f;
+        toDualQuat_general_s416ccfb5_tail(d, _t15, _t13, _sp0, _t3, _r0, _t4, _r3, _r4, _sp1, _t5, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
 
@@ -5880,6 +5832,29 @@ public class Float3x3Impl implements Float3x3 {
         return toDualQuat_general(dest);
     }
 
+    /** Private store group 0 of {@code toDualQuat}: computes and stores it; reached only through it. */
+    private void toDualQuat_s6608609c_c0(DoubleDualQuatImpl _dst, float _t13, float _sp0, float _t3, float _r0, float _t4, float _t15, float _r3, float _r4, float _sp1, float _t5, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.rX = _t13 > 0.0f ? _sp0 * _t3 : _r0 > _t4 ? 0.5f * (float) Math.sqrt(_t15) : _r3 > _r4 ? _sp1 * _t5 : _sp2 * _t6;
+        _dst.rY = _t13 > 0.0f ? _sp0 * _t7 : _r0 > _t4 ? _sp3 * _t5 : _r3 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.rZ = _t13 > 0.0f ? _sp0 * _t9 : _r0 > _t4 ? _sp3 * _t6 : _r3 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.rW = _t13 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t4 ? _sp3 * _t3 : _r3 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private store group 1 of {@code toDualQuat}: computes and stores it; reached only through it. */
+    private void toDualQuat_s6608609c_c1(DoubleDualQuatImpl _dst) {
+        _dst.dX = 0.0f;
+        _dst.dY = 0.0f;
+        _dst.dZ = 0.0f;
+        _dst.dW = 0.0f;
+    }
+
+    /** Private tail of {@code toDualQuat}; reached only through it. */
+    private void toDualQuat_s6608609c_tail(DoubleDualQuatImpl _dst, float _t15, float _t13, float _sp0, float _t3, float _r0, float _t4, float _r3, float _r4, float _sp1, float _t5, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        toDualQuat_s6608609c_c0(_dst, _t13, _sp0, _t3, _r0, _t4, _t15, _r3, _r4, _sp1, _t5, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+        toDualQuat_s6608609c_c1(_dst);
+    }
+
 
     /**
      * Convert this matrix (assumed orthonormal) to a pure-rotation dual quaternion and store the
@@ -5893,56 +5868,32 @@ public class Float3x3Impl implements Float3x3 {
      */
     public DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        float _t1 = 1.0f - this.m00;
-        float _t3 = this.m21 - this.m12;
-        float _t4 = Math.max(this.m11, this.m22);
-        float _t5 = this.m01 + this.m10;
-        float _t6 = this.m02 + this.m20;
-        float _t7 = this.m02 - this.m20;
-        float _t8 = this.m12 + this.m21;
-        float _t9 = this.m10 - this.m01;
-        float _t13 = this.m22 + (this.m00 + this.m11);
+        float _r0 = this.m00;
+        float _r1 = this.m21;
+        float _r2 = this.m12;
+        float _r3 = this.m11;
+        float _r4 = this.m22;
+        float _r5 = this.m01;
+        float _r6 = this.m10;
+        float _r7 = this.m02;
+        float _r8 = this.m20;
+        float _t1 = 1.0f - _r0;
+        float _t3 = _r1 - _r2;
+        float _t4 = Math.max(_r3, _r4);
+        float _t5 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r2 + _r1;
+        float _t9 = _r6 - _r5;
+        float _t13 = _r4 + (_r0 + _r3);
         float _t14 = 1.0f + _t13;
-        float _t15 = this.m00 + (1.0f - this.m11 - this.m22);
-        float _t16 = this.m11 + (_t1 - this.m22);
-        float _t17 = this.m22 + (_t1 - this.m11);
+        float _t15 = _r0 + (1.0f - _r3 - _r4);
+        float _t16 = _r3 + (_t1 - _r4);
+        float _t17 = _r4 + (_t1 - _r3);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t13 > 0.0f) {
-            float _buf0 = _sp0 * _t3;
-            d.rY = _sp0 * _t7;
-            d.rZ = _sp0 * _t9;
-            d.rW = 0.5f * (float) Math.sqrt(_t14);
-            d.rX = _buf0;
-        } else {
-            if (this.m00 > _t4) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                d.rY = _sp3 * _t5;
-                d.rZ = _sp3 * _t6;
-                d.rW = _sp3 * _t3;
-                d.rX = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    float _buf0 = _sp1 * _t5;
-                    d.rY = 0.5f * (float) Math.sqrt(_t16);
-                    d.rZ = _sp1 * _t8;
-                    d.rW = _sp1 * _t7;
-                    d.rX = _buf0;
-                } else {
-                    float _buf0 = _sp2 * _t6;
-                    d.rY = _sp2 * _t8;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t17);
-                    d.rW = _sp2 * _t9;
-                    d.rX = _buf0;
-                }
-            }
-        }
-        d.dX = 0.0f;
-        d.dY = 0.0f;
-        d.dZ = 0.0f;
-        d.dW = 0.0f;
+        toDualQuat_s6608609c_tail(d, _t15, _t13, _sp0, _t3, _r0, _t4, _r3, _r4, _sp1, _t5, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
 
@@ -5963,6 +5914,21 @@ public class Float3x3Impl implements Float3x3 {
         return d;
     }
 
+    /** Private store group 0 of {@code toRigid_translation}: computes and stores it; reached only through it. */
+    private void toRigid_translation_s1bedcc31_c0(FloatRigidImpl _dst, float _t13, float _sp0, float _t20, float _t9, float _t5, float _t18, float _t4, float _sp1, float _t21) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t13 > 0.0f ? -(_sp0 * _t20) : _t9 > _t5 ? 0.5f * (float) Math.sqrt(_t18) : 1.0f > _t4 ? 0.0f : _sp1 * _t21;
+    }
+
+    /** Private store group 1 of {@code toRigid_translation}: computes and stores it; reached only through it. */
+    private void toRigid_translation_s1bedcc31_c1(FloatRigidImpl _dst, float _t13, float _sp1, float _t20, float _t9, float _t5, float _t4, float _t15, float _sp0, float _t21, float _t22, float _t16, float _t19, float _t17) {
+        _dst.rY = _t13 > 0.0f ? _sp1 * _t20 : _t9 > _t5 ? 0.0f : 1.0f > _t4 ? 0.5f * (float) Math.sqrt(_t15) : _sp0 * _t21;
+        _dst.rZ = _t13 > 0.0f ? 0.0f : _t9 > _t5 ? _sp1 * _t22 : 1.0f > _t4 ? _sp0 * _t16 : 0.5f * (float) Math.sqrt(_t19);
+        _dst.rW = _t13 > 0.0f ? 0.5f * (float) Math.sqrt(_t17) : _t9 > _t5 ? -(_sp0 * _t22) : 1.0f > _t4 ? _sp1 * _t16 : 0.0f;
+    }
+
 
     /**
      * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
@@ -5970,10 +5936,12 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatRigid toRigid_translation(@Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
-        float _t4 = (1.0f / (float) Math.sqrt(this.m02 * this.m02 + (this.m12 * this.m12 + 1.0f)));
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _t4 = (1.0f / (float) Math.sqrt(_r0 * _r0 + (_r1 * _r1 + 1.0f)));
         float _t5 = Math.max(1.0f, _t4);
-        float _sp0 = 0.5f * this.m12 * _t4;
-        float _sp1 = 0.5f * this.m02 * _t4;
+        float _sp0 = 0.5f * _r1 * _t4;
+        float _sp1 = 0.5f * _r0 * _t4;
         float _t9 = _t4 < 0.0f ? -1.0f : 1.0f;
         float _t10 = 1.0f + _t9;
         float _t13 = _t10 + _t4;
@@ -5985,58 +5953,28 @@ public class Float3x3Impl implements Float3x3 {
         float _t20 = (1.0f / (float) Math.sqrt(_t17));
         float _t21 = (1.0f / (float) Math.sqrt(_t19));
         float _t22 = (1.0f / (float) Math.sqrt(_t18));
-        if (_t13 > 0.0f) {
-            d.rX = -(_sp0 * _t20);
-            d.rY = _sp1 * _t20;
-            d.rZ = 0.0f;
-            d.rW = 0.5f * (float) Math.sqrt(_t17);
-        } else {
-            if (_t9 > _t5) {
-                d.rX = 0.5f * (float) Math.sqrt(_t18);
-                d.rY = 0.0f;
-                d.rZ = _sp1 * _t22;
-                d.rW = -(_sp0 * _t22);
-            } else {
-                if (1.0f > _t4) {
-                    d.rX = 0.0f;
-                    d.rY = 0.5f * (float) Math.sqrt(_t15);
-                    d.rZ = _sp0 * _t16;
-                    d.rW = _sp1 * _t16;
-                } else {
-                    d.rX = _sp1 * _t21;
-                    d.rY = _sp0 * _t21;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t19);
-                    d.rW = 0.0f;
-                }
-            }
-        }
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
+        toRigid_translation_s1bedcc31_c0(d, _t13, _sp0, _t20, _t9, _t5, _t18, _t4, _sp1, _t21);
+        toRigid_translation_s1bedcc31_c1(d, _t13, _sp1, _t20, _t9, _t5, _t4, _t15, _sp0, _t21, _t22, _t16, _t19, _t17);
         return d;
     }
 
+    /** Private store group 0 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s1bedcc31_c0(FloatRigidImpl _dst, float _t61, float _sp0, float _t36, float _t47, float _t37, float _t63, float _t18, float _t19, float _sp1, float _t53, float _sp2, float _t54) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t61 > 0.0f ? _sp0 * _t36 : _t47 > _t37 ? 0.5f * (float) Math.sqrt(_t63) : _t18 > _t19 ? _sp1 * _t53 : _sp2 * _t54;
+    }
 
-    /**
-     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
-     * through the public {@code toRigid} dispatcher.
-     */
-    private FloatRigid toRigid_general(@Mutated FloatRigid dest) {
-        FloatRigidImpl d = (FloatRigidImpl) dest;
-        float _t15 = (1.0f / (float) Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21));
-        float _t16 = (1.0f / (float) Math.sqrt(this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22));
-        float _t17 = (1.0f / (float) Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20));
-        float _t18 = this.m11 * _t15;
-        float _t19 = this.m22 * _t16;
-        float _t20 = this.m10 * _t17;
-        float _t21 = this.m21 * _t15;
-        float _t22 = this.m20 * _t17;
-        float _t23 = this.m02 * _t16;
-        float _t24 = this.m12 * _t16;
-        float _t25 = this.m00 * _t17;
-        float _t26 = this.m01 * _t15;
-        float _t36 = _t21 - _t24;
-        float _t37 = Math.max(_t18, _t19);
+    /** Private store group 1 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s1bedcc31_c1(FloatRigidImpl _dst, float _t61, float _sp0, float _t55, float _t47, float _t37, float _sp3, float _t53, float _t18, float _t19, float _t64, float _sp2, float _t38, float _t56, float _t54, float _sp1, float _t65, float _t62, float _t36) {
+        _dst.rY = _t61 > 0.0f ? _sp0 * _t55 : _t47 > _t37 ? _sp3 * _t53 : _t18 > _t19 ? 0.5f * (float) Math.sqrt(_t64) : _sp2 * _t38;
+        _dst.rZ = _t61 > 0.0f ? _sp0 * _t56 : _t47 > _t37 ? _sp3 * _t54 : _t18 > _t19 ? _sp1 * _t38 : 0.5f * (float) Math.sqrt(_t65);
+        _dst.rW = _t61 > 0.0f ? 0.5f * (float) Math.sqrt(_t62) : _t47 > _t37 ? _sp3 * _t36 : _t18 > _t19 ? _sp1 * _t55 : _sp2 * _t56;
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s1bedcc31_tail(FloatRigidImpl _dst, float _t24, float _t21, float _t20, float _t18, float _t22, float _t23, float _t19, float _t25, float _t26, float _t36, float _t37) {
         float _t38 = _t24 + _t21;
         float _t46 = (_t20 * _t21 - _t18 * _t22) * _t23 + (_t18 * _t19 - _t24 * _t21) * _t25 - (_t20 * _t19 - _t24 * _t22) * _t26;
         float _t47, _t48, _t49;
@@ -6061,37 +5999,49 @@ public class Float3x3Impl implements Float3x3 {
         float _t64 = _t18 + (_t51 - _t19);
         float _t65 = _t19 + (_t51 - _t18);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        toRigid_general_s1bedcc31_tail2(_dst, _t64, _t65, _t63, _t61, _sp0, _t36, _t47, _t37, _t18, _t19, _t53, _t54, _t55, _t38, _t56, _t62);
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s1bedcc31_tail2(FloatRigidImpl _dst, float _t64, float _t65, float _t63, float _t61, float _sp0, float _t36, float _t47, float _t37, float _t18, float _t19, float _t53, float _t54, float _t55, float _t38, float _t56, float _t62) {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
-        if (_t61 > 0.0f) {
-            d.rX = _sp0 * _t36;
-            d.rY = _sp0 * _t55;
-            d.rZ = _sp0 * _t56;
-            d.rW = 0.5f * (float) Math.sqrt(_t62);
-        } else {
-            if (_t47 > _t37) {
-                d.rX = 0.5f * (float) Math.sqrt(_t63);
-                d.rY = _sp3 * _t53;
-                d.rZ = _sp3 * _t54;
-                d.rW = _sp3 * _t36;
-            } else {
-                if (_t18 > _t19) {
-                    d.rX = _sp1 * _t53;
-                    d.rY = 0.5f * (float) Math.sqrt(_t64);
-                    d.rZ = _sp1 * _t38;
-                    d.rW = _sp1 * _t55;
-                } else {
-                    d.rX = _sp2 * _t54;
-                    d.rY = _sp2 * _t38;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t65);
-                    d.rW = _sp2 * _t56;
-                }
-            }
-        }
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
+        toRigid_general_s1bedcc31_c0(_dst, _t61, _sp0, _t36, _t47, _t37, _t63, _t18, _t19, _sp1, _t53, _sp2, _t54);
+        toRigid_general_s1bedcc31_c1(_dst, _t61, _sp0, _t55, _t47, _t37, _sp3, _t53, _t18, _t19, _t64, _sp2, _t38, _t56, _t54, _sp1, _t65, _t62, _t36);
+    }
+
+
+    /**
+     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
+     * through the public {@code toRigid} dispatcher.
+     */
+    private FloatRigid toRigid_general(@Mutated FloatRigid dest) {
+        FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t15 = (1.0f / (float) Math.sqrt(_r0 * _r0 + _r1 * _r1 + _r2 * _r2));
+        float _t16 = (1.0f / (float) Math.sqrt(_r3 * _r3 + _r4 * _r4 + _r5 * _r5));
+        float _t17 = (1.0f / (float) Math.sqrt(_r6 * _r6 + _r7 * _r7 + _r8 * _r8));
+        float _t18 = _r1 * _t15;
+        float _t19 = _r5 * _t16;
+        float _t20 = _r7 * _t17;
+        float _t21 = _r2 * _t15;
+        float _t22 = _r8 * _t17;
+        float _t23 = _r3 * _t16;
+        float _t24 = _r4 * _t16;
+        float _t25 = _r6 * _t17;
+        float _t26 = _r0 * _t15;
+        float _t36 = _t21 - _t24;
+        float _t37 = Math.max(_t18, _t19);
+        toRigid_general_s1bedcc31_tail(d, _t24, _t21, _t20, _t18, _t22, _t23, _t19, _t25, _t26, _t36, _t37);
         return d;
     }
 
@@ -6111,34 +6061,23 @@ public class Float3x3Impl implements Float3x3 {
         return toRigid_general(dest);
     }
 
+    /** Private store group 0 of {@code toRigid}: computes and stores it; reached only through it. */
+    private void toRigid_s14533caa_c0(DoubleRigidImpl _dst, float _t61, float _sp0, float _t36, float _t47, float _t37, float _t63, float _t18, float _t19, float _sp1, float _t53, float _sp2, float _t54) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t61 > 0.0f ? _sp0 * _t36 : _t47 > _t37 ? 0.5f * (float) Math.sqrt(_t63) : _t18 > _t19 ? _sp1 * _t53 : _sp2 * _t54;
+    }
 
-    /**
-     * Extract this matrix's rotation into a rigid transform with zero translation (scale is removed
-     * by normalizing the columns, but shear is not removed: a sheared block yields a rotation
-     * quaternion that is not unit length) and store the result in {@code dest}.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleRigid toRigid(@Mutated DoubleRigid dest) {
-        DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        float _t15 = (1.0f / (float) Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21));
-        float _t16 = (1.0f / (float) Math.sqrt(this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22));
-        float _t17 = (1.0f / (float) Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20));
-        float _t18 = this.m11 * _t15;
-        float _t19 = this.m22 * _t16;
-        float _t20 = this.m10 * _t17;
-        float _t21 = this.m21 * _t15;
-        float _t22 = this.m20 * _t17;
-        float _t23 = this.m02 * _t16;
-        float _t24 = this.m12 * _t16;
-        float _t25 = this.m00 * _t17;
-        float _t26 = this.m01 * _t15;
-        float _t36 = _t21 - _t24;
-        float _t37 = Math.max(_t18, _t19);
+    /** Private store group 1 of {@code toRigid}: computes and stores it; reached only through it. */
+    private void toRigid_s14533caa_c1(DoubleRigidImpl _dst, float _t61, float _sp0, float _t55, float _t47, float _t37, float _sp3, float _t53, float _t18, float _t19, float _t64, float _sp2, float _t38, float _t56, float _t54, float _sp1, float _t65, float _t62, float _t36) {
+        _dst.rY = _t61 > 0.0f ? _sp0 * _t55 : _t47 > _t37 ? _sp3 * _t53 : _t18 > _t19 ? 0.5f * (float) Math.sqrt(_t64) : _sp2 * _t38;
+        _dst.rZ = _t61 > 0.0f ? _sp0 * _t56 : _t47 > _t37 ? _sp3 * _t54 : _t18 > _t19 ? _sp1 * _t38 : 0.5f * (float) Math.sqrt(_t65);
+        _dst.rW = _t61 > 0.0f ? 0.5f * (float) Math.sqrt(_t62) : _t47 > _t37 ? _sp3 * _t36 : _t18 > _t19 ? _sp1 * _t55 : _sp2 * _t56;
+    }
+
+    /** Private tail of {@code toRigid}; reached only through it. */
+    private void toRigid_s14533caa_tail(DoubleRigidImpl _dst, float _t24, float _t21, float _t20, float _t18, float _t22, float _t23, float _t19, float _t25, float _t26, float _t36, float _t37) {
         float _t38 = _t24 + _t21;
         float _t46 = (_t20 * _t21 - _t18 * _t22) * _t23 + (_t18 * _t19 - _t24 * _t21) * _t25 - (_t20 * _t19 - _t24 * _t22) * _t26;
         float _t47, _t48, _t49;
@@ -6163,37 +6102,56 @@ public class Float3x3Impl implements Float3x3 {
         float _t64 = _t18 + (_t51 - _t19);
         float _t65 = _t19 + (_t51 - _t18);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        toRigid_s14533caa_tail2(_dst, _t64, _t65, _t63, _t61, _sp0, _t36, _t47, _t37, _t18, _t19, _t53, _t54, _t55, _t38, _t56, _t62);
+    }
+
+    /** Private tail of {@code toRigid}; reached only through it. */
+    private void toRigid_s14533caa_tail2(DoubleRigidImpl _dst, float _t64, float _t65, float _t63, float _t61, float _sp0, float _t36, float _t47, float _t37, float _t18, float _t19, float _t53, float _t54, float _t55, float _t38, float _t56, float _t62) {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
-        if (_t61 > 0.0f) {
-            d.rX = _sp0 * _t36;
-            d.rY = _sp0 * _t55;
-            d.rZ = _sp0 * _t56;
-            d.rW = 0.5f * (float) Math.sqrt(_t62);
-        } else {
-            if (_t47 > _t37) {
-                d.rX = 0.5f * (float) Math.sqrt(_t63);
-                d.rY = _sp3 * _t53;
-                d.rZ = _sp3 * _t54;
-                d.rW = _sp3 * _t36;
-            } else {
-                if (_t18 > _t19) {
-                    d.rX = _sp1 * _t53;
-                    d.rY = 0.5f * (float) Math.sqrt(_t64);
-                    d.rZ = _sp1 * _t38;
-                    d.rW = _sp1 * _t55;
-                } else {
-                    d.rX = _sp2 * _t54;
-                    d.rY = _sp2 * _t38;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t65);
-                    d.rW = _sp2 * _t56;
-                }
-            }
-        }
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
+        toRigid_s14533caa_c0(_dst, _t61, _sp0, _t36, _t47, _t37, _t63, _t18, _t19, _sp1, _t53, _sp2, _t54);
+        toRigid_s14533caa_c1(_dst, _t61, _sp0, _t55, _t47, _t37, _sp3, _t53, _t18, _t19, _t64, _sp2, _t38, _t56, _t54, _sp1, _t65, _t62, _t36);
+    }
+
+
+    /**
+     * Extract this matrix's rotation into a rigid transform with zero translation (scale is removed
+     * by normalizing the columns, but shear is not removed: a sheared block yields a rotation
+     * quaternion that is not unit length) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRigid toRigid(@Mutated DoubleRigid dest) {
+        DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t15 = (1.0f / (float) Math.sqrt(_r0 * _r0 + _r1 * _r1 + _r2 * _r2));
+        float _t16 = (1.0f / (float) Math.sqrt(_r3 * _r3 + _r4 * _r4 + _r5 * _r5));
+        float _t17 = (1.0f / (float) Math.sqrt(_r6 * _r6 + _r7 * _r7 + _r8 * _r8));
+        float _t18 = _r1 * _t15;
+        float _t19 = _r5 * _t16;
+        float _t20 = _r7 * _t17;
+        float _t21 = _r2 * _t15;
+        float _t22 = _r8 * _t17;
+        float _t23 = _r3 * _t16;
+        float _t24 = _r4 * _t16;
+        float _t25 = _r6 * _t17;
+        float _t26 = _r0 * _t15;
+        float _t36 = _t21 - _t24;
+        float _t37 = Math.max(_t18, _t19);
+        toRigid_s14533caa_tail(d, _t24, _t21, _t20, _t18, _t22, _t23, _t19, _t25, _t26, _t36, _t37);
         return d;
     }
 
@@ -6217,6 +6175,28 @@ public class Float3x3Impl implements Float3x3 {
         return d;
     }
 
+    /** Private store group 0 of {@code toTransform_translation}: computes and stores it; reached only through it. */
+    private void toTransform_translation_s6e32d690_c0(FloatTransformImpl _dst, float _t13, float _sp0, float _t20, float _t9, float _t5, float _t18, float _t4, float _sp1, float _t21) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t13 > 0.0f ? -(_sp0 * _t20) : _t9 > _t5 ? 0.5f * (float) Math.sqrt(_t18) : 1.0f > _t4 ? 0.0f : _sp1 * _t21;
+    }
+
+    /** Private store group 1 of {@code toTransform_translation}: computes and stores it; reached only through it. */
+    private void toTransform_translation_s6e32d690_c1(FloatTransformImpl _dst, float _t13, float _sp1, float _t20, float _t9, float _t5, float _t4, float _t15, float _sp0, float _t21, float _t22, float _t16, float _t19, float _t17) {
+        _dst.rY = _t13 > 0.0f ? _sp1 * _t20 : _t9 > _t5 ? 0.0f : 1.0f > _t4 ? 0.5f * (float) Math.sqrt(_t15) : _sp0 * _t21;
+        _dst.rZ = _t13 > 0.0f ? 0.0f : _t9 > _t5 ? _sp1 * _t22 : 1.0f > _t4 ? _sp0 * _t16 : 0.5f * (float) Math.sqrt(_t19);
+        _dst.rW = _t13 > 0.0f ? 0.5f * (float) Math.sqrt(_t17) : _t9 > _t5 ? -(_sp0 * _t22) : 1.0f > _t4 ? _sp1 * _t16 : 0.0f;
+    }
+
+    /** Private store group 2 of {@code toTransform_translation}: computes and stores it; reached only through it. */
+    private void toTransform_translation_s6e32d690_c2(FloatTransformImpl _dst, float _t9, float _t3) {
+        _dst.sX = _t9;
+        _dst.sY = 1.0f;
+        _dst.sZ = (float) Math.sqrt(_t3);
+    }
+
 
     /**
      * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
@@ -6224,11 +6204,13 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatTransform toTransform_translation(@Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t3 = this.m02 * this.m02 + (this.m12 * this.m12 + 1.0f);
+        float _r0 = this.m02;
+        float _r1 = this.m12;
+        float _t3 = _r0 * _r0 + (_r1 * _r1 + 1.0f);
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
         float _t5 = Math.max(1.0f, _t4);
-        float _sp0 = 0.5f * this.m12 * _t4;
-        float _sp1 = 0.5f * this.m02 * _t4;
+        float _sp0 = 0.5f * _r1 * _t4;
+        float _sp1 = 0.5f * _r0 * _t4;
         float _t9 = _t4 < 0.0f ? -1.0f : 1.0f;
         float _t10 = 1.0f + _t9;
         float _t13 = _t10 + _t4;
@@ -6240,38 +6222,51 @@ public class Float3x3Impl implements Float3x3 {
         float _t20 = (1.0f / (float) Math.sqrt(_t17));
         float _t21 = (1.0f / (float) Math.sqrt(_t19));
         float _t22 = (1.0f / (float) Math.sqrt(_t18));
-        if (_t13 > 0.0f) {
-            d.rX = -(_sp0 * _t20);
-            d.rY = _sp1 * _t20;
-            d.rZ = 0.0f;
-            d.rW = 0.5f * (float) Math.sqrt(_t17);
-        } else {
-            if (_t9 > _t5) {
-                d.rX = 0.5f * (float) Math.sqrt(_t18);
-                d.rY = 0.0f;
-                d.rZ = _sp1 * _t22;
-                d.rW = -(_sp0 * _t22);
-            } else {
-                if (1.0f > _t4) {
-                    d.rX = 0.0f;
-                    d.rY = 0.5f * (float) Math.sqrt(_t15);
-                    d.rZ = _sp0 * _t16;
-                    d.rW = _sp1 * _t16;
-                } else {
-                    d.rX = _sp1 * _t21;
-                    d.rY = _sp0 * _t21;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t19);
-                    d.rW = 0.0f;
-                }
-            }
-        }
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
-        d.sX = _t9;
-        d.sY = 1.0f;
-        d.sZ = (float) Math.sqrt(_t3);
+        toTransform_translation_s6e32d690_c0(d, _t13, _sp0, _t20, _t9, _t5, _t18, _t4, _sp1, _t21);
+        toTransform_translation_s6e32d690_c1(d, _t13, _sp1, _t20, _t9, _t5, _t4, _t15, _sp0, _t21, _t22, _t16, _t19, _t17);
+        toTransform_translation_s6e32d690_c2(d, _t9, _t3);
         return d;
+    }
+
+    /** Private store group 0 of {@code toTransform_orthogonal}: computes and stores it; reached only through it. */
+    private void toTransform_orthogonal_s6e32d690_c0(FloatTransformImpl _dst, float _t40, float _sp0, float _t45, float _t29, float _t25, float _t42, float _t14, float _t13, float _sp2, float _t46, float _sp1, float _t47) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t40 > 0.0f ? -(_sp0 * _t45) : _t29 > _t25 ? 0.5f * (float) Math.sqrt(_t42) : _t14 > _t13 ? _sp2 * _t46 : _sp1 * _t47;
+    }
+
+    /** Private store group 1 of {@code toTransform_orthogonal}: computes and stores it; reached only through it. */
+    private void toTransform_orthogonal_s6e32d690_c1(FloatTransformImpl _dst, float _t40, float _sp1, float _t45, float _t29, float _t25, float _sp2, float _t48, float _t14, float _t13, float _t43, float _sp0, float _t47, float _sp3, float _t46, float _t44, float _t41) {
+        _dst.rY = _t40 > 0.0f ? _sp1 * _t45 : _t29 > _t25 ? _sp2 * _t48 : _t14 > _t13 ? 0.5f * (float) Math.sqrt(_t43) : _sp0 * _t47;
+        _dst.rZ = _t40 > 0.0f ? _sp3 * _t45 : _t29 > _t25 ? _sp1 * _t48 : _t14 > _t13 ? _sp0 * _t46 : 0.5f * (float) Math.sqrt(_t44);
+        _dst.rW = _t40 > 0.0f ? 0.5f * (float) Math.sqrt(_t41) : _t29 > _t25 ? -(_sp0 * _t48) : _t14 > _t13 ? _sp1 * _t46 : _sp3 * _t47;
+    }
+
+    /** Private store group 2 of {@code toTransform_orthogonal}: computes and stores it; reached only through it. */
+    private void toTransform_orthogonal_s6e32d690_c2(FloatTransformImpl _dst, float _t28, float _t11, float _t12) {
+        _dst.sX = _t28 < 0.0f ? -_t11 : _t11;
+        _dst.sY = 1.0f;
+        _dst.sZ = (float) Math.sqrt(_t12);
+    }
+
+    /** Private tail of {@code toTransform_orthogonal}; reached only through it. */
+    private void toTransform_orthogonal_s6e32d690_tail(FloatTransformImpl _dst, float _t29, float _t16, float _t30, float _t14, float _t13, float _sp0, float _t25, float _sp1, float _t28, float _t11, float _t12) {
+        float _t31 = 1.0f + _t29;
+        float _sp2 = 0.5f * (_t16 + _t30);
+        float _sp3 = 0.5f * (_t30 - _t16);
+        float _t40 = _t14 + (_t29 + _t13);
+        float _t41 = _t14 + (_t31 + _t13);
+        float _t42 = _t31 - _t13 - _t14;
+        float _t43 = _t14 + (1.0f - _t29 - _t13);
+        float _t44 = 1.0f + _t13 - _t29 - _t14;
+        float _t45 = (1.0f / (float) Math.sqrt(_t41));
+        float _t46 = (1.0f / (float) Math.sqrt(_t43));
+        float _t47 = (1.0f / (float) Math.sqrt(_t44));
+        float _t48 = (1.0f / (float) Math.sqrt(_t42));
+        toTransform_orthogonal_s6e32d690_c0(_dst, _t40, _sp0, _t45, _t29, _t25, _t42, _t14, _t13, _sp2, _t46, _sp1, _t47);
+        toTransform_orthogonal_s6e32d690_c1(_dst, _t40, _sp1, _t45, _t29, _t25, _sp2, _t48, _t14, _t13, _t43, _sp0, _t47, _sp3, _t46, _t44, _t41);
+        toTransform_orthogonal_s6e32d690_c2(_dst, _t28, _t11, _t12);
     }
 
 
@@ -6281,20 +6276,62 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatTransform toTransform_orthogonal(@Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t8 = this.m00 * this.m00 + this.m10 * this.m10;
-        float _t9 = (1.0f / (float) Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11));
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m01;
+        float _r3 = this.m11;
+        float _r4 = this.m02;
+        float _r5 = this.m12;
+        float _t8 = _r0 * _r0 + _r1 * _r1;
+        float _t9 = (1.0f / (float) Math.sqrt(_r2 * _r2 + _r3 * _r3));
         float _t11 = (float) Math.sqrt(_t8);
         float _t10 = 1.0f / _t11;
-        float _t12 = this.m02 * this.m02 + (this.m12 * this.m12 + 1.0f);
+        float _t12 = _r4 * _r4 + (_r5 * _r5 + 1.0f);
         float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        float _t14 = this.m11 * _t9;
-        float _t15 = this.m00 * _t10;
-        float _t16 = this.m01 * _t9;
-        float _t17 = this.m10 * _t10;
-        float _sp0 = 0.5f * this.m12 * _t13;
-        float _sp1 = 0.5f * this.m02 * _t13;
+        float _t14 = _r3 * _t9;
+        float _t15 = _r0 * _t10;
+        float _t16 = _r2 * _t9;
+        float _t17 = _r1 * _t10;
+        float _sp0 = 0.5f * _r5 * _t13;
+        float _sp1 = 0.5f * _r4 * _t13;
         float _t25 = Math.max(_t14, _t13);
         float _t28 = _t15 * _t14 * _t13 - _t16 * _t17 * _t13;
+        float _t29, _t30;
+        if (_t28 < 0.0f) {
+            _t29 = -_t15;
+            _t30 = -_t17;
+        } else {
+            _t29 = _t15;
+            _t30 = _t17;
+        }
+        toTransform_orthogonal_s6e32d690_tail(d, _t29, _t16, _t30, _t14, _t13, _sp0, _t25, _sp1, _t28, _t11, _t12);
+        return d;
+    }
+
+    /** Private store group 0 of {@code toTransform_affine}: computes and stores it; reached only through it. */
+    private void toTransform_affine_s6e32d690_c0(FloatTransformImpl _dst, float _t40, float _sp0, float _t45, float _t29, float _t25, float _t42, float _t14, float _t13, float _sp2, float _t46, float _sp1, float _t47) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t40 > 0.0f ? -(_sp0 * _t45) : _t29 > _t25 ? 0.5f * (float) Math.sqrt(_t42) : _t14 > _t13 ? _sp2 * _t46 : _sp1 * _t47;
+    }
+
+    /** Private store group 1 of {@code toTransform_affine}: computes and stores it; reached only through it. */
+    private void toTransform_affine_s6e32d690_c1(FloatTransformImpl _dst, float _t40, float _sp1, float _t45, float _t29, float _t25, float _sp2, float _t48, float _t14, float _t13, float _t43, float _sp0, float _t47, float _sp3, float _t46, float _t44, float _t41) {
+        _dst.rY = _t40 > 0.0f ? _sp1 * _t45 : _t29 > _t25 ? _sp2 * _t48 : _t14 > _t13 ? 0.5f * (float) Math.sqrt(_t43) : _sp0 * _t47;
+        _dst.rZ = _t40 > 0.0f ? _sp3 * _t45 : _t29 > _t25 ? _sp1 * _t48 : _t14 > _t13 ? _sp0 * _t46 : 0.5f * (float) Math.sqrt(_t44);
+        _dst.rW = _t40 > 0.0f ? 0.5f * (float) Math.sqrt(_t41) : _t29 > _t25 ? -(_sp0 * _t48) : _t14 > _t13 ? _sp1 * _t46 : _sp3 * _t47;
+    }
+
+    /** Private store group 2 of {@code toTransform_affine}: computes and stores it; reached only through it. */
+    private void toTransform_affine_s6e32d690_c2(FloatTransformImpl _dst, float _t28, float _t11, float _t7, float _t12) {
+        _dst.sX = _t28 < 0.0f ? -_t11 : _t11;
+        _dst.sY = (float) Math.sqrt(_t7);
+        _dst.sZ = (float) Math.sqrt(_t12);
+    }
+
+    /** Private tail of {@code toTransform_affine}; reached only through it. */
+    private void toTransform_affine_s6e32d690_tail(FloatTransformImpl _dst, float _t28, float _t15, float _t17, float _t16, float _t14, float _t13, float _sp0, float _t25, float _sp1, float _t11, float _t7, float _t12) {
         float _t29, _t30;
         if (_t28 < 0.0f) {
             _t29 = -_t15;
@@ -6315,17 +6352,9 @@ public class Float3x3Impl implements Float3x3 {
         float _t46 = (1.0f / (float) Math.sqrt(_t43));
         float _t47 = (1.0f / (float) Math.sqrt(_t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t42));
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
-        d.rX = _t40 > 0.0f ? -(_sp0 * _t45) : _t29 > _t25 ? 0.5f * (float) Math.sqrt(_t42) : _t14 > _t13 ? _sp2 * _t46 : _sp1 * _t47;
-        d.rY = _t40 > 0.0f ? _sp1 * _t45 : _t29 > _t25 ? _sp2 * _t48 : _t14 > _t13 ? 0.5f * (float) Math.sqrt(_t43) : _sp0 * _t47;
-        d.rZ = _t40 > 0.0f ? _sp3 * _t45 : _t29 > _t25 ? _sp1 * _t48 : _t14 > _t13 ? _sp0 * _t46 : 0.5f * (float) Math.sqrt(_t44);
-        d.rW = _t40 > 0.0f ? 0.5f * (float) Math.sqrt(_t41) : _t29 > _t25 ? -(_sp0 * _t48) : _t14 > _t13 ? _sp1 * _t46 : _sp3 * _t47;
-        d.sX = _t28 < 0.0f ? -_t11 : _t11;
-        d.sY = 1.0f;
-        d.sZ = (float) Math.sqrt(_t12);
-        return d;
+        toTransform_affine_s6e32d690_c0(_dst, _t40, _sp0, _t45, _t29, _t25, _t42, _t14, _t13, _sp2, _t46, _sp1, _t47);
+        toTransform_affine_s6e32d690_c1(_dst, _t40, _sp1, _t45, _t29, _t25, _sp2, _t48, _t14, _t13, _t43, _sp0, _t47, _sp3, _t46, _t44, _t41);
+        toTransform_affine_s6e32d690_c2(_dst, _t28, _t11, _t7, _t12);
     }
 
 
@@ -6335,77 +6364,55 @@ public class Float3x3Impl implements Float3x3 {
      */
     private FloatTransform toTransform_affine(@Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t7 = this.m01 * this.m01 + this.m11 * this.m11;
-        float _t8 = this.m00 * this.m00 + this.m10 * this.m10;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m00;
+        float _r3 = this.m10;
+        float _r4 = this.m02;
+        float _r5 = this.m12;
+        float _t7 = _r0 * _r0 + _r1 * _r1;
+        float _t8 = _r2 * _r2 + _r3 * _r3;
         float _t9 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (float) Math.sqrt(_t8);
         float _t10 = 1.0f / _t11;
-        float _t12 = this.m02 * this.m02 + (this.m12 * this.m12 + 1.0f);
+        float _t12 = _r4 * _r4 + (_r5 * _r5 + 1.0f);
         float _t13 = (1.0f / (float) Math.sqrt(_t12));
-        float _t14 = this.m11 * _t9;
-        float _t15 = this.m00 * _t10;
-        float _t16 = this.m01 * _t9;
-        float _t17 = this.m10 * _t10;
-        float _sp0 = 0.5f * this.m12 * _t13;
-        float _sp1 = 0.5f * this.m02 * _t13;
+        float _t14 = _r1 * _t9;
+        float _t15 = _r2 * _t10;
+        float _t16 = _r0 * _t9;
+        float _t17 = _r3 * _t10;
+        float _sp0 = 0.5f * _r5 * _t13;
+        float _sp1 = 0.5f * _r4 * _t13;
         float _t25 = Math.max(_t14, _t13);
         float _t28 = _t15 * _t14 * _t13 - _t16 * _t17 * _t13;
-        float _t29, _t30;
-        if (_t28 < 0.0f) {
-            _t29 = -_t15;
-            _t30 = -_t17;
-        } else {
-            _t29 = _t15;
-            _t30 = _t17;
-        }
-        float _t31 = 1.0f + _t29;
-        float _sp2 = 0.5f * (_t16 + _t30);
-        float _sp3 = 0.5f * (_t30 - _t16);
-        float _t40 = _t14 + (_t29 + _t13);
-        float _t41 = _t14 + (_t31 + _t13);
-        float _t42 = _t31 - _t13 - _t14;
-        float _t43 = _t14 + (1.0f - _t29 - _t13);
-        float _t44 = 1.0f + _t13 - _t29 - _t14;
-        float _t45 = (1.0f / (float) Math.sqrt(_t41));
-        float _t46 = (1.0f / (float) Math.sqrt(_t43));
-        float _t47 = (1.0f / (float) Math.sqrt(_t44));
-        float _t48 = (1.0f / (float) Math.sqrt(_t42));
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
-        d.rX = _t40 > 0.0f ? -(_sp0 * _t45) : _t29 > _t25 ? 0.5f * (float) Math.sqrt(_t42) : _t14 > _t13 ? _sp2 * _t46 : _sp1 * _t47;
-        d.rY = _t40 > 0.0f ? _sp1 * _t45 : _t29 > _t25 ? _sp2 * _t48 : _t14 > _t13 ? 0.5f * (float) Math.sqrt(_t43) : _sp0 * _t47;
-        d.rZ = _t40 > 0.0f ? _sp3 * _t45 : _t29 > _t25 ? _sp1 * _t48 : _t14 > _t13 ? _sp0 * _t46 : 0.5f * (float) Math.sqrt(_t44);
-        d.rW = _t40 > 0.0f ? 0.5f * (float) Math.sqrt(_t41) : _t29 > _t25 ? -(_sp0 * _t48) : _t14 > _t13 ? _sp1 * _t46 : _sp3 * _t47;
-        d.sX = _t28 < 0.0f ? -_t11 : _t11;
-        d.sY = (float) Math.sqrt(_t7);
-        d.sZ = (float) Math.sqrt(_t12);
+        toTransform_affine_s6e32d690_tail(d, _t28, _t15, _t17, _t16, _t14, _t13, _sp0, _t25, _sp1, _t11, _t7, _t12);
         return d;
     }
 
+    /** Private store group 0 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s6e32d690_c0(FloatTransformImpl _dst, float _t62, float _sp0, float _t37, float _t48, float _t38, float _t64, float _t19, float _t20, float _sp1, float _t54, float _sp2, float _t55) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
 
-    /**
-     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
-     * through the public {@code toTransform} dispatcher.
-     */
-    private FloatTransform toTransform_general(@Mutated FloatTransform dest) {
-        FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t18 = (float) Math.sqrt(_t14);
-        float _t17 = 1.0f / _t18;
-        float _t19 = this.m11 * _t15;
-        float _t20 = this.m22 * _t16;
-        float _t21 = this.m10 * _t17;
-        float _t22 = this.m21 * _t15;
-        float _t23 = this.m20 * _t17;
-        float _t24 = this.m02 * _t16;
-        float _t25 = this.m12 * _t16;
-        float _t26 = this.m00 * _t17;
-        float _t27 = this.m01 * _t15;
+    /** Private store group 1 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s6e32d690_c1(FloatTransformImpl _dst, float _t62, float _sp0, float _t56, float _t48, float _t38, float _sp3, float _t54, float _t19, float _t20, float _t65, float _sp2, float _t39, float _t57, float _t55, float _sp1, float _t66, float _t63, float _t37) {
+        _dst.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s6e32d690_c2(FloatTransformImpl _dst, float _t47, float _t18, float _t12, float _t13) {
+        _dst.sX = _t47 < 0.0f ? -_t18 : _t18;
+        _dst.sY = (float) Math.sqrt(_t12);
+        _dst.sZ = (float) Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s6e32d690_tail(FloatTransformImpl _dst, float _t22, float _t25, float _t19, float _t20, float _t21, float _t23, float _t24, float _t26, float _t27, float _t18, float _t12, float _t13) {
         float _t37 = _t22 - _t25;
         float _t38 = Math.max(_t19, _t20);
         float _t39 = _t25 + _t22;
@@ -6430,21 +6437,54 @@ public class Float3x3Impl implements Float3x3 {
         float _t63 = _t19 + (_t20 + _t51);
         float _t64 = _t51 - _t20 - _t19;
         float _t65 = _t19 + (_t52 - _t20);
+        toTransform_general_s6e32d690_tail2(_dst, _t20, _t52, _t19, _t63, _t65, _t64, _t62, _t37, _t48, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s6e32d690_tail2(FloatTransformImpl _dst, float _t20, float _t52, float _t19, float _t63, float _t65, float _t64, float _t62, float _t37, float _t48, float _t38, float _t54, float _t55, float _t56, float _t39, float _t57, float _t47, float _t18, float _t12, float _t13) {
         float _t66 = _t20 + (_t52 - _t19);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
-        d.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        d.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
-        d.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
-        d.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        d.sX = _t47 < 0.0f ? -_t18 : _t18;
-        d.sY = (float) Math.sqrt(_t12);
-        d.sZ = (float) Math.sqrt(_t13);
+        toTransform_general_s6e32d690_c0(_dst, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        toTransform_general_s6e32d690_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        toTransform_general_s6e32d690_c2(_dst, _t47, _t18, _t12, _t13);
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private FloatTransform toTransform_general(@Mutated FloatTransform dest) {
+        FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t18 = (float) Math.sqrt(_t14);
+        float _t17 = 1.0f / _t18;
+        float _t19 = _r1 * _t15;
+        float _t20 = _r5 * _t16;
+        float _t21 = _r7 * _t17;
+        float _t22 = _r2 * _t15;
+        float _t23 = _r8 * _t17;
+        float _t24 = _r3 * _t16;
+        float _t25 = _r4 * _t16;
+        float _t26 = _r6 * _t17;
+        float _t27 = _r0 * _t15;
+        toTransform_general_s6e32d690_tail(d, _t22, _t25, _t19, _t20, _t21, _t23, _t24, _t26, _t27, _t18, _t12, _t13);
         return d;
     }
 
@@ -6466,36 +6506,30 @@ public class Float3x3Impl implements Float3x3 {
         return toTransform_general(dest);
     }
 
+    /** Private store group 0 of {@code toTransform}: computes and stores it; reached only through it. */
+    private void toTransform_s5d096289_c0(DoubleTransformImpl _dst, float _t62, float _sp0, float _t37, float _t48, float _t38, float _t64, float _t19, float _t20, float _sp1, float _t54, float _sp2, float _t55) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
 
-    /**
-     * Decompose this matrix's linear {@code R * S} block into a TRS transform with zero translation
-     * (scale is removed by normalizing the columns, but shear is not removed: a sheared block
-     * yields a rotation quaternion that is not unit length) and store the result in {@code dest}.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleTransform toTransform(@Mutated DoubleTransform dest) {
-        DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t18 = (float) Math.sqrt(_t14);
-        float _t17 = 1.0f / _t18;
-        float _t19 = this.m11 * _t15;
-        float _t20 = this.m22 * _t16;
-        float _t21 = this.m10 * _t17;
-        float _t22 = this.m21 * _t15;
-        float _t23 = this.m20 * _t17;
-        float _t24 = this.m02 * _t16;
-        float _t25 = this.m12 * _t16;
-        float _t26 = this.m00 * _t17;
-        float _t27 = this.m01 * _t15;
+    /** Private store group 1 of {@code toTransform}: computes and stores it; reached only through it. */
+    private void toTransform_s5d096289_c1(DoubleTransformImpl _dst, float _t62, float _sp0, float _t56, float _t48, float _t38, float _sp3, float _t54, float _t19, float _t20, float _t65, float _sp2, float _t39, float _t57, float _t55, float _sp1, float _t66, float _t63, float _t37) {
+        _dst.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code toTransform}: computes and stores it; reached only through it. */
+    private void toTransform_s5d096289_c2(DoubleTransformImpl _dst, float _t47, float _t18, float _t12, float _t13) {
+        _dst.sX = _t47 < 0.0f ? -_t18 : _t18;
+        _dst.sY = (float) Math.sqrt(_t12);
+        _dst.sZ = (float) Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code toTransform}; reached only through it. */
+    private void toTransform_s5d096289_tail(DoubleTransformImpl _dst, float _t22, float _t25, float _t19, float _t20, float _t21, float _t23, float _t24, float _t26, float _t27, float _t18, float _t12, float _t13) {
         float _t37 = _t22 - _t25;
         float _t38 = Math.max(_t19, _t20);
         float _t39 = _t25 + _t22;
@@ -6520,21 +6554,61 @@ public class Float3x3Impl implements Float3x3 {
         float _t63 = _t19 + (_t20 + _t51);
         float _t64 = _t51 - _t20 - _t19;
         float _t65 = _t19 + (_t52 - _t20);
+        toTransform_s5d096289_tail2(_dst, _t20, _t52, _t19, _t63, _t65, _t64, _t62, _t37, _t48, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code toTransform}; reached only through it. */
+    private void toTransform_s5d096289_tail2(DoubleTransformImpl _dst, float _t20, float _t52, float _t19, float _t63, float _t65, float _t64, float _t62, float _t37, float _t48, float _t38, float _t54, float _t55, float _t56, float _t39, float _t57, float _t47, float _t18, float _t12, float _t13) {
         float _t66 = _t20 + (_t52 - _t19);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
-        d.tX = 0.0f;
-        d.tY = 0.0f;
-        d.tZ = 0.0f;
-        d.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        d.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
-        d.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
-        d.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        d.sX = _t47 < 0.0f ? -_t18 : _t18;
-        d.sY = (float) Math.sqrt(_t12);
-        d.sZ = (float) Math.sqrt(_t13);
+        toTransform_s5d096289_c0(_dst, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        toTransform_s5d096289_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        toTransform_s5d096289_c2(_dst, _t47, _t18, _t12, _t13);
+    }
+
+
+    /**
+     * Decompose this matrix's linear {@code R * S} block into a TRS transform with zero translation
+     * (scale is removed by normalizing the columns, but shear is not removed: a sheared block
+     * yields a rotation quaternion that is not unit length) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleTransform toTransform(@Mutated DoubleTransform dest) {
+        DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t18 = (float) Math.sqrt(_t14);
+        float _t17 = 1.0f / _t18;
+        float _t19 = _r1 * _t15;
+        float _t20 = _r5 * _t16;
+        float _t21 = _r7 * _t17;
+        float _t22 = _r2 * _t15;
+        float _t23 = _r8 * _t17;
+        float _t24 = _r3 * _t16;
+        float _t25 = _r4 * _t16;
+        float _t26 = _r6 * _t17;
+        float _t27 = _r0 * _t15;
+        toTransform_s5d096289_tail(d, _t22, _t25, _t19, _t20, _t21, _t23, _t24, _t26, _t27, _t18, _t12, _t13);
         return d;
     }
 
@@ -6547,33 +6621,21 @@ public class Float3x3Impl implements Float3x3 {
         return getNormalizedRotation_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeRotation_general}: computes and stores it; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_c0(FloatQuatImpl _dst, float _t102, float _sp0, float _t81, float _t93, float _t82, float _t107, float _t46, float _t72, float _sp1, float _t97, float _sp2, float _t100, float _t101, float _sp3, float _t108, float _t84, float _t98, float _t109, float _t106) {
+        _dst.x = _t102 > 0.0f ? _sp0 * _t81 : _t93 > _t82 ? 0.5f * (float) Math.sqrt(_t107) : _t46 > _t72 ? _sp1 * _t97 : _sp2 * _t100;
+        _dst.y = _t102 > 0.0f ? _sp0 * _t101 : _t93 > _t82 ? _sp3 * _t97 : _t46 > _t72 ? 0.5f * (float) Math.sqrt(_t108) : _sp2 * _t84;
+        _dst.z = _t102 > 0.0f ? _sp0 * _t98 : _t93 > _t82 ? _sp3 * _t100 : _t46 > _t72 ? _sp1 * _t84 : 0.5f * (float) Math.sqrt(_t109);
+        _dst.w = _t102 > 0.0f ? 0.5f * (float) Math.sqrt(_t106) : _t93 > _t82 ? _sp3 * _t81 : _t46 > _t72 ? _sp1 * _t101 : _sp2 * _t98;
+    }
 
-    /**
-     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeRotation} dispatcher.
-     */
-    private FloatQuat decomposeRotation_general(@Mutated FloatQuat dest) {
-        FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        float _t9, _t10, _t11;
-        if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0f;
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-        }
-        float _t23 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        float _t24 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t28 = _t24 * _t9;
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_tail(FloatQuatImpl _dst, float _t24, float _t10, float _t11, float _r3, float _t23, float _t9, float _r4, float _r5, float _r6, float _t28, float _r7, float _r8) {
         float _t29 = _t24 * _t10;
         float _t30 = _t24 * _t11;
-        float _t31 = this.m01 - _t23 * _t9;
-        float _t32 = this.m11 - _t23 * _t10;
-        float _t33 = this.m21 - _t23 * _t11;
+        float _t31 = _r3 - _t23 * _t9;
+        float _t32 = _r4 - _t23 * _t10;
+        float _t33 = _r5 - _t23 * _t11;
         float _t41 = _t31 * _t31 + _t32 * _t32 + _t33 * _t33;
         float _t42 = (1.0f / (float) Math.sqrt(_t41));
         float _t46, _t47, _t48;
@@ -6586,11 +6648,16 @@ public class Float3x3Impl implements Float3x3 {
             _t47 = 0.0f;
             _t48 = 0.0f;
         }
-        float _t53 = (this.m02 - _t28) * _t47 + (this.m12 - _t29) * _t46 + (this.m22 - _t30) * _t48;
-        float _t60 = this.m02 - _t53 * _t47 - _t28;
-        float _t61 = this.m12 - _t53 * _t46 - _t29;
-        float _t62 = this.m22 - _t53 * _t48 - _t30;
+        float _t53 = (_r6 - _t28) * _t47 + (_r7 - _t29) * _t46 + (_r8 - _t30) * _t48;
+        float _t60 = _r6 - _t53 * _t47 - _t28;
+        float _t61 = _r7 - _t53 * _t46 - _t29;
+        float _t62 = _r8 - _t53 * _t48 - _t30;
         float _t67 = _t60 * _t60 + _t61 * _t61 + _t62 * _t62;
+        decomposeRotation_general_s6f858fd1_tail2(_dst, _t67, _t62, _t61, _t60, _t48, _t46, _t9, _t47, _t10, _t11);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_tail2(FloatQuatImpl _dst, float _t67, float _t62, float _t61, float _t60, float _t48, float _t46, float _t9, float _t47, float _t10, float _t11) {
         float _t68 = (1.0f / (float) Math.sqrt(_t67));
         float _t72, _t73, _t74;
         if (_t67 != 0.0f) {
@@ -6621,6 +6688,11 @@ public class Float3x3Impl implements Float3x3 {
         float _t98 = _t94 - _t47;
         float _t100 = _t95 + _t74;
         float _t101 = _t74 - _t95;
+        decomposeRotation_general_s6f858fd1_tail3(_dst, _t96, _t72, _t93, _t46, _t81, _t82, _t97, _t100, _t101, _t84, _t98);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_tail3(FloatQuatImpl _dst, float _t96, float _t72, float _t93, float _t46, float _t81, float _t82, float _t97, float _t100, float _t101, float _t84, float _t98) {
         float _t102 = _t96 + _t72;
         float _t106 = 1.0f + _t102;
         float _t107 = 1.0f + (_t93 - (_t46 + _t72));
@@ -6630,31 +6702,41 @@ public class Float3x3Impl implements Float3x3 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t108));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t109));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t107));
-        if (_t102 > 0.0f) {
-            d.x = _sp0 * _t81;
-            d.y = _sp0 * _t101;
-            d.z = _sp0 * _t98;
-            d.w = 0.5f * (float) Math.sqrt(_t106);
+        decomposeRotation_general_s6f858fd1_c0(_dst, _t102, _sp0, _t81, _t93, _t82, _t107, _t46, _t72, _sp1, _t97, _sp2, _t100, _t101, _sp3, _t108, _t84, _t98, _t109, _t106);
+    }
+
+
+    /**
+     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeRotation} dispatcher.
+     */
+    private FloatQuat decomposeRotation_general(@Mutated FloatQuat dest) {
+        FloatQuatImpl d = (FloatQuatImpl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t5 = (1.0f / (float) Math.sqrt(_t4));
+        float _t9, _t10, _t11;
+        if (_t4 != 0.0f) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            if (_t93 > _t82) {
-                d.x = 0.5f * (float) Math.sqrt(_t107);
-                d.y = _sp3 * _t97;
-                d.z = _sp3 * _t100;
-                d.w = _sp3 * _t81;
-            } else {
-                if (_t46 > _t72) {
-                    d.x = _sp1 * _t97;
-                    d.y = 0.5f * (float) Math.sqrt(_t108);
-                    d.z = _sp1 * _t84;
-                    d.w = _sp1 * _t101;
-                } else {
-                    d.x = _sp2 * _t100;
-                    d.y = _sp2 * _t84;
-                    d.z = 0.5f * (float) Math.sqrt(_t109);
-                    d.w = _sp2 * _t98;
-                }
-            }
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
         }
+        float _t23 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t24 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        float _t28 = _t24 * _t9;
+        decomposeRotation_general_s6f858fd1_tail(d, _t24, _t10, _t11, _r3, _t23, _t9, _r4, _r5, _r6, _t28, _r7, _r8);
         return d;
     }
 
@@ -6675,42 +6757,21 @@ public class Float3x3Impl implements Float3x3 {
         return decomposeRotation_general(dest);
     }
 
+    /** Private store group 0 of {@code decomposeRotation}: computes and stores it; reached only through it. */
+    private void decomposeRotation_s62e3ac38_c0(DoubleQuatImpl _dst, float _t102, float _sp0, float _t81, float _t93, float _t82, float _t107, float _t46, float _t72, float _sp1, float _t97, float _sp2, float _t100, float _t101, float _sp3, float _t108, float _t84, float _t98, float _t109, float _t106) {
+        _dst.x = _t102 > 0.0f ? _sp0 * _t81 : _t93 > _t82 ? 0.5f * (float) Math.sqrt(_t107) : _t46 > _t72 ? _sp1 * _t97 : _sp2 * _t100;
+        _dst.y = _t102 > 0.0f ? _sp0 * _t101 : _t93 > _t82 ? _sp3 * _t97 : _t46 > _t72 ? 0.5f * (float) Math.sqrt(_t108) : _sp2 * _t84;
+        _dst.z = _t102 > 0.0f ? _sp0 * _t98 : _t93 > _t82 ? _sp3 * _t100 : _t46 > _t72 ? _sp1 * _t84 : 0.5f * (float) Math.sqrt(_t109);
+        _dst.w = _t102 > 0.0f ? 0.5f * (float) Math.sqrt(_t106) : _t93 > _t82 ? _sp3 * _t81 : _t46 > _t72 ? _sp1 * _t101 : _sp2 * _t98;
+    }
 
-    /**
-     * Extract the rotation part of this matrix and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of each column must lie roughly between
-     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleQuat decomposeRotation(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        float _t9, _t10, _t11;
-        if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0f;
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-        }
-        float _t23 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        float _t24 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t28 = _t24 * _t9;
+    /** Private tail of {@code decomposeRotation}; reached only through it. */
+    private void decomposeRotation_s62e3ac38_tail(DoubleQuatImpl _dst, float _t24, float _t10, float _t11, float _r3, float _t23, float _t9, float _r4, float _r5, float _r6, float _t28, float _r7, float _r8) {
         float _t29 = _t24 * _t10;
         float _t30 = _t24 * _t11;
-        float _t31 = this.m01 - _t23 * _t9;
-        float _t32 = this.m11 - _t23 * _t10;
-        float _t33 = this.m21 - _t23 * _t11;
+        float _t31 = _r3 - _t23 * _t9;
+        float _t32 = _r4 - _t23 * _t10;
+        float _t33 = _r5 - _t23 * _t11;
         float _t41 = _t31 * _t31 + _t32 * _t32 + _t33 * _t33;
         float _t42 = (1.0f / (float) Math.sqrt(_t41));
         float _t46, _t47, _t48;
@@ -6723,11 +6784,16 @@ public class Float3x3Impl implements Float3x3 {
             _t47 = 0.0f;
             _t48 = 0.0f;
         }
-        float _t53 = (this.m02 - _t28) * _t47 + (this.m12 - _t29) * _t46 + (this.m22 - _t30) * _t48;
-        float _t60 = this.m02 - _t53 * _t47 - _t28;
-        float _t61 = this.m12 - _t53 * _t46 - _t29;
-        float _t62 = this.m22 - _t53 * _t48 - _t30;
+        float _t53 = (_r6 - _t28) * _t47 + (_r7 - _t29) * _t46 + (_r8 - _t30) * _t48;
+        float _t60 = _r6 - _t53 * _t47 - _t28;
+        float _t61 = _r7 - _t53 * _t46 - _t29;
+        float _t62 = _r8 - _t53 * _t48 - _t30;
         float _t67 = _t60 * _t60 + _t61 * _t61 + _t62 * _t62;
+        decomposeRotation_s62e3ac38_tail2(_dst, _t67, _t62, _t61, _t60, _t48, _t46, _t9, _t47, _t10, _t11);
+    }
+
+    /** Private tail of {@code decomposeRotation}; reached only through it. */
+    private void decomposeRotation_s62e3ac38_tail2(DoubleQuatImpl _dst, float _t67, float _t62, float _t61, float _t60, float _t48, float _t46, float _t9, float _t47, float _t10, float _t11) {
         float _t68 = (1.0f / (float) Math.sqrt(_t67));
         float _t72, _t73, _t74;
         if (_t67 != 0.0f) {
@@ -6758,6 +6824,11 @@ public class Float3x3Impl implements Float3x3 {
         float _t98 = _t94 - _t47;
         float _t100 = _t95 + _t74;
         float _t101 = _t74 - _t95;
+        decomposeRotation_s62e3ac38_tail3(_dst, _t96, _t72, _t93, _t46, _t81, _t82, _t97, _t100, _t101, _t84, _t98);
+    }
+
+    /** Private tail of {@code decomposeRotation}; reached only through it. */
+    private void decomposeRotation_s62e3ac38_tail3(DoubleQuatImpl _dst, float _t96, float _t72, float _t93, float _t46, float _t81, float _t82, float _t97, float _t100, float _t101, float _t84, float _t98) {
         float _t102 = _t96 + _t72;
         float _t106 = 1.0f + _t102;
         float _t107 = 1.0f + (_t93 - (_t46 + _t72));
@@ -6767,31 +6838,50 @@ public class Float3x3Impl implements Float3x3 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t108));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t109));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t107));
-        if (_t102 > 0.0f) {
-            d.x = _sp0 * _t81;
-            d.y = _sp0 * _t101;
-            d.z = _sp0 * _t98;
-            d.w = 0.5f * (float) Math.sqrt(_t106);
+        decomposeRotation_s62e3ac38_c0(_dst, _t102, _sp0, _t81, _t93, _t82, _t107, _t46, _t72, _sp1, _t97, _sp2, _t100, _t101, _sp3, _t108, _t84, _t98, _t109, _t106);
+    }
+
+
+    /**
+     * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat decomposeRotation(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t5 = (1.0f / (float) Math.sqrt(_t4));
+        float _t9, _t10, _t11;
+        if (_t4 != 0.0f) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            if (_t93 > _t82) {
-                d.x = 0.5f * (float) Math.sqrt(_t107);
-                d.y = _sp3 * _t97;
-                d.z = _sp3 * _t100;
-                d.w = _sp3 * _t81;
-            } else {
-                if (_t46 > _t72) {
-                    d.x = _sp1 * _t97;
-                    d.y = 0.5f * (float) Math.sqrt(_t108);
-                    d.z = _sp1 * _t84;
-                    d.w = _sp1 * _t101;
-                } else {
-                    d.x = _sp2 * _t100;
-                    d.y = _sp2 * _t84;
-                    d.z = 0.5f * (float) Math.sqrt(_t109);
-                    d.w = _sp2 * _t98;
-                }
-            }
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
         }
+        float _t23 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t24 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        float _t28 = _t24 * _t9;
+        decomposeRotation_s62e3ac38_tail(d, _t24, _t10, _t11, _r3, _t23, _t9, _r4, _r5, _r6, _t28, _r7, _r8);
         return d;
     }
 
@@ -6804,34 +6894,21 @@ public class Float3x3Impl implements Float3x3 {
         return getScale_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeScale_general}: computes and stores it; reached only through it. */
+    private void decomposeScale_general_s52bd9409_c0(Float3Impl _dst, float _t44, float _t70, float _t46, float _t71, float _t10, float _t72, float _t45, float _t11, float _t12, float _t6, float _t39, float _t65) {
+        _dst.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
+        _dst.y = (float) Math.sqrt(_t39);
+        _dst.z = (float) Math.sqrt(_t65);
+    }
 
-    /**
-     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeScale} dispatcher.
-     */
-    private Float3 decomposeScale_general(@Mutated Float3 dest) {
-        Float3Impl d = (Float3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t6 = (float) Math.sqrt(_t4);
-        float _t5 = 1.0f / _t6;
-        float _t10, _t11, _t12;
-        if (_t4 != 0.0f) {
-            _t10 = this.m00 * _t5;
-            _t11 = this.m10 * _t5;
-            _t12 = this.m20 * _t5;
-        } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
-        }
-        float _t21 = this.m01 * _t10 + this.m11 * _t11 + this.m21 * _t12;
-        float _t22 = this.m02 * _t10 + this.m12 * _t11 + this.m22 * _t12;
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s52bd9409_tail(Float3Impl _dst, float _t22, float _t10, float _t11, float _t12, float _r3, float _t21, float _r4, float _r5, float _r6, float _r7, float _r8, float _t6) {
         float _t26 = _t22 * _t10;
         float _t27 = _t22 * _t11;
         float _t28 = _t22 * _t12;
-        float _t29 = this.m01 - _t21 * _t10;
-        float _t30 = this.m11 - _t21 * _t11;
-        float _t31 = this.m21 - _t21 * _t12;
+        float _t29 = _r3 - _t21 * _t10;
+        float _t30 = _r4 - _t21 * _t11;
+        float _t31 = _r5 - _t21 * _t12;
         float _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
         float _t40 = (1.0f / (float) Math.sqrt(_t39));
         float _t44, _t45, _t46;
@@ -6844,10 +6921,15 @@ public class Float3x3Impl implements Float3x3 {
             _t45 = 0.0f;
             _t46 = 0.0f;
         }
-        float _t51 = (this.m02 - _t26) * _t45 + (this.m12 - _t27) * _t44 + (this.m22 - _t28) * _t46;
-        float _t58 = this.m02 - _t51 * _t45 - _t26;
-        float _t59 = this.m12 - _t51 * _t44 - _t27;
-        float _t60 = this.m22 - _t51 * _t46 - _t28;
+        float _t51 = (_r6 - _t26) * _t45 + (_r7 - _t27) * _t44 + (_r8 - _t28) * _t46;
+        float _t58 = _r6 - _t51 * _t45 - _t26;
+        float _t59 = _r7 - _t51 * _t44 - _t27;
+        float _t60 = _r8 - _t51 * _t46 - _t28;
+        decomposeScale_general_s52bd9409_tail2(_dst, _t58, _t59, _t60, _t44, _t46, _t10, _t45, _t11, _t12, _t6, _t39);
+    }
+
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s52bd9409_tail2(Float3Impl _dst, float _t58, float _t59, float _t60, float _t44, float _t46, float _t10, float _t45, float _t11, float _t12, float _t6, float _t39) {
         float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
         float _t66 = (1.0f / (float) Math.sqrt(_t65));
         float _t70, _t71, _t72;
@@ -6860,9 +6942,41 @@ public class Float3x3Impl implements Float3x3 {
             _t71 = 0.0f;
             _t72 = 0.0f;
         }
-        d.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
-        d.y = (float) Math.sqrt(_t39);
-        d.z = (float) Math.sqrt(_t65);
+        decomposeScale_general_s52bd9409_c0(_dst, _t44, _t70, _t46, _t71, _t10, _t72, _t45, _t11, _t12, _t6, _t39, _t65);
+    }
+
+
+    /**
+     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeScale} dispatcher.
+     */
+    private Float3 decomposeScale_general(@Mutated Float3 dest) {
+        Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t6 = (float) Math.sqrt(_t4);
+        float _t5 = 1.0f / _t6;
+        float _t10, _t11, _t12;
+        if (_t4 != 0.0f) {
+            _t10 = _r0 * _t5;
+            _t11 = _r1 * _t5;
+            _t12 = _r2 * _t5;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
+        float _t21 = _r3 * _t10 + _r4 * _t11 + _r5 * _t12;
+        float _t22 = _r6 * _t10 + _r7 * _t11 + _r8 * _t12;
+        decomposeScale_general_s52bd9409_tail(d, _t22, _t10, _t11, _t12, _r3, _t21, _r4, _r5, _r6, _r7, _r8, _t6);
         return d;
     }
 
@@ -6885,6 +6999,57 @@ public class Float3x3Impl implements Float3x3 {
         return decomposeScale_general(dest);
     }
 
+    /** Private store group 0 of {@code decomposeScale}: computes and stores it; reached only through it. */
+    private void decomposeScale_s34d82902_c0(Double3Impl _dst, float _t44, float _t70, float _t46, float _t71, float _t10, float _t72, float _t45, float _t11, float _t12, float _t6, float _t39, float _t65) {
+        _dst.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
+        _dst.y = (float) Math.sqrt(_t39);
+        _dst.z = (float) Math.sqrt(_t65);
+    }
+
+    /** Private tail of {@code decomposeScale}; reached only through it. */
+    private void decomposeScale_s34d82902_tail(Double3Impl _dst, float _t22, float _t10, float _t11, float _t12, float _r3, float _t21, float _r4, float _r5, float _r6, float _r7, float _r8, float _t6) {
+        float _t26 = _t22 * _t10;
+        float _t27 = _t22 * _t11;
+        float _t28 = _t22 * _t12;
+        float _t29 = _r3 - _t21 * _t10;
+        float _t30 = _r4 - _t21 * _t11;
+        float _t31 = _r5 - _t21 * _t12;
+        float _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        float _t40 = (1.0f / (float) Math.sqrt(_t39));
+        float _t44, _t45, _t46;
+        if (_t39 != 0.0f) {
+            _t44 = _t30 * _t40;
+            _t45 = _t29 * _t40;
+            _t46 = _t31 * _t40;
+        } else {
+            _t44 = 0.0f;
+            _t45 = 0.0f;
+            _t46 = 0.0f;
+        }
+        float _t51 = (_r6 - _t26) * _t45 + (_r7 - _t27) * _t44 + (_r8 - _t28) * _t46;
+        float _t58 = _r6 - _t51 * _t45 - _t26;
+        float _t59 = _r7 - _t51 * _t44 - _t27;
+        float _t60 = _r8 - _t51 * _t46 - _t28;
+        decomposeScale_s34d82902_tail2(_dst, _t58, _t59, _t60, _t44, _t46, _t10, _t45, _t11, _t12, _t6, _t39);
+    }
+
+    /** Private tail of {@code decomposeScale}; reached only through it. */
+    private void decomposeScale_s34d82902_tail2(Double3Impl _dst, float _t58, float _t59, float _t60, float _t44, float _t46, float _t10, float _t45, float _t11, float _t12, float _t6, float _t39) {
+        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
+        float _t66 = (1.0f / (float) Math.sqrt(_t65));
+        float _t70, _t71, _t72;
+        if (_t65 != 0.0f) {
+            _t70 = _t60 * _t66;
+            _t71 = _t59 * _t66;
+            _t72 = _t58 * _t66;
+        } else {
+            _t70 = 0.0f;
+            _t71 = 0.0f;
+            _t72 = 0.0f;
+        }
+        decomposeScale_s34d82902_c0(_dst, _t44, _t70, _t46, _t71, _t10, _t72, _t45, _t11, _t12, _t6, _t39, _t65);
+    }
+
 
     /**
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
@@ -6903,58 +7068,31 @@ public class Float3x3Impl implements Float3x3 {
      */
     public Double3 decomposeScale(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
         float _t6 = (float) Math.sqrt(_t4);
         float _t5 = 1.0f / _t6;
         float _t10, _t11, _t12;
         if (_t4 != 0.0f) {
-            _t10 = this.m00 * _t5;
-            _t11 = this.m10 * _t5;
-            _t12 = this.m20 * _t5;
+            _t10 = _r0 * _t5;
+            _t11 = _r1 * _t5;
+            _t12 = _r2 * _t5;
         } else {
             _t10 = 0.0f;
             _t11 = 0.0f;
             _t12 = 0.0f;
         }
-        float _t21 = this.m01 * _t10 + this.m11 * _t11 + this.m21 * _t12;
-        float _t22 = this.m02 * _t10 + this.m12 * _t11 + this.m22 * _t12;
-        float _t26 = _t22 * _t10;
-        float _t27 = _t22 * _t11;
-        float _t28 = _t22 * _t12;
-        float _t29 = this.m01 - _t21 * _t10;
-        float _t30 = this.m11 - _t21 * _t11;
-        float _t31 = this.m21 - _t21 * _t12;
-        float _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
-        float _t40 = (1.0f / (float) Math.sqrt(_t39));
-        float _t44, _t45, _t46;
-        if (_t39 != 0.0f) {
-            _t44 = _t30 * _t40;
-            _t45 = _t29 * _t40;
-            _t46 = _t31 * _t40;
-        } else {
-            _t44 = 0.0f;
-            _t45 = 0.0f;
-            _t46 = 0.0f;
-        }
-        float _t51 = (this.m02 - _t26) * _t45 + (this.m12 - _t27) * _t44 + (this.m22 - _t28) * _t46;
-        float _t58 = this.m02 - _t51 * _t45 - _t26;
-        float _t59 = this.m12 - _t51 * _t44 - _t27;
-        float _t60 = this.m22 - _t51 * _t46 - _t28;
-        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
-        float _t66 = (1.0f / (float) Math.sqrt(_t65));
-        float _t70, _t71, _t72;
-        if (_t65 != 0.0f) {
-            _t70 = _t60 * _t66;
-            _t71 = _t59 * _t66;
-            _t72 = _t58 * _t66;
-        } else {
-            _t70 = 0.0f;
-            _t71 = 0.0f;
-            _t72 = 0.0f;
-        }
-        d.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
-        d.y = (float) Math.sqrt(_t39);
-        d.z = (float) Math.sqrt(_t65);
+        float _t21 = _r3 * _t10 + _r4 * _t11 + _r5 * _t12;
+        float _t22 = _r6 * _t10 + _r7 * _t11 + _r8 * _t12;
+        decomposeScale_s34d82902_tail(d, _t22, _t10, _t11, _t12, _r3, _t21, _r4, _r5, _r6, _r7, _r8, _t6);
         return d;
     }
 
@@ -6980,33 +7118,20 @@ public class Float3x3Impl implements Float3x3 {
         return d;
     }
 
+    /** Private store group 0 of {@code decomposeSkew_general}: computes and stores it; reached only through it. */
+    private void decomposeSkew_general_s52bd9409_c0(Float3Impl _dst, float _t51, float _t66, float _t87, float _t67, float _t40) {
+        _dst.x = _t51 * _t66;
+        _dst.y = _t87 < 0.0f ? -_t67 : _t67;
+        _dst.z = _t87 < 0.0f ? -_t40 : _t40;
+    }
 
-    /**
-     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
-     * through the public {@code decomposeSkew} dispatcher.
-     */
-    private Float3 decomposeSkew_general(@Mutated Float3 dest) {
-        Float3Impl d = (Float3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        float _t9, _t10, _t11;
-        if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0f;
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-        }
-        float _t20 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t21 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        float _t22 = _t20 * _t9;
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s52bd9409_tail(Float3Impl _dst, float _t20, float _t10, float _t11, float _r6, float _t21, float _t9, float _r7, float _r8, float _r3, float _t22, float _r4, float _r5) {
         float _t26 = _t20 * _t10;
         float _t27 = _t20 * _t11;
-        float _t29 = this.m01 - _t21 * _t9;
-        float _t30 = this.m11 - _t21 * _t10;
-        float _t31 = this.m21 - _t21 * _t11;
+        float _t29 = _r6 - _t21 * _t9;
+        float _t30 = _r7 - _t21 * _t10;
+        float _t31 = _r8 - _t21 * _t11;
         float _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
         float _t39 = (1.0f / (float) Math.sqrt(_t38));
         float _t40 = _t21 * _t39;
@@ -7020,10 +7145,15 @@ public class Float3x3Impl implements Float3x3 {
             _t45 = 0.0f;
             _t46 = 0.0f;
         }
-        float _t51 = (this.m02 - _t22) * _t44 + (this.m12 - _t26) * _t45 + (this.m22 - _t27) * _t46;
-        float _t58 = this.m02 - _t51 * _t44 - _t22;
-        float _t59 = this.m12 - _t51 * _t45 - _t26;
-        float _t60 = this.m22 - _t51 * _t46 - _t27;
+        float _t51 = (_r3 - _t22) * _t44 + (_r4 - _t26) * _t45 + (_r5 - _t27) * _t46;
+        float _t58 = _r3 - _t51 * _t44 - _t22;
+        float _t59 = _r4 - _t51 * _t45 - _t26;
+        float _t60 = _r5 - _t51 * _t46 - _t27;
+        decomposeSkew_general_s52bd9409_tail2(_dst, _t58, _t59, _t60, _t20, _t45, _t46, _t9, _t44, _t10, _t11, _t51, _t40);
+    }
+
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s52bd9409_tail2(Float3Impl _dst, float _t58, float _t59, float _t60, float _t20, float _t45, float _t46, float _t9, float _t44, float _t10, float _t11, float _t51, float _t40) {
         float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
         float _t66 = (1.0f / (float) Math.sqrt(_t65));
         float _t67 = _t20 * _t66;
@@ -7038,14 +7168,41 @@ public class Float3x3Impl implements Float3x3 {
             _t73 = 0.0f;
         }
         float _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
-        if (_t87 < 0.0f) {
-            d.y = -_t67;
-            d.z = -_t40;
+        decomposeSkew_general_s52bd9409_c0(_dst, _t51, _t66, _t87, _t67, _t40);
+    }
+
+
+    /**
+     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
+     * through the public {@code decomposeSkew} dispatcher.
+     */
+    private Float3 decomposeSkew_general(@Mutated Float3 dest) {
+        Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m01;
+        float _r7 = this.m11;
+        float _r8 = this.m21;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t5 = (1.0f / (float) Math.sqrt(_t4));
+        float _t9, _t10, _t11;
+        if (_t4 != 0.0f) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            d.y = _t67;
-            d.z = _t40;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
         }
-        d.x = _t51 * _t66;
+        float _t20 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t21 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        float _t22 = _t20 * _t9;
+        decomposeSkew_general_s52bd9409_tail(d, _t20, _t10, _t11, _r6, _t21, _t9, _r7, _r8, _r3, _t22, _r4, _r5);
         return d;
     }
 
@@ -7069,6 +7226,59 @@ public class Float3x3Impl implements Float3x3 {
         return decomposeSkew_general(dest);
     }
 
+    /** Private store group 0 of {@code decomposeSkew}: computes and stores it; reached only through it. */
+    private void decomposeSkew_s34d82902_c0(Double3Impl _dst, float _t51, float _t66, float _t87, float _t67, float _t40) {
+        _dst.x = _t51 * _t66;
+        _dst.y = _t87 < 0.0f ? -_t67 : _t67;
+        _dst.z = _t87 < 0.0f ? -_t40 : _t40;
+    }
+
+    /** Private tail of {@code decomposeSkew}; reached only through it. */
+    private void decomposeSkew_s34d82902_tail(Double3Impl _dst, float _t20, float _t10, float _t11, float _r6, float _t21, float _t9, float _r7, float _r8, float _r3, float _t22, float _r4, float _r5) {
+        float _t26 = _t20 * _t10;
+        float _t27 = _t20 * _t11;
+        float _t29 = _r6 - _t21 * _t9;
+        float _t30 = _r7 - _t21 * _t10;
+        float _t31 = _r8 - _t21 * _t11;
+        float _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        float _t39 = (1.0f / (float) Math.sqrt(_t38));
+        float _t40 = _t21 * _t39;
+        float _t44, _t45, _t46;
+        if (_t38 != 0.0f) {
+            _t44 = _t29 * _t39;
+            _t45 = _t30 * _t39;
+            _t46 = _t31 * _t39;
+        } else {
+            _t44 = 0.0f;
+            _t45 = 0.0f;
+            _t46 = 0.0f;
+        }
+        float _t51 = (_r3 - _t22) * _t44 + (_r4 - _t26) * _t45 + (_r5 - _t27) * _t46;
+        float _t58 = _r3 - _t51 * _t44 - _t22;
+        float _t59 = _r4 - _t51 * _t45 - _t26;
+        float _t60 = _r5 - _t51 * _t46 - _t27;
+        decomposeSkew_s34d82902_tail2(_dst, _t58, _t59, _t60, _t20, _t45, _t46, _t9, _t44, _t10, _t11, _t51, _t40);
+    }
+
+    /** Private tail of {@code decomposeSkew}; reached only through it. */
+    private void decomposeSkew_s34d82902_tail2(Double3Impl _dst, float _t58, float _t59, float _t60, float _t20, float _t45, float _t46, float _t9, float _t44, float _t10, float _t11, float _t51, float _t40) {
+        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
+        float _t66 = (1.0f / (float) Math.sqrt(_t65));
+        float _t67 = _t20 * _t66;
+        float _t71, _t72, _t73;
+        if (_t65 != 0.0f) {
+            _t71 = _t60 * _t66;
+            _t72 = _t59 * _t66;
+            _t73 = _t58 * _t66;
+        } else {
+            _t71 = 0.0f;
+            _t72 = 0.0f;
+            _t73 = 0.0f;
+        }
+        float _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
+        decomposeSkew_s34d82902_c0(_dst, _t51, _t66, _t87, _t67, _t40);
+    }
+
 
     /**
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
@@ -7087,65 +7297,31 @@ public class Float3x3Impl implements Float3x3 {
      */
     public Double3 decomposeSkew(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m01;
+        float _r7 = this.m11;
+        float _r8 = this.m21;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
         float _t5 = (1.0f / (float) Math.sqrt(_t4));
         float _t9, _t10, _t11;
         if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
             _t9 = 0.0f;
             _t10 = 0.0f;
             _t11 = 0.0f;
         }
-        float _t20 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t21 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
+        float _t20 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t21 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
         float _t22 = _t20 * _t9;
-        float _t26 = _t20 * _t10;
-        float _t27 = _t20 * _t11;
-        float _t29 = this.m01 - _t21 * _t9;
-        float _t30 = this.m11 - _t21 * _t10;
-        float _t31 = this.m21 - _t21 * _t11;
-        float _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
-        float _t39 = (1.0f / (float) Math.sqrt(_t38));
-        float _t40 = _t21 * _t39;
-        float _t44, _t45, _t46;
-        if (_t38 != 0.0f) {
-            _t44 = _t29 * _t39;
-            _t45 = _t30 * _t39;
-            _t46 = _t31 * _t39;
-        } else {
-            _t44 = 0.0f;
-            _t45 = 0.0f;
-            _t46 = 0.0f;
-        }
-        float _t51 = (this.m02 - _t22) * _t44 + (this.m12 - _t26) * _t45 + (this.m22 - _t27) * _t46;
-        float _t58 = this.m02 - _t51 * _t44 - _t22;
-        float _t59 = this.m12 - _t51 * _t45 - _t26;
-        float _t60 = this.m22 - _t51 * _t46 - _t27;
-        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
-        float _t66 = (1.0f / (float) Math.sqrt(_t65));
-        float _t67 = _t20 * _t66;
-        float _t71, _t72, _t73;
-        if (_t65 != 0.0f) {
-            _t71 = _t60 * _t66;
-            _t72 = _t59 * _t66;
-            _t73 = _t58 * _t66;
-        } else {
-            _t71 = 0.0f;
-            _t72 = 0.0f;
-            _t73 = 0.0f;
-        }
-        float _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
-        if (_t87 < 0.0f) {
-            d.y = -_t67;
-            d.z = -_t40;
-        } else {
-            d.y = _t67;
-            d.z = _t40;
-        }
-        d.x = _t51 * _t66;
+        decomposeSkew_s34d82902_tail(d, _t20, _t10, _t11, _r6, _t21, _t9, _r7, _r8, _r3, _t22, _r4, _r5);
         return d;
     }
 

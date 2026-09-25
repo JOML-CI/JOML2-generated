@@ -132,6 +132,35 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
         return d;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s78e00a1c_c0(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v0X = Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6)));
+        _dst.v0Y = Math.fma(_r7, _r1, Math.fma(_r8, _r3, Math.fma(_r9, _r5, _r10)));
+        _dst.v0Z = Math.fma(_r11, _r1, Math.fma(_r12, _r3, Math.fma(_r13, _r5, _r14)));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s78e00a1c_c1(DoubleTriangleImpl _dst, double _r0, double _r15, double _r2, double _r16, double _r4, double _r17, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v1X = Math.fma(_r0, _r15, Math.fma(_r2, _r16, Math.fma(_r4, _r17, _r6)));
+        _dst.v1Y = Math.fma(_r7, _r15, Math.fma(_r8, _r16, Math.fma(_r9, _r17, _r10)));
+        _dst.v1Z = Math.fma(_r11, _r15, Math.fma(_r12, _r16, Math.fma(_r13, _r17, _r14)));
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s78e00a1c_c2(DoubleTriangleImpl _dst, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v2X = Math.fma(_r0, _r18, Math.fma(_r2, _r19, Math.fma(_r4, _r20, _r6)));
+        _dst.v2Y = Math.fma(_r7, _r18, Math.fma(_r8, _r19, Math.fma(_r9, _r20, _r10)));
+        _dst.v2Z = Math.fma(_r11, _r18, Math.fma(_r12, _r19, Math.fma(_r13, _r20, _r14)));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s78e00a1c_tail(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.v2Y;
+        transform_s78e00a1c_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s78e00a1c_c1(_dst, _r0, _r15, _r2, _r16, _r4, _r17, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s78e00a1c_c2(_dst, _r0, _r18, _r2, _r19, _r4, _r20, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+    }
+
 
     /**
      * Transform this triangle by {@code m} and store the result in {@code dest}.
@@ -142,22 +171,57 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      */
     public DoubleTriangle transform(Double3x4R m, @Mutated DoubleTriangle dest) {
         DoubleTriangleImpl d = (DoubleTriangleImpl) dest;
-        double _buf0 = Math.fma(m.m02(), this.v0Z, Math.fma(m.m00(), this.v0X, Math.fma(m.m01(), this.v0Y, m.m03())));
-        double _buf1 = Math.fma(m.m12(), this.v0Z, Math.fma(m.m10(), this.v0X, Math.fma(m.m11(), this.v0Y, m.m13())));
-        d.v0Z = Math.fma(m.m22(), this.v0Z, Math.fma(m.m20(), this.v0X, Math.fma(m.m21(), this.v0Y, m.m23())));
-        double _buf2 = Math.fma(m.m02(), this.v1Z, Math.fma(m.m00(), this.v1X, Math.fma(m.m01(), this.v1Y, m.m03())));
-        double _buf3 = Math.fma(m.m12(), this.v1Z, Math.fma(m.m10(), this.v1X, Math.fma(m.m11(), this.v1Y, m.m13())));
-        d.v1Z = Math.fma(m.m22(), this.v1Z, Math.fma(m.m20(), this.v1X, Math.fma(m.m21(), this.v1Y, m.m23())));
-        double _buf4 = Math.fma(m.m02(), this.v2Z, Math.fma(m.m00(), this.v2X, Math.fma(m.m01(), this.v2Y, m.m03())));
-        double _buf5 = Math.fma(m.m12(), this.v2Z, Math.fma(m.m10(), this.v2X, Math.fma(m.m11(), this.v2Y, m.m13())));
-        d.v2Z = Math.fma(m.m22(), this.v2Z, Math.fma(m.m20(), this.v2X, Math.fma(m.m21(), this.v2Y, m.m23())));
-        d.v0X = _buf0;
-        d.v0Y = _buf1;
-        d.v1X = _buf2;
-        d.v1Y = _buf3;
-        d.v2X = _buf4;
-        d.v2Y = _buf5;
+        double _r0 = m.m02();
+        double _r1 = this.v0Z;
+        double _r2 = m.m00();
+        double _r3 = this.v0X;
+        double _r4 = m.m01();
+        double _r5 = this.v0Y;
+        double _r6 = m.m03();
+        double _r7 = m.m12();
+        double _r8 = m.m10();
+        double _r9 = m.m11();
+        double _r10 = m.m13();
+        double _r11 = m.m22();
+        double _r12 = m.m20();
+        double _r13 = m.m21();
+        double _r14 = m.m23();
+        double _r15 = this.v1Z;
+        double _r16 = this.v1X;
+        double _r17 = this.v1Y;
+        double _r18 = this.v2Z;
+        double _r19 = this.v2X;
+        transform_s78e00a1c_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d1f427b_c0(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v0X = Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6)));
+        _dst.v0Y = Math.fma(_r7, _r1, Math.fma(_r8, _r3, Math.fma(_r9, _r5, _r10)));
+        _dst.v0Z = Math.fma(_r11, _r1, Math.fma(_r12, _r3, Math.fma(_r13, _r5, _r14)));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d1f427b_c1(DoubleTriangleImpl _dst, double _r0, double _r15, double _r2, double _r16, double _r4, double _r17, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v1X = Math.fma(_r0, _r15, Math.fma(_r2, _r16, Math.fma(_r4, _r17, _r6)));
+        _dst.v1Y = Math.fma(_r7, _r15, Math.fma(_r8, _r16, Math.fma(_r9, _r17, _r10)));
+        _dst.v1Z = Math.fma(_r11, _r15, Math.fma(_r12, _r16, Math.fma(_r13, _r17, _r14)));
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d1f427b_c2(DoubleTriangleImpl _dst, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v2X = Math.fma(_r0, _r18, Math.fma(_r2, _r19, Math.fma(_r4, _r20, _r6)));
+        _dst.v2Y = Math.fma(_r7, _r18, Math.fma(_r8, _r19, Math.fma(_r9, _r20, _r10)));
+        _dst.v2Z = Math.fma(_r11, _r18, Math.fma(_r12, _r19, Math.fma(_r13, _r20, _r14)));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s6d1f427b_tail(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.v2Y;
+        transform_s6d1f427b_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s6d1f427b_c1(_dst, _r0, _r15, _r2, _r16, _r4, _r17, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s6d1f427b_c2(_dst, _r0, _r18, _r2, _r19, _r4, _r20, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
     }
 
 
@@ -173,21 +237,27 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      */
     public DoubleTriangle transform(Double4x4R m, @Mutated DoubleTriangle dest) {
         DoubleTriangleImpl d = (DoubleTriangleImpl) dest;
-        double _buf0 = Math.fma(m.m02(), this.v0Z, Math.fma(m.m00(), this.v0X, Math.fma(m.m01(), this.v0Y, m.m03())));
-        double _buf1 = Math.fma(m.m12(), this.v0Z, Math.fma(m.m10(), this.v0X, Math.fma(m.m11(), this.v0Y, m.m13())));
-        d.v0Z = Math.fma(m.m22(), this.v0Z, Math.fma(m.m20(), this.v0X, Math.fma(m.m21(), this.v0Y, m.m23())));
-        double _buf2 = Math.fma(m.m02(), this.v1Z, Math.fma(m.m00(), this.v1X, Math.fma(m.m01(), this.v1Y, m.m03())));
-        double _buf3 = Math.fma(m.m12(), this.v1Z, Math.fma(m.m10(), this.v1X, Math.fma(m.m11(), this.v1Y, m.m13())));
-        d.v1Z = Math.fma(m.m22(), this.v1Z, Math.fma(m.m20(), this.v1X, Math.fma(m.m21(), this.v1Y, m.m23())));
-        double _buf4 = Math.fma(m.m02(), this.v2Z, Math.fma(m.m00(), this.v2X, Math.fma(m.m01(), this.v2Y, m.m03())));
-        double _buf5 = Math.fma(m.m12(), this.v2Z, Math.fma(m.m10(), this.v2X, Math.fma(m.m11(), this.v2Y, m.m13())));
-        d.v2Z = Math.fma(m.m22(), this.v2Z, Math.fma(m.m20(), this.v2X, Math.fma(m.m21(), this.v2Y, m.m23())));
-        d.v0X = _buf0;
-        d.v0Y = _buf1;
-        d.v1X = _buf2;
-        d.v1Y = _buf3;
-        d.v2X = _buf4;
-        d.v2Y = _buf5;
+        double _r0 = m.m02();
+        double _r1 = this.v0Z;
+        double _r2 = m.m00();
+        double _r3 = this.v0X;
+        double _r4 = m.m01();
+        double _r5 = this.v0Y;
+        double _r6 = m.m03();
+        double _r7 = m.m12();
+        double _r8 = m.m10();
+        double _r9 = m.m11();
+        double _r10 = m.m13();
+        double _r11 = m.m22();
+        double _r12 = m.m20();
+        double _r13 = m.m21();
+        double _r14 = m.m23();
+        double _r15 = this.v1Z;
+        double _r16 = this.v1X;
+        double _r17 = this.v1Y;
+        double _r18 = this.v2Z;
+        double _r19 = this.v2X;
+        transform_s6d1f427b_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
     }
 
@@ -229,6 +299,20 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
         return barycentric(p.x(), p.y(), p.z(), dest);
     }
 
+    /** Private store group 0 of {@code barycentric}: computes and stores it; reached only through it. */
+    private void barycentric_s3d3f3e36_c0(Double3Impl _dst, double _t45, double _t46) {
+        _dst.x = 1.0 - _t45 - _t46;
+        _dst.y = _t45;
+        _dst.z = _t46;
+    }
+
+    /** Private tail of {@code barycentric}; reached only through it. */
+    private void barycentric_s3d3f3e36_tail(Double3Impl _dst, double _t0, double _t1, double _t2, double _t3, double _t28, double _t6, double _t7, double _t30, double _t32, double _t43_inv, double _t4, double _t5, double _t8) {
+        double _t45 = Math.fma(Math.fma(_t0, _t1, -(_t2 * _t3)), _t28, Math.fma(Math.fma(_t2, _t6, -(_t7 * _t1)), _t30, Math.fma(_t7, _t3, -(_t0 * _t6)) * _t32)) * _t43_inv;
+        double _t46 = Math.fma(Math.fma(_t2, _t4, -(_t0 * _t5)), _t28, Math.fma(Math.fma(_t0, _t8, -(_t7 * _t4)), _t32, Math.fma(_t7, _t5, -(_t2 * _t8)) * _t30)) * _t43_inv;
+        barycentric_s3d3f3e36_c0(_dst, _t45, _t46);
+    }
+
 
     /**
      * Compute the barycentric coordinates of the given point with respect to this triangle and
@@ -248,25 +332,30 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      */
     public Double3 barycentric(double pX, double pY, double pZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t0 = pX - this.v0X;
-        double _t1 = this.v2Y - this.v0Y;
-        double _t2 = pY - this.v0Y;
-        double _t3 = this.v2X - this.v0X;
-        double _t4 = this.v1X - this.v0X;
-        double _t5 = this.v1Y - this.v0Y;
-        double _t6 = this.v2Z - this.v0Z;
-        double _t7 = pZ - this.v0Z;
-        double _t8 = this.v1Z - this.v0Z;
+        double _r0 = this.v0X;
+        double _r1 = this.v2Y;
+        double _r2 = this.v0Y;
+        double _r3 = this.v2X;
+        double _r4 = this.v1X;
+        double _r5 = this.v1Y;
+        double _r6 = this.v2Z;
+        double _r7 = this.v0Z;
+        double _r8 = this.v1Z;
+        double _t0 = pX - _r0;
+        double _t1 = _r1 - _r2;
+        double _t2 = pY - _r2;
+        double _t3 = _r3 - _r0;
+        double _t4 = _r4 - _r0;
+        double _t5 = _r5 - _r2;
+        double _t6 = _r6 - _r7;
+        double _t7 = pZ - _r7;
+        double _t8 = _r8 - _r7;
         double _t28 = Math.fma(_t4, _t1, -(_t5 * _t3));
         double _t30 = Math.fma(_t5, _t6, -(_t8 * _t1));
         double _t32 = Math.fma(_t8, _t3, -(_t4 * _t6));
         double _t43 = Math.fma(_t28, _t28, Math.fma(_t30, _t30, _t32 * _t32));
         double _t43_inv = 1.0 / _t43;
-        double _t45 = Math.fma(Math.fma(_t0, _t1, -(_t2 * _t3)), _t28, Math.fma(Math.fma(_t2, _t6, -(_t7 * _t1)), _t30, Math.fma(_t7, _t3, -(_t0 * _t6)) * _t32)) * _t43_inv;
-        double _t46 = Math.fma(Math.fma(_t2, _t4, -(_t0 * _t5)), _t28, Math.fma(Math.fma(_t0, _t8, -(_t7 * _t4)), _t32, Math.fma(_t7, _t5, -(_t2 * _t8)) * _t30)) * _t43_inv;
-        d.x = 1.0 - _t45 - _t46;
-        d.y = _t45;
-        d.z = _t46;
+        barycentric_s3d3f3e36_tail(d, _t0, _t1, _t2, _t3, _t28, _t6, _t7, _t30, _t32, _t43_inv, _t4, _t5, _t8);
         return d;
     }
 

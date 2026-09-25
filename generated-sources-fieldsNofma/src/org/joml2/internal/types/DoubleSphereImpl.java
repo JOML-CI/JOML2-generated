@@ -148,6 +148,20 @@ public final class DoubleSphereImpl implements DoubleSphere {
         return d;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s305b2ff7_c0(DoubleSphereImpl _dst, double _r6, double _r9, double _r0, double _r10, double _r1, double _r11, double _r12, double _r7, double _r2, double _r3, double _r13, double _r8, double _r4, double _r5, double _r14, double _r15, double _t15, double _t16, double _t17) {
+        _dst.x = _r6 * _r9 + (_r0 * _r10 + (_r1 * _r11 + _r12));
+        _dst.y = _r7 * _r9 + (_r2 * _r10 + (_r3 * _r11 + _r13));
+        _dst.z = _r8 * _r9 + (_r4 * _r10 + (_r5 * _r11 + _r14));
+        _dst.r = _r15 * Math.sqrt(Math.max(Math.max(_r0 * _r0 + (_r2 * _r2 + (_r4 * _r4 + (_t15 + _t16))), _r1 * _r1 + (_r3 * _r3 + (_r5 * _r5 + (_t15 + _t17)))), _r6 * _r6 + (_r7 * _r7 + (_r8 * _r8 + (_t16 + _t17)))));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s305b2ff7_tail(DoubleSphereImpl _dst, double _r1, double _r6, double _r3, double _r7, double _r5, double _r8, double _r9, double _r0, double _r10, double _r11, double _r12, double _r2, double _r13, double _r4, double _r14, double _r15, double _t15, double _t16) {
+        double _t17 = Math.abs(_r1 * _r6 + _r3 * _r7 + _r5 * _r8);
+        transform_s305b2ff7_c0(_dst, _r6, _r9, _r0, _r10, _r1, _r11, _r12, _r7, _r2, _r3, _r13, _r8, _r4, _r5, _r14, _r15, _t15, _t16, _t17);
+    }
+
 
     /**
      * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
@@ -165,16 +179,40 @@ public final class DoubleSphereImpl implements DoubleSphere {
      */
     public DoubleSphere transform(Double3x4R m, @Mutated DoubleSphere dest) {
         DoubleSphereImpl d = (DoubleSphereImpl) dest;
-        double _t15 = Math.abs(m.m00() * m.m01() + m.m10() * m.m11() + m.m20() * m.m21());
-        double _t16 = Math.abs(m.m00() * m.m02() + m.m10() * m.m12() + m.m20() * m.m22());
-        double _t17 = Math.abs(m.m01() * m.m02() + m.m11() * m.m12() + m.m21() * m.m22());
-        double _buf0 = m.m02() * this.z + (m.m00() * this.x + (m.m01() * this.y + m.m03()));
-        double _buf1 = m.m12() * this.z + (m.m10() * this.x + (m.m11() * this.y + m.m13()));
-        d.z = m.m22() * this.z + (m.m20() * this.x + (m.m21() * this.y + m.m23()));
-        d.r = this.r * Math.sqrt(Math.max(Math.max(m.m00() * m.m00() + (m.m10() * m.m10() + (m.m20() * m.m20() + (_t15 + _t16))), m.m01() * m.m01() + (m.m11() * m.m11() + (m.m21() * m.m21() + (_t15 + _t17)))), m.m02() * m.m02() + (m.m12() * m.m12() + (m.m22() * m.m22() + (_t16 + _t17)))));
-        d.x = _buf0;
-        d.y = _buf1;
+        double _r0 = m.m00();
+        double _r1 = m.m01();
+        double _r2 = m.m10();
+        double _r3 = m.m11();
+        double _r4 = m.m20();
+        double _r5 = m.m21();
+        double _r6 = m.m02();
+        double _r7 = m.m12();
+        double _r8 = m.m22();
+        double _r9 = this.z;
+        double _r10 = this.x;
+        double _r11 = this.y;
+        double _r12 = m.m03();
+        double _r13 = m.m13();
+        double _r14 = m.m23();
+        double _r15 = this.r;
+        double _t15 = Math.abs(_r0 * _r1 + _r2 * _r3 + _r4 * _r5);
+        double _t16 = Math.abs(_r0 * _r6 + _r2 * _r7 + _r4 * _r8);
+        transform_s305b2ff7_tail(d, _r1, _r6, _r3, _r7, _r5, _r8, _r9, _r0, _r10, _r11, _r12, _r2, _r13, _r4, _r14, _r15, _t15, _t16);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d7af416_c0(DoubleSphereImpl _dst, double _r6, double _r9, double _r0, double _r10, double _r1, double _r11, double _r12, double _r7, double _r2, double _r3, double _r13, double _r8, double _r4, double _r5, double _r14, double _r15, double _t15, double _t16, double _t17) {
+        _dst.x = _r6 * _r9 + (_r0 * _r10 + (_r1 * _r11 + _r12));
+        _dst.y = _r7 * _r9 + (_r2 * _r10 + (_r3 * _r11 + _r13));
+        _dst.z = _r8 * _r9 + (_r4 * _r10 + (_r5 * _r11 + _r14));
+        _dst.r = _r15 * Math.sqrt(Math.max(Math.max(_r0 * _r0 + (_r2 * _r2 + (_r4 * _r4 + (_t15 + _t16))), _r1 * _r1 + (_r3 * _r3 + (_r5 * _r5 + (_t15 + _t17)))), _r6 * _r6 + (_r7 * _r7 + (_r8 * _r8 + (_t16 + _t17)))));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s6d7af416_tail(DoubleSphereImpl _dst, double _r1, double _r6, double _r3, double _r7, double _r5, double _r8, double _r9, double _r0, double _r10, double _r11, double _r12, double _r2, double _r13, double _r4, double _r14, double _r15, double _t15, double _t16) {
+        double _t17 = Math.abs(_r1 * _r6 + _r3 * _r7 + _r5 * _r8);
+        transform_s6d7af416_c0(_dst, _r6, _r9, _r0, _r10, _r1, _r11, _r12, _r7, _r2, _r3, _r13, _r8, _r4, _r5, _r14, _r15, _t15, _t16, _t17);
     }
 
 
@@ -197,15 +235,25 @@ public final class DoubleSphereImpl implements DoubleSphere {
      */
     public DoubleSphere transform(Double4x4R m, @Mutated DoubleSphere dest) {
         DoubleSphereImpl d = (DoubleSphereImpl) dest;
-        double _t15 = Math.abs(m.m00() * m.m01() + m.m10() * m.m11() + m.m20() * m.m21());
-        double _t16 = Math.abs(m.m00() * m.m02() + m.m10() * m.m12() + m.m20() * m.m22());
-        double _t17 = Math.abs(m.m01() * m.m02() + m.m11() * m.m12() + m.m21() * m.m22());
-        double _buf0 = m.m02() * this.z + (m.m00() * this.x + (m.m01() * this.y + m.m03()));
-        double _buf1 = m.m12() * this.z + (m.m10() * this.x + (m.m11() * this.y + m.m13()));
-        d.z = m.m22() * this.z + (m.m20() * this.x + (m.m21() * this.y + m.m23()));
-        d.r = this.r * Math.sqrt(Math.max(Math.max(m.m00() * m.m00() + (m.m10() * m.m10() + (m.m20() * m.m20() + (_t15 + _t16))), m.m01() * m.m01() + (m.m11() * m.m11() + (m.m21() * m.m21() + (_t15 + _t17)))), m.m02() * m.m02() + (m.m12() * m.m12() + (m.m22() * m.m22() + (_t16 + _t17)))));
-        d.x = _buf0;
-        d.y = _buf1;
+        double _r0 = m.m00();
+        double _r1 = m.m01();
+        double _r2 = m.m10();
+        double _r3 = m.m11();
+        double _r4 = m.m20();
+        double _r5 = m.m21();
+        double _r6 = m.m02();
+        double _r7 = m.m12();
+        double _r8 = m.m22();
+        double _r9 = this.z;
+        double _r10 = this.x;
+        double _r11 = this.y;
+        double _r12 = m.m03();
+        double _r13 = m.m13();
+        double _r14 = m.m23();
+        double _r15 = this.r;
+        double _t15 = Math.abs(_r0 * _r1 + _r2 * _r3 + _r4 * _r5);
+        double _t16 = Math.abs(_r0 * _r6 + _r2 * _r7 + _r4 * _r8);
+        transform_s6d7af416_tail(d, _r1, _r6, _r3, _r7, _r5, _r8, _r9, _r0, _r10, _r11, _r12, _r2, _r13, _r4, _r14, _r15, _t15, _t16);
         return d;
     }
 

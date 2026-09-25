@@ -436,6 +436,86 @@ public final class DoubleOBBImpl implements DoubleOBB {
         return this;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c0(DoubleOBBImpl _dst, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r21, double _r6, double _r7, double _r8, double _r22, double _r9, double _r10, double _r11, double _r23, double _t51) {
+        _dst.cX = _r0 * _r18 + (_r2 * _r19 + (_r4 * _r20 + _r21));
+        _dst.cY = _r6 * _r18 + (_r7 * _r19 + (_r8 * _r20 + _r22));
+        _dst.cZ = _r9 * _r18 + (_r10 * _r19 + (_r11 * _r20 + _r23));
+        _dst.uXx = _t51;
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c1(DoubleOBBImpl _dst, double _t52, double _t53, double _t71, double _t72) {
+        _dst.uXy = _t52;
+        _dst.uXz = _t53;
+        _dst.uYx = _t71;
+        _dst.uYy = _t72;
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c2(DoubleOBBImpl _dst, double _t73, double _t80, double _t81, double _t82) {
+        _dst.uYz = _t73;
+        _dst.uZx = _t80;
+        _dst.uZy = _t81;
+        _dst.uZz = _t82;
+    }
+
+    /** Private store group 3 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c3(DoubleOBBImpl _dst, double _r24, double _t36, double _t51, double _t37, double _t52, double _t38, double _t53, double _r25, double _t58, double _r26, double _t42, double _t43, double _t44, double _t71, double _t72, double _t73, double _t39, double _t40, double _t41, double _t80, double _t81, double _t82) {
+        _dst.hsX = _r24 * Math.abs(_t36 * _t51 + _t37 * _t52 + _t38 * _t53) + _r25 * Math.abs(_t58) + _r26 * Math.abs(_t42 * _t51 + _t43 * _t52 + _t44 * _t53);
+        _dst.hsY = _r24 * Math.abs(_t36 * _t71 + _t37 * _t72 + _t38 * _t73) + _r25 * Math.abs(_t39 * _t71 + _t40 * _t72 + _t41 * _t73) + _r26 * Math.abs(_t42 * _t71 + _t43 * _t72 + _t44 * _t73);
+        _dst.hsZ = _r24 * Math.abs(_t36 * _t80 + _t37 * _t81 + _t38 * _t82) + _r25 * Math.abs(_t39 * _t80 + _t40 * _t81 + _t41 * _t82) + _r26 * Math.abs(_t42 * _t80 + _t43 * _t81 + _t44 * _t82);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_scba2d91_tail(DoubleOBBImpl _dst, Double3x4R m, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.cZ;
+        double _r21 = m.m03();
+        double _r22 = m.m13();
+        double _r23 = m.m23();
+        double _r24 = this.hsX;
+        double _r25 = this.hsY;
+        double _r26 = this.hsZ;
+        double _t36 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5;
+        double _t37 = _r6 * _r1 + _r7 * _r3 + _r8 * _r5;
+        double _t38 = _r9 * _r1 + _r10 * _r3 + _r11 * _r5;
+        double _t39 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14;
+        double _t40 = _r6 * _r12 + _r7 * _r13 + _r8 * _r14;
+        transform_scba2d91_tail2(_dst, _r9, _r12, _r10, _r13, _r11, _r14, _r0, _r15, _r2, _r16, _r4, _r17, _r6, _r7, _r8, _t36, _t37, _t38, _t39, _t40, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_scba2d91_tail2(DoubleOBBImpl _dst, double _r9, double _r12, double _r10, double _r13, double _r11, double _r14, double _r0, double _r15, double _r2, double _r16, double _r4, double _r17, double _r6, double _r7, double _r8, double _t36, double _t37, double _t38, double _t39, double _t40, double _r18, double _r19, double _r20, double _r21, double _r22, double _r23, double _r24, double _r25, double _r26) {
+        double _t41 = _r9 * _r12 + _r10 * _r13 + _r11 * _r14;
+        double _t42 = _r0 * _r15 + _r2 * _r16 + _r4 * _r17;
+        double _t43 = _r6 * _r15 + _r7 * _r16 + _r8 * _r17;
+        double _t44 = _r9 * _r15 + _r10 * _r16 + _r11 * _r17;
+        double _t50 = (1.0 / Math.sqrt(_t36 * _t36 + _t37 * _t37 + _t38 * _t38));
+        double _t51 = _t36 * _t50;
+        double _t52 = _t37 * _t50;
+        double _t53 = _t38 * _t50;
+        double _t58 = _t39 * _t51 + _t40 * _t52 + _t41 * _t53;
+        double _t62 = _t39 - _t58 * _t51;
+        double _t63 = _t40 - _t58 * _t52;
+        double _t64 = _t41 - _t58 * _t53;
+        transform_scba2d91_tail3(_dst, _t62, _t63, _t64, _t52, _t53, _t51, _r0, _r18, _r2, _r19, _r4, _r20, _r21, _r6, _r7, _r8, _r22, _r9, _r10, _r11, _r23, _r24, _t36, _t37, _t38, _r25, _t58, _r26, _t42, _t43, _t44, _t39, _t40, _t41);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_scba2d91_tail3(DoubleOBBImpl _dst, double _t62, double _t63, double _t64, double _t52, double _t53, double _t51, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r21, double _r6, double _r7, double _r8, double _r22, double _r9, double _r10, double _r11, double _r23, double _r24, double _t36, double _t37, double _t38, double _r25, double _t58, double _r26, double _t42, double _t43, double _t44, double _t39, double _t40, double _t41) {
+        double _t70 = (1.0 / Math.sqrt(_t62 * _t62 + _t63 * _t63 + _t64 * _t64));
+        double _t71 = _t62 * _t70;
+        double _t72 = _t63 * _t70;
+        double _t73 = _t64 * _t70;
+        double _t80 = _t52 * _t73 - _t53 * _t72;
+        double _t81 = _t53 * _t71 - _t51 * _t73;
+        double _t82 = _t51 * _t72 - _t52 * _t71;
+        transform_scba2d91_c0(_dst, _r0, _r18, _r2, _r19, _r4, _r20, _r21, _r6, _r7, _r8, _r22, _r9, _r10, _r11, _r23, _t51);
+        transform_scba2d91_c1(_dst, _t52, _t53, _t71, _t72);
+        transform_scba2d91_c2(_dst, _t73, _t80, _t81, _t82);
+        transform_scba2d91_c3(_dst, _r24, _t36, _t51, _t37, _t52, _t38, _t53, _r25, _t58, _r26, _t42, _t43, _t44, _t71, _t72, _t73, _t39, _t40, _t41, _t80, _t81, _t82);
+    }
+
 
     /**
      * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
@@ -451,15 +531,84 @@ public final class DoubleOBBImpl implements DoubleOBB {
      */
     public DoubleOBB transform(Double3x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
-        double _t36 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
-        double _t37 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
-        double _t38 = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
-        double _t39 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
-        double _t40 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
-        double _t41 = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
-        double _t42 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
-        double _t43 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
-        double _t44 = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
+        double _r0 = m.m00();
+        double _r1 = this.uXx;
+        double _r2 = m.m01();
+        double _r3 = this.uXy;
+        double _r4 = m.m02();
+        double _r5 = this.uXz;
+        double _r6 = m.m10();
+        double _r7 = m.m11();
+        double _r8 = m.m12();
+        double _r9 = m.m20();
+        double _r10 = m.m21();
+        double _r11 = m.m22();
+        double _r12 = this.uYx;
+        double _r13 = this.uYy;
+        double _r14 = this.uYz;
+        double _r15 = this.uZx;
+        double _r16 = this.uZy;
+        double _r17 = this.uZz;
+        double _r18 = this.cX;
+        double _r19 = this.cY;
+        transform_scba2d91_tail(d, m, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
+        return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c0(DoubleOBBImpl _dst, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r21, double _r6, double _r7, double _r8, double _r22, double _r9, double _r10, double _r11, double _r23, double _t51) {
+        _dst.cX = _r0 * _r18 + (_r2 * _r19 + (_r4 * _r20 + _r21));
+        _dst.cY = _r6 * _r18 + (_r7 * _r19 + (_r8 * _r20 + _r22));
+        _dst.cZ = _r9 * _r18 + (_r10 * _r19 + (_r11 * _r20 + _r23));
+        _dst.uXx = _t51;
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c1(DoubleOBBImpl _dst, double _t52, double _t53, double _t71, double _t72) {
+        _dst.uXy = _t52;
+        _dst.uXz = _t53;
+        _dst.uYx = _t71;
+        _dst.uYy = _t72;
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c2(DoubleOBBImpl _dst, double _t73, double _t80, double _t81, double _t82) {
+        _dst.uYz = _t73;
+        _dst.uZx = _t80;
+        _dst.uZy = _t81;
+        _dst.uZz = _t82;
+    }
+
+    /** Private store group 3 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c3(DoubleOBBImpl _dst, double _r24, double _t36, double _t51, double _t37, double _t52, double _t38, double _t53, double _r25, double _t58, double _r26, double _t42, double _t43, double _t44, double _t71, double _t72, double _t73, double _t39, double _t40, double _t41, double _t80, double _t81, double _t82) {
+        _dst.hsX = _r24 * Math.abs(_t36 * _t51 + _t37 * _t52 + _t38 * _t53) + _r25 * Math.abs(_t58) + _r26 * Math.abs(_t42 * _t51 + _t43 * _t52 + _t44 * _t53);
+        _dst.hsY = _r24 * Math.abs(_t36 * _t71 + _t37 * _t72 + _t38 * _t73) + _r25 * Math.abs(_t39 * _t71 + _t40 * _t72 + _t41 * _t73) + _r26 * Math.abs(_t42 * _t71 + _t43 * _t72 + _t44 * _t73);
+        _dst.hsZ = _r24 * Math.abs(_t36 * _t80 + _t37 * _t81 + _t38 * _t82) + _r25 * Math.abs(_t39 * _t80 + _t40 * _t81 + _t41 * _t82) + _r26 * Math.abs(_t42 * _t80 + _t43 * _t81 + _t44 * _t82);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s21a2f5d2_tail(DoubleOBBImpl _dst, Double4x4R m, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.cZ;
+        double _r21 = m.m03();
+        double _r22 = m.m13();
+        double _r23 = m.m23();
+        double _r24 = this.hsX;
+        double _r25 = this.hsY;
+        double _r26 = this.hsZ;
+        double _t36 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5;
+        double _t37 = _r6 * _r1 + _r7 * _r3 + _r8 * _r5;
+        double _t38 = _r9 * _r1 + _r10 * _r3 + _r11 * _r5;
+        double _t39 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14;
+        double _t40 = _r6 * _r12 + _r7 * _r13 + _r8 * _r14;
+        transform_s21a2f5d2_tail2(_dst, _r9, _r12, _r10, _r13, _r11, _r14, _r0, _r15, _r2, _r16, _r4, _r17, _r6, _r7, _r8, _t36, _t37, _t38, _t39, _t40, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s21a2f5d2_tail2(DoubleOBBImpl _dst, double _r9, double _r12, double _r10, double _r13, double _r11, double _r14, double _r0, double _r15, double _r2, double _r16, double _r4, double _r17, double _r6, double _r7, double _r8, double _t36, double _t37, double _t38, double _t39, double _t40, double _r18, double _r19, double _r20, double _r21, double _r22, double _r23, double _r24, double _r25, double _r26) {
+        double _t41 = _r9 * _r12 + _r10 * _r13 + _r11 * _r14;
+        double _t42 = _r0 * _r15 + _r2 * _r16 + _r4 * _r17;
+        double _t43 = _r6 * _r15 + _r7 * _r16 + _r8 * _r17;
+        double _t44 = _r9 * _r15 + _r10 * _r16 + _r11 * _r17;
         double _t50 = (1.0 / Math.sqrt(_t36 * _t36 + _t37 * _t37 + _t38 * _t38));
         double _t51 = _t36 * _t50;
         double _t52 = _t37 * _t50;
@@ -468,6 +617,11 @@ public final class DoubleOBBImpl implements DoubleOBB {
         double _t62 = _t39 - _t58 * _t51;
         double _t63 = _t40 - _t58 * _t52;
         double _t64 = _t41 - _t58 * _t53;
+        transform_s21a2f5d2_tail3(_dst, _t62, _t63, _t64, _t52, _t53, _t51, _r0, _r18, _r2, _r19, _r4, _r20, _r21, _r6, _r7, _r8, _r22, _r9, _r10, _r11, _r23, _r24, _t36, _t37, _t38, _r25, _t58, _r26, _t42, _t43, _t44, _t39, _t40, _t41);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s21a2f5d2_tail3(DoubleOBBImpl _dst, double _t62, double _t63, double _t64, double _t52, double _t53, double _t51, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r21, double _r6, double _r7, double _r8, double _r22, double _r9, double _r10, double _r11, double _r23, double _r24, double _t36, double _t37, double _t38, double _r25, double _t58, double _r26, double _t42, double _t43, double _t44, double _t39, double _t40, double _t41) {
         double _t70 = (1.0 / Math.sqrt(_t62 * _t62 + _t63 * _t63 + _t64 * _t64));
         double _t71 = _t62 * _t70;
         double _t72 = _t63 * _t70;
@@ -475,26 +629,10 @@ public final class DoubleOBBImpl implements DoubleOBB {
         double _t80 = _t52 * _t73 - _t53 * _t72;
         double _t81 = _t53 * _t71 - _t51 * _t73;
         double _t82 = _t51 * _t72 - _t52 * _t71;
-        double _buf0 = m.m00() * this.cX + (m.m01() * this.cY + (m.m02() * this.cZ + m.m03()));
-        double _buf1 = m.m10() * this.cX + (m.m11() * this.cY + (m.m12() * this.cZ + m.m13()));
-        d.cZ = m.m20() * this.cX + (m.m21() * this.cY + (m.m22() * this.cZ + m.m23()));
-        d.uXx = _t51;
-        d.uXy = _t52;
-        d.uXz = _t53;
-        d.uYx = _t71;
-        d.uYy = _t72;
-        d.uYz = _t73;
-        d.uZx = _t80;
-        d.uZy = _t81;
-        d.uZz = _t82;
-        double _buf2 = this.hsX * Math.abs(_t36 * _t51 + _t37 * _t52 + _t38 * _t53) + this.hsY * Math.abs(_t58) + this.hsZ * Math.abs(_t42 * _t51 + _t43 * _t52 + _t44 * _t53);
-        double _buf3 = this.hsX * Math.abs(_t36 * _t71 + _t37 * _t72 + _t38 * _t73) + this.hsY * Math.abs(_t39 * _t71 + _t40 * _t72 + _t41 * _t73) + this.hsZ * Math.abs(_t42 * _t71 + _t43 * _t72 + _t44 * _t73);
-        d.hsZ = this.hsX * Math.abs(_t36 * _t80 + _t37 * _t81 + _t38 * _t82) + this.hsY * Math.abs(_t39 * _t80 + _t40 * _t81 + _t41 * _t82) + this.hsZ * Math.abs(_t42 * _t80 + _t43 * _t81 + _t44 * _t82);
-        d.cX = _buf0;
-        d.cY = _buf1;
-        d.hsX = _buf2;
-        d.hsY = _buf3;
-        return d;
+        transform_s21a2f5d2_c0(_dst, _r0, _r18, _r2, _r19, _r4, _r20, _r21, _r6, _r7, _r8, _r22, _r9, _r10, _r11, _r23, _t51);
+        transform_s21a2f5d2_c1(_dst, _t52, _t53, _t71, _t72);
+        transform_s21a2f5d2_c2(_dst, _t73, _t80, _t81, _t82);
+        transform_s21a2f5d2_c3(_dst, _r24, _t36, _t51, _t37, _t52, _t38, _t53, _r25, _t58, _r26, _t42, _t43, _t44, _t71, _t72, _t73, _t39, _t40, _t41, _t80, _t81, _t82);
     }
 
 
@@ -515,49 +653,27 @@ public final class DoubleOBBImpl implements DoubleOBB {
      */
     public DoubleOBB transform(Double4x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
-        double _t36 = m.m00() * this.uXx + m.m01() * this.uXy + m.m02() * this.uXz;
-        double _t37 = m.m10() * this.uXx + m.m11() * this.uXy + m.m12() * this.uXz;
-        double _t38 = m.m20() * this.uXx + m.m21() * this.uXy + m.m22() * this.uXz;
-        double _t39 = m.m00() * this.uYx + m.m01() * this.uYy + m.m02() * this.uYz;
-        double _t40 = m.m10() * this.uYx + m.m11() * this.uYy + m.m12() * this.uYz;
-        double _t41 = m.m20() * this.uYx + m.m21() * this.uYy + m.m22() * this.uYz;
-        double _t42 = m.m00() * this.uZx + m.m01() * this.uZy + m.m02() * this.uZz;
-        double _t43 = m.m10() * this.uZx + m.m11() * this.uZy + m.m12() * this.uZz;
-        double _t44 = m.m20() * this.uZx + m.m21() * this.uZy + m.m22() * this.uZz;
-        double _t50 = (1.0 / Math.sqrt(_t36 * _t36 + _t37 * _t37 + _t38 * _t38));
-        double _t51 = _t36 * _t50;
-        double _t52 = _t37 * _t50;
-        double _t53 = _t38 * _t50;
-        double _t58 = _t39 * _t51 + _t40 * _t52 + _t41 * _t53;
-        double _t62 = _t39 - _t58 * _t51;
-        double _t63 = _t40 - _t58 * _t52;
-        double _t64 = _t41 - _t58 * _t53;
-        double _t70 = (1.0 / Math.sqrt(_t62 * _t62 + _t63 * _t63 + _t64 * _t64));
-        double _t71 = _t62 * _t70;
-        double _t72 = _t63 * _t70;
-        double _t73 = _t64 * _t70;
-        double _t80 = _t52 * _t73 - _t53 * _t72;
-        double _t81 = _t53 * _t71 - _t51 * _t73;
-        double _t82 = _t51 * _t72 - _t52 * _t71;
-        double _buf0 = m.m00() * this.cX + (m.m01() * this.cY + (m.m02() * this.cZ + m.m03()));
-        double _buf1 = m.m10() * this.cX + (m.m11() * this.cY + (m.m12() * this.cZ + m.m13()));
-        d.cZ = m.m20() * this.cX + (m.m21() * this.cY + (m.m22() * this.cZ + m.m23()));
-        d.uXx = _t51;
-        d.uXy = _t52;
-        d.uXz = _t53;
-        d.uYx = _t71;
-        d.uYy = _t72;
-        d.uYz = _t73;
-        d.uZx = _t80;
-        d.uZy = _t81;
-        d.uZz = _t82;
-        double _buf2 = this.hsX * Math.abs(_t36 * _t51 + _t37 * _t52 + _t38 * _t53) + this.hsY * Math.abs(_t58) + this.hsZ * Math.abs(_t42 * _t51 + _t43 * _t52 + _t44 * _t53);
-        double _buf3 = this.hsX * Math.abs(_t36 * _t71 + _t37 * _t72 + _t38 * _t73) + this.hsY * Math.abs(_t39 * _t71 + _t40 * _t72 + _t41 * _t73) + this.hsZ * Math.abs(_t42 * _t71 + _t43 * _t72 + _t44 * _t73);
-        d.hsZ = this.hsX * Math.abs(_t36 * _t80 + _t37 * _t81 + _t38 * _t82) + this.hsY * Math.abs(_t39 * _t80 + _t40 * _t81 + _t41 * _t82) + this.hsZ * Math.abs(_t42 * _t80 + _t43 * _t81 + _t44 * _t82);
-        d.cX = _buf0;
-        d.cY = _buf1;
-        d.hsX = _buf2;
-        d.hsY = _buf3;
+        double _r0 = m.m00();
+        double _r1 = this.uXx;
+        double _r2 = m.m01();
+        double _r3 = this.uXy;
+        double _r4 = m.m02();
+        double _r5 = this.uXz;
+        double _r6 = m.m10();
+        double _r7 = m.m11();
+        double _r8 = m.m12();
+        double _r9 = m.m20();
+        double _r10 = m.m21();
+        double _r11 = m.m22();
+        double _r12 = this.uYx;
+        double _r13 = this.uYy;
+        double _r14 = this.uYz;
+        double _r15 = this.uZx;
+        double _r16 = this.uZy;
+        double _r17 = this.uZz;
+        double _r18 = this.cX;
+        double _r19 = this.cY;
+        transform_s21a2f5d2_tail(d, m, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
     }
 

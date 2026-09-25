@@ -321,6 +321,43 @@ public final class FloatAABBImpl implements FloatAABB {
         return d;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s15123f48_c0(FloatAABBImpl _dst, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17, float _t55) {
+        _dst.minX = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t36 + (_t43 + (_r15 - _t53));
+        _dst.minY = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t37 + (_t45 + (_r16 - _t54));
+        _dst.minZ = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t38 + (_t47 + (_r17 - _t55));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s15123f48_c1(FloatAABBImpl _dst, float _t49, float _t36, float _t43, float _t53, float _r15, float _t37, float _t45, float _t54, float _r16, float _t38, float _t47, float _t55, float _r17) {
+        _dst.maxX = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t36 + (_t43 + (_t53 + _r15));
+        _dst.maxY = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t37 + (_t45 + (_t54 + _r16));
+        _dst.maxZ = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t38 + (_t47 + (_t55 + _r17));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s15123f48_tail(FloatAABBImpl _dst, float _r1, float _r0, float _r3, float _r2, float _sp0, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t9, float _t10, float _t11, float _r15, float _r16, float _r17) {
+        float _t13 = _r1 + _r0;
+        float _t14 = _r3 + _r2;
+        float _t36 = _sp0 * _r6;
+        float _t37 = _sp0 * _r7;
+        float _t38 = _sp0 * _r8;
+        float _t43 = 0.5f * (_r9 * _t13 + _r10 * _t14);
+        float _t45 = 0.5f * (_r11 * _t13 + _r12 * _t14);
+        float _t47 = 0.5f * (_r13 * _t13 + _r14 * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(_r9) + _t10 * Math.abs(_r10) + _t11 * Math.abs(_r6));
+        float _t54 = 0.5f * (_t9 * Math.abs(_r11) + _t10 * Math.abs(_r12) + _t11 * Math.abs(_r7));
+        transform_s15123f48_tail2(_dst, _t9, _r13, _t10, _r14, _t11, _r8, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s15123f48_tail2(FloatAABBImpl _dst, float _t9, float _r13, float _t10, float _r14, float _t11, float _r8, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17) {
+        float _t55 = 0.5f * (_t9 * Math.abs(_r13) + _t10 * Math.abs(_r14) + _t11 * Math.abs(_r8));
+        transform_s15123f48_c0(_dst, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17, _t55);
+        transform_s15123f48_c1(_dst, _t49, _t36, _t43, _t53, _r15, _t37, _t45, _t54, _r16, _t38, _t47, _t55, _r17);
+    }
+
 
     /**
      * Transform this axis-aligned bounding box by {@code m} and set it to the axis-aligned box
@@ -332,38 +369,67 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public FloatAABB transform(Float3x4R m, @Mutated FloatAABB dest) {
         FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t9 = this.maxX - this.minX;
-        float _t10 = this.maxY - this.minY;
-        float _t11 = this.maxZ - this.minZ;
-        float _sp0 = 0.5f * (this.minZ + this.maxZ);
-        float _t13 = this.minX + this.maxX;
-        float _t14 = this.minY + this.maxY;
-        float _t36 = _sp0 * m.m02();
-        float _t37 = _sp0 * m.m12();
-        float _t38 = _sp0 * m.m22();
-        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
-        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
-        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
-        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
-        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
-        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
-        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
-        if (_t49 < 0.0f) {
-            d.minX = Float.POSITIVE_INFINITY;
-            d.minY = Float.POSITIVE_INFINITY;
-            d.minZ = Float.POSITIVE_INFINITY;
-            d.maxX = Float.NEGATIVE_INFINITY;
-            d.maxY = Float.NEGATIVE_INFINITY;
-            d.maxZ = Float.NEGATIVE_INFINITY;
-        } else {
-            d.minX = _t36 + (_t43 + (m.m03() - _t53));
-            d.minY = _t37 + (_t45 + (m.m13() - _t54));
-            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
-            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
-            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
-            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
-        }
+        float _r0 = this.maxX;
+        float _r1 = this.minX;
+        float _r2 = this.maxY;
+        float _r3 = this.minY;
+        float _r4 = this.maxZ;
+        float _r5 = this.minZ;
+        float _r6 = m.m02();
+        float _r7 = m.m12();
+        float _r8 = m.m22();
+        float _r9 = m.m00();
+        float _r10 = m.m01();
+        float _r11 = m.m10();
+        float _r12 = m.m11();
+        float _r13 = m.m20();
+        float _r14 = m.m21();
+        float _r15 = m.m03();
+        float _r16 = m.m13();
+        float _r17 = m.m23();
+        float _t9 = _r0 - _r1;
+        float _t10 = _r2 - _r3;
+        float _t11 = _r4 - _r5;
+        float _sp0 = 0.5f * (_r5 + _r4);
+        transform_s15123f48_tail(d, _r1, _r0, _r3, _r2, _sp0, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t9, _t10, _t11, _r15, _r16, _r17);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s1f6f022f_c0(DoubleAABBImpl _dst, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17, float _t55) {
+        _dst.minX = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t36 + (_t43 + (_r15 - _t53));
+        _dst.minY = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t37 + (_t45 + (_r16 - _t54));
+        _dst.minZ = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t38 + (_t47 + (_r17 - _t55));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s1f6f022f_c1(DoubleAABBImpl _dst, float _t49, float _t36, float _t43, float _t53, float _r15, float _t37, float _t45, float _t54, float _r16, float _t38, float _t47, float _t55, float _r17) {
+        _dst.maxX = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t36 + (_t43 + (_t53 + _r15));
+        _dst.maxY = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t37 + (_t45 + (_t54 + _r16));
+        _dst.maxZ = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t38 + (_t47 + (_t55 + _r17));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s1f6f022f_tail(DoubleAABBImpl _dst, float _r1, float _r0, float _r3, float _r2, float _sp0, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t9, float _t10, float _t11, float _r15, float _r16, float _r17) {
+        float _t13 = _r1 + _r0;
+        float _t14 = _r3 + _r2;
+        float _t36 = _sp0 * _r6;
+        float _t37 = _sp0 * _r7;
+        float _t38 = _sp0 * _r8;
+        float _t43 = 0.5f * (_r9 * _t13 + _r10 * _t14);
+        float _t45 = 0.5f * (_r11 * _t13 + _r12 * _t14);
+        float _t47 = 0.5f * (_r13 * _t13 + _r14 * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(_r9) + _t10 * Math.abs(_r10) + _t11 * Math.abs(_r6));
+        float _t54 = 0.5f * (_t9 * Math.abs(_r11) + _t10 * Math.abs(_r12) + _t11 * Math.abs(_r7));
+        transform_s1f6f022f_tail2(_dst, _t9, _r13, _t10, _r14, _t11, _r8, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s1f6f022f_tail2(DoubleAABBImpl _dst, float _t9, float _r13, float _t10, float _r14, float _t11, float _r8, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17) {
+        float _t55 = 0.5f * (_t9 * Math.abs(_r13) + _t10 * Math.abs(_r14) + _t11 * Math.abs(_r8));
+        transform_s1f6f022f_c0(_dst, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17, _t55);
+        transform_s1f6f022f_c1(_dst, _t49, _t36, _t43, _t53, _r15, _t37, _t45, _t54, _r16, _t38, _t47, _t55, _r17);
     }
 
 
@@ -380,38 +446,67 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public DoubleAABB transform(Float3x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        float _t9 = this.maxX - this.minX;
-        float _t10 = this.maxY - this.minY;
-        float _t11 = this.maxZ - this.minZ;
-        float _sp0 = 0.5f * (this.minZ + this.maxZ);
-        float _t13 = this.minX + this.maxX;
-        float _t14 = this.minY + this.maxY;
-        float _t36 = _sp0 * m.m02();
-        float _t37 = _sp0 * m.m12();
-        float _t38 = _sp0 * m.m22();
-        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
-        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
-        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
-        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
-        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
-        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
-        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
-        if (_t49 < 0.0f) {
-            d.minX = Float.POSITIVE_INFINITY;
-            d.minY = Float.POSITIVE_INFINITY;
-            d.minZ = Float.POSITIVE_INFINITY;
-            d.maxX = Float.NEGATIVE_INFINITY;
-            d.maxY = Float.NEGATIVE_INFINITY;
-            d.maxZ = Float.NEGATIVE_INFINITY;
-        } else {
-            d.minX = _t36 + (_t43 + (m.m03() - _t53));
-            d.minY = _t37 + (_t45 + (m.m13() - _t54));
-            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
-            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
-            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
-            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
-        }
+        float _r0 = this.maxX;
+        float _r1 = this.minX;
+        float _r2 = this.maxY;
+        float _r3 = this.minY;
+        float _r4 = this.maxZ;
+        float _r5 = this.minZ;
+        float _r6 = m.m02();
+        float _r7 = m.m12();
+        float _r8 = m.m22();
+        float _r9 = m.m00();
+        float _r10 = m.m01();
+        float _r11 = m.m10();
+        float _r12 = m.m11();
+        float _r13 = m.m20();
+        float _r14 = m.m21();
+        float _r15 = m.m03();
+        float _r16 = m.m13();
+        float _r17 = m.m23();
+        float _t9 = _r0 - _r1;
+        float _t10 = _r2 - _r3;
+        float _t11 = _r4 - _r5;
+        float _sp0 = 0.5f * (_r5 + _r4);
+        transform_s1f6f022f_tail(d, _r1, _r0, _r3, _r2, _sp0, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t9, _t10, _t11, _r15, _r16, _r17);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s29fb0789_c0(FloatAABBImpl _dst, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17, float _t55) {
+        _dst.minX = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t36 + (_t43 + (_r15 - _t53));
+        _dst.minY = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t37 + (_t45 + (_r16 - _t54));
+        _dst.minZ = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t38 + (_t47 + (_r17 - _t55));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s29fb0789_c1(FloatAABBImpl _dst, float _t49, float _t36, float _t43, float _t53, float _r15, float _t37, float _t45, float _t54, float _r16, float _t38, float _t47, float _t55, float _r17) {
+        _dst.maxX = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t36 + (_t43 + (_t53 + _r15));
+        _dst.maxY = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t37 + (_t45 + (_t54 + _r16));
+        _dst.maxZ = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t38 + (_t47 + (_t55 + _r17));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s29fb0789_tail(FloatAABBImpl _dst, float _r1, float _r0, float _r3, float _r2, float _sp0, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t9, float _t10, float _t11, float _r15, float _r16, float _r17) {
+        float _t13 = _r1 + _r0;
+        float _t14 = _r3 + _r2;
+        float _t36 = _sp0 * _r6;
+        float _t37 = _sp0 * _r7;
+        float _t38 = _sp0 * _r8;
+        float _t43 = 0.5f * (_r9 * _t13 + _r10 * _t14);
+        float _t45 = 0.5f * (_r11 * _t13 + _r12 * _t14);
+        float _t47 = 0.5f * (_r13 * _t13 + _r14 * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(_r9) + _t10 * Math.abs(_r10) + _t11 * Math.abs(_r6));
+        float _t54 = 0.5f * (_t9 * Math.abs(_r11) + _t10 * Math.abs(_r12) + _t11 * Math.abs(_r7));
+        transform_s29fb0789_tail2(_dst, _t9, _r13, _t10, _r14, _t11, _r8, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s29fb0789_tail2(FloatAABBImpl _dst, float _t9, float _r13, float _t10, float _r14, float _t11, float _r8, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17) {
+        float _t55 = 0.5f * (_t9 * Math.abs(_r13) + _t10 * Math.abs(_r14) + _t11 * Math.abs(_r8));
+        transform_s29fb0789_c0(_dst, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17, _t55);
+        transform_s29fb0789_c1(_dst, _t49, _t36, _t43, _t53, _r15, _t37, _t45, _t54, _r16, _t38, _t47, _t55, _r17);
     }
 
 
@@ -428,38 +523,67 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public FloatAABB transform(Float4x4R m, @Mutated FloatAABB dest) {
         FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t9 = this.maxX - this.minX;
-        float _t10 = this.maxY - this.minY;
-        float _t11 = this.maxZ - this.minZ;
-        float _sp0 = 0.5f * (this.minZ + this.maxZ);
-        float _t13 = this.minX + this.maxX;
-        float _t14 = this.minY + this.maxY;
-        float _t36 = _sp0 * m.m02();
-        float _t37 = _sp0 * m.m12();
-        float _t38 = _sp0 * m.m22();
-        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
-        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
-        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
-        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
-        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
-        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
-        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
-        if (_t49 < 0.0f) {
-            d.minX = Float.POSITIVE_INFINITY;
-            d.minY = Float.POSITIVE_INFINITY;
-            d.minZ = Float.POSITIVE_INFINITY;
-            d.maxX = Float.NEGATIVE_INFINITY;
-            d.maxY = Float.NEGATIVE_INFINITY;
-            d.maxZ = Float.NEGATIVE_INFINITY;
-        } else {
-            d.minX = _t36 + (_t43 + (m.m03() - _t53));
-            d.minY = _t37 + (_t45 + (m.m13() - _t54));
-            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
-            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
-            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
-            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
-        }
+        float _r0 = this.maxX;
+        float _r1 = this.minX;
+        float _r2 = this.maxY;
+        float _r3 = this.minY;
+        float _r4 = this.maxZ;
+        float _r5 = this.minZ;
+        float _r6 = m.m02();
+        float _r7 = m.m12();
+        float _r8 = m.m22();
+        float _r9 = m.m00();
+        float _r10 = m.m01();
+        float _r11 = m.m10();
+        float _r12 = m.m11();
+        float _r13 = m.m20();
+        float _r14 = m.m21();
+        float _r15 = m.m03();
+        float _r16 = m.m13();
+        float _r17 = m.m23();
+        float _t9 = _r0 - _r1;
+        float _t10 = _r2 - _r3;
+        float _t11 = _r4 - _r5;
+        float _sp0 = 0.5f * (_r5 + _r4);
+        transform_s29fb0789_tail(d, _r1, _r0, _r3, _r2, _sp0, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t9, _t10, _t11, _r15, _r16, _r17);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s279f420e_c0(DoubleAABBImpl _dst, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17, float _t55) {
+        _dst.minX = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t36 + (_t43 + (_r15 - _t53));
+        _dst.minY = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t37 + (_t45 + (_r16 - _t54));
+        _dst.minZ = _t49 < 0.0f ? Float.POSITIVE_INFINITY : _t38 + (_t47 + (_r17 - _t55));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s279f420e_c1(DoubleAABBImpl _dst, float _t49, float _t36, float _t43, float _t53, float _r15, float _t37, float _t45, float _t54, float _r16, float _t38, float _t47, float _t55, float _r17) {
+        _dst.maxX = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t36 + (_t43 + (_t53 + _r15));
+        _dst.maxY = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t37 + (_t45 + (_t54 + _r16));
+        _dst.maxZ = _t49 < 0.0f ? Float.NEGATIVE_INFINITY : _t38 + (_t47 + (_t55 + _r17));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s279f420e_tail(DoubleAABBImpl _dst, float _r1, float _r0, float _r3, float _r2, float _sp0, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _t9, float _t10, float _t11, float _r15, float _r16, float _r17) {
+        float _t13 = _r1 + _r0;
+        float _t14 = _r3 + _r2;
+        float _t36 = _sp0 * _r6;
+        float _t37 = _sp0 * _r7;
+        float _t38 = _sp0 * _r8;
+        float _t43 = 0.5f * (_r9 * _t13 + _r10 * _t14);
+        float _t45 = 0.5f * (_r11 * _t13 + _r12 * _t14);
+        float _t47 = 0.5f * (_r13 * _t13 + _r14 * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(_r9) + _t10 * Math.abs(_r10) + _t11 * Math.abs(_r6));
+        float _t54 = 0.5f * (_t9 * Math.abs(_r11) + _t10 * Math.abs(_r12) + _t11 * Math.abs(_r7));
+        transform_s279f420e_tail2(_dst, _t9, _r13, _t10, _r14, _t11, _r8, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s279f420e_tail2(DoubleAABBImpl _dst, float _t9, float _r13, float _t10, float _r14, float _t11, float _r8, float _t49, float _t36, float _t43, float _r15, float _t53, float _t37, float _t45, float _r16, float _t54, float _t38, float _t47, float _r17) {
+        float _t55 = 0.5f * (_t9 * Math.abs(_r13) + _t10 * Math.abs(_r14) + _t11 * Math.abs(_r8));
+        transform_s279f420e_c0(_dst, _t49, _t36, _t43, _r15, _t53, _t37, _t45, _r16, _t54, _t38, _t47, _r17, _t55);
+        transform_s279f420e_c1(_dst, _t49, _t36, _t43, _t53, _r15, _t37, _t45, _t54, _r16, _t38, _t47, _t55, _r17);
     }
 
 
@@ -479,37 +603,29 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public DoubleAABB transform(Float4x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        float _t9 = this.maxX - this.minX;
-        float _t10 = this.maxY - this.minY;
-        float _t11 = this.maxZ - this.minZ;
-        float _sp0 = 0.5f * (this.minZ + this.maxZ);
-        float _t13 = this.minX + this.maxX;
-        float _t14 = this.minY + this.maxY;
-        float _t36 = _sp0 * m.m02();
-        float _t37 = _sp0 * m.m12();
-        float _t38 = _sp0 * m.m22();
-        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
-        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
-        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
-        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
-        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
-        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
-        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
-        if (_t49 < 0.0f) {
-            d.minX = Float.POSITIVE_INFINITY;
-            d.minY = Float.POSITIVE_INFINITY;
-            d.minZ = Float.POSITIVE_INFINITY;
-            d.maxX = Float.NEGATIVE_INFINITY;
-            d.maxY = Float.NEGATIVE_INFINITY;
-            d.maxZ = Float.NEGATIVE_INFINITY;
-        } else {
-            d.minX = _t36 + (_t43 + (m.m03() - _t53));
-            d.minY = _t37 + (_t45 + (m.m13() - _t54));
-            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
-            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
-            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
-            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
-        }
+        float _r0 = this.maxX;
+        float _r1 = this.minX;
+        float _r2 = this.maxY;
+        float _r3 = this.minY;
+        float _r4 = this.maxZ;
+        float _r5 = this.minZ;
+        float _r6 = m.m02();
+        float _r7 = m.m12();
+        float _r8 = m.m22();
+        float _r9 = m.m00();
+        float _r10 = m.m01();
+        float _r11 = m.m10();
+        float _r12 = m.m11();
+        float _r13 = m.m20();
+        float _r14 = m.m21();
+        float _r15 = m.m03();
+        float _r16 = m.m13();
+        float _r17 = m.m23();
+        float _t9 = _r0 - _r1;
+        float _t10 = _r2 - _r3;
+        float _t11 = _r4 - _r5;
+        float _sp0 = 0.5f * (_r5 + _r4);
+        transform_s279f420e_tail(d, _r1, _r0, _r3, _r2, _sp0, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _t9, _t10, _t11, _r15, _r16, _r17);
         return d;
     }
 

@@ -939,6 +939,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return dlb(other.rX(), other.rY(), other.rZ(), other.rW(), other.dX(), other.dY(), other.dZ(), other.dW(), t, dest);
     }
 
+    /** Private store group 0 of {@code dlb}: computes and stores it; reached only through it. */
+    private void dlb_s4b3cdb8d_c0(FloatDualQuatImpl _dst, float _t14, float _t23, float _t15, float _t16, float _t17) {
+        _dst.rX = _t14 * _t23;
+        _dst.rY = _t15 * _t23;
+        _dst.rZ = _t16 * _t23;
+        _dst.rW = _t17 * _t23;
+    }
+
+    /** Private store group 1 of {@code dlb}: computes and stores it; reached only through it. */
+    private void dlb_s4b3cdb8d_c1(FloatDualQuatImpl _dst, float t, float otherDX, float _t9, float _r4, float _t23, float otherDY, float _r5, float otherDZ, float _r6, float otherDW, float _r7) {
+        _dst.dX = Math.fma(t, Math.fma(otherDX, _t9, -_r4), _r4) * _t23;
+        _dst.dY = Math.fma(t, Math.fma(otherDY, _t9, -_r5), _r5) * _t23;
+        _dst.dZ = Math.fma(t, Math.fma(otherDZ, _t9, -_r6), _r6) * _t23;
+        _dst.dW = Math.fma(t, Math.fma(otherDW, _t9, -_r7), _r7) * _t23;
+    }
+
 
     /**
      * Blend this dual quaternion with ({@code otherRX}, {@code otherRY}, {@code otherRZ},
@@ -972,21 +988,39 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat dlb(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, float t, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _t9 = Math.fma(otherRX, this.rX, otherRY * this.rY) + Math.fma(otherRZ, this.rZ, otherRW * this.rW) < 0.0f ? -1.0f : 1.0f;
-        float _t14 = Math.fma(t, Math.fma(otherRX, _t9, -this.rX), this.rX);
-        float _t15 = Math.fma(t, Math.fma(otherRY, _t9, -this.rY), this.rY);
-        float _t16 = Math.fma(t, Math.fma(otherRZ, _t9, -this.rZ), this.rZ);
-        float _t17 = Math.fma(t, Math.fma(otherRW, _t9, -this.rW), this.rW);
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.dX;
+        float _r5 = this.dY;
+        float _r6 = this.dZ;
+        float _r7 = this.dW;
+        float _t9 = Math.fma(otherRX, _r0, otherRY * _r1) + Math.fma(otherRZ, _r2, otherRW * _r3) < 0.0f ? -1.0f : 1.0f;
+        float _t14 = Math.fma(t, Math.fma(otherRX, _t9, -_r0), _r0);
+        float _t15 = Math.fma(t, Math.fma(otherRY, _t9, -_r1), _r1);
+        float _t16 = Math.fma(t, Math.fma(otherRZ, _t9, -_r2), _r2);
+        float _t17 = Math.fma(t, Math.fma(otherRW, _t9, -_r3), _r3);
         float _t23 = (1.0f / (float) Math.sqrt(Math.fma(_t14, _t14, _t15 * _t15) + Math.fma(_t16, _t16, _t17 * _t17)));
-        d.rX = _t14 * _t23;
-        d.rY = _t15 * _t23;
-        d.rZ = _t16 * _t23;
-        d.rW = _t17 * _t23;
-        d.dX = Math.fma(t, Math.fma(otherDX, _t9, -this.dX), this.dX) * _t23;
-        d.dY = Math.fma(t, Math.fma(otherDY, _t9, -this.dY), this.dY) * _t23;
-        d.dZ = Math.fma(t, Math.fma(otherDZ, _t9, -this.dZ), this.dZ) * _t23;
-        d.dW = Math.fma(t, Math.fma(otherDW, _t9, -this.dW), this.dW) * _t23;
+        dlb_s4b3cdb8d_c0(d, _t14, _t23, _t15, _t16, _t17);
+        dlb_s4b3cdb8d_c1(d, t, otherDX, _t9, _r4, _t23, otherDY, _r5, otherDZ, _r6, otherDW, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code dlb}: computes and stores it; reached only through it. */
+    private void dlb_s1639cfc4_c0(DoubleDualQuatImpl _dst, float _t14, float _t23, float _t15, float _t16, float _t17) {
+        _dst.rX = _t14 * _t23;
+        _dst.rY = _t15 * _t23;
+        _dst.rZ = _t16 * _t23;
+        _dst.rW = _t17 * _t23;
+    }
+
+    /** Private store group 1 of {@code dlb}: computes and stores it; reached only through it. */
+    private void dlb_s1639cfc4_c1(DoubleDualQuatImpl _dst, float t, float otherDX, float _t9, float _r4, float _t23, float otherDY, float _r5, float otherDZ, float _r6, float otherDW, float _r7) {
+        _dst.dX = Math.fma(t, Math.fma(otherDX, _t9, -_r4), _r4) * _t23;
+        _dst.dY = Math.fma(t, Math.fma(otherDY, _t9, -_r5), _r5) * _t23;
+        _dst.dZ = Math.fma(t, Math.fma(otherDZ, _t9, -_r6), _r6) * _t23;
+        _dst.dW = Math.fma(t, Math.fma(otherDW, _t9, -_r7), _r7) * _t23;
     }
 
 
@@ -1025,20 +1059,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat dlb(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, float t, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        float _t9 = Math.fma(otherRX, this.rX, otherRY * this.rY) + Math.fma(otherRZ, this.rZ, otherRW * this.rW) < 0.0f ? -1.0f : 1.0f;
-        float _t14 = Math.fma(t, Math.fma(otherRX, _t9, -this.rX), this.rX);
-        float _t15 = Math.fma(t, Math.fma(otherRY, _t9, -this.rY), this.rY);
-        float _t16 = Math.fma(t, Math.fma(otherRZ, _t9, -this.rZ), this.rZ);
-        float _t17 = Math.fma(t, Math.fma(otherRW, _t9, -this.rW), this.rW);
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.dX;
+        float _r5 = this.dY;
+        float _r6 = this.dZ;
+        float _r7 = this.dW;
+        float _t9 = Math.fma(otherRX, _r0, otherRY * _r1) + Math.fma(otherRZ, _r2, otherRW * _r3) < 0.0f ? -1.0f : 1.0f;
+        float _t14 = Math.fma(t, Math.fma(otherRX, _t9, -_r0), _r0);
+        float _t15 = Math.fma(t, Math.fma(otherRY, _t9, -_r1), _r1);
+        float _t16 = Math.fma(t, Math.fma(otherRZ, _t9, -_r2), _r2);
+        float _t17 = Math.fma(t, Math.fma(otherRW, _t9, -_r3), _r3);
         float _t23 = (1.0f / (float) Math.sqrt(Math.fma(_t14, _t14, _t15 * _t15) + Math.fma(_t16, _t16, _t17 * _t17)));
-        d.rX = _t14 * _t23;
-        d.rY = _t15 * _t23;
-        d.rZ = _t16 * _t23;
-        d.rW = _t17 * _t23;
-        d.dX = Math.fma(t, Math.fma(otherDX, _t9, -this.dX), this.dX) * _t23;
-        d.dY = Math.fma(t, Math.fma(otherDY, _t9, -this.dY), this.dY) * _t23;
-        d.dZ = Math.fma(t, Math.fma(otherDZ, _t9, -this.dZ), this.dZ) * _t23;
-        d.dW = Math.fma(t, Math.fma(otherDW, _t9, -this.dW), this.dW) * _t23;
+        dlb_s1639cfc4_c0(d, _t14, _t23, _t15, _t16, _t17);
+        dlb_s1639cfc4_c1(d, t, otherDX, _t9, _r4, _t23, otherDY, _r5, otherDZ, _r6, otherDW, _r7);
         return d;
     }
 
@@ -1207,6 +1243,112 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return sclerp(other.rX(), other.rY(), other.rZ(), other.rW(), other.dX(), other.dY(), other.dZ(), other.dW(), t, dest);
     }
 
+    /** Private store group 0 of {@code sclerp}: computes and stores it; reached only through it. */
+    private void sclerp_s4b3cdb8d_c0(FloatDualQuatImpl _dst, float _r2, float _t142, float _r4, float _t143, float _r3, float _t144, float _r0, float _t145) {
+        _dst.rX = Math.fma(_r2, _t142, _r4 * _t143) + Math.fma(_r3, _t144, -(_r0 * _t145));
+        _dst.rY = Math.fma(_r3, _t142, _r0 * _t143) + Math.fma(_r4, _t145, -(_r2 * _t144));
+        _dst.rZ = Math.fma(_r2, _t145, _r4 * _t144) + Math.fma(_r0, _t142, -(_r3 * _t143));
+        _dst.rW = Math.fma(_r4, _t142, -(_r2 * _t143)) - Math.fma(_r3, _t145, _r0 * _t144);
+    }
+
+    /** Private store group 1 of {@code sclerp}: computes and stores it; reached only through it. */
+    private void sclerp_s4b3cdb8d_c1(FloatDualQuatImpl _dst, float _r2, float _t147, float _r4, float _t160, float _r3, float _t161, float _r0, float _t162, float _r5, float _t142, float _r6, float _t143, float _r7, float _t144, float _r1, float _t145, float _t0, float _t2) {
+        _dst.dX = Math.fma(_r2, _t147, _r4 * _t160) + Math.fma(_r3, _t161, -(_r0 * _t162)) + (Math.fma(_r5, _t142, _r6 * _t143) + Math.fma(_r7, _t144, -(_r1 * _t145)));
+        _dst.dY = Math.fma(_r3, _t147, _r0 * _t160) + Math.fma(_r4, _t162, -(_r2 * _t161)) + (Math.fma(_r7, _t142, _r1 * _t143) + Math.fma(_r6, _t145, -(_r5 * _t144)));
+        _dst.dZ = Math.fma(_r2, _t162, _r4 * _t161) + Math.fma(_r0, _t147, -(_r3 * _t160)) + (Math.fma(_r5, _t145, _r6 * _t144) + Math.fma(_r1, _t142, -(_r7 * _t143)));
+        _dst.dW = Math.fma(_r4, _t147, -(_r2 * _t160)) + Math.fma(_t0, _t161, -(_r3 * _t162)) + (Math.fma(_r6, _t142, -(_r5 * _t143)) + Math.fma(_t2, _t144, -(_r7 * _t145)));
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s4b3cdb8d_tail(FloatDualQuatImpl _dst, float _t57, float _t77, float _r3, float _t9, float _r0, float _t10, float _r4, float _t11, float _r2, float _t12, float _t0, float _t13, float _t14, float _t15, float _t16, float _r5, float _r6, float _r7, float _r1, float _t2, float t) {
+        float _t83 = _t57 - _t77;
+        float _t84 = Math.fma(_r3, _t9, -(_r0 * _t10)) + Math.fma(_r4, _t11, -(_r2 * _t12));
+        float _t85 = Math.fma(_r2, _t11, _r4 * _t12) + Math.fma(_t0, _t9, -(_r3 * _t10));
+        float _t86 = Math.fma(_r0, _t12, -(_r3 * _t11)) + Math.fma(_r4, _t9, -(_r2 * _t10));
+        float _t97 = Math.fma(_r2, _t13, _r4 * _t14) + Math.fma(_r3, _t15, _r0 * _t16) + (Math.fma(_r5, _t9, _r6 * _t10) + Math.fma(_r7, _t12, _r1 * _t11));
+        sclerp_s4b3cdb8d_tail2(_dst, _r0, _t15, _r3, _t16, _r4, _t13, _r2, _t14, _r1, _t12, _r7, _t11, _r6, _t9, _r5, _t10, _t0, _t2, _t83, _t77, _t57, _t84, _t85, _t86, _t97, t);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s4b3cdb8d_tail2(FloatDualQuatImpl _dst, float _r0, float _t15, float _r3, float _t16, float _r4, float _t13, float _r2, float _t14, float _r1, float _t12, float _r7, float _t11, float _r6, float _t9, float _r5, float _t10, float _t0, float _t2, float _t83, float _t77, float _t57, float _t84, float _t85, float _t86, float _t97, float t) {
+        float _t99 = Math.fma(_r0, _t15, -(_r3 * _t16)) + Math.fma(_r4, _t13, -(_r2 * _t14)) + (Math.fma(_r1, _t12, -(_r7 * _t11)) + Math.fma(_r6, _t9, -(_r5 * _t10)));
+        float _t100 = Math.fma(_r3, _t13, -(_r0 * _t14)) + Math.fma(_r4, _t16, -(_r2 * _t15)) + (Math.fma(_r7, _t9, -(_r1 * _t10)) + Math.fma(_r6, _t11, -(_r5 * _t12)));
+        float _t101 = Math.fma(_r2, _t16, _r4 * _t15) + Math.fma(_t0, _t13, -(_r3 * _t14)) + (Math.fma(_r5, _t11, _r6 * _t12) + Math.fma(_t2, _t9, -(_r7 * _t10)));
+        sclerp_s4b3cdb8d_tail3(_dst, _t83, _t77, _t57, _t84, _t85, _t86, _t97, _t99, _t100, _t101, t, _r2, _r4, _r3, _r0, _r5, _r6, _r7, _r1, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s4b3cdb8d_tail3(FloatDualQuatImpl _dst, float _t83, float _t77, float _t57, float _t84, float _t85, float _t86, float _t97, float _t99, float _t100, float _t101, float t, float _r2, float _r4, float _r3, float _r0, float _r5, float _r6, float _r7, float _r1, float _t0, float _t2) {
+        float _t105, _t106, _t107, _t108, _t112, _t114, _t115, _t116;
+        if (_t83 < 0.0f) {
+            _t105 = _t77 - _t57;
+            _t106 = -_t84;
+            _t107 = -_t85;
+            _t108 = -_t86;
+            _t112 = -_t97;
+            _t114 = -_t99;
+            _t115 = -_t100;
+            _t116 = -_t101;
+        } else {
+            _t105 = _t83;
+            _t106 = _t84;
+            _t107 = _t85;
+            _t108 = _t86;
+            _t112 = _t97;
+            _t114 = _t99;
+            _t115 = _t100;
+            _t116 = _t101;
+        }
+        float _t122 = Math.fma(_t106, _t106, Math.fma(_t107, _t107, _t108 * _t108));
+        float _t124 = (1.0f / (float) Math.sqrt(_t122));
+        float _t126 = _t124 * _t108;
+        float _t127 = _t124 * _t106;
+        float _t128 = _t124 * _t107;
+        float _t129 = t * (float) Math.atan2((float) Math.sqrt(_t122), _t105);
+        sclerp_s4b3cdb8d_tail4(_dst, _t129, _t124, _t112, t, _t105, _t122, _t108, _t126, _t106, _t127, _t107, _t128, _t114, _t115, _t116, _r2, _r4, _r3, _r0, _r5, _r6, _r7, _r1, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s4b3cdb8d_tail4(FloatDualQuatImpl _dst, float _t129, float _t124, float _t112, float t, float _t105, float _t122, float _t108, float _t126, float _t106, float _t127, float _t107, float _t128, float _t114, float _t115, float _t116, float _r2, float _r4, float _r3, float _r0, float _r5, float _r6, float _r7, float _r1, float _t0, float _t2) {
+        float _t130 = (float) Math.sin(_t129);
+        float _t131 = _t124 * _t112;
+        float _t132 = t * _t131;
+        float _t133 = _t131 * _t105;
+        float _t137 = (float) Math.cosFromSin(_t130, _t129);
+        float _t142, _t143, _t144, _t145;
+        if (_t122 < 1.0E-12f) {
+            _t142 = 1.0f;
+            _t143 = t * _t108;
+            _t144 = t * _t106;
+            _t145 = t * _t107;
+        } else {
+            _t142 = _t137;
+            _t143 = _t126 * _t130;
+            _t144 = _t127 * _t130;
+            _t145 = _t128 * _t130;
+        }
+        float _t146 = _t132 * _t137;
+        sclerp_s4b3cdb8d_tail5(_dst, _t122, t, _t112, _t132, _t130, _t114, _t133, _t126, _t124, _t146, _t115, _t127, _t116, _t128, _r2, _t142, _r4, _t143, _r3, _t144, _r0, _t145, _r5, _r6, _r7, _r1, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s4b3cdb8d_tail5(FloatDualQuatImpl _dst, float _t122, float t, float _t112, float _t132, float _t130, float _t114, float _t133, float _t126, float _t124, float _t146, float _t115, float _t127, float _t116, float _t128, float _r2, float _t142, float _r4, float _t143, float _r3, float _t144, float _r0, float _t145, float _r5, float _r6, float _r7, float _r1, float _t0, float _t2) {
+        float _t147, _t160, _t161, _t162;
+        if (_t122 < 1.0E-12f) {
+            _t147 = t * t * _t112;
+            _t160 = t * _t114;
+            _t161 = t * _t115;
+            _t162 = t * _t116;
+        } else {
+            _t147 = _t132 * _t130;
+            _t160 = Math.fma(Math.fma(_t133, _t126, _t114) * _t124, _t130, -(_t146 * _t126));
+            _t161 = Math.fma(Math.fma(_t133, _t127, _t115) * _t124, _t130, -(_t146 * _t127));
+            _t162 = Math.fma(Math.fma(_t133, _t128, _t116) * _t124, _t130, -(_t146 * _t128));
+        }
+        sclerp_s4b3cdb8d_c0(_dst, _r2, _t142, _r4, _t143, _r3, _t144, _r0, _t145);
+        sclerp_s4b3cdb8d_c1(_dst, _r2, _t147, _r4, _t160, _r3, _t161, _r0, _t162, _r5, _t142, _r6, _t143, _r7, _t144, _r1, _t145, _t0, _t2);
+    }
+
 
     /**
      * Screw-linearly interpolate between this dual quaternion (which must have unit length) and
@@ -1244,9 +1386,17 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat sclerp(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, float t, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _t0 = -this.rZ;
-        float _t2 = -this.dZ;
-        float _t8 = Math.fma(otherRX, this.rX, otherRY * this.rY) + Math.fma(otherRZ, this.rZ, otherRW * this.rW) < 0.0f ? -1.0f : 1.0f;
+        float _r0 = this.rZ;
+        float _r1 = this.dZ;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.rW;
+        float _r5 = this.dX;
+        float _r6 = this.dW;
+        float _r7 = this.dY;
+        float _t0 = -_r0;
+        float _t2 = -_r1;
+        float _t8 = Math.fma(otherRX, _r2, otherRY * _r3) + Math.fma(otherRZ, _r0, otherRW * _r4) < 0.0f ? -1.0f : 1.0f;
         float _t9 = otherRX * _t8;
         float _t10 = otherRW * _t8;
         float _t11 = otherRZ * _t8;
@@ -1255,16 +1405,48 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t14 = otherDW * _t8;
         float _t15 = otherDY * _t8;
         float _t16 = otherDZ * _t8;
-        float _t57 = Math.fma(this.rX, _t9, this.rW * _t10);
-        float _t77 = Math.fma(_t0, _t11, -(this.rY * _t12));
+        float _t57 = Math.fma(_r2, _t9, _r4 * _t10);
+        float _t77 = Math.fma(_t0, _t11, -(_r3 * _t12));
+        sclerp_s4b3cdb8d_tail(d, _t57, _t77, _r3, _t9, _r0, _t10, _r4, _t11, _r2, _t12, _t0, _t13, _t14, _t15, _t16, _r5, _r6, _r7, _r1, _t2, t);
+        return d;
+    }
+
+    /** Private store group 0 of {@code sclerp}: computes and stores it; reached only through it. */
+    private void sclerp_s1639cfc4_c0(DoubleDualQuatImpl _dst, float _r2, float _t142, float _r4, float _t143, float _r3, float _t144, float _r0, float _t145) {
+        _dst.rX = Math.fma(_r2, _t142, _r4 * _t143) + Math.fma(_r3, _t144, -(_r0 * _t145));
+        _dst.rY = Math.fma(_r3, _t142, _r0 * _t143) + Math.fma(_r4, _t145, -(_r2 * _t144));
+        _dst.rZ = Math.fma(_r2, _t145, _r4 * _t144) + Math.fma(_r0, _t142, -(_r3 * _t143));
+        _dst.rW = Math.fma(_r4, _t142, -(_r2 * _t143)) - Math.fma(_r3, _t145, _r0 * _t144);
+    }
+
+    /** Private store group 1 of {@code sclerp}: computes and stores it; reached only through it. */
+    private void sclerp_s1639cfc4_c1(DoubleDualQuatImpl _dst, float _r2, float _t147, float _r4, float _t160, float _r3, float _t161, float _r0, float _t162, float _r5, float _t142, float _r6, float _t143, float _r7, float _t144, float _r1, float _t145, float _t0, float _t2) {
+        _dst.dX = Math.fma(_r2, _t147, _r4 * _t160) + Math.fma(_r3, _t161, -(_r0 * _t162)) + (Math.fma(_r5, _t142, _r6 * _t143) + Math.fma(_r7, _t144, -(_r1 * _t145)));
+        _dst.dY = Math.fma(_r3, _t147, _r0 * _t160) + Math.fma(_r4, _t162, -(_r2 * _t161)) + (Math.fma(_r7, _t142, _r1 * _t143) + Math.fma(_r6, _t145, -(_r5 * _t144)));
+        _dst.dZ = Math.fma(_r2, _t162, _r4 * _t161) + Math.fma(_r0, _t147, -(_r3 * _t160)) + (Math.fma(_r5, _t145, _r6 * _t144) + Math.fma(_r1, _t142, -(_r7 * _t143)));
+        _dst.dW = Math.fma(_r4, _t147, -(_r2 * _t160)) + Math.fma(_t0, _t161, -(_r3 * _t162)) + (Math.fma(_r6, _t142, -(_r5 * _t143)) + Math.fma(_t2, _t144, -(_r7 * _t145)));
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s1639cfc4_tail(DoubleDualQuatImpl _dst, float _t57, float _t77, float _r3, float _t9, float _r0, float _t10, float _r4, float _t11, float _r2, float _t12, float _t0, float _t13, float _t14, float _t15, float _t16, float _r5, float _r6, float _r7, float _r1, float _t2, float t) {
         float _t83 = _t57 - _t77;
-        float _t84 = Math.fma(this.rY, _t9, -(this.rZ * _t10)) + Math.fma(this.rW, _t11, -(this.rX * _t12));
-        float _t85 = Math.fma(this.rX, _t11, this.rW * _t12) + Math.fma(_t0, _t9, -(this.rY * _t10));
-        float _t86 = Math.fma(this.rZ, _t12, -(this.rY * _t11)) + Math.fma(this.rW, _t9, -(this.rX * _t10));
-        float _t97 = Math.fma(this.rX, _t13, this.rW * _t14) + Math.fma(this.rY, _t15, this.rZ * _t16) + (Math.fma(this.dX, _t9, this.dW * _t10) + Math.fma(this.dY, _t12, this.dZ * _t11));
-        float _t99 = Math.fma(this.rZ, _t15, -(this.rY * _t16)) + Math.fma(this.rW, _t13, -(this.rX * _t14)) + (Math.fma(this.dZ, _t12, -(this.dY * _t11)) + Math.fma(this.dW, _t9, -(this.dX * _t10)));
-        float _t100 = Math.fma(this.rY, _t13, -(this.rZ * _t14)) + Math.fma(this.rW, _t16, -(this.rX * _t15)) + (Math.fma(this.dY, _t9, -(this.dZ * _t10)) + Math.fma(this.dW, _t11, -(this.dX * _t12)));
-        float _t101 = Math.fma(this.rX, _t16, this.rW * _t15) + Math.fma(_t0, _t13, -(this.rY * _t14)) + (Math.fma(this.dX, _t11, this.dW * _t12) + Math.fma(_t2, _t9, -(this.dY * _t10)));
+        float _t84 = Math.fma(_r3, _t9, -(_r0 * _t10)) + Math.fma(_r4, _t11, -(_r2 * _t12));
+        float _t85 = Math.fma(_r2, _t11, _r4 * _t12) + Math.fma(_t0, _t9, -(_r3 * _t10));
+        float _t86 = Math.fma(_r0, _t12, -(_r3 * _t11)) + Math.fma(_r4, _t9, -(_r2 * _t10));
+        float _t97 = Math.fma(_r2, _t13, _r4 * _t14) + Math.fma(_r3, _t15, _r0 * _t16) + (Math.fma(_r5, _t9, _r6 * _t10) + Math.fma(_r7, _t12, _r1 * _t11));
+        sclerp_s1639cfc4_tail2(_dst, _r0, _t15, _r3, _t16, _r4, _t13, _r2, _t14, _r1, _t12, _r7, _t11, _r6, _t9, _r5, _t10, _t0, _t2, _t83, _t77, _t57, _t84, _t85, _t86, _t97, t);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s1639cfc4_tail2(DoubleDualQuatImpl _dst, float _r0, float _t15, float _r3, float _t16, float _r4, float _t13, float _r2, float _t14, float _r1, float _t12, float _r7, float _t11, float _r6, float _t9, float _r5, float _t10, float _t0, float _t2, float _t83, float _t77, float _t57, float _t84, float _t85, float _t86, float _t97, float t) {
+        float _t99 = Math.fma(_r0, _t15, -(_r3 * _t16)) + Math.fma(_r4, _t13, -(_r2 * _t14)) + (Math.fma(_r1, _t12, -(_r7 * _t11)) + Math.fma(_r6, _t9, -(_r5 * _t10)));
+        float _t100 = Math.fma(_r3, _t13, -(_r0 * _t14)) + Math.fma(_r4, _t16, -(_r2 * _t15)) + (Math.fma(_r7, _t9, -(_r1 * _t10)) + Math.fma(_r6, _t11, -(_r5 * _t12)));
+        float _t101 = Math.fma(_r2, _t16, _r4 * _t15) + Math.fma(_t0, _t13, -(_r3 * _t14)) + (Math.fma(_r5, _t11, _r6 * _t12) + Math.fma(_t2, _t9, -(_r7 * _t10)));
+        sclerp_s1639cfc4_tail3(_dst, _t83, _t77, _t57, _t84, _t85, _t86, _t97, _t99, _t100, _t101, t, _r2, _r4, _r3, _r0, _r5, _r6, _r7, _r1, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s1639cfc4_tail3(DoubleDualQuatImpl _dst, float _t83, float _t77, float _t57, float _t84, float _t85, float _t86, float _t97, float _t99, float _t100, float _t101, float t, float _r2, float _r4, float _r3, float _r0, float _r5, float _r6, float _r7, float _r1, float _t0, float _t2) {
         float _t105, _t106, _t107, _t108, _t112, _t114, _t115, _t116;
         if (_t83 < 0.0f) {
             _t105 = _t77 - _t57;
@@ -1291,51 +1473,48 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t127 = _t124 * _t106;
         float _t128 = _t124 * _t107;
         float _t129 = t * (float) Math.atan2((float) Math.sqrt(_t122), _t105);
+        sclerp_s1639cfc4_tail4(_dst, _t129, _t124, _t112, t, _t105, _t122, _t108, _t126, _t106, _t127, _t107, _t128, _t114, _t115, _t116, _r2, _r4, _r3, _r0, _r5, _r6, _r7, _r1, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s1639cfc4_tail4(DoubleDualQuatImpl _dst, float _t129, float _t124, float _t112, float t, float _t105, float _t122, float _t108, float _t126, float _t106, float _t127, float _t107, float _t128, float _t114, float _t115, float _t116, float _r2, float _r4, float _r3, float _r0, float _r5, float _r6, float _r7, float _r1, float _t0, float _t2) {
         float _t130 = (float) Math.sin(_t129);
         float _t131 = _t124 * _t112;
         float _t132 = t * _t131;
         float _t133 = _t131 * _t105;
         float _t137 = (float) Math.cosFromSin(_t130, _t129);
-        float _t142, _t143, _t144, _t145, _t147;
+        float _t142, _t143, _t144, _t145;
         if (_t122 < 1.0E-12f) {
             _t142 = 1.0f;
             _t143 = t * _t108;
             _t144 = t * _t106;
             _t145 = t * _t107;
-            _t147 = t * t * _t112;
         } else {
             _t142 = _t137;
             _t143 = _t126 * _t130;
             _t144 = _t127 * _t130;
             _t145 = _t128 * _t130;
-            _t147 = _t132 * _t130;
         }
         float _t146 = _t132 * _t137;
-        float _t160, _t161, _t162;
+        sclerp_s1639cfc4_tail5(_dst, _t122, t, _t112, _t132, _t130, _t114, _t133, _t126, _t124, _t146, _t115, _t127, _t116, _t128, _r2, _t142, _r4, _t143, _r3, _t144, _r0, _t145, _r5, _r6, _r7, _r1, _t0, _t2);
+    }
+
+    /** Private tail of {@code sclerp}; reached only through it. */
+    private void sclerp_s1639cfc4_tail5(DoubleDualQuatImpl _dst, float _t122, float t, float _t112, float _t132, float _t130, float _t114, float _t133, float _t126, float _t124, float _t146, float _t115, float _t127, float _t116, float _t128, float _r2, float _t142, float _r4, float _t143, float _r3, float _t144, float _r0, float _t145, float _r5, float _r6, float _r7, float _r1, float _t0, float _t2) {
+        float _t147, _t160, _t161, _t162;
         if (_t122 < 1.0E-12f) {
+            _t147 = t * t * _t112;
             _t160 = t * _t114;
             _t161 = t * _t115;
             _t162 = t * _t116;
         } else {
+            _t147 = _t132 * _t130;
             _t160 = Math.fma(Math.fma(_t133, _t126, _t114) * _t124, _t130, -(_t146 * _t126));
             _t161 = Math.fma(Math.fma(_t133, _t127, _t115) * _t124, _t130, -(_t146 * _t127));
             _t162 = Math.fma(Math.fma(_t133, _t128, _t116) * _t124, _t130, -(_t146 * _t128));
         }
-        float _buf0 = Math.fma(this.rX, _t142, this.rW * _t143) + Math.fma(this.rY, _t144, -(this.rZ * _t145));
-        float _buf1 = Math.fma(this.rY, _t142, this.rZ * _t143) + Math.fma(this.rW, _t145, -(this.rX * _t144));
-        float _buf2 = Math.fma(this.rX, _t145, this.rW * _t144) + Math.fma(this.rZ, _t142, -(this.rY * _t143));
-        float _buf3 = Math.fma(this.rW, _t142, -(this.rX * _t143)) - Math.fma(this.rY, _t145, this.rZ * _t144);
-        float _buf4 = Math.fma(this.rX, _t147, this.rW * _t160) + Math.fma(this.rY, _t161, -(this.rZ * _t162)) + (Math.fma(this.dX, _t142, this.dW * _t143) + Math.fma(this.dY, _t144, -(this.dZ * _t145)));
-        float _buf5 = Math.fma(this.rY, _t147, this.rZ * _t160) + Math.fma(this.rW, _t162, -(this.rX * _t161)) + (Math.fma(this.dY, _t142, this.dZ * _t143) + Math.fma(this.dW, _t145, -(this.dX * _t144)));
-        d.dZ = Math.fma(this.rX, _t162, this.rW * _t161) + Math.fma(this.rZ, _t147, -(this.rY * _t160)) + (Math.fma(this.dX, _t145, this.dW * _t144) + Math.fma(this.dZ, _t142, -(this.dY * _t143)));
-        d.dW = Math.fma(this.rW, _t147, -(this.rX * _t160)) + Math.fma(_t0, _t161, -(this.rY * _t162)) + (Math.fma(this.dW, _t142, -(this.dX * _t143)) + Math.fma(_t2, _t144, -(this.dY * _t145)));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
-        return d;
+        sclerp_s1639cfc4_c0(_dst, _r2, _t142, _r4, _t143, _r3, _t144, _r0, _t145);
+        sclerp_s1639cfc4_c1(_dst, _r2, _t147, _r4, _t160, _r3, _t161, _r0, _t162, _r5, _t142, _r6, _t143, _r7, _t144, _r1, _t145, _t0, _t2);
     }
 
 
@@ -1378,9 +1557,17 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat sclerp(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, float t, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        float _t0 = -this.rZ;
-        float _t2 = -this.dZ;
-        float _t8 = Math.fma(otherRX, this.rX, otherRY * this.rY) + Math.fma(otherRZ, this.rZ, otherRW * this.rW) < 0.0f ? -1.0f : 1.0f;
+        float _r0 = this.rZ;
+        float _r1 = this.dZ;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.rW;
+        float _r5 = this.dX;
+        float _r6 = this.dW;
+        float _r7 = this.dY;
+        float _t0 = -_r0;
+        float _t2 = -_r1;
+        float _t8 = Math.fma(otherRX, _r2, otherRY * _r3) + Math.fma(otherRZ, _r0, otherRW * _r4) < 0.0f ? -1.0f : 1.0f;
         float _t9 = otherRX * _t8;
         float _t10 = otherRW * _t8;
         float _t11 = otherRZ * _t8;
@@ -1389,86 +1576,9 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t14 = otherDW * _t8;
         float _t15 = otherDY * _t8;
         float _t16 = otherDZ * _t8;
-        float _t57 = Math.fma(this.rX, _t9, this.rW * _t10);
-        float _t77 = Math.fma(_t0, _t11, -(this.rY * _t12));
-        float _t83 = _t57 - _t77;
-        float _t84 = Math.fma(this.rY, _t9, -(this.rZ * _t10)) + Math.fma(this.rW, _t11, -(this.rX * _t12));
-        float _t85 = Math.fma(this.rX, _t11, this.rW * _t12) + Math.fma(_t0, _t9, -(this.rY * _t10));
-        float _t86 = Math.fma(this.rZ, _t12, -(this.rY * _t11)) + Math.fma(this.rW, _t9, -(this.rX * _t10));
-        float _t97 = Math.fma(this.rX, _t13, this.rW * _t14) + Math.fma(this.rY, _t15, this.rZ * _t16) + (Math.fma(this.dX, _t9, this.dW * _t10) + Math.fma(this.dY, _t12, this.dZ * _t11));
-        float _t99 = Math.fma(this.rZ, _t15, -(this.rY * _t16)) + Math.fma(this.rW, _t13, -(this.rX * _t14)) + (Math.fma(this.dZ, _t12, -(this.dY * _t11)) + Math.fma(this.dW, _t9, -(this.dX * _t10)));
-        float _t100 = Math.fma(this.rY, _t13, -(this.rZ * _t14)) + Math.fma(this.rW, _t16, -(this.rX * _t15)) + (Math.fma(this.dY, _t9, -(this.dZ * _t10)) + Math.fma(this.dW, _t11, -(this.dX * _t12)));
-        float _t101 = Math.fma(this.rX, _t16, this.rW * _t15) + Math.fma(_t0, _t13, -(this.rY * _t14)) + (Math.fma(this.dX, _t11, this.dW * _t12) + Math.fma(_t2, _t9, -(this.dY * _t10)));
-        float _t105, _t106, _t107, _t108, _t112, _t114, _t115, _t116;
-        if (_t83 < 0.0f) {
-            _t105 = _t77 - _t57;
-            _t106 = -_t84;
-            _t107 = -_t85;
-            _t108 = -_t86;
-            _t112 = -_t97;
-            _t114 = -_t99;
-            _t115 = -_t100;
-            _t116 = -_t101;
-        } else {
-            _t105 = _t83;
-            _t106 = _t84;
-            _t107 = _t85;
-            _t108 = _t86;
-            _t112 = _t97;
-            _t114 = _t99;
-            _t115 = _t100;
-            _t116 = _t101;
-        }
-        float _t122 = Math.fma(_t106, _t106, Math.fma(_t107, _t107, _t108 * _t108));
-        float _t124 = (1.0f / (float) Math.sqrt(_t122));
-        float _t126 = _t124 * _t108;
-        float _t127 = _t124 * _t106;
-        float _t128 = _t124 * _t107;
-        float _t129 = t * (float) Math.atan2((float) Math.sqrt(_t122), _t105);
-        float _t130 = (float) Math.sin(_t129);
-        float _t131 = _t124 * _t112;
-        float _t132 = t * _t131;
-        float _t133 = _t131 * _t105;
-        float _t137 = (float) Math.cosFromSin(_t130, _t129);
-        float _t142, _t143, _t144, _t145, _t147;
-        if (_t122 < 1.0E-12f) {
-            _t142 = 1.0f;
-            _t143 = t * _t108;
-            _t144 = t * _t106;
-            _t145 = t * _t107;
-            _t147 = t * t * _t112;
-        } else {
-            _t142 = _t137;
-            _t143 = _t126 * _t130;
-            _t144 = _t127 * _t130;
-            _t145 = _t128 * _t130;
-            _t147 = _t132 * _t130;
-        }
-        float _t146 = _t132 * _t137;
-        float _t160, _t161, _t162;
-        if (_t122 < 1.0E-12f) {
-            _t160 = t * _t114;
-            _t161 = t * _t115;
-            _t162 = t * _t116;
-        } else {
-            _t160 = Math.fma(Math.fma(_t133, _t126, _t114) * _t124, _t130, -(_t146 * _t126));
-            _t161 = Math.fma(Math.fma(_t133, _t127, _t115) * _t124, _t130, -(_t146 * _t127));
-            _t162 = Math.fma(Math.fma(_t133, _t128, _t116) * _t124, _t130, -(_t146 * _t128));
-        }
-        float _buf0 = Math.fma(this.rX, _t142, this.rW * _t143) + Math.fma(this.rY, _t144, -(this.rZ * _t145));
-        float _buf1 = Math.fma(this.rY, _t142, this.rZ * _t143) + Math.fma(this.rW, _t145, -(this.rX * _t144));
-        float _buf2 = Math.fma(this.rX, _t145, this.rW * _t144) + Math.fma(this.rZ, _t142, -(this.rY * _t143));
-        float _buf3 = Math.fma(this.rW, _t142, -(this.rX * _t143)) - Math.fma(this.rY, _t145, this.rZ * _t144);
-        float _buf4 = Math.fma(this.rX, _t147, this.rW * _t160) + Math.fma(this.rY, _t161, -(this.rZ * _t162)) + (Math.fma(this.dX, _t142, this.dW * _t143) + Math.fma(this.dY, _t144, -(this.dZ * _t145)));
-        float _buf5 = Math.fma(this.rY, _t147, this.rZ * _t160) + Math.fma(this.rW, _t162, -(this.rX * _t161)) + (Math.fma(this.dY, _t142, this.dZ * _t143) + Math.fma(this.dW, _t145, -(this.dX * _t144)));
-        d.dZ = Math.fma(this.rX, _t162, this.rW * _t161) + Math.fma(this.rZ, _t147, -(this.rY * _t160)) + (Math.fma(this.dX, _t145, this.dW * _t144) + Math.fma(this.dZ, _t142, -(this.dY * _t143)));
-        d.dW = Math.fma(this.rW, _t147, -(this.rX * _t160)) + Math.fma(_t0, _t161, -(this.rY * _t162)) + (Math.fma(this.dW, _t142, -(this.dX * _t143)) + Math.fma(_t2, _t144, -(this.dY * _t145)));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
+        float _t57 = Math.fma(_r2, _t9, _r4 * _t10);
+        float _t77 = Math.fma(_t0, _t11, -(_r3 * _t12));
+        sclerp_s1639cfc4_tail(d, _t57, _t77, _r3, _t9, _r0, _t10, _r4, _t11, _r2, _t12, _t0, _t13, _t14, _t15, _t16, _r5, _r6, _r7, _r1, _t2, t);
         return d;
     }
 
@@ -1509,6 +1619,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return mul(other.rX(), other.rY(), other.rZ(), other.rW(), other.dX(), other.dY(), other.dZ(), other.dW(), dest);
     }
 
+    /** Private store group 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s447e38b9_c0(FloatDualQuatImpl _dst, float otherRX, float _r0, float otherRW, float _r1, float otherRZ, float _r2, float otherRY, float _r3) {
+        _dst.rX = Math.fma(otherRX, _r0, otherRW * _r1) + Math.fma(otherRZ, _r2, -(otherRY * _r3));
+        _dst.rY = Math.fma(otherRX, _r3, otherRW * _r2) + Math.fma(otherRY, _r0, -(otherRZ * _r1));
+        _dst.rZ = Math.fma(otherRY, _r1, otherRZ * _r0) + Math.fma(otherRW, _r3, -(otherRX * _r2));
+        _dst.rW = Math.fma(otherRW, _r0, -(otherRX * _r1)) - Math.fma(otherRY, _r2, otherRZ * _r3);
+    }
+
+    /** Private store group 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s447e38b9_c1(FloatDualQuatImpl _dst, float otherRX, float _r4, float otherRW, float _r5, float otherRZ, float _r6, float otherRY, float _r7, float otherDX, float _r0, float otherDW, float _r1, float otherDZ, float _r2, float otherDY, float _r3) {
+        _dst.dX = Math.fma(otherRX, _r4, otherRW * _r5) + Math.fma(otherRZ, _r6, -(otherRY * _r7)) + (Math.fma(otherDX, _r0, otherDW * _r1) + Math.fma(otherDZ, _r2, -(otherDY * _r3)));
+        _dst.dY = Math.fma(otherRX, _r7, otherRW * _r6) + Math.fma(otherRY, _r4, -(otherRZ * _r5)) + (Math.fma(otherDX, _r3, otherDW * _r2) + Math.fma(otherDY, _r0, -(otherDZ * _r1)));
+        _dst.dZ = Math.fma(otherRY, _r5, otherRZ * _r4) + Math.fma(otherRW, _r7, -(otherRX * _r6)) + (Math.fma(otherDY, _r1, otherDZ * _r0) + Math.fma(otherDW, _r3, -(otherDX * _r2)));
+        _dst.dW = Math.fma(otherRW, _r4, -(otherRX * _r5)) + Math.fma(-otherRZ, _r7, -(otherRY * _r6)) + (Math.fma(otherDW, _r0, -(otherDX * _r1)) + Math.fma(-otherDZ, _r3, -(otherDY * _r2)));
+    }
+
 
     /**
      * Multiply this dual quaternion by ({@code otherRX}, {@code otherRY}, {@code otherRZ},
@@ -1541,22 +1667,33 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat mul(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ));
-        float _buf1 = Math.fma(otherRX, this.rZ, otherRW * this.rY) + Math.fma(otherRY, this.rW, -(otherRZ * this.rX));
-        float _buf2 = Math.fma(otherRY, this.rX, otherRZ * this.rW) + Math.fma(otherRW, this.rZ, -(otherRX * this.rY));
-        float _buf3 = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
-        float _buf4 = Math.fma(otherRX, this.dW, otherRW * this.dX) + Math.fma(otherRZ, this.dY, -(otherRY * this.dZ)) + (Math.fma(otherDX, this.rW, otherDW * this.rX) + Math.fma(otherDZ, this.rY, -(otherDY * this.rZ)));
-        float _buf5 = Math.fma(otherRX, this.dZ, otherRW * this.dY) + Math.fma(otherRY, this.dW, -(otherRZ * this.dX)) + (Math.fma(otherDX, this.rZ, otherDW * this.rY) + Math.fma(otherDY, this.rW, -(otherDZ * this.rX)));
-        float _buf6 = Math.fma(otherRY, this.dX, otherRZ * this.dW) + Math.fma(otherRW, this.dZ, -(otherRX * this.dY)) + (Math.fma(otherDY, this.rX, otherDZ * this.rW) + Math.fma(otherDW, this.rZ, -(otherDX * this.rY)));
-        d.dW = Math.fma(otherRW, this.dW, -(otherRX * this.dX)) + Math.fma(-otherRZ, this.dZ, -(otherRY * this.dY)) + (Math.fma(otherDW, this.rW, -(otherDX * this.rX)) + Math.fma(-otherDZ, this.rZ, -(otherDY * this.rY)));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
-        d.dZ = _buf6;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
+        mul_s447e38b9_c0(d, otherRX, _r0, otherRW, _r1, otherRZ, _r2, otherRY, _r3);
+        mul_s447e38b9_c1(d, otherRX, _r4, otherRW, _r5, otherRZ, _r6, otherRY, _r7, otherDX, _r0, otherDW, _r1, otherDZ, _r2, otherDY, _r3);
         return d;
+    }
+
+    /** Private store group 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s45241818_c0(DoubleDualQuatImpl _dst, float otherRX, float _r0, float otherRW, float _r1, float otherRZ, float _r2, float otherRY, float _r3) {
+        _dst.rX = Math.fma(otherRX, _r0, otherRW * _r1) + Math.fma(otherRZ, _r2, -(otherRY * _r3));
+        _dst.rY = Math.fma(otherRX, _r3, otherRW * _r2) + Math.fma(otherRY, _r0, -(otherRZ * _r1));
+        _dst.rZ = Math.fma(otherRY, _r1, otherRZ * _r0) + Math.fma(otherRW, _r3, -(otherRX * _r2));
+        _dst.rW = Math.fma(otherRW, _r0, -(otherRX * _r1)) - Math.fma(otherRY, _r2, otherRZ * _r3);
+    }
+
+    /** Private store group 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s45241818_c1(DoubleDualQuatImpl _dst, float otherRX, float _r4, float otherRW, float _r5, float otherRZ, float _r6, float otherRY, float _r7, float otherDX, float _r0, float otherDW, float _r1, float otherDZ, float _r2, float otherDY, float _r3) {
+        _dst.dX = Math.fma(otherRX, _r4, otherRW * _r5) + Math.fma(otherRZ, _r6, -(otherRY * _r7)) + (Math.fma(otherDX, _r0, otherDW * _r1) + Math.fma(otherDZ, _r2, -(otherDY * _r3)));
+        _dst.dY = Math.fma(otherRX, _r7, otherRW * _r6) + Math.fma(otherRY, _r4, -(otherRZ * _r5)) + (Math.fma(otherDX, _r3, otherDW * _r2) + Math.fma(otherDY, _r0, -(otherDZ * _r1)));
+        _dst.dZ = Math.fma(otherRY, _r5, otherRZ * _r4) + Math.fma(otherRW, _r7, -(otherRX * _r6)) + (Math.fma(otherDY, _r1, otherDZ * _r0) + Math.fma(otherDW, _r3, -(otherDX * _r2)));
+        _dst.dW = Math.fma(otherRW, _r4, -(otherRX * _r5)) + Math.fma(-otherRZ, _r7, -(otherRY * _r6)) + (Math.fma(otherDW, _r0, -(otherDX * _r1)) + Math.fma(-otherDZ, _r3, -(otherDY * _r2)));
     }
 
 
@@ -1594,21 +1731,16 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat mul(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRZ, this.rY, -(otherRY * this.rZ));
-        float _buf1 = Math.fma(otherRX, this.rZ, otherRW * this.rY) + Math.fma(otherRY, this.rW, -(otherRZ * this.rX));
-        float _buf2 = Math.fma(otherRY, this.rX, otherRZ * this.rW) + Math.fma(otherRW, this.rZ, -(otherRX * this.rY));
-        float _buf3 = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
-        float _buf4 = Math.fma(otherRX, this.dW, otherRW * this.dX) + Math.fma(otherRZ, this.dY, -(otherRY * this.dZ)) + (Math.fma(otherDX, this.rW, otherDW * this.rX) + Math.fma(otherDZ, this.rY, -(otherDY * this.rZ)));
-        float _buf5 = Math.fma(otherRX, this.dZ, otherRW * this.dY) + Math.fma(otherRY, this.dW, -(otherRZ * this.dX)) + (Math.fma(otherDX, this.rZ, otherDW * this.rY) + Math.fma(otherDY, this.rW, -(otherDZ * this.rX)));
-        float _buf6 = Math.fma(otherRY, this.dX, otherRZ * this.dW) + Math.fma(otherRW, this.dZ, -(otherRX * this.dY)) + (Math.fma(otherDY, this.rX, otherDZ * this.rW) + Math.fma(otherDW, this.rZ, -(otherDX * this.rY)));
-        d.dW = Math.fma(otherRW, this.dW, -(otherRX * this.dX)) + Math.fma(-otherRZ, this.dZ, -(otherRY * this.dY)) + (Math.fma(otherDW, this.rW, -(otherDX * this.rX)) + Math.fma(-otherDZ, this.rZ, -(otherDY * this.rY)));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
-        d.dZ = _buf6;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
+        mul_s45241818_c0(d, otherRX, _r0, otherRW, _r1, otherRZ, _r2, otherRY, _r3);
+        mul_s45241818_c1(d, otherRX, _r4, otherRW, _r5, otherRZ, _r6, otherRY, _r7, otherDX, _r0, otherDW, _r1, otherDZ, _r2, otherDY, _r3);
         return d;
     }
 
@@ -1649,6 +1781,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return preMul(other.rX(), other.rY(), other.rZ(), other.rW(), other.dX(), other.dY(), other.dZ(), other.dW(), dest);
     }
 
+    /** Private store group 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s447e38b9_c0(FloatDualQuatImpl _dst, float otherRX, float _r0, float otherRW, float _r1, float otherRY, float _r2, float otherRZ, float _r3) {
+        _dst.rX = Math.fma(otherRX, _r0, otherRW * _r1) + Math.fma(otherRY, _r2, -(otherRZ * _r3));
+        _dst.rY = Math.fma(otherRY, _r0, otherRZ * _r1) + Math.fma(otherRW, _r3, -(otherRX * _r2));
+        _dst.rZ = Math.fma(otherRX, _r3, otherRW * _r2) + Math.fma(otherRZ, _r0, -(otherRY * _r1));
+        _dst.rW = Math.fma(otherRW, _r0, -(otherRX * _r1)) - Math.fma(otherRY, _r3, otherRZ * _r2);
+    }
+
+    /** Private store group 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s447e38b9_c1(FloatDualQuatImpl _dst, float otherRX, float _r4, float otherRW, float _r5, float otherRY, float _r6, float otherRZ, float _r7, float otherDX, float _r0, float otherDW, float _r1, float otherDY, float _r2, float otherDZ, float _r3) {
+        _dst.dX = Math.fma(otherRX, _r4, otherRW * _r5) + Math.fma(otherRY, _r6, -(otherRZ * _r7)) + (Math.fma(otherDX, _r0, otherDW * _r1) + Math.fma(otherDY, _r2, -(otherDZ * _r3)));
+        _dst.dY = Math.fma(otherRY, _r4, otherRZ * _r5) + Math.fma(otherRW, _r7, -(otherRX * _r6)) + (Math.fma(otherDY, _r0, otherDZ * _r1) + Math.fma(otherDW, _r3, -(otherDX * _r2)));
+        _dst.dZ = Math.fma(otherRX, _r7, otherRW * _r6) + Math.fma(otherRZ, _r4, -(otherRY * _r5)) + (Math.fma(otherDX, _r3, otherDW * _r2) + Math.fma(otherDZ, _r0, -(otherDY * _r1)));
+        _dst.dW = Math.fma(otherRW, _r4, -(otherRX * _r5)) + Math.fma(-otherRZ, _r6, -(otherRY * _r7)) + (Math.fma(otherDW, _r0, -(otherDX * _r1)) + Math.fma(-otherDZ, _r2, -(otherDY * _r3)));
+    }
+
 
     /**
      * Pre-multiply ({@code otherRX}, {@code otherRY}, {@code otherRZ}, {@code otherRW},
@@ -1681,22 +1829,33 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat preMul(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
-        float _buf1 = Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(otherRW, this.rY, -(otherRX * this.rZ));
-        float _buf2 = Math.fma(otherRX, this.rY, otherRW * this.rZ) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX));
-        float _buf3 = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
-        float _buf4 = Math.fma(otherRX, this.dW, otherRW * this.dX) + Math.fma(otherRY, this.dZ, -(otherRZ * this.dY)) + (Math.fma(otherDX, this.rW, otherDW * this.rX) + Math.fma(otherDY, this.rZ, -(otherDZ * this.rY)));
-        float _buf5 = Math.fma(otherRY, this.dW, otherRZ * this.dX) + Math.fma(otherRW, this.dY, -(otherRX * this.dZ)) + (Math.fma(otherDY, this.rW, otherDZ * this.rX) + Math.fma(otherDW, this.rY, -(otherDX * this.rZ)));
-        float _buf6 = Math.fma(otherRX, this.dY, otherRW * this.dZ) + Math.fma(otherRZ, this.dW, -(otherRY * this.dX)) + (Math.fma(otherDX, this.rY, otherDW * this.rZ) + Math.fma(otherDZ, this.rW, -(otherDY * this.rX)));
-        d.dW = Math.fma(otherRW, this.dW, -(otherRX * this.dX)) + Math.fma(-otherRZ, this.dZ, -(otherRY * this.dY)) + (Math.fma(otherDW, this.rW, -(otherDX * this.rX)) + Math.fma(-otherDZ, this.rZ, -(otherDY * this.rY)));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
-        d.dZ = _buf6;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rZ;
+        float _r3 = this.rY;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dZ;
+        float _r7 = this.dY;
+        preMul_s447e38b9_c0(d, otherRX, _r0, otherRW, _r1, otherRY, _r2, otherRZ, _r3);
+        preMul_s447e38b9_c1(d, otherRX, _r4, otherRW, _r5, otherRY, _r6, otherRZ, _r7, otherDX, _r0, otherDW, _r1, otherDY, _r2, otherDZ, _r3);
         return d;
+    }
+
+    /** Private store group 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s45241818_c0(DoubleDualQuatImpl _dst, float otherRX, float _r0, float otherRW, float _r1, float otherRY, float _r2, float otherRZ, float _r3) {
+        _dst.rX = Math.fma(otherRX, _r0, otherRW * _r1) + Math.fma(otherRY, _r2, -(otherRZ * _r3));
+        _dst.rY = Math.fma(otherRY, _r0, otherRZ * _r1) + Math.fma(otherRW, _r3, -(otherRX * _r2));
+        _dst.rZ = Math.fma(otherRX, _r3, otherRW * _r2) + Math.fma(otherRZ, _r0, -(otherRY * _r1));
+        _dst.rW = Math.fma(otherRW, _r0, -(otherRX * _r1)) - Math.fma(otherRY, _r3, otherRZ * _r2);
+    }
+
+    /** Private store group 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s45241818_c1(DoubleDualQuatImpl _dst, float otherRX, float _r4, float otherRW, float _r5, float otherRY, float _r6, float otherRZ, float _r7, float otherDX, float _r0, float otherDW, float _r1, float otherDY, float _r2, float otherDZ, float _r3) {
+        _dst.dX = Math.fma(otherRX, _r4, otherRW * _r5) + Math.fma(otherRY, _r6, -(otherRZ * _r7)) + (Math.fma(otherDX, _r0, otherDW * _r1) + Math.fma(otherDY, _r2, -(otherDZ * _r3)));
+        _dst.dY = Math.fma(otherRY, _r4, otherRZ * _r5) + Math.fma(otherRW, _r7, -(otherRX * _r6)) + (Math.fma(otherDY, _r0, otherDZ * _r1) + Math.fma(otherDW, _r3, -(otherDX * _r2)));
+        _dst.dZ = Math.fma(otherRX, _r7, otherRW * _r6) + Math.fma(otherRZ, _r4, -(otherRY * _r5)) + (Math.fma(otherDX, _r3, otherDW * _r2) + Math.fma(otherDZ, _r0, -(otherDY * _r1)));
+        _dst.dW = Math.fma(otherRW, _r4, -(otherRX * _r5)) + Math.fma(-otherRZ, _r6, -(otherRY * _r7)) + (Math.fma(otherDW, _r0, -(otherDX * _r1)) + Math.fma(-otherDZ, _r2, -(otherDY * _r3)));
     }
 
 
@@ -1734,21 +1893,16 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat preMul(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        float _buf0 = Math.fma(otherRX, this.rW, otherRW * this.rX) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
-        float _buf1 = Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(otherRW, this.rY, -(otherRX * this.rZ));
-        float _buf2 = Math.fma(otherRX, this.rY, otherRW * this.rZ) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX));
-        float _buf3 = Math.fma(otherRW, this.rW, -(otherRX * this.rX)) - Math.fma(otherRY, this.rY, otherRZ * this.rZ);
-        float _buf4 = Math.fma(otherRX, this.dW, otherRW * this.dX) + Math.fma(otherRY, this.dZ, -(otherRZ * this.dY)) + (Math.fma(otherDX, this.rW, otherDW * this.rX) + Math.fma(otherDY, this.rZ, -(otherDZ * this.rY)));
-        float _buf5 = Math.fma(otherRY, this.dW, otherRZ * this.dX) + Math.fma(otherRW, this.dY, -(otherRX * this.dZ)) + (Math.fma(otherDY, this.rW, otherDZ * this.rX) + Math.fma(otherDW, this.rY, -(otherDX * this.rZ)));
-        float _buf6 = Math.fma(otherRX, this.dY, otherRW * this.dZ) + Math.fma(otherRZ, this.dW, -(otherRY * this.dX)) + (Math.fma(otherDX, this.rY, otherDW * this.rZ) + Math.fma(otherDZ, this.rW, -(otherDY * this.rX)));
-        d.dW = Math.fma(otherRW, this.dW, -(otherRX * this.dX)) + Math.fma(-otherRZ, this.dZ, -(otherRY * this.dY)) + (Math.fma(otherDW, this.rW, -(otherDX * this.rX)) + Math.fma(-otherDZ, this.rZ, -(otherDY * this.rY)));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
-        d.dZ = _buf6;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rZ;
+        float _r3 = this.rY;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dZ;
+        float _r7 = this.dY;
+        preMul_s45241818_c0(d, otherRX, _r0, otherRW, _r1, otherRY, _r2, otherRZ, _r3);
+        preMul_s45241818_c1(d, otherRX, _r4, otherRW, _r5, otherRY, _r6, otherRZ, _r7, otherDX, _r0, otherDW, _r1, otherDY, _r2, otherDZ, _r3);
         return d;
     }
 
@@ -1948,6 +2102,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return difference(other.rX(), other.rY(), other.rZ(), other.rW(), other.dX(), other.dY(), other.dZ(), other.dW(), dest);
     }
 
+    /** Private store group 0 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s447e38b9_c0(FloatDualQuatImpl _dst, float otherRX, float _r0, float otherRW, float _r1, float otherRY, float _r2, float otherRZ, float _r3, float _t0) {
+        _dst.rX = Math.fma(otherRX, _r0, -(otherRW * _r1)) + Math.fma(otherRY, _r2, -(otherRZ * _r3));
+        _dst.rY = Math.fma(otherRY, _r0, otherRZ * _r1) + Math.fma(_t0, _r2, -(otherRW * _r3));
+        _dst.rZ = Math.fma(otherRX, _r3, -(otherRW * _r2)) + Math.fma(otherRZ, _r0, -(otherRY * _r1));
+        _dst.rW = Math.fma(otherRX, _r1, otherRW * _r0) - Math.fma(-otherRZ, _r2, -(otherRY * _r3));
+    }
+
+    /** Private store group 1 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s447e38b9_c1(FloatDualQuatImpl _dst, float otherRX, float _r4, float otherRW, float _r5, float otherRY, float _r6, float otherRZ, float _r7, float otherDX, float _r0, float otherDW, float _r1, float otherDY, float _r2, float otherDZ, float _r3, float _t0) {
+        _dst.dX = Math.fma(otherRX, _r4, -(otherRW * _r5)) + Math.fma(otherRY, _r6, -(otherRZ * _r7)) + (Math.fma(otherDX, _r0, -(otherDW * _r1)) + Math.fma(otherDY, _r2, -(otherDZ * _r3)));
+        _dst.dY = Math.fma(otherRY, _r4, otherRZ * _r5) + Math.fma(_t0, _r6, -(otherRW * _r7)) + (Math.fma(otherDY, _r0, otherDZ * _r1) + Math.fma(-otherDX, _r2, -(otherDW * _r3)));
+        _dst.dZ = Math.fma(otherRX, _r7, -(otherRW * _r6)) + Math.fma(otherRZ, _r4, -(otherRY * _r5)) + (Math.fma(otherDX, _r3, -(otherDW * _r2)) + Math.fma(otherDZ, _r0, -(otherDY * _r1)));
+        _dst.dW = Math.fma(otherRX, _r5, otherRW * _r4) + Math.fma(otherRY, _r7, otherRZ * _r6) + (Math.fma(otherDX, _r1, otherDW * _r0) + Math.fma(otherDY, _r3, otherDZ * _r2));
+    }
+
 
     /**
      * Compute the difference between this dual quaternion and ({@code otherRX}, {@code otherRY},
@@ -1979,23 +2149,34 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat difference(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rZ;
+        float _r3 = this.rY;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dZ;
+        float _r7 = this.dY;
         float _t0 = -otherRX;
-        float _buf0 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
-        float _buf1 = Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(_t0, this.rZ, -(otherRW * this.rY));
-        float _buf2 = Math.fma(otherRX, this.rY, -(otherRW * this.rZ)) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX));
-        float _buf3 = Math.fma(otherRX, this.rX, otherRW * this.rW) - Math.fma(-otherRZ, this.rZ, -(otherRY * this.rY));
-        float _buf4 = Math.fma(otherRX, this.dW, -(otherRW * this.dX)) + Math.fma(otherRY, this.dZ, -(otherRZ * this.dY)) + (Math.fma(otherDX, this.rW, -(otherDW * this.rX)) + Math.fma(otherDY, this.rZ, -(otherDZ * this.rY)));
-        float _buf5 = Math.fma(otherRY, this.dW, otherRZ * this.dX) + Math.fma(_t0, this.dZ, -(otherRW * this.dY)) + (Math.fma(otherDY, this.rW, otherDZ * this.rX) + Math.fma(-otherDX, this.rZ, -(otherDW * this.rY)));
-        float _buf6 = Math.fma(otherRX, this.dY, -(otherRW * this.dZ)) + Math.fma(otherRZ, this.dW, -(otherRY * this.dX)) + (Math.fma(otherDX, this.rY, -(otherDW * this.rZ)) + Math.fma(otherDZ, this.rW, -(otherDY * this.rX)));
-        d.dW = Math.fma(otherRX, this.dX, otherRW * this.dW) + Math.fma(otherRY, this.dY, otherRZ * this.dZ) + (Math.fma(otherDX, this.rX, otherDW * this.rW) + Math.fma(otherDY, this.rY, otherDZ * this.rZ));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
-        d.dZ = _buf6;
+        difference_s447e38b9_c0(d, otherRX, _r0, otherRW, _r1, otherRY, _r2, otherRZ, _r3, _t0);
+        difference_s447e38b9_c1(d, otherRX, _r4, otherRW, _r5, otherRY, _r6, otherRZ, _r7, otherDX, _r0, otherDW, _r1, otherDY, _r2, otherDZ, _r3, _t0);
         return d;
+    }
+
+    /** Private store group 0 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s45241818_c0(DoubleDualQuatImpl _dst, float otherRX, float _r0, float otherRW, float _r1, float otherRY, float _r2, float otherRZ, float _r3, float _t0) {
+        _dst.rX = Math.fma(otherRX, _r0, -(otherRW * _r1)) + Math.fma(otherRY, _r2, -(otherRZ * _r3));
+        _dst.rY = Math.fma(otherRY, _r0, otherRZ * _r1) + Math.fma(_t0, _r2, -(otherRW * _r3));
+        _dst.rZ = Math.fma(otherRX, _r3, -(otherRW * _r2)) + Math.fma(otherRZ, _r0, -(otherRY * _r1));
+        _dst.rW = Math.fma(otherRX, _r1, otherRW * _r0) - Math.fma(-otherRZ, _r2, -(otherRY * _r3));
+    }
+
+    /** Private store group 1 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s45241818_c1(DoubleDualQuatImpl _dst, float otherRX, float _r4, float otherRW, float _r5, float otherRY, float _r6, float otherRZ, float _r7, float otherDX, float _r0, float otherDW, float _r1, float otherDY, float _r2, float otherDZ, float _r3, float _t0) {
+        _dst.dX = Math.fma(otherRX, _r4, -(otherRW * _r5)) + Math.fma(otherRY, _r6, -(otherRZ * _r7)) + (Math.fma(otherDX, _r0, -(otherDW * _r1)) + Math.fma(otherDY, _r2, -(otherDZ * _r3)));
+        _dst.dY = Math.fma(otherRY, _r4, otherRZ * _r5) + Math.fma(_t0, _r6, -(otherRW * _r7)) + (Math.fma(otherDY, _r0, otherDZ * _r1) + Math.fma(-otherDX, _r2, -(otherDW * _r3)));
+        _dst.dZ = Math.fma(otherRX, _r7, -(otherRW * _r6)) + Math.fma(otherRZ, _r4, -(otherRY * _r5)) + (Math.fma(otherDX, _r3, -(otherDW * _r2)) + Math.fma(otherDZ, _r0, -(otherDY * _r1)));
+        _dst.dW = Math.fma(otherRX, _r5, otherRW * _r4) + Math.fma(otherRY, _r7, otherRZ * _r6) + (Math.fma(otherDX, _r1, otherDW * _r0) + Math.fma(otherDY, _r3, otherDZ * _r2));
     }
 
 
@@ -2032,22 +2213,17 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat difference(float otherRX, float otherRY, float otherRZ, float otherRW, float otherDX, float otherDY, float otherDZ, float otherDW, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rZ;
+        float _r3 = this.rY;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dZ;
+        float _r7 = this.dY;
         float _t0 = -otherRX;
-        float _buf0 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
-        float _buf1 = Math.fma(otherRY, this.rW, otherRZ * this.rX) + Math.fma(_t0, this.rZ, -(otherRW * this.rY));
-        float _buf2 = Math.fma(otherRX, this.rY, -(otherRW * this.rZ)) + Math.fma(otherRZ, this.rW, -(otherRY * this.rX));
-        float _buf3 = Math.fma(otherRX, this.rX, otherRW * this.rW) - Math.fma(-otherRZ, this.rZ, -(otherRY * this.rY));
-        float _buf4 = Math.fma(otherRX, this.dW, -(otherRW * this.dX)) + Math.fma(otherRY, this.dZ, -(otherRZ * this.dY)) + (Math.fma(otherDX, this.rW, -(otherDW * this.rX)) + Math.fma(otherDY, this.rZ, -(otherDZ * this.rY)));
-        float _buf5 = Math.fma(otherRY, this.dW, otherRZ * this.dX) + Math.fma(_t0, this.dZ, -(otherRW * this.dY)) + (Math.fma(otherDY, this.rW, otherDZ * this.rX) + Math.fma(-otherDX, this.rZ, -(otherDW * this.rY)));
-        float _buf6 = Math.fma(otherRX, this.dY, -(otherRW * this.dZ)) + Math.fma(otherRZ, this.dW, -(otherRY * this.dX)) + (Math.fma(otherDX, this.rY, -(otherDW * this.rZ)) + Math.fma(otherDZ, this.rW, -(otherDY * this.rX)));
-        d.dW = Math.fma(otherRX, this.dX, otherRW * this.dW) + Math.fma(otherRY, this.dY, otherRZ * this.dZ) + (Math.fma(otherDX, this.rX, otherDW * this.rW) + Math.fma(otherDY, this.rY, otherDZ * this.rZ));
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.rW = _buf3;
-        d.dX = _buf4;
-        d.dY = _buf5;
-        d.dZ = _buf6;
+        difference_s45241818_c0(d, otherRX, _r0, otherRW, _r1, otherRY, _r2, otherRZ, _r3, _t0);
+        difference_s45241818_c1(d, otherRX, _r4, otherRW, _r5, otherRY, _r6, otherRZ, _r7, otherDX, _r0, otherDW, _r1, otherDY, _r2, otherDZ, _r3, _t0);
         return d;
     }
 
@@ -2137,6 +2313,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code exp}: computes and stores it; reached only through it. */
+    private void exp_s416ccfb5_c0(FloatDualQuatImpl _dst, float _t4, float _r1, float _t9, float _t8, float _r2, float _t10, float _r0, float _t11, float _t13) {
+        _dst.rX = _t4 < 1.0E-12f ? _r1 : _t9 * _t8;
+        _dst.rY = _t4 < 1.0E-12f ? _r2 : _t10 * _t8;
+        _dst.rZ = _t4 < 1.0E-12f ? _r0 : _t11 * _t8;
+        _dst.rW = _t4 < 1.0E-12f ? 1.0f : _t13;
+    }
+
+    /** Private store group 1 of {@code exp}: computes and stores it; reached only through it. */
+    private void exp_s416ccfb5_c1(FloatDualQuatImpl _dst, float _t4, float _r4, float _t9, float _t14, float _t12, float _sp0, float _r5, float _t10, float _r3, float _t11, float _t5, float _t8) {
+        _dst.dX = _t4 < 1.0E-12f ? _r4 : Math.fma(_t9, _t14, Math.fma(-_t9, _t12, _r4) * _sp0);
+        _dst.dY = _t4 < 1.0E-12f ? _r5 : Math.fma(_t10, _t14, Math.fma(-_t10, _t12, _r5) * _sp0);
+        _dst.dZ = _t4 < 1.0E-12f ? _r3 : Math.fma(_t11, _t14, Math.fma(-_t11, _t12, _r3) * _sp0);
+        _dst.dW = _t4 < 1.0E-12f ? -_t5 : -(_t12 * _t8);
+    }
+
 
     /**
      * Compute the exponential of this dual quaternion and store the result in {@code dest}.
@@ -2150,38 +2342,43 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat exp(@Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _t4 = Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY));
-        float _t5 = Math.fma(this.rZ, this.dZ, Math.fma(this.rX, this.dX, this.rY * this.dY));
+        float _r0 = this.rZ;
+        float _r1 = this.rX;
+        float _r2 = this.rY;
+        float _r3 = this.dZ;
+        float _r4 = this.dX;
+        float _r5 = this.dY;
+        float _t4 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t5 = Math.fma(_r0, _r3, Math.fma(_r1, _r4, _r2 * _r5));
         float _t7 = (float) Math.sqrt(_t4);
         float _t6 = 1.0f / _t7;
         float _t8 = (float) Math.sin(_t7);
         float _sp0 = _t6 * _t8;
-        float _t9 = this.rX * _t6;
-        float _t10 = this.rY * _t6;
-        float _t11 = this.rZ * _t6;
+        float _t9 = _r1 * _t6;
+        float _t10 = _r2 * _t6;
+        float _t11 = _r0 * _t6;
         float _t12 = _t5 * _t6;
         float _t13 = (float) Math.cosFromSin(_t8, _t7);
         float _t14 = _t12 * _t13;
-        if (_t4 < 1.0E-12f) {
-            d.rX = this.rX;
-            d.rY = this.rY;
-            d.rZ = this.rZ;
-            d.rW = 1.0f;
-            d.dX = this.dX;
-            d.dY = this.dY;
-            d.dZ = this.dZ;
-            d.dW = -_t5;
-        } else {
-            d.rX = _t9 * _t8;
-            d.rY = _t10 * _t8;
-            d.rZ = _t11 * _t8;
-            d.rW = _t13;
-            d.dX = Math.fma(_t9, _t14, Math.fma(-_t9, _t12, this.dX) * _sp0);
-            d.dY = Math.fma(_t10, _t14, Math.fma(-_t10, _t12, this.dY) * _sp0);
-            d.dZ = Math.fma(_t11, _t14, Math.fma(-_t11, _t12, this.dZ) * _sp0);
-            d.dW = -(_t12 * _t8);
-        }
+        exp_s416ccfb5_c0(d, _t4, _r1, _t9, _t8, _r2, _t10, _r0, _t11, _t13);
+        exp_s416ccfb5_c1(d, _t4, _r4, _t9, _t14, _t12, _sp0, _r5, _t10, _r3, _t11, _t5, _t8);
         return d;
+    }
+
+    /** Private store group 0 of {@code exp}: computes and stores it; reached only through it. */
+    private void exp_s6608609c_c0(DoubleDualQuatImpl _dst, float _t4, float _r1, float _t9, float _t8, float _r2, float _t10, float _r0, float _t11, float _t13) {
+        _dst.rX = _t4 < 1.0E-12f ? _r1 : _t9 * _t8;
+        _dst.rY = _t4 < 1.0E-12f ? _r2 : _t10 * _t8;
+        _dst.rZ = _t4 < 1.0E-12f ? _r0 : _t11 * _t8;
+        _dst.rW = _t4 < 1.0E-12f ? 1.0f : _t13;
+    }
+
+    /** Private store group 1 of {@code exp}: computes and stores it; reached only through it. */
+    private void exp_s6608609c_c1(DoubleDualQuatImpl _dst, float _t4, float _r4, float _t9, float _t14, float _t12, float _sp0, float _r5, float _t10, float _r3, float _t11, float _t5, float _t8) {
+        _dst.dX = _t4 < 1.0E-12f ? _r4 : Math.fma(_t9, _t14, Math.fma(-_t9, _t12, _r4) * _sp0);
+        _dst.dY = _t4 < 1.0E-12f ? _r5 : Math.fma(_t10, _t14, Math.fma(-_t10, _t12, _r5) * _sp0);
+        _dst.dZ = _t4 < 1.0E-12f ? _r3 : Math.fma(_t11, _t14, Math.fma(-_t11, _t12, _r3) * _sp0);
+        _dst.dW = _t4 < 1.0E-12f ? -_t5 : -(_t12 * _t8);
     }
 
 
@@ -2200,37 +2397,26 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat exp(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        float _t4 = Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY));
-        float _t5 = Math.fma(this.rZ, this.dZ, Math.fma(this.rX, this.dX, this.rY * this.dY));
+        float _r0 = this.rZ;
+        float _r1 = this.rX;
+        float _r2 = this.rY;
+        float _r3 = this.dZ;
+        float _r4 = this.dX;
+        float _r5 = this.dY;
+        float _t4 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t5 = Math.fma(_r0, _r3, Math.fma(_r1, _r4, _r2 * _r5));
         float _t7 = (float) Math.sqrt(_t4);
         float _t6 = 1.0f / _t7;
         float _t8 = (float) Math.sin(_t7);
         float _sp0 = _t6 * _t8;
-        float _t9 = this.rX * _t6;
-        float _t10 = this.rY * _t6;
-        float _t11 = this.rZ * _t6;
+        float _t9 = _r1 * _t6;
+        float _t10 = _r2 * _t6;
+        float _t11 = _r0 * _t6;
         float _t12 = _t5 * _t6;
         float _t13 = (float) Math.cosFromSin(_t8, _t7);
         float _t14 = _t12 * _t13;
-        if (_t4 < 1.0E-12f) {
-            d.rX = this.rX;
-            d.rY = this.rY;
-            d.rZ = this.rZ;
-            d.rW = 1.0f;
-            d.dX = this.dX;
-            d.dY = this.dY;
-            d.dZ = this.dZ;
-            d.dW = -_t5;
-        } else {
-            d.rX = _t9 * _t8;
-            d.rY = _t10 * _t8;
-            d.rZ = _t11 * _t8;
-            d.rW = _t13;
-            d.dX = Math.fma(_t9, _t14, Math.fma(-_t9, _t12, this.dX) * _sp0);
-            d.dY = Math.fma(_t10, _t14, Math.fma(-_t10, _t12, this.dY) * _sp0);
-            d.dZ = Math.fma(_t11, _t14, Math.fma(-_t11, _t12, this.dZ) * _sp0);
-            d.dW = -(_t12 * _t8);
-        }
+        exp_s6608609c_c0(d, _t4, _r1, _t9, _t8, _r2, _t10, _r0, _t11, _t13);
+        exp_s6608609c_c1(d, _t4, _r4, _t9, _t14, _t12, _sp0, _r5, _t10, _r3, _t11, _t5, _t8);
         return d;
     }
 
@@ -2981,6 +3167,34 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return Math.fma(this.rX, this.rX, this.rY * this.rY) + Math.fma(this.rZ, this.rZ, this.rW * this.rW);
     }
 
+    /** Private store group 0 of {@code log}: computes and stores it; reached only through it. */
+    private void log_s416ccfb5_c0(FloatDualQuatImpl _dst, float _t18, float _t9, float _t21, float _t22, float _t10, float _t23, float _t8, float _t24) {
+        _dst.rX = _t18 < 1.0E-12f ? _t9 : _t21 * _t22;
+        _dst.rY = _t18 < 1.0E-12f ? _t10 : _t23 * _t22;
+        _dst.rZ = _t18 < 1.0E-12f ? _t8 : _t24 * _t22;
+        _dst.rW = 0.0f;
+    }
+
+    /** Private store group 1 of {@code log}: computes and stores it; reached only through it. */
+    private void log_s416ccfb5_c1(FloatDualQuatImpl _dst, float _t18, float _t12, float _t26, float _t21, float _t19, float _t22, float _t25, float _t14, float _t23, float _t15, float _t24) {
+        _dst.dX = _t18 < 1.0E-12f ? _t12 : Math.fma(Math.fma(_t26, _t21, _t12) * _t19, _t22, -(_t21 * _t25));
+        _dst.dY = _t18 < 1.0E-12f ? _t14 : Math.fma(Math.fma(_t26, _t23, _t14) * _t19, _t22, -(_t23 * _t25));
+        _dst.dZ = _t18 < 1.0E-12f ? _t15 : Math.fma(Math.fma(_t26, _t24, _t15) * _t19, _t22, -(_t24 * _t25));
+        _dst.dW = 0.0f;
+    }
+
+    /** Private tail of {@code log}; reached only through it. */
+    private void log_s416ccfb5_tail(FloatDualQuatImpl _dst, float _t19, float _t9, float _t18, float _t11, float _t10, float _t8, float _r0, float _r7, float _t12, float _t14, float _t15) {
+        float _t21 = _t19 * _t9;
+        float _t22 = (float) Math.atan2((float) Math.sqrt(_t18), _t11);
+        float _t23 = _t19 * _t10;
+        float _t24 = _t19 * _t8;
+        float _t25 = _t19 * (_r0 < 0.0f ? -_r7 : _r7);
+        float _t26 = _t25 * _t11;
+        log_s416ccfb5_c0(_dst, _t18, _t9, _t21, _t22, _t10, _t23, _t8, _t24);
+        log_s416ccfb5_c1(_dst, _t18, _t12, _t26, _t21, _t19, _t22, _t25, _t14, _t23, _t15, _t24);
+    }
+
 
     /**
      * Compute the natural logarithm of this dual quaternion and store the result in {@code dest}.
@@ -2993,50 +3207,64 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat log(@Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rW;
+        float _r1 = this.rZ;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dX;
+        float _r5 = this.dY;
+        float _r6 = this.dZ;
+        float _r7 = this.dW;
         float _t8, _t9, _t10, _t11, _t12, _t14, _t15;
-        if (this.rW < 0.0f) {
-            _t8 = -this.rZ;
-            _t9 = -this.rX;
-            _t10 = -this.rY;
-            _t11 = -this.rW;
-            _t12 = -this.dX;
-            _t14 = -this.dY;
-            _t15 = -this.dZ;
+        if (_r0 < 0.0f) {
+            _t8 = -_r1;
+            _t9 = -_r2;
+            _t10 = -_r3;
+            _t11 = -_r0;
+            _t12 = -_r4;
+            _t14 = -_r5;
+            _t15 = -_r6;
         } else {
-            _t8 = this.rZ;
-            _t9 = this.rX;
-            _t10 = this.rY;
-            _t11 = this.rW;
-            _t12 = this.dX;
-            _t14 = this.dY;
-            _t15 = this.dZ;
+            _t8 = _r1;
+            _t9 = _r2;
+            _t10 = _r3;
+            _t11 = _r0;
+            _t12 = _r4;
+            _t14 = _r5;
+            _t15 = _r6;
         }
         float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
         float _t19 = (1.0f / (float) Math.sqrt(_t18));
+        log_s416ccfb5_tail(d, _t19, _t9, _t18, _t11, _t10, _t8, _r0, _r7, _t12, _t14, _t15);
+        return d;
+    }
+
+    /** Private store group 0 of {@code log}: computes and stores it; reached only through it. */
+    private void log_s6608609c_c0(DoubleDualQuatImpl _dst, float _t18, float _t9, float _t21, float _t22, float _t10, float _t23, float _t8, float _t24) {
+        _dst.rX = _t18 < 1.0E-12f ? _t9 : _t21 * _t22;
+        _dst.rY = _t18 < 1.0E-12f ? _t10 : _t23 * _t22;
+        _dst.rZ = _t18 < 1.0E-12f ? _t8 : _t24 * _t22;
+        _dst.rW = 0.0f;
+    }
+
+    /** Private store group 1 of {@code log}: computes and stores it; reached only through it. */
+    private void log_s6608609c_c1(DoubleDualQuatImpl _dst, float _t18, float _t12, float _t26, float _t21, float _t19, float _t22, float _t25, float _t14, float _t23, float _t15, float _t24) {
+        _dst.dX = _t18 < 1.0E-12f ? _t12 : Math.fma(Math.fma(_t26, _t21, _t12) * _t19, _t22, -(_t21 * _t25));
+        _dst.dY = _t18 < 1.0E-12f ? _t14 : Math.fma(Math.fma(_t26, _t23, _t14) * _t19, _t22, -(_t23 * _t25));
+        _dst.dZ = _t18 < 1.0E-12f ? _t15 : Math.fma(Math.fma(_t26, _t24, _t15) * _t19, _t22, -(_t24 * _t25));
+        _dst.dW = 0.0f;
+    }
+
+    /** Private tail of {@code log}; reached only through it. */
+    private void log_s6608609c_tail(DoubleDualQuatImpl _dst, float _t19, float _t9, float _t18, float _t11, float _t10, float _t8, float _r0, float _r7, float _t12, float _t14, float _t15) {
         float _t21 = _t19 * _t9;
         float _t22 = (float) Math.atan2((float) Math.sqrt(_t18), _t11);
         float _t23 = _t19 * _t10;
         float _t24 = _t19 * _t8;
-        float _t25 = _t19 * (this.rW < 0.0f ? -this.dW : this.dW);
+        float _t25 = _t19 * (_r0 < 0.0f ? -_r7 : _r7);
         float _t26 = _t25 * _t11;
-        if (_t18 < 1.0E-12f) {
-            d.rX = _t9;
-            d.rY = _t10;
-            d.rZ = _t8;
-            d.dX = _t12;
-            d.dY = _t14;
-            d.dZ = _t15;
-        } else {
-            d.rX = _t21 * _t22;
-            d.rY = _t23 * _t22;
-            d.rZ = _t24 * _t22;
-            d.dX = Math.fma(Math.fma(_t26, _t21, _t12) * _t19, _t22, -(_t21 * _t25));
-            d.dY = Math.fma(Math.fma(_t26, _t23, _t14) * _t19, _t22, -(_t23 * _t25));
-            d.dZ = Math.fma(Math.fma(_t26, _t24, _t15) * _t19, _t22, -(_t24 * _t25));
-        }
-        d.rW = 0.0f;
-        d.dW = 0.0f;
-        return d;
+        log_s6608609c_c0(_dst, _t18, _t9, _t21, _t22, _t10, _t23, _t8, _t24);
+        log_s6608609c_c1(_dst, _t18, _t12, _t26, _t21, _t19, _t22, _t25, _t14, _t23, _t15, _t24);
     }
 
 
@@ -3054,49 +3282,35 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat log(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rW;
+        float _r1 = this.rZ;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dX;
+        float _r5 = this.dY;
+        float _r6 = this.dZ;
+        float _r7 = this.dW;
         float _t8, _t9, _t10, _t11, _t12, _t14, _t15;
-        if (this.rW < 0.0f) {
-            _t8 = -this.rZ;
-            _t9 = -this.rX;
-            _t10 = -this.rY;
-            _t11 = -this.rW;
-            _t12 = -this.dX;
-            _t14 = -this.dY;
-            _t15 = -this.dZ;
+        if (_r0 < 0.0f) {
+            _t8 = -_r1;
+            _t9 = -_r2;
+            _t10 = -_r3;
+            _t11 = -_r0;
+            _t12 = -_r4;
+            _t14 = -_r5;
+            _t15 = -_r6;
         } else {
-            _t8 = this.rZ;
-            _t9 = this.rX;
-            _t10 = this.rY;
-            _t11 = this.rW;
-            _t12 = this.dX;
-            _t14 = this.dY;
-            _t15 = this.dZ;
+            _t8 = _r1;
+            _t9 = _r2;
+            _t10 = _r3;
+            _t11 = _r0;
+            _t12 = _r4;
+            _t14 = _r5;
+            _t15 = _r6;
         }
         float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
         float _t19 = (1.0f / (float) Math.sqrt(_t18));
-        float _t21 = _t19 * _t9;
-        float _t22 = (float) Math.atan2((float) Math.sqrt(_t18), _t11);
-        float _t23 = _t19 * _t10;
-        float _t24 = _t19 * _t8;
-        float _t25 = _t19 * (this.rW < 0.0f ? -this.dW : this.dW);
-        float _t26 = _t25 * _t11;
-        if (_t18 < 1.0E-12f) {
-            d.rX = _t9;
-            d.rY = _t10;
-            d.rZ = _t8;
-            d.dX = _t12;
-            d.dY = _t14;
-            d.dZ = _t15;
-        } else {
-            d.rX = _t21 * _t22;
-            d.rY = _t23 * _t22;
-            d.rZ = _t24 * _t22;
-            d.dX = Math.fma(Math.fma(_t26, _t21, _t12) * _t19, _t22, -(_t21 * _t25));
-            d.dY = Math.fma(Math.fma(_t26, _t23, _t14) * _t19, _t22, -(_t23 * _t25));
-            d.dZ = Math.fma(Math.fma(_t26, _t24, _t15) * _t19, _t22, -(_t24 * _t25));
-        }
-        d.rW = 0.0f;
-        d.dW = 0.0f;
+        log_s6608609c_tail(d, _t19, _t9, _t18, _t11, _t10, _t8, _r0, _r7, _t12, _t14, _t15);
         return d;
     }
 
@@ -3369,37 +3583,24 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code pow}: computes and stores it; reached only through it. */
+    private void pow_s7aa26011_c0(FloatDualQuatImpl _dst, float _t18, float t, float _t9, float _t21, float _t28, float _t10, float _t23, float _t8, float _t24, float _t30) {
+        _dst.rX = _t18 < 1.0E-12f ? t * _t9 : _t21 * _t28;
+        _dst.rY = _t18 < 1.0E-12f ? t * _t10 : _t23 * _t28;
+        _dst.rZ = _t18 < 1.0E-12f ? t * _t8 : _t24 * _t28;
+        _dst.rW = _t18 < 1.0E-12f ? 1.0f : _t30;
+    }
 
-    /**
-     * Raise this dual quaternion to the power of {@code t} (screw-motion power: {@code t = 0}
-     * yields the identity, {@code t = 1} yields {@code this}) and store the result in {@code dest}.
-     *
-     * @param t the exponent
-     * @param dest will hold the result
-     * @return dest
-     */
-    public FloatDualQuat pow(float t, @Mutated FloatDualQuat dest) {
-        FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15;
-        if (this.rW < 0.0f) {
-            _t8 = -this.rZ;
-            _t9 = -this.rX;
-            _t10 = -this.rY;
-            _t11 = -this.rW;
-            _t12 = -this.dX;
-            _t13 = -this.dW;
-            _t14 = -this.dY;
-            _t15 = -this.dZ;
-        } else {
-            _t8 = this.rZ;
-            _t9 = this.rX;
-            _t10 = this.rY;
-            _t11 = this.rW;
-            _t12 = this.dX;
-            _t13 = this.dW;
-            _t14 = this.dY;
-            _t15 = this.dZ;
-        }
+    /** Private store group 1 of {@code pow}: computes and stores it; reached only through it. */
+    private void pow_s7aa26011_c1(FloatDualQuatImpl _dst, float _t18, float t, float _t12, float _t29, float _t21, float _t19, float _t28, float _t31, float _t14, float _t23, float _t15, float _t24, float _t13, float _t27) {
+        _dst.dX = _t18 < 1.0E-12f ? t * _t12 : Math.fma(Math.fma(_t29, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
+        _dst.dY = _t18 < 1.0E-12f ? t * _t14 : Math.fma(Math.fma(_t29, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
+        _dst.dZ = _t18 < 1.0E-12f ? t * _t15 : Math.fma(Math.fma(_t29, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
+        _dst.dW = _t18 < 1.0E-12f ? t * t * _t13 : _t27 * _t28;
+    }
+
+    /** Private tail of {@code pow}; reached only through it. */
+    private void pow_s7aa26011_tail(FloatDualQuatImpl _dst, float _t8, float _t9, float _t10, float _t13, float t, float _t11, float _t12, float _t14, float _t15) {
         float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
         float _t19 = (1.0f / (float) Math.sqrt(_t18));
         float _t21 = _t19 * _t9;
@@ -3412,26 +3613,85 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t29 = _t25 * _t11;
         float _t30 = (float) Math.cosFromSin(_t28, _t26);
         float _t31 = _t27 * _t30;
-        if (_t18 < 1.0E-12f) {
-            d.rX = t * _t9;
-            d.rY = t * _t10;
-            d.rZ = t * _t8;
-            d.rW = 1.0f;
-            d.dX = t * _t12;
-            d.dY = t * _t14;
-            d.dZ = t * _t15;
-            d.dW = t * t * _t13;
+        pow_s7aa26011_c0(_dst, _t18, t, _t9, _t21, _t28, _t10, _t23, _t8, _t24, _t30);
+        pow_s7aa26011_c1(_dst, _t18, t, _t12, _t29, _t21, _t19, _t28, _t31, _t14, _t23, _t15, _t24, _t13, _t27);
+    }
+
+
+    /**
+     * Raise this dual quaternion to the power of {@code t} (screw-motion power: {@code t = 0}
+     * yields the identity, {@code t = 1} yields {@code this}) and store the result in {@code dest}.
+     *
+     * @param t the exponent
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatDualQuat pow(float t, @Mutated FloatDualQuat dest) {
+        FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rW;
+        float _r1 = this.rZ;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
+        float _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15;
+        if (_r0 < 0.0f) {
+            _t8 = -_r1;
+            _t9 = -_r2;
+            _t10 = -_r3;
+            _t11 = -_r0;
+            _t12 = -_r4;
+            _t13 = -_r5;
+            _t14 = -_r6;
+            _t15 = -_r7;
         } else {
-            d.rX = _t21 * _t28;
-            d.rY = _t23 * _t28;
-            d.rZ = _t24 * _t28;
-            d.rW = _t30;
-            d.dX = Math.fma(Math.fma(_t29, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
-            d.dY = Math.fma(Math.fma(_t29, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
-            d.dZ = Math.fma(Math.fma(_t29, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
-            d.dW = _t27 * _t28;
+            _t8 = _r1;
+            _t9 = _r2;
+            _t10 = _r3;
+            _t11 = _r0;
+            _t12 = _r4;
+            _t13 = _r5;
+            _t14 = _r6;
+            _t15 = _r7;
         }
+        pow_s7aa26011_tail(d, _t8, _t9, _t10, _t13, t, _t11, _t12, _t14, _t15);
         return d;
+    }
+
+    /** Private store group 0 of {@code pow}: computes and stores it; reached only through it. */
+    private void pow_s5384dbc0_c0(DoubleDualQuatImpl _dst, float _t18, float t, float _t9, float _t21, float _t28, float _t10, float _t23, float _t8, float _t24, float _t30) {
+        _dst.rX = _t18 < 1.0E-12f ? t * _t9 : _t21 * _t28;
+        _dst.rY = _t18 < 1.0E-12f ? t * _t10 : _t23 * _t28;
+        _dst.rZ = _t18 < 1.0E-12f ? t * _t8 : _t24 * _t28;
+        _dst.rW = _t18 < 1.0E-12f ? 1.0f : _t30;
+    }
+
+    /** Private store group 1 of {@code pow}: computes and stores it; reached only through it. */
+    private void pow_s5384dbc0_c1(DoubleDualQuatImpl _dst, float _t18, float t, float _t12, float _t29, float _t21, float _t19, float _t28, float _t31, float _t14, float _t23, float _t15, float _t24, float _t13, float _t27) {
+        _dst.dX = _t18 < 1.0E-12f ? t * _t12 : Math.fma(Math.fma(_t29, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
+        _dst.dY = _t18 < 1.0E-12f ? t * _t14 : Math.fma(Math.fma(_t29, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
+        _dst.dZ = _t18 < 1.0E-12f ? t * _t15 : Math.fma(Math.fma(_t29, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
+        _dst.dW = _t18 < 1.0E-12f ? t * t * _t13 : _t27 * _t28;
+    }
+
+    /** Private tail of {@code pow}; reached only through it. */
+    private void pow_s5384dbc0_tail(DoubleDualQuatImpl _dst, float _t8, float _t9, float _t10, float _t13, float t, float _t11, float _t12, float _t14, float _t15) {
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = (1.0f / (float) Math.sqrt(_t18));
+        float _t21 = _t19 * _t9;
+        float _t23 = _t19 * _t10;
+        float _t24 = _t19 * _t8;
+        float _t25 = _t19 * _t13;
+        float _t26 = t * (float) Math.atan2((float) Math.sqrt(_t18), _t11);
+        float _t27 = t * _t25;
+        float _t28 = (float) Math.sin(_t26);
+        float _t29 = _t25 * _t11;
+        float _t30 = (float) Math.cosFromSin(_t28, _t26);
+        float _t31 = _t27 * _t30;
+        pow_s5384dbc0_c0(_dst, _t18, t, _t9, _t21, _t28, _t10, _t23, _t8, _t24, _t30);
+        pow_s5384dbc0_c1(_dst, _t18, t, _t12, _t29, _t21, _t19, _t28, _t31, _t14, _t23, _t15, _t24, _t13, _t27);
     }
 
 
@@ -3448,57 +3708,35 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat pow(float t, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rW;
+        float _r1 = this.rZ;
+        float _r2 = this.rX;
+        float _r3 = this.rY;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15;
-        if (this.rW < 0.0f) {
-            _t8 = -this.rZ;
-            _t9 = -this.rX;
-            _t10 = -this.rY;
-            _t11 = -this.rW;
-            _t12 = -this.dX;
-            _t13 = -this.dW;
-            _t14 = -this.dY;
-            _t15 = -this.dZ;
+        if (_r0 < 0.0f) {
+            _t8 = -_r1;
+            _t9 = -_r2;
+            _t10 = -_r3;
+            _t11 = -_r0;
+            _t12 = -_r4;
+            _t13 = -_r5;
+            _t14 = -_r6;
+            _t15 = -_r7;
         } else {
-            _t8 = this.rZ;
-            _t9 = this.rX;
-            _t10 = this.rY;
-            _t11 = this.rW;
-            _t12 = this.dX;
-            _t13 = this.dW;
-            _t14 = this.dY;
-            _t15 = this.dZ;
+            _t8 = _r1;
+            _t9 = _r2;
+            _t10 = _r3;
+            _t11 = _r0;
+            _t12 = _r4;
+            _t13 = _r5;
+            _t14 = _r6;
+            _t15 = _r7;
         }
-        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
-        float _t19 = (1.0f / (float) Math.sqrt(_t18));
-        float _t21 = _t19 * _t9;
-        float _t23 = _t19 * _t10;
-        float _t24 = _t19 * _t8;
-        float _t25 = _t19 * _t13;
-        float _t26 = t * (float) Math.atan2((float) Math.sqrt(_t18), _t11);
-        float _t27 = t * _t25;
-        float _t28 = (float) Math.sin(_t26);
-        float _t29 = _t25 * _t11;
-        float _t30 = (float) Math.cosFromSin(_t28, _t26);
-        float _t31 = _t27 * _t30;
-        if (_t18 < 1.0E-12f) {
-            d.rX = t * _t9;
-            d.rY = t * _t10;
-            d.rZ = t * _t8;
-            d.rW = 1.0f;
-            d.dX = t * _t12;
-            d.dY = t * _t14;
-            d.dZ = t * _t15;
-            d.dW = t * t * _t13;
-        } else {
-            d.rX = _t21 * _t28;
-            d.rY = _t23 * _t28;
-            d.rZ = _t24 * _t28;
-            d.rW = _t30;
-            d.dX = Math.fma(Math.fma(_t29, _t21, _t12) * _t19, _t28, -(_t31 * _t21));
-            d.dY = Math.fma(Math.fma(_t29, _t23, _t14) * _t19, _t28, -(_t31 * _t23));
-            d.dZ = Math.fma(Math.fma(_t29, _t24, _t15) * _t19, _t28, -(_t31 * _t24));
-            d.dW = _t27 * _t28;
-        }
+        pow_s5384dbc0_tail(d, _t8, _t9, _t10, _t13, t, _t11, _t12, _t14, _t15);
         return d;
     }
 
@@ -5155,6 +5393,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return rotate(rotation.x(), rotation.y(), rotation.z(), rotation.w(), dest);
     }
 
+    /** Private store group 0 of {@code rotate}: computes and stores it; reached only through it. */
+    private void rotate_s6dc699f7_c0(FloatDualQuatImpl _dst, float rotationX, float _r0, float rotationW, float _r1, float rotationZ, float _r2, float rotationY, float _r3) {
+        _dst.rX = Math.fma(rotationX, _r0, rotationW * _r1) + Math.fma(rotationZ, _r2, -(rotationY * _r3));
+        _dst.rY = Math.fma(rotationX, _r3, rotationW * _r2) + Math.fma(rotationY, _r0, -(rotationZ * _r1));
+        _dst.rZ = Math.fma(rotationY, _r1, rotationZ * _r0) + Math.fma(rotationW, _r3, -(rotationX * _r2));
+        _dst.rW = Math.fma(rotationW, _r0, -(rotationX * _r1)) - Math.fma(rotationY, _r2, rotationZ * _r3);
+    }
+
+    /** Private store group 1 of {@code rotate}: computes and stores it; reached only through it. */
+    private void rotate_s6dc699f7_c1(FloatDualQuatImpl _dst, float rotationX, float _r4, float rotationW, float _r5, float rotationZ, float _r6, float rotationY, float _r7) {
+        _dst.dX = Math.fma(rotationX, _r4, rotationW * _r5) + Math.fma(rotationZ, _r6, -(rotationY * _r7));
+        _dst.dY = Math.fma(rotationX, _r7, rotationW * _r6) + Math.fma(rotationY, _r4, -(rotationZ * _r5));
+        _dst.dZ = Math.fma(rotationY, _r5, rotationZ * _r4) + Math.fma(rotationW, _r7, -(rotationX * _r6));
+        _dst.dW = Math.fma(rotationW, _r4, -(rotationX * _r5)) - Math.fma(rotationY, _r6, rotationZ * _r7);
+    }
+
 
     /**
      * Apply the rotation represented by the quaternion ({@code rotationX}, {@code rotationY},
@@ -5182,21 +5436,33 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat rotate(float rotationX, float rotationY, float rotationZ, float rotationW, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
-        float _buf0 = Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ));
-        float _buf1 = Math.fma(rotationX, this.rZ, rotationW * this.rY) + Math.fma(rotationY, this.rW, -(rotationZ * this.rX));
-        float _buf2 = Math.fma(rotationY, this.rX, rotationZ * this.rW) + Math.fma(rotationW, this.rZ, -(rotationX * this.rY));
-        d.rW = Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ);
-        float _buf3 = Math.fma(rotationX, this.dW, rotationW * this.dX) + Math.fma(rotationZ, this.dY, -(rotationY * this.dZ));
-        float _buf4 = Math.fma(rotationX, this.dZ, rotationW * this.dY) + Math.fma(rotationY, this.dW, -(rotationZ * this.dX));
-        float _buf5 = Math.fma(rotationY, this.dX, rotationZ * this.dW) + Math.fma(rotationW, this.dZ, -(rotationX * this.dY));
-        d.dW = Math.fma(rotationW, this.dW, -(rotationX * this.dX)) - Math.fma(rotationY, this.dY, rotationZ * this.dZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
+        rotate_s6dc699f7_c0(d, rotationX, _r0, rotationW, _r1, rotationZ, _r2, rotationY, _r3);
+        rotate_s6dc699f7_c1(d, rotationX, _r4, rotationW, _r5, rotationZ, _r6, rotationY, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotate}: computes and stores it; reached only through it. */
+    private void rotate_s44e7de9a_c0(DoubleDualQuatImpl _dst, float rotationX, float _r0, float rotationW, float _r1, float rotationZ, float _r2, float rotationY, float _r3) {
+        _dst.rX = Math.fma(rotationX, _r0, rotationW * _r1) + Math.fma(rotationZ, _r2, -(rotationY * _r3));
+        _dst.rY = Math.fma(rotationX, _r3, rotationW * _r2) + Math.fma(rotationY, _r0, -(rotationZ * _r1));
+        _dst.rZ = Math.fma(rotationY, _r1, rotationZ * _r0) + Math.fma(rotationW, _r3, -(rotationX * _r2));
+        _dst.rW = Math.fma(rotationW, _r0, -(rotationX * _r1)) - Math.fma(rotationY, _r2, rotationZ * _r3);
+    }
+
+    /** Private store group 1 of {@code rotate}: computes and stores it; reached only through it. */
+    private void rotate_s44e7de9a_c1(DoubleDualQuatImpl _dst, float rotationX, float _r4, float rotationW, float _r5, float rotationZ, float _r6, float rotationY, float _r7) {
+        _dst.dX = Math.fma(rotationX, _r4, rotationW * _r5) + Math.fma(rotationZ, _r6, -(rotationY * _r7));
+        _dst.dY = Math.fma(rotationX, _r7, rotationW * _r6) + Math.fma(rotationY, _r4, -(rotationZ * _r5));
+        _dst.dZ = Math.fma(rotationY, _r5, rotationZ * _r4) + Math.fma(rotationW, _r7, -(rotationX * _r6));
+        _dst.dW = Math.fma(rotationW, _r4, -(rotationX * _r5)) - Math.fma(rotationY, _r6, rotationZ * _r7);
     }
 
 
@@ -5229,20 +5495,16 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat rotate(float rotationX, float rotationY, float rotationZ, float rotationW, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        float _buf0 = Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationZ, this.rY, -(rotationY * this.rZ));
-        float _buf1 = Math.fma(rotationX, this.rZ, rotationW * this.rY) + Math.fma(rotationY, this.rW, -(rotationZ * this.rX));
-        float _buf2 = Math.fma(rotationY, this.rX, rotationZ * this.rW) + Math.fma(rotationW, this.rZ, -(rotationX * this.rY));
-        d.rW = Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ);
-        float _buf3 = Math.fma(rotationX, this.dW, rotationW * this.dX) + Math.fma(rotationZ, this.dY, -(rotationY * this.dZ));
-        float _buf4 = Math.fma(rotationX, this.dZ, rotationW * this.dY) + Math.fma(rotationY, this.dW, -(rotationZ * this.dX));
-        float _buf5 = Math.fma(rotationY, this.dX, rotationZ * this.dW) + Math.fma(rotationW, this.dZ, -(rotationX * this.dY));
-        d.dW = Math.fma(rotationW, this.dW, -(rotationX * this.dX)) - Math.fma(rotationY, this.dY, rotationZ * this.dZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        float _r0 = this.rW;
+        float _r1 = this.rX;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dW;
+        float _r5 = this.dX;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
+        rotate_s44e7de9a_c0(d, rotationX, _r0, rotationW, _r1, rotationZ, _r2, rotationY, _r3);
+        rotate_s44e7de9a_c1(d, rotationX, _r4, rotationW, _r5, rotationZ, _r6, rotationY, _r7);
         return d;
     }
 
@@ -5285,6 +5547,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return rotateAxis(angle, axis.x(), axis.y(), axis.z(), dest);
     }
 
+    /** Private store group 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s61270cf0_c0(FloatDualQuatImpl _dst, float _r0, float _t5, float _r1, float _t2, float _r2, float _t3, float _r3, float _t4) {
+        _dst.rX = Math.fma(_r0, _t5, _r1 * _t2) + Math.fma(_r2, _t3, -(_r3 * _t4));
+        _dst.rY = Math.fma(_r2, _t5, _r3 * _t2) + Math.fma(_r1, _t4, -(_r0 * _t3));
+        _dst.rZ = Math.fma(_r0, _t4, _r1 * _t3) + Math.fma(_r3, _t5, -(_r2 * _t2));
+        _dst.rW = Math.fma(_r1, _t5, -(_r0 * _t2)) - Math.fma(_r2, _t4, _r3 * _t3);
+    }
+
+    /** Private store group 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s61270cf0_c1(FloatDualQuatImpl _dst, float _r4, float _t5, float _r5, float _t2, float _r6, float _t3, float _r7, float _t4) {
+        _dst.dX = Math.fma(_r4, _t5, _r5 * _t2) + Math.fma(_r6, _t3, -(_r7 * _t4));
+        _dst.dY = Math.fma(_r6, _t5, _r7 * _t2) + Math.fma(_r5, _t4, -(_r4 * _t3));
+        _dst.dZ = Math.fma(_r4, _t4, _r5 * _t3) + Math.fma(_r7, _t5, -(_r6 * _t2));
+        _dst.dW = Math.fma(_r5, _t5, -(_r4 * _t2)) - Math.fma(_r6, _t4, _r7 * _t3);
+    }
+
 
     /**
      * Apply a rotation of {@code angle} radians about the axis ({@code axisX}, {@code axisY},
@@ -5309,27 +5587,39 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         float _t2 = axisX * _t1;
         float _t3 = axisZ * _t1;
         float _t4 = axisY * _t1;
         float _t5 = (float) Math.cosFromSin(_t1, _t0);
-        float _buf0 = Math.fma(this.rX, _t5, this.rW * _t2) + Math.fma(this.rY, _t3, -(this.rZ * _t4));
-        float _buf1 = Math.fma(this.rY, _t5, this.rZ * _t2) + Math.fma(this.rW, _t4, -(this.rX * _t3));
-        float _buf2 = Math.fma(this.rX, _t4, this.rW * _t3) + Math.fma(this.rZ, _t5, -(this.rY * _t2));
-        d.rW = Math.fma(this.rW, _t5, -(this.rX * _t2)) - Math.fma(this.rY, _t4, this.rZ * _t3);
-        float _buf3 = Math.fma(this.dX, _t5, this.dW * _t2) + Math.fma(this.dY, _t3, -(this.dZ * _t4));
-        float _buf4 = Math.fma(this.dY, _t5, this.dZ * _t2) + Math.fma(this.dW, _t4, -(this.dX * _t3));
-        float _buf5 = Math.fma(this.dX, _t4, this.dW * _t3) + Math.fma(this.dZ, _t5, -(this.dY * _t2));
-        d.dW = Math.fma(this.dW, _t5, -(this.dX * _t2)) - Math.fma(this.dY, _t4, this.dZ * _t3);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateAxis_s61270cf0_c0(d, _r0, _t5, _r1, _t2, _r2, _t3, _r3, _t4);
+        rotateAxis_s61270cf0_c1(d, _r4, _t5, _r5, _t2, _r6, _t3, _r7, _t4);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s3d95cac1_c0(DoubleDualQuatImpl _dst, float _r0, float _t5, float _r1, float _t2, float _r2, float _t3, float _r3, float _t4) {
+        _dst.rX = Math.fma(_r0, _t5, _r1 * _t2) + Math.fma(_r2, _t3, -(_r3 * _t4));
+        _dst.rY = Math.fma(_r2, _t5, _r3 * _t2) + Math.fma(_r1, _t4, -(_r0 * _t3));
+        _dst.rZ = Math.fma(_r0, _t4, _r1 * _t3) + Math.fma(_r3, _t5, -(_r2 * _t2));
+        _dst.rW = Math.fma(_r1, _t5, -(_r0 * _t2)) - Math.fma(_r2, _t4, _r3 * _t3);
+    }
+
+    /** Private store group 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s3d95cac1_c1(DoubleDualQuatImpl _dst, float _r4, float _t5, float _r5, float _t2, float _r6, float _t3, float _r7, float _t4) {
+        _dst.dX = Math.fma(_r4, _t5, _r5 * _t2) + Math.fma(_r6, _t3, -(_r7 * _t4));
+        _dst.dY = Math.fma(_r6, _t5, _r7 * _t2) + Math.fma(_r5, _t4, -(_r4 * _t3));
+        _dst.dZ = Math.fma(_r4, _t4, _r5 * _t3) + Math.fma(_r7, _t5, -(_r6 * _t2));
+        _dst.dW = Math.fma(_r5, _t5, -(_r4 * _t2)) - Math.fma(_r6, _t4, _r7 * _t3);
     }
 
 
@@ -5359,26 +5649,22 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         float _t2 = axisX * _t1;
         float _t3 = axisZ * _t1;
         float _t4 = axisY * _t1;
         float _t5 = (float) Math.cosFromSin(_t1, _t0);
-        float _buf0 = Math.fma(this.rX, _t5, this.rW * _t2) + Math.fma(this.rY, _t3, -(this.rZ * _t4));
-        float _buf1 = Math.fma(this.rY, _t5, this.rZ * _t2) + Math.fma(this.rW, _t4, -(this.rX * _t3));
-        float _buf2 = Math.fma(this.rX, _t4, this.rW * _t3) + Math.fma(this.rZ, _t5, -(this.rY * _t2));
-        d.rW = Math.fma(this.rW, _t5, -(this.rX * _t2)) - Math.fma(this.rY, _t4, this.rZ * _t3);
-        float _buf3 = Math.fma(this.dX, _t5, this.dW * _t2) + Math.fma(this.dY, _t3, -(this.dZ * _t4));
-        float _buf4 = Math.fma(this.dY, _t5, this.dZ * _t2) + Math.fma(this.dW, _t4, -(this.dX * _t3));
-        float _buf5 = Math.fma(this.dX, _t4, this.dW * _t3) + Math.fma(this.dZ, _t5, -(this.dY * _t2));
-        d.dW = Math.fma(this.dW, _t5, -(this.dX * _t2)) - Math.fma(this.dY, _t4, this.dZ * _t3);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateAxis_s3d95cac1_c0(d, _r0, _t5, _r1, _t2, _r2, _t3, _r3, _t4);
+        rotateAxis_s3d95cac1_c1(d, _r4, _t5, _r5, _t2, _r6, _t3, _r7, _t4);
         return d;
     }
 
@@ -5451,6 +5737,29 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s106d101b_c0(FloatDualQuatImpl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t20, float _r3, float _t22) {
+        _dst.rX = Math.fma(_r0, _t21, _r1 * _t19) + Math.fma(_r2, _t20, -(_r3 * _t22));
+        _dst.rY = Math.fma(_r2, _t21, _r3 * _t19) + Math.fma(_r1, _t22, -(_r0 * _t20));
+        _dst.rZ = Math.fma(_r0, _t22, _r1 * _t20) + Math.fma(_r3, _t21, -(_r2 * _t19));
+        _dst.rW = Math.fma(_r1, _t21, -(_r0 * _t19)) - Math.fma(_r2, _t22, _r3 * _t20);
+    }
+
+    /** Private store group 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s106d101b_c1(FloatDualQuatImpl _dst, float _r4, float _t21, float _r5, float _t19, float _r6, float _t20, float _r7, float _t22) {
+        _dst.dX = Math.fma(_r4, _t21, _r5 * _t19) + Math.fma(_r6, _t20, -(_r7 * _t22));
+        _dst.dY = Math.fma(_r6, _t21, _r7 * _t19) + Math.fma(_r5, _t22, -(_r4 * _t20));
+        _dst.dZ = Math.fma(_r4, _t22, _r5 * _t20) + Math.fma(_r7, _t21, -(_r6 * _t19));
+        _dst.dW = Math.fma(_r5, _t21, -(_r4 * _t19)) - Math.fma(_r6, _t22, _r7 * _t20);
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_s106d101b_tail(FloatDualQuatImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _t21, float _r1, float _t19, float _r2, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
+        rotateXYZ_s106d101b_c0(_dst, _r0, _t21, _r1, _t19, _r2, _t20, _r3, _t22);
+        rotateXYZ_s106d101b_c1(_dst, _r4, _t21, _r5, _t19, _r6, _t20, _r7, _t22);
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -5470,6 +5779,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat rotateXYZ(float angleX, float angleY, float angleZ, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -5486,22 +5803,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t10, _t8, _t11 * _t5);
         float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
-        float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
-        float _buf1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20));
-        float _buf2 = Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19));
-        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20);
-        float _buf3 = Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t20, -(this.dZ * _t22));
-        float _buf4 = Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t22, -(this.dX * _t20));
-        float _buf5 = Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t21, -(this.dY * _t19));
-        d.dW = Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t22, this.dZ * _t20);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateXYZ_s106d101b_tail(d, _t11, _t8, _t10, _t5, _r0, _t21, _r1, _t19, _r2, _t20, _r3, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s77102cf6_c0(DoubleDualQuatImpl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t20, float _r3, float _t22) {
+        _dst.rX = Math.fma(_r0, _t21, _r1 * _t19) + Math.fma(_r2, _t20, -(_r3 * _t22));
+        _dst.rY = Math.fma(_r2, _t21, _r3 * _t19) + Math.fma(_r1, _t22, -(_r0 * _t20));
+        _dst.rZ = Math.fma(_r0, _t22, _r1 * _t20) + Math.fma(_r3, _t21, -(_r2 * _t19));
+        _dst.rW = Math.fma(_r1, _t21, -(_r0 * _t19)) - Math.fma(_r2, _t22, _r3 * _t20);
+    }
+
+    /** Private store group 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s77102cf6_c1(DoubleDualQuatImpl _dst, float _r4, float _t21, float _r5, float _t19, float _r6, float _t20, float _r7, float _t22) {
+        _dst.dX = Math.fma(_r4, _t21, _r5 * _t19) + Math.fma(_r6, _t20, -(_r7 * _t22));
+        _dst.dY = Math.fma(_r6, _t21, _r7 * _t19) + Math.fma(_r5, _t22, -(_r4 * _t20));
+        _dst.dZ = Math.fma(_r4, _t22, _r5 * _t20) + Math.fma(_r7, _t21, -(_r6 * _t19));
+        _dst.dW = Math.fma(_r5, _t21, -(_r4 * _t19)) - Math.fma(_r6, _t22, _r7 * _t20);
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_s77102cf6_tail(DoubleDualQuatImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _t21, float _r1, float _t19, float _r2, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
+        rotateXYZ_s77102cf6_c0(_dst, _r0, _t21, _r1, _t19, _r2, _t20, _r3, _t22);
+        rotateXYZ_s77102cf6_c1(_dst, _r4, _t21, _r5, _t19, _r6, _t20, _r7, _t22);
     }
 
 
@@ -5526,6 +5852,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat rotateXYZ(float angleX, float angleY, float angleZ, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -5542,22 +5876,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t10, _t8, _t11 * _t5);
         float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
-        float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
-        float _buf1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t22, -(this.rX * _t20));
-        float _buf2 = Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t21, -(this.rY * _t19));
-        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t22, this.rZ * _t20);
-        float _buf3 = Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t20, -(this.dZ * _t22));
-        float _buf4 = Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t22, -(this.dX * _t20));
-        float _buf5 = Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t21, -(this.dY * _t19));
-        d.dW = Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t22, this.dZ * _t20);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateXYZ_s77102cf6_tail(d, _t11, _t8, _t10, _t5, _r0, _t21, _r1, _t19, _r2, _t20, _r3, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s52accddb_c0(FloatDualQuatImpl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t20, float _r3, float _t22) {
+        _dst.rX = Math.fma(_r0, _t19, _r1 * _t21) + Math.fma(_r2, _t20, -(_r3 * _t22));
+        _dst.rY = Math.fma(_r2, _t19, _r3 * _t21) + Math.fma(_r1, _t22, -(_r0 * _t20));
+        _dst.rZ = Math.fma(_r0, _t22, _r1 * _t20) + Math.fma(_r3, _t19, -(_r2 * _t21));
+        _dst.rW = Math.fma(_r1, _t19, -(_r0 * _t21)) - Math.fma(_r2, _t22, _r3 * _t20);
+    }
+
+    /** Private store group 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s52accddb_c1(FloatDualQuatImpl _dst, float _r4, float _t19, float _r5, float _t21, float _r6, float _t20, float _r7, float _t22) {
+        _dst.dX = Math.fma(_r4, _t19, _r5 * _t21) + Math.fma(_r6, _t20, -(_r7 * _t22));
+        _dst.dY = Math.fma(_r6, _t19, _r7 * _t21) + Math.fma(_r5, _t22, -(_r4 * _t20));
+        _dst.dZ = Math.fma(_r4, _t22, _r5 * _t20) + Math.fma(_r7, _t19, -(_r6 * _t21));
+        _dst.dW = Math.fma(_r5, _t19, -(_r4 * _t21)) - Math.fma(_r6, _t22, _r7 * _t20);
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s52accddb_tail(FloatDualQuatImpl _dst, float _t12, float _t5, float _t9, float _t8, float _r0, float _t19, float _r1, float _t21, float _r2, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        rotateXZY_s52accddb_c0(_dst, _r0, _t19, _r1, _t21, _r2, _t20, _r3, _t22);
+        rotateXZY_s52accddb_c1(_dst, _r4, _t19, _r5, _t21, _r6, _t20, _r7, _t22);
     }
 
 
@@ -5579,6 +5922,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -5595,22 +5946,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
         float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
-        float _buf1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20));
-        float _buf2 = Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
-        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20);
-        float _buf3 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t20, -(this.dZ * _t22));
-        float _buf4 = Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t22, -(this.dX * _t20));
-        float _buf5 = Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t19, -(this.dY * _t21));
-        d.dW = Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t22, this.dZ * _t20);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateXZY_s52accddb_tail(d, _t12, _t5, _t9, _t8, _r0, _t19, _r1, _t21, _r2, _t20, _r3, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s7cc82736_c0(DoubleDualQuatImpl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t20, float _r3, float _t22) {
+        _dst.rX = Math.fma(_r0, _t19, _r1 * _t21) + Math.fma(_r2, _t20, -(_r3 * _t22));
+        _dst.rY = Math.fma(_r2, _t19, _r3 * _t21) + Math.fma(_r1, _t22, -(_r0 * _t20));
+        _dst.rZ = Math.fma(_r0, _t22, _r1 * _t20) + Math.fma(_r3, _t19, -(_r2 * _t21));
+        _dst.rW = Math.fma(_r1, _t19, -(_r0 * _t21)) - Math.fma(_r2, _t22, _r3 * _t20);
+    }
+
+    /** Private store group 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s7cc82736_c1(DoubleDualQuatImpl _dst, float _r4, float _t19, float _r5, float _t21, float _r6, float _t20, float _r7, float _t22) {
+        _dst.dX = Math.fma(_r4, _t19, _r5 * _t21) + Math.fma(_r6, _t20, -(_r7 * _t22));
+        _dst.dY = Math.fma(_r6, _t19, _r7 * _t21) + Math.fma(_r5, _t22, -(_r4 * _t20));
+        _dst.dZ = Math.fma(_r4, _t22, _r5 * _t20) + Math.fma(_r7, _t19, -(_r6 * _t21));
+        _dst.dW = Math.fma(_r5, _t19, -(_r4 * _t21)) - Math.fma(_r6, _t22, _r7 * _t20);
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s7cc82736_tail(DoubleDualQuatImpl _dst, float _t12, float _t5, float _t9, float _t8, float _r0, float _t19, float _r1, float _t21, float _r2, float _t20, float _r3, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
+        rotateXZY_s7cc82736_c0(_dst, _r0, _t19, _r1, _t21, _r2, _t20, _r3, _t22);
+        rotateXZY_s7cc82736_c1(_dst, _r4, _t19, _r5, _t21, _r6, _t20, _r7, _t22);
     }
 
 
@@ -5635,6 +5995,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -5651,21 +6019,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t5, _t11 * _t8);
         float _t21 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _t22 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t20, -(this.rZ * _t22));
-        float _buf1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t22, -(this.rX * _t20));
-        float _buf2 = Math.fma(this.rX, _t22, this.rW * _t20) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
-        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t22, this.rZ * _t20);
-        float _buf3 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t20, -(this.dZ * _t22));
-        float _buf4 = Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t22, -(this.dX * _t20));
-        float _buf5 = Math.fma(this.dX, _t22, this.dW * _t20) + Math.fma(this.dZ, _t19, -(this.dY * _t21));
-        d.dW = Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t22, this.dZ * _t20);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateXZY_s7cc82736_tail(d, _t12, _t5, _t9, _t8, _r0, _t19, _r1, _t21, _r2, _t20, _r3, _r4, _r5, _r6, _r7);
         return d;
     }
 
@@ -5738,6 +6092,29 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s5a6dbddb_c0(FloatDualQuatImpl _dst, float _r0, float _t19, float _r1, float _t20, float _r2, float _t21, float _r3, float _t22) {
+        _dst.rX = Math.fma(_r0, _t19, _r1 * _t20) + Math.fma(_r2, _t21, -(_r3 * _t22));
+        _dst.rY = Math.fma(_r2, _t19, _r3 * _t20) + Math.fma(_r1, _t22, -(_r0 * _t21));
+        _dst.rZ = Math.fma(_r0, _t22, _r1 * _t21) + Math.fma(_r3, _t19, -(_r2 * _t20));
+        _dst.rW = Math.fma(_r1, _t19, -(_r0 * _t20)) - Math.fma(_r2, _t22, _r3 * _t21);
+    }
+
+    /** Private store group 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s5a6dbddb_c1(FloatDualQuatImpl _dst, float _r4, float _t19, float _r5, float _t20, float _r6, float _t21, float _r7, float _t22) {
+        _dst.dX = Math.fma(_r4, _t19, _r5 * _t20) + Math.fma(_r6, _t21, -(_r7 * _t22));
+        _dst.dY = Math.fma(_r6, _t19, _r7 * _t20) + Math.fma(_r5, _t22, -(_r4 * _t21));
+        _dst.dZ = Math.fma(_r4, _t22, _r5 * _t21) + Math.fma(_r7, _t19, -(_r6 * _t20));
+        _dst.dW = Math.fma(_r5, _t19, -(_r4 * _t20)) - Math.fma(_r6, _t22, _r7 * _t21);
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s5a6dbddb_tail(FloatDualQuatImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _t19, float _r1, float _t20, float _r2, float _t21, float _r3, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
+        rotateYXZ_s5a6dbddb_c0(_dst, _r0, _t19, _r1, _t20, _r2, _t21, _r3, _t22);
+        rotateYXZ_s5a6dbddb_c1(_dst, _r4, _t19, _r5, _t20, _r6, _t21, _r7, _t22);
+    }
+
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -5757,6 +6134,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -5773,22 +6158,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
         float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
-        float _buf0 = Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22));
-        float _buf1 = Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21));
-        float _buf2 = Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20));
-        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21);
-        float _buf3 = Math.fma(this.dX, _t19, this.dW * _t20) + Math.fma(this.dY, _t21, -(this.dZ * _t22));
-        float _buf4 = Math.fma(this.dY, _t19, this.dZ * _t20) + Math.fma(this.dW, _t22, -(this.dX * _t21));
-        float _buf5 = Math.fma(this.dX, _t22, this.dW * _t21) + Math.fma(this.dZ, _t19, -(this.dY * _t20));
-        d.dW = Math.fma(this.dW, _t19, -(this.dX * _t20)) - Math.fma(this.dY, _t22, this.dZ * _t21);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateYXZ_s5a6dbddb_tail(d, _t11, _t8, _t10, _t5, _r0, _t19, _r1, _t20, _r2, _t21, _r3, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s6d253736_c0(DoubleDualQuatImpl _dst, float _r0, float _t19, float _r1, float _t20, float _r2, float _t21, float _r3, float _t22) {
+        _dst.rX = Math.fma(_r0, _t19, _r1 * _t20) + Math.fma(_r2, _t21, -(_r3 * _t22));
+        _dst.rY = Math.fma(_r2, _t19, _r3 * _t20) + Math.fma(_r1, _t22, -(_r0 * _t21));
+        _dst.rZ = Math.fma(_r0, _t22, _r1 * _t21) + Math.fma(_r3, _t19, -(_r2 * _t20));
+        _dst.rW = Math.fma(_r1, _t19, -(_r0 * _t20)) - Math.fma(_r2, _t22, _r3 * _t21);
+    }
+
+    /** Private store group 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s6d253736_c1(DoubleDualQuatImpl _dst, float _r4, float _t19, float _r5, float _t20, float _r6, float _t21, float _r7, float _t22) {
+        _dst.dX = Math.fma(_r4, _t19, _r5 * _t20) + Math.fma(_r6, _t21, -(_r7 * _t22));
+        _dst.dY = Math.fma(_r6, _t19, _r7 * _t20) + Math.fma(_r5, _t22, -(_r4 * _t21));
+        _dst.dZ = Math.fma(_r4, _t22, _r5 * _t21) + Math.fma(_r7, _t19, -(_r6 * _t20));
+        _dst.dW = Math.fma(_r5, _t19, -(_r4 * _t20)) - Math.fma(_r6, _t22, _r7 * _t21);
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s6d253736_tail(DoubleDualQuatImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _t19, float _r1, float _t20, float _r2, float _t21, float _r3, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
+        rotateYXZ_s6d253736_c0(_dst, _r0, _t19, _r1, _t20, _r2, _t21, _r3, _t22);
+        rotateYXZ_s6d253736_c1(_dst, _r4, _t19, _r5, _t20, _r6, _t21, _r7, _t22);
     }
 
 
@@ -5813,6 +6207,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -5829,22 +6231,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t10, _t8, _t11 * _t5);
         float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t11, _t8, -(_t10 * _t5));
-        float _buf0 = Math.fma(this.rX, _t19, this.rW * _t20) + Math.fma(this.rY, _t21, -(this.rZ * _t22));
-        float _buf1 = Math.fma(this.rY, _t19, this.rZ * _t20) + Math.fma(this.rW, _t22, -(this.rX * _t21));
-        float _buf2 = Math.fma(this.rX, _t22, this.rW * _t21) + Math.fma(this.rZ, _t19, -(this.rY * _t20));
-        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t20)) - Math.fma(this.rY, _t22, this.rZ * _t21);
-        float _buf3 = Math.fma(this.dX, _t19, this.dW * _t20) + Math.fma(this.dY, _t21, -(this.dZ * _t22));
-        float _buf4 = Math.fma(this.dY, _t19, this.dZ * _t20) + Math.fma(this.dW, _t22, -(this.dX * _t21));
-        float _buf5 = Math.fma(this.dX, _t22, this.dW * _t21) + Math.fma(this.dZ, _t19, -(this.dY * _t20));
-        d.dW = Math.fma(this.dW, _t19, -(this.dX * _t20)) - Math.fma(this.dY, _t22, this.dZ * _t21);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateYXZ_s6d253736_tail(d, _t11, _t8, _t10, _t5, _r0, _t19, _r1, _t20, _r2, _t21, _r3, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s5eed395b_c0(FloatDualQuatImpl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t22, float _r3, float _t20) {
+        _dst.rX = Math.fma(_r0, _t21, _r1 * _t19) + Math.fma(_r2, _t22, -(_r3 * _t20));
+        _dst.rY = Math.fma(_r2, _t21, _r3 * _t19) + Math.fma(_r1, _t20, -(_r0 * _t22));
+        _dst.rZ = Math.fma(_r0, _t20, _r1 * _t22) + Math.fma(_r3, _t21, -(_r2 * _t19));
+        _dst.rW = Math.fma(_r1, _t21, -(_r0 * _t19)) - Math.fma(_r2, _t20, _r3 * _t22);
+    }
+
+    /** Private store group 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s5eed395b_c1(FloatDualQuatImpl _dst, float _r4, float _t21, float _r5, float _t19, float _r6, float _t22, float _r7, float _t20) {
+        _dst.dX = Math.fma(_r4, _t21, _r5 * _t19) + Math.fma(_r6, _t22, -(_r7 * _t20));
+        _dst.dY = Math.fma(_r6, _t21, _r7 * _t19) + Math.fma(_r5, _t20, -(_r4 * _t22));
+        _dst.dZ = Math.fma(_r4, _t20, _r5 * _t22) + Math.fma(_r7, _t21, -(_r6 * _t19));
+        _dst.dW = Math.fma(_r5, _t21, -(_r4 * _t19)) - Math.fma(_r6, _t20, _r7 * _t22);
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_s5eed395b_tail(FloatDualQuatImpl _dst, float _t10, float _t8, float _t11, float _t5, float _r0, float _t21, float _r1, float _t19, float _r2, float _r3, float _t20, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        rotateYZX_s5eed395b_c0(_dst, _r0, _t21, _r1, _t19, _r2, _t22, _r3, _t20);
+        rotateYZX_s5eed395b_c1(_dst, _r4, _t21, _r5, _t19, _r6, _t22, _r7, _t20);
     }
 
 
@@ -5866,6 +6277,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -5882,22 +6301,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
-        float _buf1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22));
-        float _buf2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19));
-        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22);
-        float _buf3 = Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
-        float _buf4 = Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t20, -(this.dX * _t22));
-        float _buf5 = Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t21, -(this.dY * _t19));
-        d.dW = Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t20, this.dZ * _t22);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateYZX_s5eed395b_tail(d, _t10, _t8, _t11, _t5, _r0, _t21, _r1, _t19, _r2, _r3, _t20, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s78952bb6_c0(DoubleDualQuatImpl _dst, float _r0, float _t21, float _r1, float _t19, float _r2, float _t22, float _r3, float _t20) {
+        _dst.rX = Math.fma(_r0, _t21, _r1 * _t19) + Math.fma(_r2, _t22, -(_r3 * _t20));
+        _dst.rY = Math.fma(_r2, _t21, _r3 * _t19) + Math.fma(_r1, _t20, -(_r0 * _t22));
+        _dst.rZ = Math.fma(_r0, _t20, _r1 * _t22) + Math.fma(_r3, _t21, -(_r2 * _t19));
+        _dst.rW = Math.fma(_r1, _t21, -(_r0 * _t19)) - Math.fma(_r2, _t20, _r3 * _t22);
+    }
+
+    /** Private store group 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s78952bb6_c1(DoubleDualQuatImpl _dst, float _r4, float _t21, float _r5, float _t19, float _r6, float _t22, float _r7, float _t20) {
+        _dst.dX = Math.fma(_r4, _t21, _r5 * _t19) + Math.fma(_r6, _t22, -(_r7 * _t20));
+        _dst.dY = Math.fma(_r6, _t21, _r7 * _t19) + Math.fma(_r5, _t20, -(_r4 * _t22));
+        _dst.dZ = Math.fma(_r4, _t20, _r5 * _t22) + Math.fma(_r7, _t21, -(_r6 * _t19));
+        _dst.dW = Math.fma(_r5, _t21, -(_r4 * _t19)) - Math.fma(_r6, _t20, _r7 * _t22);
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_s78952bb6_tail(DoubleDualQuatImpl _dst, float _t10, float _t8, float _t11, float _t5, float _r0, float _t21, float _r1, float _t19, float _r2, float _r3, float _t20, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        rotateYZX_s78952bb6_c0(_dst, _r0, _t21, _r1, _t19, _r2, _t22, _r3, _t20);
+        rotateYZX_s78952bb6_c1(_dst, _r4, _t21, _r5, _t19, _r6, _t22, _r7, _t20);
     }
 
 
@@ -5922,6 +6350,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -5938,21 +6374,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _buf0 = Math.fma(this.rX, _t21, this.rW * _t19) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
-        float _buf1 = Math.fma(this.rY, _t21, this.rZ * _t19) + Math.fma(this.rW, _t20, -(this.rX * _t22));
-        float _buf2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t21, -(this.rY * _t19));
-        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t19)) - Math.fma(this.rY, _t20, this.rZ * _t22);
-        float _buf3 = Math.fma(this.dX, _t21, this.dW * _t19) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
-        float _buf4 = Math.fma(this.dY, _t21, this.dZ * _t19) + Math.fma(this.dW, _t20, -(this.dX * _t22));
-        float _buf5 = Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t21, -(this.dY * _t19));
-        d.dW = Math.fma(this.dW, _t21, -(this.dX * _t19)) - Math.fma(this.dY, _t20, this.dZ * _t22);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateYZX_s78952bb6_tail(d, _t10, _t8, _t11, _t5, _r0, _t21, _r1, _t19, _r2, _r3, _t20, _r4, _r5, _r6, _r7);
         return d;
     }
 
@@ -6025,6 +6447,29 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s66ae295b_c0(FloatDualQuatImpl _dst, float _r0, float _t21, float _r1, float _t22, float _r2, float _t19, float _r3, float _t20) {
+        _dst.rX = Math.fma(_r0, _t21, _r1 * _t22) + Math.fma(_r2, _t19, -(_r3 * _t20));
+        _dst.rY = Math.fma(_r2, _t21, _r3 * _t22) + Math.fma(_r1, _t20, -(_r0 * _t19));
+        _dst.rZ = Math.fma(_r0, _t20, _r1 * _t19) + Math.fma(_r3, _t21, -(_r2 * _t22));
+        _dst.rW = Math.fma(_r1, _t21, -(_r0 * _t22)) - Math.fma(_r2, _t20, _r3 * _t19);
+    }
+
+    /** Private store group 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s66ae295b_c1(FloatDualQuatImpl _dst, float _r4, float _t21, float _r5, float _t22, float _r6, float _t19, float _r7, float _t20) {
+        _dst.dX = Math.fma(_r4, _t21, _r5 * _t22) + Math.fma(_r6, _t19, -(_r7 * _t20));
+        _dst.dY = Math.fma(_r6, _t21, _r7 * _t22) + Math.fma(_r5, _t20, -(_r4 * _t19));
+        _dst.dZ = Math.fma(_r4, _t20, _r5 * _t19) + Math.fma(_r7, _t21, -(_r6 * _t22));
+        _dst.dW = Math.fma(_r5, _t21, -(_r4 * _t22)) - Math.fma(_r6, _t20, _r7 * _t19);
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s66ae295b_tail(FloatDualQuatImpl _dst, float _t10, float _t8, float _t11, float _t5, float _r0, float _t21, float _r1, float _r2, float _t19, float _r3, float _t20, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        rotateZXY_s66ae295b_c0(_dst, _r0, _t21, _r1, _t22, _r2, _t19, _r3, _t20);
+        rotateZXY_s66ae295b_c1(_dst, _r4, _t21, _r5, _t22, _r6, _t19, _r7, _t20);
+    }
+
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -6044,6 +6489,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -6060,22 +6513,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
         float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _buf0 = Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20));
-        float _buf1 = Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19));
-        float _buf2 = Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22));
-        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19);
-        float _buf3 = Math.fma(this.dX, _t21, this.dW * _t22) + Math.fma(this.dY, _t19, -(this.dZ * _t20));
-        float _buf4 = Math.fma(this.dY, _t21, this.dZ * _t22) + Math.fma(this.dW, _t20, -(this.dX * _t19));
-        float _buf5 = Math.fma(this.dX, _t20, this.dW * _t19) + Math.fma(this.dZ, _t21, -(this.dY * _t22));
-        d.dW = Math.fma(this.dW, _t21, -(this.dX * _t22)) - Math.fma(this.dY, _t20, this.dZ * _t19);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateZXY_s66ae295b_tail(d, _t10, _t8, _t11, _t5, _r0, _t21, _r1, _r2, _t19, _r3, _t20, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s68f23bb6_c0(DoubleDualQuatImpl _dst, float _r0, float _t21, float _r1, float _t22, float _r2, float _t19, float _r3, float _t20) {
+        _dst.rX = Math.fma(_r0, _t21, _r1 * _t22) + Math.fma(_r2, _t19, -(_r3 * _t20));
+        _dst.rY = Math.fma(_r2, _t21, _r3 * _t22) + Math.fma(_r1, _t20, -(_r0 * _t19));
+        _dst.rZ = Math.fma(_r0, _t20, _r1 * _t19) + Math.fma(_r3, _t21, -(_r2 * _t22));
+        _dst.rW = Math.fma(_r1, _t21, -(_r0 * _t22)) - Math.fma(_r2, _t20, _r3 * _t19);
+    }
+
+    /** Private store group 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s68f23bb6_c1(DoubleDualQuatImpl _dst, float _r4, float _t21, float _r5, float _t22, float _r6, float _t19, float _r7, float _t20) {
+        _dst.dX = Math.fma(_r4, _t21, _r5 * _t22) + Math.fma(_r6, _t19, -(_r7 * _t20));
+        _dst.dY = Math.fma(_r6, _t21, _r7 * _t22) + Math.fma(_r5, _t20, -(_r4 * _t19));
+        _dst.dZ = Math.fma(_r4, _t20, _r5 * _t19) + Math.fma(_r7, _t21, -(_r6 * _t22));
+        _dst.dW = Math.fma(_r5, _t21, -(_r4 * _t22)) - Math.fma(_r6, _t20, _r7 * _t19);
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s68f23bb6_tail(DoubleDualQuatImpl _dst, float _t10, float _t8, float _t11, float _t5, float _r0, float _t21, float _r1, float _r2, float _t19, float _r3, float _t20, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        rotateZXY_s68f23bb6_c0(_dst, _r0, _t21, _r1, _t22, _r2, _t19, _r3, _t20);
+        rotateZXY_s68f23bb6_c1(_dst, _r4, _t21, _r5, _t22, _r6, _t19, _r7, _t20);
     }
 
 
@@ -6100,6 +6562,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -6116,22 +6586,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t10, _t5, _t11 * _t8);
         float _t20 = Math.fma(_t9, _t8, _t14 * _t5);
         float _t21 = Math.fma(_t14, _t8, -(_t9 * _t5));
-        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _buf0 = Math.fma(this.rX, _t21, this.rW * _t22) + Math.fma(this.rY, _t19, -(this.rZ * _t20));
-        float _buf1 = Math.fma(this.rY, _t21, this.rZ * _t22) + Math.fma(this.rW, _t20, -(this.rX * _t19));
-        float _buf2 = Math.fma(this.rX, _t20, this.rW * _t19) + Math.fma(this.rZ, _t21, -(this.rY * _t22));
-        d.rW = Math.fma(this.rW, _t21, -(this.rX * _t22)) - Math.fma(this.rY, _t20, this.rZ * _t19);
-        float _buf3 = Math.fma(this.dX, _t21, this.dW * _t22) + Math.fma(this.dY, _t19, -(this.dZ * _t20));
-        float _buf4 = Math.fma(this.dY, _t21, this.dZ * _t22) + Math.fma(this.dW, _t20, -(this.dX * _t19));
-        float _buf5 = Math.fma(this.dX, _t20, this.dW * _t19) + Math.fma(this.dZ, _t21, -(this.dY * _t22));
-        d.dW = Math.fma(this.dW, _t21, -(this.dX * _t22)) - Math.fma(this.dY, _t20, this.dZ * _t19);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateZXY_s68f23bb6_tail(d, _t10, _t8, _t11, _t5, _r0, _t21, _r1, _r2, _t19, _r3, _t20, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s28ede71b_c0(FloatDualQuatImpl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t22, float _r3, float _t20) {
+        _dst.rX = Math.fma(_r0, _t19, _r1 * _t21) + Math.fma(_r2, _t22, -(_r3 * _t20));
+        _dst.rY = Math.fma(_r2, _t19, _r3 * _t21) + Math.fma(_r1, _t20, -(_r0 * _t22));
+        _dst.rZ = Math.fma(_r0, _t20, _r1 * _t22) + Math.fma(_r3, _t19, -(_r2 * _t21));
+        _dst.rW = Math.fma(_r1, _t19, -(_r0 * _t21)) - Math.fma(_r2, _t20, _r3 * _t22);
+    }
+
+    /** Private store group 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s28ede71b_c1(FloatDualQuatImpl _dst, float _r4, float _t19, float _r5, float _t21, float _r6, float _t22, float _r7, float _t20) {
+        _dst.dX = Math.fma(_r4, _t19, _r5 * _t21) + Math.fma(_r6, _t22, -(_r7 * _t20));
+        _dst.dY = Math.fma(_r6, _t19, _r7 * _t21) + Math.fma(_r5, _t20, -(_r4 * _t22));
+        _dst.dZ = Math.fma(_r4, _t20, _r5 * _t22) + Math.fma(_r7, _t19, -(_r6 * _t21));
+        _dst.dW = Math.fma(_r5, _t19, -(_r4 * _t21)) - Math.fma(_r6, _t20, _r7 * _t22);
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s28ede71b_tail(FloatDualQuatImpl _dst, float _t10, float _t8, float _t11, float _t5, float _r0, float _t19, float _r1, float _t21, float _r2, float _r3, float _t20, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        rotateZYX_s28ede71b_c0(_dst, _r0, _t19, _r1, _t21, _r2, _t22, _r3, _t20);
+        rotateZYX_s28ede71b_c1(_dst, _r4, _t19, _r5, _t21, _r6, _t22, _r7, _t20);
     }
 
 
@@ -6153,6 +6632,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public FloatDualQuat rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatDualQuat dest) {
         FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -6169,22 +6656,31 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
-        float _buf1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22));
-        float _buf2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
-        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22);
-        float _buf3 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
-        float _buf4 = Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t20, -(this.dX * _t22));
-        float _buf5 = Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t19, -(this.dY * _t21));
-        d.dW = Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t20, this.dZ * _t22);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateZYX_s28ede71b_tail(d, _t10, _t8, _t11, _t5, _r0, _t19, _r1, _t21, _r2, _r3, _t20, _r4, _r5, _r6, _r7);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s6eaa35f6_c0(DoubleDualQuatImpl _dst, float _r0, float _t19, float _r1, float _t21, float _r2, float _t22, float _r3, float _t20) {
+        _dst.rX = Math.fma(_r0, _t19, _r1 * _t21) + Math.fma(_r2, _t22, -(_r3 * _t20));
+        _dst.rY = Math.fma(_r2, _t19, _r3 * _t21) + Math.fma(_r1, _t20, -(_r0 * _t22));
+        _dst.rZ = Math.fma(_r0, _t20, _r1 * _t22) + Math.fma(_r3, _t19, -(_r2 * _t21));
+        _dst.rW = Math.fma(_r1, _t19, -(_r0 * _t21)) - Math.fma(_r2, _t20, _r3 * _t22);
+    }
+
+    /** Private store group 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s6eaa35f6_c1(DoubleDualQuatImpl _dst, float _r4, float _t19, float _r5, float _t21, float _r6, float _t22, float _r7, float _t20) {
+        _dst.dX = Math.fma(_r4, _t19, _r5 * _t21) + Math.fma(_r6, _t22, -(_r7 * _t20));
+        _dst.dY = Math.fma(_r6, _t19, _r7 * _t21) + Math.fma(_r5, _t20, -(_r4 * _t22));
+        _dst.dZ = Math.fma(_r4, _t20, _r5 * _t22) + Math.fma(_r7, _t19, -(_r6 * _t21));
+        _dst.dW = Math.fma(_r5, _t19, -(_r4 * _t21)) - Math.fma(_r6, _t20, _r7 * _t22);
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s6eaa35f6_tail(DoubleDualQuatImpl _dst, float _t10, float _t8, float _t11, float _t5, float _r0, float _t19, float _r1, float _t21, float _r2, float _r3, float _t20, float _r4, float _r5, float _r6, float _r7) {
+        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
+        rotateZYX_s6eaa35f6_c0(_dst, _r0, _t19, _r1, _t21, _r2, _t22, _r3, _t20);
+        rotateZYX_s6eaa35f6_c1(_dst, _r4, _t19, _r5, _t21, _r6, _t22, _r7, _t20);
     }
 
 
@@ -6209,6 +6705,14 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public DoubleDualQuat rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rW;
+        float _r2 = this.rY;
+        float _r3 = this.rZ;
+        float _r4 = this.dX;
+        float _r5 = this.dW;
+        float _r6 = this.dY;
+        float _r7 = this.dZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -6225,21 +6729,7 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t19 = Math.fma(_t9, _t5, _t12 * _t8);
         float _t20 = Math.fma(_t11, _t8, _t10 * _t5);
         float _t21 = Math.fma(_t12, _t5, -(_t9 * _t8));
-        float _t22 = Math.fma(_t10, _t8, -(_t11 * _t5));
-        float _buf0 = Math.fma(this.rX, _t19, this.rW * _t21) + Math.fma(this.rY, _t22, -(this.rZ * _t20));
-        float _buf1 = Math.fma(this.rY, _t19, this.rZ * _t21) + Math.fma(this.rW, _t20, -(this.rX * _t22));
-        float _buf2 = Math.fma(this.rX, _t20, this.rW * _t22) + Math.fma(this.rZ, _t19, -(this.rY * _t21));
-        d.rW = Math.fma(this.rW, _t19, -(this.rX * _t21)) - Math.fma(this.rY, _t20, this.rZ * _t22);
-        float _buf3 = Math.fma(this.dX, _t19, this.dW * _t21) + Math.fma(this.dY, _t22, -(this.dZ * _t20));
-        float _buf4 = Math.fma(this.dY, _t19, this.dZ * _t21) + Math.fma(this.dW, _t20, -(this.dX * _t22));
-        float _buf5 = Math.fma(this.dX, _t20, this.dW * _t22) + Math.fma(this.dZ, _t19, -(this.dY * _t21));
-        d.dW = Math.fma(this.dW, _t19, -(this.dX * _t21)) - Math.fma(this.dY, _t20, this.dZ * _t22);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
-        d.dX = _buf3;
-        d.dY = _buf4;
-        d.dZ = _buf5;
+        rotateZYX_s6eaa35f6_tail(d, _t10, _t8, _t11, _t5, _r0, _t19, _r1, _t21, _r2, _r3, _t20, _r4, _r5, _r6, _r7);
         return d;
     }
 
@@ -6400,6 +6890,13 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return transform(p.x(), p.y(), p.z(), dest);
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s36805c6c_c0(Float3Impl _dst, float _r1, float _t9, float _r2, float _t10, float _r3, float _t11, float _r4, float _r5, float _r6, float _r0, float _r7, float pX, float pY, float pZ) {
+        _dst.x = Math.fma(_r1, _t9, Math.fma(-_r2, _t10, Math.fma(_r3, _t11, Math.fma(2.0f, Math.fma(_r1, _r4, -(_r2 * _r5)) + Math.fma(_r3, _r6, -(_r0 * _r7)), pX))));
+        _dst.y = Math.fma(_r2, _t11, Math.fma(-_r0, _t9, Math.fma(_r3, _t10, Math.fma(2.0f, Math.fma(_r2, _r6, -(_r0 * _r4)) + Math.fma(_r3, _r5, -(_r1 * _r7)), pY))));
+        _dst.z = Math.fma(_r0, _t10, Math.fma(-_r1, _t11, Math.fma(_r3, _t9, Math.fma(2.0f, Math.fma(_r0, _r5, -(_r1 * _r6)) + Math.fma(_r3, _r4, -(_r2 * _r7)), pZ))));
+    }
+
 
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by this dual quaternion and store the result
@@ -6415,15 +6912,26 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Float3 transform(float pX, float pY, float pZ, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t9 = 2.0f * Math.fma(pY, this.rX, -(pX * this.rY));
-        float _t10 = 2.0f * Math.fma(pX, this.rZ, -(pZ * this.rX));
-        float _t11 = 2.0f * Math.fma(pZ, this.rY, -(pY * this.rZ));
-        float _buf0 = Math.fma(this.rY, _t9, Math.fma(-this.rZ, _t10, Math.fma(this.rW, _t11, Math.fma(2.0f, Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)), pX))));
-        float _buf1 = Math.fma(this.rZ, _t11, Math.fma(-this.rX, _t9, Math.fma(this.rW, _t10, Math.fma(2.0f, Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)), pY))));
-        d.z = Math.fma(this.rX, _t10, Math.fma(-this.rY, _t11, Math.fma(this.rW, _t9, Math.fma(2.0f, Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)), pZ))));
-        d.x = _buf0;
-        d.y = _buf1;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.dZ;
+        float _r5 = this.dY;
+        float _r6 = this.dX;
+        float _r7 = this.dW;
+        float _t9 = 2.0f * Math.fma(pY, _r0, -(pX * _r1));
+        float _t10 = 2.0f * Math.fma(pX, _r2, -(pZ * _r0));
+        float _t11 = 2.0f * Math.fma(pZ, _r1, -(pY * _r2));
+        transform_s36805c6c_c0(d, _r1, _t9, _r2, _t10, _r3, _t11, _r4, _r5, _r6, _r0, _r7, pX, pY, pZ);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s496e6cff_c0(Double3Impl _dst, float _r1, float _t9, float _r2, float _t10, float _r3, float _t11, float _r4, float _r5, float _r6, float _r0, float _r7, float pX, float pY, float pZ) {
+        _dst.x = Math.fma(_r1, _t9, Math.fma(-_r2, _t10, Math.fma(_r3, _t11, Math.fma(2.0f, Math.fma(_r1, _r4, -(_r2 * _r5)) + Math.fma(_r3, _r6, -(_r0 * _r7)), pX))));
+        _dst.y = Math.fma(_r2, _t11, Math.fma(-_r0, _t9, Math.fma(_r3, _t10, Math.fma(2.0f, Math.fma(_r2, _r6, -(_r0 * _r4)) + Math.fma(_r3, _r5, -(_r1 * _r7)), pY))));
+        _dst.z = Math.fma(_r0, _t10, Math.fma(-_r1, _t11, Math.fma(_r3, _t9, Math.fma(2.0f, Math.fma(_r0, _r5, -(_r1 * _r6)) + Math.fma(_r3, _r4, -(_r2 * _r7)), pZ))));
     }
 
 
@@ -6444,14 +6952,18 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Double3 transform(float pX, float pY, float pZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t9 = 2.0f * Math.fma(pY, this.rX, -(pX * this.rY));
-        float _t10 = 2.0f * Math.fma(pX, this.rZ, -(pZ * this.rX));
-        float _t11 = 2.0f * Math.fma(pZ, this.rY, -(pY * this.rZ));
-        float _buf0 = Math.fma(this.rY, _t9, Math.fma(-this.rZ, _t10, Math.fma(this.rW, _t11, Math.fma(2.0f, Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)), pX))));
-        float _buf1 = Math.fma(this.rZ, _t11, Math.fma(-this.rX, _t9, Math.fma(this.rW, _t10, Math.fma(2.0f, Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)), pY))));
-        d.z = Math.fma(this.rX, _t10, Math.fma(-this.rY, _t11, Math.fma(this.rW, _t9, Math.fma(2.0f, Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)), pZ))));
-        d.x = _buf0;
-        d.y = _buf1;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.dZ;
+        float _r5 = this.dY;
+        float _r6 = this.dX;
+        float _r7 = this.dW;
+        float _t9 = 2.0f * Math.fma(pY, _r0, -(pX * _r1));
+        float _t10 = 2.0f * Math.fma(pX, _r2, -(pZ * _r0));
+        float _t11 = 2.0f * Math.fma(pZ, _r1, -(pY * _r2));
+        transform_s496e6cff_c0(d, _r1, _t9, _r2, _t10, _r3, _t11, _r4, _r5, _r6, _r0, _r7, pX, pY, pZ);
         return d;
     }
 
@@ -6656,6 +7168,19 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return transformInverse(p.x(), p.y(), p.z(), dest);
     }
 
+    /** Private store group 0 of {@code transformInverse}: computes and stores it; reached only through it. */
+    private void transformInverse_s36805c6c_c0(Float3Impl _dst, float _r6, float _t33, float _r2, float _t34, float _r4, float _t35, float _t22, float _r0, float _t23, float _t21) {
+        _dst.x = Math.fma(_r6, _t33, Math.fma(-_r2, _t34, Math.fma(_r4, _t35, _t22)));
+        _dst.y = Math.fma(_r0, _t34, Math.fma(-_r6, _t35, Math.fma(_r4, _t33, _t23)));
+        _dst.z = Math.fma(_r2, _t35, Math.fma(-_r0, _t33, Math.fma(_r4, _t34, _t21)));
+    }
+
+    /** Private tail of {@code transformInverse}; reached only through it. */
+    private void transformInverse_s36805c6c_tail(Float3Impl _dst, float _r6, float _t23, float _r2, float _t21, float _t33, float _t34, float _r4, float _t22, float _r0) {
+        float _t35 = 2.0f * Math.fma(_r6, _t23, -(_r2 * _t21));
+        transformInverse_s36805c6c_c0(_dst, _r6, _t33, _r2, _t34, _r4, _t35, _t22, _r0, _t23, _t21);
+    }
+
 
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this dual quaternion
@@ -6669,18 +7194,34 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Float3 transformInverse(float pX, float pY, float pZ, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t21 = Math.fma(-2.0f, Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)), pZ);
-        float _t22 = Math.fma(-2.0f, Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)), pX);
-        float _t23 = Math.fma(-2.0f, Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)), pY);
-        float _t33 = 2.0f * Math.fma(this.rX, _t21, -(this.rZ * _t22));
-        float _t34 = 2.0f * Math.fma(this.rY, _t22, -(this.rX * _t23));
-        float _t35 = 2.0f * Math.fma(this.rZ, _t23, -(this.rY * _t21));
-        float _buf0 = Math.fma(this.rZ, _t33, Math.fma(-this.rY, _t34, Math.fma(this.rW, _t35, _t22)));
-        float _buf1 = Math.fma(this.rX, _t34, Math.fma(-this.rZ, _t35, Math.fma(this.rW, _t33, _t23)));
-        d.z = Math.fma(this.rY, _t35, Math.fma(-this.rX, _t33, Math.fma(this.rW, _t34, _t21)));
-        d.x = _buf0;
-        d.y = _buf1;
+        float _r0 = this.rX;
+        float _r1 = this.dY;
+        float _r2 = this.rY;
+        float _r3 = this.dX;
+        float _r4 = this.rW;
+        float _r5 = this.dZ;
+        float _r6 = this.rZ;
+        float _r7 = this.dW;
+        float _t21 = Math.fma(-2.0f, Math.fma(_r0, _r1, -(_r2 * _r3)) + Math.fma(_r4, _r5, -(_r6 * _r7)), pZ);
+        float _t22 = Math.fma(-2.0f, Math.fma(_r2, _r5, -(_r6 * _r1)) + Math.fma(_r4, _r3, -(_r0 * _r7)), pX);
+        float _t23 = Math.fma(-2.0f, Math.fma(_r6, _r3, -(_r0 * _r5)) + Math.fma(_r4, _r1, -(_r2 * _r7)), pY);
+        float _t33 = 2.0f * Math.fma(_r0, _t21, -(_r6 * _t22));
+        float _t34 = 2.0f * Math.fma(_r2, _t22, -(_r0 * _t23));
+        transformInverse_s36805c6c_tail(d, _r6, _t23, _r2, _t21, _t33, _t34, _r4, _t22, _r0);
         return d;
+    }
+
+    /** Private store group 0 of {@code transformInverse}: computes and stores it; reached only through it. */
+    private void transformInverse_s496e6cff_c0(Double3Impl _dst, float _r6, float _t33, float _r2, float _t34, float _r4, float _t35, float _t22, float _r0, float _t23, float _t21) {
+        _dst.x = Math.fma(_r6, _t33, Math.fma(-_r2, _t34, Math.fma(_r4, _t35, _t22)));
+        _dst.y = Math.fma(_r0, _t34, Math.fma(-_r6, _t35, Math.fma(_r4, _t33, _t23)));
+        _dst.z = Math.fma(_r2, _t35, Math.fma(-_r0, _t33, Math.fma(_r4, _t34, _t21)));
+    }
+
+    /** Private tail of {@code transformInverse}; reached only through it. */
+    private void transformInverse_s496e6cff_tail(Double3Impl _dst, float _r6, float _t23, float _r2, float _t21, float _t33, float _t34, float _r4, float _t22, float _r0) {
+        float _t35 = 2.0f * Math.fma(_r6, _t23, -(_r2 * _t21));
+        transformInverse_s496e6cff_c0(_dst, _r6, _t33, _r2, _t34, _r4, _t35, _t22, _r0, _t23, _t21);
     }
 
 
@@ -6699,17 +7240,20 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      */
     public Double3 transformInverse(float pX, float pY, float pZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t21 = Math.fma(-2.0f, Math.fma(this.rX, this.dY, -(this.rY * this.dX)) + Math.fma(this.rW, this.dZ, -(this.rZ * this.dW)), pZ);
-        float _t22 = Math.fma(-2.0f, Math.fma(this.rY, this.dZ, -(this.rZ * this.dY)) + Math.fma(this.rW, this.dX, -(this.rX * this.dW)), pX);
-        float _t23 = Math.fma(-2.0f, Math.fma(this.rZ, this.dX, -(this.rX * this.dZ)) + Math.fma(this.rW, this.dY, -(this.rY * this.dW)), pY);
-        float _t33 = 2.0f * Math.fma(this.rX, _t21, -(this.rZ * _t22));
-        float _t34 = 2.0f * Math.fma(this.rY, _t22, -(this.rX * _t23));
-        float _t35 = 2.0f * Math.fma(this.rZ, _t23, -(this.rY * _t21));
-        float _buf0 = Math.fma(this.rZ, _t33, Math.fma(-this.rY, _t34, Math.fma(this.rW, _t35, _t22)));
-        float _buf1 = Math.fma(this.rX, _t34, Math.fma(-this.rZ, _t35, Math.fma(this.rW, _t33, _t23)));
-        d.z = Math.fma(this.rY, _t35, Math.fma(-this.rX, _t33, Math.fma(this.rW, _t34, _t21)));
-        d.x = _buf0;
-        d.y = _buf1;
+        float _r0 = this.rX;
+        float _r1 = this.dY;
+        float _r2 = this.rY;
+        float _r3 = this.dX;
+        float _r4 = this.rW;
+        float _r5 = this.dZ;
+        float _r6 = this.rZ;
+        float _r7 = this.dW;
+        float _t21 = Math.fma(-2.0f, Math.fma(_r0, _r1, -(_r2 * _r3)) + Math.fma(_r4, _r5, -(_r6 * _r7)), pZ);
+        float _t22 = Math.fma(-2.0f, Math.fma(_r2, _r5, -(_r6 * _r1)) + Math.fma(_r4, _r3, -(_r0 * _r7)), pX);
+        float _t23 = Math.fma(-2.0f, Math.fma(_r6, _r3, -(_r0 * _r5)) + Math.fma(_r4, _r1, -(_r2 * _r7)), pY);
+        float _t33 = 2.0f * Math.fma(_r0, _t21, -(_r6 * _t22));
+        float _t34 = 2.0f * Math.fma(_r2, _t22, -(_r0 * _t23));
+        transformInverse_s496e6cff_tail(d, _r6, _t23, _r2, _t21, _t33, _t34, _r4, _t22, _r0);
         return d;
     }
 

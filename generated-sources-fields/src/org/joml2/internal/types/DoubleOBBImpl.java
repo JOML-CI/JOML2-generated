@@ -430,6 +430,87 @@ public final class DoubleOBBImpl implements DoubleOBB {
         return this;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c0(DoubleOBBImpl _dst, double _r2, double _r18, double _r4, double _r19, double _r0, double _r20, double _r21, double _r10, double _r11, double _r9, double _r22, double _r7, double _r8, double _r6, double _r23, double _t31) {
+        _dst.cX = Math.fma(_r2, _r18, Math.fma(_r4, _r19, Math.fma(_r0, _r20, _r21)));
+        _dst.cY = Math.fma(_r10, _r18, Math.fma(_r11, _r19, Math.fma(_r9, _r20, _r22)));
+        _dst.cZ = Math.fma(_r7, _r18, Math.fma(_r8, _r19, Math.fma(_r6, _r20, _r23)));
+        _dst.uXx = _t31;
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c1(DoubleOBBImpl _dst, double _t32, double _t33, double _t45, double _t46) {
+        _dst.uXy = _t32;
+        _dst.uXz = _t33;
+        _dst.uYx = _t45;
+        _dst.uYy = _t46;
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c2(DoubleOBBImpl _dst, double _t47, double _t54, double _t55, double _t56) {
+        _dst.uYz = _t47;
+        _dst.uZx = _t54;
+        _dst.uZy = _t55;
+        _dst.uZz = _t56;
+    }
+
+    /** Private store group 3 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_scba2d91_c3(DoubleOBBImpl _dst, double _r24, double _t24, double _t33, double _t25, double _t31, double _t26, double _t32, double _r25, double _t19, double _t18, double _t20, double _r26, double _t36, double _t47, double _t45, double _t46, double _t21, double _t22, double _t23, double _t56, double _t54, double _t55) {
+        _dst.hsX = Math.fma(_r24, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(_r25, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), _r26 * Math.abs(_t36)));
+        _dst.hsY = Math.fma(_r24, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(_r25, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), _r26 * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
+        _dst.hsZ = Math.fma(_r24, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(_r25, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), _r26 * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_scba2d91_tail(DoubleOBBImpl _dst, Double3x4R m, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.cZ;
+        double _r21 = m.m03();
+        double _r22 = m.m13();
+        double _r23 = m.m23();
+        double _r24 = this.hsZ;
+        double _r25 = this.hsX;
+        double _r26 = this.hsY;
+        double _t18 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        double _t19 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, _r8 * _r5));
+        double _t20 = Math.fma(_r9, _r1, Math.fma(_r10, _r3, _r11 * _r5));
+        double _t21 = Math.fma(_r6, _r12, Math.fma(_r7, _r13, _r8 * _r14));
+        double _t22 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        double _t23 = Math.fma(_r9, _r12, Math.fma(_r10, _r13, _r11 * _r14));
+        transform_scba2d91_tail2(_dst, _r6, _r15, _r7, _r16, _r8, _r17, _r0, _r2, _r4, _r9, _r10, _r11, _t19, _t18, _t20, _t21, _t22, _t23, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_scba2d91_tail2(DoubleOBBImpl _dst, double _r6, double _r15, double _r7, double _r16, double _r8, double _r17, double _r0, double _r2, double _r4, double _r9, double _r10, double _r11, double _t19, double _t18, double _t20, double _t21, double _t22, double _t23, double _r18, double _r19, double _r20, double _r21, double _r22, double _r23, double _r24, double _r25, double _r26) {
+        double _t24 = Math.fma(_r6, _r15, Math.fma(_r7, _r16, _r8 * _r17));
+        double _t25 = Math.fma(_r0, _r15, Math.fma(_r2, _r16, _r4 * _r17));
+        double _t26 = Math.fma(_r9, _r15, Math.fma(_r10, _r16, _r11 * _r17));
+        double _t30 = (1.0 / Math.sqrt(Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20))));
+        double _t31 = _t18 * _t30;
+        double _t32 = _t20 * _t30;
+        double _t33 = _t19 * _t30;
+        double _t36 = Math.fma(_t21, _t33, Math.fma(_t22, _t31, _t23 * _t32));
+        double _t37 = -_t36;
+        double _t38 = Math.fma(_t37, _t31, _t22);
+        double _t39 = Math.fma(_t37, _t33, _t21);
+        double _t40 = Math.fma(_t37, _t32, _t23);
+        double _t44 = (1.0 / Math.sqrt(Math.fma(_t39, _t39, Math.fma(_t38, _t38, _t40 * _t40))));
+        double _t45 = _t38 * _t44;
+        double _t46 = _t40 * _t44;
+        double _t47 = _t39 * _t44;
+        transform_scba2d91_tail3(_dst, _t32, _t47, _t33, _t46, _t45, _t31, _r2, _r18, _r4, _r19, _r0, _r20, _r21, _r10, _r11, _r9, _r22, _r7, _r8, _r6, _r23, _r24, _t24, _t25, _t26, _r25, _t19, _t18, _t20, _r26, _t36, _t21, _t22, _t23);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_scba2d91_tail3(DoubleOBBImpl _dst, double _t32, double _t47, double _t33, double _t46, double _t45, double _t31, double _r2, double _r18, double _r4, double _r19, double _r0, double _r20, double _r21, double _r10, double _r11, double _r9, double _r22, double _r7, double _r8, double _r6, double _r23, double _r24, double _t24, double _t25, double _t26, double _r25, double _t19, double _t18, double _t20, double _r26, double _t36, double _t21, double _t22, double _t23) {
+        double _t54 = Math.fma(_t32, _t47, -(_t33 * _t46));
+        double _t55 = Math.fma(_t33, _t45, -(_t31 * _t47));
+        double _t56 = Math.fma(_t31, _t46, -(_t32 * _t45));
+        transform_scba2d91_c0(_dst, _r2, _r18, _r4, _r19, _r0, _r20, _r21, _r10, _r11, _r9, _r22, _r7, _r8, _r6, _r23, _t31);
+        transform_scba2d91_c1(_dst, _t32, _t33, _t45, _t46);
+        transform_scba2d91_c2(_dst, _t47, _t54, _t55, _t56);
+        transform_scba2d91_c3(_dst, _r24, _t24, _t33, _t25, _t31, _t26, _t32, _r25, _t19, _t18, _t20, _r26, _t36, _t47, _t45, _t46, _t21, _t22, _t23, _t56, _t54, _t55);
+    }
+
 
     /**
      * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
@@ -445,15 +526,84 @@ public final class DoubleOBBImpl implements DoubleOBB {
      */
     public DoubleOBB transform(Double3x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
-        double _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
-        double _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
-        double _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        double _t21 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
-        double _t22 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        double _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        double _t24 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        double _t25 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        double _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
+        double _r0 = m.m02();
+        double _r1 = this.uXz;
+        double _r2 = m.m00();
+        double _r3 = this.uXx;
+        double _r4 = m.m01();
+        double _r5 = this.uXy;
+        double _r6 = m.m22();
+        double _r7 = m.m20();
+        double _r8 = m.m21();
+        double _r9 = m.m12();
+        double _r10 = m.m10();
+        double _r11 = m.m11();
+        double _r12 = this.uYz;
+        double _r13 = this.uYx;
+        double _r14 = this.uYy;
+        double _r15 = this.uZz;
+        double _r16 = this.uZx;
+        double _r17 = this.uZy;
+        double _r18 = this.cX;
+        double _r19 = this.cY;
+        transform_scba2d91_tail(d, m, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
+        return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c0(DoubleOBBImpl _dst, double _r2, double _r18, double _r4, double _r19, double _r0, double _r20, double _r21, double _r10, double _r11, double _r9, double _r22, double _r7, double _r8, double _r6, double _r23, double _t31) {
+        _dst.cX = Math.fma(_r2, _r18, Math.fma(_r4, _r19, Math.fma(_r0, _r20, _r21)));
+        _dst.cY = Math.fma(_r10, _r18, Math.fma(_r11, _r19, Math.fma(_r9, _r20, _r22)));
+        _dst.cZ = Math.fma(_r7, _r18, Math.fma(_r8, _r19, Math.fma(_r6, _r20, _r23)));
+        _dst.uXx = _t31;
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c1(DoubleOBBImpl _dst, double _t32, double _t33, double _t45, double _t46) {
+        _dst.uXy = _t32;
+        _dst.uXz = _t33;
+        _dst.uYx = _t45;
+        _dst.uYy = _t46;
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c2(DoubleOBBImpl _dst, double _t47, double _t54, double _t55, double _t56) {
+        _dst.uYz = _t47;
+        _dst.uZx = _t54;
+        _dst.uZy = _t55;
+        _dst.uZz = _t56;
+    }
+
+    /** Private store group 3 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s21a2f5d2_c3(DoubleOBBImpl _dst, double _r24, double _t24, double _t33, double _t25, double _t31, double _t26, double _t32, double _r25, double _t19, double _t18, double _t20, double _r26, double _t36, double _t47, double _t45, double _t46, double _t21, double _t22, double _t23, double _t56, double _t54, double _t55) {
+        _dst.hsX = Math.fma(_r24, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(_r25, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), _r26 * Math.abs(_t36)));
+        _dst.hsY = Math.fma(_r24, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(_r25, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), _r26 * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
+        _dst.hsZ = Math.fma(_r24, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(_r25, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), _r26 * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s21a2f5d2_tail(DoubleOBBImpl _dst, Double4x4R m, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.cZ;
+        double _r21 = m.m03();
+        double _r22 = m.m13();
+        double _r23 = m.m23();
+        double _r24 = this.hsZ;
+        double _r25 = this.hsX;
+        double _r26 = this.hsY;
+        double _t18 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5));
+        double _t19 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, _r8 * _r5));
+        double _t20 = Math.fma(_r9, _r1, Math.fma(_r10, _r3, _r11 * _r5));
+        double _t21 = Math.fma(_r6, _r12, Math.fma(_r7, _r13, _r8 * _r14));
+        double _t22 = Math.fma(_r0, _r12, Math.fma(_r2, _r13, _r4 * _r14));
+        double _t23 = Math.fma(_r9, _r12, Math.fma(_r10, _r13, _r11 * _r14));
+        transform_s21a2f5d2_tail2(_dst, _r6, _r15, _r7, _r16, _r8, _r17, _r0, _r2, _r4, _r9, _r10, _r11, _t19, _t18, _t20, _t21, _t22, _t23, _r18, _r19, _r20, _r21, _r22, _r23, _r24, _r25, _r26);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s21a2f5d2_tail2(DoubleOBBImpl _dst, double _r6, double _r15, double _r7, double _r16, double _r8, double _r17, double _r0, double _r2, double _r4, double _r9, double _r10, double _r11, double _t19, double _t18, double _t20, double _t21, double _t22, double _t23, double _r18, double _r19, double _r20, double _r21, double _r22, double _r23, double _r24, double _r25, double _r26) {
+        double _t24 = Math.fma(_r6, _r15, Math.fma(_r7, _r16, _r8 * _r17));
+        double _t25 = Math.fma(_r0, _r15, Math.fma(_r2, _r16, _r4 * _r17));
+        double _t26 = Math.fma(_r9, _r15, Math.fma(_r10, _r16, _r11 * _r17));
         double _t30 = (1.0 / Math.sqrt(Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20))));
         double _t31 = _t18 * _t30;
         double _t32 = _t20 * _t30;
@@ -467,29 +617,18 @@ public final class DoubleOBBImpl implements DoubleOBB {
         double _t45 = _t38 * _t44;
         double _t46 = _t40 * _t44;
         double _t47 = _t39 * _t44;
+        transform_s21a2f5d2_tail3(_dst, _t32, _t47, _t33, _t46, _t45, _t31, _r2, _r18, _r4, _r19, _r0, _r20, _r21, _r10, _r11, _r9, _r22, _r7, _r8, _r6, _r23, _r24, _t24, _t25, _t26, _r25, _t19, _t18, _t20, _r26, _t36, _t21, _t22, _t23);
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s21a2f5d2_tail3(DoubleOBBImpl _dst, double _t32, double _t47, double _t33, double _t46, double _t45, double _t31, double _r2, double _r18, double _r4, double _r19, double _r0, double _r20, double _r21, double _r10, double _r11, double _r9, double _r22, double _r7, double _r8, double _r6, double _r23, double _r24, double _t24, double _t25, double _t26, double _r25, double _t19, double _t18, double _t20, double _r26, double _t36, double _t21, double _t22, double _t23) {
         double _t54 = Math.fma(_t32, _t47, -(_t33 * _t46));
         double _t55 = Math.fma(_t33, _t45, -(_t31 * _t47));
         double _t56 = Math.fma(_t31, _t46, -(_t32 * _t45));
-        double _buf0 = Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, Math.fma(m.m02(), this.cZ, m.m03())));
-        double _buf1 = Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, Math.fma(m.m12(), this.cZ, m.m13())));
-        d.cZ = Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, Math.fma(m.m22(), this.cZ, m.m23())));
-        d.uXx = _t31;
-        d.uXy = _t32;
-        d.uXz = _t33;
-        d.uYx = _t45;
-        d.uYy = _t46;
-        d.uYz = _t47;
-        d.uZx = _t54;
-        d.uZy = _t55;
-        d.uZz = _t56;
-        double _buf2 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), this.hsY * Math.abs(_t36)));
-        double _buf3 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), this.hsY * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
-        d.hsZ = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), this.hsY * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
-        d.cX = _buf0;
-        d.cY = _buf1;
-        d.hsX = _buf2;
-        d.hsY = _buf3;
-        return d;
+        transform_s21a2f5d2_c0(_dst, _r2, _r18, _r4, _r19, _r0, _r20, _r21, _r10, _r11, _r9, _r22, _r7, _r8, _r6, _r23, _t31);
+        transform_s21a2f5d2_c1(_dst, _t32, _t33, _t45, _t46);
+        transform_s21a2f5d2_c2(_dst, _t47, _t54, _t55, _t56);
+        transform_s21a2f5d2_c3(_dst, _r24, _t24, _t33, _t25, _t31, _t26, _t32, _r25, _t19, _t18, _t20, _r26, _t36, _t47, _t45, _t46, _t21, _t22, _t23, _t56, _t54, _t55);
     }
 
 
@@ -510,50 +649,27 @@ public final class DoubleOBBImpl implements DoubleOBB {
      */
     public DoubleOBB transform(Double4x4R m, @Mutated DoubleOBB dest) {
         DoubleOBBImpl d = (DoubleOBBImpl) dest;
-        double _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
-        double _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
-        double _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        double _t21 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
-        double _t22 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        double _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        double _t24 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
-        double _t25 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        double _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        double _t30 = (1.0 / Math.sqrt(Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20))));
-        double _t31 = _t18 * _t30;
-        double _t32 = _t20 * _t30;
-        double _t33 = _t19 * _t30;
-        double _t36 = Math.fma(_t21, _t33, Math.fma(_t22, _t31, _t23 * _t32));
-        double _t37 = -_t36;
-        double _t38 = Math.fma(_t37, _t31, _t22);
-        double _t39 = Math.fma(_t37, _t33, _t21);
-        double _t40 = Math.fma(_t37, _t32, _t23);
-        double _t44 = (1.0 / Math.sqrt(Math.fma(_t39, _t39, Math.fma(_t38, _t38, _t40 * _t40))));
-        double _t45 = _t38 * _t44;
-        double _t46 = _t40 * _t44;
-        double _t47 = _t39 * _t44;
-        double _t54 = Math.fma(_t32, _t47, -(_t33 * _t46));
-        double _t55 = Math.fma(_t33, _t45, -(_t31 * _t47));
-        double _t56 = Math.fma(_t31, _t46, -(_t32 * _t45));
-        double _buf0 = Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, Math.fma(m.m02(), this.cZ, m.m03())));
-        double _buf1 = Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, Math.fma(m.m12(), this.cZ, m.m13())));
-        d.cZ = Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, Math.fma(m.m22(), this.cZ, m.m23())));
-        d.uXx = _t31;
-        d.uXy = _t32;
-        d.uXz = _t33;
-        d.uYx = _t45;
-        d.uYy = _t46;
-        d.uYz = _t47;
-        d.uZx = _t54;
-        d.uZy = _t55;
-        d.uZz = _t56;
-        double _buf2 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), this.hsY * Math.abs(_t36)));
-        double _buf3 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), this.hsY * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
-        d.hsZ = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), this.hsY * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
-        d.cX = _buf0;
-        d.cY = _buf1;
-        d.hsX = _buf2;
-        d.hsY = _buf3;
+        double _r0 = m.m02();
+        double _r1 = this.uXz;
+        double _r2 = m.m00();
+        double _r3 = this.uXx;
+        double _r4 = m.m01();
+        double _r5 = this.uXy;
+        double _r6 = m.m22();
+        double _r7 = m.m20();
+        double _r8 = m.m21();
+        double _r9 = m.m12();
+        double _r10 = m.m10();
+        double _r11 = m.m11();
+        double _r12 = this.uYz;
+        double _r13 = this.uYx;
+        double _r14 = this.uYy;
+        double _r15 = this.uZz;
+        double _r16 = this.uZx;
+        double _r17 = this.uZy;
+        double _r18 = this.cX;
+        double _r19 = this.cY;
+        transform_s21a2f5d2_tail(d, m, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
     }
 

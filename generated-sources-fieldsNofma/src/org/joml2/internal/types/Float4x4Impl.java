@@ -902,44 +902,37 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code getNormalizedRotation_general}: computes and stores it; reached only through it. */
+    private void getNormalizedRotation_general_s6f858fd1_c0(FloatQuatImpl _dst, float _t66, float _sp0, float _t45, float _t57, float _t46, float _t71, float _t27, float _t28, float _sp1, float _t61, float _sp2, float _t63, float _t64, float _sp3, float _t72, float _t48, float _t65, float _t73, float _t70) {
+        _dst.x = _t66 > 0.0f ? _sp0 * _t45 : _t57 > _t46 ? 0.5f * (float) Math.sqrt(_t71) : _t27 > _t28 ? _sp1 * _t61 : _sp2 * _t63;
+        _dst.y = _t66 > 0.0f ? _sp0 * _t64 : _t57 > _t46 ? _sp3 * _t61 : _t27 > _t28 ? 0.5f * (float) Math.sqrt(_t72) : _sp2 * _t48;
+        _dst.z = _t66 > 0.0f ? _sp0 * _t65 : _t57 > _t46 ? _sp3 * _t63 : _t27 > _t28 ? _sp1 * _t48 : 0.5f * (float) Math.sqrt(_t73);
+        _dst.w = _t66 > 0.0f ? 0.5f * (float) Math.sqrt(_t70) : _t57 > _t46 ? _sp3 * _t45 : _t27 > _t28 ? _sp1 * _t64 : _sp2 * _t65;
+    }
 
-    /**
-     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
-     * reached only through the public {@code getNormalizedRotation} dispatcher.
-     */
-    private FloatQuat getNormalizedRotation_general(@Mutated FloatQuat dest) {
-        FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t14));
-        float _t27, _t29, _t33;
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s6f858fd1_tail(FloatQuatImpl _dst, float _t12, float _r2, float _t15, float _t13, float _r4, float _t16, float _t14, float _r6, float _t17, float _r3, float _r0, float _r7, float _r8, float _t27, float _t28) {
+        float _t29, _t33;
         if (_t12 != 0.0f) {
-            _t27 = this.m11 * _t15;
-            _t29 = this.m21 * _t15;
-            _t33 = this.m01 * _t15;
+            _t29 = _r2 * _t15;
+            _t33 = _r0 * _t15;
         } else {
-            _t27 = 0.0f;
             _t29 = 0.0f;
             _t33 = 0.0f;
         }
-        float _t28, _t30, _t32;
+        float _t30, _t32;
         if (_t13 != 0.0f) {
-            _t28 = this.m22 * _t16;
-            _t30 = this.m12 * _t16;
-            _t32 = this.m02 * _t16;
+            _t30 = _r4 * _t16;
+            _t32 = _r3 * _t16;
         } else {
-            _t28 = 0.0f;
             _t30 = 0.0f;
             _t32 = 0.0f;
         }
         float _t31, _t34, _t35;
         if (_t14 != 0.0f) {
-            _t31 = this.m00 * _t17;
-            _t34 = this.m10 * _t17;
-            _t35 = this.m20 * _t17;
+            _t31 = _r6 * _t17;
+            _t34 = _r7 * _t17;
+            _t35 = _r8 * _t17;
         } else {
             _t31 = 0.0f;
             _t34 = 0.0f;
@@ -949,6 +942,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t46 = Math.max(_t27, _t28);
         float _t48 = _t29 + _t30;
         float _t56 = (_t27 * _t28 - _t29 * _t30) * _t31 + (_t29 * _t32 - _t33 * _t28) * _t34 + (_t33 * _t30 - _t27 * _t32) * _t35;
+        getNormalizedRotation_general_s6f858fd1_tail2(_dst, _t56, _t31, _t34, _t35, _t27, _t33, _t32, _t28, _t45, _t46, _t48);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s6f858fd1_tail2(FloatQuatImpl _dst, float _t56, float _t31, float _t34, float _t35, float _t27, float _t33, float _t32, float _t28, float _t45, float _t46, float _t48) {
         float _t57, _t58, _t59;
         if (_t56 < 0.0f) {
             _t57 = -_t31;
@@ -973,31 +971,34 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t72));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t71));
-        if (_t66 > 0.0f) {
-            d.x = _sp0 * _t45;
-            d.y = _sp0 * _t64;
-            d.z = _sp0 * _t65;
-            d.w = 0.5f * (float) Math.sqrt(_t70);
-        } else {
-            if (_t57 > _t46) {
-                d.x = 0.5f * (float) Math.sqrt(_t71);
-                d.y = _sp3 * _t61;
-                d.z = _sp3 * _t63;
-                d.w = _sp3 * _t45;
-            } else {
-                if (_t27 > _t28) {
-                    d.x = _sp1 * _t61;
-                    d.y = 0.5f * (float) Math.sqrt(_t72);
-                    d.z = _sp1 * _t48;
-                    d.w = _sp1 * _t64;
-                } else {
-                    d.x = _sp2 * _t63;
-                    d.y = _sp2 * _t48;
-                    d.z = 0.5f * (float) Math.sqrt(_t73);
-                    d.w = _sp2 * _t65;
-                }
-            }
-        }
+        getNormalizedRotation_general_s6f858fd1_c0(_dst, _t66, _sp0, _t45, _t57, _t46, _t71, _t27, _t28, _sp1, _t61, _sp2, _t63, _t64, _sp3, _t72, _t48, _t65, _t73, _t70);
+    }
+
+
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
+    private FloatQuat getNormalizedRotation_general(@Mutated FloatQuat dest) {
+        FloatQuatImpl d = (FloatQuatImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t17 = (1.0f / (float) Math.sqrt(_t14));
+        float _t27 = _t12 != 0.0f ? _r1 * _t15 : 0.0f;
+        float _t28 = _t13 != 0.0f ? _r5 * _t16 : 0.0f;
+        getNormalizedRotation_general_s6f858fd1_tail(d, _t12, _r2, _t15, _t13, _r4, _t16, _t14, _r6, _t17, _r3, _r0, _r7, _r8, _t27, _t28);
         return d;
     }
 
@@ -1020,55 +1021,37 @@ public class Float4x4Impl implements Float4x4 {
         return getNormalizedRotation_general(dest);
     }
 
+    /** Private store group 0 of {@code getNormalizedRotation}: computes and stores it; reached only through it. */
+    private void getNormalizedRotation_s62e3ac38_c0(DoubleQuatImpl _dst, float _t66, float _sp0, float _t45, float _t57, float _t46, float _t71, float _t27, float _t28, float _sp1, float _t61, float _sp2, float _t63, float _t64, float _sp3, float _t72, float _t48, float _t65, float _t73, float _t70) {
+        _dst.x = _t66 > 0.0f ? _sp0 * _t45 : _t57 > _t46 ? 0.5f * (float) Math.sqrt(_t71) : _t27 > _t28 ? _sp1 * _t61 : _sp2 * _t63;
+        _dst.y = _t66 > 0.0f ? _sp0 * _t64 : _t57 > _t46 ? _sp3 * _t61 : _t27 > _t28 ? 0.5f * (float) Math.sqrt(_t72) : _sp2 * _t48;
+        _dst.z = _t66 > 0.0f ? _sp0 * _t65 : _t57 > _t46 ? _sp3 * _t63 : _t27 > _t28 ? _sp1 * _t48 : 0.5f * (float) Math.sqrt(_t73);
+        _dst.w = _t66 > 0.0f ? 0.5f * (float) Math.sqrt(_t70) : _t57 > _t46 ? _sp3 * _t45 : _t27 > _t28 ? _sp1 * _t64 : _sp2 * _t65;
+    }
 
-    /**
-     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
-     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
-     * unit length) and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of each column must lie roughly between
-     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleQuat getNormalizedRotation(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t14));
-        float _t27, _t29, _t33;
+    /** Private tail of {@code getNormalizedRotation}; reached only through it. */
+    private void getNormalizedRotation_s62e3ac38_tail(DoubleQuatImpl _dst, float _t12, float _r2, float _t15, float _t13, float _r4, float _t16, float _t14, float _r6, float _t17, float _r3, float _r0, float _r7, float _r8, float _t27, float _t28) {
+        float _t29, _t33;
         if (_t12 != 0.0f) {
-            _t27 = this.m11 * _t15;
-            _t29 = this.m21 * _t15;
-            _t33 = this.m01 * _t15;
+            _t29 = _r2 * _t15;
+            _t33 = _r0 * _t15;
         } else {
-            _t27 = 0.0f;
             _t29 = 0.0f;
             _t33 = 0.0f;
         }
-        float _t28, _t30, _t32;
+        float _t30, _t32;
         if (_t13 != 0.0f) {
-            _t28 = this.m22 * _t16;
-            _t30 = this.m12 * _t16;
-            _t32 = this.m02 * _t16;
+            _t30 = _r4 * _t16;
+            _t32 = _r3 * _t16;
         } else {
-            _t28 = 0.0f;
             _t30 = 0.0f;
             _t32 = 0.0f;
         }
         float _t31, _t34, _t35;
         if (_t14 != 0.0f) {
-            _t31 = this.m00 * _t17;
-            _t34 = this.m10 * _t17;
-            _t35 = this.m20 * _t17;
+            _t31 = _r6 * _t17;
+            _t34 = _r7 * _t17;
+            _t35 = _r8 * _t17;
         } else {
             _t31 = 0.0f;
             _t34 = 0.0f;
@@ -1078,6 +1061,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t46 = Math.max(_t27, _t28);
         float _t48 = _t29 + _t30;
         float _t56 = (_t27 * _t28 - _t29 * _t30) * _t31 + (_t29 * _t32 - _t33 * _t28) * _t34 + (_t33 * _t30 - _t27 * _t32) * _t35;
+        getNormalizedRotation_s62e3ac38_tail2(_dst, _t56, _t31, _t34, _t35, _t27, _t33, _t32, _t28, _t45, _t46, _t48);
+    }
+
+    /** Private tail of {@code getNormalizedRotation}; reached only through it. */
+    private void getNormalizedRotation_s62e3ac38_tail2(DoubleQuatImpl _dst, float _t56, float _t31, float _t34, float _t35, float _t27, float _t33, float _t32, float _t28, float _t45, float _t46, float _t48) {
         float _t57, _t58, _t59;
         if (_t56 < 0.0f) {
             _t57 = -_t31;
@@ -1102,31 +1090,45 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t72));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t71));
-        if (_t66 > 0.0f) {
-            d.x = _sp0 * _t45;
-            d.y = _sp0 * _t64;
-            d.z = _sp0 * _t65;
-            d.w = 0.5f * (float) Math.sqrt(_t70);
-        } else {
-            if (_t57 > _t46) {
-                d.x = 0.5f * (float) Math.sqrt(_t71);
-                d.y = _sp3 * _t61;
-                d.z = _sp3 * _t63;
-                d.w = _sp3 * _t45;
-            } else {
-                if (_t27 > _t28) {
-                    d.x = _sp1 * _t61;
-                    d.y = 0.5f * (float) Math.sqrt(_t72);
-                    d.z = _sp1 * _t48;
-                    d.w = _sp1 * _t64;
-                } else {
-                    d.x = _sp2 * _t63;
-                    d.y = _sp2 * _t48;
-                    d.z = 0.5f * (float) Math.sqrt(_t73);
-                    d.w = _sp2 * _t65;
-                }
-            }
-        }
+        getNormalizedRotation_s62e3ac38_c0(_dst, _t66, _sp0, _t45, _t57, _t46, _t71, _t27, _t28, _sp1, _t61, _sp2, _t63, _t64, _sp3, _t72, _t48, _t65, _t73, _t70);
+    }
+
+
+    /**
+     * Extract the rotation of this matrix as a quaternion, column-normalizing the linear block
+     * first to strip scale (skew is not removed: a sheared block yields a quaternion that is not
+     * unit length) and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat getNormalizedRotation(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t17 = (1.0f / (float) Math.sqrt(_t14));
+        float _t27 = _t12 != 0.0f ? _r1 * _t15 : 0.0f;
+        float _t28 = _t13 != 0.0f ? _r5 * _t16 : 0.0f;
+        getNormalizedRotation_s62e3ac38_tail(d, _t12, _r2, _t15, _t13, _r4, _t16, _t14, _r6, _t17, _r3, _r0, _r7, _r8, _t27, _t28);
         return d;
     }
 
@@ -1382,6 +1384,20 @@ public class Float4x4Impl implements Float4x4 {
         return getNormalizedRotation_identity(dest);
     }
 
+    /** Private store group 0 of {@code getUnnormalizedRotation_orthogonal}: computes and stores it; reached only through it. */
+    private void getUnnormalizedRotation_orthogonal_s6f858fd1_c0(FloatQuatImpl _dst, float _t10, float _sp0, float _t1, float _r0, float _t2, float _t15, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.x = _t10 > 0.0f ? _sp0 * _t1 : _r0 > _t2 ? 0.5f * (float) Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0f ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0f ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code getUnnormalizedRotation_orthogonal}; reached only through it. */
+    private void getUnnormalizedRotation_orthogonal_s6f858fd1_tail(FloatQuatImpl _dst, float _t15, float _t10, float _sp0, float _t1, float _r0, float _t2, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        getUnnormalizedRotation_orthogonal_s6f858fd1_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+    }
+
 
     /**
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
@@ -1389,54 +1405,35 @@ public class Float4x4Impl implements Float4x4 {
      */
     private FloatQuat getUnnormalizedRotation_orthogonal(@Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t0 = this.m00 + this.m11;
-        float _t1 = this.m21 - this.m12;
-        float _t2 = Math.max(this.m11, this.m22);
-        float _t4 = this.m01 + this.m10;
-        float _t6 = this.m02 + this.m20;
-        float _t7 = this.m02 - this.m20;
-        float _t8 = this.m12 + this.m21;
-        float _t9 = this.m10 - this.m01;
-        float _t10 = this.m22 + _t0;
+        float _r0 = this.m00;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m12;
+        float _r4 = this.m22;
+        float _r5 = this.m01;
+        float _r6 = this.m10;
+        float _r7 = this.m02;
+        float _r8 = this.m20;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t2 = Math.max(_r1, _r4);
+        float _t4 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r6 - _r5;
+        float _t10 = _r4 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (this.m00 - (this.m11 + this.m22));
-        float _t16 = 1.0f + (this.m11 - (this.m00 + this.m22));
-        float _t17 = 1.0f + (this.m22 - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r4));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r4));
+        float _t17 = 1.0f + (_r4 - _t0);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            float _buf0 = _sp0 * _t1;
-            d.y = _sp0 * _t7;
-            d.z = _sp0 * _t9;
-            d.w = 0.5f * (float) Math.sqrt(_t14);
-            d.x = _buf0;
-        } else {
-            if (this.m00 > _t2) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                d.y = _sp3 * _t4;
-                d.z = _sp3 * _t6;
-                d.w = _sp3 * _t1;
-                d.x = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    float _buf0 = _sp1 * _t4;
-                    d.y = 0.5f * (float) Math.sqrt(_t16);
-                    d.z = _sp1 * _t8;
-                    d.w = _sp1 * _t7;
-                    d.x = _buf0;
-                } else {
-                    float _buf0 = _sp2 * _t6;
-                    d.y = _sp2 * _t8;
-                    d.z = 0.5f * (float) Math.sqrt(_t17);
-                    d.w = _sp2 * _t9;
-                    d.x = _buf0;
-                }
-            }
-        }
+        getUnnormalizedRotation_orthogonal_s6f858fd1_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
+
 
 
     /**
@@ -1462,6 +1459,20 @@ public class Float4x4Impl implements Float4x4 {
         return getUnnormalizedRotation_general(dest);
     }
 
+    /** Private store group 0 of {@code getUnnormalizedRotation}: computes and stores it; reached only through it. */
+    private void getUnnormalizedRotation_s62e3ac38_c0(DoubleQuatImpl _dst, float _t10, float _sp0, float _t1, float _r0, float _t2, float _t15, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.x = _t10 > 0.0f ? _sp0 * _t1 : _r0 > _t2 ? 0.5f * (float) Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0f ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0f ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code getUnnormalizedRotation}; reached only through it. */
+    private void getUnnormalizedRotation_s62e3ac38_tail(DoubleQuatImpl _dst, float _t15, float _t10, float _sp0, float _t1, float _r0, float _t2, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        getUnnormalizedRotation_s62e3ac38_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+    }
+
 
     /**
      * Extract the rotation of this matrix as a quaternion directly from the linear block without
@@ -1475,52 +1486,32 @@ public class Float4x4Impl implements Float4x4 {
      */
     public DoubleQuat getUnnormalizedRotation(@Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t0 = this.m00 + this.m11;
-        float _t1 = this.m21 - this.m12;
-        float _t2 = Math.max(this.m11, this.m22);
-        float _t4 = this.m01 + this.m10;
-        float _t6 = this.m02 + this.m20;
-        float _t7 = this.m02 - this.m20;
-        float _t8 = this.m12 + this.m21;
-        float _t9 = this.m10 - this.m01;
-        float _t10 = this.m22 + _t0;
+        float _r0 = this.m00;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m12;
+        float _r4 = this.m22;
+        float _r5 = this.m01;
+        float _r6 = this.m10;
+        float _r7 = this.m02;
+        float _r8 = this.m20;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t2 = Math.max(_r1, _r4);
+        float _t4 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r6 - _r5;
+        float _t10 = _r4 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (this.m00 - (this.m11 + this.m22));
-        float _t16 = 1.0f + (this.m11 - (this.m00 + this.m22));
-        float _t17 = 1.0f + (this.m22 - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r4));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r4));
+        float _t17 = 1.0f + (_r4 - _t0);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            float _buf0 = _sp0 * _t1;
-            d.y = _sp0 * _t7;
-            d.z = _sp0 * _t9;
-            d.w = 0.5f * (float) Math.sqrt(_t14);
-            d.x = _buf0;
-        } else {
-            if (this.m00 > _t2) {
-                float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                d.y = _sp3 * _t4;
-                d.z = _sp3 * _t6;
-                d.w = _sp3 * _t1;
-                d.x = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    float _buf0 = _sp1 * _t4;
-                    d.y = 0.5f * (float) Math.sqrt(_t16);
-                    d.z = _sp1 * _t8;
-                    d.w = _sp1 * _t7;
-                    d.x = _buf0;
-                } else {
-                    float _buf0 = _sp2 * _t6;
-                    d.y = _sp2 * _t8;
-                    d.z = 0.5f * (float) Math.sqrt(_t17);
-                    d.w = _sp2 * _t9;
-                    d.x = _buf0;
-                }
-            }
-        }
+        getUnnormalizedRotation_s62e3ac38_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
 
@@ -9870,25 +9861,28 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s1bedcc31_c0(FloatRigidImpl _dst, float _r9, float _r10, float _r11, float _t61, float _sp0, float _t36, float _t47, float _t37, float _t63, float _t18, float _t19, float _sp1, float _t53, float _sp2, float _t54) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t61 > 0.0f ? _sp0 * _t36 : _t47 > _t37 ? 0.5f * (float) Math.sqrt(_t63) : _t18 > _t19 ? _sp1 * _t53 : _sp2 * _t54;
+    }
 
-    /**
-     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
-     * through the public {@code toRigid} dispatcher.
-     */
-    private FloatRigid toRigid_general(@Mutated FloatRigid dest) {
-        FloatRigidImpl d = (FloatRigidImpl) dest;
-        float _t15 = (1.0f / (float) Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21));
-        float _t16 = (1.0f / (float) Math.sqrt(this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22));
-        float _t17 = (1.0f / (float) Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20));
-        float _t18 = this.m11 * _t15;
-        float _t19 = this.m22 * _t16;
-        float _t20 = this.m10 * _t17;
-        float _t21 = this.m21 * _t15;
-        float _t22 = this.m20 * _t17;
-        float _t23 = this.m02 * _t16;
-        float _t24 = this.m12 * _t16;
-        float _t25 = this.m00 * _t17;
-        float _t26 = this.m01 * _t15;
+    /** Private store group 1 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s1bedcc31_c1(FloatRigidImpl _dst, float _t61, float _sp0, float _t55, float _t47, float _t37, float _sp3, float _t53, float _t18, float _t19, float _t64, float _sp2, float _t38, float _t56, float _t54, float _sp1, float _t65, float _t62, float _t36) {
+        _dst.rY = _t61 > 0.0f ? _sp0 * _t55 : _t47 > _t37 ? _sp3 * _t53 : _t18 > _t19 ? 0.5f * (float) Math.sqrt(_t64) : _sp2 * _t38;
+        _dst.rZ = _t61 > 0.0f ? _sp0 * _t56 : _t47 > _t37 ? _sp3 * _t54 : _t18 > _t19 ? _sp1 * _t38 : 0.5f * (float) Math.sqrt(_t65);
+        _dst.rW = _t61 > 0.0f ? 0.5f * (float) Math.sqrt(_t62) : _t47 > _t37 ? _sp3 * _t36 : _t18 > _t19 ? _sp1 * _t55 : _sp2 * _t56;
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s1bedcc31_tail(FloatRigidImpl _dst, float _r8, float _t17, float _r3, float _t16, float _r4, float _r6, float _r0, float _t15, float _t21, float _t18, float _t19, float _t20, float _r9, float _r10, float _r11) {
+        float _t22 = _r8 * _t17;
+        float _t23 = _r3 * _t16;
+        float _t24 = _r4 * _t16;
+        float _t25 = _r6 * _t17;
+        float _t26 = _r0 * _t15;
         float _t36 = _t21 - _t24;
         float _t37 = Math.max(_t18, _t19);
         float _t38 = _t24 + _t21;
@@ -9911,6 +9905,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t56 = _t48 - _t26;
         float _t61 = _t18 + (_t19 + _t47);
         float _t62 = _t18 + (_t19 + _t50);
+        toRigid_general_s1bedcc31_tail2(_dst, _t50, _t19, _t18, _t51, _t62, _r9, _r10, _r11, _t61, _t36, _t47, _t37, _t53, _t54, _t55, _t38, _t56);
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s1bedcc31_tail2(FloatRigidImpl _dst, float _t50, float _t19, float _t18, float _t51, float _t62, float _r9, float _r10, float _r11, float _t61, float _t36, float _t47, float _t37, float _t53, float _t54, float _t55, float _t38, float _t56) {
         float _t63 = _t50 - _t19 - _t18;
         float _t64 = _t18 + (_t51 - _t19);
         float _t65 = _t19 + (_t51 - _t18);
@@ -9918,34 +9917,37 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
-        if (_t61 > 0.0f) {
-            d.rX = _sp0 * _t36;
-            d.rY = _sp0 * _t55;
-            d.rZ = _sp0 * _t56;
-            d.rW = 0.5f * (float) Math.sqrt(_t62);
-        } else {
-            if (_t47 > _t37) {
-                d.rX = 0.5f * (float) Math.sqrt(_t63);
-                d.rY = _sp3 * _t53;
-                d.rZ = _sp3 * _t54;
-                d.rW = _sp3 * _t36;
-            } else {
-                if (_t18 > _t19) {
-                    d.rX = _sp1 * _t53;
-                    d.rY = 0.5f * (float) Math.sqrt(_t64);
-                    d.rZ = _sp1 * _t38;
-                    d.rW = _sp1 * _t55;
-                } else {
-                    d.rX = _sp2 * _t54;
-                    d.rY = _sp2 * _t38;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t65);
-                    d.rW = _sp2 * _t56;
-                }
-            }
-        }
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
+        toRigid_general_s1bedcc31_c0(_dst, _r9, _r10, _r11, _t61, _sp0, _t36, _t47, _t37, _t63, _t18, _t19, _sp1, _t53, _sp2, _t54);
+        toRigid_general_s1bedcc31_c1(_dst, _t61, _sp0, _t55, _t47, _t37, _sp3, _t53, _t18, _t19, _t64, _sp2, _t38, _t56, _t54, _sp1, _t65, _t62, _t36);
+    }
+
+
+    /**
+     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
+     * through the public {@code toRigid} dispatcher.
+     */
+    private FloatRigid toRigid_general(@Mutated FloatRigid dest) {
+        FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        float _t15 = (1.0f / (float) Math.sqrt(_r0 * _r0 + _r1 * _r1 + _r2 * _r2));
+        float _t16 = (1.0f / (float) Math.sqrt(_r3 * _r3 + _r4 * _r4 + _r5 * _r5));
+        float _t17 = (1.0f / (float) Math.sqrt(_r6 * _r6 + _r7 * _r7 + _r8 * _r8));
+        float _t18 = _r1 * _t15;
+        float _t19 = _r5 * _t16;
+        float _t20 = _r7 * _t17;
+        float _t21 = _r2 * _t15;
+        toRigid_general_s1bedcc31_tail(d, _r8, _t17, _r3, _t16, _r4, _r6, _r0, _t15, _t21, _t18, _t19, _t20, _r9, _r10, _r11);
         return d;
     }
 
@@ -9966,33 +9968,28 @@ public class Float4x4Impl implements Float4x4 {
         return toRigid_general(dest);
     }
 
+    /** Private store group 0 of {@code toRigid}: computes and stores it; reached only through it. */
+    private void toRigid_s14533caa_c0(DoubleRigidImpl _dst, float _r9, float _r10, float _r11, float _t61, float _sp0, float _t36, float _t47, float _t37, float _t63, float _t18, float _t19, float _sp1, float _t53, float _sp2, float _t54) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t61 > 0.0f ? _sp0 * _t36 : _t47 > _t37 ? 0.5f * (float) Math.sqrt(_t63) : _t18 > _t19 ? _sp1 * _t53 : _sp2 * _t54;
+    }
 
-    /**
-     * Decompose this matrix into a rigid transform: translation from the last column, rotation from
-     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
-     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length)
-     * and store the result in {@code dest}.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleRigid toRigid(@Mutated DoubleRigid dest) {
-        DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        float _t15 = (1.0f / (float) Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21));
-        float _t16 = (1.0f / (float) Math.sqrt(this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22));
-        float _t17 = (1.0f / (float) Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20));
-        float _t18 = this.m11 * _t15;
-        float _t19 = this.m22 * _t16;
-        float _t20 = this.m10 * _t17;
-        float _t21 = this.m21 * _t15;
-        float _t22 = this.m20 * _t17;
-        float _t23 = this.m02 * _t16;
-        float _t24 = this.m12 * _t16;
-        float _t25 = this.m00 * _t17;
-        float _t26 = this.m01 * _t15;
+    /** Private store group 1 of {@code toRigid}: computes and stores it; reached only through it. */
+    private void toRigid_s14533caa_c1(DoubleRigidImpl _dst, float _t61, float _sp0, float _t55, float _t47, float _t37, float _sp3, float _t53, float _t18, float _t19, float _t64, float _sp2, float _t38, float _t56, float _t54, float _sp1, float _t65, float _t62, float _t36) {
+        _dst.rY = _t61 > 0.0f ? _sp0 * _t55 : _t47 > _t37 ? _sp3 * _t53 : _t18 > _t19 ? 0.5f * (float) Math.sqrt(_t64) : _sp2 * _t38;
+        _dst.rZ = _t61 > 0.0f ? _sp0 * _t56 : _t47 > _t37 ? _sp3 * _t54 : _t18 > _t19 ? _sp1 * _t38 : 0.5f * (float) Math.sqrt(_t65);
+        _dst.rW = _t61 > 0.0f ? 0.5f * (float) Math.sqrt(_t62) : _t47 > _t37 ? _sp3 * _t36 : _t18 > _t19 ? _sp1 * _t55 : _sp2 * _t56;
+    }
+
+    /** Private tail of {@code toRigid}; reached only through it. */
+    private void toRigid_s14533caa_tail(DoubleRigidImpl _dst, float _r8, float _t17, float _r3, float _t16, float _r4, float _r6, float _r0, float _t15, float _t21, float _t18, float _t19, float _t20, float _r9, float _r10, float _r11) {
+        float _t22 = _r8 * _t17;
+        float _t23 = _r3 * _t16;
+        float _t24 = _r4 * _t16;
+        float _t25 = _r6 * _t17;
+        float _t26 = _r0 * _t15;
         float _t36 = _t21 - _t24;
         float _t37 = Math.max(_t18, _t19);
         float _t38 = _t24 + _t21;
@@ -10015,6 +10012,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t56 = _t48 - _t26;
         float _t61 = _t18 + (_t19 + _t47);
         float _t62 = _t18 + (_t19 + _t50);
+        toRigid_s14533caa_tail2(_dst, _t50, _t19, _t18, _t51, _t62, _r9, _r10, _r11, _t61, _t36, _t47, _t37, _t53, _t54, _t55, _t38, _t56);
+    }
+
+    /** Private tail of {@code toRigid}; reached only through it. */
+    private void toRigid_s14533caa_tail2(DoubleRigidImpl _dst, float _t50, float _t19, float _t18, float _t51, float _t62, float _r9, float _r10, float _r11, float _t61, float _t36, float _t47, float _t37, float _t53, float _t54, float _t55, float _t38, float _t56) {
         float _t63 = _t50 - _t19 - _t18;
         float _t64 = _t18 + (_t51 - _t19);
         float _t65 = _t19 + (_t51 - _t18);
@@ -10022,34 +10024,45 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
-        if (_t61 > 0.0f) {
-            d.rX = _sp0 * _t36;
-            d.rY = _sp0 * _t55;
-            d.rZ = _sp0 * _t56;
-            d.rW = 0.5f * (float) Math.sqrt(_t62);
-        } else {
-            if (_t47 > _t37) {
-                d.rX = 0.5f * (float) Math.sqrt(_t63);
-                d.rY = _sp3 * _t53;
-                d.rZ = _sp3 * _t54;
-                d.rW = _sp3 * _t36;
-            } else {
-                if (_t18 > _t19) {
-                    d.rX = _sp1 * _t53;
-                    d.rY = 0.5f * (float) Math.sqrt(_t64);
-                    d.rZ = _sp1 * _t38;
-                    d.rW = _sp1 * _t55;
-                } else {
-                    d.rX = _sp2 * _t54;
-                    d.rY = _sp2 * _t38;
-                    d.rZ = 0.5f * (float) Math.sqrt(_t65);
-                    d.rW = _sp2 * _t56;
-                }
-            }
-        }
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
+        toRigid_s14533caa_c0(_dst, _r9, _r10, _r11, _t61, _sp0, _t36, _t47, _t37, _t63, _t18, _t19, _sp1, _t53, _sp2, _t54);
+        toRigid_s14533caa_c1(_dst, _t61, _sp0, _t55, _t47, _t37, _sp3, _t53, _t18, _t19, _t64, _sp2, _t38, _t56, _t54, _sp1, _t65, _t62, _t36);
+    }
+
+
+    /**
+     * Decompose this matrix into a rigid transform: translation from the last column, rotation from
+     * the column-normalized upper-left 3x3 block (scale is removed by normalizing the columns, but
+     * shear is not removed: a sheared block yields a rotation quaternion that is not unit length)
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleRigid toRigid(@Mutated DoubleRigid dest) {
+        DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        float _t15 = (1.0f / (float) Math.sqrt(_r0 * _r0 + _r1 * _r1 + _r2 * _r2));
+        float _t16 = (1.0f / (float) Math.sqrt(_r3 * _r3 + _r4 * _r4 + _r5 * _r5));
+        float _t17 = (1.0f / (float) Math.sqrt(_r6 * _r6 + _r7 * _r7 + _r8 * _r8));
+        float _t18 = _r1 * _t15;
+        float _t19 = _r5 * _t16;
+        float _t20 = _r7 * _t17;
+        float _t21 = _r2 * _t15;
+        toRigid_s14533caa_tail(d, _r8, _t17, _r3, _t16, _r4, _r6, _r0, _t15, _t21, _t18, _t19, _t20, _r9, _r10, _r11);
         return d;
     }
 
@@ -10093,29 +10106,37 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s6e32d690_c0(FloatTransformImpl _dst, float _r9, float _r10, float _r11, float _t62, float _sp0, float _t37, float _t48, float _t38, float _t64, float _t19, float _t20, float _sp1, float _t54, float _sp2, float _t55) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
 
-    /**
-     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
-     * through the public {@code toTransform} dispatcher.
-     */
-    private FloatTransform toTransform_general(@Mutated FloatTransform dest) {
-        FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t18 = (float) Math.sqrt(_t14);
-        float _t17 = 1.0f / _t18;
-        float _t19 = this.m11 * _t15;
-        float _t20 = this.m22 * _t16;
-        float _t21 = this.m10 * _t17;
-        float _t22 = this.m21 * _t15;
-        float _t23 = this.m20 * _t17;
-        float _t24 = this.m02 * _t16;
-        float _t25 = this.m12 * _t16;
-        float _t26 = this.m00 * _t17;
-        float _t27 = this.m01 * _t15;
+    /** Private store group 1 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s6e32d690_c1(FloatTransformImpl _dst, float _t62, float _sp0, float _t56, float _t48, float _t38, float _sp3, float _t54, float _t19, float _t20, float _t65, float _sp2, float _t39, float _t57, float _t55, float _sp1, float _t66, float _t63, float _t37) {
+        _dst.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s6e32d690_c2(FloatTransformImpl _dst, float _t47, float _t18, float _t12, float _t13) {
+        _dst.sX = _t47 < 0.0f ? -_t18 : _t18;
+        _dst.sY = (float) Math.sqrt(_t12);
+        _dst.sZ = (float) Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s6e32d690_tail(FloatTransformImpl _dst, float _r7, float _t17, float _r2, float _t15, float _r8, float _r3, float _t16, float _r4, float _r6, float _r0, float _t19, float _t20, float _r9, float _r10, float _r11, float _t18, float _t12, float _t13) {
+        float _t21 = _r7 * _t17;
+        float _t22 = _r2 * _t15;
+        float _t23 = _r8 * _t17;
+        float _t24 = _r3 * _t16;
+        float _t25 = _r4 * _t16;
+        float _t26 = _r6 * _t17;
+        float _t27 = _r0 * _t15;
         float _t37 = _t22 - _t25;
         float _t38 = Math.max(_t19, _t20);
         float _t39 = _t25 + _t22;
@@ -10136,6 +10157,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t55 = _t24 + _t50;
         float _t56 = _t24 - _t50;
         float _t57 = _t49 - _t27;
+        toTransform_general_s6e32d690_tail2(_dst, _t19, _t20, _t48, _t51, _t52, _r9, _r10, _r11, _t37, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s6e32d690_tail2(FloatTransformImpl _dst, float _t19, float _t20, float _t48, float _t51, float _t52, float _r9, float _r10, float _r11, float _t37, float _t38, float _t54, float _t55, float _t56, float _t39, float _t57, float _t47, float _t18, float _t12, float _t13) {
         float _t62 = _t19 + (_t20 + _t48);
         float _t63 = _t19 + (_t20 + _t51);
         float _t64 = _t51 - _t20 - _t19;
@@ -10145,16 +10171,40 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
-        d.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        d.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
-        d.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
-        d.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        d.sX = _t47 < 0.0f ? -_t18 : _t18;
-        d.sY = (float) Math.sqrt(_t12);
-        d.sZ = (float) Math.sqrt(_t13);
+        toTransform_general_s6e32d690_c0(_dst, _r9, _r10, _r11, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        toTransform_general_s6e32d690_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        toTransform_general_s6e32d690_c2(_dst, _t47, _t18, _t12, _t13);
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private FloatTransform toTransform_general(@Mutated FloatTransform dest) {
+        FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t18 = (float) Math.sqrt(_t14);
+        float _t17 = 1.0f / _t18;
+        float _t19 = _r1 * _t15;
+        float _t20 = _r5 * _t16;
+        toTransform_general_s6e32d690_tail(d, _r7, _t17, _r2, _t15, _r8, _r3, _t16, _r4, _r6, _r0, _t19, _t20, _r9, _r10, _r11, _t18, _t12, _t13);
         return d;
     }
 
@@ -10175,37 +10225,37 @@ public class Float4x4Impl implements Float4x4 {
         return toTransform_general(dest);
     }
 
+    /** Private store group 0 of {@code toTransform}: computes and stores it; reached only through it. */
+    private void toTransform_s5d096289_c0(DoubleTransformImpl _dst, float _r9, float _r10, float _r11, float _t62, float _sp0, float _t37, float _t48, float _t38, float _t64, float _t19, float _t20, float _sp1, float _t54, float _sp2, float _t55) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
 
-    /**
-     * Decompose this matrix into a TRS transform: translation from the last column, scale from the
-     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
-     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
-     * rotation quaternion that is not unit length) and store the result in {@code dest}.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleTransform toTransform(@Mutated DoubleTransform dest) {
-        DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        float _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        float _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        float _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t15 = (1.0f / (float) Math.sqrt(_t12));
-        float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t18 = (float) Math.sqrt(_t14);
-        float _t17 = 1.0f / _t18;
-        float _t19 = this.m11 * _t15;
-        float _t20 = this.m22 * _t16;
-        float _t21 = this.m10 * _t17;
-        float _t22 = this.m21 * _t15;
-        float _t23 = this.m20 * _t17;
-        float _t24 = this.m02 * _t16;
-        float _t25 = this.m12 * _t16;
-        float _t26 = this.m00 * _t17;
-        float _t27 = this.m01 * _t15;
+    /** Private store group 1 of {@code toTransform}: computes and stores it; reached only through it. */
+    private void toTransform_s5d096289_c1(DoubleTransformImpl _dst, float _t62, float _sp0, float _t56, float _t48, float _t38, float _sp3, float _t54, float _t19, float _t20, float _t65, float _sp2, float _t39, float _t57, float _t55, float _sp1, float _t66, float _t63, float _t37) {
+        _dst.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code toTransform}: computes and stores it; reached only through it. */
+    private void toTransform_s5d096289_c2(DoubleTransformImpl _dst, float _t47, float _t18, float _t12, float _t13) {
+        _dst.sX = _t47 < 0.0f ? -_t18 : _t18;
+        _dst.sY = (float) Math.sqrt(_t12);
+        _dst.sZ = (float) Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code toTransform}; reached only through it. */
+    private void toTransform_s5d096289_tail(DoubleTransformImpl _dst, float _r7, float _t17, float _r2, float _t15, float _r8, float _r3, float _t16, float _r4, float _r6, float _r0, float _t19, float _t20, float _r9, float _r10, float _r11, float _t18, float _t12, float _t13) {
+        float _t21 = _r7 * _t17;
+        float _t22 = _r2 * _t15;
+        float _t23 = _r8 * _t17;
+        float _t24 = _r3 * _t16;
+        float _t25 = _r4 * _t16;
+        float _t26 = _r6 * _t17;
+        float _t27 = _r0 * _t15;
         float _t37 = _t22 - _t25;
         float _t38 = Math.max(_t19, _t20);
         float _t39 = _t25 + _t22;
@@ -10226,6 +10276,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t55 = _t24 + _t50;
         float _t56 = _t24 - _t50;
         float _t57 = _t49 - _t27;
+        toTransform_s5d096289_tail2(_dst, _t19, _t20, _t48, _t51, _t52, _r9, _r10, _r11, _t37, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code toTransform}; reached only through it. */
+    private void toTransform_s5d096289_tail2(DoubleTransformImpl _dst, float _t19, float _t20, float _t48, float _t51, float _t52, float _r9, float _r10, float _r11, float _t37, float _t38, float _t54, float _t55, float _t56, float _t39, float _t57, float _t47, float _t18, float _t12, float _t13) {
         float _t62 = _t19 + (_t20 + _t48);
         float _t63 = _t19 + (_t20 + _t51);
         float _t64 = _t51 - _t20 - _t19;
@@ -10235,16 +10290,48 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
-        d.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        d.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
-        d.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
-        d.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        d.sX = _t47 < 0.0f ? -_t18 : _t18;
-        d.sY = (float) Math.sqrt(_t12);
-        d.sZ = (float) Math.sqrt(_t13);
+        toTransform_s5d096289_c0(_dst, _r9, _r10, _r11, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        toTransform_s5d096289_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        toTransform_s5d096289_c2(_dst, _t47, _t18, _t12, _t13);
+    }
+
+
+    /**
+     * Decompose this matrix into a TRS transform: translation from the last column, scale from the
+     * column lengths of the upper-left 3x3 block, rotation from the column-normalized block (scale
+     * is removed by normalizing the columns, but shear is not removed: a sheared block yields a
+     * rotation quaternion that is not unit length) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleTransform toTransform(@Mutated DoubleTransform dest) {
+        DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m11;
+        float _r2 = this.m21;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m00;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        float _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        float _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        float _t15 = (1.0f / (float) Math.sqrt(_t12));
+        float _t16 = (1.0f / (float) Math.sqrt(_t13));
+        float _t18 = (float) Math.sqrt(_t14);
+        float _t17 = 1.0f / _t18;
+        float _t19 = _r1 * _t15;
+        float _t20 = _r5 * _t16;
+        toTransform_s5d096289_tail(d, _r7, _t17, _r2, _t15, _r8, _r3, _t16, _r4, _r6, _r0, _t19, _t20, _r9, _r10, _r11, _t18, _t12, _t13);
         return d;
     }
 
@@ -10257,33 +10344,21 @@ public class Float4x4Impl implements Float4x4 {
         return getNormalizedRotation_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeRotation_general}: computes and stores it; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_c0(FloatQuatImpl _dst, float _t102, float _sp0, float _t81, float _t93, float _t82, float _t107, float _t46, float _t72, float _sp1, float _t97, float _sp2, float _t100, float _t101, float _sp3, float _t108, float _t84, float _t98, float _t109, float _t106) {
+        _dst.x = _t102 > 0.0f ? _sp0 * _t81 : _t93 > _t82 ? 0.5f * (float) Math.sqrt(_t107) : _t46 > _t72 ? _sp1 * _t97 : _sp2 * _t100;
+        _dst.y = _t102 > 0.0f ? _sp0 * _t101 : _t93 > _t82 ? _sp3 * _t97 : _t46 > _t72 ? 0.5f * (float) Math.sqrt(_t108) : _sp2 * _t84;
+        _dst.z = _t102 > 0.0f ? _sp0 * _t98 : _t93 > _t82 ? _sp3 * _t100 : _t46 > _t72 ? _sp1 * _t84 : 0.5f * (float) Math.sqrt(_t109);
+        _dst.w = _t102 > 0.0f ? 0.5f * (float) Math.sqrt(_t106) : _t93 > _t82 ? _sp3 * _t81 : _t46 > _t72 ? _sp1 * _t101 : _sp2 * _t98;
+    }
 
-    /**
-     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeRotation} dispatcher.
-     */
-    private FloatQuat decomposeRotation_general(@Mutated FloatQuat dest) {
-        FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        float _t9, _t10, _t11;
-        if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0f;
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-        }
-        float _t23 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        float _t24 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t28 = _t24 * _t9;
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_tail(FloatQuatImpl _dst, float _t24, float _t10, float _t11, float _r3, float _t23, float _t9, float _r4, float _r5, float _r6, float _t28, float _r7, float _r8) {
         float _t29 = _t24 * _t10;
         float _t30 = _t24 * _t11;
-        float _t31 = this.m01 - _t23 * _t9;
-        float _t32 = this.m11 - _t23 * _t10;
-        float _t33 = this.m21 - _t23 * _t11;
+        float _t31 = _r3 - _t23 * _t9;
+        float _t32 = _r4 - _t23 * _t10;
+        float _t33 = _r5 - _t23 * _t11;
         float _t41 = _t31 * _t31 + _t32 * _t32 + _t33 * _t33;
         float _t42 = (1.0f / (float) Math.sqrt(_t41));
         float _t46, _t47, _t48;
@@ -10296,11 +10371,16 @@ public class Float4x4Impl implements Float4x4 {
             _t47 = 0.0f;
             _t48 = 0.0f;
         }
-        float _t53 = (this.m02 - _t28) * _t47 + (this.m12 - _t29) * _t46 + (this.m22 - _t30) * _t48;
-        float _t60 = this.m02 - _t53 * _t47 - _t28;
-        float _t61 = this.m12 - _t53 * _t46 - _t29;
-        float _t62 = this.m22 - _t53 * _t48 - _t30;
+        float _t53 = (_r6 - _t28) * _t47 + (_r7 - _t29) * _t46 + (_r8 - _t30) * _t48;
+        float _t60 = _r6 - _t53 * _t47 - _t28;
+        float _t61 = _r7 - _t53 * _t46 - _t29;
+        float _t62 = _r8 - _t53 * _t48 - _t30;
         float _t67 = _t60 * _t60 + _t61 * _t61 + _t62 * _t62;
+        decomposeRotation_general_s6f858fd1_tail2(_dst, _t67, _t62, _t61, _t60, _t48, _t46, _t9, _t47, _t10, _t11);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_tail2(FloatQuatImpl _dst, float _t67, float _t62, float _t61, float _t60, float _t48, float _t46, float _t9, float _t47, float _t10, float _t11) {
         float _t68 = (1.0f / (float) Math.sqrt(_t67));
         float _t72, _t73, _t74;
         if (_t67 != 0.0f) {
@@ -10331,6 +10411,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t98 = _t94 - _t47;
         float _t100 = _t95 + _t74;
         float _t101 = _t74 - _t95;
+        decomposeRotation_general_s6f858fd1_tail3(_dst, _t96, _t72, _t93, _t46, _t81, _t82, _t97, _t100, _t101, _t84, _t98);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s6f858fd1_tail3(FloatQuatImpl _dst, float _t96, float _t72, float _t93, float _t46, float _t81, float _t82, float _t97, float _t100, float _t101, float _t84, float _t98) {
         float _t102 = _t96 + _t72;
         float _t106 = 1.0f + _t102;
         float _t107 = 1.0f + (_t93 - (_t46 + _t72));
@@ -10340,31 +10425,41 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t108));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t109));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t107));
-        if (_t102 > 0.0f) {
-            d.x = _sp0 * _t81;
-            d.y = _sp0 * _t101;
-            d.z = _sp0 * _t98;
-            d.w = 0.5f * (float) Math.sqrt(_t106);
+        decomposeRotation_general_s6f858fd1_c0(_dst, _t102, _sp0, _t81, _t93, _t82, _t107, _t46, _t72, _sp1, _t97, _sp2, _t100, _t101, _sp3, _t108, _t84, _t98, _t109, _t106);
+    }
+
+
+    /**
+     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeRotation} dispatcher.
+     */
+    private FloatQuat decomposeRotation_general(@Mutated FloatQuat dest) {
+        FloatQuatImpl d = (FloatQuatImpl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t5 = (1.0f / (float) Math.sqrt(_t4));
+        float _t9, _t10, _t11;
+        if (_t4 != 0.0f) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            if (_t93 > _t82) {
-                d.x = 0.5f * (float) Math.sqrt(_t107);
-                d.y = _sp3 * _t97;
-                d.z = _sp3 * _t100;
-                d.w = _sp3 * _t81;
-            } else {
-                if (_t46 > _t72) {
-                    d.x = _sp1 * _t97;
-                    d.y = 0.5f * (float) Math.sqrt(_t108);
-                    d.z = _sp1 * _t84;
-                    d.w = _sp1 * _t101;
-                } else {
-                    d.x = _sp2 * _t100;
-                    d.y = _sp2 * _t84;
-                    d.z = 0.5f * (float) Math.sqrt(_t109);
-                    d.w = _sp2 * _t98;
-                }
-            }
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
         }
+        float _t23 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t24 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        float _t28 = _t24 * _t9;
+        decomposeRotation_general_s6f858fd1_tail(d, _t24, _t10, _t11, _r3, _t23, _t9, _r4, _r5, _r6, _t28, _r7, _r8);
         return d;
     }
 
@@ -10385,42 +10480,21 @@ public class Float4x4Impl implements Float4x4 {
         return decomposeRotation_general(dest);
     }
 
+    /** Private store group 0 of {@code decomposeRotation}: computes and stores it; reached only through it. */
+    private void decomposeRotation_s62e3ac38_c0(DoubleQuatImpl _dst, float _t102, float _sp0, float _t81, float _t93, float _t82, float _t107, float _t46, float _t72, float _sp1, float _t97, float _sp2, float _t100, float _t101, float _sp3, float _t108, float _t84, float _t98, float _t109, float _t106) {
+        _dst.x = _t102 > 0.0f ? _sp0 * _t81 : _t93 > _t82 ? 0.5f * (float) Math.sqrt(_t107) : _t46 > _t72 ? _sp1 * _t97 : _sp2 * _t100;
+        _dst.y = _t102 > 0.0f ? _sp0 * _t101 : _t93 > _t82 ? _sp3 * _t97 : _t46 > _t72 ? 0.5f * (float) Math.sqrt(_t108) : _sp2 * _t84;
+        _dst.z = _t102 > 0.0f ? _sp0 * _t98 : _t93 > _t82 ? _sp3 * _t100 : _t46 > _t72 ? _sp1 * _t84 : 0.5f * (float) Math.sqrt(_t109);
+        _dst.w = _t102 > 0.0f ? 0.5f * (float) Math.sqrt(_t106) : _t93 > _t82 ? _sp3 * _t81 : _t46 > _t72 ? _sp1 * _t101 : _sp2 * _t98;
+    }
 
-    /**
-     * Extract the rotation part of this matrix and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of each column must lie roughly between
-     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
-     * <p>
-     * The computation is performed at {@code float} precision; each result component is widened to
-     * {@code double} only when stored.
-     *
-     * @param dest will hold the result
-     * @return dest
-     */
-    public DoubleQuat decomposeRotation(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        float _t9, _t10, _t11;
-        if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0f;
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-        }
-        float _t23 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        float _t24 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t28 = _t24 * _t9;
+    /** Private tail of {@code decomposeRotation}; reached only through it. */
+    private void decomposeRotation_s62e3ac38_tail(DoubleQuatImpl _dst, float _t24, float _t10, float _t11, float _r3, float _t23, float _t9, float _r4, float _r5, float _r6, float _t28, float _r7, float _r8) {
         float _t29 = _t24 * _t10;
         float _t30 = _t24 * _t11;
-        float _t31 = this.m01 - _t23 * _t9;
-        float _t32 = this.m11 - _t23 * _t10;
-        float _t33 = this.m21 - _t23 * _t11;
+        float _t31 = _r3 - _t23 * _t9;
+        float _t32 = _r4 - _t23 * _t10;
+        float _t33 = _r5 - _t23 * _t11;
         float _t41 = _t31 * _t31 + _t32 * _t32 + _t33 * _t33;
         float _t42 = (1.0f / (float) Math.sqrt(_t41));
         float _t46, _t47, _t48;
@@ -10433,11 +10507,16 @@ public class Float4x4Impl implements Float4x4 {
             _t47 = 0.0f;
             _t48 = 0.0f;
         }
-        float _t53 = (this.m02 - _t28) * _t47 + (this.m12 - _t29) * _t46 + (this.m22 - _t30) * _t48;
-        float _t60 = this.m02 - _t53 * _t47 - _t28;
-        float _t61 = this.m12 - _t53 * _t46 - _t29;
-        float _t62 = this.m22 - _t53 * _t48 - _t30;
+        float _t53 = (_r6 - _t28) * _t47 + (_r7 - _t29) * _t46 + (_r8 - _t30) * _t48;
+        float _t60 = _r6 - _t53 * _t47 - _t28;
+        float _t61 = _r7 - _t53 * _t46 - _t29;
+        float _t62 = _r8 - _t53 * _t48 - _t30;
         float _t67 = _t60 * _t60 + _t61 * _t61 + _t62 * _t62;
+        decomposeRotation_s62e3ac38_tail2(_dst, _t67, _t62, _t61, _t60, _t48, _t46, _t9, _t47, _t10, _t11);
+    }
+
+    /** Private tail of {@code decomposeRotation}; reached only through it. */
+    private void decomposeRotation_s62e3ac38_tail2(DoubleQuatImpl _dst, float _t67, float _t62, float _t61, float _t60, float _t48, float _t46, float _t9, float _t47, float _t10, float _t11) {
         float _t68 = (1.0f / (float) Math.sqrt(_t67));
         float _t72, _t73, _t74;
         if (_t67 != 0.0f) {
@@ -10468,6 +10547,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t98 = _t94 - _t47;
         float _t100 = _t95 + _t74;
         float _t101 = _t74 - _t95;
+        decomposeRotation_s62e3ac38_tail3(_dst, _t96, _t72, _t93, _t46, _t81, _t82, _t97, _t100, _t101, _t84, _t98);
+    }
+
+    /** Private tail of {@code decomposeRotation}; reached only through it. */
+    private void decomposeRotation_s62e3ac38_tail3(DoubleQuatImpl _dst, float _t96, float _t72, float _t93, float _t46, float _t81, float _t82, float _t97, float _t100, float _t101, float _t84, float _t98) {
         float _t102 = _t96 + _t72;
         float _t106 = 1.0f + _t102;
         float _t107 = 1.0f + (_t93 - (_t46 + _t72));
@@ -10477,31 +10561,50 @@ public class Float4x4Impl implements Float4x4 {
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t108));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t109));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t107));
-        if (_t102 > 0.0f) {
-            d.x = _sp0 * _t81;
-            d.y = _sp0 * _t101;
-            d.z = _sp0 * _t98;
-            d.w = 0.5f * (float) Math.sqrt(_t106);
+        decomposeRotation_s62e3ac38_c0(_dst, _t102, _sp0, _t81, _t93, _t82, _t107, _t46, _t72, _sp1, _t97, _sp2, _t100, _t101, _sp3, _t108, _t84, _t98, _t109, _t106);
+    }
+
+
+    /**
+     * Extract the rotation part of this matrix and store the result in {@code dest}.
+     * <p>
+     * The squared length is formed at {@code float} precision, so the result is exact only while it
+     * stays within the {@code float} range: the magnitude of each column must lie roughly between
+     * {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat decomposeRotation(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t5 = (1.0f / (float) Math.sqrt(_t4));
+        float _t9, _t10, _t11;
+        if (_t4 != 0.0f) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            if (_t93 > _t82) {
-                d.x = 0.5f * (float) Math.sqrt(_t107);
-                d.y = _sp3 * _t97;
-                d.z = _sp3 * _t100;
-                d.w = _sp3 * _t81;
-            } else {
-                if (_t46 > _t72) {
-                    d.x = _sp1 * _t97;
-                    d.y = 0.5f * (float) Math.sqrt(_t108);
-                    d.z = _sp1 * _t84;
-                    d.w = _sp1 * _t101;
-                } else {
-                    d.x = _sp2 * _t100;
-                    d.y = _sp2 * _t84;
-                    d.z = 0.5f * (float) Math.sqrt(_t109);
-                    d.w = _sp2 * _t98;
-                }
-            }
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
         }
+        float _t23 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t24 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        float _t28 = _t24 * _t9;
+        decomposeRotation_s62e3ac38_tail(d, _t24, _t10, _t11, _r3, _t23, _t9, _r4, _r5, _r6, _t28, _r7, _r8);
         return d;
     }
 
@@ -10514,34 +10617,21 @@ public class Float4x4Impl implements Float4x4 {
         return getScale_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeScale_general}: computes and stores it; reached only through it. */
+    private void decomposeScale_general_s52bd9409_c0(Float3Impl _dst, float _t44, float _t70, float _t46, float _t71, float _t10, float _t72, float _t45, float _t11, float _t12, float _t6, float _t39, float _t65) {
+        _dst.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
+        _dst.y = (float) Math.sqrt(_t39);
+        _dst.z = (float) Math.sqrt(_t65);
+    }
 
-    /**
-     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeScale} dispatcher.
-     */
-    private Float3 decomposeScale_general(@Mutated Float3 dest) {
-        Float3Impl d = (Float3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t6 = (float) Math.sqrt(_t4);
-        float _t5 = 1.0f / _t6;
-        float _t10, _t11, _t12;
-        if (_t4 != 0.0f) {
-            _t10 = this.m00 * _t5;
-            _t11 = this.m10 * _t5;
-            _t12 = this.m20 * _t5;
-        } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
-        }
-        float _t21 = this.m01 * _t10 + this.m11 * _t11 + this.m21 * _t12;
-        float _t22 = this.m02 * _t10 + this.m12 * _t11 + this.m22 * _t12;
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s52bd9409_tail(Float3Impl _dst, float _t22, float _t10, float _t11, float _t12, float _r3, float _t21, float _r4, float _r5, float _r6, float _r7, float _r8, float _t6) {
         float _t26 = _t22 * _t10;
         float _t27 = _t22 * _t11;
         float _t28 = _t22 * _t12;
-        float _t29 = this.m01 - _t21 * _t10;
-        float _t30 = this.m11 - _t21 * _t11;
-        float _t31 = this.m21 - _t21 * _t12;
+        float _t29 = _r3 - _t21 * _t10;
+        float _t30 = _r4 - _t21 * _t11;
+        float _t31 = _r5 - _t21 * _t12;
         float _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
         float _t40 = (1.0f / (float) Math.sqrt(_t39));
         float _t44, _t45, _t46;
@@ -10554,10 +10644,15 @@ public class Float4x4Impl implements Float4x4 {
             _t45 = 0.0f;
             _t46 = 0.0f;
         }
-        float _t51 = (this.m02 - _t26) * _t45 + (this.m12 - _t27) * _t44 + (this.m22 - _t28) * _t46;
-        float _t58 = this.m02 - _t51 * _t45 - _t26;
-        float _t59 = this.m12 - _t51 * _t44 - _t27;
-        float _t60 = this.m22 - _t51 * _t46 - _t28;
+        float _t51 = (_r6 - _t26) * _t45 + (_r7 - _t27) * _t44 + (_r8 - _t28) * _t46;
+        float _t58 = _r6 - _t51 * _t45 - _t26;
+        float _t59 = _r7 - _t51 * _t44 - _t27;
+        float _t60 = _r8 - _t51 * _t46 - _t28;
+        decomposeScale_general_s52bd9409_tail2(_dst, _t58, _t59, _t60, _t44, _t46, _t10, _t45, _t11, _t12, _t6, _t39);
+    }
+
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s52bd9409_tail2(Float3Impl _dst, float _t58, float _t59, float _t60, float _t44, float _t46, float _t10, float _t45, float _t11, float _t12, float _t6, float _t39) {
         float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
         float _t66 = (1.0f / (float) Math.sqrt(_t65));
         float _t70, _t71, _t72;
@@ -10570,9 +10665,41 @@ public class Float4x4Impl implements Float4x4 {
             _t71 = 0.0f;
             _t72 = 0.0f;
         }
-        d.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
-        d.y = (float) Math.sqrt(_t39);
-        d.z = (float) Math.sqrt(_t65);
+        decomposeScale_general_s52bd9409_c0(_dst, _t44, _t70, _t46, _t71, _t10, _t72, _t45, _t11, _t12, _t6, _t39, _t65);
+    }
+
+
+    /**
+     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeScale} dispatcher.
+     */
+    private Float3 decomposeScale_general(@Mutated Float3 dest) {
+        Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t6 = (float) Math.sqrt(_t4);
+        float _t5 = 1.0f / _t6;
+        float _t10, _t11, _t12;
+        if (_t4 != 0.0f) {
+            _t10 = _r0 * _t5;
+            _t11 = _r1 * _t5;
+            _t12 = _r2 * _t5;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
+        float _t21 = _r3 * _t10 + _r4 * _t11 + _r5 * _t12;
+        float _t22 = _r6 * _t10 + _r7 * _t11 + _r8 * _t12;
+        decomposeScale_general_s52bd9409_tail(d, _t22, _t10, _t11, _t12, _r3, _t21, _r4, _r5, _r6, _r7, _r8, _t6);
         return d;
     }
 
@@ -10595,6 +10722,57 @@ public class Float4x4Impl implements Float4x4 {
         return decomposeScale_general(dest);
     }
 
+    /** Private store group 0 of {@code decomposeScale}: computes and stores it; reached only through it. */
+    private void decomposeScale_s34d82902_c0(Double3Impl _dst, float _t44, float _t70, float _t46, float _t71, float _t10, float _t72, float _t45, float _t11, float _t12, float _t6, float _t39, float _t65) {
+        _dst.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
+        _dst.y = (float) Math.sqrt(_t39);
+        _dst.z = (float) Math.sqrt(_t65);
+    }
+
+    /** Private tail of {@code decomposeScale}; reached only through it. */
+    private void decomposeScale_s34d82902_tail(Double3Impl _dst, float _t22, float _t10, float _t11, float _t12, float _r3, float _t21, float _r4, float _r5, float _r6, float _r7, float _r8, float _t6) {
+        float _t26 = _t22 * _t10;
+        float _t27 = _t22 * _t11;
+        float _t28 = _t22 * _t12;
+        float _t29 = _r3 - _t21 * _t10;
+        float _t30 = _r4 - _t21 * _t11;
+        float _t31 = _r5 - _t21 * _t12;
+        float _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        float _t40 = (1.0f / (float) Math.sqrt(_t39));
+        float _t44, _t45, _t46;
+        if (_t39 != 0.0f) {
+            _t44 = _t30 * _t40;
+            _t45 = _t29 * _t40;
+            _t46 = _t31 * _t40;
+        } else {
+            _t44 = 0.0f;
+            _t45 = 0.0f;
+            _t46 = 0.0f;
+        }
+        float _t51 = (_r6 - _t26) * _t45 + (_r7 - _t27) * _t44 + (_r8 - _t28) * _t46;
+        float _t58 = _r6 - _t51 * _t45 - _t26;
+        float _t59 = _r7 - _t51 * _t44 - _t27;
+        float _t60 = _r8 - _t51 * _t46 - _t28;
+        decomposeScale_s34d82902_tail2(_dst, _t58, _t59, _t60, _t44, _t46, _t10, _t45, _t11, _t12, _t6, _t39);
+    }
+
+    /** Private tail of {@code decomposeScale}; reached only through it. */
+    private void decomposeScale_s34d82902_tail2(Double3Impl _dst, float _t58, float _t59, float _t60, float _t44, float _t46, float _t10, float _t45, float _t11, float _t12, float _t6, float _t39) {
+        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
+        float _t66 = (1.0f / (float) Math.sqrt(_t65));
+        float _t70, _t71, _t72;
+        if (_t65 != 0.0f) {
+            _t70 = _t60 * _t66;
+            _t71 = _t59 * _t66;
+            _t72 = _t58 * _t66;
+        } else {
+            _t70 = 0.0f;
+            _t71 = 0.0f;
+            _t72 = 0.0f;
+        }
+        decomposeScale_s34d82902_c0(_dst, _t44, _t70, _t46, _t71, _t10, _t72, _t45, _t11, _t12, _t6, _t39, _t65);
+    }
+
 
     /**
      * Extract the scaling factors of this matrix via Gram-Schmidt orthogonalization (skew-aware;
@@ -10613,58 +10791,31 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Double3 decomposeScale(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m01;
+        float _r4 = this.m11;
+        float _r5 = this.m21;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = this.m22;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
         float _t6 = (float) Math.sqrt(_t4);
         float _t5 = 1.0f / _t6;
         float _t10, _t11, _t12;
         if (_t4 != 0.0f) {
-            _t10 = this.m00 * _t5;
-            _t11 = this.m10 * _t5;
-            _t12 = this.m20 * _t5;
+            _t10 = _r0 * _t5;
+            _t11 = _r1 * _t5;
+            _t12 = _r2 * _t5;
         } else {
             _t10 = 0.0f;
             _t11 = 0.0f;
             _t12 = 0.0f;
         }
-        float _t21 = this.m01 * _t10 + this.m11 * _t11 + this.m21 * _t12;
-        float _t22 = this.m02 * _t10 + this.m12 * _t11 + this.m22 * _t12;
-        float _t26 = _t22 * _t10;
-        float _t27 = _t22 * _t11;
-        float _t28 = _t22 * _t12;
-        float _t29 = this.m01 - _t21 * _t10;
-        float _t30 = this.m11 - _t21 * _t11;
-        float _t31 = this.m21 - _t21 * _t12;
-        float _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
-        float _t40 = (1.0f / (float) Math.sqrt(_t39));
-        float _t44, _t45, _t46;
-        if (_t39 != 0.0f) {
-            _t44 = _t30 * _t40;
-            _t45 = _t29 * _t40;
-            _t46 = _t31 * _t40;
-        } else {
-            _t44 = 0.0f;
-            _t45 = 0.0f;
-            _t46 = 0.0f;
-        }
-        float _t51 = (this.m02 - _t26) * _t45 + (this.m12 - _t27) * _t44 + (this.m22 - _t28) * _t46;
-        float _t58 = this.m02 - _t51 * _t45 - _t26;
-        float _t59 = this.m12 - _t51 * _t44 - _t27;
-        float _t60 = this.m22 - _t51 * _t46 - _t28;
-        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
-        float _t66 = (1.0f / (float) Math.sqrt(_t65));
-        float _t70, _t71, _t72;
-        if (_t65 != 0.0f) {
-            _t70 = _t60 * _t66;
-            _t71 = _t59 * _t66;
-            _t72 = _t58 * _t66;
-        } else {
-            _t70 = 0.0f;
-            _t71 = 0.0f;
-            _t72 = 0.0f;
-        }
-        d.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0f ? -_t6 : _t6;
-        d.y = (float) Math.sqrt(_t39);
-        d.z = (float) Math.sqrt(_t65);
+        float _t21 = _r3 * _t10 + _r4 * _t11 + _r5 * _t12;
+        float _t22 = _r6 * _t10 + _r7 * _t11 + _r8 * _t12;
+        decomposeScale_s34d82902_tail(d, _t22, _t10, _t11, _t12, _r3, _t21, _r4, _r5, _r6, _r7, _r8, _t6);
         return d;
     }
 
@@ -10677,33 +10828,20 @@ public class Float4x4Impl implements Float4x4 {
         return getEulerAnglesXYZ_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeSkew_general}: computes and stores it; reached only through it. */
+    private void decomposeSkew_general_s52bd9409_c0(Float3Impl _dst, float _t51, float _t66, float _t87, float _t67, float _t40) {
+        _dst.x = _t51 * _t66;
+        _dst.y = _t87 < 0.0f ? -_t67 : _t67;
+        _dst.z = _t87 < 0.0f ? -_t40 : _t40;
+    }
 
-    /**
-     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
-     * through the public {@code decomposeSkew} dispatcher.
-     */
-    private Float3 decomposeSkew_general(@Mutated Float3 dest) {
-        Float3Impl d = (Float3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        float _t9, _t10, _t11;
-        if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0f;
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-        }
-        float _t20 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t21 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        float _t22 = _t20 * _t9;
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s52bd9409_tail(Float3Impl _dst, float _t20, float _t10, float _t11, float _r6, float _t21, float _t9, float _r7, float _r8, float _r3, float _t22, float _r4, float _r5) {
         float _t26 = _t20 * _t10;
         float _t27 = _t20 * _t11;
-        float _t29 = this.m01 - _t21 * _t9;
-        float _t30 = this.m11 - _t21 * _t10;
-        float _t31 = this.m21 - _t21 * _t11;
+        float _t29 = _r6 - _t21 * _t9;
+        float _t30 = _r7 - _t21 * _t10;
+        float _t31 = _r8 - _t21 * _t11;
         float _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
         float _t39 = (1.0f / (float) Math.sqrt(_t38));
         float _t40 = _t21 * _t39;
@@ -10717,10 +10855,15 @@ public class Float4x4Impl implements Float4x4 {
             _t45 = 0.0f;
             _t46 = 0.0f;
         }
-        float _t51 = (this.m02 - _t22) * _t44 + (this.m12 - _t26) * _t45 + (this.m22 - _t27) * _t46;
-        float _t58 = this.m02 - _t51 * _t44 - _t22;
-        float _t59 = this.m12 - _t51 * _t45 - _t26;
-        float _t60 = this.m22 - _t51 * _t46 - _t27;
+        float _t51 = (_r3 - _t22) * _t44 + (_r4 - _t26) * _t45 + (_r5 - _t27) * _t46;
+        float _t58 = _r3 - _t51 * _t44 - _t22;
+        float _t59 = _r4 - _t51 * _t45 - _t26;
+        float _t60 = _r5 - _t51 * _t46 - _t27;
+        decomposeSkew_general_s52bd9409_tail2(_dst, _t58, _t59, _t60, _t20, _t45, _t46, _t9, _t44, _t10, _t11, _t51, _t40);
+    }
+
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s52bd9409_tail2(Float3Impl _dst, float _t58, float _t59, float _t60, float _t20, float _t45, float _t46, float _t9, float _t44, float _t10, float _t11, float _t51, float _t40) {
         float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
         float _t66 = (1.0f / (float) Math.sqrt(_t65));
         float _t67 = _t20 * _t66;
@@ -10735,14 +10878,41 @@ public class Float4x4Impl implements Float4x4 {
             _t73 = 0.0f;
         }
         float _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
-        if (_t87 < 0.0f) {
-            d.y = -_t67;
-            d.z = -_t40;
+        decomposeSkew_general_s52bd9409_c0(_dst, _t51, _t66, _t87, _t67, _t40);
+    }
+
+
+    /**
+     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
+     * through the public {@code decomposeSkew} dispatcher.
+     */
+    private Float3 decomposeSkew_general(@Mutated Float3 dest) {
+        Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m01;
+        float _r7 = this.m11;
+        float _r8 = this.m21;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        float _t5 = (1.0f / (float) Math.sqrt(_t4));
+        float _t9, _t10, _t11;
+        if (_t4 != 0.0f) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            d.y = _t67;
-            d.z = _t40;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
         }
-        d.x = _t51 * _t66;
+        float _t20 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t21 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        float _t22 = _t20 * _t9;
+        decomposeSkew_general_s52bd9409_tail(d, _t20, _t10, _t11, _r6, _t21, _t9, _r7, _r8, _r3, _t22, _r4, _r5);
         return d;
     }
 
@@ -10765,6 +10935,59 @@ public class Float4x4Impl implements Float4x4 {
         return decomposeSkew_general(dest);
     }
 
+    /** Private store group 0 of {@code decomposeSkew}: computes and stores it; reached only through it. */
+    private void decomposeSkew_s34d82902_c0(Double3Impl _dst, float _t51, float _t66, float _t87, float _t67, float _t40) {
+        _dst.x = _t51 * _t66;
+        _dst.y = _t87 < 0.0f ? -_t67 : _t67;
+        _dst.z = _t87 < 0.0f ? -_t40 : _t40;
+    }
+
+    /** Private tail of {@code decomposeSkew}; reached only through it. */
+    private void decomposeSkew_s34d82902_tail(Double3Impl _dst, float _t20, float _t10, float _t11, float _r6, float _t21, float _t9, float _r7, float _r8, float _r3, float _t22, float _r4, float _r5) {
+        float _t26 = _t20 * _t10;
+        float _t27 = _t20 * _t11;
+        float _t29 = _r6 - _t21 * _t9;
+        float _t30 = _r7 - _t21 * _t10;
+        float _t31 = _r8 - _t21 * _t11;
+        float _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        float _t39 = (1.0f / (float) Math.sqrt(_t38));
+        float _t40 = _t21 * _t39;
+        float _t44, _t45, _t46;
+        if (_t38 != 0.0f) {
+            _t44 = _t29 * _t39;
+            _t45 = _t30 * _t39;
+            _t46 = _t31 * _t39;
+        } else {
+            _t44 = 0.0f;
+            _t45 = 0.0f;
+            _t46 = 0.0f;
+        }
+        float _t51 = (_r3 - _t22) * _t44 + (_r4 - _t26) * _t45 + (_r5 - _t27) * _t46;
+        float _t58 = _r3 - _t51 * _t44 - _t22;
+        float _t59 = _r4 - _t51 * _t45 - _t26;
+        float _t60 = _r5 - _t51 * _t46 - _t27;
+        decomposeSkew_s34d82902_tail2(_dst, _t58, _t59, _t60, _t20, _t45, _t46, _t9, _t44, _t10, _t11, _t51, _t40);
+    }
+
+    /** Private tail of {@code decomposeSkew}; reached only through it. */
+    private void decomposeSkew_s34d82902_tail2(Double3Impl _dst, float _t58, float _t59, float _t60, float _t20, float _t45, float _t46, float _t9, float _t44, float _t10, float _t11, float _t51, float _t40) {
+        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
+        float _t66 = (1.0f / (float) Math.sqrt(_t65));
+        float _t67 = _t20 * _t66;
+        float _t71, _t72, _t73;
+        if (_t65 != 0.0f) {
+            _t71 = _t60 * _t66;
+            _t72 = _t59 * _t66;
+            _t73 = _t58 * _t66;
+        } else {
+            _t71 = 0.0f;
+            _t72 = 0.0f;
+            _t73 = 0.0f;
+        }
+        float _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
+        decomposeSkew_s34d82902_c0(_dst, _t51, _t66, _t87, _t67, _t40);
+    }
+
 
     /**
      * Extract the shear (skew) factors of this matrix via Gram-Schmidt orthogonalization, as
@@ -10783,65 +11006,31 @@ public class Float4x4Impl implements Float4x4 {
      */
     public Double3 decomposeSkew(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
+        float _r0 = this.m00;
+        float _r1 = this.m10;
+        float _r2 = this.m20;
+        float _r3 = this.m02;
+        float _r4 = this.m12;
+        float _r5 = this.m22;
+        float _r6 = this.m01;
+        float _r7 = this.m11;
+        float _r8 = this.m21;
+        float _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
         float _t5 = (1.0f / (float) Math.sqrt(_t4));
         float _t9, _t10, _t11;
         if (_t4 != 0.0f) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
             _t9 = 0.0f;
             _t10 = 0.0f;
             _t11 = 0.0f;
         }
-        float _t20 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        float _t21 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
+        float _t20 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        float _t21 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
         float _t22 = _t20 * _t9;
-        float _t26 = _t20 * _t10;
-        float _t27 = _t20 * _t11;
-        float _t29 = this.m01 - _t21 * _t9;
-        float _t30 = this.m11 - _t21 * _t10;
-        float _t31 = this.m21 - _t21 * _t11;
-        float _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
-        float _t39 = (1.0f / (float) Math.sqrt(_t38));
-        float _t40 = _t21 * _t39;
-        float _t44, _t45, _t46;
-        if (_t38 != 0.0f) {
-            _t44 = _t29 * _t39;
-            _t45 = _t30 * _t39;
-            _t46 = _t31 * _t39;
-        } else {
-            _t44 = 0.0f;
-            _t45 = 0.0f;
-            _t46 = 0.0f;
-        }
-        float _t51 = (this.m02 - _t22) * _t44 + (this.m12 - _t26) * _t45 + (this.m22 - _t27) * _t46;
-        float _t58 = this.m02 - _t51 * _t44 - _t22;
-        float _t59 = this.m12 - _t51 * _t45 - _t26;
-        float _t60 = this.m22 - _t51 * _t46 - _t27;
-        float _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
-        float _t66 = (1.0f / (float) Math.sqrt(_t65));
-        float _t67 = _t20 * _t66;
-        float _t71, _t72, _t73;
-        if (_t65 != 0.0f) {
-            _t71 = _t60 * _t66;
-            _t72 = _t59 * _t66;
-            _t73 = _t58 * _t66;
-        } else {
-            _t71 = 0.0f;
-            _t72 = 0.0f;
-            _t73 = 0.0f;
-        }
-        float _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
-        if (_t87 < 0.0f) {
-            d.y = -_t67;
-            d.z = -_t40;
-        } else {
-            d.y = _t67;
-            d.z = _t40;
-        }
-        d.x = _t51 * _t66;
+        decomposeSkew_s34d82902_tail(d, _t20, _t10, _t11, _r6, _t21, _t9, _r7, _r8, _r3, _t22, _r4, _r5);
         return d;
     }
 
@@ -11102,34 +11291,29 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code frustumAabb_no_orthogonal}: computes and stores it; reached only through it. */
+    private void frustumAabb_no_orthogonal_s544e0688_c0(FloatAABBImpl _dst, float _t138, float _t139, float _t140, float _t141, float _t142, float _t143, float _t144, float _t145, float _t122, float _t123, float _t124, float _t125, float _t126, float _t127, float _t128, float _t129, float _t146, float _t147, float _t148, float _t149, float _t150, float _t151, float _t152, float _t153) {
+        _dst.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t138, _t139), _t140), _t141), _t142), _t143), _t144), _t145);
+        _dst.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t122, _t123), _t124), _t125), _t126), _t127), _t128), _t129);
+        _dst.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t146, _t147), _t148), _t149), _t150), _t151), _t152), _t153);
+    }
 
-    /**
-     * Private body of {@code frustumAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
-     * by runtime matrix properties; reached only through the public {@code frustumAabb} dispatcher.
-     */
-    private FloatAABB frustumAabb_no_orthogonal(@Mutated FloatAABB dest) {
-        FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t0 = this.m23 - -1.0f;
-        float _t1 = this.m13 - -1.0f;
-        float _t2 = this.m03 - -1.0f;
-        float _t3 = this.m03 - 1.0f;
-        float _t4 = this.m13 - 1.0f;
-        float _t5 = this.m23 - 1.0f;
-        float _t12 = this.m12 * _t0;
-        float _t13 = this.m22 * _t1;
-        float _t14 = this.m11 * _t0;
-        float _t15 = this.m21 * _t1;
-        float _t16 = this.m22 * _t4;
-        float _t17 = this.m21 * _t4;
-        float _t18 = this.m12 * _t5;
-        float _t19 = this.m11 * _t5;
-        float _t20 = this.m10 * _t0;
-        float _t21 = this.m20 * _t1;
-        float _t22 = this.m20 * _t4;
-        float _t23 = this.m10 * _t5;
-        float _t24 = this.m11 * this.m22 - this.m12 * this.m21;
-        float _t25 = this.m10 * this.m22 - this.m12 * this.m20;
-        float _t26 = this.m10 * this.m21 - this.m11 * this.m20;
+    /** Private store group 1 of {@code frustumAabb_no_orthogonal}: computes and stores it; reached only through it. */
+    private void frustumAabb_no_orthogonal_s544e0688_c1(FloatAABBImpl _dst, float _t138, float _t139, float _t140, float _t141, float _t142, float _t143, float _t144, float _t145, float _t122, float _t123, float _t124, float _t125, float _t126, float _t127, float _t128, float _t129, float _t146, float _t147, float _t148, float _t149, float _t150, float _t151, float _t152, float _t153) {
+        _dst.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t138, _t139), _t140), _t141), _t142), _t143), _t144), _t145);
+        _dst.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t122, _t123), _t124), _t125), _t126), _t127), _t128), _t129);
+        _dst.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t146, _t147), _t148), _t149), _t150), _t151), _t152), _t153);
+    }
+
+    /** Private tail of {@code frustumAabb_no_orthogonal}; reached only through it. */
+    private void frustumAabb_no_orthogonal_s544e0688_tail(FloatAABBImpl _dst, float _r7, float _t0, float _r8, float _t1, float _t4, float _t5, float _r5, float _r4, float _r3, float _r6, float _t12, float _t13, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t2, float _t3, float _r9, float _r10, float _r11) {
+        float _t20 = _r7 * _t0;
+        float _t21 = _r8 * _t1;
+        float _t22 = _r8 * _t4;
+        float _t23 = _r7 * _t5;
+        float _t24 = _r5 * _r4 - _r3 * _r6;
+        float _t25 = _r7 * _r4 - _r3 * _r8;
+        float _t26 = _r7 * _r6 - _r5 * _r8;
         float _t30 = _t12 - _t13;
         float _t31 = _t14 - _t15;
         float _t32 = _t12 - _t16;
@@ -11148,22 +11332,32 @@ public class Float4x4Impl implements Float4x4 {
         float _t45 = _t3 * _t25;
         float _t46 = _t2 * _t26;
         float _t47 = _t3 * _t26;
-        float _t73 = this.m01 * _t30 - this.m02 * _t31;
-        float _t74 = this.m01 * _t32 - this.m02 * _t33;
-        float _t75 = this.m01 * _t34 - this.m02 * _t35;
-        float _t76 = this.m01 * _t36 - this.m02 * _t37;
-        float _t77 = this.m00 * _t30 - this.m02 * _t38;
-        float _t78 = this.m00 * _t32 - this.m02 * _t39;
-        float _t79 = this.m00 * _t34 - this.m02 * _t40;
-        float _t80 = this.m00 * _t36 - this.m02 * _t41;
-        float _t81 = this.m00 * _t31 - this.m01 * _t38;
-        float _t82 = this.m00 * _t33 - this.m01 * _t39;
-        float _t83 = this.m00 * _t35 - this.m01 * _t40;
-        float _t84 = this.m00 * _t37 - this.m01 * _t41;
-        float _t85 = this.m00 * _t24 - this.m01 * _t25 + this.m02 * _t26;
+        float _t73 = _r9 * _t30 - _r10 * _t31;
+        frustumAabb_no_orthogonal_s544e0688_tail2(_dst, _r9, _t32, _r10, _t33, _t34, _t35, _t36, _t37, _r11, _t30, _t38, _t39, _t40, _t41, _t31, _t24, _t25, _t26, _t44, _t45, _t73, _t42, _t43, _t46, _t47);
+    }
+
+    /** Private tail of {@code frustumAabb_no_orthogonal}; reached only through it. */
+    private void frustumAabb_no_orthogonal_s544e0688_tail2(FloatAABBImpl _dst, float _r9, float _t32, float _r10, float _t33, float _t34, float _t35, float _t36, float _t37, float _r11, float _t30, float _t38, float _t39, float _t40, float _t41, float _t31, float _t24, float _t25, float _t26, float _t44, float _t45, float _t73, float _t42, float _t43, float _t46, float _t47) {
+        float _t74 = _r9 * _t32 - _r10 * _t33;
+        float _t75 = _r9 * _t34 - _r10 * _t35;
+        float _t76 = _r9 * _t36 - _r10 * _t37;
+        float _t77 = _r11 * _t30 - _r10 * _t38;
+        float _t78 = _r11 * _t32 - _r10 * _t39;
+        float _t79 = _r11 * _t34 - _r10 * _t40;
+        float _t80 = _r11 * _t36 - _r10 * _t41;
+        float _t81 = _r11 * _t31 - _r9 * _t38;
+        float _t82 = _r11 * _t33 - _r9 * _t39;
+        float _t83 = _r11 * _t35 - _r9 * _t40;
+        float _t84 = _r11 * _t37 - _r9 * _t41;
+        float _t85 = _r11 * _t24 - _r9 * _t25 + _r10 * _t26;
         float _t86 = Math.abs(_t85);
         float _t113 = _t86 > _t86 * 9.536743E-7f ? _t85 : Math.copySign(0.0f, _t85);
         float _t113_inv = 1.0f / _t113;
+        frustumAabb_no_orthogonal_s544e0688_tail3(_dst, _t77, _t44, _t113_inv, _t45, _t78, _t79, _t80, _t73, _t42, _t43, _t74, _t75, _t76, _t81, _t46, _t47, _t82, _t83, _t84);
+    }
+
+    /** Private tail of {@code frustumAabb_no_orthogonal}; reached only through it. */
+    private void frustumAabb_no_orthogonal_s544e0688_tail3(FloatAABBImpl _dst, float _t77, float _t44, float _t113_inv, float _t45, float _t78, float _t79, float _t80, float _t73, float _t42, float _t43, float _t74, float _t75, float _t76, float _t81, float _t46, float _t47, float _t82, float _t83, float _t84) {
         float _t122 = (_t77 + _t44) * _t113_inv;
         float _t123 = (_t77 + _t45) * _t113_inv;
         float _t124 = (_t78 + _t45) * _t113_inv;
@@ -11182,19 +11376,19 @@ public class Float4x4Impl implements Float4x4 {
         float _t145 = -((_t76 + _t42) * _t113_inv);
         float _t146 = -((_t81 + _t46) * _t113_inv);
         float _t147 = -((_t81 + _t47) * _t113_inv);
+        frustumAabb_no_orthogonal_s544e0688_tail4(_dst, _t82, _t47, _t113_inv, _t46, _t83, _t84, _t138, _t139, _t140, _t141, _t142, _t143, _t144, _t145, _t122, _t123, _t124, _t125, _t126, _t127, _t128, _t129, _t146, _t147);
+    }
+
+    /** Private tail of {@code frustumAabb_no_orthogonal}; reached only through it. */
+    private void frustumAabb_no_orthogonal_s544e0688_tail4(FloatAABBImpl _dst, float _t82, float _t47, float _t113_inv, float _t46, float _t83, float _t84, float _t138, float _t139, float _t140, float _t141, float _t142, float _t143, float _t144, float _t145, float _t122, float _t123, float _t124, float _t125, float _t126, float _t127, float _t128, float _t129, float _t146, float _t147) {
         float _t148 = -((_t82 + _t47) * _t113_inv);
         float _t149 = -((_t82 + _t46) * _t113_inv);
         float _t150 = -((_t83 + _t46) * _t113_inv);
         float _t151 = -((_t83 + _t47) * _t113_inv);
         float _t152 = -((_t84 + _t47) * _t113_inv);
         float _t153 = -((_t84 + _t46) * _t113_inv);
-        d.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t138, _t139), _t140), _t141), _t142), _t143), _t144), _t145);
-        d.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t122, _t123), _t124), _t125), _t126), _t127), _t128), _t129);
-        d.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t146, _t147), _t148), _t149), _t150), _t151), _t152), _t153);
-        d.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t138, _t139), _t140), _t141), _t142), _t143), _t144), _t145);
-        d.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t122, _t123), _t124), _t125), _t126), _t127), _t128), _t129);
-        d.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t146, _t147), _t148), _t149), _t150), _t151), _t152), _t153);
-        return d;
+        frustumAabb_no_orthogonal_s544e0688_c0(_dst, _t138, _t139, _t140, _t141, _t142, _t143, _t144, _t145, _t122, _t123, _t124, _t125, _t126, _t127, _t128, _t129, _t146, _t147, _t148, _t149, _t150, _t151, _t152, _t153);
+        frustumAabb_no_orthogonal_s544e0688_c1(_dst, _t138, _t139, _t140, _t141, _t142, _t143, _t144, _t145, _t122, _t123, _t124, _t125, _t126, _t127, _t128, _t129, _t146, _t147, _t148, _t149, _t150, _t151, _t152, _t153);
     }
 
 
@@ -11202,38 +11396,82 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code frustumAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
      * by runtime matrix properties; reached only through the public {@code frustumAabb} dispatcher.
      */
-    private FloatAABB frustumAabb_no_general(@Mutated FloatAABB dest) {
+    private FloatAABB frustumAabb_no_orthogonal(@Mutated FloatAABB dest) {
         FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t0 = this.m01 + this.m31;
-        float _t1 = this.m12 + this.m32;
-        float _t2 = this.m23 + this.m33;
-        float _t3 = this.m13 + this.m33;
-        float _t4 = this.m22 + this.m32;
-        float _t5 = this.m02 + this.m32;
-        float _t6 = this.m11 + this.m31;
-        float _t7 = this.m21 + this.m31;
-        float _t8 = this.m03 + this.m33;
-        float _t9 = this.m00 + this.m30;
-        float _t10 = this.m10 + this.m30;
-        float _t11 = this.m20 + this.m30;
-        float _t12 = this.m22 - this.m32;
-        float _t13 = this.m21 - this.m31;
-        float _t14 = this.m20 - this.m30;
-        float _t15 = this.m01 - this.m31;
-        float _t16 = this.m02 - this.m32;
-        float _t17 = this.m03 - this.m33;
-        float _t18 = this.m00 - this.m30;
-        float _t19 = this.m12 - this.m32;
-        float _t20 = this.m13 - this.m33;
-        float _t21 = this.m11 - this.m31;
-        float _t22 = this.m10 - this.m30;
-        float _t23 = this.m23 - this.m33;
+        float _r0 = this.m23;
+        float _r1 = this.m13;
+        float _r2 = this.m03;
+        float _r3 = this.m12;
+        float _r4 = this.m22;
+        float _r5 = this.m11;
+        float _r6 = this.m21;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _r9 = this.m01;
+        float _r10 = this.m02;
+        float _r11 = this.m00;
+        float _t0 = _r0 - -1.0f;
+        float _t1 = _r1 - -1.0f;
+        float _t2 = _r2 - -1.0f;
+        float _t3 = _r2 - 1.0f;
+        float _t4 = _r1 - 1.0f;
+        float _t5 = _r0 - 1.0f;
+        float _t12 = _r3 * _t0;
+        float _t13 = _r4 * _t1;
+        float _t14 = _r5 * _t0;
+        float _t15 = _r6 * _t1;
+        float _t16 = _r4 * _t4;
+        float _t17 = _r6 * _t4;
+        float _t18 = _r3 * _t5;
+        float _t19 = _r5 * _t5;
+        frustumAabb_no_orthogonal_s544e0688_tail(d, _r7, _t0, _r8, _t1, _t4, _t5, _r5, _r4, _r3, _r6, _t12, _t13, _t14, _t15, _t16, _t17, _t18, _t19, _t2, _t3, _r9, _r10, _r11);
+        return d;
+    }
+
+    /** Private store group 0 of {@code frustumAabb_no_general}: computes and stores it; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_c0(FloatAABBImpl _dst, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t319, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323, float _t324, float _t325, float _t326, float _t327) {
+        _dst.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
+        _dst.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
+        _dst.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
+    }
+
+    /** Private store group 1 of {@code frustumAabb_no_general}: computes and stores it; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_c1(FloatAABBImpl _dst, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t319, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323, float _t324, float _t325, float _t326, float _t327) {
+        _dst.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
+        _dst.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
+        _dst.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail(FloatAABBImpl _dst, float _r10, float _r1, float _r11, float _r5, float _r12, float _r13, float _r14, float _r15, float _r7, float _r3, float _r0, float _r8, float _r2, float _r6, float _r9, float _r4, float _t1, float _t2, float _t3, float _t4, float _t6, float _t0, float _t5) {
+        float _t7 = _r10 + _r1;
+        float _t8 = _r11 + _r5;
+        float _t9 = _r12 + _r13;
+        float _t10 = _r14 + _r13;
+        float _t11 = _r15 + _r13;
+        float _t12 = _r7 - _r3;
+        float _t13 = _r10 - _r1;
+        float _t14 = _r15 - _r13;
+        float _t15 = _r0 - _r1;
+        float _t16 = _r8 - _r3;
+        float _t17 = _r11 - _r5;
+        float _t18 = _r12 - _r13;
+        float _t19 = _r2 - _r3;
+        float _t20 = _r6 - _r5;
+        float _t21 = _r9 - _r1;
+        float _t22 = _r14 - _r13;
+        float _t23 = _r4 - _r5;
         float _t72 = _t1 * _t2 - _t3 * _t4;
         float _t73 = _t6 * _t2 - _t3 * _t7;
         float _t74 = _t6 * _t4 - _t1 * _t7;
         float _t75 = _t10 * _t4 - _t1 * _t11;
         float _t76 = _t10 * _t7 - _t6 * _t11;
         float _t77 = _t6 * _t12 - _t1 * _t13;
+        frustumAabb_no_general_s544e0688_tail2(_dst, _t10, _t12, _t1, _t14, _t13, _t6, _t2, _t19, _t4, _t20, _t21, _t7, _t22, _t11, _t23, _t3, _t9, _t74, _t0, _t75, _t5, _t76, _t77, _t18, _t15, _t16, _t72, _t8, _t17, _t73);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail2(FloatAABBImpl _dst, float _t10, float _t12, float _t1, float _t14, float _t13, float _t6, float _t2, float _t19, float _t4, float _t20, float _t21, float _t7, float _t22, float _t11, float _t23, float _t3, float _t9, float _t74, float _t0, float _t75, float _t5, float _t76, float _t77, float _t18, float _t15, float _t16, float _t72, float _t8, float _t17, float _t73) {
         float _t78 = _t10 * _t12 - _t1 * _t14;
         float _t79 = _t10 * _t13 - _t6 * _t14;
         float _t80 = _t2 * _t19 - _t4 * _t20;
@@ -11246,6 +11484,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t87 = _t22 * _t13 - _t21 * _t14;
         float _t88 = _t1 * _t23 - _t3 * _t12;
         float _t89 = _t6 * _t23 - _t3 * _t13;
+        frustumAabb_no_general_s544e0688_tail3(_dst, _t19, _t23, _t20, _t12, _t21, _t13, _t10, _t2, _t3, _t11, _t22, _t14, _t9, _t74, _t0, _t75, _t5, _t76, _t77, _t78, _t79, _t18, _t15, _t16, _t82, _t83, _t84, _t85, _t86, _t87, _t72, _t8, _t17, _t80, _t88, _t73, _t81, _t89);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail3(FloatAABBImpl _dst, float _t19, float _t23, float _t20, float _t12, float _t21, float _t13, float _t10, float _t2, float _t3, float _t11, float _t22, float _t14, float _t9, float _t74, float _t0, float _t75, float _t5, float _t76, float _t77, float _t78, float _t79, float _t18, float _t15, float _t16, float _t82, float _t83, float _t84, float _t85, float _t86, float _t87, float _t72, float _t8, float _t17, float _t80, float _t88, float _t73, float _t81, float _t89) {
         float _t90 = _t19 * _t23 - _t20 * _t12;
         float _t91 = _t21 * _t23 - _t20 * _t13;
         float _t92 = _t10 * _t2 - _t3 * _t11;
@@ -11256,6 +11499,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t226 = _t9 * _t77 - _t0 * _t78 + _t5 * _t79;
         float _t228 = _t18 * _t74 - _t15 * _t75 + _t16 * _t76;
         float _t229 = _t18 * _t77 - _t15 * _t78 + _t16 * _t79;
+        frustumAabb_no_general_s544e0688_tail4(_dst, _t18, _t82, _t15, _t83, _t16, _t84, _t85, _t86, _t87, _t9, _t0, _t5, _t225, _t226, _t228, _t229, _t72, _t92, _t8, _t75, _t17, _t80, _t93, _t88, _t94, _t78, _t90, _t95, _t73, _t74, _t81, _t89, _t77, _t91, _t76, _t79);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail4(FloatAABBImpl _dst, float _t18, float _t82, float _t15, float _t83, float _t16, float _t84, float _t85, float _t86, float _t87, float _t9, float _t0, float _t5, float _t225, float _t226, float _t228, float _t229, float _t72, float _t92, float _t8, float _t75, float _t17, float _t80, float _t93, float _t88, float _t94, float _t78, float _t90, float _t95, float _t73, float _t74, float _t81, float _t89, float _t77, float _t91, float _t76, float _t79) {
         float _t231 = _t18 * _t82 - _t15 * _t83 + _t16 * _t84;
         float _t232 = _t18 * _t85 - _t15 * _t86 + _t16 * _t87;
         float _t234 = _t9 * _t82 - _t0 * _t83 + _t5 * _t84;
@@ -11270,6 +11518,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t263 = Math.abs(_t235);
         float _t280 = _t256 > _t257 * 9.536743E-7f ? _t225 : Math.copySign(0.0f, _t226);
         float _t280_inv = 1.0f / _t280;
+        frustumAabb_no_general_s544e0688_tail5(_dst, _t258, _t259, _t228, _t229, _t260, _t261, _t231, _t232, _t262, _t263, _t234, _t235, _t257, _t256, _t226, _t225, _t9, _t72, _t5, _t92, _t8, _t75, _t280_inv, _t18, _t16, _t17, _t80, _t93, _t83, _t88, _t94, _t78, _t90, _t95, _t86, _t0, _t73, _t74, _t15, _t81, _t82, _t89, _t77, _t91, _t85, _t76, _t84, _t79, _t87);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail5(FloatAABBImpl _dst, float _t258, float _t259, float _t228, float _t229, float _t260, float _t261, float _t231, float _t232, float _t262, float _t263, float _t234, float _t235, float _t257, float _t256, float _t226, float _t225, float _t9, float _t72, float _t5, float _t92, float _t8, float _t75, float _t280_inv, float _t18, float _t16, float _t17, float _t80, float _t93, float _t83, float _t88, float _t94, float _t78, float _t90, float _t95, float _t86, float _t0, float _t73, float _t74, float _t15, float _t81, float _t82, float _t89, float _t77, float _t91, float _t85, float _t76, float _t84, float _t79, float _t87) {
         float _t281 = _t258 > _t259 * 9.536743E-7f ? _t228 : Math.copySign(0.0f, _t229);
         float _t281_inv = 1.0f / _t281;
         float _t282 = _t260 > _t261 * 9.536743E-7f ? _t231 : Math.copySign(0.0f, _t232);
@@ -11280,6 +11533,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t284_inv = 1.0f / _t284;
         float _t285 = _t259 > _t258 * 9.536743E-7f ? _t229 : Math.copySign(0.0f, _t228);
         float _t285_inv = 1.0f / _t285;
+        frustumAabb_no_general_s544e0688_tail6(_dst, _t261, _t260, _t232, _t231, _t263, _t262, _t235, _t234, _t9, _t72, _t5, _t92, _t8, _t75, _t280_inv, _t18, _t16, _t17, _t281_inv, _t80, _t93, _t83, _t282_inv, _t283_inv, _t88, _t94, _t78, _t284_inv, _t285_inv, _t90, _t95, _t86, _t0, _t73, _t74, _t15, _t81, _t82, _t89, _t77, _t91, _t85, _t76, _t84, _t79, _t87);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail6(FloatAABBImpl _dst, float _t261, float _t260, float _t232, float _t231, float _t263, float _t262, float _t235, float _t234, float _t9, float _t72, float _t5, float _t92, float _t8, float _t75, float _t280_inv, float _t18, float _t16, float _t17, float _t281_inv, float _t80, float _t93, float _t83, float _t282_inv, float _t283_inv, float _t88, float _t94, float _t78, float _t284_inv, float _t285_inv, float _t90, float _t95, float _t86, float _t0, float _t73, float _t74, float _t15, float _t81, float _t82, float _t89, float _t77, float _t91, float _t85, float _t76, float _t84, float _t79, float _t87) {
         float _t286 = _t261 > _t260 * 9.536743E-7f ? _t232 : Math.copySign(0.0f, _t231);
         float _t286_inv = 1.0f / _t286;
         float _t287 = _t263 > _t262 * 9.536743E-7f ? _t235 : Math.copySign(0.0f, _t234);
@@ -11288,32 +11546,81 @@ public class Float4x4Impl implements Float4x4 {
         float _t297 = (_t18 * _t72 - _t16 * _t92 + _t17 * _t75) * _t281_inv;
         float _t298 = (_t18 * _t80 - _t16 * _t93 + _t17 * _t83) * _t282_inv;
         float _t299 = (_t9 * _t80 - _t5 * _t93 + _t8 * _t83) * _t283_inv;
+        frustumAabb_no_general_s544e0688_tail7(_dst, _t9, _t88, _t5, _t94, _t8, _t78, _t284_inv, _t18, _t16, _t17, _t285_inv, _t90, _t95, _t86, _t286_inv, _t287_inv, _t0, _t72, _t73, _t74, _t280_inv, _t15, _t281_inv, _t80, _t81, _t82, _t282_inv, _t283_inv, _t89, _t77, _t91, _t85, _t92, _t76, _t93, _t84, _t79, _t87, _t296, _t297, _t298, _t299);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail7(FloatAABBImpl _dst, float _t9, float _t88, float _t5, float _t94, float _t8, float _t78, float _t284_inv, float _t18, float _t16, float _t17, float _t285_inv, float _t90, float _t95, float _t86, float _t286_inv, float _t287_inv, float _t0, float _t72, float _t73, float _t74, float _t280_inv, float _t15, float _t281_inv, float _t80, float _t81, float _t82, float _t282_inv, float _t283_inv, float _t89, float _t77, float _t91, float _t85, float _t92, float _t76, float _t93, float _t84, float _t79, float _t87, float _t296, float _t297, float _t298, float _t299) {
         float _t300 = (_t9 * _t88 - _t5 * _t94 + _t8 * _t78) * _t284_inv;
         float _t301 = (_t18 * _t88 - _t16 * _t94 + _t17 * _t78) * _t285_inv;
         float _t302 = (_t18 * _t90 - _t16 * _t95 + _t17 * _t86) * _t286_inv;
         float _t303 = (_t9 * _t90 - _t5 * _t95 + _t8 * _t86) * _t287_inv;
         float _t312 = -((_t0 * _t72 - _t5 * _t73 + _t8 * _t74) * _t280_inv);
         float _t313 = -((_t15 * _t72 - _t16 * _t73 + _t17 * _t74) * _t281_inv);
+        frustumAabb_no_general_s544e0688_tail8(_dst, _t15, _t80, _t16, _t81, _t17, _t82, _t282_inv, _t0, _t5, _t8, _t283_inv, _t88, _t89, _t77, _t284_inv, _t285_inv, _t90, _t91, _t85, _t286_inv, _t287_inv, _t9, _t73, _t92, _t76, _t280_inv, _t18, _t281_inv, _t93, _t84, _t94, _t79, _t95, _t87, _t312, _t313, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail8(FloatAABBImpl _dst, float _t15, float _t80, float _t16, float _t81, float _t17, float _t82, float _t282_inv, float _t0, float _t5, float _t8, float _t283_inv, float _t88, float _t89, float _t77, float _t284_inv, float _t285_inv, float _t90, float _t91, float _t85, float _t286_inv, float _t287_inv, float _t9, float _t73, float _t92, float _t76, float _t280_inv, float _t18, float _t281_inv, float _t93, float _t84, float _t94, float _t79, float _t95, float _t87, float _t312, float _t313, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303) {
         float _t314 = -((_t15 * _t80 - _t16 * _t81 + _t17 * _t82) * _t282_inv);
         float _t315 = -((_t0 * _t80 - _t5 * _t81 + _t8 * _t82) * _t283_inv);
         float _t316 = -((_t0 * _t88 - _t5 * _t89 + _t8 * _t77) * _t284_inv);
         float _t317 = -((_t15 * _t88 - _t16 * _t89 + _t17 * _t77) * _t285_inv);
         float _t318 = -((_t15 * _t90 - _t16 * _t91 + _t17 * _t85) * _t286_inv);
+        frustumAabb_no_general_s544e0688_tail9(_dst, _t0, _t90, _t5, _t91, _t8, _t85, _t287_inv, _t9, _t73, _t92, _t76, _t280_inv, _t18, _t15, _t17, _t281_inv, _t81, _t93, _t84, _t282_inv, _t283_inv, _t89, _t94, _t79, _t284_inv, _t285_inv, _t95, _t87, _t286_inv, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail9(FloatAABBImpl _dst, float _t0, float _t90, float _t5, float _t91, float _t8, float _t85, float _t287_inv, float _t9, float _t73, float _t92, float _t76, float _t280_inv, float _t18, float _t15, float _t17, float _t281_inv, float _t81, float _t93, float _t84, float _t282_inv, float _t283_inv, float _t89, float _t94, float _t79, float _t284_inv, float _t285_inv, float _t95, float _t87, float _t286_inv, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303) {
         float _t319 = -((_t0 * _t90 - _t5 * _t91 + _t8 * _t85) * _t287_inv);
         float _t320 = -((_t9 * _t73 - _t0 * _t92 + _t8 * _t76) * _t280_inv);
         float _t321 = -((_t18 * _t73 - _t15 * _t92 + _t17 * _t76) * _t281_inv);
         float _t322 = -((_t18 * _t81 - _t15 * _t93 + _t17 * _t84) * _t282_inv);
         float _t323 = -((_t9 * _t81 - _t0 * _t93 + _t8 * _t84) * _t283_inv);
         float _t324 = -((_t9 * _t89 - _t0 * _t94 + _t8 * _t79) * _t284_inv);
+        frustumAabb_no_general_s544e0688_tail10(_dst, _t18, _t89, _t15, _t94, _t17, _t79, _t285_inv, _t91, _t95, _t87, _t286_inv, _t9, _t0, _t8, _t287_inv, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t319, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323, _t324);
+    }
+
+    /** Private tail of {@code frustumAabb_no_general}; reached only through it. */
+    private void frustumAabb_no_general_s544e0688_tail10(FloatAABBImpl _dst, float _t18, float _t89, float _t15, float _t94, float _t17, float _t79, float _t285_inv, float _t91, float _t95, float _t87, float _t286_inv, float _t9, float _t0, float _t8, float _t287_inv, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t319, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323, float _t324) {
         float _t325 = -((_t18 * _t89 - _t15 * _t94 + _t17 * _t79) * _t285_inv);
         float _t326 = -((_t18 * _t91 - _t15 * _t95 + _t17 * _t87) * _t286_inv);
         float _t327 = -((_t9 * _t91 - _t0 * _t95 + _t8 * _t87) * _t287_inv);
-        d.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
-        d.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
-        d.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
-        d.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
-        d.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
-        d.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
+        frustumAabb_no_general_s544e0688_c0(_dst, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t319, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323, _t324, _t325, _t326, _t327);
+        frustumAabb_no_general_s544e0688_c1(_dst, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t319, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323, _t324, _t325, _t326, _t327);
+    }
+
+
+    /**
+     * Private body of {@code frustumAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
+     * by runtime matrix properties; reached only through the public {@code frustumAabb} dispatcher.
+     */
+    private FloatAABB frustumAabb_no_general(@Mutated FloatAABB dest) {
+        FloatAABBImpl d = (FloatAABBImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m31;
+        float _r2 = this.m12;
+        float _r3 = this.m32;
+        float _r4 = this.m23;
+        float _r5 = this.m33;
+        float _r6 = this.m13;
+        float _r7 = this.m22;
+        float _r8 = this.m02;
+        float _r9 = this.m11;
+        float _r10 = this.m21;
+        float _r11 = this.m03;
+        float _r12 = this.m00;
+        float _r13 = this.m30;
+        float _r14 = this.m10;
+        float _r15 = this.m20;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 + _r3;
+        float _t2 = _r4 + _r5;
+        float _t3 = _r6 + _r5;
+        float _t4 = _r7 + _r3;
+        float _t5 = _r8 + _r3;
+        float _t6 = _r9 + _r1;
+        frustumAabb_no_general_s544e0688_tail(d, _r10, _r1, _r11, _r5, _r12, _r13, _r14, _r15, _r7, _r3, _r0, _r8, _r2, _r6, _r9, _r4, _t1, _t2, _t3, _t4, _t6, _t0, _t5);
         return d;
     }
 
@@ -11330,43 +11637,50 @@ public class Float4x4Impl implements Float4x4 {
         return frustumAabb_no_general(dest);
     }
 
+    /** Private store group 0 of {@code frustumAabb_no}: computes and stores it; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_c0(DoubleAABBImpl _dst, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t319, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323, float _t324, float _t325, float _t326, float _t327) {
+        _dst.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
+        _dst.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
+        _dst.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
+    }
 
-    /**
-     * Private body of {@code frustumAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
-     * through the public {@code frustumAabb} dispatcher.
-     */
-    private DoubleAABB frustumAabb_no(@Mutated DoubleAABB dest) {
-        DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        float _t0 = this.m01 + this.m31;
-        float _t1 = this.m12 + this.m32;
-        float _t2 = this.m23 + this.m33;
-        float _t3 = this.m13 + this.m33;
-        float _t4 = this.m22 + this.m32;
-        float _t5 = this.m02 + this.m32;
-        float _t6 = this.m11 + this.m31;
-        float _t7 = this.m21 + this.m31;
-        float _t8 = this.m03 + this.m33;
-        float _t9 = this.m00 + this.m30;
-        float _t10 = this.m10 + this.m30;
-        float _t11 = this.m20 + this.m30;
-        float _t12 = this.m22 - this.m32;
-        float _t13 = this.m21 - this.m31;
-        float _t14 = this.m20 - this.m30;
-        float _t15 = this.m01 - this.m31;
-        float _t16 = this.m02 - this.m32;
-        float _t17 = this.m03 - this.m33;
-        float _t18 = this.m00 - this.m30;
-        float _t19 = this.m12 - this.m32;
-        float _t20 = this.m13 - this.m33;
-        float _t21 = this.m11 - this.m31;
-        float _t22 = this.m10 - this.m30;
-        float _t23 = this.m23 - this.m33;
+    /** Private store group 1 of {@code frustumAabb_no}: computes and stores it; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_c1(DoubleAABBImpl _dst, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t319, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323, float _t324, float _t325, float _t326, float _t327) {
+        _dst.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
+        _dst.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
+        _dst.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail(DoubleAABBImpl _dst, float _r10, float _r1, float _r11, float _r5, float _r12, float _r13, float _r14, float _r15, float _r7, float _r3, float _r0, float _r8, float _r2, float _r6, float _r9, float _r4, float _t1, float _t2, float _t3, float _t4, float _t6, float _t0, float _t5) {
+        float _t7 = _r10 + _r1;
+        float _t8 = _r11 + _r5;
+        float _t9 = _r12 + _r13;
+        float _t10 = _r14 + _r13;
+        float _t11 = _r15 + _r13;
+        float _t12 = _r7 - _r3;
+        float _t13 = _r10 - _r1;
+        float _t14 = _r15 - _r13;
+        float _t15 = _r0 - _r1;
+        float _t16 = _r8 - _r3;
+        float _t17 = _r11 - _r5;
+        float _t18 = _r12 - _r13;
+        float _t19 = _r2 - _r3;
+        float _t20 = _r6 - _r5;
+        float _t21 = _r9 - _r1;
+        float _t22 = _r14 - _r13;
+        float _t23 = _r4 - _r5;
         float _t72 = _t1 * _t2 - _t3 * _t4;
         float _t73 = _t6 * _t2 - _t3 * _t7;
         float _t74 = _t6 * _t4 - _t1 * _t7;
         float _t75 = _t10 * _t4 - _t1 * _t11;
         float _t76 = _t10 * _t7 - _t6 * _t11;
         float _t77 = _t6 * _t12 - _t1 * _t13;
+        frustumAabb_no_s47ac22ef_tail2(_dst, _t10, _t12, _t1, _t14, _t13, _t6, _t2, _t19, _t4, _t20, _t21, _t7, _t22, _t11, _t23, _t3, _t9, _t74, _t0, _t75, _t5, _t76, _t77, _t18, _t15, _t16, _t72, _t8, _t17, _t73);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail2(DoubleAABBImpl _dst, float _t10, float _t12, float _t1, float _t14, float _t13, float _t6, float _t2, float _t19, float _t4, float _t20, float _t21, float _t7, float _t22, float _t11, float _t23, float _t3, float _t9, float _t74, float _t0, float _t75, float _t5, float _t76, float _t77, float _t18, float _t15, float _t16, float _t72, float _t8, float _t17, float _t73) {
         float _t78 = _t10 * _t12 - _t1 * _t14;
         float _t79 = _t10 * _t13 - _t6 * _t14;
         float _t80 = _t2 * _t19 - _t4 * _t20;
@@ -11379,6 +11693,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t87 = _t22 * _t13 - _t21 * _t14;
         float _t88 = _t1 * _t23 - _t3 * _t12;
         float _t89 = _t6 * _t23 - _t3 * _t13;
+        frustumAabb_no_s47ac22ef_tail3(_dst, _t19, _t23, _t20, _t12, _t21, _t13, _t10, _t2, _t3, _t11, _t22, _t14, _t9, _t74, _t0, _t75, _t5, _t76, _t77, _t78, _t79, _t18, _t15, _t16, _t82, _t83, _t84, _t85, _t86, _t87, _t72, _t8, _t17, _t80, _t88, _t73, _t81, _t89);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail3(DoubleAABBImpl _dst, float _t19, float _t23, float _t20, float _t12, float _t21, float _t13, float _t10, float _t2, float _t3, float _t11, float _t22, float _t14, float _t9, float _t74, float _t0, float _t75, float _t5, float _t76, float _t77, float _t78, float _t79, float _t18, float _t15, float _t16, float _t82, float _t83, float _t84, float _t85, float _t86, float _t87, float _t72, float _t8, float _t17, float _t80, float _t88, float _t73, float _t81, float _t89) {
         float _t90 = _t19 * _t23 - _t20 * _t12;
         float _t91 = _t21 * _t23 - _t20 * _t13;
         float _t92 = _t10 * _t2 - _t3 * _t11;
@@ -11389,6 +11708,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t226 = _t9 * _t77 - _t0 * _t78 + _t5 * _t79;
         float _t228 = _t18 * _t74 - _t15 * _t75 + _t16 * _t76;
         float _t229 = _t18 * _t77 - _t15 * _t78 + _t16 * _t79;
+        frustumAabb_no_s47ac22ef_tail4(_dst, _t18, _t82, _t15, _t83, _t16, _t84, _t85, _t86, _t87, _t9, _t0, _t5, _t225, _t226, _t228, _t229, _t72, _t92, _t8, _t75, _t17, _t80, _t93, _t88, _t94, _t78, _t90, _t95, _t73, _t74, _t81, _t89, _t77, _t91, _t76, _t79);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail4(DoubleAABBImpl _dst, float _t18, float _t82, float _t15, float _t83, float _t16, float _t84, float _t85, float _t86, float _t87, float _t9, float _t0, float _t5, float _t225, float _t226, float _t228, float _t229, float _t72, float _t92, float _t8, float _t75, float _t17, float _t80, float _t93, float _t88, float _t94, float _t78, float _t90, float _t95, float _t73, float _t74, float _t81, float _t89, float _t77, float _t91, float _t76, float _t79) {
         float _t231 = _t18 * _t82 - _t15 * _t83 + _t16 * _t84;
         float _t232 = _t18 * _t85 - _t15 * _t86 + _t16 * _t87;
         float _t234 = _t9 * _t82 - _t0 * _t83 + _t5 * _t84;
@@ -11403,6 +11727,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t263 = Math.abs(_t235);
         float _t280 = _t256 > _t257 * 9.536743E-7f ? _t225 : Math.copySign(0.0f, _t226);
         float _t280_inv = 1.0f / _t280;
+        frustumAabb_no_s47ac22ef_tail5(_dst, _t258, _t259, _t228, _t229, _t260, _t261, _t231, _t232, _t262, _t263, _t234, _t235, _t257, _t256, _t226, _t225, _t9, _t72, _t5, _t92, _t8, _t75, _t280_inv, _t18, _t16, _t17, _t80, _t93, _t83, _t88, _t94, _t78, _t90, _t95, _t86, _t0, _t73, _t74, _t15, _t81, _t82, _t89, _t77, _t91, _t85, _t76, _t84, _t79, _t87);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail5(DoubleAABBImpl _dst, float _t258, float _t259, float _t228, float _t229, float _t260, float _t261, float _t231, float _t232, float _t262, float _t263, float _t234, float _t235, float _t257, float _t256, float _t226, float _t225, float _t9, float _t72, float _t5, float _t92, float _t8, float _t75, float _t280_inv, float _t18, float _t16, float _t17, float _t80, float _t93, float _t83, float _t88, float _t94, float _t78, float _t90, float _t95, float _t86, float _t0, float _t73, float _t74, float _t15, float _t81, float _t82, float _t89, float _t77, float _t91, float _t85, float _t76, float _t84, float _t79, float _t87) {
         float _t281 = _t258 > _t259 * 9.536743E-7f ? _t228 : Math.copySign(0.0f, _t229);
         float _t281_inv = 1.0f / _t281;
         float _t282 = _t260 > _t261 * 9.536743E-7f ? _t231 : Math.copySign(0.0f, _t232);
@@ -11413,6 +11742,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t284_inv = 1.0f / _t284;
         float _t285 = _t259 > _t258 * 9.536743E-7f ? _t229 : Math.copySign(0.0f, _t228);
         float _t285_inv = 1.0f / _t285;
+        frustumAabb_no_s47ac22ef_tail6(_dst, _t261, _t260, _t232, _t231, _t263, _t262, _t235, _t234, _t9, _t72, _t5, _t92, _t8, _t75, _t280_inv, _t18, _t16, _t17, _t281_inv, _t80, _t93, _t83, _t282_inv, _t283_inv, _t88, _t94, _t78, _t284_inv, _t285_inv, _t90, _t95, _t86, _t0, _t73, _t74, _t15, _t81, _t82, _t89, _t77, _t91, _t85, _t76, _t84, _t79, _t87);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail6(DoubleAABBImpl _dst, float _t261, float _t260, float _t232, float _t231, float _t263, float _t262, float _t235, float _t234, float _t9, float _t72, float _t5, float _t92, float _t8, float _t75, float _t280_inv, float _t18, float _t16, float _t17, float _t281_inv, float _t80, float _t93, float _t83, float _t282_inv, float _t283_inv, float _t88, float _t94, float _t78, float _t284_inv, float _t285_inv, float _t90, float _t95, float _t86, float _t0, float _t73, float _t74, float _t15, float _t81, float _t82, float _t89, float _t77, float _t91, float _t85, float _t76, float _t84, float _t79, float _t87) {
         float _t286 = _t261 > _t260 * 9.536743E-7f ? _t232 : Math.copySign(0.0f, _t231);
         float _t286_inv = 1.0f / _t286;
         float _t287 = _t263 > _t262 * 9.536743E-7f ? _t235 : Math.copySign(0.0f, _t234);
@@ -11421,32 +11755,81 @@ public class Float4x4Impl implements Float4x4 {
         float _t297 = (_t18 * _t72 - _t16 * _t92 + _t17 * _t75) * _t281_inv;
         float _t298 = (_t18 * _t80 - _t16 * _t93 + _t17 * _t83) * _t282_inv;
         float _t299 = (_t9 * _t80 - _t5 * _t93 + _t8 * _t83) * _t283_inv;
+        frustumAabb_no_s47ac22ef_tail7(_dst, _t9, _t88, _t5, _t94, _t8, _t78, _t284_inv, _t18, _t16, _t17, _t285_inv, _t90, _t95, _t86, _t286_inv, _t287_inv, _t0, _t72, _t73, _t74, _t280_inv, _t15, _t281_inv, _t80, _t81, _t82, _t282_inv, _t283_inv, _t89, _t77, _t91, _t85, _t92, _t76, _t93, _t84, _t79, _t87, _t296, _t297, _t298, _t299);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail7(DoubleAABBImpl _dst, float _t9, float _t88, float _t5, float _t94, float _t8, float _t78, float _t284_inv, float _t18, float _t16, float _t17, float _t285_inv, float _t90, float _t95, float _t86, float _t286_inv, float _t287_inv, float _t0, float _t72, float _t73, float _t74, float _t280_inv, float _t15, float _t281_inv, float _t80, float _t81, float _t82, float _t282_inv, float _t283_inv, float _t89, float _t77, float _t91, float _t85, float _t92, float _t76, float _t93, float _t84, float _t79, float _t87, float _t296, float _t297, float _t298, float _t299) {
         float _t300 = (_t9 * _t88 - _t5 * _t94 + _t8 * _t78) * _t284_inv;
         float _t301 = (_t18 * _t88 - _t16 * _t94 + _t17 * _t78) * _t285_inv;
         float _t302 = (_t18 * _t90 - _t16 * _t95 + _t17 * _t86) * _t286_inv;
         float _t303 = (_t9 * _t90 - _t5 * _t95 + _t8 * _t86) * _t287_inv;
         float _t312 = -((_t0 * _t72 - _t5 * _t73 + _t8 * _t74) * _t280_inv);
         float _t313 = -((_t15 * _t72 - _t16 * _t73 + _t17 * _t74) * _t281_inv);
+        frustumAabb_no_s47ac22ef_tail8(_dst, _t15, _t80, _t16, _t81, _t17, _t82, _t282_inv, _t0, _t5, _t8, _t283_inv, _t88, _t89, _t77, _t284_inv, _t285_inv, _t90, _t91, _t85, _t286_inv, _t287_inv, _t9, _t73, _t92, _t76, _t280_inv, _t18, _t281_inv, _t93, _t84, _t94, _t79, _t95, _t87, _t312, _t313, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail8(DoubleAABBImpl _dst, float _t15, float _t80, float _t16, float _t81, float _t17, float _t82, float _t282_inv, float _t0, float _t5, float _t8, float _t283_inv, float _t88, float _t89, float _t77, float _t284_inv, float _t285_inv, float _t90, float _t91, float _t85, float _t286_inv, float _t287_inv, float _t9, float _t73, float _t92, float _t76, float _t280_inv, float _t18, float _t281_inv, float _t93, float _t84, float _t94, float _t79, float _t95, float _t87, float _t312, float _t313, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303) {
         float _t314 = -((_t15 * _t80 - _t16 * _t81 + _t17 * _t82) * _t282_inv);
         float _t315 = -((_t0 * _t80 - _t5 * _t81 + _t8 * _t82) * _t283_inv);
         float _t316 = -((_t0 * _t88 - _t5 * _t89 + _t8 * _t77) * _t284_inv);
         float _t317 = -((_t15 * _t88 - _t16 * _t89 + _t17 * _t77) * _t285_inv);
         float _t318 = -((_t15 * _t90 - _t16 * _t91 + _t17 * _t85) * _t286_inv);
+        frustumAabb_no_s47ac22ef_tail9(_dst, _t0, _t90, _t5, _t91, _t8, _t85, _t287_inv, _t9, _t73, _t92, _t76, _t280_inv, _t18, _t15, _t17, _t281_inv, _t81, _t93, _t84, _t282_inv, _t283_inv, _t89, _t94, _t79, _t284_inv, _t285_inv, _t95, _t87, _t286_inv, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail9(DoubleAABBImpl _dst, float _t0, float _t90, float _t5, float _t91, float _t8, float _t85, float _t287_inv, float _t9, float _t73, float _t92, float _t76, float _t280_inv, float _t18, float _t15, float _t17, float _t281_inv, float _t81, float _t93, float _t84, float _t282_inv, float _t283_inv, float _t89, float _t94, float _t79, float _t284_inv, float _t285_inv, float _t95, float _t87, float _t286_inv, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303) {
         float _t319 = -((_t0 * _t90 - _t5 * _t91 + _t8 * _t85) * _t287_inv);
         float _t320 = -((_t9 * _t73 - _t0 * _t92 + _t8 * _t76) * _t280_inv);
         float _t321 = -((_t18 * _t73 - _t15 * _t92 + _t17 * _t76) * _t281_inv);
         float _t322 = -((_t18 * _t81 - _t15 * _t93 + _t17 * _t84) * _t282_inv);
         float _t323 = -((_t9 * _t81 - _t0 * _t93 + _t8 * _t84) * _t283_inv);
         float _t324 = -((_t9 * _t89 - _t0 * _t94 + _t8 * _t79) * _t284_inv);
+        frustumAabb_no_s47ac22ef_tail10(_dst, _t18, _t89, _t15, _t94, _t17, _t79, _t285_inv, _t91, _t95, _t87, _t286_inv, _t9, _t0, _t8, _t287_inv, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t319, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323, _t324);
+    }
+
+    /** Private tail of {@code frustumAabb_no}; reached only through it. */
+    private void frustumAabb_no_s47ac22ef_tail10(DoubleAABBImpl _dst, float _t18, float _t89, float _t15, float _t94, float _t17, float _t79, float _t285_inv, float _t91, float _t95, float _t87, float _t286_inv, float _t9, float _t0, float _t8, float _t287_inv, float _t312, float _t313, float _t314, float _t315, float _t316, float _t317, float _t318, float _t319, float _t296, float _t297, float _t298, float _t299, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323, float _t324) {
         float _t325 = -((_t18 * _t89 - _t15 * _t94 + _t17 * _t79) * _t285_inv);
         float _t326 = -((_t18 * _t91 - _t15 * _t95 + _t17 * _t87) * _t286_inv);
         float _t327 = -((_t9 * _t91 - _t0 * _t95 + _t8 * _t87) * _t287_inv);
-        d.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
-        d.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
-        d.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
-        d.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t312, _t313), _t314), _t315), _t316), _t317), _t318), _t319);
-        d.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t300), _t301), _t302), _t303);
-        d.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t320, _t321), _t322), _t323), _t324), _t325), _t326), _t327);
+        frustumAabb_no_s47ac22ef_c0(_dst, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t319, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323, _t324, _t325, _t326, _t327);
+        frustumAabb_no_s47ac22ef_c1(_dst, _t312, _t313, _t314, _t315, _t316, _t317, _t318, _t319, _t296, _t297, _t298, _t299, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323, _t324, _t325, _t326, _t327);
+    }
+
+
+    /**
+     * Private body of {@code frustumAabb} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code frustumAabb} dispatcher.
+     */
+    private DoubleAABB frustumAabb_no(@Mutated DoubleAABB dest) {
+        DoubleAABBImpl d = (DoubleAABBImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m31;
+        float _r2 = this.m12;
+        float _r3 = this.m32;
+        float _r4 = this.m23;
+        float _r5 = this.m33;
+        float _r6 = this.m13;
+        float _r7 = this.m22;
+        float _r8 = this.m02;
+        float _r9 = this.m11;
+        float _r10 = this.m21;
+        float _r11 = this.m03;
+        float _r12 = this.m00;
+        float _r13 = this.m30;
+        float _r14 = this.m10;
+        float _r15 = this.m20;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 + _r3;
+        float _t2 = _r4 + _r5;
+        float _t3 = _r6 + _r5;
+        float _t4 = _r7 + _r3;
+        float _t5 = _r8 + _r3;
+        float _t6 = _r9 + _r1;
+        frustumAabb_no_s47ac22ef_tail(d, _r10, _r1, _r11, _r5, _r12, _r13, _r14, _r15, _r7, _r3, _r0, _r8, _r2, _r6, _r9, _r4, _t1, _t2, _t3, _t4, _t6, _t0, _t5);
         return d;
     }
 
@@ -11488,33 +11871,28 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code frustumAabb_zo_orthogonal}: computes and stores it; reached only through it. */
+    private void frustumAabb_zo_orthogonal_s544e0688_c0(FloatAABBImpl _dst, float _t125, float _t126, float _t127, float _t128, float _t145, float _t146, float _t147, float _t148, float _t117, float _t118, float _t119, float _t120, float _t137, float _t138, float _t139, float _t140, float _t129, float _t130, float _t131, float _t132, float _t149, float _t150, float _t151, float _t152) {
+        _dst.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t125, _t126), _t127), _t128), _t145), _t146), _t147), _t148);
+        _dst.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t117, _t118), _t119), _t120), _t137), _t138), _t139), _t140);
+        _dst.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t129, _t130), _t131), _t132), _t149), _t150), _t151), _t152);
+    }
 
-    /**
-     * Private body of {@code frustumAabb} for {@code DepthRange.ZERO_TO_ONE}, specialized by
-     * runtime matrix properties; reached only through the public {@code frustumAabb} dispatcher.
-     */
-    private FloatAABB frustumAabb_zo_orthogonal(@Mutated FloatAABB dest) {
-        FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t0 = this.m13 - -1.0f;
-        float _t1 = this.m03 - -1.0f;
-        float _t2 = this.m03 - 1.0f;
-        float _t3 = this.m13 - 1.0f;
-        float _t4 = this.m23 - 1.0f;
-        float _t5 = this.m12 * this.m23;
-        float _t6 = this.m11 * this.m23;
-        float _t13 = this.m10 * this.m23;
-        float _t14 = this.m22 * _t0;
-        float _t15 = this.m21 * _t0;
-        float _t16 = this.m22 * _t3;
-        float _t17 = this.m21 * _t3;
-        float _t18 = this.m12 * _t4;
-        float _t19 = this.m11 * _t4;
-        float _t20 = this.m20 * _t0;
-        float _t21 = this.m20 * _t3;
-        float _t22 = this.m10 * _t4;
-        float _t23 = this.m11 * this.m22 - this.m12 * this.m21;
-        float _t24 = this.m10 * this.m22 - this.m12 * this.m20;
-        float _t25 = this.m10 * this.m21 - this.m11 * this.m20;
+    /** Private store group 1 of {@code frustumAabb_zo_orthogonal}: computes and stores it; reached only through it. */
+    private void frustumAabb_zo_orthogonal_s544e0688_c1(FloatAABBImpl _dst, float _t125, float _t126, float _t127, float _t128, float _t145, float _t146, float _t147, float _t148, float _t117, float _t118, float _t119, float _t120, float _t137, float _t138, float _t139, float _t140, float _t129, float _t130, float _t131, float _t132, float _t149, float _t150, float _t151, float _t152) {
+        _dst.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t125, _t126), _t127), _t128), _t145), _t146), _t147), _t148);
+        _dst.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t117, _t118), _t119), _t120), _t137), _t138), _t139), _t140);
+        _dst.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t129, _t130), _t131), _t132), _t149), _t150), _t151), _t152);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_orthogonal}; reached only through it. */
+    private void frustumAabb_zo_orthogonal_s544e0688_tail(FloatAABBImpl _dst, float _r8, float _t0, float _t3, float _r5, float _t4, float _r4, float _r6, float _r3, float _r7, float _t5, float _t14, float _t6, float _t15, float _t16, float _t17, float _t13, float _t18, float _t19, float _t1, float _t2, float _r9, float _r10, float _r11) {
+        float _t20 = _r8 * _t0;
+        float _t21 = _r8 * _t3;
+        float _t22 = _r5 * _t4;
+        float _t23 = _r4 * _r6 - _r3 * _r7;
+        float _t24 = _r5 * _r6 - _r3 * _r8;
+        float _t25 = _r5 * _r7 - _r4 * _r8;
         float _t26 = _t5 - _t14;
         float _t27 = _t6 - _t15;
         float _t28 = _t5 - _t16;
@@ -11533,23 +11911,33 @@ public class Float4x4Impl implements Float4x4 {
         float _t50 = _t2 * _t24;
         float _t55 = _t1 * _t25;
         float _t56 = _t2 * _t25;
-        float _t72 = this.m01 * _t26 - this.m02 * _t27;
-        float _t73 = this.m01 * _t28 - this.m02 * _t29;
-        float _t74 = this.m00 * _t26 - this.m02 * _t30;
-        float _t75 = this.m00 * _t28 - this.m02 * _t31;
-        float _t76 = this.m00 * _t27 - this.m01 * _t30;
-        float _t77 = this.m00 * _t29 - this.m01 * _t31;
-        float _t78 = this.m01 * _t35 - this.m02 * _t36;
-        float _t79 = this.m01 * _t37 - this.m02 * _t38;
-        float _t80 = this.m00 * _t35 - this.m02 * _t39;
-        float _t81 = this.m00 * _t37 - this.m02 * _t40;
-        float _t82 = this.m00 * _t36 - this.m01 * _t39;
-        float _t83 = this.m00 * _t38 - this.m01 * _t40;
-        float _t84 = this.m00 * _t23 - this.m01 * _t24 + this.m02 * _t25;
+        float _t72 = _r9 * _t26 - _r10 * _t27;
+        float _t73 = _r9 * _t28 - _r10 * _t29;
+        frustumAabb_zo_orthogonal_s544e0688_tail2(_dst, _r11, _t26, _r10, _t30, _t28, _t31, _t27, _r9, _t29, _t35, _t36, _t37, _t38, _t39, _t40, _t23, _t24, _t25, _t49, _t50, _t72, _t43, _t44, _t73, _t55, _t56);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_orthogonal}; reached only through it. */
+    private void frustumAabb_zo_orthogonal_s544e0688_tail2(FloatAABBImpl _dst, float _r11, float _t26, float _r10, float _t30, float _t28, float _t31, float _t27, float _r9, float _t29, float _t35, float _t36, float _t37, float _t38, float _t39, float _t40, float _t23, float _t24, float _t25, float _t49, float _t50, float _t72, float _t43, float _t44, float _t73, float _t55, float _t56) {
+        float _t74 = _r11 * _t26 - _r10 * _t30;
+        float _t75 = _r11 * _t28 - _r10 * _t31;
+        float _t76 = _r11 * _t27 - _r9 * _t30;
+        float _t77 = _r11 * _t29 - _r9 * _t31;
+        float _t78 = _r9 * _t35 - _r10 * _t36;
+        float _t79 = _r9 * _t37 - _r10 * _t38;
+        float _t80 = _r11 * _t35 - _r10 * _t39;
+        float _t81 = _r11 * _t37 - _r10 * _t40;
+        float _t82 = _r11 * _t36 - _r9 * _t39;
+        float _t83 = _r11 * _t38 - _r9 * _t40;
+        float _t84 = _r11 * _t23 - _r9 * _t24 + _r10 * _t25;
         float _t85 = Math.abs(_t84);
         float _t112 = _t85 > _t85 * 9.536743E-7f ? _t84 : Math.copySign(0.0f, _t84);
         float _t112_inv = 1.0f / _t112;
         float _t117 = (_t74 + _t49) * _t112_inv;
+        frustumAabb_zo_orthogonal_s544e0688_tail3(_dst, _t74, _t50, _t112_inv, _t75, _t49, _t72, _t43, _t44, _t73, _t76, _t55, _t56, _t77, _t80, _t81, _t78, _t79, _t82, _t83, _t117);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_orthogonal}; reached only through it. */
+    private void frustumAabb_zo_orthogonal_s544e0688_tail3(FloatAABBImpl _dst, float _t74, float _t50, float _t112_inv, float _t75, float _t49, float _t72, float _t43, float _t44, float _t73, float _t76, float _t55, float _t56, float _t77, float _t80, float _t81, float _t78, float _t79, float _t82, float _t83, float _t117) {
         float _t118 = (_t74 + _t50) * _t112_inv;
         float _t119 = (_t75 + _t50) * _t112_inv;
         float _t120 = (_t75 + _t49) * _t112_inv;
@@ -11567,19 +11955,19 @@ public class Float4x4Impl implements Float4x4 {
         float _t140 = (_t81 + _t49) * _t112_inv;
         float _t145 = -((_t78 + _t43) * _t112_inv);
         float _t146 = -((_t78 + _t44) * _t112_inv);
+        frustumAabb_zo_orthogonal_s544e0688_tail4(_dst, _t79, _t44, _t112_inv, _t43, _t82, _t55, _t56, _t83, _t125, _t126, _t127, _t128, _t145, _t146, _t117, _t118, _t119, _t120, _t137, _t138, _t139, _t140, _t129, _t130, _t131, _t132);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_orthogonal}; reached only through it. */
+    private void frustumAabb_zo_orthogonal_s544e0688_tail4(FloatAABBImpl _dst, float _t79, float _t44, float _t112_inv, float _t43, float _t82, float _t55, float _t56, float _t83, float _t125, float _t126, float _t127, float _t128, float _t145, float _t146, float _t117, float _t118, float _t119, float _t120, float _t137, float _t138, float _t139, float _t140, float _t129, float _t130, float _t131, float _t132) {
         float _t147 = -((_t79 + _t44) * _t112_inv);
         float _t148 = -((_t79 + _t43) * _t112_inv);
         float _t149 = -((_t82 + _t55) * _t112_inv);
         float _t150 = -((_t82 + _t56) * _t112_inv);
         float _t151 = -((_t83 + _t56) * _t112_inv);
         float _t152 = -((_t83 + _t55) * _t112_inv);
-        d.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t125, _t126), _t127), _t128), _t145), _t146), _t147), _t148);
-        d.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t117, _t118), _t119), _t120), _t137), _t138), _t139), _t140);
-        d.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t129, _t130), _t131), _t132), _t149), _t150), _t151), _t152);
-        d.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t125, _t126), _t127), _t128), _t145), _t146), _t147), _t148);
-        d.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t117, _t118), _t119), _t120), _t137), _t138), _t139), _t140);
-        d.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t129, _t130), _t131), _t132), _t149), _t150), _t151), _t152);
-        return d;
+        frustumAabb_zo_orthogonal_s544e0688_c0(_dst, _t125, _t126, _t127, _t128, _t145, _t146, _t147, _t148, _t117, _t118, _t119, _t120, _t137, _t138, _t139, _t140, _t129, _t130, _t131, _t132, _t149, _t150, _t151, _t152);
+        frustumAabb_zo_orthogonal_s544e0688_c1(_dst, _t125, _t126, _t127, _t128, _t145, _t146, _t147, _t148, _t117, _t118, _t119, _t120, _t137, _t138, _t139, _t140, _t129, _t130, _t131, _t132, _t149, _t150, _t151, _t152);
     }
 
 
@@ -11587,40 +11975,84 @@ public class Float4x4Impl implements Float4x4 {
      * Private body of {@code frustumAabb} for {@code DepthRange.ZERO_TO_ONE}, specialized by
      * runtime matrix properties; reached only through the public {@code frustumAabb} dispatcher.
      */
-    private FloatAABB frustumAabb_zo_general(@Mutated FloatAABB dest) {
+    private FloatAABB frustumAabb_zo_orthogonal(@Mutated FloatAABB dest) {
         FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t0 = this.m01 + this.m31;
-        float _t1 = this.m12 + this.m32;
-        float _t2 = this.m13 + this.m33;
-        float _t3 = this.m02 + this.m32;
-        float _t4 = this.m11 + this.m31;
-        float _t5 = this.m03 + this.m33;
-        float _t6 = this.m00 + this.m30;
-        float _t7 = this.m10 + this.m30;
-        float _t8 = this.m22 - this.m32;
-        float _t9 = this.m21 - this.m31;
-        float _t10 = this.m20 - this.m30;
-        float _t11 = this.m01 - this.m31;
-        float _t12 = this.m02 - this.m32;
-        float _t13 = this.m03 - this.m33;
-        float _t14 = this.m00 - this.m30;
-        float _t15 = this.m12 - this.m32;
-        float _t16 = this.m13 - this.m33;
-        float _t17 = this.m11 - this.m31;
-        float _t18 = this.m10 - this.m30;
-        float _t19 = this.m23 - this.m33;
-        float _t68 = this.m23 * _t1 - this.m22 * _t2;
-        float _t69 = this.m23 * _t4 - this.m21 * _t2;
-        float _t70 = this.m22 * _t4 - this.m21 * _t1;
-        float _t71 = this.m22 * _t7 - this.m20 * _t1;
-        float _t72 = this.m21 * _t7 - this.m20 * _t4;
-        float _t73 = this.m23 * _t15 - this.m22 * _t16;
-        float _t74 = this.m23 * _t17 - this.m21 * _t16;
-        float _t75 = this.m22 * _t17 - this.m21 * _t15;
-        float _t76 = this.m22 * _t18 - this.m20 * _t15;
-        float _t77 = this.m21 * _t18 - this.m20 * _t17;
-        float _t78 = this.m23 * _t7 - this.m20 * _t2;
-        float _t79 = this.m23 * _t18 - this.m20 * _t16;
+        float _r0 = this.m13;
+        float _r1 = this.m03;
+        float _r2 = this.m23;
+        float _r3 = this.m12;
+        float _r4 = this.m11;
+        float _r5 = this.m10;
+        float _r6 = this.m22;
+        float _r7 = this.m21;
+        float _r8 = this.m20;
+        float _r9 = this.m01;
+        float _r10 = this.m02;
+        float _r11 = this.m00;
+        float _t0 = _r0 - -1.0f;
+        float _t1 = _r1 - -1.0f;
+        float _t2 = _r1 - 1.0f;
+        float _t3 = _r0 - 1.0f;
+        float _t4 = _r2 - 1.0f;
+        float _t5 = _r3 * _r2;
+        float _t6 = _r4 * _r2;
+        float _t13 = _r5 * _r2;
+        float _t14 = _r6 * _t0;
+        float _t15 = _r7 * _t0;
+        float _t16 = _r6 * _t3;
+        float _t17 = _r7 * _t3;
+        float _t18 = _r3 * _t4;
+        float _t19 = _r4 * _t4;
+        frustumAabb_zo_orthogonal_s544e0688_tail(d, _r8, _t0, _t3, _r5, _t4, _r4, _r6, _r3, _r7, _t5, _t14, _t6, _t15, _t16, _t17, _t13, _t18, _t19, _t1, _t2, _r9, _r10, _r11);
+        return d;
+    }
+
+    /** Private store group 0 of {@code frustumAabb_zo_general}: computes and stores it; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_c0(FloatAABBImpl _dst, float _t296, float _t297, float _t298, float _t299, float _t316, float _t317, float _t318, float _t319, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323) {
+        _dst.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
+        _dst.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
+        _dst.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
+    }
+
+    /** Private store group 1 of {@code frustumAabb_zo_general}: computes and stores it; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_c1(FloatAABBImpl _dst, float _t296, float _t297, float _t298, float _t299, float _t316, float _t317, float _t318, float _t319, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323) {
+        _dst.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
+        _dst.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
+        _dst.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail(FloatAABBImpl _dst, float _r11, float _r10, float _r12, float _r3, float _r13, float _r1, float _r14, float _r0, float _r6, float _r8, float _r5, float _r9, float _r2, float _r4, float _r7, float _r15, float _t1, float _t2, float _t4, float _t6, float _t0, float _t3, float _t5) {
+        float _t7 = _r11 + _r10;
+        float _t8 = _r12 - _r3;
+        float _t9 = _r13 - _r1;
+        float _t10 = _r14 - _r10;
+        float _t11 = _r0 - _r1;
+        float _t12 = _r6 - _r3;
+        float _t13 = _r8 - _r5;
+        float _t14 = _r9 - _r10;
+        float _t15 = _r2 - _r3;
+        float _t16 = _r4 - _r5;
+        float _t17 = _r7 - _r1;
+        float _t18 = _r11 - _r10;
+        float _t19 = _r15 - _r5;
+        float _t68 = _r15 * _t1 - _r12 * _t2;
+        float _t69 = _r15 * _t4 - _r13 * _t2;
+        float _t70 = _r12 * _t4 - _r13 * _t1;
+        float _t71 = _r12 * _t7 - _r14 * _t1;
+        float _t72 = _r13 * _t7 - _r14 * _t4;
+        float _t73 = _r15 * _t15 - _r12 * _t16;
+        float _t74 = _r15 * _t17 - _r13 * _t16;
+        frustumAabb_zo_general_s544e0688_tail2(_dst, _r12, _t17, _r13, _t15, _t18, _r14, _r15, _t7, _t2, _t16, _t4, _t8, _t1, _t9, _t10, _t19, _t6, _t70, _t0, _t71, _t3, _t72, _t14, _t11, _t12, _t68, _t5, _t13, _t73, _t69, _t74);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail2(FloatAABBImpl _dst, float _r12, float _t17, float _r13, float _t15, float _t18, float _r14, float _r15, float _t7, float _t2, float _t16, float _t4, float _t8, float _t1, float _t9, float _t10, float _t19, float _t6, float _t70, float _t0, float _t71, float _t3, float _t72, float _t14, float _t11, float _t12, float _t68, float _t5, float _t13, float _t73, float _t69, float _t74) {
+        float _t75 = _r12 * _t17 - _r13 * _t15;
+        float _t76 = _r12 * _t18 - _r14 * _t15;
+        float _t77 = _r13 * _t18 - _r14 * _t17;
+        float _t78 = _r15 * _t7 - _r14 * _t2;
+        float _t79 = _r15 * _t18 - _r14 * _t16;
         float _t86 = _t4 * _t8 - _t1 * _t9;
         float _t87 = _t7 * _t8 - _t1 * _t10;
         float _t88 = _t7 * _t9 - _t4 * _t10;
@@ -11628,6 +12060,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t102 = _t18 * _t8 - _t15 * _t10;
         float _t103 = _t18 * _t9 - _t17 * _t10;
         float _t110 = _t1 * _t19 - _t2 * _t8;
+        frustumAabb_zo_general_s544e0688_tail3(_dst, _t4, _t19, _t2, _t9, _t15, _t16, _t8, _t17, _t7, _t10, _t18, _t6, _t70, _t0, _t71, _t3, _t72, _t14, _t11, _t12, _t75, _t76, _t77, _t86, _t87, _t88, _t101, _t102, _t103, _t68, _t78, _t5, _t13, _t73, _t79, _t69, _t74, _t110);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail3(FloatAABBImpl _dst, float _t4, float _t19, float _t2, float _t9, float _t15, float _t16, float _t8, float _t17, float _t7, float _t10, float _t18, float _t6, float _t70, float _t0, float _t71, float _t3, float _t72, float _t14, float _t11, float _t12, float _t75, float _t76, float _t77, float _t86, float _t87, float _t88, float _t101, float _t102, float _t103, float _t68, float _t78, float _t5, float _t13, float _t73, float _t79, float _t69, float _t74, float _t110) {
         float _t111 = _t4 * _t19 - _t2 * _t9;
         float _t112 = _t15 * _t19 - _t16 * _t8;
         float _t113 = _t17 * _t19 - _t16 * _t9;
@@ -11640,6 +12077,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t236 = Math.abs(_t221);
         float _t237 = Math.abs(_t223);
         float _t238 = Math.abs(_t225);
+        frustumAabb_zo_general_s544e0688_tail4(_dst, _t227, _t6, _t86, _t0, _t87, _t3, _t88, _t14, _t11, _t12, _t101, _t102, _t103, _t236, _t221, _t237, _t223, _t238, _t225, _t68, _t78, _t5, _t71, _t13, _t73, _t79, _t76, _t69, _t70, _t74, _t75, _t72, _t77, _t110, _t126, _t112, _t127, _t111, _t113);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail4(FloatAABBImpl _dst, float _t227, float _t6, float _t86, float _t0, float _t87, float _t3, float _t88, float _t14, float _t11, float _t12, float _t101, float _t102, float _t103, float _t236, float _t221, float _t237, float _t223, float _t238, float _t225, float _t68, float _t78, float _t5, float _t71, float _t13, float _t73, float _t79, float _t76, float _t69, float _t70, float _t74, float _t75, float _t72, float _t77, float _t110, float _t126, float _t112, float _t127, float _t111, float _t113) {
         float _t239 = Math.abs(_t227);
         float _t248 = _t6 * _t86 - _t0 * _t87 + _t3 * _t88;
         float _t249 = _t14 * _t86 - _t11 * _t87 + _t12 * _t88;
@@ -11651,6 +12093,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t267 = Math.abs(_t251);
         float _t276 = _t236 > _t264 * 9.536743E-7f ? _t221 : Math.copySign(0.0f, _t248);
         float _t276_inv = 1.0f / _t276;
+        frustumAabb_zo_general_s544e0688_tail5(_dst, _t237, _t265, _t223, _t249, _t238, _t266, _t225, _t250, _t239, _t267, _t227, _t251, _t264, _t236, _t248, _t221, _t6, _t68, _t3, _t78, _t5, _t71, _t276_inv, _t14, _t12, _t13, _t73, _t79, _t76, _t0, _t69, _t70, _t11, _t74, _t75, _t72, _t77, _t110, _t126, _t87, _t112, _t127, _t102, _t111, _t86, _t113, _t101, _t88, _t103);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail5(FloatAABBImpl _dst, float _t237, float _t265, float _t223, float _t249, float _t238, float _t266, float _t225, float _t250, float _t239, float _t267, float _t227, float _t251, float _t264, float _t236, float _t248, float _t221, float _t6, float _t68, float _t3, float _t78, float _t5, float _t71, float _t276_inv, float _t14, float _t12, float _t13, float _t73, float _t79, float _t76, float _t0, float _t69, float _t70, float _t11, float _t74, float _t75, float _t72, float _t77, float _t110, float _t126, float _t87, float _t112, float _t127, float _t102, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103) {
         float _t277 = _t237 > _t265 * 9.536743E-7f ? _t223 : Math.copySign(0.0f, _t249);
         float _t277_inv = 1.0f / _t277;
         float _t278 = _t238 > _t266 * 9.536743E-7f ? _t225 : Math.copySign(0.0f, _t250);
@@ -11661,6 +12108,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t280_inv = 1.0f / _t280;
         float _t281 = _t265 > _t237 * 9.536743E-7f ? _t249 : Math.copySign(0.0f, _t223);
         float _t281_inv = 1.0f / _t281;
+        frustumAabb_zo_general_s544e0688_tail6(_dst, _t266, _t238, _t250, _t225, _t267, _t239, _t251, _t227, _t6, _t68, _t3, _t78, _t5, _t71, _t276_inv, _t14, _t12, _t13, _t277_inv, _t73, _t79, _t76, _t278_inv, _t279_inv, _t0, _t69, _t70, _t11, _t74, _t75, _t72, _t77, _t110, _t126, _t87, _t280_inv, _t281_inv, _t112, _t127, _t102, _t111, _t86, _t113, _t101, _t88, _t103);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail6(FloatAABBImpl _dst, float _t266, float _t238, float _t250, float _t225, float _t267, float _t239, float _t251, float _t227, float _t6, float _t68, float _t3, float _t78, float _t5, float _t71, float _t276_inv, float _t14, float _t12, float _t13, float _t277_inv, float _t73, float _t79, float _t76, float _t278_inv, float _t279_inv, float _t0, float _t69, float _t70, float _t11, float _t74, float _t75, float _t72, float _t77, float _t110, float _t126, float _t87, float _t280_inv, float _t281_inv, float _t112, float _t127, float _t102, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103) {
         float _t282 = _t266 > _t238 * 9.536743E-7f ? _t250 : Math.copySign(0.0f, _t225);
         float _t282_inv = 1.0f / _t282;
         float _t283 = _t267 > _t239 * 9.536743E-7f ? _t251 : Math.copySign(0.0f, _t227);
@@ -11669,32 +12121,81 @@ public class Float4x4Impl implements Float4x4 {
         float _t289 = (_t14 * _t68 - _t12 * _t78 + _t13 * _t71) * _t277_inv;
         float _t290 = (_t14 * _t73 - _t12 * _t79 + _t13 * _t76) * _t278_inv;
         float _t291 = (_t6 * _t73 - _t3 * _t79 + _t5 * _t76) * _t279_inv;
+        frustumAabb_zo_general_s544e0688_tail7(_dst, _t0, _t68, _t3, _t69, _t5, _t70, _t276_inv, _t11, _t12, _t13, _t277_inv, _t73, _t74, _t75, _t278_inv, _t279_inv, _t6, _t78, _t72, _t14, _t79, _t77, _t110, _t126, _t87, _t280_inv, _t281_inv, _t112, _t127, _t102, _t282_inv, _t283_inv, _t111, _t86, _t113, _t101, _t88, _t103, _t288, _t289, _t290, _t291);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail7(FloatAABBImpl _dst, float _t0, float _t68, float _t3, float _t69, float _t5, float _t70, float _t276_inv, float _t11, float _t12, float _t13, float _t277_inv, float _t73, float _t74, float _t75, float _t278_inv, float _t279_inv, float _t6, float _t78, float _t72, float _t14, float _t79, float _t77, float _t110, float _t126, float _t87, float _t280_inv, float _t281_inv, float _t112, float _t127, float _t102, float _t282_inv, float _t283_inv, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103, float _t288, float _t289, float _t290, float _t291) {
         float _t296 = -((_t0 * _t68 - _t3 * _t69 + _t5 * _t70) * _t276_inv);
         float _t297 = -((_t11 * _t68 - _t12 * _t69 + _t13 * _t70) * _t277_inv);
         float _t298 = -((_t11 * _t73 - _t12 * _t74 + _t13 * _t75) * _t278_inv);
         float _t299 = -((_t0 * _t73 - _t3 * _t74 + _t5 * _t75) * _t279_inv);
         float _t300 = -((_t6 * _t69 - _t0 * _t78 + _t5 * _t72) * _t276_inv);
         float _t301 = -((_t14 * _t69 - _t11 * _t78 + _t13 * _t72) * _t277_inv);
+        frustumAabb_zo_general_s544e0688_tail8(_dst, _t14, _t74, _t11, _t79, _t13, _t77, _t278_inv, _t6, _t0, _t5, _t279_inv, _t110, _t3, _t126, _t87, _t280_inv, _t12, _t281_inv, _t112, _t127, _t102, _t282_inv, _t283_inv, _t111, _t86, _t113, _t101, _t88, _t103, _t296, _t297, _t298, _t299, _t288, _t289, _t290, _t291, _t300, _t301);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail8(FloatAABBImpl _dst, float _t14, float _t74, float _t11, float _t79, float _t13, float _t77, float _t278_inv, float _t6, float _t0, float _t5, float _t279_inv, float _t110, float _t3, float _t126, float _t87, float _t280_inv, float _t12, float _t281_inv, float _t112, float _t127, float _t102, float _t282_inv, float _t283_inv, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103, float _t296, float _t297, float _t298, float _t299, float _t288, float _t289, float _t290, float _t291, float _t300, float _t301) {
         float _t302 = -((_t14 * _t74 - _t11 * _t79 + _t13 * _t77) * _t278_inv);
         float _t303 = -((_t6 * _t74 - _t0 * _t79 + _t5 * _t77) * _t279_inv);
         float _t308 = (_t6 * _t110 - _t3 * _t126 + _t5 * _t87) * _t280_inv;
         float _t309 = (_t14 * _t110 - _t12 * _t126 + _t13 * _t87) * _t281_inv;
         float _t310 = (_t14 * _t112 - _t12 * _t127 + _t13 * _t102) * _t282_inv;
         float _t311 = (_t6 * _t112 - _t3 * _t127 + _t5 * _t102) * _t283_inv;
+        frustumAabb_zo_general_s544e0688_tail9(_dst, _t0, _t110, _t3, _t111, _t5, _t86, _t280_inv, _t11, _t12, _t13, _t281_inv, _t112, _t113, _t101, _t282_inv, _t283_inv, _t6, _t126, _t88, _t14, _t127, _t103, _t296, _t297, _t298, _t299, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail9(FloatAABBImpl _dst, float _t0, float _t110, float _t3, float _t111, float _t5, float _t86, float _t280_inv, float _t11, float _t12, float _t13, float _t281_inv, float _t112, float _t113, float _t101, float _t282_inv, float _t283_inv, float _t6, float _t126, float _t88, float _t14, float _t127, float _t103, float _t296, float _t297, float _t298, float _t299, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303) {
         float _t316 = -((_t0 * _t110 - _t3 * _t111 + _t5 * _t86) * _t280_inv);
         float _t317 = -((_t11 * _t110 - _t12 * _t111 + _t13 * _t86) * _t281_inv);
         float _t318 = -((_t11 * _t112 - _t12 * _t113 + _t13 * _t101) * _t282_inv);
         float _t319 = -((_t0 * _t112 - _t3 * _t113 + _t5 * _t101) * _t283_inv);
         float _t320 = -((_t6 * _t111 - _t0 * _t126 + _t5 * _t88) * _t280_inv);
         float _t321 = -((_t14 * _t111 - _t11 * _t126 + _t13 * _t88) * _t281_inv);
+        frustumAabb_zo_general_s544e0688_tail10(_dst, _t14, _t113, _t11, _t127, _t13, _t103, _t282_inv, _t6, _t0, _t5, _t283_inv, _t296, _t297, _t298, _t299, _t316, _t317, _t318, _t319, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303, _t320, _t321);
+    }
+
+    /** Private tail of {@code frustumAabb_zo_general}; reached only through it. */
+    private void frustumAabb_zo_general_s544e0688_tail10(FloatAABBImpl _dst, float _t14, float _t113, float _t11, float _t127, float _t13, float _t103, float _t282_inv, float _t6, float _t0, float _t5, float _t283_inv, float _t296, float _t297, float _t298, float _t299, float _t316, float _t317, float _t318, float _t319, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321) {
         float _t322 = -((_t14 * _t113 - _t11 * _t127 + _t13 * _t103) * _t282_inv);
         float _t323 = -((_t6 * _t113 - _t0 * _t127 + _t5 * _t103) * _t283_inv);
-        d.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
-        d.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
-        d.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
-        d.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
-        d.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
-        d.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
+        frustumAabb_zo_general_s544e0688_c0(_dst, _t296, _t297, _t298, _t299, _t316, _t317, _t318, _t319, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323);
+        frustumAabb_zo_general_s544e0688_c1(_dst, _t296, _t297, _t298, _t299, _t316, _t317, _t318, _t319, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323);
+    }
+
+
+    /**
+     * Private body of {@code frustumAabb} for {@code DepthRange.ZERO_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code frustumAabb} dispatcher.
+     */
+    private FloatAABB frustumAabb_zo_general(@Mutated FloatAABB dest) {
+        FloatAABBImpl d = (FloatAABBImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m31;
+        float _r2 = this.m12;
+        float _r3 = this.m32;
+        float _r4 = this.m13;
+        float _r5 = this.m33;
+        float _r6 = this.m02;
+        float _r7 = this.m11;
+        float _r8 = this.m03;
+        float _r9 = this.m00;
+        float _r10 = this.m30;
+        float _r11 = this.m10;
+        float _r12 = this.m22;
+        float _r13 = this.m21;
+        float _r14 = this.m20;
+        float _r15 = this.m23;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 + _r3;
+        float _t2 = _r4 + _r5;
+        float _t3 = _r6 + _r3;
+        float _t4 = _r7 + _r1;
+        float _t5 = _r8 + _r5;
+        float _t6 = _r9 + _r10;
+        frustumAabb_zo_general_s544e0688_tail(d, _r11, _r10, _r12, _r3, _r13, _r1, _r14, _r0, _r6, _r8, _r5, _r9, _r2, _r4, _r7, _r15, _t1, _t2, _t4, _t6, _t0, _t3, _t5);
         return d;
     }
 
@@ -11711,45 +12212,52 @@ public class Float4x4Impl implements Float4x4 {
         return frustumAabb_zo_general(dest);
     }
 
+    /** Private store group 0 of {@code frustumAabb_zo}: computes and stores it; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_c0(DoubleAABBImpl _dst, float _t296, float _t297, float _t298, float _t299, float _t316, float _t317, float _t318, float _t319, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323) {
+        _dst.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
+        _dst.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
+        _dst.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
+    }
 
-    /**
-     * Private body of {@code frustumAabb} for {@code DepthRange.ZERO_TO_ONE}; reached only through
-     * the public {@code frustumAabb} dispatcher.
-     */
-    private DoubleAABB frustumAabb_zo(@Mutated DoubleAABB dest) {
-        DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        float _t0 = this.m01 + this.m31;
-        float _t1 = this.m12 + this.m32;
-        float _t2 = this.m13 + this.m33;
-        float _t3 = this.m02 + this.m32;
-        float _t4 = this.m11 + this.m31;
-        float _t5 = this.m03 + this.m33;
-        float _t6 = this.m00 + this.m30;
-        float _t7 = this.m10 + this.m30;
-        float _t8 = this.m22 - this.m32;
-        float _t9 = this.m21 - this.m31;
-        float _t10 = this.m20 - this.m30;
-        float _t11 = this.m01 - this.m31;
-        float _t12 = this.m02 - this.m32;
-        float _t13 = this.m03 - this.m33;
-        float _t14 = this.m00 - this.m30;
-        float _t15 = this.m12 - this.m32;
-        float _t16 = this.m13 - this.m33;
-        float _t17 = this.m11 - this.m31;
-        float _t18 = this.m10 - this.m30;
-        float _t19 = this.m23 - this.m33;
-        float _t68 = this.m23 * _t1 - this.m22 * _t2;
-        float _t69 = this.m23 * _t4 - this.m21 * _t2;
-        float _t70 = this.m22 * _t4 - this.m21 * _t1;
-        float _t71 = this.m22 * _t7 - this.m20 * _t1;
-        float _t72 = this.m21 * _t7 - this.m20 * _t4;
-        float _t73 = this.m23 * _t15 - this.m22 * _t16;
-        float _t74 = this.m23 * _t17 - this.m21 * _t16;
-        float _t75 = this.m22 * _t17 - this.m21 * _t15;
-        float _t76 = this.m22 * _t18 - this.m20 * _t15;
-        float _t77 = this.m21 * _t18 - this.m20 * _t17;
-        float _t78 = this.m23 * _t7 - this.m20 * _t2;
-        float _t79 = this.m23 * _t18 - this.m20 * _t16;
+    /** Private store group 1 of {@code frustumAabb_zo}: computes and stores it; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_c1(DoubleAABBImpl _dst, float _t296, float _t297, float _t298, float _t299, float _t316, float _t317, float _t318, float _t319, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321, float _t322, float _t323) {
+        _dst.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
+        _dst.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
+        _dst.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail(DoubleAABBImpl _dst, float _r11, float _r10, float _r12, float _r3, float _r13, float _r1, float _r14, float _r0, float _r6, float _r8, float _r5, float _r9, float _r2, float _r4, float _r7, float _r15, float _t1, float _t2, float _t4, float _t6, float _t0, float _t3, float _t5) {
+        float _t7 = _r11 + _r10;
+        float _t8 = _r12 - _r3;
+        float _t9 = _r13 - _r1;
+        float _t10 = _r14 - _r10;
+        float _t11 = _r0 - _r1;
+        float _t12 = _r6 - _r3;
+        float _t13 = _r8 - _r5;
+        float _t14 = _r9 - _r10;
+        float _t15 = _r2 - _r3;
+        float _t16 = _r4 - _r5;
+        float _t17 = _r7 - _r1;
+        float _t18 = _r11 - _r10;
+        float _t19 = _r15 - _r5;
+        float _t68 = _r15 * _t1 - _r12 * _t2;
+        float _t69 = _r15 * _t4 - _r13 * _t2;
+        float _t70 = _r12 * _t4 - _r13 * _t1;
+        float _t71 = _r12 * _t7 - _r14 * _t1;
+        float _t72 = _r13 * _t7 - _r14 * _t4;
+        float _t73 = _r15 * _t15 - _r12 * _t16;
+        float _t74 = _r15 * _t17 - _r13 * _t16;
+        frustumAabb_zo_s47ac22ef_tail2(_dst, _r12, _t17, _r13, _t15, _t18, _r14, _r15, _t7, _t2, _t16, _t4, _t8, _t1, _t9, _t10, _t19, _t6, _t70, _t0, _t71, _t3, _t72, _t14, _t11, _t12, _t68, _t5, _t13, _t73, _t69, _t74);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail2(DoubleAABBImpl _dst, float _r12, float _t17, float _r13, float _t15, float _t18, float _r14, float _r15, float _t7, float _t2, float _t16, float _t4, float _t8, float _t1, float _t9, float _t10, float _t19, float _t6, float _t70, float _t0, float _t71, float _t3, float _t72, float _t14, float _t11, float _t12, float _t68, float _t5, float _t13, float _t73, float _t69, float _t74) {
+        float _t75 = _r12 * _t17 - _r13 * _t15;
+        float _t76 = _r12 * _t18 - _r14 * _t15;
+        float _t77 = _r13 * _t18 - _r14 * _t17;
+        float _t78 = _r15 * _t7 - _r14 * _t2;
+        float _t79 = _r15 * _t18 - _r14 * _t16;
         float _t86 = _t4 * _t8 - _t1 * _t9;
         float _t87 = _t7 * _t8 - _t1 * _t10;
         float _t88 = _t7 * _t9 - _t4 * _t10;
@@ -11757,6 +12265,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t102 = _t18 * _t8 - _t15 * _t10;
         float _t103 = _t18 * _t9 - _t17 * _t10;
         float _t110 = _t1 * _t19 - _t2 * _t8;
+        frustumAabb_zo_s47ac22ef_tail3(_dst, _t4, _t19, _t2, _t9, _t15, _t16, _t8, _t17, _t7, _t10, _t18, _t6, _t70, _t0, _t71, _t3, _t72, _t14, _t11, _t12, _t75, _t76, _t77, _t86, _t87, _t88, _t101, _t102, _t103, _t68, _t78, _t5, _t13, _t73, _t79, _t69, _t74, _t110);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail3(DoubleAABBImpl _dst, float _t4, float _t19, float _t2, float _t9, float _t15, float _t16, float _t8, float _t17, float _t7, float _t10, float _t18, float _t6, float _t70, float _t0, float _t71, float _t3, float _t72, float _t14, float _t11, float _t12, float _t75, float _t76, float _t77, float _t86, float _t87, float _t88, float _t101, float _t102, float _t103, float _t68, float _t78, float _t5, float _t13, float _t73, float _t79, float _t69, float _t74, float _t110) {
         float _t111 = _t4 * _t19 - _t2 * _t9;
         float _t112 = _t15 * _t19 - _t16 * _t8;
         float _t113 = _t17 * _t19 - _t16 * _t9;
@@ -11769,6 +12282,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t236 = Math.abs(_t221);
         float _t237 = Math.abs(_t223);
         float _t238 = Math.abs(_t225);
+        frustumAabb_zo_s47ac22ef_tail4(_dst, _t227, _t6, _t86, _t0, _t87, _t3, _t88, _t14, _t11, _t12, _t101, _t102, _t103, _t236, _t221, _t237, _t223, _t238, _t225, _t68, _t78, _t5, _t71, _t13, _t73, _t79, _t76, _t69, _t70, _t74, _t75, _t72, _t77, _t110, _t126, _t112, _t127, _t111, _t113);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail4(DoubleAABBImpl _dst, float _t227, float _t6, float _t86, float _t0, float _t87, float _t3, float _t88, float _t14, float _t11, float _t12, float _t101, float _t102, float _t103, float _t236, float _t221, float _t237, float _t223, float _t238, float _t225, float _t68, float _t78, float _t5, float _t71, float _t13, float _t73, float _t79, float _t76, float _t69, float _t70, float _t74, float _t75, float _t72, float _t77, float _t110, float _t126, float _t112, float _t127, float _t111, float _t113) {
         float _t239 = Math.abs(_t227);
         float _t248 = _t6 * _t86 - _t0 * _t87 + _t3 * _t88;
         float _t249 = _t14 * _t86 - _t11 * _t87 + _t12 * _t88;
@@ -11780,6 +12298,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t267 = Math.abs(_t251);
         float _t276 = _t236 > _t264 * 9.536743E-7f ? _t221 : Math.copySign(0.0f, _t248);
         float _t276_inv = 1.0f / _t276;
+        frustumAabb_zo_s47ac22ef_tail5(_dst, _t237, _t265, _t223, _t249, _t238, _t266, _t225, _t250, _t239, _t267, _t227, _t251, _t264, _t236, _t248, _t221, _t6, _t68, _t3, _t78, _t5, _t71, _t276_inv, _t14, _t12, _t13, _t73, _t79, _t76, _t0, _t69, _t70, _t11, _t74, _t75, _t72, _t77, _t110, _t126, _t87, _t112, _t127, _t102, _t111, _t86, _t113, _t101, _t88, _t103);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail5(DoubleAABBImpl _dst, float _t237, float _t265, float _t223, float _t249, float _t238, float _t266, float _t225, float _t250, float _t239, float _t267, float _t227, float _t251, float _t264, float _t236, float _t248, float _t221, float _t6, float _t68, float _t3, float _t78, float _t5, float _t71, float _t276_inv, float _t14, float _t12, float _t13, float _t73, float _t79, float _t76, float _t0, float _t69, float _t70, float _t11, float _t74, float _t75, float _t72, float _t77, float _t110, float _t126, float _t87, float _t112, float _t127, float _t102, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103) {
         float _t277 = _t237 > _t265 * 9.536743E-7f ? _t223 : Math.copySign(0.0f, _t249);
         float _t277_inv = 1.0f / _t277;
         float _t278 = _t238 > _t266 * 9.536743E-7f ? _t225 : Math.copySign(0.0f, _t250);
@@ -11790,6 +12313,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t280_inv = 1.0f / _t280;
         float _t281 = _t265 > _t237 * 9.536743E-7f ? _t249 : Math.copySign(0.0f, _t223);
         float _t281_inv = 1.0f / _t281;
+        frustumAabb_zo_s47ac22ef_tail6(_dst, _t266, _t238, _t250, _t225, _t267, _t239, _t251, _t227, _t6, _t68, _t3, _t78, _t5, _t71, _t276_inv, _t14, _t12, _t13, _t277_inv, _t73, _t79, _t76, _t278_inv, _t279_inv, _t0, _t69, _t70, _t11, _t74, _t75, _t72, _t77, _t110, _t126, _t87, _t280_inv, _t281_inv, _t112, _t127, _t102, _t111, _t86, _t113, _t101, _t88, _t103);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail6(DoubleAABBImpl _dst, float _t266, float _t238, float _t250, float _t225, float _t267, float _t239, float _t251, float _t227, float _t6, float _t68, float _t3, float _t78, float _t5, float _t71, float _t276_inv, float _t14, float _t12, float _t13, float _t277_inv, float _t73, float _t79, float _t76, float _t278_inv, float _t279_inv, float _t0, float _t69, float _t70, float _t11, float _t74, float _t75, float _t72, float _t77, float _t110, float _t126, float _t87, float _t280_inv, float _t281_inv, float _t112, float _t127, float _t102, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103) {
         float _t282 = _t266 > _t238 * 9.536743E-7f ? _t250 : Math.copySign(0.0f, _t225);
         float _t282_inv = 1.0f / _t282;
         float _t283 = _t267 > _t239 * 9.536743E-7f ? _t251 : Math.copySign(0.0f, _t227);
@@ -11798,32 +12326,81 @@ public class Float4x4Impl implements Float4x4 {
         float _t289 = (_t14 * _t68 - _t12 * _t78 + _t13 * _t71) * _t277_inv;
         float _t290 = (_t14 * _t73 - _t12 * _t79 + _t13 * _t76) * _t278_inv;
         float _t291 = (_t6 * _t73 - _t3 * _t79 + _t5 * _t76) * _t279_inv;
+        frustumAabb_zo_s47ac22ef_tail7(_dst, _t0, _t68, _t3, _t69, _t5, _t70, _t276_inv, _t11, _t12, _t13, _t277_inv, _t73, _t74, _t75, _t278_inv, _t279_inv, _t6, _t78, _t72, _t14, _t79, _t77, _t110, _t126, _t87, _t280_inv, _t281_inv, _t112, _t127, _t102, _t282_inv, _t283_inv, _t111, _t86, _t113, _t101, _t88, _t103, _t288, _t289, _t290, _t291);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail7(DoubleAABBImpl _dst, float _t0, float _t68, float _t3, float _t69, float _t5, float _t70, float _t276_inv, float _t11, float _t12, float _t13, float _t277_inv, float _t73, float _t74, float _t75, float _t278_inv, float _t279_inv, float _t6, float _t78, float _t72, float _t14, float _t79, float _t77, float _t110, float _t126, float _t87, float _t280_inv, float _t281_inv, float _t112, float _t127, float _t102, float _t282_inv, float _t283_inv, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103, float _t288, float _t289, float _t290, float _t291) {
         float _t296 = -((_t0 * _t68 - _t3 * _t69 + _t5 * _t70) * _t276_inv);
         float _t297 = -((_t11 * _t68 - _t12 * _t69 + _t13 * _t70) * _t277_inv);
         float _t298 = -((_t11 * _t73 - _t12 * _t74 + _t13 * _t75) * _t278_inv);
         float _t299 = -((_t0 * _t73 - _t3 * _t74 + _t5 * _t75) * _t279_inv);
         float _t300 = -((_t6 * _t69 - _t0 * _t78 + _t5 * _t72) * _t276_inv);
         float _t301 = -((_t14 * _t69 - _t11 * _t78 + _t13 * _t72) * _t277_inv);
+        frustumAabb_zo_s47ac22ef_tail8(_dst, _t14, _t74, _t11, _t79, _t13, _t77, _t278_inv, _t6, _t0, _t5, _t279_inv, _t110, _t3, _t126, _t87, _t280_inv, _t12, _t281_inv, _t112, _t127, _t102, _t282_inv, _t283_inv, _t111, _t86, _t113, _t101, _t88, _t103, _t296, _t297, _t298, _t299, _t288, _t289, _t290, _t291, _t300, _t301);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail8(DoubleAABBImpl _dst, float _t14, float _t74, float _t11, float _t79, float _t13, float _t77, float _t278_inv, float _t6, float _t0, float _t5, float _t279_inv, float _t110, float _t3, float _t126, float _t87, float _t280_inv, float _t12, float _t281_inv, float _t112, float _t127, float _t102, float _t282_inv, float _t283_inv, float _t111, float _t86, float _t113, float _t101, float _t88, float _t103, float _t296, float _t297, float _t298, float _t299, float _t288, float _t289, float _t290, float _t291, float _t300, float _t301) {
         float _t302 = -((_t14 * _t74 - _t11 * _t79 + _t13 * _t77) * _t278_inv);
         float _t303 = -((_t6 * _t74 - _t0 * _t79 + _t5 * _t77) * _t279_inv);
         float _t308 = (_t6 * _t110 - _t3 * _t126 + _t5 * _t87) * _t280_inv;
         float _t309 = (_t14 * _t110 - _t12 * _t126 + _t13 * _t87) * _t281_inv;
         float _t310 = (_t14 * _t112 - _t12 * _t127 + _t13 * _t102) * _t282_inv;
         float _t311 = (_t6 * _t112 - _t3 * _t127 + _t5 * _t102) * _t283_inv;
+        frustumAabb_zo_s47ac22ef_tail9(_dst, _t0, _t110, _t3, _t111, _t5, _t86, _t280_inv, _t11, _t12, _t13, _t281_inv, _t112, _t113, _t101, _t282_inv, _t283_inv, _t6, _t126, _t88, _t14, _t127, _t103, _t296, _t297, _t298, _t299, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail9(DoubleAABBImpl _dst, float _t0, float _t110, float _t3, float _t111, float _t5, float _t86, float _t280_inv, float _t11, float _t12, float _t13, float _t281_inv, float _t112, float _t113, float _t101, float _t282_inv, float _t283_inv, float _t6, float _t126, float _t88, float _t14, float _t127, float _t103, float _t296, float _t297, float _t298, float _t299, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303) {
         float _t316 = -((_t0 * _t110 - _t3 * _t111 + _t5 * _t86) * _t280_inv);
         float _t317 = -((_t11 * _t110 - _t12 * _t111 + _t13 * _t86) * _t281_inv);
         float _t318 = -((_t11 * _t112 - _t12 * _t113 + _t13 * _t101) * _t282_inv);
         float _t319 = -((_t0 * _t112 - _t3 * _t113 + _t5 * _t101) * _t283_inv);
         float _t320 = -((_t6 * _t111 - _t0 * _t126 + _t5 * _t88) * _t280_inv);
         float _t321 = -((_t14 * _t111 - _t11 * _t126 + _t13 * _t88) * _t281_inv);
+        frustumAabb_zo_s47ac22ef_tail10(_dst, _t14, _t113, _t11, _t127, _t13, _t103, _t282_inv, _t6, _t0, _t5, _t283_inv, _t296, _t297, _t298, _t299, _t316, _t317, _t318, _t319, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303, _t320, _t321);
+    }
+
+    /** Private tail of {@code frustumAabb_zo}; reached only through it. */
+    private void frustumAabb_zo_s47ac22ef_tail10(DoubleAABBImpl _dst, float _t14, float _t113, float _t11, float _t127, float _t13, float _t103, float _t282_inv, float _t6, float _t0, float _t5, float _t283_inv, float _t296, float _t297, float _t298, float _t299, float _t316, float _t317, float _t318, float _t319, float _t288, float _t289, float _t290, float _t291, float _t308, float _t309, float _t310, float _t311, float _t300, float _t301, float _t302, float _t303, float _t320, float _t321) {
         float _t322 = -((_t14 * _t113 - _t11 * _t127 + _t13 * _t103) * _t282_inv);
         float _t323 = -((_t6 * _t113 - _t0 * _t127 + _t5 * _t103) * _t283_inv);
-        d.minX = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
-        d.minY = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
-        d.minZ = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
-        d.maxX = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t296, _t297), _t298), _t299), _t316), _t317), _t318), _t319);
-        d.maxY = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t288, _t289), _t290), _t291), _t308), _t309), _t310), _t311);
-        d.maxZ = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t300, _t301), _t302), _t303), _t320), _t321), _t322), _t323);
+        frustumAabb_zo_s47ac22ef_c0(_dst, _t296, _t297, _t298, _t299, _t316, _t317, _t318, _t319, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323);
+        frustumAabb_zo_s47ac22ef_c1(_dst, _t296, _t297, _t298, _t299, _t316, _t317, _t318, _t319, _t288, _t289, _t290, _t291, _t308, _t309, _t310, _t311, _t300, _t301, _t302, _t303, _t320, _t321, _t322, _t323);
+    }
+
+
+    /**
+     * Private body of {@code frustumAabb} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code frustumAabb} dispatcher.
+     */
+    private DoubleAABB frustumAabb_zo(@Mutated DoubleAABB dest) {
+        DoubleAABBImpl d = (DoubleAABBImpl) dest;
+        float _r0 = this.m01;
+        float _r1 = this.m31;
+        float _r2 = this.m12;
+        float _r3 = this.m32;
+        float _r4 = this.m13;
+        float _r5 = this.m33;
+        float _r6 = this.m02;
+        float _r7 = this.m11;
+        float _r8 = this.m03;
+        float _r9 = this.m00;
+        float _r10 = this.m30;
+        float _r11 = this.m10;
+        float _r12 = this.m22;
+        float _r13 = this.m21;
+        float _r14 = this.m20;
+        float _r15 = this.m23;
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 + _r3;
+        float _t2 = _r4 + _r5;
+        float _t3 = _r6 + _r3;
+        float _t4 = _r7 + _r1;
+        float _t5 = _r8 + _r5;
+        float _t6 = _r9 + _r10;
+        frustumAabb_zo_s47ac22ef_tail(d, _r11, _r10, _r12, _r3, _r13, _r1, _r14, _r0, _r6, _r8, _r5, _r9, _r2, _r4, _r7, _r15, _t1, _t2, _t4, _t6, _t0, _t3, _t5);
         return d;
     }
 
@@ -14014,6 +14591,29 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code frustumRayDir_no_affine}: computes and stores it; reached only through it. */
+    private void frustumRayDir_no_affine_s7ab55a4a_c0(Float3Impl _dst, float _r10, float _t29, float _r11, float _t30, float _t35, float _t31, float _t32, float _t39_inv, float _r9, float _t33, float _t36, float _t34, float _t37) {
+        _dst.x = (_r10 * _t29 - _r11 * _t30 + _t35 - (_r10 * _t31 - _r11 * _t32 + _t35)) * _t39_inv;
+        _dst.y = (_r9 * _t31 - _r11 * _t33 + _t36 - (_r9 * _t29 - _r11 * _t34 + _t36)) * _t39_inv;
+        _dst.z = (_r9 * _t30 - _r10 * _t34 + _t37 - (_r9 * _t32 - _r10 * _t33 + _t37)) * _t39_inv;
+    }
+
+    /** Private tail of {@code frustumRayDir_no_affine}; reached only through it. */
+    private void frustumRayDir_no_affine_s7ab55a4a_tail(Float3Impl _dst, float _r6, float _t2, float _t20, float _r5, float _t21, float _t5, float _r7, float _t25, float _t19, float _t22, float _t23, float _t24, float _r9, float _r10, float _r11) {
+        float _t29 = _r6 * _t2 - _t20;
+        float _t30 = _r5 * _t2 - _t21;
+        float _t31 = _r6 * _t5 - _t20;
+        float _t32 = _r5 * _t5 - _t21;
+        float _t33 = _r7 * _t5 - _t25;
+        float _t34 = _r7 * _t2 - _t25;
+        float _t35 = _t19 * _t22;
+        float _t36 = _t19 * _t23;
+        float _t37 = _t19 * _t24;
+        float _t39 = _r9 * _t22 - _r10 * _t23 + _r11 * _t24;
+        float _t39_inv = 1.0f / _t39;
+        frustumRayDir_no_affine_s7ab55a4a_c0(_dst, _r10, _t29, _r11, _t30, _t35, _t31, _t32, _t39_inv, _r9, _t33, _t36, _t34, _t37);
+    }
+
 
     /**
      * Private body of {@code frustumRayDir} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized
@@ -14022,33 +14622,75 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float3 frustumRayDir_no_affine(float x, float y, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t2 = this.m23 - -1.0f;
-        float _t5 = this.m23 - 1.0f;
-        float _t18 = this.m13 + 1.0f - (y + y);
-        float _t19 = this.m03 + 1.0f - (x + x);
-        float _t20 = this.m22 * _t18;
-        float _t21 = this.m21 * _t18;
-        float _t22 = this.m11 * this.m22 - this.m12 * this.m21;
-        float _t23 = this.m10 * this.m22 - this.m12 * this.m20;
-        float _t24 = this.m10 * this.m21 - this.m11 * this.m20;
-        float _t25 = this.m20 * _t18;
-        float _t29 = this.m12 * _t2 - _t20;
-        float _t30 = this.m11 * _t2 - _t21;
-        float _t31 = this.m12 * _t5 - _t20;
-        float _t32 = this.m11 * _t5 - _t21;
-        float _t33 = this.m10 * _t5 - _t25;
-        float _t34 = this.m10 * _t2 - _t25;
-        float _t35 = _t19 * _t22;
-        float _t36 = _t19 * _t23;
-        float _t37 = _t19 * _t24;
-        float _t39 = this.m00 * _t22 - this.m01 * _t23 + this.m02 * _t24;
-        float _t39_inv = 1.0f / _t39;
-        float _buf0 = (this.m01 * _t29 - this.m02 * _t30 + _t35 - (this.m01 * _t31 - this.m02 * _t32 + _t35)) * _t39_inv;
-        float _buf1 = (this.m00 * _t31 - this.m02 * _t33 + _t36 - (this.m00 * _t29 - this.m02 * _t34 + _t36)) * _t39_inv;
-        d.z = (this.m00 * _t30 - this.m01 * _t34 + _t37 - (this.m00 * _t32 - this.m01 * _t33 + _t37)) * _t39_inv;
-        d.x = _buf0;
-        d.y = _buf1;
+        float _r0 = this.m23;
+        float _r1 = this.m13;
+        float _r2 = this.m03;
+        float _r3 = this.m22;
+        float _r4 = this.m21;
+        float _r5 = this.m11;
+        float _r6 = this.m12;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _r9 = this.m00;
+        float _r10 = this.m01;
+        float _r11 = this.m02;
+        float _t2 = _r0 - -1.0f;
+        float _t5 = _r0 - 1.0f;
+        float _t18 = _r1 + 1.0f - (y + y);
+        float _t19 = _r2 + 1.0f - (x + x);
+        float _t20 = _r3 * _t18;
+        float _t21 = _r4 * _t18;
+        float _t22 = _r5 * _r3 - _r6 * _r4;
+        float _t23 = _r7 * _r3 - _r6 * _r8;
+        float _t24 = _r7 * _r4 - _r5 * _r8;
+        float _t25 = _r8 * _t18;
+        frustumRayDir_no_affine_s7ab55a4a_tail(d, _r6, _t2, _t20, _r5, _t21, _t5, _r7, _t25, _t19, _t22, _t23, _t24, _r9, _r10, _r11);
         return d;
+    }
+
+    /** Private store group 0 of {@code frustumRayDir_no_general}: computes and stores it; reached only through it. */
+    private void frustumRayDir_no_general_s7ab55a4a_c0(Float3Impl _dst, float _t20, float _t52, float _sp0, float _t25, float _t56, float _t57, float _t27, float _t58, float _t53, float _t61, float _t77_inv, float _t23, float _t54, float _t62, float _t59, float _t63, float _t60, float _t55) {
+        _dst.x = (_t20 * _t52 + (_sp0 * (_t25 * _t56 - _t20 * _t57 + _t27 * _t58) - _t27 * _t53) - _t25 * _t61) * _t77_inv;
+        _dst.y = (_t23 * _t61 + (_t27 * _t54 - (_t23 * _t56 - _t20 * _t62 + _t27 * _t59) * _sp0 - _t20 * _t63)) * _t77_inv;
+        _dst.z = (_t25 * _t63 + ((_t23 * _t57 - _t25 * _t62 + _t27 * _t60) * _sp0 - _t27 * _t55) - _t23 * _t52) * _t77_inv;
+    }
+
+    /** Private tail of {@code frustumRayDir_no_general}; reached only through it. */
+    private void frustumRayDir_no_general_s7ab55a4a_tail(Float3Impl _dst, float _r0, float _r1, float _r4, float _r5, float _r2, float _r3, float _r6, float _r7, float _r8, float _t2, float _r9, float _t3, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _t4, float _t5, float _t6, float _t7) {
+        float _t8 = _r0 + _r1;
+        float _t9 = _r4 + _r5;
+        float _t10 = _r2 + _r3;
+        float _t11 = _r6 + _r7;
+        float _t20 = _r8 - _r5 * _t2;
+        float _t21 = _r9 - _r3 * _t3;
+        float _t22 = _r10 - _r1 * _t3;
+        float _t23 = _r11 - _r7 * _t2;
+        float _t24 = _r12 - _r5 * _t3;
+        float _t25 = _r13 - _r3 * _t2;
+        float _t26 = _r14 - _r7 * _t3;
+        float _t27 = _r15 - _r1 * _t2;
+        float _t52 = _t21 * _t4 - _t22 * _t5;
+        float _t53 = _t21 * _t6 - _t24 * _t5;
+        float _t54 = _t26 * _t6 - _t24 * _t7;
+        float _t55 = _t26 * _t5 - _t21 * _t7;
+        float _t56 = _t8 * _t24 - _t9 * _t22;
+        float _t57 = _t8 * _t21 - _t10 * _t22;
+        float _t58 = _t9 * _t21 - _t10 * _t24;
+        frustumRayDir_no_general_s7ab55a4a_tail2(_dst, _t9, _t26, _t11, _t24, _t10, _t21, _t4, _t22, _t6, _t8, _t7, _t23, _t53, _t25, _t54, _t20, _t55, _t58, _t52, _t56, _t57, _t27);
+    }
+
+    /** Private tail of {@code frustumRayDir_no_general}; reached only through it. */
+    private void frustumRayDir_no_general_s7ab55a4a_tail2(Float3Impl _dst, float _t9, float _t26, float _t11, float _t24, float _t10, float _t21, float _t4, float _t22, float _t6, float _t8, float _t7, float _t23, float _t53, float _t25, float _t54, float _t20, float _t55, float _t58, float _t52, float _t56, float _t57, float _t27) {
+        float _t59 = _t9 * _t26 - _t11 * _t24;
+        float _t60 = _t10 * _t26 - _t11 * _t21;
+        float _t61 = _t24 * _t4 - _t22 * _t6;
+        float _t62 = _t8 * _t26 - _t11 * _t22;
+        float _t63 = _t26 * _t4 - _t22 * _t7;
+        float _t72 = _t23 * _t53 - _t25 * _t54 + _t20 * _t55;
+        float _t73 = _t23 * _t58 - _t25 * _t59 + _t20 * _t60;
+        float _sp0 = _t72 / _t73;
+        float _t77_inv = 1.0f / (Math.abs(_t72) <= Math.abs(_t73) * 9.536743E-7f ? _t73 : _t72);
+        frustumRayDir_no_general_s7ab55a4a_c0(_dst, _t20, _t52, _sp0, _t25, _t56, _t57, _t27, _t58, _t53, _t61, _t77_inv, _t23, _t54, _t62, _t59, _t63, _t60, _t55);
     }
 
 
@@ -14059,43 +14701,29 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float3 frustumRayDir_no_general(float x, float y, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m21;
+        float _r3 = this.m31;
+        float _r4 = this.m22;
+        float _r5 = this.m32;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m02;
+        float _r9 = this.m11;
+        float _r10 = this.m13;
+        float _r11 = this.m00;
+        float _r12 = this.m12;
+        float _r13 = this.m01;
+        float _r14 = this.m10;
+        float _r15 = this.m03;
         float _t2 = x + x - 1.0f;
         float _t3 = y + y - 1.0f;
-        float _t4 = this.m23 - this.m33;
-        float _t5 = this.m21 - this.m31;
-        float _t6 = this.m22 - this.m32;
-        float _t7 = this.m20 - this.m30;
-        float _t8 = this.m23 + this.m33;
-        float _t9 = this.m22 + this.m32;
-        float _t10 = this.m21 + this.m31;
-        float _t11 = this.m20 + this.m30;
-        float _t20 = this.m02 - this.m32 * _t2;
-        float _t21 = this.m11 - this.m31 * _t3;
-        float _t22 = this.m13 - this.m33 * _t3;
-        float _t23 = this.m00 - this.m30 * _t2;
-        float _t24 = this.m12 - this.m32 * _t3;
-        float _t25 = this.m01 - this.m31 * _t2;
-        float _t26 = this.m10 - this.m30 * _t3;
-        float _t27 = this.m03 - this.m33 * _t2;
-        float _t52 = _t21 * _t4 - _t22 * _t5;
-        float _t53 = _t21 * _t6 - _t24 * _t5;
-        float _t54 = _t26 * _t6 - _t24 * _t7;
-        float _t55 = _t26 * _t5 - _t21 * _t7;
-        float _t56 = _t8 * _t24 - _t9 * _t22;
-        float _t57 = _t8 * _t21 - _t10 * _t22;
-        float _t58 = _t9 * _t21 - _t10 * _t24;
-        float _t59 = _t9 * _t26 - _t11 * _t24;
-        float _t60 = _t10 * _t26 - _t11 * _t21;
-        float _t61 = _t24 * _t4 - _t22 * _t6;
-        float _t62 = _t8 * _t26 - _t11 * _t22;
-        float _t63 = _t26 * _t4 - _t22 * _t7;
-        float _t72 = _t23 * _t53 - _t25 * _t54 + _t20 * _t55;
-        float _t73 = _t23 * _t58 - _t25 * _t59 + _t20 * _t60;
-        float _sp0 = _t72 / _t73;
-        float _t77_inv = 1.0f / (Math.abs(_t72) <= Math.abs(_t73) * 9.536743E-7f ? _t73 : _t72);
-        d.x = (_t20 * _t52 + (_sp0 * (_t25 * _t56 - _t20 * _t57 + _t27 * _t58) - _t27 * _t53) - _t25 * _t61) * _t77_inv;
-        d.y = (_t23 * _t61 + (_t27 * _t54 - (_t23 * _t56 - _t20 * _t62 + _t27 * _t59) * _sp0 - _t20 * _t63)) * _t77_inv;
-        d.z = (_t25 * _t63 + ((_t23 * _t57 - _t25 * _t62 + _t27 * _t60) * _sp0 - _t27 * _t55) - _t23 * _t52) * _t77_inv;
+        float _t4 = _r0 - _r1;
+        float _t5 = _r2 - _r3;
+        float _t6 = _r4 - _r5;
+        float _t7 = _r6 - _r7;
+        frustumRayDir_no_general_s7ab55a4a_tail(d, _r0, _r1, _r4, _r5, _r2, _r3, _r6, _r7, _r8, _t2, _r9, _t3, _r10, _r11, _r12, _r13, _r14, _r15, _t4, _t5, _t6, _t7);
         return d;
     }
 
@@ -14113,31 +14741,27 @@ public class Float4x4Impl implements Float4x4 {
         return frustumRayDir_no_general(x, y, dest);
     }
 
+    /** Private store group 0 of {@code frustumRayDir_no}: computes and stores it; reached only through it. */
+    private void frustumRayDir_no_sbd92ae1_c0(Double3Impl _dst, float _t20, float _t52, float _sp0, float _t25, float _t56, float _t57, float _t27, float _t58, float _t53, float _t61, float _t77_inv, float _t23, float _t54, float _t62, float _t59, float _t63, float _t60, float _t55) {
+        _dst.x = (_t20 * _t52 + (_sp0 * (_t25 * _t56 - _t20 * _t57 + _t27 * _t58) - _t27 * _t53) - _t25 * _t61) * _t77_inv;
+        _dst.y = (_t23 * _t61 + (_t27 * _t54 - (_t23 * _t56 - _t20 * _t62 + _t27 * _t59) * _sp0 - _t20 * _t63)) * _t77_inv;
+        _dst.z = (_t25 * _t63 + ((_t23 * _t57 - _t25 * _t62 + _t27 * _t60) * _sp0 - _t27 * _t55) - _t23 * _t52) * _t77_inv;
+    }
 
-    /**
-     * Private body of {@code frustumRayDir} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached
-     * only through the public {@code frustumRayDir} dispatcher.
-     */
-    private Double3 frustumRayDir_no(float x, float y, @Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        float _t2 = x + x - 1.0f;
-        float _t3 = y + y - 1.0f;
-        float _t4 = this.m23 - this.m33;
-        float _t5 = this.m21 - this.m31;
-        float _t6 = this.m22 - this.m32;
-        float _t7 = this.m20 - this.m30;
-        float _t8 = this.m23 + this.m33;
-        float _t9 = this.m22 + this.m32;
-        float _t10 = this.m21 + this.m31;
-        float _t11 = this.m20 + this.m30;
-        float _t20 = this.m02 - this.m32 * _t2;
-        float _t21 = this.m11 - this.m31 * _t3;
-        float _t22 = this.m13 - this.m33 * _t3;
-        float _t23 = this.m00 - this.m30 * _t2;
-        float _t24 = this.m12 - this.m32 * _t3;
-        float _t25 = this.m01 - this.m31 * _t2;
-        float _t26 = this.m10 - this.m30 * _t3;
-        float _t27 = this.m03 - this.m33 * _t2;
+    /** Private tail of {@code frustumRayDir_no}; reached only through it. */
+    private void frustumRayDir_no_sbd92ae1_tail(Double3Impl _dst, float _r0, float _r1, float _r4, float _r5, float _r2, float _r3, float _r6, float _r7, float _r8, float _t2, float _r9, float _t3, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _t4, float _t5, float _t6, float _t7) {
+        float _t8 = _r0 + _r1;
+        float _t9 = _r4 + _r5;
+        float _t10 = _r2 + _r3;
+        float _t11 = _r6 + _r7;
+        float _t20 = _r8 - _r5 * _t2;
+        float _t21 = _r9 - _r3 * _t3;
+        float _t22 = _r10 - _r1 * _t3;
+        float _t23 = _r11 - _r7 * _t2;
+        float _t24 = _r12 - _r5 * _t3;
+        float _t25 = _r13 - _r3 * _t2;
+        float _t26 = _r14 - _r7 * _t3;
+        float _t27 = _r15 - _r1 * _t2;
         float _t52 = _t21 * _t4 - _t22 * _t5;
         float _t53 = _t21 * _t6 - _t24 * _t5;
         float _t54 = _t26 * _t6 - _t24 * _t7;
@@ -14145,6 +14769,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t56 = _t8 * _t24 - _t9 * _t22;
         float _t57 = _t8 * _t21 - _t10 * _t22;
         float _t58 = _t9 * _t21 - _t10 * _t24;
+        frustumRayDir_no_sbd92ae1_tail2(_dst, _t9, _t26, _t11, _t24, _t10, _t21, _t4, _t22, _t6, _t8, _t7, _t23, _t53, _t25, _t54, _t20, _t55, _t58, _t52, _t56, _t57, _t27);
+    }
+
+    /** Private tail of {@code frustumRayDir_no}; reached only through it. */
+    private void frustumRayDir_no_sbd92ae1_tail2(Double3Impl _dst, float _t9, float _t26, float _t11, float _t24, float _t10, float _t21, float _t4, float _t22, float _t6, float _t8, float _t7, float _t23, float _t53, float _t25, float _t54, float _t20, float _t55, float _t58, float _t52, float _t56, float _t57, float _t27) {
         float _t59 = _t9 * _t26 - _t11 * _t24;
         float _t60 = _t10 * _t26 - _t11 * _t21;
         float _t61 = _t24 * _t4 - _t22 * _t6;
@@ -14154,9 +14783,39 @@ public class Float4x4Impl implements Float4x4 {
         float _t73 = _t23 * _t58 - _t25 * _t59 + _t20 * _t60;
         float _sp0 = _t72 / _t73;
         float _t77_inv = 1.0f / (Math.abs(_t72) <= Math.abs(_t73) * 9.536743E-7f ? _t73 : _t72);
-        d.x = (_t20 * _t52 + (_sp0 * (_t25 * _t56 - _t20 * _t57 + _t27 * _t58) - _t27 * _t53) - _t25 * _t61) * _t77_inv;
-        d.y = (_t23 * _t61 + (_t27 * _t54 - (_t23 * _t56 - _t20 * _t62 + _t27 * _t59) * _sp0 - _t20 * _t63)) * _t77_inv;
-        d.z = (_t25 * _t63 + ((_t23 * _t57 - _t25 * _t62 + _t27 * _t60) * _sp0 - _t27 * _t55) - _t23 * _t52) * _t77_inv;
+        frustumRayDir_no_sbd92ae1_c0(_dst, _t20, _t52, _sp0, _t25, _t56, _t57, _t27, _t58, _t53, _t61, _t77_inv, _t23, _t54, _t62, _t59, _t63, _t60, _t55);
+    }
+
+
+    /**
+     * Private body of {@code frustumRayDir} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached
+     * only through the public {@code frustumRayDir} dispatcher.
+     */
+    private Double3 frustumRayDir_no(float x, float y, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m21;
+        float _r3 = this.m31;
+        float _r4 = this.m22;
+        float _r5 = this.m32;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m02;
+        float _r9 = this.m11;
+        float _r10 = this.m13;
+        float _r11 = this.m00;
+        float _r12 = this.m12;
+        float _r13 = this.m01;
+        float _r14 = this.m10;
+        float _r15 = this.m03;
+        float _t2 = x + x - 1.0f;
+        float _t3 = y + y - 1.0f;
+        float _t4 = _r0 - _r1;
+        float _t5 = _r2 - _r3;
+        float _t6 = _r4 - _r5;
+        float _t7 = _r6 - _r7;
+        frustumRayDir_no_sbd92ae1_tail(d, _r0, _r1, _r4, _r5, _r2, _r3, _r6, _r7, _r8, _t2, _r9, _t3, _r10, _r11, _r12, _r13, _r14, _r15, _t4, _t5, _t6, _t7);
         return d;
     }
 
@@ -14199,6 +14858,29 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code frustumRayDir_zo_affine}: computes and stores it; reached only through it. */
+    private void frustumRayDir_zo_affine_s7ab55a4a_c0(Float3Impl _dst, float _r10, float _t28, float _r11, float _t29, float _t34, float _t31, float _t32, float _t38_inv, float _r9, float _t33, float _t35, float _t30, float _t36) {
+        _dst.x = (_r10 * _t28 - _r11 * _t29 + _t34 - (_r10 * _t31 - _r11 * _t32 + _t34)) * _t38_inv;
+        _dst.y = (_r9 * _t31 - _r11 * _t33 + _t35 - (_r9 * _t28 - _r11 * _t30 + _t35)) * _t38_inv;
+        _dst.z = (_r9 * _t29 - _r10 * _t30 + _t36 - (_r9 * _t32 - _r10 * _t33 + _t36)) * _t38_inv;
+    }
+
+    /** Private tail of {@code frustumRayDir_zo_affine}; reached only through it. */
+    private void frustumRayDir_zo_affine_s7ab55a4a_tail(Float3Impl _dst, float _r6, float _r0, float _t19, float _r5, float _t20, float _r7, float _t24, float _t4, float _t18, float _t21, float _t22, float _t23, float _r9, float _r10, float _r11) {
+        float _t28 = _r6 * _r0 - _t19;
+        float _t29 = _r5 * _r0 - _t20;
+        float _t30 = _r7 * _r0 - _t24;
+        float _t31 = _r6 * _t4 - _t19;
+        float _t32 = _r5 * _t4 - _t20;
+        float _t33 = _r7 * _t4 - _t24;
+        float _t34 = _t18 * _t21;
+        float _t35 = _t18 * _t22;
+        float _t36 = _t18 * _t23;
+        float _t38 = _r9 * _t21 - _r10 * _t22 + _r11 * _t23;
+        float _t38_inv = 1.0f / _t38;
+        frustumRayDir_zo_affine_s7ab55a4a_c0(_dst, _r10, _t28, _r11, _t29, _t34, _t31, _t32, _t38_inv, _r9, _t33, _t35, _t30, _t36);
+    }
+
 
     /**
      * Private body of {@code frustumRayDir} for {@code DepthRange.ZERO_TO_ONE}, specialized by
@@ -14206,32 +14888,70 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float3 frustumRayDir_zo_affine(float x, float y, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t4 = this.m23 - 1.0f;
-        float _t17 = this.m13 + 1.0f - (y + y);
-        float _t18 = this.m03 + 1.0f - (x + x);
-        float _t19 = this.m22 * _t17;
-        float _t20 = this.m21 * _t17;
-        float _t21 = this.m11 * this.m22 - this.m12 * this.m21;
-        float _t22 = this.m10 * this.m22 - this.m12 * this.m20;
-        float _t23 = this.m10 * this.m21 - this.m11 * this.m20;
-        float _t24 = this.m20 * _t17;
-        float _t28 = this.m12 * this.m23 - _t19;
-        float _t29 = this.m11 * this.m23 - _t20;
-        float _t30 = this.m10 * this.m23 - _t24;
-        float _t31 = this.m12 * _t4 - _t19;
-        float _t32 = this.m11 * _t4 - _t20;
-        float _t33 = this.m10 * _t4 - _t24;
-        float _t34 = _t18 * _t21;
-        float _t35 = _t18 * _t22;
-        float _t36 = _t18 * _t23;
-        float _t38 = this.m00 * _t21 - this.m01 * _t22 + this.m02 * _t23;
-        float _t38_inv = 1.0f / _t38;
-        float _buf0 = (this.m01 * _t28 - this.m02 * _t29 + _t34 - (this.m01 * _t31 - this.m02 * _t32 + _t34)) * _t38_inv;
-        float _buf1 = (this.m00 * _t31 - this.m02 * _t33 + _t35 - (this.m00 * _t28 - this.m02 * _t30 + _t35)) * _t38_inv;
-        d.z = (this.m00 * _t29 - this.m01 * _t30 + _t36 - (this.m00 * _t32 - this.m01 * _t33 + _t36)) * _t38_inv;
-        d.x = _buf0;
-        d.y = _buf1;
+        float _r0 = this.m23;
+        float _r1 = this.m13;
+        float _r2 = this.m03;
+        float _r3 = this.m22;
+        float _r4 = this.m21;
+        float _r5 = this.m11;
+        float _r6 = this.m12;
+        float _r7 = this.m10;
+        float _r8 = this.m20;
+        float _r9 = this.m00;
+        float _r10 = this.m01;
+        float _r11 = this.m02;
+        float _t4 = _r0 - 1.0f;
+        float _t17 = _r1 + 1.0f - (y + y);
+        float _t18 = _r2 + 1.0f - (x + x);
+        float _t19 = _r3 * _t17;
+        float _t20 = _r4 * _t17;
+        float _t21 = _r5 * _r3 - _r6 * _r4;
+        float _t22 = _r7 * _r3 - _r6 * _r8;
+        float _t23 = _r7 * _r4 - _r5 * _r8;
+        float _t24 = _r8 * _t17;
+        frustumRayDir_zo_affine_s7ab55a4a_tail(d, _r6, _r0, _t19, _r5, _t20, _r7, _t24, _t4, _t18, _t21, _t22, _t23, _r9, _r10, _r11);
         return d;
+    }
+
+    /** Private store group 0 of {@code frustumRayDir_zo_general}: computes and stores it; reached only through it. */
+    private void frustumRayDir_zo_general_s7ab55a4a_c0(Float3Impl _dst, float _t16, float _t54, float _sp0, float _t21, float _t48, float _t49, float _t23, float _t50, float _t55, float _t58, float _t73_inv, float _t19, float _t56, float _t53, float _t51, float _t59, float _t52, float _t57) {
+        _dst.x = (_t16 * _t54 + (_sp0 * (_t21 * _t48 - _t16 * _t49 + _t23 * _t50) - _t23 * _t55) - _t21 * _t58) * _t73_inv;
+        _dst.y = (_t19 * _t58 + (_t23 * _t56 - (_t19 * _t48 - _t16 * _t53 + _t23 * _t51) * _sp0 - _t16 * _t59)) * _t73_inv;
+        _dst.z = (_t21 * _t59 + ((_t19 * _t49 - _t21 * _t53 + _t23 * _t52) * _sp0 - _t23 * _t57) - _t19 * _t54) * _t73_inv;
+    }
+
+    /** Private tail of {@code frustumRayDir_zo_general}; reached only through it. */
+    private void frustumRayDir_zo_general_s7ab55a4a_tail(Float3Impl _dst, float _r8, float _r5, float _t2, float _r9, float _r3, float _t3, float _r10, float _r1, float _r11, float _r7, float _r12, float _r13, float _r14, float _r15, float _r0, float _r4, float _r2, float _r6, float _t4, float _t5, float _t6, float _t7) {
+        float _t16 = _r8 - _r5 * _t2;
+        float _t17 = _r9 - _r3 * _t3;
+        float _t18 = _r10 - _r1 * _t3;
+        float _t19 = _r11 - _r7 * _t2;
+        float _t20 = _r12 - _r5 * _t3;
+        float _t21 = _r13 - _r3 * _t2;
+        float _t22 = _r14 - _r7 * _t3;
+        float _t23 = _r15 - _r1 * _t2;
+        float _t48 = _r0 * _t20 - _r4 * _t18;
+        float _t49 = _r0 * _t17 - _r2 * _t18;
+        float _t50 = _r4 * _t17 - _r2 * _t20;
+        float _t51 = _r4 * _t22 - _r6 * _t20;
+        float _t52 = _r2 * _t22 - _r6 * _t17;
+        float _t53 = _r0 * _t22 - _r6 * _t18;
+        float _t54 = _t17 * _t4 - _t18 * _t5;
+        float _t55 = _t17 * _t6 - _t20 * _t5;
+        float _t56 = _t22 * _t6 - _t20 * _t7;
+        frustumRayDir_zo_general_s7ab55a4a_tail2(_dst, _t22, _t5, _t17, _t7, _t20, _t4, _t18, _t6, _t19, _t50, _t21, _t51, _t16, _t52, _t55, _t56, _t54, _t48, _t49, _t23, _t53);
+    }
+
+    /** Private tail of {@code frustumRayDir_zo_general}; reached only through it. */
+    private void frustumRayDir_zo_general_s7ab55a4a_tail2(Float3Impl _dst, float _t22, float _t5, float _t17, float _t7, float _t20, float _t4, float _t18, float _t6, float _t19, float _t50, float _t21, float _t51, float _t16, float _t52, float _t55, float _t56, float _t54, float _t48, float _t49, float _t23, float _t53) {
+        float _t57 = _t22 * _t5 - _t17 * _t7;
+        float _t58 = _t20 * _t4 - _t18 * _t6;
+        float _t59 = _t22 * _t4 - _t18 * _t7;
+        float _t68 = _t19 * _t50 - _t21 * _t51 + _t16 * _t52;
+        float _t71 = _t19 * _t55 - _t21 * _t56 + _t16 * _t57;
+        float _sp0 = _t71 / _t68;
+        float _t73_inv = 1.0f / (Math.abs(_t71) <= Math.abs(_t68) * 9.536743E-7f ? _t68 : _t71);
+        frustumRayDir_zo_general_s7ab55a4a_c0(_dst, _t16, _t54, _sp0, _t21, _t48, _t49, _t23, _t50, _t55, _t58, _t73_inv, _t19, _t56, _t53, _t51, _t59, _t52, _t57);
     }
 
 
@@ -14241,39 +14961,29 @@ public class Float4x4Impl implements Float4x4 {
      */
     private Float3 frustumRayDir_zo_general(float x, float y, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m21;
+        float _r3 = this.m31;
+        float _r4 = this.m22;
+        float _r5 = this.m32;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m02;
+        float _r9 = this.m11;
+        float _r10 = this.m13;
+        float _r11 = this.m00;
+        float _r12 = this.m12;
+        float _r13 = this.m01;
+        float _r14 = this.m10;
+        float _r15 = this.m03;
         float _t2 = x + x - 1.0f;
         float _t3 = y + y - 1.0f;
-        float _t4 = this.m23 - this.m33;
-        float _t5 = this.m21 - this.m31;
-        float _t6 = this.m22 - this.m32;
-        float _t7 = this.m20 - this.m30;
-        float _t16 = this.m02 - this.m32 * _t2;
-        float _t17 = this.m11 - this.m31 * _t3;
-        float _t18 = this.m13 - this.m33 * _t3;
-        float _t19 = this.m00 - this.m30 * _t2;
-        float _t20 = this.m12 - this.m32 * _t3;
-        float _t21 = this.m01 - this.m31 * _t2;
-        float _t22 = this.m10 - this.m30 * _t3;
-        float _t23 = this.m03 - this.m33 * _t2;
-        float _t48 = this.m23 * _t20 - this.m22 * _t18;
-        float _t49 = this.m23 * _t17 - this.m21 * _t18;
-        float _t50 = this.m22 * _t17 - this.m21 * _t20;
-        float _t51 = this.m22 * _t22 - this.m20 * _t20;
-        float _t52 = this.m21 * _t22 - this.m20 * _t17;
-        float _t53 = this.m23 * _t22 - this.m20 * _t18;
-        float _t54 = _t17 * _t4 - _t18 * _t5;
-        float _t55 = _t17 * _t6 - _t20 * _t5;
-        float _t56 = _t22 * _t6 - _t20 * _t7;
-        float _t57 = _t22 * _t5 - _t17 * _t7;
-        float _t58 = _t20 * _t4 - _t18 * _t6;
-        float _t59 = _t22 * _t4 - _t18 * _t7;
-        float _t68 = _t19 * _t50 - _t21 * _t51 + _t16 * _t52;
-        float _t71 = _t19 * _t55 - _t21 * _t56 + _t16 * _t57;
-        float _sp0 = _t71 / _t68;
-        float _t73_inv = 1.0f / (Math.abs(_t71) <= Math.abs(_t68) * 9.536743E-7f ? _t68 : _t71);
-        d.x = (_t16 * _t54 + (_sp0 * (_t21 * _t48 - _t16 * _t49 + _t23 * _t50) - _t23 * _t55) - _t21 * _t58) * _t73_inv;
-        d.y = (_t19 * _t58 + (_t23 * _t56 - (_t19 * _t48 - _t16 * _t53 + _t23 * _t51) * _sp0 - _t16 * _t59)) * _t73_inv;
-        d.z = (_t21 * _t59 + ((_t19 * _t49 - _t21 * _t53 + _t23 * _t52) * _sp0 - _t23 * _t57) - _t19 * _t54) * _t73_inv;
+        float _t4 = _r0 - _r1;
+        float _t5 = _r2 - _r3;
+        float _t6 = _r4 - _r5;
+        float _t7 = _r6 - _r7;
+        frustumRayDir_zo_general_s7ab55a4a_tail(d, _r8, _r5, _t2, _r9, _r3, _t3, _r10, _r1, _r11, _r7, _r12, _r13, _r14, _r15, _r0, _r4, _r2, _r6, _t4, _t5, _t6, _t7);
         return d;
     }
 
@@ -14291,36 +15001,37 @@ public class Float4x4Impl implements Float4x4 {
         return frustumRayDir_zo_general(x, y, dest);
     }
 
+    /** Private store group 0 of {@code frustumRayDir_zo}: computes and stores it; reached only through it. */
+    private void frustumRayDir_zo_sbd92ae1_c0(Double3Impl _dst, float _t16, float _t54, float _sp0, float _t21, float _t48, float _t49, float _t23, float _t50, float _t55, float _t58, float _t73_inv, float _t19, float _t56, float _t53, float _t51, float _t59, float _t52, float _t57) {
+        _dst.x = (_t16 * _t54 + (_sp0 * (_t21 * _t48 - _t16 * _t49 + _t23 * _t50) - _t23 * _t55) - _t21 * _t58) * _t73_inv;
+        _dst.y = (_t19 * _t58 + (_t23 * _t56 - (_t19 * _t48 - _t16 * _t53 + _t23 * _t51) * _sp0 - _t16 * _t59)) * _t73_inv;
+        _dst.z = (_t21 * _t59 + ((_t19 * _t49 - _t21 * _t53 + _t23 * _t52) * _sp0 - _t23 * _t57) - _t19 * _t54) * _t73_inv;
+    }
 
-    /**
-     * Private body of {@code frustumRayDir} for {@code DepthRange.ZERO_TO_ONE}; reached only
-     * through the public {@code frustumRayDir} dispatcher.
-     */
-    private Double3 frustumRayDir_zo(float x, float y, @Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        float _t2 = x + x - 1.0f;
-        float _t3 = y + y - 1.0f;
-        float _t4 = this.m23 - this.m33;
-        float _t5 = this.m21 - this.m31;
-        float _t6 = this.m22 - this.m32;
-        float _t7 = this.m20 - this.m30;
-        float _t16 = this.m02 - this.m32 * _t2;
-        float _t17 = this.m11 - this.m31 * _t3;
-        float _t18 = this.m13 - this.m33 * _t3;
-        float _t19 = this.m00 - this.m30 * _t2;
-        float _t20 = this.m12 - this.m32 * _t3;
-        float _t21 = this.m01 - this.m31 * _t2;
-        float _t22 = this.m10 - this.m30 * _t3;
-        float _t23 = this.m03 - this.m33 * _t2;
-        float _t48 = this.m23 * _t20 - this.m22 * _t18;
-        float _t49 = this.m23 * _t17 - this.m21 * _t18;
-        float _t50 = this.m22 * _t17 - this.m21 * _t20;
-        float _t51 = this.m22 * _t22 - this.m20 * _t20;
-        float _t52 = this.m21 * _t22 - this.m20 * _t17;
-        float _t53 = this.m23 * _t22 - this.m20 * _t18;
+    /** Private tail of {@code frustumRayDir_zo}; reached only through it. */
+    private void frustumRayDir_zo_sbd92ae1_tail(Double3Impl _dst, float _r8, float _r5, float _t2, float _r9, float _r3, float _t3, float _r10, float _r1, float _r11, float _r7, float _r12, float _r13, float _r14, float _r15, float _r0, float _r4, float _r2, float _r6, float _t4, float _t5, float _t6, float _t7) {
+        float _t16 = _r8 - _r5 * _t2;
+        float _t17 = _r9 - _r3 * _t3;
+        float _t18 = _r10 - _r1 * _t3;
+        float _t19 = _r11 - _r7 * _t2;
+        float _t20 = _r12 - _r5 * _t3;
+        float _t21 = _r13 - _r3 * _t2;
+        float _t22 = _r14 - _r7 * _t3;
+        float _t23 = _r15 - _r1 * _t2;
+        float _t48 = _r0 * _t20 - _r4 * _t18;
+        float _t49 = _r0 * _t17 - _r2 * _t18;
+        float _t50 = _r4 * _t17 - _r2 * _t20;
+        float _t51 = _r4 * _t22 - _r6 * _t20;
+        float _t52 = _r2 * _t22 - _r6 * _t17;
+        float _t53 = _r0 * _t22 - _r6 * _t18;
         float _t54 = _t17 * _t4 - _t18 * _t5;
         float _t55 = _t17 * _t6 - _t20 * _t5;
         float _t56 = _t22 * _t6 - _t20 * _t7;
+        frustumRayDir_zo_sbd92ae1_tail2(_dst, _t22, _t5, _t17, _t7, _t20, _t4, _t18, _t6, _t19, _t50, _t21, _t51, _t16, _t52, _t55, _t56, _t54, _t48, _t49, _t23, _t53);
+    }
+
+    /** Private tail of {@code frustumRayDir_zo}; reached only through it. */
+    private void frustumRayDir_zo_sbd92ae1_tail2(Double3Impl _dst, float _t22, float _t5, float _t17, float _t7, float _t20, float _t4, float _t18, float _t6, float _t19, float _t50, float _t21, float _t51, float _t16, float _t52, float _t55, float _t56, float _t54, float _t48, float _t49, float _t23, float _t53) {
         float _t57 = _t22 * _t5 - _t17 * _t7;
         float _t58 = _t20 * _t4 - _t18 * _t6;
         float _t59 = _t22 * _t4 - _t18 * _t7;
@@ -14328,9 +15039,39 @@ public class Float4x4Impl implements Float4x4 {
         float _t71 = _t19 * _t55 - _t21 * _t56 + _t16 * _t57;
         float _sp0 = _t71 / _t68;
         float _t73_inv = 1.0f / (Math.abs(_t71) <= Math.abs(_t68) * 9.536743E-7f ? _t68 : _t71);
-        d.x = (_t16 * _t54 + (_sp0 * (_t21 * _t48 - _t16 * _t49 + _t23 * _t50) - _t23 * _t55) - _t21 * _t58) * _t73_inv;
-        d.y = (_t19 * _t58 + (_t23 * _t56 - (_t19 * _t48 - _t16 * _t53 + _t23 * _t51) * _sp0 - _t16 * _t59)) * _t73_inv;
-        d.z = (_t21 * _t59 + ((_t19 * _t49 - _t21 * _t53 + _t23 * _t52) * _sp0 - _t23 * _t57) - _t19 * _t54) * _t73_inv;
+        frustumRayDir_zo_sbd92ae1_c0(_dst, _t16, _t54, _sp0, _t21, _t48, _t49, _t23, _t50, _t55, _t58, _t73_inv, _t19, _t56, _t53, _t51, _t59, _t52, _t57);
+    }
+
+
+    /**
+     * Private body of {@code frustumRayDir} for {@code DepthRange.ZERO_TO_ONE}; reached only
+     * through the public {@code frustumRayDir} dispatcher.
+     */
+    private Double3 frustumRayDir_zo(float x, float y, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m21;
+        float _r3 = this.m31;
+        float _r4 = this.m22;
+        float _r5 = this.m32;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m02;
+        float _r9 = this.m11;
+        float _r10 = this.m13;
+        float _r11 = this.m00;
+        float _r12 = this.m12;
+        float _r13 = this.m01;
+        float _r14 = this.m10;
+        float _r15 = this.m03;
+        float _t2 = x + x - 1.0f;
+        float _t3 = y + y - 1.0f;
+        float _t4 = _r0 - _r1;
+        float _t5 = _r2 - _r3;
+        float _t6 = _r4 - _r5;
+        float _t7 = _r6 - _r7;
+        frustumRayDir_zo_sbd92ae1_tail(d, _r8, _r5, _t2, _r9, _r3, _t3, _r10, _r1, _r11, _r7, _r12, _r13, _r14, _r15, _r0, _r4, _r2, _r6, _t4, _t5, _t6, _t7);
         return d;
     }
 
@@ -97673,28 +98414,27 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code unproject_no_general}: computes and stores it; reached only through it. */
+    private void unproject_no_general_s7ee4f0ac_c0(Float3Impl _dst, float _t26, float _t46, float _t29, float _t47, float _t31, float _t48, float _t56_inv, float _t32, float _t51, float _t49, float _t50) {
+        _dst.x = -((_t26 * _t46 - _t29 * _t47 + _t31 * _t48) * _t56_inv);
+        _dst.y = (_t32 * _t46 - _t29 * _t51 + _t31 * _t49) * _t56_inv;
+        _dst.z = -((_t32 * _t47 - _t26 * _t51 + _t31 * _t50) * _t56_inv);
+    }
 
-    /**
-     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
-     * runtime matrix properties; reached only through the public {@code unproject} dispatcher.
-     */
-    private Float3 unproject_no_general(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Float3 dest) {
-        Float3Impl d = (Float3Impl) dest;
-        float _t3 = winCoordsZ + winCoordsZ - 1.0f;
-        float _t12 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
-        float _t13 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t14 = this.m23 - this.m33 * _t3;
-        float _t15 = this.m22 - this.m32 * _t3;
-        float _t16 = this.m21 - this.m31 * _t3;
-        float _t17 = this.m20 - this.m30 * _t3;
-        float _t26 = this.m01 - this.m31 * _t12;
-        float _t27 = this.m12 - this.m32 * _t13;
-        float _t28 = this.m13 - this.m33 * _t13;
-        float _t29 = this.m02 - this.m32 * _t12;
-        float _t30 = this.m11 - this.m31 * _t13;
-        float _t31 = this.m03 - this.m33 * _t12;
-        float _t32 = this.m00 - this.m30 * _t12;
-        float _t33 = this.m10 - this.m30 * _t13;
+    /** Private tail of {@code unproject_no_general}; reached only through it. */
+    private void unproject_no_general_s7ee4f0ac_tail(Float3Impl _dst, float _r0, float _r1, float _t3, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _t12, float _r9, float _t13, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15) {
+        float _t14 = _r0 - _r1 * _t3;
+        float _t15 = _r2 - _r3 * _t3;
+        float _t16 = _r4 - _r5 * _t3;
+        float _t17 = _r6 - _r7 * _t3;
+        float _t26 = _r8 - _r5 * _t12;
+        float _t27 = _r9 - _r3 * _t13;
+        float _t28 = _r10 - _r1 * _t13;
+        float _t29 = _r11 - _r3 * _t12;
+        float _t30 = _r12 - _r5 * _t13;
+        float _t31 = _r13 - _r1 * _t12;
+        float _t32 = _r14 - _r7 * _t12;
+        float _t33 = _r15 - _r7 * _t13;
         float _t46 = _t27 * _t14 - _t28 * _t15;
         float _t47 = _t30 * _t14 - _t28 * _t16;
         float _t48 = _t30 * _t15 - _t27 * _t16;
@@ -97702,10 +98442,42 @@ public class Float4x4Impl implements Float4x4 {
         float _t50 = _t33 * _t16 - _t30 * _t17;
         float _t51 = _t33 * _t14 - _t28 * _t17;
         float _t56 = _t32 * _t48 - _t26 * _t49 + _t29 * _t50;
+        unproject_no_general_s7ee4f0ac_tail2(_dst, _t56, _t26, _t46, _t29, _t47, _t31, _t48, _t32, _t51, _t49, _t50);
+    }
+
+    /** Private tail of {@code unproject_no_general}; reached only through it. */
+    private void unproject_no_general_s7ee4f0ac_tail2(Float3Impl _dst, float _t56, float _t26, float _t46, float _t29, float _t47, float _t31, float _t48, float _t32, float _t51, float _t49, float _t50) {
         float _t56_inv = 1.0f / _t56;
-        d.x = -((_t26 * _t46 - _t29 * _t47 + _t31 * _t48) * _t56_inv);
-        d.y = (_t32 * _t46 - _t29 * _t51 + _t31 * _t49) * _t56_inv;
-        d.z = -((_t32 * _t47 - _t26 * _t51 + _t31 * _t50) * _t56_inv);
+        unproject_no_general_s7ee4f0ac_c0(_dst, _t26, _t46, _t29, _t47, _t31, _t48, _t56_inv, _t32, _t51, _t49, _t50);
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}, specialized by
+     * runtime matrix properties; reached only through the public {@code unproject} dispatcher.
+     */
+    private Float3 unproject_no_general(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Float3 dest) {
+        Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m22;
+        float _r3 = this.m32;
+        float _r4 = this.m21;
+        float _r5 = this.m31;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m01;
+        float _r9 = this.m12;
+        float _r10 = this.m13;
+        float _r11 = this.m02;
+        float _r12 = this.m11;
+        float _r13 = this.m03;
+        float _r14 = this.m00;
+        float _r15 = this.m10;
+        float _t3 = winCoordsZ + winCoordsZ - 1.0f;
+        float _t12 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t13 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        unproject_no_general_s7ee4f0ac_tail(d, _r0, _r1, _t3, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _t12, _r9, _t13, _r10, _r11, _r12, _r13, _r14, _r15);
         return d;
     }
 
@@ -97723,28 +98495,27 @@ public class Float4x4Impl implements Float4x4 {
         return unproject_no_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
     }
 
+    /** Private store group 0 of {@code unproject_no}: computes and stores it; reached only through it. */
+    private void unproject_no_sd9c60bf_c0(Double3Impl _dst, float _t26, float _t46, float _t29, float _t47, float _t31, float _t48, float _t56_inv, float _t32, float _t51, float _t49, float _t50) {
+        _dst.x = -((_t26 * _t46 - _t29 * _t47 + _t31 * _t48) * _t56_inv);
+        _dst.y = (_t32 * _t46 - _t29 * _t51 + _t31 * _t49) * _t56_inv;
+        _dst.z = -((_t32 * _t47 - _t26 * _t51 + _t31 * _t50) * _t56_inv);
+    }
 
-    /**
-     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
-     * through the public {@code unproject} dispatcher.
-     */
-    private Double3 unproject_no(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        float _t3 = winCoordsZ + winCoordsZ - 1.0f;
-        float _t12 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
-        float _t13 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t14 = this.m23 - this.m33 * _t3;
-        float _t15 = this.m22 - this.m32 * _t3;
-        float _t16 = this.m21 - this.m31 * _t3;
-        float _t17 = this.m20 - this.m30 * _t3;
-        float _t26 = this.m01 - this.m31 * _t12;
-        float _t27 = this.m12 - this.m32 * _t13;
-        float _t28 = this.m13 - this.m33 * _t13;
-        float _t29 = this.m02 - this.m32 * _t12;
-        float _t30 = this.m11 - this.m31 * _t13;
-        float _t31 = this.m03 - this.m33 * _t12;
-        float _t32 = this.m00 - this.m30 * _t12;
-        float _t33 = this.m10 - this.m30 * _t13;
+    /** Private tail of {@code unproject_no}; reached only through it. */
+    private void unproject_no_sd9c60bf_tail(Double3Impl _dst, float _r0, float _r1, float _t3, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _t12, float _r9, float _t13, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15) {
+        float _t14 = _r0 - _r1 * _t3;
+        float _t15 = _r2 - _r3 * _t3;
+        float _t16 = _r4 - _r5 * _t3;
+        float _t17 = _r6 - _r7 * _t3;
+        float _t26 = _r8 - _r5 * _t12;
+        float _t27 = _r9 - _r3 * _t13;
+        float _t28 = _r10 - _r1 * _t13;
+        float _t29 = _r11 - _r3 * _t12;
+        float _t30 = _r12 - _r5 * _t13;
+        float _t31 = _r13 - _r1 * _t12;
+        float _t32 = _r14 - _r7 * _t12;
+        float _t33 = _r15 - _r7 * _t13;
         float _t46 = _t27 * _t14 - _t28 * _t15;
         float _t47 = _t30 * _t14 - _t28 * _t16;
         float _t48 = _t30 * _t15 - _t27 * _t16;
@@ -97752,10 +98523,42 @@ public class Float4x4Impl implements Float4x4 {
         float _t50 = _t33 * _t16 - _t30 * _t17;
         float _t51 = _t33 * _t14 - _t28 * _t17;
         float _t56 = _t32 * _t48 - _t26 * _t49 + _t29 * _t50;
+        unproject_no_sd9c60bf_tail2(_dst, _t56, _t26, _t46, _t29, _t47, _t31, _t48, _t32, _t51, _t49, _t50);
+    }
+
+    /** Private tail of {@code unproject_no}; reached only through it. */
+    private void unproject_no_sd9c60bf_tail2(Double3Impl _dst, float _t56, float _t26, float _t46, float _t29, float _t47, float _t31, float _t48, float _t32, float _t51, float _t49, float _t50) {
         float _t56_inv = 1.0f / _t56;
-        d.x = -((_t26 * _t46 - _t29 * _t47 + _t31 * _t48) * _t56_inv);
-        d.y = (_t32 * _t46 - _t29 * _t51 + _t31 * _t49) * _t56_inv;
-        d.z = -((_t32 * _t47 - _t26 * _t51 + _t31 * _t50) * _t56_inv);
+        unproject_no_sd9c60bf_c0(_dst, _t26, _t46, _t29, _t47, _t31, _t48, _t56_inv, _t32, _t51, _t49, _t50);
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.NEGATIVE_ONE_TO_ONE}; reached only
+     * through the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_no(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m22;
+        float _r3 = this.m32;
+        float _r4 = this.m21;
+        float _r5 = this.m31;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m01;
+        float _r9 = this.m12;
+        float _r10 = this.m13;
+        float _r11 = this.m02;
+        float _r12 = this.m11;
+        float _r13 = this.m03;
+        float _r14 = this.m00;
+        float _r15 = this.m10;
+        float _t3 = winCoordsZ + winCoordsZ - 1.0f;
+        float _t12 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
+        float _t13 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
+        unproject_no_sd9c60bf_tail(d, _r0, _r1, _t3, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _t12, _r9, _t13, _r10, _r11, _r12, _r13, _r14, _r15);
         return d;
     }
 
@@ -97844,27 +98647,25 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code unproject_zo_general}: computes and stores it; reached only through it. */
+    private void unproject_zo_general_s7ee4f0ac_c0(Float3Impl _dst, float _t24, float _t44, float _t27, float _t45, float _t29, float _t46, float _t54_inv, float _t30, float _t49, float _t47, float _t48) {
+        _dst.x = -((_t24 * _t44 - _t27 * _t45 + _t29 * _t46) * _t54_inv);
+        _dst.y = (_t30 * _t44 - _t27 * _t49 + _t29 * _t47) * _t54_inv;
+        _dst.z = -((_t30 * _t45 - _t24 * _t49 + _t29 * _t48) * _t54_inv);
+    }
 
-    /**
-     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
-     * matrix properties; reached only through the public {@code unproject} dispatcher.
-     */
-    private Float3 unproject_zo_general(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Float3 dest) {
-        Float3Impl d = (Float3Impl) dest;
-        float _t8 = this.m23 - this.m33 * winCoordsZ;
-        float _t9 = this.m22 - this.m32 * winCoordsZ;
-        float _t10 = this.m21 - this.m31 * winCoordsZ;
-        float _t11 = this.m20 - this.m30 * winCoordsZ;
+    /** Private tail of {@code unproject_zo_general}; reached only through it. */
+    private void unproject_zo_general_s7ee4f0ac_tail(Float3Impl _dst, float winCoordsX, float viewportX, float viewportZ, float winCoordsY, float viewportY, float viewportW, float _r8, float _r5, float _r9, float _r3, float _r10, float _r1, float _r11, float _r12, float _r13, float _r14, float _r7, float _r15, float _t8, float _t9, float _t10, float _t11) {
         float _t14 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t15 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t24 = this.m01 - this.m31 * _t14;
-        float _t25 = this.m12 - this.m32 * _t15;
-        float _t26 = this.m13 - this.m33 * _t15;
-        float _t27 = this.m02 - this.m32 * _t14;
-        float _t28 = this.m11 - this.m31 * _t15;
-        float _t29 = this.m03 - this.m33 * _t14;
-        float _t30 = this.m00 - this.m30 * _t14;
-        float _t31 = this.m10 - this.m30 * _t15;
+        float _t24 = _r8 - _r5 * _t14;
+        float _t25 = _r9 - _r3 * _t15;
+        float _t26 = _r10 - _r1 * _t15;
+        float _t27 = _r11 - _r3 * _t14;
+        float _t28 = _r12 - _r5 * _t15;
+        float _t29 = _r13 - _r1 * _t14;
+        float _t30 = _r14 - _r7 * _t14;
+        float _t31 = _r15 - _r7 * _t15;
         float _t44 = _t25 * _t8 - _t26 * _t9;
         float _t45 = _t28 * _t8 - _t26 * _t10;
         float _t46 = _t28 * _t9 - _t25 * _t10;
@@ -97872,10 +98673,43 @@ public class Float4x4Impl implements Float4x4 {
         float _t48 = _t31 * _t10 - _t28 * _t11;
         float _t49 = _t31 * _t8 - _t26 * _t11;
         float _t54 = _t30 * _t46 - _t24 * _t47 + _t27 * _t48;
+        unproject_zo_general_s7ee4f0ac_tail2(_dst, _t54, _t24, _t44, _t27, _t45, _t29, _t46, _t30, _t49, _t47, _t48);
+    }
+
+    /** Private tail of {@code unproject_zo_general}; reached only through it. */
+    private void unproject_zo_general_s7ee4f0ac_tail2(Float3Impl _dst, float _t54, float _t24, float _t44, float _t27, float _t45, float _t29, float _t46, float _t30, float _t49, float _t47, float _t48) {
         float _t54_inv = 1.0f / _t54;
-        d.x = -((_t24 * _t44 - _t27 * _t45 + _t29 * _t46) * _t54_inv);
-        d.y = (_t30 * _t44 - _t27 * _t49 + _t29 * _t47) * _t54_inv;
-        d.z = -((_t30 * _t45 - _t24 * _t49 + _t29 * _t48) * _t54_inv);
+        unproject_zo_general_s7ee4f0ac_c0(_dst, _t24, _t44, _t27, _t45, _t29, _t46, _t54_inv, _t30, _t49, _t47, _t48);
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}, specialized by runtime
+     * matrix properties; reached only through the public {@code unproject} dispatcher.
+     */
+    private Float3 unproject_zo_general(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Float3 dest) {
+        Float3Impl d = (Float3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m22;
+        float _r3 = this.m32;
+        float _r4 = this.m21;
+        float _r5 = this.m31;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m01;
+        float _r9 = this.m12;
+        float _r10 = this.m13;
+        float _r11 = this.m02;
+        float _r12 = this.m11;
+        float _r13 = this.m03;
+        float _r14 = this.m00;
+        float _r15 = this.m10;
+        float _t8 = _r0 - _r1 * winCoordsZ;
+        float _t9 = _r2 - _r3 * winCoordsZ;
+        float _t10 = _r4 - _r5 * winCoordsZ;
+        float _t11 = _r6 - _r7 * winCoordsZ;
+        unproject_zo_general_s7ee4f0ac_tail(d, winCoordsX, viewportX, viewportZ, winCoordsY, viewportY, viewportW, _r8, _r5, _r9, _r3, _r10, _r1, _r11, _r12, _r13, _r14, _r7, _r15, _t8, _t9, _t10, _t11);
         return d;
     }
 
@@ -97893,27 +98727,25 @@ public class Float4x4Impl implements Float4x4 {
         return unproject_zo_general(winCoordsX, winCoordsY, winCoordsZ, viewportX, viewportY, viewportZ, viewportW, dest);
     }
 
+    /** Private store group 0 of {@code unproject_zo}: computes and stores it; reached only through it. */
+    private void unproject_zo_sd9c60bf_c0(Double3Impl _dst, float _t24, float _t44, float _t27, float _t45, float _t29, float _t46, float _t54_inv, float _t30, float _t49, float _t47, float _t48) {
+        _dst.x = -((_t24 * _t44 - _t27 * _t45 + _t29 * _t46) * _t54_inv);
+        _dst.y = (_t30 * _t44 - _t27 * _t49 + _t29 * _t47) * _t54_inv;
+        _dst.z = -((_t30 * _t45 - _t24 * _t49 + _t29 * _t48) * _t54_inv);
+    }
 
-    /**
-     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}; reached only through
-     * the public {@code unproject} dispatcher.
-     */
-    private Double3 unproject_zo(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        float _t8 = this.m23 - this.m33 * winCoordsZ;
-        float _t9 = this.m22 - this.m32 * winCoordsZ;
-        float _t10 = this.m21 - this.m31 * winCoordsZ;
-        float _t11 = this.m20 - this.m30 * winCoordsZ;
+    /** Private tail of {@code unproject_zo}; reached only through it. */
+    private void unproject_zo_sd9c60bf_tail(Double3Impl _dst, float winCoordsX, float viewportX, float viewportZ, float winCoordsY, float viewportY, float viewportW, float _r8, float _r5, float _r9, float _r3, float _r10, float _r1, float _r11, float _r12, float _r13, float _r14, float _r7, float _r15, float _t8, float _t9, float _t10, float _t11) {
         float _t14 = 2.0f * (winCoordsX - viewportX) / viewportZ - 1.0f;
         float _t15 = 2.0f * (winCoordsY - viewportY) / viewportW - 1.0f;
-        float _t24 = this.m01 - this.m31 * _t14;
-        float _t25 = this.m12 - this.m32 * _t15;
-        float _t26 = this.m13 - this.m33 * _t15;
-        float _t27 = this.m02 - this.m32 * _t14;
-        float _t28 = this.m11 - this.m31 * _t15;
-        float _t29 = this.m03 - this.m33 * _t14;
-        float _t30 = this.m00 - this.m30 * _t14;
-        float _t31 = this.m10 - this.m30 * _t15;
+        float _t24 = _r8 - _r5 * _t14;
+        float _t25 = _r9 - _r3 * _t15;
+        float _t26 = _r10 - _r1 * _t15;
+        float _t27 = _r11 - _r3 * _t14;
+        float _t28 = _r12 - _r5 * _t15;
+        float _t29 = _r13 - _r1 * _t14;
+        float _t30 = _r14 - _r7 * _t14;
+        float _t31 = _r15 - _r7 * _t15;
         float _t44 = _t25 * _t8 - _t26 * _t9;
         float _t45 = _t28 * _t8 - _t26 * _t10;
         float _t46 = _t28 * _t9 - _t25 * _t10;
@@ -97921,10 +98753,43 @@ public class Float4x4Impl implements Float4x4 {
         float _t48 = _t31 * _t10 - _t28 * _t11;
         float _t49 = _t31 * _t8 - _t26 * _t11;
         float _t54 = _t30 * _t46 - _t24 * _t47 + _t27 * _t48;
+        unproject_zo_sd9c60bf_tail2(_dst, _t54, _t24, _t44, _t27, _t45, _t29, _t46, _t30, _t49, _t47, _t48);
+    }
+
+    /** Private tail of {@code unproject_zo}; reached only through it. */
+    private void unproject_zo_sd9c60bf_tail2(Double3Impl _dst, float _t54, float _t24, float _t44, float _t27, float _t45, float _t29, float _t46, float _t30, float _t49, float _t47, float _t48) {
         float _t54_inv = 1.0f / _t54;
-        d.x = -((_t24 * _t44 - _t27 * _t45 + _t29 * _t46) * _t54_inv);
-        d.y = (_t30 * _t44 - _t27 * _t49 + _t29 * _t47) * _t54_inv;
-        d.z = -((_t30 * _t45 - _t24 * _t49 + _t29 * _t48) * _t54_inv);
+        unproject_zo_sd9c60bf_c0(_dst, _t24, _t44, _t27, _t45, _t29, _t46, _t54_inv, _t30, _t49, _t47, _t48);
+    }
+
+
+    /**
+     * Private body of {@code unproject} for {@code DepthRange.ZERO_TO_ONE}; reached only through
+     * the public {@code unproject} dispatcher.
+     */
+    private Double3 unproject_zo(float winCoordsX, float winCoordsY, float winCoordsZ, float viewportX, float viewportY, float viewportZ, float viewportW, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        float _r0 = this.m23;
+        float _r1 = this.m33;
+        float _r2 = this.m22;
+        float _r3 = this.m32;
+        float _r4 = this.m21;
+        float _r5 = this.m31;
+        float _r6 = this.m20;
+        float _r7 = this.m30;
+        float _r8 = this.m01;
+        float _r9 = this.m12;
+        float _r10 = this.m13;
+        float _r11 = this.m02;
+        float _r12 = this.m11;
+        float _r13 = this.m03;
+        float _r14 = this.m00;
+        float _r15 = this.m10;
+        float _t8 = _r0 - _r1 * winCoordsZ;
+        float _t9 = _r2 - _r3 * winCoordsZ;
+        float _t10 = _r4 - _r5 * winCoordsZ;
+        float _t11 = _r6 - _r7 * winCoordsZ;
+        unproject_zo_sd9c60bf_tail(d, winCoordsX, viewportX, viewportZ, winCoordsY, viewportY, viewportW, _r8, _r5, _r9, _r3, _r10, _r1, _r11, _r12, _r13, _r14, _r7, _r15, _t8, _t9, _t10, _t11);
         return d;
     }
 
@@ -100024,6 +100889,32 @@ public class Float4x4Impl implements Float4x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code transformAabb_orthogonal}: computes and stores it; reached only through it. */
+    private void transformAabb_orthogonal_s6eb9d004_c0(FloatAABBImpl _dst, float _t22, float _r9, float _t3, float _t4, float _t5, float _t6, float _t7, float _t8, float _r10, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _r11, float _t15, float _t16, float _t17, float _t18, float _t19, float _t20) {
+        _dst.minX = _t22 < 0.0f ? Float.POSITIVE_INFINITY : _r9 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+        _dst.minY = _t22 < 0.0f ? Float.POSITIVE_INFINITY : _r10 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+        _dst.minZ = _t22 < 0.0f ? Float.POSITIVE_INFINITY : _r11 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+    }
+
+    /** Private store group 1 of {@code transformAabb_orthogonal}: computes and stores it; reached only through it. */
+    private void transformAabb_orthogonal_s6eb9d004_c1(FloatAABBImpl _dst, float _t22, float _r9, float _t3, float _t4, float _t5, float _t6, float _t7, float _t8, float _r10, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _r11, float _t15, float _t16, float _t17, float _t18, float _t19, float _t20) {
+        _dst.maxX = _t22 < 0.0f ? Float.NEGATIVE_INFINITY : _r9 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+        _dst.maxY = _t22 < 0.0f ? Float.NEGATIVE_INFINITY : _r10 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+        _dst.maxZ = _t22 < 0.0f ? Float.NEGATIVE_INFINITY : _r11 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+    }
+
+    /** Private tail of {@code transformAabb_orthogonal}; reached only through it. */
+    private void transformAabb_orthogonal_s6eb9d004_tail(FloatAABBImpl _dst, float maxX, float _r6, float minY, float _r7, float maxY, float minZ, float _r8, float maxZ, float minX, float _r9, float _t3, float _t4, float _t5, float _t6, float _t7, float _t8, float _r10, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _r11, float _t15) {
+        float _t16 = maxX * _r6;
+        float _t17 = minY * _r7;
+        float _t18 = maxY * _r7;
+        float _t19 = minZ * _r8;
+        float _t20 = maxZ * _r8;
+        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        transformAabb_orthogonal_s6eb9d004_c0(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+        transformAabb_orthogonal_s6eb9d004_c1(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+    }
+
 
     /**
      * Private body of {@code transformAabb}, specialized by runtime matrix properties; reached only
@@ -100031,42 +100922,35 @@ public class Float4x4Impl implements Float4x4 {
      */
     private FloatAABB transformAabb_orthogonal(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated FloatAABB dest) {
         FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t3 = minX * this.m00;
-        float _t4 = maxX * this.m00;
-        float _t5 = minY * this.m01;
-        float _t6 = maxY * this.m01;
-        float _t7 = minZ * this.m02;
-        float _t8 = maxZ * this.m02;
-        float _t9 = minX * this.m10;
-        float _t10 = maxX * this.m10;
-        float _t11 = minY * this.m11;
-        float _t12 = maxY * this.m11;
-        float _t13 = minZ * this.m12;
-        float _t14 = maxZ * this.m12;
-        float _t15 = minX * this.m20;
-        float _t16 = maxX * this.m20;
-        float _t17 = minY * this.m21;
-        float _t18 = maxY * this.m21;
-        float _t19 = minZ * this.m22;
-        float _t20 = maxZ * this.m22;
-        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
-        if (_t22 < 0.0f) {
-            d.minX = Float.POSITIVE_INFINITY;
-            d.minY = Float.POSITIVE_INFINITY;
-            d.minZ = Float.POSITIVE_INFINITY;
-            d.maxX = Float.NEGATIVE_INFINITY;
-            d.maxY = Float.NEGATIVE_INFINITY;
-            d.maxZ = Float.NEGATIVE_INFINITY;
-        } else {
-            d.minX = this.m03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
-            d.minY = this.m13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
-            d.minZ = this.m23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
-            d.maxX = this.m03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
-            d.maxY = this.m13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
-            d.maxZ = this.m23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
-        }
+        float _r0 = this.m00;
+        float _r1 = this.m01;
+        float _r2 = this.m02;
+        float _r3 = this.m10;
+        float _r4 = this.m11;
+        float _r5 = this.m12;
+        float _r6 = this.m20;
+        float _r7 = this.m21;
+        float _r8 = this.m22;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        float _t3 = minX * _r0;
+        float _t4 = maxX * _r0;
+        float _t5 = minY * _r1;
+        float _t6 = maxY * _r1;
+        float _t7 = minZ * _r2;
+        float _t8 = maxZ * _r2;
+        float _t9 = minX * _r3;
+        float _t10 = maxX * _r3;
+        float _t11 = minY * _r4;
+        float _t12 = maxY * _r4;
+        float _t13 = minZ * _r5;
+        float _t14 = maxZ * _r5;
+        float _t15 = minX * _r6;
+        transformAabb_orthogonal_s6eb9d004_tail(d, maxX, _r6, minY, _r7, maxY, minZ, _r8, maxZ, minX, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15);
         return d;
     }
+
 
 
     /**
@@ -100108,6 +100992,32 @@ public class Float4x4Impl implements Float4x4 {
         return transformAabb_general(minX, minY, minZ, maxX, maxY, maxZ, dest);
     }
 
+    /** Private store group 0 of {@code transformAabb}: computes and stores it; reached only through it. */
+    private void transformAabb_s7ab988f3_c0(DoubleAABBImpl _dst, float _t22, float _r9, float _t3, float _t4, float _t5, float _t6, float _t7, float _t8, float _r10, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _r11, float _t15, float _t16, float _t17, float _t18, float _t19, float _t20) {
+        _dst.minX = _t22 < 0.0f ? Float.POSITIVE_INFINITY : _r9 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+        _dst.minY = _t22 < 0.0f ? Float.POSITIVE_INFINITY : _r10 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+        _dst.minZ = _t22 < 0.0f ? Float.POSITIVE_INFINITY : _r11 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+    }
+
+    /** Private store group 1 of {@code transformAabb}: computes and stores it; reached only through it. */
+    private void transformAabb_s7ab988f3_c1(DoubleAABBImpl _dst, float _t22, float _r9, float _t3, float _t4, float _t5, float _t6, float _t7, float _t8, float _r10, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _r11, float _t15, float _t16, float _t17, float _t18, float _t19, float _t20) {
+        _dst.maxX = _t22 < 0.0f ? Float.NEGATIVE_INFINITY : _r9 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+        _dst.maxY = _t22 < 0.0f ? Float.NEGATIVE_INFINITY : _r10 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+        _dst.maxZ = _t22 < 0.0f ? Float.NEGATIVE_INFINITY : _r11 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+    }
+
+    /** Private tail of {@code transformAabb}; reached only through it. */
+    private void transformAabb_s7ab988f3_tail(DoubleAABBImpl _dst, float maxX, float _r6, float minY, float _r7, float maxY, float minZ, float _r8, float maxZ, float minX, float _r9, float _t3, float _t4, float _t5, float _t6, float _t7, float _t8, float _r10, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _r11, float _t15) {
+        float _t16 = maxX * _r6;
+        float _t17 = minY * _r7;
+        float _t18 = maxY * _r7;
+        float _t19 = minZ * _r8;
+        float _t20 = maxZ * _r8;
+        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        transformAabb_s7ab988f3_c0(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+        transformAabb_s7ab988f3_c1(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+    }
+
 
     /**
      * Transform the given axis-aligned box by this matrix and compute the axis-aligned box
@@ -100136,40 +101046,32 @@ public class Float4x4Impl implements Float4x4 {
      */
     public DoubleAABB transformAabb(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        float _t3 = minX * this.m00;
-        float _t4 = maxX * this.m00;
-        float _t5 = minY * this.m01;
-        float _t6 = maxY * this.m01;
-        float _t7 = minZ * this.m02;
-        float _t8 = maxZ * this.m02;
-        float _t9 = minX * this.m10;
-        float _t10 = maxX * this.m10;
-        float _t11 = minY * this.m11;
-        float _t12 = maxY * this.m11;
-        float _t13 = minZ * this.m12;
-        float _t14 = maxZ * this.m12;
-        float _t15 = minX * this.m20;
-        float _t16 = maxX * this.m20;
-        float _t17 = minY * this.m21;
-        float _t18 = maxY * this.m21;
-        float _t19 = minZ * this.m22;
-        float _t20 = maxZ * this.m22;
-        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
-        if (_t22 < 0.0f) {
-            d.minX = Float.POSITIVE_INFINITY;
-            d.minY = Float.POSITIVE_INFINITY;
-            d.minZ = Float.POSITIVE_INFINITY;
-            d.maxX = Float.NEGATIVE_INFINITY;
-            d.maxY = Float.NEGATIVE_INFINITY;
-            d.maxZ = Float.NEGATIVE_INFINITY;
-        } else {
-            d.minX = this.m03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
-            d.minY = this.m13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
-            d.minZ = this.m23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
-            d.maxX = this.m03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
-            d.maxY = this.m13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
-            d.maxZ = this.m23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
-        }
+        float _r0 = this.m00;
+        float _r1 = this.m01;
+        float _r2 = this.m02;
+        float _r3 = this.m10;
+        float _r4 = this.m11;
+        float _r5 = this.m12;
+        float _r6 = this.m20;
+        float _r7 = this.m21;
+        float _r8 = this.m22;
+        float _r9 = this.m03;
+        float _r10 = this.m13;
+        float _r11 = this.m23;
+        float _t3 = minX * _r0;
+        float _t4 = maxX * _r0;
+        float _t5 = minY * _r1;
+        float _t6 = maxY * _r1;
+        float _t7 = minZ * _r2;
+        float _t8 = maxZ * _r2;
+        float _t9 = minX * _r3;
+        float _t10 = maxX * _r3;
+        float _t11 = minY * _r4;
+        float _t12 = maxY * _r4;
+        float _t13 = minZ * _r5;
+        float _t14 = maxZ * _r5;
+        float _t15 = minX * _r6;
+        transformAabb_s7ab988f3_tail(d, maxX, _r6, minY, _r7, maxY, minZ, _r8, maxZ, minX, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15);
         return d;
     }
 

@@ -586,53 +586,44 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code getNormalizedRotation_general}: computes and stores it; reached only through it. */
+    private void getNormalizedRotation_general_s62e3ac38_c0(DoubleQuatImpl _dst, double _t58, double _sp0, double _t36, double _t49, double _t37, double _t63, double _t23, double _t26, double _sp1, double _t53, double _sp2, double _t55, double _t56, double _sp3, double _t64, double _t39, double _t57, double _t65, double _t62) {
+        _dst.x = _t58 > 0.0 ? _sp0 * _t36 : _t49 > _t37 ? 0.5 * Math.sqrt(_t63) : _t23 > _t26 ? _sp1 * _t53 : _sp2 * _t55;
+        _dst.y = _t58 > 0.0 ? _sp0 * _t56 : _t49 > _t37 ? _sp3 * _t53 : _t23 > _t26 ? 0.5 * Math.sqrt(_t64) : _sp2 * _t39;
+        _dst.z = _t58 > 0.0 ? _sp0 * _t57 : _t49 > _t37 ? _sp3 * _t55 : _t23 > _t26 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t65);
+        _dst.w = _t58 > 0.0 ? 0.5 * Math.sqrt(_t62) : _t49 > _t37 ? _sp3 * _t36 : _t23 > _t26 ? _sp1 * _t56 : _sp2 * _t57;
+    }
 
-    /**
-     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
-     * reached only through the public {@code getNormalizedRotation} dispatcher.
-     */
-    private DoubleQuat getNormalizedRotation_general(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t6 = Math.fma(this.m21, this.m21, Math.fma(this.m01, this.m01, this.m11 * this.m11));
-        double _t7 = Math.fma(this.m22, this.m22, Math.fma(this.m02, this.m02, this.m12 * this.m12));
-        double _t8 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
-        double _t9 = (1.0 / Math.sqrt(_t6));
-        double _t10 = (1.0 / Math.sqrt(_t7));
-        double _t11 = (1.0 / Math.sqrt(_t8));
-        double _t21, _t23, _t27;
-        if (_t6 != 0.0) {
-            _t21 = this.m01 * _t9;
-            _t23 = this.m11 * _t9;
-            _t27 = this.m21 * _t9;
-        } else {
-            _t21 = 0.0;
-            _t23 = 0.0;
-            _t27 = 0.0;
-        }
-        double _t22, _t24, _t26;
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s62e3ac38_tail(DoubleQuatImpl _dst, double _t7, double _r4, double _t10, double _t8, double _r6, double _t11, double _r3, double _t6, double _r0, double _t9, double _r7, double _r8, double _t22, double _t23, double _t21) {
+        double _t24, _t26;
         if (_t7 != 0.0) {
-            _t22 = this.m12 * _t10;
-            _t24 = this.m02 * _t10;
-            _t26 = this.m22 * _t10;
+            _t24 = _r4 * _t10;
+            _t26 = _r3 * _t10;
         } else {
-            _t22 = 0.0;
             _t24 = 0.0;
             _t26 = 0.0;
         }
         double _t25, _t28, _t29;
         if (_t8 != 0.0) {
-            _t25 = this.m20 * _t11;
-            _t28 = this.m00 * _t11;
-            _t29 = this.m10 * _t11;
+            _t25 = _r6 * _t11;
+            _t28 = _r7 * _t11;
+            _t29 = _r8 * _t11;
         } else {
             _t25 = 0.0;
             _t28 = 0.0;
             _t29 = 0.0;
         }
+        double _t27 = _t6 != 0.0 ? _r0 * _t9 : 0.0;
         double _t36 = _t27 - _t22;
         double _t37 = Math.max(_t23, _t26);
         double _t39 = _t27 + _t22;
         double _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
+        getNormalizedRotation_general_s62e3ac38_tail2(_dst, _t48, _t28, _t29, _t25, _t23, _t21, _t24, _t26, _t36, _t37, _t39);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s62e3ac38_tail2(DoubleQuatImpl _dst, double _t48, double _t28, double _t29, double _t25, double _t23, double _t21, double _t24, double _t26, double _t36, double _t37, double _t39) {
         double _t49, _t50, _t51;
         if (_t48 < 0.0) {
             _t49 = -_t28;
@@ -657,31 +648,41 @@ public class Double3x4Impl implements Double3x4 {
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
-        if (_t58 > 0.0) {
-            d.x = _sp0 * _t36;
-            d.y = _sp0 * _t56;
-            d.z = _sp0 * _t57;
-            d.w = 0.5 * Math.sqrt(_t62);
+        getNormalizedRotation_general_s62e3ac38_c0(_dst, _t58, _sp0, _t36, _t49, _t37, _t63, _t23, _t26, _sp1, _t53, _sp2, _t55, _t56, _sp3, _t64, _t39, _t57, _t65, _t62);
+    }
+
+
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getNormalizedRotation_general(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.m21;
+        double _r1 = this.m01;
+        double _r2 = this.m11;
+        double _r3 = this.m22;
+        double _r4 = this.m02;
+        double _r5 = this.m12;
+        double _r6 = this.m20;
+        double _r7 = this.m00;
+        double _r8 = this.m10;
+        double _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
+        double _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
+        double _t9 = (1.0 / Math.sqrt(_t6));
+        double _t10 = (1.0 / Math.sqrt(_t7));
+        double _t11 = (1.0 / Math.sqrt(_t8));
+        double _t21, _t23;
+        if (_t6 != 0.0) {
+            _t21 = _r1 * _t9;
+            _t23 = _r2 * _t9;
         } else {
-            if (_t49 > _t37) {
-                d.x = 0.5 * Math.sqrt(_t63);
-                d.y = _sp3 * _t53;
-                d.z = _sp3 * _t55;
-                d.w = _sp3 * _t36;
-            } else {
-                if (_t23 > _t26) {
-                    d.x = _sp1 * _t53;
-                    d.y = 0.5 * Math.sqrt(_t64);
-                    d.z = _sp1 * _t39;
-                    d.w = _sp1 * _t56;
-                } else {
-                    d.x = _sp2 * _t55;
-                    d.y = _sp2 * _t39;
-                    d.z = 0.5 * Math.sqrt(_t65);
-                    d.w = _sp2 * _t57;
-                }
-            }
+            _t21 = 0.0;
+            _t23 = 0.0;
         }
+        double _t22 = _t7 != 0.0 ? _r5 * _t10 : 0.0;
+        getNormalizedRotation_general_s62e3ac38_tail(d, _t7, _r4, _t10, _t8, _r6, _t11, _r3, _t6, _r0, _t9, _r7, _r8, _t22, _t23, _t21);
         return d;
     }
 
@@ -879,6 +880,20 @@ public class Double3x4Impl implements Double3x4 {
         return getNormalizedRotation_identity(dest);
     }
 
+    /** Private store group 0 of {@code getUnnormalizedRotation_orthogonal}: computes and stores it; reached only through it. */
+    private void getUnnormalizedRotation_orthogonal_s62e3ac38_c0(DoubleQuatImpl _dst, double _t10, double _sp0, double _t1, double _r0, double _t2, double _t15, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _sp3, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        _dst.x = _t10 > 0.0 ? _sp0 * _t1 : _r0 > _t2 ? 0.5 * Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0 ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5 * Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0 ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5 * Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0 ? 0.5 * Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code getUnnormalizedRotation_orthogonal}; reached only through it. */
+    private void getUnnormalizedRotation_orthogonal_s62e3ac38_tail(DoubleQuatImpl _dst, double _t15, double _t10, double _sp0, double _t1, double _r0, double _t2, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        getUnnormalizedRotation_orthogonal_s62e3ac38_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+    }
+
 
     /**
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
@@ -886,54 +901,35 @@ public class Double3x4Impl implements Double3x4 {
      */
     private DoubleQuat getUnnormalizedRotation_orthogonal(@Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t0 = this.m00 + this.m11;
-        double _t1 = this.m21 - this.m12;
-        double _t2 = Math.max(this.m11, this.m22);
-        double _t4 = this.m01 + this.m10;
-        double _t6 = this.m02 + this.m20;
-        double _t7 = this.m02 - this.m20;
-        double _t8 = this.m12 + this.m21;
-        double _t9 = this.m10 - this.m01;
-        double _t10 = this.m22 + _t0;
+        double _r0 = this.m00;
+        double _r1 = this.m11;
+        double _r2 = this.m21;
+        double _r3 = this.m12;
+        double _r4 = this.m22;
+        double _r5 = this.m01;
+        double _r6 = this.m10;
+        double _r7 = this.m02;
+        double _r8 = this.m20;
+        double _t0 = _r0 + _r1;
+        double _t1 = _r2 - _r3;
+        double _t2 = Math.max(_r1, _r4);
+        double _t4 = _r5 + _r6;
+        double _t6 = _r7 + _r8;
+        double _t7 = _r7 - _r8;
+        double _t8 = _r3 + _r2;
+        double _t9 = _r6 - _r5;
+        double _t10 = _r4 + _t0;
         double _t14 = 1.0 + _t10;
-        double _t15 = 1.0 + (this.m00 - (this.m11 + this.m22));
-        double _t16 = 1.0 + (this.m11 - (this.m00 + this.m22));
-        double _t17 = 1.0 + (this.m22 - _t0);
+        double _t15 = 1.0 + (_r0 - (_r1 + _r4));
+        double _t16 = 1.0 + (_r1 - (_r0 + _r4));
+        double _t17 = 1.0 + (_r4 - _t0);
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
-        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
-        if (_t10 > 0.0) {
-            double _buf0 = _sp0 * _t1;
-            d.y = _sp0 * _t7;
-            d.z = _sp0 * _t9;
-            d.w = 0.5 * Math.sqrt(_t14);
-            d.x = _buf0;
-        } else {
-            if (this.m00 > _t2) {
-                double _buf0 = 0.5 * Math.sqrt(_t15);
-                d.y = _sp3 * _t4;
-                d.z = _sp3 * _t6;
-                d.w = _sp3 * _t1;
-                d.x = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    double _buf0 = _sp1 * _t4;
-                    d.y = 0.5 * Math.sqrt(_t16);
-                    d.z = _sp1 * _t8;
-                    d.w = _sp1 * _t7;
-                    d.x = _buf0;
-                } else {
-                    double _buf0 = _sp2 * _t6;
-                    d.y = _sp2 * _t8;
-                    d.z = 0.5 * Math.sqrt(_t17);
-                    d.w = _sp2 * _t9;
-                    d.x = _buf0;
-                }
-            }
-        }
+        getUnnormalizedRotation_orthogonal_s62e3ac38_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
+
 
 
     /**
@@ -4993,29 +4989,30 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s14533caa_c0(DoubleRigidImpl _dst, double _r9, double _r10, double _r11, double _t59, double _sp0, double _t32, double _t44, double _t33, double _t64, double _t21, double _t16, double _sp1, double _t51, double _sp2, double _t52) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t59 > 0.0 ? _sp0 * _t32 : _t44 > _t33 ? 0.5 * Math.sqrt(_t64) : _t21 > _t16 ? _sp1 * _t51 : _sp2 * _t52;
+    }
 
-    /**
-     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
-     * through the public {@code toRigid} dispatcher.
-     */
-    private DoubleRigid toRigid_general(@Mutated DoubleRigid dest) {
-        DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        double _t0 = -this.m11;
-        double _t1 = -this.m22;
-        double _t12 = (1.0 / Math.sqrt(Math.fma(this.m21, this.m21, Math.fma(this.m01, this.m01, this.m11 * this.m11))));
-        double _t13 = (1.0 / Math.sqrt(Math.fma(this.m22, this.m22, Math.fma(this.m02, this.m02, this.m12 * this.m12))));
-        double _t14 = (1.0 / Math.sqrt(Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10))));
-        double _t15 = this.m10 * _t14;
-        double _t16 = this.m22 * _t13;
-        double _t17 = this.m12 * _t13;
-        double _t18 = this.m20 * _t14;
-        double _t20 = this.m21 * _t12;
-        double _t21 = this.m11 * _t12;
-        double _t23 = this.m00 * _t14;
-        double _t28 = Math.fma(this.m12, _t13, _t20);
-        double _t32 = Math.fma(this.m21, _t12, -_t17);
+    /** Private store group 1 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s14533caa_c1(DoubleRigidImpl _dst, double _t59, double _sp0, double _t53, double _t44, double _t33, double _sp3, double _t51, double _t21, double _t16, double _t62, double _sp2, double _t28, double _t54, double _t52, double _sp1, double _t63, double _t60, double _t32) {
+        _dst.rY = _t59 > 0.0 ? _sp0 * _t53 : _t44 > _t33 ? _sp3 * _t51 : _t21 > _t16 ? 0.5 * Math.sqrt(_t62) : _sp2 * _t28;
+        _dst.rZ = _t59 > 0.0 ? _sp0 * _t54 : _t44 > _t33 ? _sp3 * _t52 : _t21 > _t16 ? _sp1 * _t28 : 0.5 * Math.sqrt(_t63);
+        _dst.rW = _t59 > 0.0 ? 0.5 * Math.sqrt(_t60) : _t44 > _t33 ? _sp3 * _t32 : _t21 > _t16 ? _sp1 * _t53 : _sp2 * _t54;
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s14533caa_tail(DoubleRigidImpl _dst, double _r2, double _t12, double _r0, double _r7, double _t14, double _r5, double _t13, double _t17, double _t16, double _t15, double _t18, double _r3, double _r4, double _r1, double _t1, double _t0, double _r9, double _r10, double _r11) {
+        double _t20 = _r2 * _t12;
+        double _t21 = _r0 * _t12;
+        double _t23 = _r7 * _t14;
+        double _t28 = Math.fma(_r5, _t13, _t20);
+        double _t32 = Math.fma(_r2, _t12, -_t17);
         double _t33 = Math.max(_t21, _t16);
-        double _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), this.m01 * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), this.m02 * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
+        double _t43 = Math.fma(-Math.fma(_t15, _t16, -(_t17 * _t18)), _r3 * _t12, Math.fma(Math.fma(_t15, _t20, -(_t21 * _t18)), _r4 * _t13, Math.fma(_t21, _t16, -(_t17 * _t20)) * _t23));
         double _t44, _t45, _t46;
         if (_t43 < 0.0) {
             _t44 = -_t23;
@@ -5028,47 +5025,57 @@ public class Double3x4Impl implements Double3x4 {
         }
         double _t48 = 1.0 + _t44;
         double _t49 = 1.0 - _t44;
-        double _t51 = Math.fma(this.m01, _t12, _t45);
-        double _t52 = Math.fma(this.m02, _t13, _t46);
-        double _t53 = Math.fma(this.m02, _t13, -_t46);
-        double _t54 = Math.fma(-this.m01, _t12, _t45);
-        double _t59 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t44));
-        double _t60 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t48));
+        double _t51 = Math.fma(_r3, _t12, _t45);
+        double _t52 = Math.fma(_r4, _t13, _t46);
+        double _t53 = Math.fma(_r4, _t13, -_t46);
+        double _t54 = Math.fma(-_r3, _t12, _t45);
+        toRigid_general_s14533caa_tail2(_dst, _r0, _t12, _r1, _t13, _t44, _t48, _t1, _t49, _t0, _r9, _r10, _r11, _t32, _t33, _t21, _t16, _t51, _t52, _t53, _t28, _t54);
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s14533caa_tail2(DoubleRigidImpl _dst, double _r0, double _t12, double _r1, double _t13, double _t44, double _t48, double _t1, double _t49, double _t0, double _r9, double _r10, double _r11, double _t32, double _t33, double _t21, double _t16, double _t51, double _t52, double _t53, double _t28, double _t54) {
+        double _t59 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t44));
+        double _t60 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t48));
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
-        double _t62 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t49));
-        double _t63 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t49));
+        double _t62 = Math.fma(_r0, _t12, Math.fma(_t1, _t13, _t49));
+        double _t63 = Math.fma(_r1, _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
-        if (_t59 > 0.0) {
-            d.rX = _sp0 * _t32;
-            d.rY = _sp0 * _t53;
-            d.rZ = _sp0 * _t54;
-            d.rW = 0.5 * Math.sqrt(_t60);
-        } else {
-            if (_t44 > _t33) {
-                d.rX = 0.5 * Math.sqrt(_t64);
-                d.rY = _sp3 * _t51;
-                d.rZ = _sp3 * _t52;
-                d.rW = _sp3 * _t32;
-            } else {
-                if (_t21 > _t16) {
-                    d.rX = _sp1 * _t51;
-                    d.rY = 0.5 * Math.sqrt(_t62);
-                    d.rZ = _sp1 * _t28;
-                    d.rW = _sp1 * _t53;
-                } else {
-                    d.rX = _sp2 * _t52;
-                    d.rY = _sp2 * _t28;
-                    d.rZ = 0.5 * Math.sqrt(_t63);
-                    d.rW = _sp2 * _t54;
-                }
-            }
-        }
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
+        toRigid_general_s14533caa_c0(_dst, _r9, _r10, _r11, _t59, _sp0, _t32, _t44, _t33, _t64, _t21, _t16, _sp1, _t51, _sp2, _t52);
+        toRigid_general_s14533caa_c1(_dst, _t59, _sp0, _t53, _t44, _t33, _sp3, _t51, _t21, _t16, _t62, _sp2, _t28, _t54, _t52, _sp1, _t63, _t60, _t32);
+    }
+
+
+    /**
+     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
+     * through the public {@code toRigid} dispatcher.
+     */
+    private DoubleRigid toRigid_general(@Mutated DoubleRigid dest) {
+        DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.m11;
+        double _r1 = this.m22;
+        double _r2 = this.m21;
+        double _r3 = this.m01;
+        double _r4 = this.m02;
+        double _r5 = this.m12;
+        double _r6 = this.m20;
+        double _r7 = this.m00;
+        double _r8 = this.m10;
+        double _r9 = this.m03;
+        double _r10 = this.m13;
+        double _r11 = this.m23;
+        double _t0 = -_r0;
+        double _t1 = -_r1;
+        double _t12 = (1.0 / Math.sqrt(Math.fma(_r2, _r2, Math.fma(_r3, _r3, _r0 * _r0))));
+        double _t13 = (1.0 / Math.sqrt(Math.fma(_r1, _r1, Math.fma(_r4, _r4, _r5 * _r5))));
+        double _t14 = (1.0 / Math.sqrt(Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8))));
+        double _t15 = _r8 * _t14;
+        double _t16 = _r1 * _t13;
+        double _t17 = _r5 * _t13;
+        double _t18 = _r6 * _t14;
+        toRigid_general_s14533caa_tail(d, _r2, _t12, _r0, _r7, _t14, _r5, _t13, _t17, _t16, _t15, _t18, _r3, _r4, _r1, _t1, _t0, _r9, _r10, _r11);
         return d;
     }
 
@@ -5129,33 +5136,40 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s5d096289_c0(DoubleTransformImpl _dst, double _r9, double _r10, double _r11, double _t60, double _sp0, double _t33, double _t45, double _t34, double _t65, double _t22, double _t17, double _sp1, double _t52, double _sp2, double _t53) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+    }
 
-    /**
-     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
-     * through the public {@code toTransform} dispatcher.
-     */
-    private DoubleTransform toTransform_general(@Mutated DoubleTransform dest) {
-        DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        double _t0 = -this.m11;
-        double _t1 = -this.m22;
-        double _t9 = Math.fma(this.m21, this.m21, Math.fma(this.m01, this.m01, this.m11 * this.m11));
-        double _t10 = Math.fma(this.m22, this.m22, Math.fma(this.m02, this.m02, this.m12 * this.m12));
-        double _t11 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
-        double _t12 = (1.0 / Math.sqrt(_t9));
-        double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t15 = Math.sqrt(_t11);
-        double _t14 = 1.0 / _t15;
-        double _t16 = this.m10 * _t14;
-        double _t17 = this.m22 * _t13;
-        double _t18 = this.m12 * _t13;
-        double _t19 = this.m20 * _t14;
-        double _t21 = this.m21 * _t12;
-        double _t22 = this.m11 * _t12;
-        double _t24 = this.m00 * _t14;
-        double _t29 = Math.fma(this.m12, _t13, _t21);
-        double _t33 = Math.fma(this.m21, _t12, -_t18);
+    /** Private store group 1 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s5d096289_c1(DoubleTransformImpl _dst, double _t60, double _sp0, double _t54, double _t45, double _t34, double _sp3, double _t52, double _t22, double _t17, double _t63, double _sp2, double _t29, double _t55, double _t53, double _sp1, double _t64, double _t61, double _t33) {
+        _dst.rY = _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29;
+        _dst.rZ = _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64);
+        _dst.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
+    }
+
+    /** Private store group 2 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s5d096289_c2(DoubleTransformImpl _dst, double _t44, double _t15, double _t9, double _t10) {
+        _dst.sX = _t44 < 0.0 ? -_t15 : _t15;
+        _dst.sY = Math.sqrt(_t9);
+        _dst.sZ = Math.sqrt(_t10);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s5d096289_tail(DoubleTransformImpl _dst, double _r1, double _t13, double _r5, double _r6, double _t14, double _r2, double _t12, double _r0, double _r7, double _t16, double _r3, double _r4, double _t1, double _t0, double _r9, double _r10, double _r11, double _t15, double _t9, double _t10) {
+        double _t17 = _r1 * _t13;
+        double _t18 = _r5 * _t13;
+        double _t19 = _r6 * _t14;
+        double _t21 = _r2 * _t12;
+        double _t22 = _r0 * _t12;
+        double _t24 = _r7 * _t14;
+        double _t29 = Math.fma(_r5, _t13, _t21);
+        double _t33 = Math.fma(_r2, _t12, -_t18);
         double _t34 = Math.max(_t22, _t17);
-        double _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), this.m01 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), this.m02 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        double _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), _r3 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), _r4 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
         double _t45, _t46, _t47;
         if (_t44 < 0.0) {
             _t45 = -_t24;
@@ -5168,29 +5182,59 @@ public class Double3x4Impl implements Double3x4 {
         }
         double _t49 = 1.0 + _t45;
         double _t50 = 1.0 - _t45;
-        double _t52 = Math.fma(this.m01, _t12, _t46);
-        double _t53 = Math.fma(this.m02, _t13, _t47);
-        double _t54 = Math.fma(this.m02, _t13, -_t47);
-        double _t55 = Math.fma(-this.m01, _t12, _t46);
-        double _t60 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t45));
-        double _t61 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t49));
+        double _t52 = Math.fma(_r3, _t12, _t46);
+        toTransform_general_s5d096289_tail2(_dst, _r4, _t13, _t47, _r3, _t12, _t46, _r0, _r1, _t45, _t49, _t1, _t50, _t0, _r9, _r10, _r11, _t33, _t34, _t22, _t17, _t52, _t29, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s5d096289_tail2(DoubleTransformImpl _dst, double _r4, double _t13, double _t47, double _r3, double _t12, double _t46, double _r0, double _r1, double _t45, double _t49, double _t1, double _t50, double _t0, double _r9, double _r10, double _r11, double _t33, double _t34, double _t22, double _t17, double _t52, double _t29, double _t44, double _t15, double _t9, double _t10) {
+        double _t53 = Math.fma(_r4, _t13, _t47);
+        double _t54 = Math.fma(_r4, _t13, -_t47);
+        double _t55 = Math.fma(-_r3, _t12, _t46);
+        double _t60 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t45));
+        double _t61 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t49));
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
-        double _t63 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t50));
-        double _t64 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t50));
+        double _t63 = Math.fma(_r0, _t12, Math.fma(_t1, _t13, _t50));
+        double _t64 = Math.fma(_r1, _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
-        d.rX = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
-        d.rY = _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29;
-        d.rZ = _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64);
-        d.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
-        d.sX = _t44 < 0.0 ? -_t15 : _t15;
-        d.sY = Math.sqrt(_t9);
-        d.sZ = Math.sqrt(_t10);
+        toTransform_general_s5d096289_c0(_dst, _r9, _r10, _r11, _t60, _sp0, _t33, _t45, _t34, _t65, _t22, _t17, _sp1, _t52, _sp2, _t53);
+        toTransform_general_s5d096289_c1(_dst, _t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33);
+        toTransform_general_s5d096289_c2(_dst, _t44, _t15, _t9, _t10);
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private DoubleTransform toTransform_general(@Mutated DoubleTransform dest) {
+        DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        double _r0 = this.m11;
+        double _r1 = this.m22;
+        double _r2 = this.m21;
+        double _r3 = this.m01;
+        double _r4 = this.m02;
+        double _r5 = this.m12;
+        double _r6 = this.m20;
+        double _r7 = this.m00;
+        double _r8 = this.m10;
+        double _r9 = this.m03;
+        double _r10 = this.m13;
+        double _r11 = this.m23;
+        double _t0 = -_r0;
+        double _t1 = -_r1;
+        double _t9 = Math.fma(_r2, _r2, Math.fma(_r3, _r3, _r0 * _r0));
+        double _t10 = Math.fma(_r1, _r1, Math.fma(_r4, _r4, _r5 * _r5));
+        double _t11 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
+        double _t12 = (1.0 / Math.sqrt(_t9));
+        double _t13 = (1.0 / Math.sqrt(_t10));
+        double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
+        double _t16 = _r8 * _t14;
+        toTransform_general_s5d096289_tail(d, _r1, _t13, _r5, _r6, _t14, _r2, _t12, _r0, _r7, _t16, _r3, _r4, _t1, _t0, _r9, _r10, _r11, _t15, _t9, _t10);
         return d;
     }
 
@@ -5220,30 +5264,17 @@ public class Double3x4Impl implements Double3x4 {
         return getNormalizedRotation_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeRotation_general}: computes and stores it; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_c0(DoubleQuatImpl _dst, double _t82, double _sp0, double _t60, double _t73, double _t61, double _t87, double _t36, double _t56, double _sp1, double _t77, double _sp2, double _t80, double _t81, double _sp3, double _t88, double _t63, double _t78, double _t89, double _t86) {
+        _dst.x = _t82 > 0.0 ? _sp0 * _t60 : _t73 > _t61 ? 0.5 * Math.sqrt(_t87) : _t36 > _t56 ? _sp1 * _t77 : _sp2 * _t80;
+        _dst.y = _t82 > 0.0 ? _sp0 * _t81 : _t73 > _t61 ? _sp3 * _t77 : _t36 > _t56 ? 0.5 * Math.sqrt(_t88) : _sp2 * _t63;
+        _dst.z = _t82 > 0.0 ? _sp0 * _t78 : _t73 > _t61 ? _sp3 * _t80 : _t36 > _t56 ? _sp1 * _t63 : 0.5 * Math.sqrt(_t89);
+        _dst.w = _t82 > 0.0 ? 0.5 * Math.sqrt(_t86) : _t73 > _t61 ? _sp3 * _t60 : _t36 > _t56 ? _sp1 * _t81 : _sp2 * _t78;
+    }
 
-    /**
-     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeRotation} dispatcher.
-     */
-    private DoubleQuat decomposeRotation_general(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t2 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 != 0.0) {
-            _t7 = this.m20 * _t3;
-            _t8 = this.m00 * _t3;
-            _t9 = this.m10 * _t3;
-        } else {
-            _t7 = 0.0;
-            _t8 = 0.0;
-            _t9 = 0.0;
-        }
-        double _t19 = -Math.fma(this.m21, _t7, Math.fma(this.m01, _t8, this.m11 * _t9));
-        double _t20 = -Math.fma(this.m22, _t7, Math.fma(this.m02, _t8, this.m12 * _t9));
-        double _t21 = Math.fma(_t19, _t7, this.m21);
-        double _t22 = Math.fma(_t19, _t8, this.m01);
-        double _t23 = Math.fma(_t19, _t9, this.m11);
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_tail(DoubleQuatImpl _dst, double _t19, double _t9, double _r5, double _t21, double _t22, double _t20, double _t7, double _r6, double _t8, double _r7, double _r8) {
+        double _t23 = Math.fma(_t19, _t9, _r5);
         double _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t34, _t35, _t36;
@@ -5256,12 +5287,17 @@ public class Double3x4Impl implements Double3x4 {
             _t35 = 0.0;
             _t36 = 0.0;
         }
-        double _t40 = -Math.fma(Math.fma(_t20, _t7, this.m22), _t35, Math.fma(Math.fma(_t20, _t8, this.m02), _t34, Math.fma(_t20, _t9, this.m12) * _t36));
-        double _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, this.m22));
-        double _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, this.m02));
-        double _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, this.m12));
+        double _t40 = -Math.fma(Math.fma(_t20, _t7, _r6), _t35, Math.fma(Math.fma(_t20, _t8, _r7), _t34, Math.fma(_t20, _t9, _r8) * _t36));
+        double _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _r6));
+        double _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _r7));
+        double _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _r8));
         double _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         double _t50 = (1.0 / Math.sqrt(_t49));
+        decomposeRotation_general_s62e3ac38_tail2(_dst, _t49, _t46, _t50, _t45, _t44, _t35, _t36, _t34, _t7, _t8, _t9);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_tail2(DoubleQuatImpl _dst, double _t49, double _t46, double _t50, double _t45, double _t44, double _t35, double _t36, double _t34, double _t7, double _t8, double _t9) {
         double _t54, _t55, _t56;
         if (_t49 != 0.0) {
             _t54 = _t46 * _t50;
@@ -5292,6 +5328,11 @@ public class Double3x4Impl implements Double3x4 {
         double _t80 = _t75 + _t55;
         double _t81 = _t55 - _t75;
         double _t82 = _t76 + _t56;
+        decomposeRotation_general_s62e3ac38_tail3(_dst, _t82, _t73, _t36, _t56, _t76, _t60, _t61, _t77, _t80, _t81, _t63, _t78);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_tail3(DoubleQuatImpl _dst, double _t82, double _t73, double _t36, double _t56, double _t76, double _t60, double _t61, double _t77, double _t80, double _t81, double _t63, double _t78) {
         double _t86 = 1.0 + _t82;
         double _t87 = 1.0 + (_t73 - (_t36 + _t56));
         double _t88 = 1.0 + (_t36 - (_t73 + _t56));
@@ -5300,31 +5341,42 @@ public class Double3x4Impl implements Double3x4 {
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t88));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t89));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t87));
-        if (_t82 > 0.0) {
-            d.x = _sp0 * _t60;
-            d.y = _sp0 * _t81;
-            d.z = _sp0 * _t78;
-            d.w = 0.5 * Math.sqrt(_t86);
+        decomposeRotation_general_s62e3ac38_c0(_dst, _t82, _sp0, _t60, _t73, _t61, _t87, _t36, _t56, _sp1, _t77, _sp2, _t80, _t81, _sp3, _t88, _t63, _t78, _t89, _t86);
+    }
+
+
+    /**
+     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeRotation} dispatcher.
+     */
+    private DoubleQuat decomposeRotation_general(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.m20;
+        double _r1 = this.m00;
+        double _r2 = this.m10;
+        double _r3 = this.m21;
+        double _r4 = this.m01;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m02;
+        double _r8 = this.m12;
+        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _r0 * _t3;
+            _t8 = _r1 * _t3;
+            _t9 = _r2 * _t3;
         } else {
-            if (_t73 > _t61) {
-                d.x = 0.5 * Math.sqrt(_t87);
-                d.y = _sp3 * _t77;
-                d.z = _sp3 * _t80;
-                d.w = _sp3 * _t60;
-            } else {
-                if (_t36 > _t56) {
-                    d.x = _sp1 * _t77;
-                    d.y = 0.5 * Math.sqrt(_t88);
-                    d.z = _sp1 * _t63;
-                    d.w = _sp1 * _t81;
-                } else {
-                    d.x = _sp2 * _t80;
-                    d.y = _sp2 * _t63;
-                    d.z = 0.5 * Math.sqrt(_t89);
-                    d.w = _sp2 * _t78;
-                }
-            }
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
         }
+        double _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        double _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        double _t21 = Math.fma(_t19, _t7, _r3);
+        double _t22 = Math.fma(_t19, _t8, _r4);
+        decomposeRotation_general_s62e3ac38_tail(d, _t19, _t9, _r5, _t21, _t22, _t20, _t7, _r6, _t8, _r7, _r8);
         return d;
     }
 
@@ -5354,31 +5406,17 @@ public class Double3x4Impl implements Double3x4 {
         return getScale_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeScale_general}: computes and stores it; reached only through it. */
+    private void decomposeScale_general_s34d82902_c0(Double3Impl _dst, double _t32, double _t52, double _t34, double _t53, double _t8, double _t54, double _t33, double _t9, double _t10, double _t4, double _t27, double _t47) {
+        _dst.x = Math.fma(Math.fma(_t32, _t52, -(_t34 * _t53)), _t8, Math.fma(Math.fma(_t34, _t54, -(_t33 * _t52)), _t9, Math.fma(_t33, _t53, -(_t32 * _t54)) * _t10)) < 0.0 ? -_t4 : _t4;
+        _dst.y = Math.sqrt(_t27);
+        _dst.z = Math.sqrt(_t47);
+    }
 
-    /**
-     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeScale} dispatcher.
-     */
-    private Double3 decomposeScale_general(@Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        double _t2 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
-        double _t4 = Math.sqrt(_t2);
-        double _t3 = 1.0 / _t4;
-        double _t8, _t9, _t10;
-        if (_t2 != 0.0) {
-            _t8 = this.m20 * _t3;
-            _t9 = this.m00 * _t3;
-            _t10 = this.m10 * _t3;
-        } else {
-            _t8 = 0.0;
-            _t9 = 0.0;
-            _t10 = 0.0;
-        }
-        double _t17 = -Math.fma(this.m21, _t8, Math.fma(this.m01, _t9, this.m11 * _t10));
-        double _t18 = -Math.fma(this.m22, _t8, Math.fma(this.m02, _t9, this.m12 * _t10));
-        double _t19 = Math.fma(_t17, _t8, this.m21);
-        double _t20 = Math.fma(_t17, _t9, this.m01);
-        double _t21 = Math.fma(_t17, _t10, this.m11);
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s34d82902_tail(Double3Impl _dst, double _t17, double _t9, double _r4, double _t10, double _r5, double _t19, double _t18, double _t8, double _r6, double _r7, double _r8, double _t4) {
+        double _t20 = Math.fma(_t17, _t9, _r4);
+        double _t21 = Math.fma(_t17, _t10, _r5);
         double _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t28 = (1.0 / Math.sqrt(_t27));
         double _t32, _t33, _t34;
@@ -5391,12 +5429,17 @@ public class Double3x4Impl implements Double3x4 {
             _t33 = 0.0;
             _t34 = 0.0;
         }
-        double _t38 = -Math.fma(Math.fma(_t18, _t8, this.m22), _t33, Math.fma(Math.fma(_t18, _t9, this.m02), _t32, Math.fma(_t18, _t10, this.m12) * _t34));
-        double _t42 = Math.fma(_t18, _t8, Math.fma(_t38, _t33, this.m22));
-        double _t43 = Math.fma(_t18, _t9, Math.fma(_t38, _t32, this.m02));
-        double _t44 = Math.fma(_t18, _t10, Math.fma(_t38, _t34, this.m12));
+        double _t38 = -Math.fma(Math.fma(_t18, _t8, _r6), _t33, Math.fma(Math.fma(_t18, _t9, _r7), _t32, Math.fma(_t18, _t10, _r8) * _t34));
+        double _t42 = Math.fma(_t18, _t8, Math.fma(_t38, _t33, _r6));
+        double _t43 = Math.fma(_t18, _t9, Math.fma(_t38, _t32, _r7));
+        double _t44 = Math.fma(_t18, _t10, Math.fma(_t38, _t34, _r8));
         double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         double _t48 = (1.0 / Math.sqrt(_t47));
+        decomposeScale_general_s34d82902_tail2(_dst, _t47, _t44, _t48, _t43, _t42, _t32, _t34, _t8, _t33, _t9, _t10, _t4, _t27);
+    }
+
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s34d82902_tail2(Double3Impl _dst, double _t47, double _t44, double _t48, double _t43, double _t42, double _t32, double _t34, double _t8, double _t33, double _t9, double _t10, double _t4, double _t27) {
         double _t52, _t53, _t54;
         if (_t47 != 0.0) {
             _t52 = _t44 * _t48;
@@ -5407,9 +5450,42 @@ public class Double3x4Impl implements Double3x4 {
             _t53 = 0.0;
             _t54 = 0.0;
         }
-        d.x = Math.fma(Math.fma(_t32, _t52, -(_t34 * _t53)), _t8, Math.fma(Math.fma(_t34, _t54, -(_t33 * _t52)), _t9, Math.fma(_t33, _t53, -(_t32 * _t54)) * _t10)) < 0.0 ? -_t4 : _t4;
-        d.y = Math.sqrt(_t27);
-        d.z = Math.sqrt(_t47);
+        decomposeScale_general_s34d82902_c0(_dst, _t32, _t52, _t34, _t53, _t8, _t54, _t33, _t9, _t10, _t4, _t27, _t47);
+    }
+
+
+    /**
+     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeScale} dispatcher.
+     */
+    private Double3 decomposeScale_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _r0 = this.m20;
+        double _r1 = this.m00;
+        double _r2 = this.m10;
+        double _r3 = this.m21;
+        double _r4 = this.m01;
+        double _r5 = this.m11;
+        double _r6 = this.m22;
+        double _r7 = this.m02;
+        double _r8 = this.m12;
+        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t4 = Math.sqrt(_t2);
+        double _t3 = 1.0 / _t4;
+        double _t8, _t9, _t10;
+        if (_t2 != 0.0) {
+            _t8 = _r0 * _t3;
+            _t9 = _r1 * _t3;
+            _t10 = _r2 * _t3;
+        } else {
+            _t8 = 0.0;
+            _t9 = 0.0;
+            _t10 = 0.0;
+        }
+        double _t17 = -Math.fma(_r3, _t8, Math.fma(_r4, _t9, _r5 * _t10));
+        double _t18 = -Math.fma(_r6, _t8, Math.fma(_r7, _t9, _r8 * _t10));
+        double _t19 = Math.fma(_t17, _t8, _r3);
+        decomposeScale_general_s34d82902_tail(d, _t17, _t9, _r4, _t10, _r5, _t19, _t18, _t8, _r6, _r7, _r8, _t4);
         return d;
     }
 
@@ -5441,32 +5517,17 @@ public class Double3x4Impl implements Double3x4 {
         return getEulerAnglesXYZ_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeSkew_general}: computes and stores it; reached only through it. */
+    private void decomposeSkew_general_s34d82902_c0(Double3Impl _dst, double _t37, double _t48, double _t67, double _t49, double _t28) {
+        _dst.x = _t37 * _t48;
+        _dst.y = _t67 < 0.0 ? -_t49 : _t49;
+        _dst.z = _t67 < 0.0 ? -_t28 : _t28;
+    }
 
-    /**
-     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
-     * through the public {@code decomposeSkew} dispatcher.
-     */
-    private Double3 decomposeSkew_general(@Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        double _t2 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 != 0.0) {
-            _t7 = this.m20 * _t3;
-            _t8 = this.m00 * _t3;
-            _t9 = this.m10 * _t3;
-        } else {
-            _t7 = 0.0;
-            _t8 = 0.0;
-            _t9 = 0.0;
-        }
-        double _t14 = Math.fma(this.m22, _t7, Math.fma(this.m02, _t8, this.m12 * _t9));
-        double _t15 = Math.fma(this.m21, _t7, Math.fma(this.m01, _t8, this.m11 * _t9));
-        double _t16 = -_t14;
-        double _t17 = -_t15;
-        double _t19 = Math.fma(_t17, _t7, this.m21);
-        double _t20 = Math.fma(_t17, _t8, this.m01);
-        double _t21 = Math.fma(_t17, _t9, this.m11);
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s34d82902_tail(Double3Impl _dst, double _t17, double _t8, double _r7, double _t9, double _r8, double _t19, double _t15, double _t16, double _t7, double _r3, double _r4, double _r5, double _t14) {
+        double _t20 = Math.fma(_t17, _t8, _r7);
+        double _t21 = Math.fma(_t17, _t9, _r8);
         double _t26 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t28 = _t15 * _t27;
@@ -5480,14 +5541,19 @@ public class Double3x4Impl implements Double3x4 {
             _t33 = 0.0;
             _t34 = 0.0;
         }
-        double _t37 = Math.fma(Math.fma(_t16, _t7, this.m22), _t32, Math.fma(Math.fma(_t16, _t8, this.m02), _t33, Math.fma(_t16, _t9, this.m12) * _t34));
+        double _t37 = Math.fma(Math.fma(_t16, _t7, _r3), _t32, Math.fma(Math.fma(_t16, _t8, _r4), _t33, Math.fma(_t16, _t9, _r5) * _t34));
         double _t38 = -_t37;
-        double _t42 = Math.fma(_t16, _t7, Math.fma(_t38, _t32, this.m22));
-        double _t43 = Math.fma(_t16, _t8, Math.fma(_t38, _t33, this.m02));
-        double _t44 = Math.fma(_t16, _t9, Math.fma(_t38, _t34, this.m12));
+        double _t42 = Math.fma(_t16, _t7, Math.fma(_t38, _t32, _r3));
+        double _t43 = Math.fma(_t16, _t8, Math.fma(_t38, _t33, _r4));
+        double _t44 = Math.fma(_t16, _t9, Math.fma(_t38, _t34, _r5));
         double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t49 = _t14 * _t48;
+        decomposeSkew_general_s34d82902_tail2(_dst, _t47, _t44, _t48, _t43, _t42, _t33, _t34, _t7, _t32, _t8, _t9, _t37, _t49, _t28);
+    }
+
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s34d82902_tail2(Double3Impl _dst, double _t47, double _t44, double _t48, double _t43, double _t42, double _t33, double _t34, double _t7, double _t32, double _t8, double _t9, double _t37, double _t49, double _t28) {
         double _t53, _t54, _t55;
         if (_t47 != 0.0) {
             _t53 = _t44 * _t48;
@@ -5499,14 +5565,43 @@ public class Double3x4Impl implements Double3x4 {
             _t55 = 0.0;
         }
         double _t67 = Math.fma(Math.fma(_t33, _t53, -(_t34 * _t54)), _t7, Math.fma(Math.fma(_t34, _t55, -(_t32 * _t53)), _t8, Math.fma(_t32, _t54, -(_t33 * _t55)) * _t9));
-        if (_t67 < 0.0) {
-            d.y = -_t49;
-            d.z = -_t28;
+        decomposeSkew_general_s34d82902_c0(_dst, _t37, _t48, _t67, _t49, _t28);
+    }
+
+
+    /**
+     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
+     * through the public {@code decomposeSkew} dispatcher.
+     */
+    private Double3 decomposeSkew_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _r0 = this.m20;
+        double _r1 = this.m00;
+        double _r2 = this.m10;
+        double _r3 = this.m22;
+        double _r4 = this.m02;
+        double _r5 = this.m12;
+        double _r6 = this.m21;
+        double _r7 = this.m01;
+        double _r8 = this.m11;
+        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _r0 * _t3;
+            _t8 = _r1 * _t3;
+            _t9 = _r2 * _t3;
         } else {
-            d.y = _t49;
-            d.z = _t28;
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
         }
-        d.x = _t37 * _t48;
+        double _t14 = Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        double _t15 = Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        double _t16 = -_t14;
+        double _t17 = -_t15;
+        double _t19 = Math.fma(_t17, _t7, _r6);
+        decomposeSkew_general_s34d82902_tail(d, _t17, _t8, _r7, _t9, _r8, _t19, _t15, _t16, _t7, _r3, _r4, _r5, _t14);
         return d;
     }
 
@@ -27881,6 +27976,32 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code transformAabb_orthogonal}: computes and stores it; reached only through it. */
+    private void transformAabb_orthogonal_s589e1a9d_c0(DoubleAABBImpl _dst, double _t22, double _r9, double _t3, double _t4, double _t5, double _t6, double _t7, double _t8, double _r10, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _r11, double _t15, double _t16, double _t17, double _t18, double _t19, double _t20) {
+        _dst.minX = _t22 < 0.0 ? Double.POSITIVE_INFINITY : _r9 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+        _dst.minY = _t22 < 0.0 ? Double.POSITIVE_INFINITY : _r10 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+        _dst.minZ = _t22 < 0.0 ? Double.POSITIVE_INFINITY : _r11 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+    }
+
+    /** Private store group 1 of {@code transformAabb_orthogonal}: computes and stores it; reached only through it. */
+    private void transformAabb_orthogonal_s589e1a9d_c1(DoubleAABBImpl _dst, double _t22, double _r9, double _t3, double _t4, double _t5, double _t6, double _t7, double _t8, double _r10, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _r11, double _t15, double _t16, double _t17, double _t18, double _t19, double _t20) {
+        _dst.maxX = _t22 < 0.0 ? Double.NEGATIVE_INFINITY : _r9 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+        _dst.maxY = _t22 < 0.0 ? Double.NEGATIVE_INFINITY : _r10 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+        _dst.maxZ = _t22 < 0.0 ? Double.NEGATIVE_INFINITY : _r11 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+    }
+
+    /** Private tail of {@code transformAabb_orthogonal}; reached only through it. */
+    private void transformAabb_orthogonal_s589e1a9d_tail(DoubleAABBImpl _dst, double maxX, double _r6, double minY, double _r7, double maxY, double minZ, double _r8, double maxZ, double minX, double _r9, double _t3, double _t4, double _t5, double _t6, double _t7, double _t8, double _r10, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _r11, double _t15) {
+        double _t16 = maxX * _r6;
+        double _t17 = minY * _r7;
+        double _t18 = maxY * _r7;
+        double _t19 = minZ * _r8;
+        double _t20 = maxZ * _r8;
+        double _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        transformAabb_orthogonal_s589e1a9d_c0(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+        transformAabb_orthogonal_s589e1a9d_c1(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+    }
+
 
     /**
      * Private body of {@code transformAabb}, specialized by runtime matrix properties; reached only
@@ -27888,42 +28009,35 @@ public class Double3x4Impl implements Double3x4 {
      */
     private DoubleAABB transformAabb_orthogonal(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        double _t3 = minX * this.m00;
-        double _t4 = maxX * this.m00;
-        double _t5 = minY * this.m01;
-        double _t6 = maxY * this.m01;
-        double _t7 = minZ * this.m02;
-        double _t8 = maxZ * this.m02;
-        double _t9 = minX * this.m10;
-        double _t10 = maxX * this.m10;
-        double _t11 = minY * this.m11;
-        double _t12 = maxY * this.m11;
-        double _t13 = minZ * this.m12;
-        double _t14 = maxZ * this.m12;
-        double _t15 = minX * this.m20;
-        double _t16 = maxX * this.m20;
-        double _t17 = minY * this.m21;
-        double _t18 = maxY * this.m21;
-        double _t19 = minZ * this.m22;
-        double _t20 = maxZ * this.m22;
-        double _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
-        if (_t22 < 0.0) {
-            d.minX = Double.POSITIVE_INFINITY;
-            d.minY = Double.POSITIVE_INFINITY;
-            d.minZ = Double.POSITIVE_INFINITY;
-            d.maxX = Double.NEGATIVE_INFINITY;
-            d.maxY = Double.NEGATIVE_INFINITY;
-            d.maxZ = Double.NEGATIVE_INFINITY;
-        } else {
-            d.minX = this.m03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
-            d.minY = this.m13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
-            d.minZ = this.m23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
-            d.maxX = this.m03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
-            d.maxY = this.m13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
-            d.maxZ = this.m23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
-        }
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m10;
+        double _r4 = this.m11;
+        double _r5 = this.m12;
+        double _r6 = this.m20;
+        double _r7 = this.m21;
+        double _r8 = this.m22;
+        double _r9 = this.m03;
+        double _r10 = this.m13;
+        double _r11 = this.m23;
+        double _t3 = minX * _r0;
+        double _t4 = maxX * _r0;
+        double _t5 = minY * _r1;
+        double _t6 = maxY * _r1;
+        double _t7 = minZ * _r2;
+        double _t8 = maxZ * _r2;
+        double _t9 = minX * _r3;
+        double _t10 = maxX * _r3;
+        double _t11 = minY * _r4;
+        double _t12 = maxY * _r4;
+        double _t13 = minZ * _r5;
+        double _t14 = maxZ * _r5;
+        double _t15 = minX * _r6;
+        transformAabb_orthogonal_s589e1a9d_tail(d, maxX, _r6, minY, _r7, maxY, minZ, _r8, maxZ, minX, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15);
         return d;
     }
+
 
 
     /**

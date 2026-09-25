@@ -1647,6 +1647,14 @@ public final class Float4Impl implements Float4 {
         return catmullRomTangent(p1.x(), p1.y(), p1.z(), p1.w(), p2.x(), p2.y(), p2.z(), p2.w(), p3.x(), p3.y(), p3.z(), p3.w(), t, dest);
     }
 
+    /** Private store group 0 of {@code catmullRomTangent}: computes and stores it; reached only through it. */
+    private void catmullRomTangent_s56104e12_c0(Float4Impl _dst, float t, float p1X, float _r0, float p2X, float p3X, float _t0, float p1Y, float _r1, float p2Y, float p3Y, float p1Z, float _r2, float p2Z, float p3Z, float p1W, float _r3, float p2W, float p3W) {
+        _dst.x = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1X, Math.fma(2.0f, _r0, Math.fma(4.0f, p2X, -p3X))), Math.fma(3.0f * Math.fma(-3.0f, p2X, Math.fma(3.0f, p1X, p3X - _r0)), _t0, p2X - _r0));
+        _dst.y = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Y, Math.fma(2.0f, _r1, Math.fma(4.0f, p2Y, -p3Y))), Math.fma(3.0f * Math.fma(-3.0f, p2Y, Math.fma(3.0f, p1Y, p3Y - _r1)), _t0, p2Y - _r1));
+        _dst.z = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Z, Math.fma(2.0f, _r2, Math.fma(4.0f, p2Z, -p3Z))), Math.fma(3.0f * Math.fma(-3.0f, p2Z, Math.fma(3.0f, p1Z, p3Z - _r2)), _t0, p2Z - _r2));
+        _dst.w = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1W, Math.fma(2.0f, _r3, Math.fma(4.0f, p2W, -p3W))), Math.fma(3.0f * Math.fma(-3.0f, p2W, Math.fma(3.0f, p1W, p3W - _r3)), _t0, p2W - _r3));
+    }
+
 
     /**
      * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
@@ -1683,12 +1691,21 @@ public final class Float4Impl implements Float4 {
      */
     public Float4 catmullRomTangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t, @Mutated Float4 dest) {
         Float4Impl d = (Float4Impl) dest;
+        float _r0 = this.x;
+        float _r1 = this.y;
+        float _r2 = this.z;
+        float _r3 = this.w;
         float _t0 = t * t;
-        d.x = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1X, Math.fma(2.0f, this.x, Math.fma(4.0f, p2X, -p3X))), Math.fma(3.0f * Math.fma(-3.0f, p2X, Math.fma(3.0f, p1X, p3X - this.x)), _t0, p2X - this.x));
-        d.y = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Y, Math.fma(2.0f, this.y, Math.fma(4.0f, p2Y, -p3Y))), Math.fma(3.0f * Math.fma(-3.0f, p2Y, Math.fma(3.0f, p1Y, p3Y - this.y)), _t0, p2Y - this.y));
-        d.z = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Z, Math.fma(2.0f, this.z, Math.fma(4.0f, p2Z, -p3Z))), Math.fma(3.0f * Math.fma(-3.0f, p2Z, Math.fma(3.0f, p1Z, p3Z - this.z)), _t0, p2Z - this.z));
-        d.w = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1W, Math.fma(2.0f, this.w, Math.fma(4.0f, p2W, -p3W))), Math.fma(3.0f * Math.fma(-3.0f, p2W, Math.fma(3.0f, p1W, p3W - this.w)), _t0, p2W - this.w));
+        catmullRomTangent_s56104e12_c0(d, t, p1X, _r0, p2X, p3X, _t0, p1Y, _r1, p2Y, p3Y, p1Z, _r2, p2Z, p3Z, p1W, _r3, p2W, p3W);
         return d;
+    }
+
+    /** Private store group 0 of {@code catmullRomTangent}: computes and stores it; reached only through it. */
+    private void catmullRomTangent_s68ab4d77_c0(Double4Impl _dst, float t, float p1X, float _r0, float p2X, float p3X, float _t0, float p1Y, float _r1, float p2Y, float p3Y, float p1Z, float _r2, float p2Z, float p3Z, float p1W, float _r3, float p2W, float p3W) {
+        _dst.x = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1X, Math.fma(2.0f, _r0, Math.fma(4.0f, p2X, -p3X))), Math.fma(3.0f * Math.fma(-3.0f, p2X, Math.fma(3.0f, p1X, p3X - _r0)), _t0, p2X - _r0));
+        _dst.y = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Y, Math.fma(2.0f, _r1, Math.fma(4.0f, p2Y, -p3Y))), Math.fma(3.0f * Math.fma(-3.0f, p2Y, Math.fma(3.0f, p1Y, p3Y - _r1)), _t0, p2Y - _r1));
+        _dst.z = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Z, Math.fma(2.0f, _r2, Math.fma(4.0f, p2Z, -p3Z))), Math.fma(3.0f * Math.fma(-3.0f, p2Z, Math.fma(3.0f, p1Z, p3Z - _r2)), _t0, p2Z - _r2));
+        _dst.w = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1W, Math.fma(2.0f, _r3, Math.fma(4.0f, p2W, -p3W))), Math.fma(3.0f * Math.fma(-3.0f, p2W, Math.fma(3.0f, p1W, p3W - _r3)), _t0, p2W - _r3));
     }
 
 
@@ -1730,11 +1747,12 @@ public final class Float4Impl implements Float4 {
      */
     public Double4 catmullRomTangent(float p1X, float p1Y, float p1Z, float p1W, float p2X, float p2Y, float p2Z, float p2W, float p3X, float p3Y, float p3Z, float p3W, float t, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
+        float _r0 = this.x;
+        float _r1 = this.y;
+        float _r2 = this.z;
+        float _r3 = this.w;
         float _t0 = t * t;
-        d.x = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1X, Math.fma(2.0f, this.x, Math.fma(4.0f, p2X, -p3X))), Math.fma(3.0f * Math.fma(-3.0f, p2X, Math.fma(3.0f, p1X, p3X - this.x)), _t0, p2X - this.x));
-        d.y = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Y, Math.fma(2.0f, this.y, Math.fma(4.0f, p2Y, -p3Y))), Math.fma(3.0f * Math.fma(-3.0f, p2Y, Math.fma(3.0f, p1Y, p3Y - this.y)), _t0, p2Y - this.y));
-        d.z = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1Z, Math.fma(2.0f, this.z, Math.fma(4.0f, p2Z, -p3Z))), Math.fma(3.0f * Math.fma(-3.0f, p2Z, Math.fma(3.0f, p1Z, p3Z - this.z)), _t0, p2Z - this.z));
-        d.w = 0.5f * Math.fma(t, 2.0f * Math.fma(-5.0f, p1W, Math.fma(2.0f, this.w, Math.fma(4.0f, p2W, -p3W))), Math.fma(3.0f * Math.fma(-3.0f, p2W, Math.fma(3.0f, p1W, p3W - this.w)), _t0, p2W - this.w));
+        catmullRomTangent_s68ab4d77_c0(d, t, p1X, _r0, p2X, p3X, _t0, p1Y, _r1, p2Y, p3Y, p1Z, _r2, p2Z, p3Z, p1W, _r3, p2W, p3W);
         return d;
     }
 

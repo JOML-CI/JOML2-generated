@@ -1100,6 +1100,33 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return slerpShortest(target.x(), target.y(), target.z(), target.w(), alpha, dest);
     }
 
+    /** Private store group 0 of {@code slerpShortest}: computes and stores it; reached only through it. */
+    private void slerpShortest_s323d976d_c0(DoubleQuatImpl _dst, double _t63, double _t64, double _t53, double _t54, double _t55, double _t56) {
+        _dst.x = _t63 != 0.0 ? _t64 * _t53 : 0.0;
+        _dst.y = _t63 != 0.0 ? _t64 * _t54 : 0.0;
+        _dst.z = _t63 != 0.0 ? _t64 * _t55 : 0.0;
+        _dst.w = _t63 != 0.0 ? _t64 * _t56 : 0.0;
+    }
+
+    /** Private tail of {@code slerpShortest}; reached only through it. */
+    private void slerpShortest_s323d976d_tail(DoubleQuatImpl _dst, double _t20, double _r0, double _t28, double _t22, double _t24, double _t20_inv, double alpha, double _t0, double _r1, double _t25, double _r2, double _t26, double _r3, double _t27) {
+        double _t53, _t54, _t55, _t56;
+        if (_t20 > 0.0) {
+            _t53 = (_r0 * _t28 + _t22 * _t24) * _t20_inv;
+            _t54 = (_r1 * _t28 + _t22 * _t25) * _t20_inv;
+            _t55 = (_r2 * _t28 + _t22 * _t26) * _t20_inv;
+            _t56 = (_r3 * _t28 + _t22 * _t27) * _t20_inv;
+        } else {
+            _t53 = alpha * _t24 + _r0 * _t0;
+            _t54 = alpha * _t25 + _r1 * _t0;
+            _t55 = alpha * _t26 + _r2 * _t0;
+            _t56 = alpha * _t27 + _r3 * _t0;
+        }
+        double _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
+        double _t64 = (1.0 / Math.sqrt(_t63));
+        slerpShortest_s323d976d_c0(_dst, _t63, _t64, _t53, _t54, _t55, _t56);
+    }
+
 
     /**
      * Spherically interpolate along the shortest path between this quaternion (which must have unit
@@ -1124,8 +1151,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat slerpShortest(double targetX, double targetY, double targetZ, double targetW, double alpha, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.y;
+        double _r2 = this.z;
+        double _r3 = this.w;
         double _t0 = 1.0 - alpha;
-        double _t15 = this.x * targetX + this.y * targetY + this.z * targetZ + this.w * targetW;
+        double _t15 = _r0 * targetX + _r1 * targetY + _r2 * targetZ + _r3 * targetW;
         double _t17 = -_t15;
         double _t19 = Math.acos(Math.min(1.0, Math.abs(_t15)));
         double _t20 = Math.sin(_t19);
@@ -1144,31 +1175,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
             _t27 = targetW;
         }
         double _t28 = Math.sin(_t0 * _t19);
-        double _t53, _t54, _t55, _t56;
-        if (_t20 > 0.0) {
-            _t53 = (this.x * _t28 + _t22 * _t24) * _t20_inv;
-            _t54 = (this.y * _t28 + _t22 * _t25) * _t20_inv;
-            _t55 = (this.z * _t28 + _t22 * _t26) * _t20_inv;
-            _t56 = (this.w * _t28 + _t22 * _t27) * _t20_inv;
-        } else {
-            _t53 = alpha * _t24 + this.x * _t0;
-            _t54 = alpha * _t25 + this.y * _t0;
-            _t55 = alpha * _t26 + this.z * _t0;
-            _t56 = alpha * _t27 + this.w * _t0;
-        }
-        double _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
-        double _t64 = (1.0 / Math.sqrt(_t63));
-        if (_t63 != 0.0) {
-            d.x = _t64 * _t53;
-            d.y = _t64 * _t54;
-            d.z = _t64 * _t55;
-            d.w = _t64 * _t56;
-        } else {
-            d.x = 0.0;
-            d.y = 0.0;
-            d.z = 0.0;
-            d.w = 0.0;
-        }
+        slerpShortest_s323d976d_tail(d, _t20, _r0, _t28, _t22, _t24, _t20_inv, alpha, _t0, _r1, _t25, _r2, _t26, _r3, _t27);
         return d;
     }
 
@@ -1187,6 +1194,75 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat squad(DoubleQuatR control0, DoubleQuatR control1, DoubleQuatR target, double t, @Mutated DoubleQuat dest) {
         return squad(control0.x(), control0.y(), control0.z(), control0.w(), control1.x(), control1.y(), control1.z(), control1.w(), target.x(), target.y(), target.z(), target.w(), t, dest);
+    }
+
+    /** Private store group 0 of {@code squad}: computes and stores it; reached only through it. */
+    private void squad_s41d92dd3_c0(DoubleQuatImpl _dst, double _t80, double _t114, double _t81, double _t115, double _t82, double _t83, double _t84, double _t85, double _t86, double _t87) {
+        _dst.x = _t80 * _t114 + _t81 * _t115;
+        _dst.y = _t82 * _t114 + _t83 * _t115;
+        _dst.z = _t84 * _t114 + _t85 * _t115;
+        _dst.w = _t86 * _t114 + _t87 * _t115;
+    }
+
+    /** Private tail of {@code squad}; reached only through it. */
+    private void squad_s41d92dd3_tail(DoubleQuatImpl _dst, double _t7, double _t8, double _t9, double _t10, double _t30, double t, double _t11, double _t0, double _t6, double control0X, double control1X, double _r0, double targetX, double control0Y, double control1Y, double _r1, double targetY, double control0Z, double control1Z, double _r2, double targetZ, double control0W, double control1W, double _r3, double targetW, double _t12, double _t22, double _t13) {
+        double _t31 = Math.min(4.0, _t7 * _t7 + _t8 * _t8 + _t9 * _t9 + _t10 * _t10);
+        double _t32 = quatArcAngle(_t30);
+        double _t33 = quatArcAngle(_t31);
+        double _t34 = 4.0 - _t30;
+        double _t35 = 4.0 - _t31;
+        double _t44 = _t34 * _t30;
+        double _t45 = _t35 * _t31;
+        double _t46 = Math.sqrt(_t44);
+        double _t48 = Math.sqrt(_t45);
+        double _t50 = 2.0 / _t46;
+        double _t51 = 2.0 / _t48;
+        double _t60 = _t46 > 2.0E-14 ? _t50 * Math.sin(t * _t32) : _t30 > _t34 ? t : _t11;
+        double _t61 = _t48 > 2.0E-14 ? _t51 * Math.sin(t * _t33) : _t31 > _t35 ? t : _t11;
+        squad_s41d92dd3_tail2(_dst, _t46, _t50, _t0, _t32, _t30, _t34, _t6, _t48, _t51, _t33, _t31, _t35, control0X, control1X, _t60, _r0, targetX, _t61, control0Y, control1Y, _r1, targetY, control0Z, control1Z, _r2, targetZ, control0W, control1W, _r3, targetW, _t12, _t22, _t13);
+    }
+
+    /** Private tail of {@code squad}; reached only through it. */
+    private void squad_s41d92dd3_tail2(DoubleQuatImpl _dst, double _t46, double _t50, double _t0, double _t32, double _t30, double _t34, double _t6, double _t48, double _t51, double _t33, double _t31, double _t35, double control0X, double control1X, double _t60, double _r0, double targetX, double _t61, double control0Y, double control1Y, double _r1, double targetY, double control0Z, double control1Z, double _r2, double targetZ, double control0W, double control1W, double _r3, double targetW, double _t12, double _t22, double _t13) {
+        double _t62 = _t46 > 2.0E-14 ? _t50 * Math.sin(_t0 * _t32) : _t30 > _t34 ? _t0 : _t6;
+        double _t63 = _t48 > 2.0E-14 ? _t51 * Math.sin(_t0 * _t33) : _t31 > _t35 ? _t0 : _t6;
+        double _t80 = control0X * _t62 + control1X * _t60;
+        double _t81 = _r0 * _t63 + targetX * _t61;
+        double _t82 = control0Y * _t62 + control1Y * _t60;
+        double _t83 = _r1 * _t63 + targetY * _t61;
+        double _t84 = control0Z * _t62 + control1Z * _t60;
+        double _t85 = _r2 * _t63 + targetZ * _t61;
+        double _t86 = control0W * _t62 + control1W * _t60;
+        double _t87 = _r3 * _t63 + targetW * _t61;
+        double _t88 = _t80 + _t81;
+        double _t89 = _t82 + _t83;
+        double _t90 = _t84 + _t85;
+        double _t91 = _t86 + _t87;
+        squad_s41d92dd3_tail3(_dst, _t88, _t89, _t90, _t91, _t12, _t22, _t13, _t80, _t81, _t82, _t83, _t84, _t85, _t86, _t87);
+    }
+
+    /** Private tail of {@code squad}; reached only through it. */
+    private void squad_s41d92dd3_tail3(DoubleQuatImpl _dst, double _t88, double _t89, double _t90, double _t91, double _t12, double _t22, double _t13, double _t80, double _t81, double _t82, double _t83, double _t84, double _t85, double _t86, double _t87) {
+        double _t99 = Math.min(4.0, _t88 * _t88 + _t89 * _t89 + _t90 * _t90 + _t91 * _t91);
+        double _t100 = quatArcAngle(_t99);
+        double _t101 = 4.0 - _t99;
+        double _t106 = _t101 * _t99;
+        double _t107 = Math.sqrt(_t106);
+        double _t109 = 2.0 / _t107;
+        double _t114, _t115;
+        if (_t107 > 2.0E-14) {
+            _t114 = _t109 * Math.sin(_t12 * _t100);
+            _t115 = _t109 * Math.sin(_t13 * _t100);
+        } else {
+            if (_t99 > _t101) {
+                _t114 = _t12;
+                _t115 = _t13;
+            } else {
+                _t114 = 1.0 - _t22;
+                _t115 = _t22;
+            }
+        }
+        squad_s41d92dd3_c0(_dst, _t80, _t114, _t81, _t115, _t82, _t83, _t84, _t85, _t86, _t87);
     }
 
 
@@ -1225,93 +1301,26 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat squad(double control0X, double control0Y, double control0Z, double control0W, double control1X, double control1Y, double control1Z, double control1W, double targetX, double targetY, double targetZ, double targetW, double t, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.y;
+        double _r2 = this.z;
+        double _r3 = this.w;
         double _t0 = 1.0 - t;
         double _t2 = control0X + control1X;
         double _t3 = control0Y + control1Y;
         double _t4 = control0Z + control1Z;
         double _t5 = control0W + control1W;
         double _t6 = t < 0.5 ? 1.0 : 0.0;
-        double _t7 = this.x + targetX;
-        double _t8 = this.y + targetY;
-        double _t9 = this.z + targetZ;
-        double _t10 = this.w + targetW;
+        double _t7 = _r0 + targetX;
+        double _t8 = _r1 + targetY;
+        double _t9 = _r2 + targetZ;
+        double _t10 = _r3 + targetW;
         double _t11 = 1.0 - _t6;
         double _t12 = _t0 * (t + t);
         double _t13 = 1.0 - _t12;
         double _t22 = _t12 < 0.5 ? 1.0 : 0.0;
         double _t30 = Math.min(4.0, _t2 * _t2 + _t3 * _t3 + _t4 * _t4 + _t5 * _t5);
-        double _t31 = Math.min(4.0, _t7 * _t7 + _t8 * _t8 + _t9 * _t9 + _t10 * _t10);
-        double _t32 = quatArcAngle(_t30);
-        double _t33 = quatArcAngle(_t31);
-        double _t34 = 4.0 - _t30;
-        double _t35 = 4.0 - _t31;
-        double _t44 = _t34 * _t30;
-        double _t45 = _t35 * _t31;
-        double _t46 = Math.sqrt(_t44);
-        double _t48 = Math.sqrt(_t45);
-        double _t50 = 2.0 / _t46;
-        double _t51 = 2.0 / _t48;
-        double _t60, _t62;
-        if (_t46 > 2.0E-14) {
-            _t60 = _t50 * Math.sin(t * _t32);
-            _t62 = _t50 * Math.sin(_t0 * _t32);
-        } else {
-            if (_t30 > _t34) {
-                _t60 = t;
-                _t62 = _t0;
-            } else {
-                _t60 = _t11;
-                _t62 = _t6;
-            }
-        }
-        double _t61, _t63;
-        if (_t48 > 2.0E-14) {
-            _t61 = _t51 * Math.sin(t * _t33);
-            _t63 = _t51 * Math.sin(_t0 * _t33);
-        } else {
-            if (_t31 > _t35) {
-                _t61 = t;
-                _t63 = _t0;
-            } else {
-                _t61 = _t11;
-                _t63 = _t6;
-            }
-        }
-        double _t80 = control0X * _t62 + control1X * _t60;
-        double _t81 = this.x * _t63 + targetX * _t61;
-        double _t82 = control0Y * _t62 + control1Y * _t60;
-        double _t83 = this.y * _t63 + targetY * _t61;
-        double _t84 = control0Z * _t62 + control1Z * _t60;
-        double _t85 = this.z * _t63 + targetZ * _t61;
-        double _t86 = control0W * _t62 + control1W * _t60;
-        double _t87 = this.w * _t63 + targetW * _t61;
-        double _t88 = _t80 + _t81;
-        double _t89 = _t82 + _t83;
-        double _t90 = _t84 + _t85;
-        double _t91 = _t86 + _t87;
-        double _t99 = Math.min(4.0, _t88 * _t88 + _t89 * _t89 + _t90 * _t90 + _t91 * _t91);
-        double _t100 = quatArcAngle(_t99);
-        double _t101 = 4.0 - _t99;
-        double _t106 = _t101 * _t99;
-        double _t107 = Math.sqrt(_t106);
-        double _t109 = 2.0 / _t107;
-        double _t114, _t115;
-        if (_t107 > 2.0E-14) {
-            _t114 = _t109 * Math.sin(_t12 * _t100);
-            _t115 = _t109 * Math.sin(_t13 * _t100);
-        } else {
-            if (_t99 > _t101) {
-                _t114 = _t12;
-                _t115 = _t13;
-            } else {
-                _t114 = 1.0 - _t22;
-                _t115 = _t22;
-            }
-        }
-        d.x = _t80 * _t114 + _t81 * _t115;
-        d.y = _t82 * _t114 + _t83 * _t115;
-        d.z = _t84 * _t114 + _t85 * _t115;
-        d.w = _t86 * _t114 + _t87 * _t115;
+        squad_s41d92dd3_tail(d, _t7, _t8, _t9, _t10, _t30, t, _t11, _t0, _t6, control0X, control1X, _r0, targetX, control0Y, control1Y, _r1, targetY, control0Z, control1Z, _r2, targetZ, control0W, control1W, _r3, targetW, _t12, _t22, _t13);
         return d;
     }
 
@@ -2849,6 +2858,44 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return rotateTowards(target.x(), target.y(), target.z(), target.w(), step, dest);
     }
 
+    /** Private store group 0 of {@code rotateTowards}: computes and stores it; reached only through it. */
+    private void rotateTowards_s2171c335_c0(DoubleQuatImpl _dst, double _t92, double _t93, double _t82, double _t83, double _t84, double _t85) {
+        _dst.x = _t92 != 0.0 ? _t93 * _t82 : 0.0;
+        _dst.y = _t92 != 0.0 ? _t93 * _t83 : 0.0;
+        _dst.z = _t92 != 0.0 ? _t93 * _t84 : 0.0;
+        _dst.w = _t92 != 0.0 ? _t93 * _t85 : 0.0;
+    }
+
+    /** Private tail of {@code rotateTowards}; reached only through it. */
+    private void rotateTowards_s2171c335_tail(DoubleQuatImpl _dst, double _r3, double _t19, double _t20, double _t21, double _t22, double _t23, double _t24, double _t25, double _t26, double step, double _t14, double _t15, double _r0, double _t16, double _t15_inv, double _r1, double _t17, double _r2, double _t18) {
+        double _t27 = _r3 + _t19;
+        double _t45 = 4.0 * Math.atan2(Math.sqrt(_t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23), Math.sqrt(_t24 * _t24 + _t25 * _t25 + _t26 * _t26 + _t27 * _t27));
+        double _t48 = _t45 > 0.0 ? Math.min(1.0, step / _t45) : 0.0;
+        double _t49 = 1.0 - _t48;
+        double _t55 = Math.sin(_t14 * _t48);
+        double _t57 = Math.sin(_t49 * _t14);
+        rotateTowards_s2171c335_tail2(_dst, _t15, _r0, _t57, _t55, _t16, _t15_inv, _t49, _t48, _r1, _t17, _r2, _t18, _r3, _t19);
+    }
+
+    /** Private tail of {@code rotateTowards}; reached only through it. */
+    private void rotateTowards_s2171c335_tail2(DoubleQuatImpl _dst, double _t15, double _r0, double _t57, double _t55, double _t16, double _t15_inv, double _t49, double _t48, double _r1, double _t17, double _r2, double _t18, double _r3, double _t19) {
+        double _t82, _t83, _t84, _t85;
+        if (_t15 > 0.0) {
+            _t82 = (_r0 * _t57 + _t55 * _t16) * _t15_inv;
+            _t83 = (_r1 * _t57 + _t55 * _t17) * _t15_inv;
+            _t84 = (_r2 * _t57 + _t55 * _t18) * _t15_inv;
+            _t85 = (_r3 * _t57 + _t55 * _t19) * _t15_inv;
+        } else {
+            _t82 = _r0 * _t49 + _t16 * _t48;
+            _t83 = _r1 * _t49 + _t17 * _t48;
+            _t84 = _r2 * _t49 + _t18 * _t48;
+            _t85 = _r3 * _t49 + _t19 * _t48;
+        }
+        double _t92 = _t82 * _t82 + _t83 * _t83 + _t84 * _t84 + _t85 * _t85;
+        double _t93 = (1.0 / Math.sqrt(_t92));
+        rotateTowards_s2171c335_c0(_dst, _t92, _t93, _t82, _t83, _t84, _t85);
+    }
+
 
     /**
      * Rotate this quaternion towards ({@code targetX}, {@code targetY}, {@code targetZ},
@@ -2873,7 +2920,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateTowards(double targetX, double targetY, double targetZ, double targetW, double step, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t10 = this.x * targetX + this.y * targetY + this.z * targetZ + this.w * targetW;
+        double _r0 = this.x;
+        double _r1 = this.y;
+        double _r2 = this.z;
+        double _r3 = this.w;
+        double _t10 = _r0 * targetX + _r1 * targetY + _r2 * targetZ + _r3 * targetW;
         double _t12 = -_t10;
         double _t14 = Math.acos(Math.min(1.0, Math.abs(_t10)));
         double _t15 = Math.sin(_t14);
@@ -2890,44 +2941,14 @@ public final class DoubleQuatImpl implements DoubleQuat {
             _t18 = targetZ;
             _t19 = targetW;
         }
-        double _t20 = this.x - _t16;
-        double _t21 = this.y - _t17;
-        double _t22 = this.z - _t18;
-        double _t23 = this.w - _t19;
-        double _t24 = this.x + _t16;
-        double _t25 = this.y + _t17;
-        double _t26 = this.z + _t18;
-        double _t27 = this.w + _t19;
-        double _t45 = 4.0 * Math.atan2(Math.sqrt(_t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23), Math.sqrt(_t24 * _t24 + _t25 * _t25 + _t26 * _t26 + _t27 * _t27));
-        double _t48 = _t45 > 0.0 ? Math.min(1.0, step / _t45) : 0.0;
-        double _t49 = 1.0 - _t48;
-        double _t55 = Math.sin(_t14 * _t48);
-        double _t57 = Math.sin(_t49 * _t14);
-        double _t82, _t83, _t84, _t85;
-        if (_t15 > 0.0) {
-            _t82 = (this.x * _t57 + _t55 * _t16) * _t15_inv;
-            _t83 = (this.y * _t57 + _t55 * _t17) * _t15_inv;
-            _t84 = (this.z * _t57 + _t55 * _t18) * _t15_inv;
-            _t85 = (this.w * _t57 + _t55 * _t19) * _t15_inv;
-        } else {
-            _t82 = this.x * _t49 + _t16 * _t48;
-            _t83 = this.y * _t49 + _t17 * _t48;
-            _t84 = this.z * _t49 + _t18 * _t48;
-            _t85 = this.w * _t49 + _t19 * _t48;
-        }
-        double _t92 = _t82 * _t82 + _t83 * _t83 + _t84 * _t84 + _t85 * _t85;
-        double _t93 = (1.0 / Math.sqrt(_t92));
-        if (_t92 != 0.0) {
-            d.x = _t93 * _t82;
-            d.y = _t93 * _t83;
-            d.z = _t93 * _t84;
-            d.w = _t93 * _t85;
-        } else {
-            d.x = 0.0;
-            d.y = 0.0;
-            d.z = 0.0;
-            d.w = 0.0;
-        }
+        double _t20 = _r0 - _t16;
+        double _t21 = _r1 - _t17;
+        double _t22 = _r2 - _t18;
+        double _t23 = _r3 - _t19;
+        double _t24 = _r0 + _t16;
+        double _t25 = _r1 + _t17;
+        double _t26 = _r2 + _t18;
+        rotateTowards_s2171c335_tail(d, _r3, _t19, _t20, _t21, _t22, _t23, _t24, _t25, _t26, step, _t14, _t15, _r0, _t16, _t15_inv, _r1, _t17, _r2, _t18);
         return d;
     }
 
@@ -2953,6 +2974,65 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat lookAlong(Double3R dir, Double3R up, @Mutated DoubleQuat dest) {
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+    /** Private store group 0 of {@code lookAlong}: computes and stores it; reached only through it. */
+    private void lookAlong_s384e4630_c0(DoubleQuatImpl _dst, double _r0, double _t105, double _r1, double _t106, double _r2, double _t107, double _r3, double _t108) {
+        _dst.x = _r0 * _t105 + _r1 * _t106 + (_r2 * _t107 - _r3 * _t108);
+        _dst.y = _r2 * _t105 + _r3 * _t106 + (_r1 * _t108 - _r0 * _t107);
+        _dst.z = _r0 * _t108 + _r1 * _t107 + (_r3 * _t105 - _r2 * _t106);
+        _dst.w = _r1 * _t105 - _r0 * _t106 - (_r2 * _t108 + _r3 * _t107);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private void lookAlong_s384e4630_tail(DoubleQuatImpl _dst, double _t7, double _t28, double _t6, double _t29, double _t43, double _t44, double _t27, double _t31, double _t32, double _t30, double _t35, double _t38, double _r0, double _r1, double _r2, double _r3) {
+        double _t45 = _t7 * _t28 - _t6 * _t29;
+        double _t48 = Math.max(_t43, _t6);
+        double _t49 = _t44 - _t7;
+        double _t50 = _t44 + _t7;
+        double _t53 = _t29 - _t45;
+        double _t54 = _t45 + _t29;
+        double _t56 = _t43 + _t27 + _t6;
+        double _t57 = _t31 + (_t27 + (_t6 + 1.0) - _t32);
+        double _t58 = _t27 + (_t32 + (1.0 - _t6) - _t31);
+        double _t59 = _t31 + (_t30 - _t6 - _t32);
+        double _t60 = _t6 + (_t32 + _t30 - _t31);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t58));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t59));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t57));
+        lookAlong_s384e4630_tail2(_dst, _t56, _t57, _t27, _t48, _sp0, _t49, _t43, _t6, _sp1, _t35, _sp2, _t53, _sp3, _t58, _t54, _t38, _t50, _t60, _t59, _r0, _r1, _r2, _r3);
+    }
+
+    /** Private tail of {@code lookAlong}; reached only through it. */
+    private void lookAlong_s384e4630_tail2(DoubleQuatImpl _dst, double _t56, double _t57, double _t27, double _t48, double _sp0, double _t49, double _t43, double _t6, double _sp1, double _t35, double _sp2, double _t53, double _sp3, double _t58, double _t54, double _t38, double _t50, double _t60, double _t59, double _r0, double _r1, double _r2, double _r3) {
+        double _t105, _t106, _t107, _t108;
+        if (_t56 > 0.0) {
+            _t105 = 0.5 * Math.sqrt(_t57);
+            _t106 = _sp3 * _t49;
+            _t107 = _sp3 * _t53;
+            _t108 = _sp3 * _t35;
+        } else {
+            if (_t27 > _t48) {
+                _t105 = _sp0 * _t49;
+                _t106 = 0.5 * Math.sqrt(_t58);
+                _t107 = _sp0 * _t38;
+                _t108 = _sp0 * _t54;
+            } else {
+                if (_t43 > _t6) {
+                    _t105 = _sp1 * _t35;
+                    _t106 = _sp1 * _t54;
+                    _t107 = _sp1 * _t50;
+                    _t108 = 0.5 * Math.sqrt(_t59);
+                } else {
+                    _t105 = _sp2 * _t53;
+                    _t106 = _sp2 * _t38;
+                    _t107 = 0.5 * Math.sqrt(_t60);
+                    _t108 = _sp2 * _t50;
+                }
+            }
+        }
+        lookAlong_s384e4630_c0(_dst, _r0, _t105, _r1, _t106, _r2, _t107, _r3, _t108);
     }
 
 
@@ -2990,6 +3070,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _ct0 = _t17 * _t17 + _t18 * _t18 + _t19 * _t19;
         if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
         double _t26 = (1.0 / Math.sqrt(_ct0));
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t27 = _t17 * _t26;
         double _t28 = _t19 * _t26;
         double _t29 = _t18 * _t26;
@@ -3000,54 +3084,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t38 = _t8 + _t28;
         double _t43 = _t31 - _t32;
         double _t44 = _t8 * _t29 - _t7 * _t27;
-        double _t45 = _t7 * _t28 - _t6 * _t29;
-        double _t48 = Math.max(_t43, _t6);
-        double _t49 = _t44 - _t7;
-        double _t50 = _t44 + _t7;
-        double _t53 = _t29 - _t45;
-        double _t54 = _t45 + _t29;
-        double _t56 = _t43 + _t27 + _t6;
-        double _t57 = _t31 + (_t27 + (_t6 + 1.0) - _t32);
-        double _t58 = _t27 + (_t32 + (1.0 - _t6) - _t31);
-        double _t59 = _t31 + (_t30 - _t6 - _t32);
-        double _t60 = _t6 + (_t32 + _t30 - _t31);
-        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t58));
-        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t59));
-        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t60));
-        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t57));
-        double _t105, _t106, _t107, _t108;
-        if (_t56 > 0.0) {
-            _t105 = 0.5 * Math.sqrt(_t57);
-            _t106 = _sp3 * _t49;
-            _t107 = _sp3 * _t53;
-            _t108 = _sp3 * _t35;
-        } else {
-            if (_t27 > _t48) {
-                _t105 = _sp0 * _t49;
-                _t106 = 0.5 * Math.sqrt(_t58);
-                _t107 = _sp0 * _t38;
-                _t108 = _sp0 * _t54;
-            } else {
-                if (_t43 > _t6) {
-                    _t105 = _sp1 * _t35;
-                    _t106 = _sp1 * _t54;
-                    _t107 = _sp1 * _t50;
-                    _t108 = 0.5 * Math.sqrt(_t59);
-                } else {
-                    _t105 = _sp2 * _t53;
-                    _t106 = _sp2 * _t38;
-                    _t107 = 0.5 * Math.sqrt(_t60);
-                    _t108 = _sp2 * _t50;
-                }
-            }
-        }
-        double _buf0 = this.x * _t105 + this.w * _t106 + (this.y * _t107 - this.z * _t108);
-        double _buf1 = this.y * _t105 + this.z * _t106 + (this.w * _t108 - this.x * _t107);
-        double _buf2 = this.x * _t108 + this.w * _t107 + (this.z * _t105 - this.y * _t106);
-        d.w = this.w * _t105 - this.x * _t106 - (this.y * _t108 + this.z * _t107);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        lookAlong_s384e4630_tail(d, _t7, _t28, _t6, _t29, _t43, _t44, _t27, _t31, _t32, _t30, _t35, _t38, _r0, _r1, _r2, _r3);
         return d;
     }
 
@@ -3061,37 +3098,16 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
     }
 
+    /** Private store group 0 of {@code lookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_s384e4630_c0(DoubleQuatImpl _dst, double _r0, double _t129, double _r1, double _t130, double _r2, double _t127, double _r3, double _t128) {
+        _dst.x = _r0 * _t129 + _r1 * _t130 + (_r2 * _t127 - _r3 * _t128);
+        _dst.y = _r2 * _t129 + _r3 * _t130 + (_r1 * _t128 - _r0 * _t127);
+        _dst.z = _r0 * _t128 + _r1 * _t127 + (_r3 * _t129 - _r2 * _t130);
+        _dst.w = _r1 * _t129 - _r0 * _t130 - (_r2 * _t128 + _r3 * _t127);
+    }
 
-    /**
-     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
-     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
-     * through them.
-     */
-    private DoubleQuat lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11, _t12, _t13, _t14;
-        if (_t4 == 0.0) {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 1.0;
-            _t12 = 0.0;
-            _t13 = 1.0;
-            _t14 = 0.0;
-        } else {
-            _t9 = upZ;
-            _t10 = upX;
-            _t11 = upY;
-            _t12 = dirX * _t5;
-            _t13 = dirZ * _t5;
-            _t14 = dirY * _t5;
-        }
-        double _t15 = Math.abs(_t12);
-        double _t16 = Math.abs(_t13);
-        double _t17 = -_t14;
-        double _t19 = 1.0 + _t13;
-        double _t20 = 1.0 - _t13;
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private void lookAlong_degenerate_s384e4630_tail(DoubleQuatImpl _dst, double _t15, double _t16, double _t14, double _t17, double _t9, double _t12, double _t10, double _t13, double _t11, double _t19, double _t20, double _r0, double _r1, double _r2, double _r3) {
         double _t27, _t28, _t32;
         if (_t15 > _t16) {
             _t27 = 0.0;
@@ -3119,6 +3135,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
             _t50 = _t47 * _t29;
         }
         double _t51 = _t48 * _t12;
+        lookAlong_degenerate_s384e4630_tail2(_dst, _t12, _t48, _t49, _t13, _t14, _t50, _t51, _t17, _t19, _t20, _r0, _r1, _r2, _r3);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private void lookAlong_degenerate_s384e4630_tail2(DoubleQuatImpl _dst, double _t12, double _t48, double _t49, double _t13, double _t14, double _t50, double _t51, double _t17, double _t19, double _t20, double _r0, double _r1, double _r2, double _r3) {
         double _t52 = _t12 - _t48;
         double _t54 = _t48 + _t12;
         double _t55 = _t49 * _t13;
@@ -3140,6 +3161,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t77));
         double _t93 = _t50 - _t71;
         double _t94 = _t71 + _t50;
+        lookAlong_degenerate_s384e4630_tail3(_dst, _t76, _sp0, _t93, _t49, _t72, _sp1, _t54, _t67, _t13, _sp2, _t74, _t80, _t52, _t94, _t79, _sp3, _t77, _t75, _t78, _r0, _r1, _r2, _r3);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private void lookAlong_degenerate_s384e4630_tail3(DoubleQuatImpl _dst, double _t76, double _sp0, double _t93, double _t49, double _t72, double _sp1, double _t54, double _t67, double _t13, double _sp2, double _t74, double _t80, double _t52, double _t94, double _t79, double _sp3, double _t77, double _t75, double _t78, double _r0, double _r1, double _r2, double _r3) {
         double _t127, _t128, _t129, _t130;
         if (_t76 > 0.0) {
             _t127 = _sp0 * _t93;
@@ -3166,13 +3192,45 @@ public final class DoubleQuatImpl implements DoubleQuat {
                 }
             }
         }
-        double _buf0 = this.x * _t129 + this.w * _t130 + (this.y * _t127 - this.z * _t128);
-        double _buf1 = this.y * _t129 + this.z * _t130 + (this.w * _t128 - this.x * _t127);
-        double _buf2 = this.x * _t128 + this.w * _t127 + (this.z * _t129 - this.y * _t130);
-        d.w = this.w * _t129 - this.x * _t130 - (this.y * _t128 + this.z * _t127);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        lookAlong_degenerate_s384e4630_c0(_dst, _r0, _t129, _r1, _t130, _r2, _t127, _r3, _t128);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleQuat lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
+        }
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t17 = -_t14;
+        double _t19 = 1.0 + _t13;
+        double _t20 = 1.0 - _t13;
+        lookAlong_degenerate_s384e4630_tail(d, _t15, _t16, _t14, _t17, _t9, _t12, _t10, _t13, _t11, _t19, _t20, _r0, _r1, _r2, _r3);
         return d;
     }
 
@@ -3932,6 +3990,39 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return rotateTo(fromDir.x(), fromDir.y(), fromDir.z(), toDir.x(), toDir.y(), toDir.z(), dest);
     }
 
+    /** Private store group 0 of {@code rotateTo}: computes and stores it; reached only through it. */
+    private void rotateTo_s203b189_c0(DoubleQuatImpl _dst, double _r0, double _t49, double _r1, double _t53, double _r2, double _t54, double _r3, double _t55) {
+        _dst.x = _r0 * _t49 + _r1 * _t53 + (_r2 * _t54 - _r3 * _t55);
+        _dst.y = _r2 * _t49 + _r3 * _t53 + (_r1 * _t55 - _r0 * _t54);
+        _dst.z = _r0 * _t55 + _r1 * _t54 + (_r3 * _t49 - _r2 * _t53);
+        _dst.w = _r1 * _t49 - _r0 * _t53 - (_r2 * _t55 + _r3 * _t54);
+    }
+
+    /** Private tail of {@code rotateTo}; reached only through it. */
+    private void rotateTo_s203b189_tail(DoubleQuatImpl _dst, double _t16, double _t17, double _t18, double _t28, double _t30, double _t37, double _t38, double _t20, double _t21, double _t22, double _r0, double _r1, double _r2, double _r3) {
+        double _t43 = (1.0 / Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + 0.25 * _t28 * _t28));
+        double _t49, _t53, _t54, _t55;
+        if (_t30 > 1.0E-13) {
+            _t49 = _t30 * _t43;
+            _t53 = _t16 * _t43;
+            _t54 = _t18 * _t43;
+            _t55 = _t17 * _t43;
+        } else {
+            if (_t37 != 0.0) {
+                _t49 = 0.0;
+                _t53 = _t38 * _t20;
+                _t54 = _t38 * _t21;
+                _t55 = _t38 * _t22;
+            } else {
+                _t49 = 0.0;
+                _t53 = 0.0;
+                _t54 = 0.0;
+                _t55 = 0.0;
+            }
+        }
+        rotateTo_s203b189_c0(_dst, _r0, _t49, _r1, _t53, _r2, _t54, _r3, _t55);
+    }
+
 
     /**
      * Apply the rotation that rotates ({@code fromDirX}, {@code fromDirY}, {@code fromDirZ}) onto
@@ -3960,6 +4051,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t2 = fromDirX + toDirX;
         double _t3 = fromDirY + toDirY;
         double _t4 = fromDirZ + toDirZ;
@@ -3981,33 +4076,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t30 = 0.5 * _t28;
         double _t37 = _t20 * _t20 + _t22 * _t22 + _t21 * _t21;
         double _t38 = (1.0 / Math.sqrt(_t37));
-        double _t43 = (1.0 / Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + 0.25 * _t28 * _t28));
-        double _t49, _t53, _t54, _t55;
-        if (_t30 > 1.0E-13) {
-            _t49 = _t30 * _t43;
-            _t53 = _t16 * _t43;
-            _t54 = _t18 * _t43;
-            _t55 = _t17 * _t43;
-        } else {
-            if (_t37 != 0.0) {
-                _t49 = 0.0;
-                _t53 = _t38 * _t20;
-                _t54 = _t38 * _t21;
-                _t55 = _t38 * _t22;
-            } else {
-                _t49 = 0.0;
-                _t53 = 0.0;
-                _t54 = 0.0;
-                _t55 = 0.0;
-            }
-        }
-        double _buf0 = this.x * _t49 + this.w * _t53 + (this.y * _t54 - this.z * _t55);
-        double _buf1 = this.y * _t49 + this.z * _t53 + (this.w * _t55 - this.x * _t54);
-        double _buf2 = this.x * _t55 + this.w * _t54 + (this.z * _t49 - this.y * _t53);
-        d.w = this.w * _t49 - this.x * _t53 - (this.y * _t55 + this.z * _t54);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        rotateTo_s203b189_tail(d, _t16, _t17, _t18, _t28, _t30, _t37, _t38, _t20, _t21, _t22, _r0, _r1, _r2, _r3);
         return d;
     }
 
@@ -4034,6 +4103,14 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s2a22d61_c0(DoubleQuatImpl _dst, double _r0, double _t21, double _r1, double _t22, double _r2, double _t23, double _r3, double _t24) {
+        _dst.x = _r0 * _t21 + _r1 * _t22 + (_r2 * _t23 - _r3 * _t24);
+        _dst.y = _r2 * _t21 + _r3 * _t22 + (_r1 * _t24 - _r0 * _t23);
+        _dst.z = _r0 * _t24 + _r1 * _t23 + (_r3 * _t21 - _r2 * _t22);
+        _dst.w = _r1 * _t21 - _r0 * _t22 - (_r2 * _t24 + _r3 * _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -4053,6 +4130,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateXYZ(double angleX, double angleY, double angleZ, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -4070,14 +4151,16 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t22 = _t10 * _t8 + _t11 * _t5;
         double _t23 = _t9 * _t8 + _t13 * _t5;
         double _t24 = _t11 * _t8 - _t10 * _t5;
-        double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
-        double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
-        double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        rotateXYZ_s2a22d61_c0(d, _r0, _t21, _r1, _t22, _r2, _t23, _r3, _t24);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s50b651bf_c0(DoubleQuatImpl _dst, double _r0, double _t21, double _r1, double _t22, double _r2, double _t23, double _r3, double _t24) {
+        _dst.x = _r0 * _t21 + _r1 * _t22 + (_r2 * _t23 - _r3 * _t24);
+        _dst.y = _r2 * _t21 + _r3 * _t22 + (_r1 * _t24 - _r0 * _t23);
+        _dst.z = _r0 * _t24 + _r1 * _t23 + (_r3 * _t21 - _r2 * _t22);
+        _dst.w = _r1 * _t21 - _r0 * _t22 - (_r2 * _t24 + _r3 * _t23);
     }
 
 
@@ -4099,6 +4182,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateXZY(double angleX, double angleZ, double angleY, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -4116,13 +4203,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t22 = _t10 * _t8 - _t11 * _t5;
         double _t23 = _t10 * _t5 + _t11 * _t8;
         double _t24 = _t13 * _t5 - _t9 * _t8;
-        double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
-        double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
-        double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        rotateXZY_s50b651bf_c0(d, _r0, _t21, _r1, _t22, _r2, _t23, _r3, _t24);
         return d;
     }
 
@@ -4149,6 +4230,14 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s20d10143_c0(DoubleQuatImpl _dst, double _r0, double _t21, double _r1, double _t22, double _r2, double _t23, double _r3, double _t24) {
+        _dst.x = _r0 * _t21 + _r1 * _t22 + (_r2 * _t23 - _r3 * _t24);
+        _dst.y = _r2 * _t21 + _r3 * _t22 + (_r1 * _t24 - _r0 * _t23);
+        _dst.z = _r0 * _t24 + _r1 * _t23 + (_r3 * _t21 - _r2 * _t22);
+        _dst.w = _r1 * _t21 - _r0 * _t22 - (_r2 * _t24 + _r3 * _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -4168,6 +4257,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateYXZ(double angleY, double angleX, double angleZ, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -4185,14 +4278,16 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t22 = _t10 * _t8 + _t11 * _t5;
         double _t23 = _t13 * _t5 - _t9 * _t8;
         double _t24 = _t11 * _t8 - _t10 * _t5;
-        double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
-        double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
-        double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        rotateYXZ_s20d10143_c0(d, _r0, _t21, _r1, _t22, _r2, _t23, _r3, _t24);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s3cf949ff_c0(DoubleQuatImpl _dst, double _r0, double _t21, double _r1, double _t22, double _r2, double _t23, double _r3, double _t24) {
+        _dst.x = _r0 * _t21 + _r1 * _t22 + (_r2 * _t23 - _r3 * _t24);
+        _dst.y = _r2 * _t21 + _r3 * _t22 + (_r1 * _t24 - _r0 * _t23);
+        _dst.z = _r0 * _t24 + _r1 * _t23 + (_r3 * _t21 - _r2 * _t22);
+        _dst.w = _r1 * _t21 - _r0 * _t22 - (_r2 * _t24 + _r3 * _t23);
     }
 
 
@@ -4214,6 +4309,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateYZX(double angleY, double angleZ, double angleX, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -4231,13 +4330,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t22 = _t9 * _t8 + _t13 * _t5;
         double _t23 = _t10 * _t8 - _t11 * _t5;
         double _t24 = _t11 * _t8 + _t10 * _t5;
-        double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
-        double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
-        double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        rotateYZX_s3cf949ff_c0(d, _r0, _t21, _r1, _t22, _r2, _t23, _r3, _t24);
         return d;
     }
 
@@ -4264,6 +4357,14 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_sd13f983_c0(DoubleQuatImpl _dst, double _r0, double _t21, double _r1, double _t22, double _r2, double _t23, double _r3, double _t24) {
+        _dst.x = _r0 * _t21 + _r1 * _t22 + (_r2 * _t23 - _r3 * _t24);
+        _dst.y = _r2 * _t21 + _r3 * _t22 + (_r1 * _t24 - _r0 * _t23);
+        _dst.z = _r0 * _t24 + _r1 * _t23 + (_r3 * _t21 - _r2 * _t22);
+        _dst.w = _r1 * _t21 - _r0 * _t22 - (_r2 * _t24 + _r3 * _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -4283,6 +4384,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateZXY(double angleZ, double angleX, double angleY, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -4300,14 +4405,16 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t22 = _t10 * _t8 - _t11 * _t5;
         double _t23 = _t10 * _t5 + _t11 * _t8;
         double _t24 = _t9 * _t8 + _t13 * _t5;
-        double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
-        double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
-        double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        rotateZXY_sd13f983_c0(d, _r0, _t21, _r1, _t22, _r2, _t23, _r3, _t24);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s5b281de1_c0(DoubleQuatImpl _dst, double _r0, double _t21, double _r1, double _t22, double _r2, double _t23, double _r3, double _t24) {
+        _dst.x = _r0 * _t21 + _r1 * _t22 + (_r2 * _t23 - _r3 * _t24);
+        _dst.y = _r2 * _t21 + _r3 * _t22 + (_r1 * _t24 - _r0 * _t23);
+        _dst.z = _r0 * _t24 + _r1 * _t23 + (_r3 * _t21 - _r2 * _t22);
+        _dst.w = _r1 * _t21 - _r0 * _t22 - (_r2 * _t24 + _r3 * _t23);
     }
 
 
@@ -4329,6 +4436,10 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public DoubleQuat rotateZYX(double angleZ, double angleY, double angleX, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.x;
+        double _r1 = this.w;
+        double _r2 = this.y;
+        double _r3 = this.z;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -4346,13 +4457,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t22 = _t13 * _t5 - _t9 * _t8;
         double _t23 = _t10 * _t8 - _t11 * _t5;
         double _t24 = _t11 * _t8 + _t10 * _t5;
-        double _buf0 = this.x * _t21 + this.w * _t22 + (this.y * _t23 - this.z * _t24);
-        double _buf1 = this.y * _t21 + this.z * _t22 + (this.w * _t24 - this.x * _t23);
-        double _buf2 = this.x * _t24 + this.w * _t23 + (this.z * _t21 - this.y * _t22);
-        d.w = this.w * _t21 - this.x * _t22 - (this.y * _t24 + this.z * _t23);
-        d.x = _buf0;
-        d.y = _buf1;
-        d.z = _buf2;
+        rotateZYX_s5b281de1_c0(d, _r0, _t21, _r1, _t22, _r2, _t23, _r3, _t24);
         return d;
     }
 

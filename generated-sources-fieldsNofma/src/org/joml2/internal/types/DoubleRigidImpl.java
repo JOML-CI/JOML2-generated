@@ -906,6 +906,42 @@ public final class DoubleRigidImpl implements DoubleRigid {
         return lerp(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), t, dest);
     }
 
+    /** Private store group 0 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s3b4e3a15_c0(DoubleRigidImpl _dst, double t, double otherTX, double _r4, double otherTY, double _r5, double otherTZ, double _r6, double _t63, double _t64, double _t53) {
+        _dst.tX = t * (otherTX - _r4) + _r4;
+        _dst.tY = t * (otherTY - _r5) + _r5;
+        _dst.tZ = t * (otherTZ - _r6) + _r6;
+        _dst.rX = _t63 != 0.0 ? _t64 * _t53 : 0.0;
+    }
+
+    /** Private store group 1 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s3b4e3a15_c1(DoubleRigidImpl _dst, double _t63, double _t64, double _t54, double _t55, double _t56) {
+        _dst.rY = _t63 != 0.0 ? _t64 * _t54 : 0.0;
+        _dst.rZ = _t63 != 0.0 ? _t64 * _t55 : 0.0;
+        _dst.rW = _t63 != 0.0 ? _t64 * _t56 : 0.0;
+    }
+
+    /** Private tail of {@code lerp}; reached only through it. */
+    private void lerp_s3b4e3a15_tail(DoubleRigidImpl _dst, double _t0, double _t19, double _t20, double _r0, double _t22, double _t24, double _t20_inv, double t, double _r1, double _t25, double _r2, double _t26, double _r3, double _t27, double otherTX, double _r4, double otherTY, double _r5, double otherTZ, double _r6) {
+        double _t28 = Math.sin(_t0 * _t19);
+        double _t53, _t54, _t55, _t56;
+        if (_t20 > 0.0) {
+            _t53 = (_r0 * _t28 + _t22 * _t24) * _t20_inv;
+            _t54 = (_r1 * _t28 + _t22 * _t25) * _t20_inv;
+            _t55 = (_r2 * _t28 + _t22 * _t26) * _t20_inv;
+            _t56 = (_r3 * _t28 + _t22 * _t27) * _t20_inv;
+        } else {
+            _t53 = t * _t24 + _r0 * _t0;
+            _t54 = t * _t25 + _r1 * _t0;
+            _t55 = t * _t26 + _r2 * _t0;
+            _t56 = t * _t27 + _r3 * _t0;
+        }
+        double _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
+        double _t64 = (1.0 / Math.sqrt(_t63));
+        lerp_s3b4e3a15_c0(_dst, t, otherTX, _r4, otherTY, _r5, otherTZ, _r6, _t63, _t64, _t53);
+        lerp_s3b4e3a15_c1(_dst, _t63, _t64, _t54, _t55, _t56);
+    }
+
 
     /**
      * Interpolate between this rigid transform and ({@code otherTX}, {@code otherTY},
@@ -937,8 +973,15 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid lerp(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW, double t, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.rX;
+        double _r1 = this.rY;
+        double _r2 = this.rZ;
+        double _r3 = this.rW;
+        double _r4 = this.tX;
+        double _r5 = this.tY;
+        double _r6 = this.tZ;
         double _t0 = 1.0 - t;
-        double _t15 = otherRX * this.rX + otherRY * this.rY + otherRZ * this.rZ + otherRW * this.rW;
+        double _t15 = otherRX * _r0 + otherRY * _r1 + otherRZ * _r2 + otherRW * _r3;
         double _t17 = -_t15;
         double _t19 = Math.acos(Math.min(1.0, Math.abs(_t15)));
         double _t20 = Math.sin(_t19);
@@ -956,35 +999,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
             _t26 = otherRZ;
             _t27 = otherRW;
         }
-        double _t28 = Math.sin(_t0 * _t19);
-        double _t53, _t54, _t55, _t56;
-        if (_t20 > 0.0) {
-            _t53 = (this.rX * _t28 + _t22 * _t24) * _t20_inv;
-            _t54 = (this.rY * _t28 + _t22 * _t25) * _t20_inv;
-            _t55 = (this.rZ * _t28 + _t22 * _t26) * _t20_inv;
-            _t56 = (this.rW * _t28 + _t22 * _t27) * _t20_inv;
-        } else {
-            _t53 = t * _t24 + this.rX * _t0;
-            _t54 = t * _t25 + this.rY * _t0;
-            _t55 = t * _t26 + this.rZ * _t0;
-            _t56 = t * _t27 + this.rW * _t0;
-        }
-        double _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
-        double _t64 = (1.0 / Math.sqrt(_t63));
-        if (_t63 != 0.0) {
-            d.rX = _t64 * _t53;
-            d.rY = _t64 * _t54;
-            d.rZ = _t64 * _t55;
-            d.rW = _t64 * _t56;
-        } else {
-            d.rX = 0.0;
-            d.rY = 0.0;
-            d.rZ = 0.0;
-            d.rW = 0.0;
-        }
-        d.tX = t * (otherTX - this.tX) + this.tX;
-        d.tY = t * (otherTY - this.tY) + this.tY;
-        d.tZ = t * (otherTZ - this.tZ) + this.tZ;
+        lerp_s3b4e3a15_tail(d, _t0, _t19, _t20, _r0, _t22, _t24, _t20_inv, t, _r1, _t25, _r2, _t26, _r3, _t27, otherTX, _r4, otherTY, _r5, otherTZ, _r6);
         return d;
     }
 
@@ -1003,6 +1018,21 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid mul(DoubleRigidR other, @Mutated DoubleRigid dest) {
         return mul(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), dest);
+    }
+
+    /** Private store group 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1abfb90e_c0(DoubleRigidImpl _dst, double _r1, double _t9, double _r3, double _t10, double _r4, double otherTX, double _r2, double _t11, double _r5, double otherTY, double _r0, double _r6, double otherTZ, double otherRX, double otherRW, double otherRZ, double otherRY) {
+        _dst.tX = _r1 * _t9 + (_r3 * _t10 + (_r4 + otherTX) - _r2 * _t11);
+        _dst.tY = _r2 * _t10 + (_r3 * _t11 + (_r5 + otherTY) - _r0 * _t9);
+        _dst.tZ = _r0 * _t11 + (_r3 * _t9 + (_r6 + otherTZ) - _r1 * _t10);
+        _dst.rX = otherRX * _r3 + otherRW * _r0 + (otherRZ * _r1 - otherRY * _r2);
+    }
+
+    /** Private store group 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1abfb90e_c1(DoubleRigidImpl _dst, double otherRX, double _r2, double otherRW, double _r1, double otherRY, double _r3, double otherRZ, double _r0) {
+        _dst.rY = otherRX * _r2 + otherRW * _r1 + (otherRY * _r3 - otherRZ * _r0);
+        _dst.rZ = otherRY * _r0 + otherRZ * _r3 + (otherRW * _r2 - otherRX * _r1);
+        _dst.rW = otherRW * _r3 - otherRX * _r0 - (otherRY * _r1 + otherRZ * _r2);
     }
 
 
@@ -1035,19 +1065,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid mul(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        double _t9 = 2.0 * (otherTY * this.rX - otherTX * this.rY);
-        double _t10 = 2.0 * (otherTZ * this.rY - otherTY * this.rZ);
-        double _t11 = 2.0 * (otherTX * this.rZ - otherTZ * this.rX);
-        d.tX = this.rY * _t9 + (this.rW * _t10 + (this.tX + otherTX) - this.rZ * _t11);
-        d.tY = this.rZ * _t10 + (this.rW * _t11 + (this.tY + otherTY) - this.rX * _t9);
-        d.tZ = this.rX * _t11 + (this.rW * _t9 + (this.tZ + otherTZ) - this.rY * _t10);
-        double _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
-        double _buf1 = otherRX * this.rZ + otherRW * this.rY + (otherRY * this.rW - otherRZ * this.rX);
-        double _buf2 = otherRY * this.rX + otherRZ * this.rW + (otherRW * this.rZ - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        double _r0 = this.rX;
+        double _r1 = this.rY;
+        double _r2 = this.rZ;
+        double _r3 = this.rW;
+        double _r4 = this.tX;
+        double _r5 = this.tY;
+        double _r6 = this.tZ;
+        double _t9 = 2.0 * (otherTY * _r0 - otherTX * _r1);
+        double _t10 = 2.0 * (otherTZ * _r1 - otherTY * _r2);
+        double _t11 = 2.0 * (otherTX * _r2 - otherTZ * _r0);
+        mul_s1abfb90e_c0(d, _r1, _t9, _r3, _t10, _r4, otherTX, _r2, _t11, _r5, otherTY, _r0, _r6, otherTZ, otherRX, otherRW, otherRZ, otherRY);
+        mul_s1abfb90e_c1(d, otherRX, _r2, otherRW, _r1, otherRY, _r3, otherRZ, _r0);
         return d;
     }
 
@@ -1065,6 +1094,21 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid preMul(DoubleRigidR other, @Mutated DoubleRigid dest) {
         return preMul(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), dest);
+    }
+
+    /** Private store group 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1abfb90e_c0(DoubleRigidImpl _dst, double otherRY, double _t9, double otherRW, double _t10, double otherTX, double _r1, double otherRZ, double _t11, double otherTY, double _r0, double otherRX, double otherTZ, double _r2, double _r3, double _r4, double _r5, double _r6) {
+        _dst.tX = otherRY * _t9 + (otherRW * _t10 + (otherTX + _r1) - otherRZ * _t11);
+        _dst.tY = otherRZ * _t10 + (otherRW * _t11 + (otherTY + _r0) - otherRX * _t9);
+        _dst.tZ = otherRX * _t11 + (otherRW * _t9 + (otherTZ + _r2) - otherRY * _t10);
+        _dst.rX = otherRX * _r3 + otherRW * _r4 + (otherRY * _r5 - otherRZ * _r6);
+    }
+
+    /** Private store group 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1abfb90e_c1(DoubleRigidImpl _dst, double otherRY, double _r3, double otherRZ, double _r4, double otherRW, double _r6, double otherRX, double _r5) {
+        _dst.rY = otherRY * _r3 + otherRZ * _r4 + (otherRW * _r6 - otherRX * _r5);
+        _dst.rZ = otherRX * _r6 + otherRW * _r5 + (otherRZ * _r3 - otherRY * _r4);
+        _dst.rW = otherRW * _r3 - otherRX * _r4 - (otherRY * _r6 + otherRZ * _r5);
     }
 
 
@@ -1096,19 +1140,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid preMul(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        double _t9 = 2.0 * (otherRX * this.tY - otherRY * this.tX);
-        double _t10 = 2.0 * (otherRY * this.tZ - otherRZ * this.tY);
-        double _t11 = 2.0 * (otherRZ * this.tX - otherRX * this.tZ);
-        d.tX = otherRY * _t9 + (otherRW * _t10 + (otherTX + this.tX) - otherRZ * _t11);
-        d.tY = otherRZ * _t10 + (otherRW * _t11 + (otherTY + this.tY) - otherRX * _t9);
-        d.tZ = otherRX * _t11 + (otherRW * _t9 + (otherTZ + this.tZ) - otherRY * _t10);
-        double _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        double _buf1 = otherRY * this.rW + otherRZ * this.rX + (otherRW * this.rY - otherRX * this.rZ);
-        double _buf2 = otherRX * this.rY + otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        double _r0 = this.tY;
+        double _r1 = this.tX;
+        double _r2 = this.tZ;
+        double _r3 = this.rW;
+        double _r4 = this.rX;
+        double _r5 = this.rZ;
+        double _r6 = this.rY;
+        double _t9 = 2.0 * (otherRX * _r0 - otherRY * _r1);
+        double _t10 = 2.0 * (otherRY * _r2 - otherRZ * _r0);
+        double _t11 = 2.0 * (otherRZ * _r1 - otherRX * _r2);
+        preMul_s1abfb90e_c0(d, otherRY, _t9, otherRW, _t10, otherTX, _r1, otherRZ, _t11, otherTY, _r0, otherRX, otherTZ, _r2, _r3, _r4, _r5, _r6);
+        preMul_s1abfb90e_c1(d, otherRY, _r3, otherRZ, _r4, otherRW, _r6, otherRX, _r5);
         return d;
     }
 
@@ -1125,6 +1168,21 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid difference(DoubleRigidR other, @Mutated DoubleRigid dest) {
         return difference(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), dest);
+    }
+
+    /** Private store group 0 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s1abfb90e_c0(DoubleRigidImpl _dst, double otherTX, double _r1, double _t18, double _r6, double _t19, double _r2, double _t20, double _t21, double _t22, double _t23, double _r3, double otherTY, double _r0, double _r5, double otherTZ, double _r4, double otherRX, double otherRW, double otherRY, double otherRZ) {
+        _dst.tX = otherTX + _r1 * _t18 + (_r6 * _t19 - _r2 * _t20) + (_r1 * _t21 - _r2 * _t22 + (_r6 * _t23 - _r3));
+        _dst.tY = otherTY + _r0 * _t20 + (_r6 * _t18 - _r1 * _t19) + (_r0 * _t22 - _r1 * _t23 + (_r6 * _t21 - _r5));
+        _dst.tZ = otherTZ + _r2 * _t19 + (_r6 * _t20 - _r0 * _t18) + (_r2 * _t23 - _r0 * _t21 + (_r6 * _t22 - _r4));
+        _dst.rX = otherRX * _r6 - otherRW * _r0 + (otherRY * _r1 - otherRZ * _r2);
+    }
+
+    /** Private store group 1 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s1abfb90e_c1(DoubleRigidImpl _dst, double otherRY, double _r6, double otherRZ, double _r0, double otherRW, double _r2, double otherRX, double _r1) {
+        _dst.rY = otherRY * _r6 + otherRZ * _r0 + (-(otherRW * _r2) - otherRX * _r1);
+        _dst.rZ = otherRX * _r2 - otherRW * _r1 + (otherRZ * _r6 - otherRY * _r0);
+        _dst.rW = otherRX * _r0 + otherRW * _r6 - (-(otherRY * _r2) - otherRZ * _r1);
     }
 
 
@@ -1155,22 +1213,21 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid difference(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        double _t18 = 2.0 * (otherTZ * this.rX - otherTX * this.rZ);
-        double _t19 = 2.0 * (otherTY * this.rZ - otherTZ * this.rY);
-        double _t20 = 2.0 * (otherTX * this.rY - otherTY * this.rX);
-        double _t21 = 2.0 * (this.tX * this.rZ - this.tZ * this.rX);
-        double _t22 = 2.0 * (this.tY * this.rX - this.tX * this.rY);
-        double _t23 = 2.0 * (this.tZ * this.rY - this.tY * this.rZ);
-        d.tX = otherTX + this.rZ * _t18 + (this.rW * _t19 - this.rY * _t20) + (this.rZ * _t21 - this.rY * _t22 + (this.rW * _t23 - this.tX));
-        d.tY = otherTY + this.rX * _t20 + (this.rW * _t18 - this.rZ * _t19) + (this.rX * _t22 - this.rZ * _t23 + (this.rW * _t21 - this.tY));
-        d.tZ = otherTZ + this.rY * _t19 + (this.rW * _t20 - this.rX * _t18) + (this.rY * _t23 - this.rX * _t21 + (this.rW * _t22 - this.tZ));
-        double _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        double _buf1 = otherRY * this.rW + otherRZ * this.rX + (-(otherRW * this.rY) - otherRX * this.rZ);
-        double _buf2 = otherRX * this.rY - otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        double _r0 = this.rX;
+        double _r1 = this.rZ;
+        double _r2 = this.rY;
+        double _r3 = this.tX;
+        double _r4 = this.tZ;
+        double _r5 = this.tY;
+        double _r6 = this.rW;
+        double _t18 = 2.0 * (otherTZ * _r0 - otherTX * _r1);
+        double _t19 = 2.0 * (otherTY * _r1 - otherTZ * _r2);
+        double _t20 = 2.0 * (otherTX * _r2 - otherTY * _r0);
+        double _t21 = 2.0 * (_r3 * _r1 - _r4 * _r0);
+        double _t22 = 2.0 * (_r5 * _r0 - _r3 * _r2);
+        double _t23 = 2.0 * (_r4 * _r2 - _r5 * _r1);
+        difference_s1abfb90e_c0(d, otherTX, _r1, _t18, _r6, _t19, _r2, _t20, _t21, _t22, _t23, _r3, otherTY, _r0, _r5, otherTZ, _r4, otherRX, otherRW, otherRY, otherRZ);
+        difference_s1abfb90e_c1(d, otherRY, _r6, otherRZ, _r0, otherRW, _r2, otherRX, _r1);
         return d;
     }
 
@@ -1915,6 +1972,21 @@ public final class DoubleRigidImpl implements DoubleRigid {
         return rotateAxis(angle, axis.x(), axis.y(), axis.z(), dest);
     }
 
+    /** Private store group 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s5fbf191b_c0(DoubleRigidImpl _dst, double _r0, double _r1, double _r2, double _r3, double _t5, double _r4, double _t2, double _r5, double _t3, double _r6, double _t4) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t5 + _r4 * _t2 + (_r5 * _t3 - _r6 * _t4);
+    }
+
+    /** Private store group 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s5fbf191b_c1(DoubleRigidImpl _dst, double _r5, double _t5, double _r6, double _t2, double _r4, double _t4, double _r3, double _t3) {
+        _dst.rY = _r5 * _t5 + _r6 * _t2 + (_r4 * _t4 - _r3 * _t3);
+        _dst.rZ = _r3 * _t4 + _r4 * _t3 + (_r6 * _t5 - _r5 * _t2);
+        _dst.rW = _r4 * _t5 - _r3 * _t2 - (_r5 * _t4 + _r6 * _t3);
+    }
+
 
     /**
      * Apply a rotation of {@code angle} radians about the axis ({@code axisX}, {@code axisY},
@@ -1939,22 +2011,21 @@ public final class DoubleRigidImpl implements DoubleRigid {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.tX;
+        double _r1 = this.tY;
+        double _r2 = this.tZ;
+        double _r3 = this.rX;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rZ;
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
         double _t2 = axisX * _t1;
         double _t3 = axisZ * _t1;
         double _t4 = axisY * _t1;
         double _t5 = Math.cosFromSin(_t1, _t0);
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        double _buf0 = this.rX * _t5 + this.rW * _t2 + (this.rY * _t3 - this.rZ * _t4);
-        double _buf1 = this.rY * _t5 + this.rZ * _t2 + (this.rW * _t4 - this.rX * _t3);
-        double _buf2 = this.rX * _t4 + this.rW * _t3 + (this.rZ * _t5 - this.rY * _t2);
-        d.rW = this.rW * _t5 - this.rX * _t2 - (this.rY * _t4 + this.rZ * _t3);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateAxis_s5fbf191b_c0(d, _r0, _r1, _r2, _r3, _t5, _r4, _t2, _r5, _t3, _r6, _t4);
+        rotateAxis_s5fbf191b_c1(d, _r5, _t5, _r6, _t2, _r4, _t4, _r3, _t3);
         return d;
     }
 
@@ -1988,6 +2059,28 @@ public final class DoubleRigidImpl implements DoubleRigid {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s6c64e0a1_c0(DoubleRigidImpl _dst, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6, double _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s6c64e0a1_c1(DoubleRigidImpl _dst, double _r5, double _t21, double _r6, double _t22, double _r4, double _t24, double _r3, double _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_s6c64e0a1_tail(DoubleRigidImpl _dst, double _t11, double _t8, double _t10, double _t5, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6) {
+        double _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateXYZ_s6c64e0a1_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXYZ_s6c64e0a1_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -2007,6 +2100,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid rotateXYZ(double angleX, double angleY, double angleZ, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.tX;
+        double _r1 = this.tY;
+        double _r2 = this.tZ;
+        double _r3 = this.rX;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rZ;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -2023,18 +2123,30 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t21 = _t13 * _t8 - _t9 * _t5;
         double _t22 = _t10 * _t8 + _t11 * _t5;
         double _t23 = _t9 * _t8 + _t13 * _t5;
-        double _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        double _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        double _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        double _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXYZ_s6c64e0a1_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s60d54803_c0(DoubleRigidImpl _dst, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6, double _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s60d54803_c1(DoubleRigidImpl _dst, double _r5, double _t21, double _r6, double _t22, double _r4, double _t24, double _r3, double _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s60d54803_tail(DoubleRigidImpl _dst, double _t13, double _t5, double _t9, double _t8, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6) {
+        double _t24 = _t13 * _t5 - _t9 * _t8;
+        rotateXZY_s60d54803_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXZY_s60d54803_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -2056,6 +2168,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid rotateXZY(double angleX, double angleZ, double angleY, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.tX;
+        double _r1 = this.tY;
+        double _r2 = this.tZ;
+        double _r3 = this.rX;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rZ;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -2072,17 +2191,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t21 = _t9 * _t5 + _t13 * _t8;
         double _t22 = _t10 * _t8 - _t11 * _t5;
         double _t23 = _t10 * _t5 + _t11 * _t8;
-        double _t24 = _t13 * _t5 - _t9 * _t8;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        double _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        double _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        double _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXZY_s60d54803_tail(d, _t13, _t5, _t9, _t8, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
     }
 
@@ -2116,6 +2225,28 @@ public final class DoubleRigidImpl implements DoubleRigid {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s141088ff_c0(DoubleRigidImpl _dst, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6, double _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s141088ff_c1(DoubleRigidImpl _dst, double _r5, double _t21, double _r6, double _t22, double _r4, double _t24, double _r3, double _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s141088ff_tail(DoubleRigidImpl _dst, double _t11, double _t8, double _t10, double _t5, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6) {
+        double _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateYXZ_s141088ff_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYXZ_s141088ff_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -2135,6 +2266,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid rotateYXZ(double angleY, double angleX, double angleZ, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.tX;
+        double _r1 = this.tY;
+        double _r2 = this.tZ;
+        double _r3 = this.rX;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rZ;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
@@ -2151,18 +2289,30 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t21 = _t9 * _t5 + _t13 * _t8;
         double _t22 = _t10 * _t8 + _t11 * _t5;
         double _t23 = _t13 * _t5 - _t9 * _t8;
-        double _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        double _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        double _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        double _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYXZ_s141088ff_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s7cf157c3_c0(DoubleRigidImpl _dst, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6, double _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s7cf157c3_c1(DoubleRigidImpl _dst, double _r5, double _t21, double _r6, double _t22, double _r4, double _t24, double _r3, double _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_s7cf157c3_tail(DoubleRigidImpl _dst, double _t11, double _t8, double _t10, double _t5, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6) {
+        double _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateYZX_s7cf157c3_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYZX_s7cf157c3_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -2184,6 +2334,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid rotateYZX(double angleY, double angleZ, double angleX, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.tX;
+        double _r1 = this.tY;
+        double _r2 = this.tZ;
+        double _r3 = this.rX;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rZ;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -2200,17 +2357,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t21 = _t13 * _t8 - _t9 * _t5;
         double _t22 = _t9 * _t8 + _t13 * _t5;
         double _t23 = _t10 * _t8 - _t11 * _t5;
-        double _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        double _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        double _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        double _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYZX_s7cf157c3_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
     }
 
@@ -2244,6 +2391,28 @@ public final class DoubleRigidImpl implements DoubleRigid {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s302c98bf_c0(DoubleRigidImpl _dst, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6, double _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s302c98bf_c1(DoubleRigidImpl _dst, double _r5, double _t21, double _r6, double _t22, double _r4, double _t24, double _r3, double _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s302c98bf_tail(DoubleRigidImpl _dst, double _t9, double _t8, double _t13, double _t5, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6) {
+        double _t24 = _t9 * _t8 + _t13 * _t5;
+        rotateZXY_s302c98bf_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZXY_s302c98bf_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -2263,6 +2432,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid rotateZXY(double angleZ, double angleX, double angleY, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.tX;
+        double _r1 = this.tY;
+        double _r2 = this.tZ;
+        double _r3 = this.rX;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rZ;
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
@@ -2279,18 +2455,30 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t21 = _t13 * _t8 - _t9 * _t5;
         double _t22 = _t10 * _t8 - _t11 * _t5;
         double _t23 = _t10 * _t5 + _t11 * _t8;
-        double _t24 = _t9 * _t8 + _t13 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        double _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        double _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        double _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZXY_s302c98bf_tail(d, _t9, _t8, _t13, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s249d0021_c0(DoubleRigidImpl _dst, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6, double _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s249d0021_c1(DoubleRigidImpl _dst, double _r5, double _t21, double _r6, double _t22, double _r4, double _t24, double _r3, double _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s249d0021_tail(DoubleRigidImpl _dst, double _t11, double _t8, double _t10, double _t5, double _r0, double _r1, double _r2, double _r3, double _t21, double _r4, double _t22, double _r5, double _t23, double _r6) {
+        double _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateZYX_s249d0021_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZYX_s249d0021_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -2312,6 +2500,13 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public DoubleRigid rotateZYX(double angleZ, double angleY, double angleX, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.tX;
+        double _r1 = this.tY;
+        double _r2 = this.tZ;
+        double _r3 = this.rX;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rZ;
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
@@ -2328,17 +2523,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t21 = _t9 * _t5 + _t13 * _t8;
         double _t22 = _t13 * _t5 - _t9 * _t8;
         double _t23 = _t10 * _t8 - _t11 * _t5;
-        double _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        double _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        double _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        double _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZYX_s249d0021_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
     }
 

@@ -138,6 +138,35 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
         return d;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s78e00a1c_c0(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v0X = _r0 * _r1 + (_r2 * _r3 + (_r4 * _r5 + _r6));
+        _dst.v0Y = _r7 * _r1 + (_r8 * _r3 + (_r9 * _r5 + _r10));
+        _dst.v0Z = _r11 * _r1 + (_r12 * _r3 + (_r13 * _r5 + _r14));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s78e00a1c_c1(DoubleTriangleImpl _dst, double _r0, double _r15, double _r2, double _r16, double _r4, double _r17, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v1X = _r0 * _r15 + (_r2 * _r16 + (_r4 * _r17 + _r6));
+        _dst.v1Y = _r7 * _r15 + (_r8 * _r16 + (_r9 * _r17 + _r10));
+        _dst.v1Z = _r11 * _r15 + (_r12 * _r16 + (_r13 * _r17 + _r14));
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s78e00a1c_c2(DoubleTriangleImpl _dst, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v2X = _r0 * _r18 + (_r2 * _r19 + (_r4 * _r20 + _r6));
+        _dst.v2Y = _r7 * _r18 + (_r8 * _r19 + (_r9 * _r20 + _r10));
+        _dst.v2Z = _r11 * _r18 + (_r12 * _r19 + (_r13 * _r20 + _r14));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s78e00a1c_tail(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.v2Y;
+        transform_s78e00a1c_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s78e00a1c_c1(_dst, _r0, _r15, _r2, _r16, _r4, _r17, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s78e00a1c_c2(_dst, _r0, _r18, _r2, _r19, _r4, _r20, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+    }
+
 
     /**
      * Transform this triangle by {@code m} and store the result in {@code dest}.
@@ -148,22 +177,57 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      */
     public DoubleTriangle transform(Double3x4R m, @Mutated DoubleTriangle dest) {
         DoubleTriangleImpl d = (DoubleTriangleImpl) dest;
-        double _buf0 = m.m02() * this.v0Z + (m.m00() * this.v0X + (m.m01() * this.v0Y + m.m03()));
-        double _buf1 = m.m12() * this.v0Z + (m.m10() * this.v0X + (m.m11() * this.v0Y + m.m13()));
-        d.v0Z = m.m22() * this.v0Z + (m.m20() * this.v0X + (m.m21() * this.v0Y + m.m23()));
-        double _buf2 = m.m02() * this.v1Z + (m.m00() * this.v1X + (m.m01() * this.v1Y + m.m03()));
-        double _buf3 = m.m12() * this.v1Z + (m.m10() * this.v1X + (m.m11() * this.v1Y + m.m13()));
-        d.v1Z = m.m22() * this.v1Z + (m.m20() * this.v1X + (m.m21() * this.v1Y + m.m23()));
-        double _buf4 = m.m02() * this.v2Z + (m.m00() * this.v2X + (m.m01() * this.v2Y + m.m03()));
-        double _buf5 = m.m12() * this.v2Z + (m.m10() * this.v2X + (m.m11() * this.v2Y + m.m13()));
-        d.v2Z = m.m22() * this.v2Z + (m.m20() * this.v2X + (m.m21() * this.v2Y + m.m23()));
-        d.v0X = _buf0;
-        d.v0Y = _buf1;
-        d.v1X = _buf2;
-        d.v1Y = _buf3;
-        d.v2X = _buf4;
-        d.v2Y = _buf5;
+        double _r0 = m.m02();
+        double _r1 = this.v0Z;
+        double _r2 = m.m00();
+        double _r3 = this.v0X;
+        double _r4 = m.m01();
+        double _r5 = this.v0Y;
+        double _r6 = m.m03();
+        double _r7 = m.m12();
+        double _r8 = m.m10();
+        double _r9 = m.m11();
+        double _r10 = m.m13();
+        double _r11 = m.m22();
+        double _r12 = m.m20();
+        double _r13 = m.m21();
+        double _r14 = m.m23();
+        double _r15 = this.v1Z;
+        double _r16 = this.v1X;
+        double _r17 = this.v1Y;
+        double _r18 = this.v2Z;
+        double _r19 = this.v2X;
+        transform_s78e00a1c_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d1f427b_c0(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v0X = _r0 * _r1 + (_r2 * _r3 + (_r4 * _r5 + _r6));
+        _dst.v0Y = _r7 * _r1 + (_r8 * _r3 + (_r9 * _r5 + _r10));
+        _dst.v0Z = _r11 * _r1 + (_r12 * _r3 + (_r13 * _r5 + _r14));
+    }
+
+    /** Private store group 1 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d1f427b_c1(DoubleTriangleImpl _dst, double _r0, double _r15, double _r2, double _r16, double _r4, double _r17, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v1X = _r0 * _r15 + (_r2 * _r16 + (_r4 * _r17 + _r6));
+        _dst.v1Y = _r7 * _r15 + (_r8 * _r16 + (_r9 * _r17 + _r10));
+        _dst.v1Z = _r11 * _r15 + (_r12 * _r16 + (_r13 * _r17 + _r14));
+    }
+
+    /** Private store group 2 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d1f427b_c2(DoubleTriangleImpl _dst, double _r0, double _r18, double _r2, double _r19, double _r4, double _r20, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14) {
+        _dst.v2X = _r0 * _r18 + (_r2 * _r19 + (_r4 * _r20 + _r6));
+        _dst.v2Y = _r7 * _r18 + (_r8 * _r19 + (_r9 * _r20 + _r10));
+        _dst.v2Z = _r11 * _r18 + (_r12 * _r19 + (_r13 * _r20 + _r14));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s6d1f427b_tail(DoubleTriangleImpl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = this.v2Y;
+        transform_s6d1f427b_c0(_dst, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s6d1f427b_c1(_dst, _r0, _r15, _r2, _r16, _r4, _r17, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
+        transform_s6d1f427b_c2(_dst, _r0, _r18, _r2, _r19, _r4, _r20, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
     }
 
 
@@ -179,21 +243,27 @@ public final class DoubleTriangleImpl implements DoubleTriangle {
      */
     public DoubleTriangle transform(Double4x4R m, @Mutated DoubleTriangle dest) {
         DoubleTriangleImpl d = (DoubleTriangleImpl) dest;
-        double _buf0 = m.m02() * this.v0Z + (m.m00() * this.v0X + (m.m01() * this.v0Y + m.m03()));
-        double _buf1 = m.m12() * this.v0Z + (m.m10() * this.v0X + (m.m11() * this.v0Y + m.m13()));
-        d.v0Z = m.m22() * this.v0Z + (m.m20() * this.v0X + (m.m21() * this.v0Y + m.m23()));
-        double _buf2 = m.m02() * this.v1Z + (m.m00() * this.v1X + (m.m01() * this.v1Y + m.m03()));
-        double _buf3 = m.m12() * this.v1Z + (m.m10() * this.v1X + (m.m11() * this.v1Y + m.m13()));
-        d.v1Z = m.m22() * this.v1Z + (m.m20() * this.v1X + (m.m21() * this.v1Y + m.m23()));
-        double _buf4 = m.m02() * this.v2Z + (m.m00() * this.v2X + (m.m01() * this.v2Y + m.m03()));
-        double _buf5 = m.m12() * this.v2Z + (m.m10() * this.v2X + (m.m11() * this.v2Y + m.m13()));
-        d.v2Z = m.m22() * this.v2Z + (m.m20() * this.v2X + (m.m21() * this.v2Y + m.m23()));
-        d.v0X = _buf0;
-        d.v0Y = _buf1;
-        d.v1X = _buf2;
-        d.v1Y = _buf3;
-        d.v2X = _buf4;
-        d.v2Y = _buf5;
+        double _r0 = m.m02();
+        double _r1 = this.v0Z;
+        double _r2 = m.m00();
+        double _r3 = this.v0X;
+        double _r4 = m.m01();
+        double _r5 = this.v0Y;
+        double _r6 = m.m03();
+        double _r7 = m.m12();
+        double _r8 = m.m10();
+        double _r9 = m.m11();
+        double _r10 = m.m13();
+        double _r11 = m.m22();
+        double _r12 = m.m20();
+        double _r13 = m.m21();
+        double _r14 = m.m23();
+        double _r15 = this.v1Z;
+        double _r16 = this.v1X;
+        double _r17 = this.v1Y;
+        double _r18 = this.v2Z;
+        double _r19 = this.v2X;
+        transform_s6d1f427b_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
         return d;
     }
 

@@ -586,44 +586,37 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code getNormalizedRotation_general}: computes and stores it; reached only through it. */
+    private void getNormalizedRotation_general_s62e3ac38_c0(DoubleQuatImpl _dst, double _t66, double _sp0, double _t45, double _t57, double _t46, double _t71, double _t27, double _t28, double _sp1, double _t61, double _sp2, double _t63, double _t64, double _sp3, double _t72, double _t48, double _t65, double _t73, double _t70) {
+        _dst.x = _t66 > 0.0 ? _sp0 * _t45 : _t57 > _t46 ? 0.5 * Math.sqrt(_t71) : _t27 > _t28 ? _sp1 * _t61 : _sp2 * _t63;
+        _dst.y = _t66 > 0.0 ? _sp0 * _t64 : _t57 > _t46 ? _sp3 * _t61 : _t27 > _t28 ? 0.5 * Math.sqrt(_t72) : _sp2 * _t48;
+        _dst.z = _t66 > 0.0 ? _sp0 * _t65 : _t57 > _t46 ? _sp3 * _t63 : _t27 > _t28 ? _sp1 * _t48 : 0.5 * Math.sqrt(_t73);
+        _dst.w = _t66 > 0.0 ? 0.5 * Math.sqrt(_t70) : _t57 > _t46 ? _sp3 * _t45 : _t27 > _t28 ? _sp1 * _t64 : _sp2 * _t65;
+    }
 
-    /**
-     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
-     * reached only through the public {@code getNormalizedRotation} dispatcher.
-     */
-    private DoubleQuat getNormalizedRotation_general(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        double _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        double _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        double _t15 = (1.0 / Math.sqrt(_t12));
-        double _t16 = (1.0 / Math.sqrt(_t13));
-        double _t17 = (1.0 / Math.sqrt(_t14));
-        double _t27, _t29, _t33;
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s62e3ac38_tail(DoubleQuatImpl _dst, double _t12, double _r2, double _t15, double _t13, double _r4, double _t16, double _t14, double _r6, double _t17, double _r3, double _r0, double _r7, double _r8, double _t27, double _t28) {
+        double _t29, _t33;
         if (_t12 != 0.0) {
-            _t27 = this.m11 * _t15;
-            _t29 = this.m21 * _t15;
-            _t33 = this.m01 * _t15;
+            _t29 = _r2 * _t15;
+            _t33 = _r0 * _t15;
         } else {
-            _t27 = 0.0;
             _t29 = 0.0;
             _t33 = 0.0;
         }
-        double _t28, _t30, _t32;
+        double _t30, _t32;
         if (_t13 != 0.0) {
-            _t28 = this.m22 * _t16;
-            _t30 = this.m12 * _t16;
-            _t32 = this.m02 * _t16;
+            _t30 = _r4 * _t16;
+            _t32 = _r3 * _t16;
         } else {
-            _t28 = 0.0;
             _t30 = 0.0;
             _t32 = 0.0;
         }
         double _t31, _t34, _t35;
         if (_t14 != 0.0) {
-            _t31 = this.m00 * _t17;
-            _t34 = this.m10 * _t17;
-            _t35 = this.m20 * _t17;
+            _t31 = _r6 * _t17;
+            _t34 = _r7 * _t17;
+            _t35 = _r8 * _t17;
         } else {
             _t31 = 0.0;
             _t34 = 0.0;
@@ -633,6 +626,11 @@ public class Double3x4Impl implements Double3x4 {
         double _t46 = Math.max(_t27, _t28);
         double _t48 = _t29 + _t30;
         double _t56 = (_t27 * _t28 - _t29 * _t30) * _t31 + (_t29 * _t32 - _t33 * _t28) * _t34 + (_t33 * _t30 - _t27 * _t32) * _t35;
+        getNormalizedRotation_general_s62e3ac38_tail2(_dst, _t56, _t31, _t34, _t35, _t27, _t33, _t32, _t28, _t45, _t46, _t48);
+    }
+
+    /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
+    private void getNormalizedRotation_general_s62e3ac38_tail2(DoubleQuatImpl _dst, double _t56, double _t31, double _t34, double _t35, double _t27, double _t33, double _t32, double _t28, double _t45, double _t46, double _t48) {
         double _t57, _t58, _t59;
         if (_t56 < 0.0) {
             _t57 = -_t31;
@@ -657,31 +655,34 @@ public class Double3x4Impl implements Double3x4 {
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t72));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t73));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t71));
-        if (_t66 > 0.0) {
-            d.x = _sp0 * _t45;
-            d.y = _sp0 * _t64;
-            d.z = _sp0 * _t65;
-            d.w = 0.5 * Math.sqrt(_t70);
-        } else {
-            if (_t57 > _t46) {
-                d.x = 0.5 * Math.sqrt(_t71);
-                d.y = _sp3 * _t61;
-                d.z = _sp3 * _t63;
-                d.w = _sp3 * _t45;
-            } else {
-                if (_t27 > _t28) {
-                    d.x = _sp1 * _t61;
-                    d.y = 0.5 * Math.sqrt(_t72);
-                    d.z = _sp1 * _t48;
-                    d.w = _sp1 * _t64;
-                } else {
-                    d.x = _sp2 * _t63;
-                    d.y = _sp2 * _t48;
-                    d.z = 0.5 * Math.sqrt(_t73);
-                    d.w = _sp2 * _t65;
-                }
-            }
-        }
+        getNormalizedRotation_general_s62e3ac38_c0(_dst, _t66, _sp0, _t45, _t57, _t46, _t71, _t27, _t28, _sp1, _t61, _sp2, _t63, _t64, _sp3, _t72, _t48, _t65, _t73, _t70);
+    }
+
+
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
+    private DoubleQuat getNormalizedRotation_general(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.m01;
+        double _r1 = this.m11;
+        double _r2 = this.m21;
+        double _r3 = this.m02;
+        double _r4 = this.m12;
+        double _r5 = this.m22;
+        double _r6 = this.m00;
+        double _r7 = this.m10;
+        double _r8 = this.m20;
+        double _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        double _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        double _t15 = (1.0 / Math.sqrt(_t12));
+        double _t16 = (1.0 / Math.sqrt(_t13));
+        double _t17 = (1.0 / Math.sqrt(_t14));
+        double _t27 = _t12 != 0.0 ? _r1 * _t15 : 0.0;
+        double _t28 = _t13 != 0.0 ? _r5 * _t16 : 0.0;
+        getNormalizedRotation_general_s62e3ac38_tail(d, _t12, _r2, _t15, _t13, _r4, _t16, _t14, _r6, _t17, _r3, _r0, _r7, _r8, _t27, _t28);
         return d;
     }
 
@@ -879,6 +880,20 @@ public class Double3x4Impl implements Double3x4 {
         return getNormalizedRotation_identity(dest);
     }
 
+    /** Private store group 0 of {@code getUnnormalizedRotation_orthogonal}: computes and stores it; reached only through it. */
+    private void getUnnormalizedRotation_orthogonal_s62e3ac38_c0(DoubleQuatImpl _dst, double _t10, double _sp0, double _t1, double _r0, double _t2, double _t15, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _sp3, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        _dst.x = _t10 > 0.0 ? _sp0 * _t1 : _r0 > _t2 ? 0.5 * Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0 ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5 * Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0 ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5 * Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0 ? 0.5 * Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code getUnnormalizedRotation_orthogonal}; reached only through it. */
+    private void getUnnormalizedRotation_orthogonal_s62e3ac38_tail(DoubleQuatImpl _dst, double _t15, double _t10, double _sp0, double _t1, double _r0, double _t2, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        getUnnormalizedRotation_orthogonal_s62e3ac38_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+    }
+
 
     /**
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
@@ -886,54 +901,35 @@ public class Double3x4Impl implements Double3x4 {
      */
     private DoubleQuat getUnnormalizedRotation_orthogonal(@Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t0 = this.m00 + this.m11;
-        double _t1 = this.m21 - this.m12;
-        double _t2 = Math.max(this.m11, this.m22);
-        double _t4 = this.m01 + this.m10;
-        double _t6 = this.m02 + this.m20;
-        double _t7 = this.m02 - this.m20;
-        double _t8 = this.m12 + this.m21;
-        double _t9 = this.m10 - this.m01;
-        double _t10 = this.m22 + _t0;
+        double _r0 = this.m00;
+        double _r1 = this.m11;
+        double _r2 = this.m21;
+        double _r3 = this.m12;
+        double _r4 = this.m22;
+        double _r5 = this.m01;
+        double _r6 = this.m10;
+        double _r7 = this.m02;
+        double _r8 = this.m20;
+        double _t0 = _r0 + _r1;
+        double _t1 = _r2 - _r3;
+        double _t2 = Math.max(_r1, _r4);
+        double _t4 = _r5 + _r6;
+        double _t6 = _r7 + _r8;
+        double _t7 = _r7 - _r8;
+        double _t8 = _r3 + _r2;
+        double _t9 = _r6 - _r5;
+        double _t10 = _r4 + _t0;
         double _t14 = 1.0 + _t10;
-        double _t15 = 1.0 + (this.m00 - (this.m11 + this.m22));
-        double _t16 = 1.0 + (this.m11 - (this.m00 + this.m22));
-        double _t17 = 1.0 + (this.m22 - _t0);
+        double _t15 = 1.0 + (_r0 - (_r1 + _r4));
+        double _t16 = 1.0 + (_r1 - (_r0 + _r4));
+        double _t17 = 1.0 + (_r4 - _t0);
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
-        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
-        if (_t10 > 0.0) {
-            double _buf0 = _sp0 * _t1;
-            d.y = _sp0 * _t7;
-            d.z = _sp0 * _t9;
-            d.w = 0.5 * Math.sqrt(_t14);
-            d.x = _buf0;
-        } else {
-            if (this.m00 > _t2) {
-                double _buf0 = 0.5 * Math.sqrt(_t15);
-                d.y = _sp3 * _t4;
-                d.z = _sp3 * _t6;
-                d.w = _sp3 * _t1;
-                d.x = _buf0;
-            } else {
-                if (this.m11 > this.m22) {
-                    double _buf0 = _sp1 * _t4;
-                    d.y = 0.5 * Math.sqrt(_t16);
-                    d.z = _sp1 * _t8;
-                    d.w = _sp1 * _t7;
-                    d.x = _buf0;
-                } else {
-                    double _buf0 = _sp2 * _t6;
-                    d.y = _sp2 * _t8;
-                    d.z = 0.5 * Math.sqrt(_t17);
-                    d.w = _sp2 * _t9;
-                    d.x = _buf0;
-                }
-            }
-        }
+        getUnnormalizedRotation_orthogonal_s62e3ac38_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
         return d;
     }
+
 
 
     /**
@@ -5018,25 +5014,28 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s14533caa_c0(DoubleRigidImpl _dst, double _r9, double _r10, double _r11, double _t61, double _sp0, double _t36, double _t47, double _t37, double _t63, double _t18, double _t19, double _sp1, double _t53, double _sp2, double _t54) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t61 > 0.0 ? _sp0 * _t36 : _t47 > _t37 ? 0.5 * Math.sqrt(_t63) : _t18 > _t19 ? _sp1 * _t53 : _sp2 * _t54;
+    }
 
-    /**
-     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
-     * through the public {@code toRigid} dispatcher.
-     */
-    private DoubleRigid toRigid_general(@Mutated DoubleRigid dest) {
-        DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        double _t15 = (1.0 / Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21));
-        double _t16 = (1.0 / Math.sqrt(this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22));
-        double _t17 = (1.0 / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20));
-        double _t18 = this.m11 * _t15;
-        double _t19 = this.m22 * _t16;
-        double _t20 = this.m10 * _t17;
-        double _t21 = this.m21 * _t15;
-        double _t22 = this.m20 * _t17;
-        double _t23 = this.m02 * _t16;
-        double _t24 = this.m12 * _t16;
-        double _t25 = this.m00 * _t17;
-        double _t26 = this.m01 * _t15;
+    /** Private store group 1 of {@code toRigid_general}: computes and stores it; reached only through it. */
+    private void toRigid_general_s14533caa_c1(DoubleRigidImpl _dst, double _t61, double _sp0, double _t55, double _t47, double _t37, double _sp3, double _t53, double _t18, double _t19, double _t64, double _sp2, double _t38, double _t56, double _t54, double _sp1, double _t65, double _t62, double _t36) {
+        _dst.rY = _t61 > 0.0 ? _sp0 * _t55 : _t47 > _t37 ? _sp3 * _t53 : _t18 > _t19 ? 0.5 * Math.sqrt(_t64) : _sp2 * _t38;
+        _dst.rZ = _t61 > 0.0 ? _sp0 * _t56 : _t47 > _t37 ? _sp3 * _t54 : _t18 > _t19 ? _sp1 * _t38 : 0.5 * Math.sqrt(_t65);
+        _dst.rW = _t61 > 0.0 ? 0.5 * Math.sqrt(_t62) : _t47 > _t37 ? _sp3 * _t36 : _t18 > _t19 ? _sp1 * _t55 : _sp2 * _t56;
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s14533caa_tail(DoubleRigidImpl _dst, double _r8, double _t17, double _r3, double _t16, double _r4, double _r6, double _r0, double _t15, double _t21, double _t18, double _t19, double _t20, double _r9, double _r10, double _r11) {
+        double _t22 = _r8 * _t17;
+        double _t23 = _r3 * _t16;
+        double _t24 = _r4 * _t16;
+        double _t25 = _r6 * _t17;
+        double _t26 = _r0 * _t15;
         double _t36 = _t21 - _t24;
         double _t37 = Math.max(_t18, _t19);
         double _t38 = _t24 + _t21;
@@ -5059,6 +5058,11 @@ public class Double3x4Impl implements Double3x4 {
         double _t56 = _t48 - _t26;
         double _t61 = _t18 + (_t19 + _t47);
         double _t62 = _t18 + (_t19 + _t50);
+        toRigid_general_s14533caa_tail2(_dst, _t50, _t19, _t18, _t51, _t62, _r9, _r10, _r11, _t61, _t36, _t47, _t37, _t53, _t54, _t55, _t38, _t56);
+    }
+
+    /** Private tail of {@code toRigid_general}; reached only through it. */
+    private void toRigid_general_s14533caa_tail2(DoubleRigidImpl _dst, double _t50, double _t19, double _t18, double _t51, double _t62, double _r9, double _r10, double _r11, double _t61, double _t36, double _t47, double _t37, double _t53, double _t54, double _t55, double _t38, double _t56) {
         double _t63 = _t50 - _t19 - _t18;
         double _t64 = _t18 + (_t51 - _t19);
         double _t65 = _t19 + (_t51 - _t18);
@@ -5066,34 +5070,37 @@ public class Double3x4Impl implements Double3x4 {
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
-        if (_t61 > 0.0) {
-            d.rX = _sp0 * _t36;
-            d.rY = _sp0 * _t55;
-            d.rZ = _sp0 * _t56;
-            d.rW = 0.5 * Math.sqrt(_t62);
-        } else {
-            if (_t47 > _t37) {
-                d.rX = 0.5 * Math.sqrt(_t63);
-                d.rY = _sp3 * _t53;
-                d.rZ = _sp3 * _t54;
-                d.rW = _sp3 * _t36;
-            } else {
-                if (_t18 > _t19) {
-                    d.rX = _sp1 * _t53;
-                    d.rY = 0.5 * Math.sqrt(_t64);
-                    d.rZ = _sp1 * _t38;
-                    d.rW = _sp1 * _t55;
-                } else {
-                    d.rX = _sp2 * _t54;
-                    d.rY = _sp2 * _t38;
-                    d.rZ = 0.5 * Math.sqrt(_t65);
-                    d.rW = _sp2 * _t56;
-                }
-            }
-        }
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
+        toRigid_general_s14533caa_c0(_dst, _r9, _r10, _r11, _t61, _sp0, _t36, _t47, _t37, _t63, _t18, _t19, _sp1, _t53, _sp2, _t54);
+        toRigid_general_s14533caa_c1(_dst, _t61, _sp0, _t55, _t47, _t37, _sp3, _t53, _t18, _t19, _t64, _sp2, _t38, _t56, _t54, _sp1, _t65, _t62, _t36);
+    }
+
+
+    /**
+     * Private body of {@code toRigid}, specialized by runtime matrix properties; reached only
+     * through the public {@code toRigid} dispatcher.
+     */
+    private DoubleRigid toRigid_general(@Mutated DoubleRigid dest) {
+        DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        double _r0 = this.m01;
+        double _r1 = this.m11;
+        double _r2 = this.m21;
+        double _r3 = this.m02;
+        double _r4 = this.m12;
+        double _r5 = this.m22;
+        double _r6 = this.m00;
+        double _r7 = this.m10;
+        double _r8 = this.m20;
+        double _r9 = this.m03;
+        double _r10 = this.m13;
+        double _r11 = this.m23;
+        double _t15 = (1.0 / Math.sqrt(_r0 * _r0 + _r1 * _r1 + _r2 * _r2));
+        double _t16 = (1.0 / Math.sqrt(_r3 * _r3 + _r4 * _r4 + _r5 * _r5));
+        double _t17 = (1.0 / Math.sqrt(_r6 * _r6 + _r7 * _r7 + _r8 * _r8));
+        double _t18 = _r1 * _t15;
+        double _t19 = _r5 * _t16;
+        double _t20 = _r7 * _t17;
+        double _t21 = _r2 * _t15;
+        toRigid_general_s14533caa_tail(d, _r8, _t17, _r3, _t16, _r4, _r6, _r0, _t15, _t21, _t18, _t19, _t20, _r9, _r10, _r11);
         return d;
     }
 
@@ -5154,29 +5161,37 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s5d096289_c0(DoubleTransformImpl _dst, double _r9, double _r10, double _r11, double _t62, double _sp0, double _t37, double _t48, double _t38, double _t64, double _t19, double _t20, double _sp1, double _t54, double _sp2, double _t55) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
 
-    /**
-     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
-     * through the public {@code toTransform} dispatcher.
-     */
-    private DoubleTransform toTransform_general(@Mutated DoubleTransform dest) {
-        DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        double _t12 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
-        double _t13 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
-        double _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        double _t15 = (1.0 / Math.sqrt(_t12));
-        double _t16 = (1.0 / Math.sqrt(_t13));
-        double _t18 = Math.sqrt(_t14);
-        double _t17 = 1.0 / _t18;
-        double _t19 = this.m11 * _t15;
-        double _t20 = this.m22 * _t16;
-        double _t21 = this.m10 * _t17;
-        double _t22 = this.m21 * _t15;
-        double _t23 = this.m20 * _t17;
-        double _t24 = this.m02 * _t16;
-        double _t25 = this.m12 * _t16;
-        double _t26 = this.m00 * _t17;
-        double _t27 = this.m01 * _t15;
+    /** Private store group 1 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s5d096289_c1(DoubleTransformImpl _dst, double _t62, double _sp0, double _t56, double _t48, double _t38, double _sp3, double _t54, double _t19, double _t20, double _t65, double _sp2, double _t39, double _t57, double _t55, double _sp1, double _t66, double _t63, double _t37) {
+        _dst.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code toTransform_general}: computes and stores it; reached only through it. */
+    private void toTransform_general_s5d096289_c2(DoubleTransformImpl _dst, double _t47, double _t18, double _t12, double _t13) {
+        _dst.sX = _t47 < 0.0 ? -_t18 : _t18;
+        _dst.sY = Math.sqrt(_t12);
+        _dst.sZ = Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s5d096289_tail(DoubleTransformImpl _dst, double _r7, double _t17, double _r2, double _t15, double _r8, double _r3, double _t16, double _r4, double _r6, double _r0, double _t19, double _t20, double _r9, double _r10, double _r11, double _t18, double _t12, double _t13) {
+        double _t21 = _r7 * _t17;
+        double _t22 = _r2 * _t15;
+        double _t23 = _r8 * _t17;
+        double _t24 = _r3 * _t16;
+        double _t25 = _r4 * _t16;
+        double _t26 = _r6 * _t17;
+        double _t27 = _r0 * _t15;
         double _t37 = _t22 - _t25;
         double _t38 = Math.max(_t19, _t20);
         double _t39 = _t25 + _t22;
@@ -5197,6 +5212,11 @@ public class Double3x4Impl implements Double3x4 {
         double _t55 = _t24 + _t50;
         double _t56 = _t24 - _t50;
         double _t57 = _t49 - _t27;
+        toTransform_general_s5d096289_tail2(_dst, _t19, _t20, _t48, _t51, _t52, _r9, _r10, _r11, _t37, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code toTransform_general}; reached only through it. */
+    private void toTransform_general_s5d096289_tail2(DoubleTransformImpl _dst, double _t19, double _t20, double _t48, double _t51, double _t52, double _r9, double _r10, double _r11, double _t37, double _t38, double _t54, double _t55, double _t56, double _t39, double _t57, double _t47, double _t18, double _t12, double _t13) {
         double _t62 = _t19 + (_t20 + _t48);
         double _t63 = _t19 + (_t20 + _t51);
         double _t64 = _t51 - _t20 - _t19;
@@ -5206,16 +5226,40 @@ public class Double3x4Impl implements Double3x4 {
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t66));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
-        d.tX = this.m03;
-        d.tY = this.m13;
-        d.tZ = this.m23;
-        d.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        d.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
-        d.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
-        d.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        d.sX = _t47 < 0.0 ? -_t18 : _t18;
-        d.sY = Math.sqrt(_t12);
-        d.sZ = Math.sqrt(_t13);
+        toTransform_general_s5d096289_c0(_dst, _r9, _r10, _r11, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        toTransform_general_s5d096289_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        toTransform_general_s5d096289_c2(_dst, _t47, _t18, _t12, _t13);
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private DoubleTransform toTransform_general(@Mutated DoubleTransform dest) {
+        DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        double _r0 = this.m01;
+        double _r1 = this.m11;
+        double _r2 = this.m21;
+        double _r3 = this.m02;
+        double _r4 = this.m12;
+        double _r5 = this.m22;
+        double _r6 = this.m00;
+        double _r7 = this.m10;
+        double _r8 = this.m20;
+        double _r9 = this.m03;
+        double _r10 = this.m13;
+        double _r11 = this.m23;
+        double _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        double _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        double _t15 = (1.0 / Math.sqrt(_t12));
+        double _t16 = (1.0 / Math.sqrt(_t13));
+        double _t18 = Math.sqrt(_t14);
+        double _t17 = 1.0 / _t18;
+        double _t19 = _r1 * _t15;
+        double _t20 = _r5 * _t16;
+        toTransform_general_s5d096289_tail(d, _r7, _t17, _r2, _t15, _r8, _r3, _t16, _r4, _r6, _r0, _t19, _t20, _r9, _r10, _r11, _t18, _t12, _t13);
         return d;
     }
 
@@ -5245,33 +5289,21 @@ public class Double3x4Impl implements Double3x4 {
         return getNormalizedRotation_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeRotation_general}: computes and stores it; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_c0(DoubleQuatImpl _dst, double _t102, double _sp0, double _t81, double _t93, double _t82, double _t107, double _t46, double _t72, double _sp1, double _t97, double _sp2, double _t100, double _t101, double _sp3, double _t108, double _t84, double _t98, double _t109, double _t106) {
+        _dst.x = _t102 > 0.0 ? _sp0 * _t81 : _t93 > _t82 ? 0.5 * Math.sqrt(_t107) : _t46 > _t72 ? _sp1 * _t97 : _sp2 * _t100;
+        _dst.y = _t102 > 0.0 ? _sp0 * _t101 : _t93 > _t82 ? _sp3 * _t97 : _t46 > _t72 ? 0.5 * Math.sqrt(_t108) : _sp2 * _t84;
+        _dst.z = _t102 > 0.0 ? _sp0 * _t98 : _t93 > _t82 ? _sp3 * _t100 : _t46 > _t72 ? _sp1 * _t84 : 0.5 * Math.sqrt(_t109);
+        _dst.w = _t102 > 0.0 ? 0.5 * Math.sqrt(_t106) : _t93 > _t82 ? _sp3 * _t81 : _t46 > _t72 ? _sp1 * _t101 : _sp2 * _t98;
+    }
 
-    /**
-     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeRotation} dispatcher.
-     */
-    private DoubleQuat decomposeRotation_general(@Mutated DoubleQuat dest) {
-        DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 != 0.0) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t23 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        double _t24 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        double _t28 = _t24 * _t9;
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_tail(DoubleQuatImpl _dst, double _t24, double _t10, double _t11, double _r3, double _t23, double _t9, double _r4, double _r5, double _r6, double _t28, double _r7, double _r8) {
         double _t29 = _t24 * _t10;
         double _t30 = _t24 * _t11;
-        double _t31 = this.m01 - _t23 * _t9;
-        double _t32 = this.m11 - _t23 * _t10;
-        double _t33 = this.m21 - _t23 * _t11;
+        double _t31 = _r3 - _t23 * _t9;
+        double _t32 = _r4 - _t23 * _t10;
+        double _t33 = _r5 - _t23 * _t11;
         double _t41 = _t31 * _t31 + _t32 * _t32 + _t33 * _t33;
         double _t42 = (1.0 / Math.sqrt(_t41));
         double _t46, _t47, _t48;
@@ -5284,11 +5316,16 @@ public class Double3x4Impl implements Double3x4 {
             _t47 = 0.0;
             _t48 = 0.0;
         }
-        double _t53 = (this.m02 - _t28) * _t47 + (this.m12 - _t29) * _t46 + (this.m22 - _t30) * _t48;
-        double _t60 = this.m02 - _t53 * _t47 - _t28;
-        double _t61 = this.m12 - _t53 * _t46 - _t29;
-        double _t62 = this.m22 - _t53 * _t48 - _t30;
+        double _t53 = (_r6 - _t28) * _t47 + (_r7 - _t29) * _t46 + (_r8 - _t30) * _t48;
+        double _t60 = _r6 - _t53 * _t47 - _t28;
+        double _t61 = _r7 - _t53 * _t46 - _t29;
+        double _t62 = _r8 - _t53 * _t48 - _t30;
         double _t67 = _t60 * _t60 + _t61 * _t61 + _t62 * _t62;
+        decomposeRotation_general_s62e3ac38_tail2(_dst, _t67, _t62, _t61, _t60, _t48, _t46, _t9, _t47, _t10, _t11);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_tail2(DoubleQuatImpl _dst, double _t67, double _t62, double _t61, double _t60, double _t48, double _t46, double _t9, double _t47, double _t10, double _t11) {
         double _t68 = (1.0 / Math.sqrt(_t67));
         double _t72, _t73, _t74;
         if (_t67 != 0.0) {
@@ -5319,6 +5356,11 @@ public class Double3x4Impl implements Double3x4 {
         double _t98 = _t94 - _t47;
         double _t100 = _t95 + _t74;
         double _t101 = _t74 - _t95;
+        decomposeRotation_general_s62e3ac38_tail3(_dst, _t96, _t72, _t93, _t46, _t81, _t82, _t97, _t100, _t101, _t84, _t98);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private void decomposeRotation_general_s62e3ac38_tail3(DoubleQuatImpl _dst, double _t96, double _t72, double _t93, double _t46, double _t81, double _t82, double _t97, double _t100, double _t101, double _t84, double _t98) {
         double _t102 = _t96 + _t72;
         double _t106 = 1.0 + _t102;
         double _t107 = 1.0 + (_t93 - (_t46 + _t72));
@@ -5328,31 +5370,41 @@ public class Double3x4Impl implements Double3x4 {
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t108));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t109));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t107));
-        if (_t102 > 0.0) {
-            d.x = _sp0 * _t81;
-            d.y = _sp0 * _t101;
-            d.z = _sp0 * _t98;
-            d.w = 0.5 * Math.sqrt(_t106);
+        decomposeRotation_general_s62e3ac38_c0(_dst, _t102, _sp0, _t81, _t93, _t82, _t107, _t46, _t72, _sp1, _t97, _sp2, _t100, _t101, _sp3, _t108, _t84, _t98, _t109, _t106);
+    }
+
+
+    /**
+     * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeRotation} dispatcher.
+     */
+    private DoubleQuat decomposeRotation_general(@Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m10;
+        double _r2 = this.m20;
+        double _r3 = this.m01;
+        double _r4 = this.m11;
+        double _r5 = this.m21;
+        double _r6 = this.m02;
+        double _r7 = this.m12;
+        double _r8 = this.m22;
+        double _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11;
+        if (_t4 != 0.0) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            if (_t93 > _t82) {
-                d.x = 0.5 * Math.sqrt(_t107);
-                d.y = _sp3 * _t97;
-                d.z = _sp3 * _t100;
-                d.w = _sp3 * _t81;
-            } else {
-                if (_t46 > _t72) {
-                    d.x = _sp1 * _t97;
-                    d.y = 0.5 * Math.sqrt(_t108);
-                    d.z = _sp1 * _t84;
-                    d.w = _sp1 * _t101;
-                } else {
-                    d.x = _sp2 * _t100;
-                    d.y = _sp2 * _t84;
-                    d.z = 0.5 * Math.sqrt(_t109);
-                    d.w = _sp2 * _t98;
-                }
-            }
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
         }
+        double _t23 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        double _t24 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        double _t28 = _t24 * _t9;
+        decomposeRotation_general_s62e3ac38_tail(d, _t24, _t10, _t11, _r3, _t23, _t9, _r4, _r5, _r6, _t28, _r7, _r8);
         return d;
     }
 
@@ -5382,34 +5434,21 @@ public class Double3x4Impl implements Double3x4 {
         return getScale_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeScale_general}: computes and stores it; reached only through it. */
+    private void decomposeScale_general_s34d82902_c0(Double3Impl _dst, double _t44, double _t70, double _t46, double _t71, double _t10, double _t72, double _t45, double _t11, double _t12, double _t6, double _t39, double _t65) {
+        _dst.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0 ? -_t6 : _t6;
+        _dst.y = Math.sqrt(_t39);
+        _dst.z = Math.sqrt(_t65);
+    }
 
-    /**
-     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
-     * only through the public {@code decomposeScale} dispatcher.
-     */
-    private Double3 decomposeScale_general(@Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        double _t6 = Math.sqrt(_t4);
-        double _t5 = 1.0 / _t6;
-        double _t10, _t11, _t12;
-        if (_t4 != 0.0) {
-            _t10 = this.m00 * _t5;
-            _t11 = this.m10 * _t5;
-            _t12 = this.m20 * _t5;
-        } else {
-            _t10 = 0.0;
-            _t11 = 0.0;
-            _t12 = 0.0;
-        }
-        double _t21 = this.m01 * _t10 + this.m11 * _t11 + this.m21 * _t12;
-        double _t22 = this.m02 * _t10 + this.m12 * _t11 + this.m22 * _t12;
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s34d82902_tail(Double3Impl _dst, double _t22, double _t10, double _t11, double _t12, double _r3, double _t21, double _r4, double _r5, double _r6, double _r7, double _r8, double _t6) {
         double _t26 = _t22 * _t10;
         double _t27 = _t22 * _t11;
         double _t28 = _t22 * _t12;
-        double _t29 = this.m01 - _t21 * _t10;
-        double _t30 = this.m11 - _t21 * _t11;
-        double _t31 = this.m21 - _t21 * _t12;
+        double _t29 = _r3 - _t21 * _t10;
+        double _t30 = _r4 - _t21 * _t11;
+        double _t31 = _r5 - _t21 * _t12;
         double _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
         double _t40 = (1.0 / Math.sqrt(_t39));
         double _t44, _t45, _t46;
@@ -5422,10 +5461,15 @@ public class Double3x4Impl implements Double3x4 {
             _t45 = 0.0;
             _t46 = 0.0;
         }
-        double _t51 = (this.m02 - _t26) * _t45 + (this.m12 - _t27) * _t44 + (this.m22 - _t28) * _t46;
-        double _t58 = this.m02 - _t51 * _t45 - _t26;
-        double _t59 = this.m12 - _t51 * _t44 - _t27;
-        double _t60 = this.m22 - _t51 * _t46 - _t28;
+        double _t51 = (_r6 - _t26) * _t45 + (_r7 - _t27) * _t44 + (_r8 - _t28) * _t46;
+        double _t58 = _r6 - _t51 * _t45 - _t26;
+        double _t59 = _r7 - _t51 * _t44 - _t27;
+        double _t60 = _r8 - _t51 * _t46 - _t28;
+        decomposeScale_general_s34d82902_tail2(_dst, _t58, _t59, _t60, _t44, _t46, _t10, _t45, _t11, _t12, _t6, _t39);
+    }
+
+    /** Private tail of {@code decomposeScale_general}; reached only through it. */
+    private void decomposeScale_general_s34d82902_tail2(Double3Impl _dst, double _t58, double _t59, double _t60, double _t44, double _t46, double _t10, double _t45, double _t11, double _t12, double _t6, double _t39) {
         double _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
         double _t66 = (1.0 / Math.sqrt(_t65));
         double _t70, _t71, _t72;
@@ -5438,9 +5482,41 @@ public class Double3x4Impl implements Double3x4 {
             _t71 = 0.0;
             _t72 = 0.0;
         }
-        d.x = (_t44 * _t70 - _t46 * _t71) * _t10 + (_t46 * _t72 - _t45 * _t70) * _t11 + (_t45 * _t71 - _t44 * _t72) * _t12 < 0.0 ? -_t6 : _t6;
-        d.y = Math.sqrt(_t39);
-        d.z = Math.sqrt(_t65);
+        decomposeScale_general_s34d82902_c0(_dst, _t44, _t70, _t46, _t71, _t10, _t72, _t45, _t11, _t12, _t6, _t39, _t65);
+    }
+
+
+    /**
+     * Private body of {@code decomposeScale}, specialized by runtime matrix properties; reached
+     * only through the public {@code decomposeScale} dispatcher.
+     */
+    private Double3 decomposeScale_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m10;
+        double _r2 = this.m20;
+        double _r3 = this.m01;
+        double _r4 = this.m11;
+        double _r5 = this.m21;
+        double _r6 = this.m02;
+        double _r7 = this.m12;
+        double _r8 = this.m22;
+        double _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t6 = Math.sqrt(_t4);
+        double _t5 = 1.0 / _t6;
+        double _t10, _t11, _t12;
+        if (_t4 != 0.0) {
+            _t10 = _r0 * _t5;
+            _t11 = _r1 * _t5;
+            _t12 = _r2 * _t5;
+        } else {
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 0.0;
+        }
+        double _t21 = _r3 * _t10 + _r4 * _t11 + _r5 * _t12;
+        double _t22 = _r6 * _t10 + _r7 * _t11 + _r8 * _t12;
+        decomposeScale_general_s34d82902_tail(d, _t22, _t10, _t11, _t12, _r3, _t21, _r4, _r5, _r6, _r7, _r8, _t6);
         return d;
     }
 
@@ -5472,33 +5548,20 @@ public class Double3x4Impl implements Double3x4 {
         return getEulerAnglesXYZ_identity(dest);
     }
 
+    /** Private store group 0 of {@code decomposeSkew_general}: computes and stores it; reached only through it. */
+    private void decomposeSkew_general_s34d82902_c0(Double3Impl _dst, double _t51, double _t66, double _t87, double _t67, double _t40) {
+        _dst.x = _t51 * _t66;
+        _dst.y = _t87 < 0.0 ? -_t67 : _t67;
+        _dst.z = _t87 < 0.0 ? -_t40 : _t40;
+    }
 
-    /**
-     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
-     * through the public {@code decomposeSkew} dispatcher.
-     */
-    private Double3 decomposeSkew_general(@Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 != 0.0) {
-            _t9 = this.m00 * _t5;
-            _t10 = this.m10 * _t5;
-            _t11 = this.m20 * _t5;
-        } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t20 = this.m02 * _t9 + this.m12 * _t10 + this.m22 * _t11;
-        double _t21 = this.m01 * _t9 + this.m11 * _t10 + this.m21 * _t11;
-        double _t22 = _t20 * _t9;
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s34d82902_tail(Double3Impl _dst, double _t20, double _t10, double _t11, double _r6, double _t21, double _t9, double _r7, double _r8, double _r3, double _t22, double _r4, double _r5) {
         double _t26 = _t20 * _t10;
         double _t27 = _t20 * _t11;
-        double _t29 = this.m01 - _t21 * _t9;
-        double _t30 = this.m11 - _t21 * _t10;
-        double _t31 = this.m21 - _t21 * _t11;
+        double _t29 = _r6 - _t21 * _t9;
+        double _t30 = _r7 - _t21 * _t10;
+        double _t31 = _r8 - _t21 * _t11;
         double _t38 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
         double _t39 = (1.0 / Math.sqrt(_t38));
         double _t40 = _t21 * _t39;
@@ -5512,10 +5575,15 @@ public class Double3x4Impl implements Double3x4 {
             _t45 = 0.0;
             _t46 = 0.0;
         }
-        double _t51 = (this.m02 - _t22) * _t44 + (this.m12 - _t26) * _t45 + (this.m22 - _t27) * _t46;
-        double _t58 = this.m02 - _t51 * _t44 - _t22;
-        double _t59 = this.m12 - _t51 * _t45 - _t26;
-        double _t60 = this.m22 - _t51 * _t46 - _t27;
+        double _t51 = (_r3 - _t22) * _t44 + (_r4 - _t26) * _t45 + (_r5 - _t27) * _t46;
+        double _t58 = _r3 - _t51 * _t44 - _t22;
+        double _t59 = _r4 - _t51 * _t45 - _t26;
+        double _t60 = _r5 - _t51 * _t46 - _t27;
+        decomposeSkew_general_s34d82902_tail2(_dst, _t58, _t59, _t60, _t20, _t45, _t46, _t9, _t44, _t10, _t11, _t51, _t40);
+    }
+
+    /** Private tail of {@code decomposeSkew_general}; reached only through it. */
+    private void decomposeSkew_general_s34d82902_tail2(Double3Impl _dst, double _t58, double _t59, double _t60, double _t20, double _t45, double _t46, double _t9, double _t44, double _t10, double _t11, double _t51, double _t40) {
         double _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
         double _t66 = (1.0 / Math.sqrt(_t65));
         double _t67 = _t20 * _t66;
@@ -5530,14 +5598,41 @@ public class Double3x4Impl implements Double3x4 {
             _t73 = 0.0;
         }
         double _t87 = (_t45 * _t71 - _t46 * _t72) * _t9 + (_t46 * _t73 - _t44 * _t71) * _t10 + (_t44 * _t72 - _t45 * _t73) * _t11;
-        if (_t87 < 0.0) {
-            d.y = -_t67;
-            d.z = -_t40;
+        decomposeSkew_general_s34d82902_c0(_dst, _t51, _t66, _t87, _t67, _t40);
+    }
+
+
+    /**
+     * Private body of {@code decomposeSkew}, specialized by runtime matrix properties; reached only
+     * through the public {@code decomposeSkew} dispatcher.
+     */
+    private Double3 decomposeSkew_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m10;
+        double _r2 = this.m20;
+        double _r3 = this.m02;
+        double _r4 = this.m12;
+        double _r5 = this.m22;
+        double _r6 = this.m01;
+        double _r7 = this.m11;
+        double _r8 = this.m21;
+        double _t4 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11;
+        if (_t4 != 0.0) {
+            _t9 = _r0 * _t5;
+            _t10 = _r1 * _t5;
+            _t11 = _r2 * _t5;
         } else {
-            d.y = _t67;
-            d.z = _t40;
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
         }
-        d.x = _t51 * _t66;
+        double _t20 = _r3 * _t9 + _r4 * _t10 + _r5 * _t11;
+        double _t21 = _r6 * _t9 + _r7 * _t10 + _r8 * _t11;
+        double _t22 = _t20 * _t9;
+        decomposeSkew_general_s34d82902_tail(d, _t20, _t10, _t11, _r6, _t21, _t9, _r7, _r8, _r3, _t22, _r4, _r5);
         return d;
     }
 
@@ -27892,6 +27987,32 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private store group 0 of {@code transformAabb_orthogonal}: computes and stores it; reached only through it. */
+    private void transformAabb_orthogonal_s589e1a9d_c0(DoubleAABBImpl _dst, double _t22, double _r9, double _t3, double _t4, double _t5, double _t6, double _t7, double _t8, double _r10, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _r11, double _t15, double _t16, double _t17, double _t18, double _t19, double _t20) {
+        _dst.minX = _t22 < 0.0 ? Double.POSITIVE_INFINITY : _r9 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+        _dst.minY = _t22 < 0.0 ? Double.POSITIVE_INFINITY : _r10 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+        _dst.minZ = _t22 < 0.0 ? Double.POSITIVE_INFINITY : _r11 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+    }
+
+    /** Private store group 1 of {@code transformAabb_orthogonal}: computes and stores it; reached only through it. */
+    private void transformAabb_orthogonal_s589e1a9d_c1(DoubleAABBImpl _dst, double _t22, double _r9, double _t3, double _t4, double _t5, double _t6, double _t7, double _t8, double _r10, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _r11, double _t15, double _t16, double _t17, double _t18, double _t19, double _t20) {
+        _dst.maxX = _t22 < 0.0 ? Double.NEGATIVE_INFINITY : _r9 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+        _dst.maxY = _t22 < 0.0 ? Double.NEGATIVE_INFINITY : _r10 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+        _dst.maxZ = _t22 < 0.0 ? Double.NEGATIVE_INFINITY : _r11 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+    }
+
+    /** Private tail of {@code transformAabb_orthogonal}; reached only through it. */
+    private void transformAabb_orthogonal_s589e1a9d_tail(DoubleAABBImpl _dst, double maxX, double _r6, double minY, double _r7, double maxY, double minZ, double _r8, double maxZ, double minX, double _r9, double _t3, double _t4, double _t5, double _t6, double _t7, double _t8, double _r10, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _r11, double _t15) {
+        double _t16 = maxX * _r6;
+        double _t17 = minY * _r7;
+        double _t18 = maxY * _r7;
+        double _t19 = minZ * _r8;
+        double _t20 = maxZ * _r8;
+        double _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        transformAabb_orthogonal_s589e1a9d_c0(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+        transformAabb_orthogonal_s589e1a9d_c1(_dst, _t22, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15, _t16, _t17, _t18, _t19, _t20);
+    }
+
 
     /**
      * Private body of {@code transformAabb}, specialized by runtime matrix properties; reached only
@@ -27899,42 +28020,35 @@ public class Double3x4Impl implements Double3x4 {
      */
     private DoubleAABB transformAabb_orthogonal(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        double _t3 = minX * this.m00;
-        double _t4 = maxX * this.m00;
-        double _t5 = minY * this.m01;
-        double _t6 = maxY * this.m01;
-        double _t7 = minZ * this.m02;
-        double _t8 = maxZ * this.m02;
-        double _t9 = minX * this.m10;
-        double _t10 = maxX * this.m10;
-        double _t11 = minY * this.m11;
-        double _t12 = maxY * this.m11;
-        double _t13 = minZ * this.m12;
-        double _t14 = maxZ * this.m12;
-        double _t15 = minX * this.m20;
-        double _t16 = maxX * this.m20;
-        double _t17 = minY * this.m21;
-        double _t18 = maxY * this.m21;
-        double _t19 = minZ * this.m22;
-        double _t20 = maxZ * this.m22;
-        double _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
-        if (_t22 < 0.0) {
-            d.minX = Double.POSITIVE_INFINITY;
-            d.minY = Double.POSITIVE_INFINITY;
-            d.minZ = Double.POSITIVE_INFINITY;
-            d.maxX = Double.NEGATIVE_INFINITY;
-            d.maxY = Double.NEGATIVE_INFINITY;
-            d.maxZ = Double.NEGATIVE_INFINITY;
-        } else {
-            d.minX = this.m03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
-            d.minY = this.m13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
-            d.minZ = this.m23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
-            d.maxX = this.m03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
-            d.maxY = this.m13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
-            d.maxZ = this.m23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
-        }
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m10;
+        double _r4 = this.m11;
+        double _r5 = this.m12;
+        double _r6 = this.m20;
+        double _r7 = this.m21;
+        double _r8 = this.m22;
+        double _r9 = this.m03;
+        double _r10 = this.m13;
+        double _r11 = this.m23;
+        double _t3 = minX * _r0;
+        double _t4 = maxX * _r0;
+        double _t5 = minY * _r1;
+        double _t6 = maxY * _r1;
+        double _t7 = minZ * _r2;
+        double _t8 = maxZ * _r2;
+        double _t9 = minX * _r3;
+        double _t10 = maxX * _r3;
+        double _t11 = minY * _r4;
+        double _t12 = maxY * _r4;
+        double _t13 = minZ * _r5;
+        double _t14 = maxZ * _r5;
+        double _t15 = minX * _r6;
+        transformAabb_orthogonal_s589e1a9d_tail(d, maxX, _r6, minY, _r7, maxY, minZ, _r8, maxZ, minX, _r9, _t3, _t4, _t5, _t6, _t7, _t8, _r10, _t9, _t10, _t11, _t12, _t13, _t14, _r11, _t15);
         return d;
     }
+
 
 
     /**

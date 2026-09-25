@@ -142,6 +142,20 @@ public final class DoubleSphereImpl implements DoubleSphere {
         return d;
     }
 
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s305b2ff7_c0(DoubleSphereImpl _dst, double _r7, double _r9, double _r2, double _r10, double _r3, double _r11, double _r12, double _r8, double _r4, double _r5, double _r13, double _r6, double _r0, double _r1, double _r14, double _r15, double _t9, double _t10, double _t11) {
+        _dst.x = Math.fma(_r7, _r9, Math.fma(_r2, _r10, Math.fma(_r3, _r11, _r12)));
+        _dst.y = Math.fma(_r8, _r9, Math.fma(_r4, _r10, Math.fma(_r5, _r11, _r13)));
+        _dst.z = Math.fma(_r6, _r9, Math.fma(_r0, _r10, Math.fma(_r1, _r11, _r14)));
+        _dst.r = _r15 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11)))));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s305b2ff7_tail(DoubleSphereImpl _dst, double _r1, double _r6, double _r3, double _r7, double _r5, double _r8, double _r9, double _r2, double _r10, double _r11, double _r12, double _r4, double _r13, double _r0, double _r14, double _r15, double _t9, double _t10) {
+        double _t11 = Math.abs(Math.fma(_r1, _r6, Math.fma(_r3, _r7, _r5 * _r8)));
+        transform_s305b2ff7_c0(_dst, _r7, _r9, _r2, _r10, _r3, _r11, _r12, _r8, _r4, _r5, _r13, _r6, _r0, _r1, _r14, _r15, _t9, _t10, _t11);
+    }
+
 
     /**
      * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
@@ -159,16 +173,40 @@ public final class DoubleSphereImpl implements DoubleSphere {
      */
     public DoubleSphere transform(Double3x4R m, @Mutated DoubleSphere dest) {
         DoubleSphereImpl d = (DoubleSphereImpl) dest;
-        double _t9 = Math.abs(Math.fma(m.m20(), m.m21(), Math.fma(m.m00(), m.m01(), m.m10() * m.m11())));
-        double _t10 = Math.abs(Math.fma(m.m20(), m.m22(), Math.fma(m.m00(), m.m02(), m.m10() * m.m12())));
-        double _t11 = Math.abs(Math.fma(m.m21(), m.m22(), Math.fma(m.m01(), m.m02(), m.m11() * m.m12())));
-        double _buf0 = Math.fma(m.m02(), this.z, Math.fma(m.m00(), this.x, Math.fma(m.m01(), this.y, m.m03())));
-        double _buf1 = Math.fma(m.m12(), this.z, Math.fma(m.m10(), this.x, Math.fma(m.m11(), this.y, m.m13())));
-        d.z = Math.fma(m.m22(), this.z, Math.fma(m.m20(), this.x, Math.fma(m.m21(), this.y, m.m23())));
-        d.r = this.r * Math.sqrt(Math.max(Math.max(Math.fma(m.m00(), m.m00(), Math.fma(m.m10(), m.m10(), Math.fma(m.m20(), m.m20(), _t9 + _t10))), Math.fma(m.m01(), m.m01(), Math.fma(m.m11(), m.m11(), Math.fma(m.m21(), m.m21(), _t9 + _t11)))), Math.fma(m.m02(), m.m02(), Math.fma(m.m12(), m.m12(), Math.fma(m.m22(), m.m22(), _t10 + _t11)))));
-        d.x = _buf0;
-        d.y = _buf1;
+        double _r0 = m.m20();
+        double _r1 = m.m21();
+        double _r2 = m.m00();
+        double _r3 = m.m01();
+        double _r4 = m.m10();
+        double _r5 = m.m11();
+        double _r6 = m.m22();
+        double _r7 = m.m02();
+        double _r8 = m.m12();
+        double _r9 = this.z;
+        double _r10 = this.x;
+        double _r11 = this.y;
+        double _r12 = m.m03();
+        double _r13 = m.m13();
+        double _r14 = m.m23();
+        double _r15 = this.r;
+        double _t9 = Math.abs(Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5)));
+        double _t10 = Math.abs(Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8)));
+        transform_s305b2ff7_tail(d, _r1, _r6, _r3, _r7, _r5, _r8, _r9, _r2, _r10, _r11, _r12, _r4, _r13, _r0, _r14, _r15, _t9, _t10);
         return d;
+    }
+
+    /** Private store group 0 of {@code transform}: computes and stores it; reached only through it. */
+    private void transform_s6d7af416_c0(DoubleSphereImpl _dst, double _r7, double _r9, double _r2, double _r10, double _r3, double _r11, double _r12, double _r8, double _r4, double _r5, double _r13, double _r6, double _r0, double _r1, double _r14, double _r15, double _t9, double _t10, double _t11) {
+        _dst.x = Math.fma(_r7, _r9, Math.fma(_r2, _r10, Math.fma(_r3, _r11, _r12)));
+        _dst.y = Math.fma(_r8, _r9, Math.fma(_r4, _r10, Math.fma(_r5, _r11, _r13)));
+        _dst.z = Math.fma(_r6, _r9, Math.fma(_r0, _r10, Math.fma(_r1, _r11, _r14)));
+        _dst.r = _r15 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11)))));
+    }
+
+    /** Private tail of {@code transform}; reached only through it. */
+    private void transform_s6d7af416_tail(DoubleSphereImpl _dst, double _r1, double _r6, double _r3, double _r7, double _r5, double _r8, double _r9, double _r2, double _r10, double _r11, double _r12, double _r4, double _r13, double _r0, double _r14, double _r15, double _t9, double _t10) {
+        double _t11 = Math.abs(Math.fma(_r1, _r6, Math.fma(_r3, _r7, _r5 * _r8)));
+        transform_s6d7af416_c0(_dst, _r7, _r9, _r2, _r10, _r3, _r11, _r12, _r8, _r4, _r5, _r13, _r6, _r0, _r1, _r14, _r15, _t9, _t10, _t11);
     }
 
 
@@ -191,15 +229,25 @@ public final class DoubleSphereImpl implements DoubleSphere {
      */
     public DoubleSphere transform(Double4x4R m, @Mutated DoubleSphere dest) {
         DoubleSphereImpl d = (DoubleSphereImpl) dest;
-        double _t9 = Math.abs(Math.fma(m.m20(), m.m21(), Math.fma(m.m00(), m.m01(), m.m10() * m.m11())));
-        double _t10 = Math.abs(Math.fma(m.m20(), m.m22(), Math.fma(m.m00(), m.m02(), m.m10() * m.m12())));
-        double _t11 = Math.abs(Math.fma(m.m21(), m.m22(), Math.fma(m.m01(), m.m02(), m.m11() * m.m12())));
-        double _buf0 = Math.fma(m.m02(), this.z, Math.fma(m.m00(), this.x, Math.fma(m.m01(), this.y, m.m03())));
-        double _buf1 = Math.fma(m.m12(), this.z, Math.fma(m.m10(), this.x, Math.fma(m.m11(), this.y, m.m13())));
-        d.z = Math.fma(m.m22(), this.z, Math.fma(m.m20(), this.x, Math.fma(m.m21(), this.y, m.m23())));
-        d.r = this.r * Math.sqrt(Math.max(Math.max(Math.fma(m.m00(), m.m00(), Math.fma(m.m10(), m.m10(), Math.fma(m.m20(), m.m20(), _t9 + _t10))), Math.fma(m.m01(), m.m01(), Math.fma(m.m11(), m.m11(), Math.fma(m.m21(), m.m21(), _t9 + _t11)))), Math.fma(m.m02(), m.m02(), Math.fma(m.m12(), m.m12(), Math.fma(m.m22(), m.m22(), _t10 + _t11)))));
-        d.x = _buf0;
-        d.y = _buf1;
+        double _r0 = m.m20();
+        double _r1 = m.m21();
+        double _r2 = m.m00();
+        double _r3 = m.m01();
+        double _r4 = m.m10();
+        double _r5 = m.m11();
+        double _r6 = m.m22();
+        double _r7 = m.m02();
+        double _r8 = m.m12();
+        double _r9 = this.z;
+        double _r10 = this.x;
+        double _r11 = this.y;
+        double _r12 = m.m03();
+        double _r13 = m.m13();
+        double _r14 = m.m23();
+        double _r15 = this.r;
+        double _t9 = Math.abs(Math.fma(_r0, _r1, Math.fma(_r2, _r3, _r4 * _r5)));
+        double _t10 = Math.abs(Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r4 * _r8)));
+        transform_s6d7af416_tail(d, _r1, _r6, _r3, _r7, _r5, _r8, _r9, _r2, _r10, _r11, _r12, _r4, _r13, _r0, _r14, _r15, _t9, _t10);
         return d;
     }
 

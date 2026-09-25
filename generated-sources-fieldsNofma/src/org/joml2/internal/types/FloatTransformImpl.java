@@ -1458,6 +1458,67 @@ public final class FloatTransformImpl implements FloatTransform {
         return lerp(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), other.sX(), other.sY(), other.sZ(), t, dest);
     }
 
+    /** Private store group 0 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s58674671_c0(FloatTransformImpl _dst, float t, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float _t63, float _t64, float _t53) {
+        _dst.tX = t * (otherTX - _r4) + _r4;
+        _dst.tY = t * (otherTY - _r5) + _r5;
+        _dst.tZ = t * (otherTZ - _r6) + _r6;
+        _dst.rX = _t63 != 0.0f ? _t64 * _t53 : 0.0f;
+    }
+
+    /** Private store group 1 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s58674671_c1(FloatTransformImpl _dst, float _t63, float _t64, float _t54, float _t55, float _t56) {
+        _dst.rY = _t63 != 0.0f ? _t64 * _t54 : 0.0f;
+        _dst.rZ = _t63 != 0.0f ? _t64 * _t55 : 0.0f;
+        _dst.rW = _t63 != 0.0f ? _t64 * _t56 : 0.0f;
+    }
+
+    /** Private store group 2 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s58674671_c2(FloatTransformImpl _dst, float t, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
+        _dst.sX = t * (otherSX - _r7) + _r7;
+        _dst.sY = t * (otherSY - _r8) + _r8;
+        _dst.sZ = t * (otherSZ - _r9) + _r9;
+    }
+
+    /** Private tail of {@code lerp}; reached only through it. */
+    private void lerp_s58674671_tail(FloatTransformImpl _dst, float _t17, float otherRX, float otherRY, float otherRZ, float otherRW, float _t0, float _t19, float _t20, float _r0, float _t22, float _t20_inv, float t, float _r1, float _r2, float _r3, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
+        float _t24, _t25, _t26, _t27;
+        if (_t17 > 0.0f) {
+            _t24 = -otherRX;
+            _t25 = -otherRY;
+            _t26 = -otherRZ;
+            _t27 = -otherRW;
+        } else {
+            _t24 = otherRX;
+            _t25 = otherRY;
+            _t26 = otherRZ;
+            _t27 = otherRW;
+        }
+        float _t28 = (float) Math.sin(_t0 * _t19);
+        lerp_s58674671_tail2(_dst, _t20, _r0, _t28, _t22, _t24, _t20_inv, t, _t0, _r1, _t25, _r2, _t26, _r3, _t27, otherTX, _r4, otherTY, _r5, otherTZ, _r6, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
+    }
+
+    /** Private tail of {@code lerp}; reached only through it. */
+    private void lerp_s58674671_tail2(FloatTransformImpl _dst, float _t20, float _r0, float _t28, float _t22, float _t24, float _t20_inv, float t, float _t0, float _r1, float _t25, float _r2, float _t26, float _r3, float _t27, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
+        float _t53, _t54, _t55, _t56;
+        if (_t20 > 0.0f) {
+            _t53 = (_r0 * _t28 + _t22 * _t24) * _t20_inv;
+            _t54 = (_r1 * _t28 + _t22 * _t25) * _t20_inv;
+            _t55 = (_r2 * _t28 + _t22 * _t26) * _t20_inv;
+            _t56 = (_r3 * _t28 + _t22 * _t27) * _t20_inv;
+        } else {
+            _t53 = t * _t24 + _r0 * _t0;
+            _t54 = t * _t25 + _r1 * _t0;
+            _t55 = t * _t26 + _r2 * _t0;
+            _t56 = t * _t27 + _r3 * _t0;
+        }
+        float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
+        float _t64 = (1.0f / (float) Math.sqrt(_t63));
+        lerp_s58674671_c0(_dst, t, otherTX, _r4, otherTY, _r5, otherTZ, _r6, _t63, _t64, _t53);
+        lerp_s58674671_c1(_dst, _t63, _t64, _t54, _t55, _t56);
+        lerp_s58674671_c2(_dst, t, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
+    }
+
 
     /**
      * Interpolate between this transform and ({@code otherTX}, {@code otherTY}, {@code otherTZ},
@@ -1497,13 +1558,51 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform lerp(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, float t, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.tX;
+        float _r5 = this.tY;
+        float _r6 = this.tZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 1.0f - t;
-        float _t15 = otherRX * this.rX + otherRY * this.rY + otherRZ * this.rZ + otherRW * this.rW;
+        float _t15 = otherRX * _r0 + otherRY * _r1 + otherRZ * _r2 + otherRW * _r3;
         float _t17 = -_t15;
         float _t19 = (float) Math.acos(Math.min(1.0f, Math.abs(_t15)));
         float _t20 = (float) Math.sin(_t19);
         float _t20_inv = 1.0f / _t20;
         float _t22 = (float) Math.sin(t * _t19);
+        lerp_s58674671_tail(d, _t17, otherRX, otherRY, otherRZ, otherRW, _t0, _t19, _t20, _r0, _t22, _t20_inv, t, _r1, _r2, _r3, otherTX, _r4, otherTY, _r5, otherTZ, _r6, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
+        return d;
+    }
+
+    /** Private store group 0 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s3962eec8_c0(DoubleTransformImpl _dst, float t, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float _t63, float _t64, float _t53) {
+        _dst.tX = t * (otherTX - _r4) + _r4;
+        _dst.tY = t * (otherTY - _r5) + _r5;
+        _dst.tZ = t * (otherTZ - _r6) + _r6;
+        _dst.rX = _t63 != 0.0f ? _t64 * _t53 : 0.0f;
+    }
+
+    /** Private store group 1 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s3962eec8_c1(DoubleTransformImpl _dst, float _t63, float _t64, float _t54, float _t55, float _t56) {
+        _dst.rY = _t63 != 0.0f ? _t64 * _t54 : 0.0f;
+        _dst.rZ = _t63 != 0.0f ? _t64 * _t55 : 0.0f;
+        _dst.rW = _t63 != 0.0f ? _t64 * _t56 : 0.0f;
+    }
+
+    /** Private store group 2 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s3962eec8_c2(DoubleTransformImpl _dst, float t, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
+        _dst.sX = t * (otherSX - _r7) + _r7;
+        _dst.sY = t * (otherSY - _r8) + _r8;
+        _dst.sZ = t * (otherSZ - _r9) + _r9;
+    }
+
+    /** Private tail of {@code lerp}; reached only through it. */
+    private void lerp_s3962eec8_tail(DoubleTransformImpl _dst, float _t17, float otherRX, float otherRY, float otherRZ, float otherRW, float _t0, float _t19, float _t20, float _r0, float _t22, float _t20_inv, float t, float _r1, float _r2, float _r3, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
         float _t24, _t25, _t26, _t27;
         if (_t17 > 0.0f) {
             _t24 = -otherRX;
@@ -1517,38 +1616,28 @@ public final class FloatTransformImpl implements FloatTransform {
             _t27 = otherRW;
         }
         float _t28 = (float) Math.sin(_t0 * _t19);
+        lerp_s3962eec8_tail2(_dst, _t20, _r0, _t28, _t22, _t24, _t20_inv, t, _t0, _r1, _t25, _r2, _t26, _r3, _t27, otherTX, _r4, otherTY, _r5, otherTZ, _r6, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
+    }
+
+    /** Private tail of {@code lerp}; reached only through it. */
+    private void lerp_s3962eec8_tail2(DoubleTransformImpl _dst, float _t20, float _r0, float _t28, float _t22, float _t24, float _t20_inv, float t, float _t0, float _r1, float _t25, float _r2, float _t26, float _r3, float _t27, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
         float _t53, _t54, _t55, _t56;
         if (_t20 > 0.0f) {
-            _t53 = (this.rX * _t28 + _t22 * _t24) * _t20_inv;
-            _t54 = (this.rY * _t28 + _t22 * _t25) * _t20_inv;
-            _t55 = (this.rZ * _t28 + _t22 * _t26) * _t20_inv;
-            _t56 = (this.rW * _t28 + _t22 * _t27) * _t20_inv;
+            _t53 = (_r0 * _t28 + _t22 * _t24) * _t20_inv;
+            _t54 = (_r1 * _t28 + _t22 * _t25) * _t20_inv;
+            _t55 = (_r2 * _t28 + _t22 * _t26) * _t20_inv;
+            _t56 = (_r3 * _t28 + _t22 * _t27) * _t20_inv;
         } else {
-            _t53 = t * _t24 + this.rX * _t0;
-            _t54 = t * _t25 + this.rY * _t0;
-            _t55 = t * _t26 + this.rZ * _t0;
-            _t56 = t * _t27 + this.rW * _t0;
+            _t53 = t * _t24 + _r0 * _t0;
+            _t54 = t * _t25 + _r1 * _t0;
+            _t55 = t * _t26 + _r2 * _t0;
+            _t56 = t * _t27 + _r3 * _t0;
         }
         float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
         float _t64 = (1.0f / (float) Math.sqrt(_t63));
-        if (_t63 != 0.0f) {
-            d.rX = _t64 * _t53;
-            d.rY = _t64 * _t54;
-            d.rZ = _t64 * _t55;
-            d.rW = _t64 * _t56;
-        } else {
-            d.rX = 0.0f;
-            d.rY = 0.0f;
-            d.rZ = 0.0f;
-            d.rW = 0.0f;
-        }
-        d.tX = t * (otherTX - this.tX) + this.tX;
-        d.tY = t * (otherTY - this.tY) + this.tY;
-        d.tZ = t * (otherTZ - this.tZ) + this.tZ;
-        d.sX = t * (otherSX - this.sX) + this.sX;
-        d.sY = t * (otherSY - this.sY) + this.sY;
-        d.sZ = t * (otherSZ - this.sZ) + this.sZ;
-        return d;
+        lerp_s3962eec8_c0(_dst, t, otherTX, _r4, otherTY, _r5, otherTZ, _r6, _t63, _t64, _t53);
+        lerp_s3962eec8_c1(_dst, _t63, _t64, _t54, _t55, _t56);
+        lerp_s3962eec8_c2(_dst, t, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
     }
 
 
@@ -1593,57 +1682,24 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform lerp(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, float t, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.tX;
+        float _r5 = this.tY;
+        float _r6 = this.tZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 1.0f - t;
-        float _t15 = otherRX * this.rX + otherRY * this.rY + otherRZ * this.rZ + otherRW * this.rW;
+        float _t15 = otherRX * _r0 + otherRY * _r1 + otherRZ * _r2 + otherRW * _r3;
         float _t17 = -_t15;
         float _t19 = (float) Math.acos(Math.min(1.0f, Math.abs(_t15)));
         float _t20 = (float) Math.sin(_t19);
         float _t20_inv = 1.0f / _t20;
         float _t22 = (float) Math.sin(t * _t19);
-        float _t24, _t25, _t26, _t27;
-        if (_t17 > 0.0f) {
-            _t24 = -otherRX;
-            _t25 = -otherRY;
-            _t26 = -otherRZ;
-            _t27 = -otherRW;
-        } else {
-            _t24 = otherRX;
-            _t25 = otherRY;
-            _t26 = otherRZ;
-            _t27 = otherRW;
-        }
-        float _t28 = (float) Math.sin(_t0 * _t19);
-        float _t53, _t54, _t55, _t56;
-        if (_t20 > 0.0f) {
-            _t53 = (this.rX * _t28 + _t22 * _t24) * _t20_inv;
-            _t54 = (this.rY * _t28 + _t22 * _t25) * _t20_inv;
-            _t55 = (this.rZ * _t28 + _t22 * _t26) * _t20_inv;
-            _t56 = (this.rW * _t28 + _t22 * _t27) * _t20_inv;
-        } else {
-            _t53 = t * _t24 + this.rX * _t0;
-            _t54 = t * _t25 + this.rY * _t0;
-            _t55 = t * _t26 + this.rZ * _t0;
-            _t56 = t * _t27 + this.rW * _t0;
-        }
-        float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
-        float _t64 = (1.0f / (float) Math.sqrt(_t63));
-        if (_t63 != 0.0f) {
-            d.rX = _t64 * _t53;
-            d.rY = _t64 * _t54;
-            d.rZ = _t64 * _t55;
-            d.rW = _t64 * _t56;
-        } else {
-            d.rX = 0.0f;
-            d.rY = 0.0f;
-            d.rZ = 0.0f;
-            d.rW = 0.0f;
-        }
-        d.tX = t * (otherTX - this.tX) + this.tX;
-        d.tY = t * (otherTY - this.tY) + this.tY;
-        d.tZ = t * (otherTZ - this.tZ) + this.tZ;
-        d.sX = t * (otherSX - this.sX) + this.sX;
-        d.sY = t * (otherSY - this.sY) + this.sY;
-        d.sZ = t * (otherSZ - this.sZ) + this.sZ;
+        lerp_s3962eec8_tail(d, _t17, otherRX, otherRY, otherRZ, otherRW, _t0, _t19, _t20, _r0, _t22, _t20_inv, t, _r1, _r2, _r3, otherTX, _r4, otherTY, _r5, otherTZ, _r6, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
         return d;
     }
 
@@ -1694,6 +1750,28 @@ public final class FloatTransformImpl implements FloatTransform {
         return mul(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), other.sX(), other.sY(), other.sZ(), dest);
     }
 
+    /** Private store group 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s3e5a2933_c0(FloatTransformImpl _dst, float _r4, float _t12, float _r6, float _t13, float _t1, float _r7, float _r5, float _t14, float _t0, float _r8, float _r3, float _t2, float _r9, float otherRX, float otherRW, float otherRZ, float otherRY) {
+        _dst.tX = _r4 * _t12 + (_r6 * _t13 + (_t1 + _r7) - _r5 * _t14);
+        _dst.tY = _r5 * _t13 + (_r6 * _t14 + (_t0 + _r8) - _r3 * _t12);
+        _dst.tZ = _r3 * _t14 + (_r6 * _t12 + (_t2 + _r9) - _r4 * _t13);
+        _dst.rX = otherRX * _r6 + otherRW * _r3 + (otherRZ * _r4 - otherRY * _r5);
+    }
+
+    /** Private store group 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s3e5a2933_c1(FloatTransformImpl _dst, float otherRY, float _r6, float otherRW, float _r4, float otherRX, float _r5, float otherRZ, float _r3) {
+        _dst.rY = otherRY * _r6 + otherRW * _r4 + (otherRX * _r5 - otherRZ * _r3);
+        _dst.rZ = otherRZ * _r6 + otherRW * _r5 + (otherRY * _r3 - otherRX * _r4);
+        _dst.rW = otherRW * _r6 - otherRX * _r3 - (otherRY * _r4 + otherRZ * _r5);
+    }
+
+    /** Private store group 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s3e5a2933_c2(FloatTransformImpl _dst, float otherSX, float _r1, float otherSY, float _r0, float otherSZ, float _r2) {
+        _dst.sX = otherSX * _r1;
+        _dst.sY = otherSY * _r0;
+        _dst.sZ = otherSZ * _r2;
+    }
+
 
     /**
      * Multiply this transform by ({@code otherTX}, {@code otherTY}, {@code otherTZ},
@@ -1735,26 +1813,48 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform mul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t0 = otherTY * this.sY;
-        float _t1 = otherTX * this.sX;
-        float _t2 = otherTZ * this.sZ;
-        float _t12 = 2.0f * (this.rX * _t0 - this.rY * _t1);
-        float _t13 = 2.0f * (this.rY * _t2 - this.rZ * _t0);
-        float _t14 = 2.0f * (this.rZ * _t1 - this.rX * _t2);
-        d.tX = this.rY * _t12 + (this.rW * _t13 + (_t1 + this.tX) - this.rZ * _t14);
-        d.tY = this.rZ * _t13 + (this.rW * _t14 + (_t0 + this.tY) - this.rX * _t12);
-        d.tZ = this.rX * _t14 + (this.rW * _t12 + (_t2 + this.tZ) - this.rY * _t13);
-        float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
-        float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRX * this.rZ - otherRZ * this.rX);
-        float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRY * this.rX - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.sX = otherSX * this.sX;
-        d.sY = otherSY * this.sY;
-        d.sZ = otherSZ * this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _r0 = this.sY;
+        float _r1 = this.sX;
+        float _r2 = this.sZ;
+        float _r3 = this.rX;
+        float _r4 = this.rY;
+        float _r5 = this.rZ;
+        float _r6 = this.rW;
+        float _r7 = this.tX;
+        float _r8 = this.tY;
+        float _r9 = this.tZ;
+        float _t0 = otherTY * _r0;
+        float _t1 = otherTX * _r1;
+        float _t2 = otherTZ * _r2;
+        float _t12 = 2.0f * (_r3 * _t0 - _r4 * _t1);
+        float _t13 = 2.0f * (_r4 * _t2 - _r5 * _t0);
+        float _t14 = 2.0f * (_r5 * _t1 - _r3 * _t2);
+        mul_s3e5a2933_c0(d, _r4, _t12, _r6, _t13, _t1, _r7, _r5, _t14, _t0, _r8, _r3, _t2, _r9, otherRX, otherRW, otherRZ, otherRY);
+        mul_s3e5a2933_c1(d, otherRY, _r6, otherRW, _r4, otherRX, _r5, otherRZ, _r3);
+        mul_s3e5a2933_c2(d, otherSX, _r1, otherSY, _r0, otherSZ, _r2);
         return d;
+    }
+
+    /** Private store group 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s11cc6446_c0(DoubleTransformImpl _dst, float _r4, float _t12, float _r6, float _t13, float _t1, float _r7, float _r5, float _t14, float _t0, float _r8, float _r3, float _t2, float _r9, float otherRX, float otherRW, float otherRZ, float otherRY) {
+        _dst.tX = _r4 * _t12 + (_r6 * _t13 + (_t1 + _r7) - _r5 * _t14);
+        _dst.tY = _r5 * _t13 + (_r6 * _t14 + (_t0 + _r8) - _r3 * _t12);
+        _dst.tZ = _r3 * _t14 + (_r6 * _t12 + (_t2 + _r9) - _r4 * _t13);
+        _dst.rX = otherRX * _r6 + otherRW * _r3 + (otherRZ * _r4 - otherRY * _r5);
+    }
+
+    /** Private store group 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s11cc6446_c1(DoubleTransformImpl _dst, float otherRY, float _r6, float otherRW, float _r4, float otherRX, float _r5, float otherRZ, float _r3) {
+        _dst.rY = otherRY * _r6 + otherRW * _r4 + (otherRX * _r5 - otherRZ * _r3);
+        _dst.rZ = otherRZ * _r6 + otherRW * _r5 + (otherRY * _r3 - otherRX * _r4);
+        _dst.rW = otherRW * _r6 - otherRX * _r3 - (otherRY * _r4 + otherRZ * _r5);
+    }
+
+    /** Private store group 2 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s11cc6446_c2(DoubleTransformImpl _dst, float otherSX, float _r1, float otherSY, float _r0, float otherSZ, float _r2) {
+        _dst.sX = otherSX * _r1;
+        _dst.sY = otherSY * _r0;
+        _dst.sZ = otherSZ * _r2;
     }
 
 
@@ -1801,25 +1901,25 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform mul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        float _t0 = otherTY * this.sY;
-        float _t1 = otherTX * this.sX;
-        float _t2 = otherTZ * this.sZ;
-        float _t12 = 2.0f * (this.rX * _t0 - this.rY * _t1);
-        float _t13 = 2.0f * (this.rY * _t2 - this.rZ * _t0);
-        float _t14 = 2.0f * (this.rZ * _t1 - this.rX * _t2);
-        d.tX = this.rY * _t12 + (this.rW * _t13 + (_t1 + this.tX) - this.rZ * _t14);
-        d.tY = this.rZ * _t13 + (this.rW * _t14 + (_t0 + this.tY) - this.rX * _t12);
-        d.tZ = this.rX * _t14 + (this.rW * _t12 + (_t2 + this.tZ) - this.rY * _t13);
-        float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
-        float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRX * this.rZ - otherRZ * this.rX);
-        float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRY * this.rX - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.sX = otherSX * this.sX;
-        d.sY = otherSY * this.sY;
-        d.sZ = otherSZ * this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _r0 = this.sY;
+        float _r1 = this.sX;
+        float _r2 = this.sZ;
+        float _r3 = this.rX;
+        float _r4 = this.rY;
+        float _r5 = this.rZ;
+        float _r6 = this.rW;
+        float _r7 = this.tX;
+        float _r8 = this.tY;
+        float _r9 = this.tZ;
+        float _t0 = otherTY * _r0;
+        float _t1 = otherTX * _r1;
+        float _t2 = otherTZ * _r2;
+        float _t12 = 2.0f * (_r3 * _t0 - _r4 * _t1);
+        float _t13 = 2.0f * (_r4 * _t2 - _r5 * _t0);
+        float _t14 = 2.0f * (_r5 * _t1 - _r3 * _t2);
+        mul_s11cc6446_c0(d, _r4, _t12, _r6, _t13, _t1, _r7, _r5, _t14, _t0, _r8, _r3, _t2, _r9, otherRX, otherRW, otherRZ, otherRY);
+        mul_s11cc6446_c1(d, otherRY, _r6, otherRW, _r4, otherRX, _r5, otherRZ, _r3);
+        mul_s11cc6446_c2(d, otherSX, _r1, otherSY, _r0, otherSZ, _r2);
         return d;
     }
 
@@ -1870,6 +1970,28 @@ public final class FloatTransformImpl implements FloatTransform {
         return preMul(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), other.sX(), other.sY(), other.sZ(), dest);
     }
 
+    /** Private store group 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s3e5a2933_c0(FloatTransformImpl _dst, float otherRY, float _t12, float otherRW, float _t13, float _t1, float otherTX, float otherRZ, float _t14, float _t0, float otherTY, float otherRX, float _t2, float otherTZ, float _r3, float _r4, float _r5, float _r6) {
+        _dst.tX = otherRY * _t12 + (otherRW * _t13 + (_t1 + otherTX) - otherRZ * _t14);
+        _dst.tY = otherRZ * _t13 + (otherRW * _t14 + (_t0 + otherTY) - otherRX * _t12);
+        _dst.tZ = otherRX * _t14 + (otherRW * _t12 + (_t2 + otherTZ) - otherRY * _t13);
+        _dst.rX = otherRX * _r3 + otherRW * _r4 + (otherRY * _r5 - otherRZ * _r6);
+    }
+
+    /** Private store group 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s3e5a2933_c1(FloatTransformImpl _dst, float otherRY, float _r3, float otherRW, float _r6, float otherRZ, float _r4, float otherRX, float _r5) {
+        _dst.rY = otherRY * _r3 + otherRW * _r6 + (otherRZ * _r4 - otherRX * _r5);
+        _dst.rZ = otherRZ * _r3 + otherRW * _r5 + (otherRX * _r6 - otherRY * _r4);
+        _dst.rW = otherRW * _r3 - otherRX * _r4 - (otherRY * _r6 + otherRZ * _r5);
+    }
+
+    /** Private store group 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s3e5a2933_c2(FloatTransformImpl _dst, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
+        _dst.sX = otherSX * _r7;
+        _dst.sY = otherSY * _r8;
+        _dst.sZ = otherSZ * _r9;
+    }
+
 
     /**
      * Pre-multiply ({@code otherTX}, {@code otherTY}, {@code otherTZ}, {@code otherRX},
@@ -1911,26 +2033,48 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _t0 = otherSY * this.tY;
-        float _t1 = otherSX * this.tX;
-        float _t2 = otherSZ * this.tZ;
+        float _r0 = this.tY;
+        float _r1 = this.tX;
+        float _r2 = this.tZ;
+        float _r3 = this.rW;
+        float _r4 = this.rX;
+        float _r5 = this.rZ;
+        float _r6 = this.rY;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
+        float _t0 = otherSY * _r0;
+        float _t1 = otherSX * _r1;
+        float _t2 = otherSZ * _r2;
         float _t12 = 2.0f * (otherRX * _t0 - otherRY * _t1);
         float _t13 = 2.0f * (otherRY * _t2 - otherRZ * _t0);
         float _t14 = 2.0f * (otherRZ * _t1 - otherRX * _t2);
-        d.tX = otherRY * _t12 + (otherRW * _t13 + (_t1 + otherTX) - otherRZ * _t14);
-        d.tY = otherRZ * _t13 + (otherRW * _t14 + (_t0 + otherTY) - otherRX * _t12);
-        d.tZ = otherRX * _t14 + (otherRW * _t12 + (_t2 + otherTZ) - otherRY * _t13);
-        float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
-        float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRX * this.rY - otherRY * this.rX);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.sX = otherSX * this.sX;
-        d.sY = otherSY * this.sY;
-        d.sZ = otherSZ * this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        preMul_s3e5a2933_c0(d, otherRY, _t12, otherRW, _t13, _t1, otherTX, otherRZ, _t14, _t0, otherTY, otherRX, _t2, otherTZ, _r3, _r4, _r5, _r6);
+        preMul_s3e5a2933_c1(d, otherRY, _r3, otherRW, _r6, otherRZ, _r4, otherRX, _r5);
+        preMul_s3e5a2933_c2(d, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s11cc6446_c0(DoubleTransformImpl _dst, float otherRY, float _t12, float otherRW, float _t13, float _t1, float otherTX, float otherRZ, float _t14, float _t0, float otherTY, float otherRX, float _t2, float otherTZ, float _r3, float _r4, float _r5, float _r6) {
+        _dst.tX = otherRY * _t12 + (otherRW * _t13 + (_t1 + otherTX) - otherRZ * _t14);
+        _dst.tY = otherRZ * _t13 + (otherRW * _t14 + (_t0 + otherTY) - otherRX * _t12);
+        _dst.tZ = otherRX * _t14 + (otherRW * _t12 + (_t2 + otherTZ) - otherRY * _t13);
+        _dst.rX = otherRX * _r3 + otherRW * _r4 + (otherRY * _r5 - otherRZ * _r6);
+    }
+
+    /** Private store group 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s11cc6446_c1(DoubleTransformImpl _dst, float otherRY, float _r3, float otherRW, float _r6, float otherRZ, float _r4, float otherRX, float _r5) {
+        _dst.rY = otherRY * _r3 + otherRW * _r6 + (otherRZ * _r4 - otherRX * _r5);
+        _dst.rZ = otherRZ * _r3 + otherRW * _r5 + (otherRX * _r6 - otherRY * _r4);
+        _dst.rW = otherRW * _r3 - otherRX * _r4 - (otherRY * _r6 + otherRZ * _r5);
+    }
+
+    /** Private store group 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s11cc6446_c2(DoubleTransformImpl _dst, float otherSX, float _r7, float otherSY, float _r8, float otherSZ, float _r9) {
+        _dst.sX = otherSX * _r7;
+        _dst.sY = otherSY * _r8;
+        _dst.sZ = otherSZ * _r9;
     }
 
 
@@ -1977,25 +2121,25 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform preMul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        float _t0 = otherSY * this.tY;
-        float _t1 = otherSX * this.tX;
-        float _t2 = otherSZ * this.tZ;
+        float _r0 = this.tY;
+        float _r1 = this.tX;
+        float _r2 = this.tZ;
+        float _r3 = this.rW;
+        float _r4 = this.rX;
+        float _r5 = this.rZ;
+        float _r6 = this.rY;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
+        float _t0 = otherSY * _r0;
+        float _t1 = otherSX * _r1;
+        float _t2 = otherSZ * _r2;
         float _t12 = 2.0f * (otherRX * _t0 - otherRY * _t1);
         float _t13 = 2.0f * (otherRY * _t2 - otherRZ * _t0);
         float _t14 = 2.0f * (otherRZ * _t1 - otherRX * _t2);
-        d.tX = otherRY * _t12 + (otherRW * _t13 + (_t1 + otherTX) - otherRZ * _t14);
-        d.tY = otherRZ * _t13 + (otherRW * _t14 + (_t0 + otherTY) - otherRX * _t12);
-        d.tZ = otherRX * _t14 + (otherRW * _t12 + (_t2 + otherTZ) - otherRY * _t13);
-        float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        float _buf1 = otherRY * this.rW + otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
-        float _buf2 = otherRZ * this.rW + otherRW * this.rZ + (otherRX * this.rY - otherRY * this.rX);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.sX = otherSX * this.sX;
-        d.sY = otherSY * this.sY;
-        d.sZ = otherSZ * this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        preMul_s11cc6446_c0(d, otherRY, _t12, otherRW, _t13, _t1, otherTX, otherRZ, _t14, _t0, otherTY, otherRX, _t2, otherTZ, _r3, _r4, _r5, _r6);
+        preMul_s11cc6446_c1(d, otherRY, _r3, otherRW, _r6, otherRZ, _r4, otherRX, _r5);
+        preMul_s11cc6446_c2(d, otherSX, _r7, otherSY, _r8, otherSZ, _r9);
         return d;
     }
 
@@ -2042,6 +2186,39 @@ public final class FloatTransformImpl implements FloatTransform {
         return difference(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), other.sX(), other.sY(), other.sZ(), dest);
     }
 
+    /** Private store group 0 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s3e5a2933_c0(FloatTransformImpl _dst, float _r7, float _t30, float _r8, float _t31, float _r9, float _t32, float _sp1, float _t33, float _t34, float _t35, float _sp3, float _r6, float _sp2, float _sp5, float _sp0, float _sp4, float otherRX, float otherRW, float otherRY, float otherRZ) {
+        _dst.tX = _r7 * _t30 - _r8 * _t31 + (_r9 * _t32 + _sp1) + (_r7 * _t33 - _r8 * _t34 + (_r9 * _t35 - _sp3));
+        _dst.tY = _r6 * _t31 - _r7 * _t32 + (_r9 * _t30 + _sp2) + (_r6 * _t34 - _r7 * _t35 + (_r9 * _t33 - _sp5));
+        _dst.tZ = _r8 * _t32 - _r6 * _t30 + (_r9 * _t31 + _sp0) + (_r8 * _t35 - _r6 * _t33 + (_r9 * _t34 - _sp4));
+        _dst.rX = otherRX * _r9 - otherRW * _r6 + (otherRY * _r7 - otherRZ * _r8);
+    }
+
+    /** Private store group 1 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s3e5a2933_c1(FloatTransformImpl _dst, float otherRY, float _r9, float otherRW, float _r8, float otherRZ, float _r6, float otherRX, float _r7) {
+        _dst.rY = otherRY * _r9 - otherRW * _r8 + (otherRZ * _r6 - otherRX * _r7);
+        _dst.rZ = otherRX * _r8 - otherRY * _r6 + (otherRZ * _r9 - otherRW * _r7);
+        _dst.rW = otherRX * _r6 + otherRW * _r9 - (-(otherRY * _r8) - otherRZ * _r7);
+    }
+
+    /** Private store group 2 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s3e5a2933_c2(FloatTransformImpl _dst, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _rcp0) {
+        _dst.sX = otherSX * _rcp1;
+        _dst.sY = otherSY * _rcp2;
+        _dst.sZ = otherSZ * _rcp0;
+    }
+
+    /** Private tail of {@code difference}; reached only through it. */
+    private void difference_s3e5a2933_tail(FloatTransformImpl _dst, float _sp2, float _r7, float _sp0, float _r8, float _sp3, float _sp4, float _r6, float _sp5, float _t30, float _t31, float _r9, float _sp1, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _rcp0) {
+        float _t32 = 2.0f * (_sp2 * _r7 - _sp0 * _r8);
+        float _t33 = 2.0f * (_sp3 * _r7 - _sp4 * _r6);
+        float _t34 = 2.0f * (_sp5 * _r6 - _sp3 * _r8);
+        float _t35 = 2.0f * (_sp4 * _r8 - _sp5 * _r7);
+        difference_s3e5a2933_c0(_dst, _r7, _t30, _r8, _t31, _r9, _t32, _sp1, _t33, _t34, _t35, _sp3, _r6, _sp2, _sp5, _sp0, _sp4, otherRX, otherRW, otherRY, otherRZ);
+        difference_s3e5a2933_c1(_dst, otherRY, _r9, otherRW, _r8, otherRZ, _r6, otherRX, _r7);
+        difference_s3e5a2933_c2(_dst, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0);
+    }
+
 
     /**
      * Compute the difference between this transform and ({@code otherTX}, {@code otherTY},
@@ -2084,35 +2261,62 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform difference(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
-        float _rcp0 = 1.0f / this.sZ;
-        float _sp4 = _rcp0 * this.tZ;
+        float _r0 = this.sZ;
+        float _r1 = this.tZ;
+        float _r2 = this.sX;
+        float _r3 = this.tX;
+        float _r4 = this.sY;
+        float _r5 = this.tY;
+        float _r6 = this.rX;
+        float _r7 = this.rZ;
+        float _r8 = this.rY;
+        float _r9 = this.rW;
+        float _rcp0 = 1.0f / _r0;
+        float _sp4 = _rcp0 * _r1;
         float _sp0 = otherTZ * _rcp0;
-        float _rcp1 = 1.0f / this.sX;
-        float _sp3 = _rcp1 * this.tX;
+        float _rcp1 = 1.0f / _r2;
+        float _sp3 = _rcp1 * _r3;
         float _sp1 = otherTX * _rcp1;
-        float _rcp2 = 1.0f / this.sY;
-        float _sp5 = _rcp2 * this.tY;
+        float _rcp2 = 1.0f / _r4;
+        float _sp5 = _rcp2 * _r5;
         float _sp2 = otherTY * _rcp2;
-        float _t30 = 2.0f * (_sp0 * this.rX - _sp1 * this.rZ);
-        float _t31 = 2.0f * (_sp1 * this.rY - _sp2 * this.rX);
-        float _t32 = 2.0f * (_sp2 * this.rZ - _sp0 * this.rY);
-        float _t33 = 2.0f * (_sp3 * this.rZ - _sp4 * this.rX);
-        float _t34 = 2.0f * (_sp5 * this.rX - _sp3 * this.rY);
-        float _t35 = 2.0f * (_sp4 * this.rY - _sp5 * this.rZ);
-        d.tX = this.rZ * _t30 - this.rY * _t31 + (this.rW * _t32 + _sp1) + (this.rZ * _t33 - this.rY * _t34 + (this.rW * _t35 - _sp3));
-        d.tY = this.rX * _t31 - this.rZ * _t32 + (this.rW * _t30 + _sp2) + (this.rX * _t34 - this.rZ * _t35 + (this.rW * _t33 - _sp5));
-        d.tZ = this.rY * _t32 - this.rX * _t30 + (this.rW * _t31 + _sp0) + (this.rY * _t35 - this.rX * _t33 + (this.rW * _t34 - _sp4));
-        float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        float _buf1 = otherRY * this.rW - otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
-        float _buf2 = otherRX * this.rY - otherRY * this.rX + (otherRZ * this.rW - otherRW * this.rZ);
-        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
-        d.sX = otherSX * _rcp1;
-        d.sY = otherSY * _rcp2;
-        d.sZ = otherSZ * _rcp0;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _t30 = 2.0f * (_sp0 * _r6 - _sp1 * _r7);
+        float _t31 = 2.0f * (_sp1 * _r8 - _sp2 * _r6);
+        difference_s3e5a2933_tail(d, _sp2, _r7, _sp0, _r8, _sp3, _sp4, _r6, _sp5, _t30, _t31, _r9, _sp1, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0);
         return d;
+    }
+
+    /** Private store group 0 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s11cc6446_c0(DoubleTransformImpl _dst, float _r7, float _t30, float _r8, float _t31, float _r9, float _t32, float _sp1, float _t33, float _t34, float _t35, float _sp3, float _r6, float _sp2, float _sp5, float _sp0, float _sp4, float otherRX, float otherRW, float otherRY, float otherRZ) {
+        _dst.tX = _r7 * _t30 - _r8 * _t31 + (_r9 * _t32 + _sp1) + (_r7 * _t33 - _r8 * _t34 + (_r9 * _t35 - _sp3));
+        _dst.tY = _r6 * _t31 - _r7 * _t32 + (_r9 * _t30 + _sp2) + (_r6 * _t34 - _r7 * _t35 + (_r9 * _t33 - _sp5));
+        _dst.tZ = _r8 * _t32 - _r6 * _t30 + (_r9 * _t31 + _sp0) + (_r8 * _t35 - _r6 * _t33 + (_r9 * _t34 - _sp4));
+        _dst.rX = otherRX * _r9 - otherRW * _r6 + (otherRY * _r7 - otherRZ * _r8);
+    }
+
+    /** Private store group 1 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s11cc6446_c1(DoubleTransformImpl _dst, float otherRY, float _r9, float otherRW, float _r8, float otherRZ, float _r6, float otherRX, float _r7) {
+        _dst.rY = otherRY * _r9 - otherRW * _r8 + (otherRZ * _r6 - otherRX * _r7);
+        _dst.rZ = otherRX * _r8 - otherRY * _r6 + (otherRZ * _r9 - otherRW * _r7);
+        _dst.rW = otherRX * _r6 + otherRW * _r9 - (-(otherRY * _r8) - otherRZ * _r7);
+    }
+
+    /** Private store group 2 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s11cc6446_c2(DoubleTransformImpl _dst, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _rcp0) {
+        _dst.sX = otherSX * _rcp1;
+        _dst.sY = otherSY * _rcp2;
+        _dst.sZ = otherSZ * _rcp0;
+    }
+
+    /** Private tail of {@code difference}; reached only through it. */
+    private void difference_s11cc6446_tail(DoubleTransformImpl _dst, float _sp2, float _r7, float _sp0, float _r8, float _sp3, float _sp4, float _r6, float _sp5, float _t30, float _t31, float _r9, float _sp1, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _rcp0) {
+        float _t32 = 2.0f * (_sp2 * _r7 - _sp0 * _r8);
+        float _t33 = 2.0f * (_sp3 * _r7 - _sp4 * _r6);
+        float _t34 = 2.0f * (_sp5 * _r6 - _sp3 * _r8);
+        float _t35 = 2.0f * (_sp4 * _r8 - _sp5 * _r7);
+        difference_s11cc6446_c0(_dst, _r7, _t30, _r8, _t31, _r9, _t32, _sp1, _t33, _t34, _t35, _sp3, _r6, _sp2, _sp5, _sp0, _sp4, otherRX, otherRW, otherRY, otherRZ);
+        difference_s11cc6446_c1(_dst, otherRY, _r9, otherRW, _r8, otherRZ, _r6, otherRX, _r7);
+        difference_s11cc6446_c2(_dst, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0);
     }
 
 
@@ -2160,34 +2364,28 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform difference(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
-        float _rcp0 = 1.0f / this.sZ;
-        float _sp4 = _rcp0 * this.tZ;
+        float _r0 = this.sZ;
+        float _r1 = this.tZ;
+        float _r2 = this.sX;
+        float _r3 = this.tX;
+        float _r4 = this.sY;
+        float _r5 = this.tY;
+        float _r6 = this.rX;
+        float _r7 = this.rZ;
+        float _r8 = this.rY;
+        float _r9 = this.rW;
+        float _rcp0 = 1.0f / _r0;
+        float _sp4 = _rcp0 * _r1;
         float _sp0 = otherTZ * _rcp0;
-        float _rcp1 = 1.0f / this.sX;
-        float _sp3 = _rcp1 * this.tX;
+        float _rcp1 = 1.0f / _r2;
+        float _sp3 = _rcp1 * _r3;
         float _sp1 = otherTX * _rcp1;
-        float _rcp2 = 1.0f / this.sY;
-        float _sp5 = _rcp2 * this.tY;
+        float _rcp2 = 1.0f / _r4;
+        float _sp5 = _rcp2 * _r5;
         float _sp2 = otherTY * _rcp2;
-        float _t30 = 2.0f * (_sp0 * this.rX - _sp1 * this.rZ);
-        float _t31 = 2.0f * (_sp1 * this.rY - _sp2 * this.rX);
-        float _t32 = 2.0f * (_sp2 * this.rZ - _sp0 * this.rY);
-        float _t33 = 2.0f * (_sp3 * this.rZ - _sp4 * this.rX);
-        float _t34 = 2.0f * (_sp5 * this.rX - _sp3 * this.rY);
-        float _t35 = 2.0f * (_sp4 * this.rY - _sp5 * this.rZ);
-        d.tX = this.rZ * _t30 - this.rY * _t31 + (this.rW * _t32 + _sp1) + (this.rZ * _t33 - this.rY * _t34 + (this.rW * _t35 - _sp3));
-        d.tY = this.rX * _t31 - this.rZ * _t32 + (this.rW * _t30 + _sp2) + (this.rX * _t34 - this.rZ * _t35 + (this.rW * _t33 - _sp5));
-        d.tZ = this.rY * _t32 - this.rX * _t30 + (this.rW * _t31 + _sp0) + (this.rY * _t35 - this.rX * _t33 + (this.rW * _t34 - _sp4));
-        float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        float _buf1 = otherRY * this.rW - otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
-        float _buf2 = otherRX * this.rY - otherRY * this.rX + (otherRZ * this.rW - otherRW * this.rZ);
-        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
-        d.sX = otherSX * _rcp1;
-        d.sY = otherSY * _rcp2;
-        d.sZ = otherSZ * _rcp0;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _t30 = 2.0f * (_sp0 * _r6 - _sp1 * _r7);
+        float _t31 = 2.0f * (_sp1 * _r8 - _sp2 * _r6);
+        difference_s11cc6446_tail(d, _sp2, _r7, _sp0, _r8, _sp3, _sp4, _r6, _sp5, _t30, _t31, _r9, _sp1, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0);
         return d;
     }
 
@@ -3599,6 +3797,28 @@ public final class FloatTransformImpl implements FloatTransform {
         return rotateAxis(angle, axis.x(), axis.y(), axis.z(), dest);
     }
 
+    /** Private store group 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s45c040b5_c0(FloatTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t5, float _r4, float _t2, float _r5, float _t3, float _r6, float _t4) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t5 + _r4 * _t2 + (_r5 * _t3 - _r6 * _t4);
+    }
+
+    /** Private store group 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s45c040b5_c1(FloatTransformImpl _dst, float _r5, float _t5, float _r4, float _t4, float _r6, float _t2, float _r3, float _t3) {
+        _dst.rY = _r5 * _t5 + _r4 * _t4 + (_r6 * _t2 - _r3 * _t3);
+        _dst.rZ = _r6 * _t5 + _r4 * _t3 + (_r3 * _t4 - _r5 * _t2);
+        _dst.rW = _r4 * _t5 - _r3 * _t2 - (_r5 * _t4 + _r6 * _t3);
+    }
+
+    /** Private store group 2 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s45c040b5_c2(FloatTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
 
     /**
      * Apply a rotation of {@code angle} radians about the axis ({@code axisX}, {@code axisY},
@@ -3629,26 +3849,48 @@ public final class FloatTransformImpl implements FloatTransform {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         float _t2 = axisX * _t1;
         float _t3 = axisZ * _t1;
         float _t4 = axisY * _t1;
         float _t5 = (float) Math.cosFromSin(_t1, _t0);
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t5 + this.rW * _t2 + (this.rY * _t3 - this.rZ * _t4);
-        float _buf1 = this.rY * _t5 + this.rW * _t4 + (this.rZ * _t2 - this.rX * _t3);
-        float _buf2 = this.rZ * _t5 + this.rW * _t3 + (this.rX * _t4 - this.rY * _t2);
-        d.rW = this.rW * _t5 - this.rX * _t2 - (this.rY * _t4 + this.rZ * _t3);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateAxis_s45c040b5_c0(d, _r0, _r1, _r2, _r3, _t5, _r4, _t2, _r5, _t3, _r6, _t4);
+        rotateAxis_s45c040b5_c1(d, _r5, _t5, _r4, _t4, _r6, _t2, _r3, _t3);
+        rotateAxis_s45c040b5_c2(d, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s77293d04_c0(DoubleTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t5, float _r4, float _t2, float _r5, float _t3, float _r6, float _t4) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t5 + _r4 * _t2 + (_r5 * _t3 - _r6 * _t4);
+    }
+
+    /** Private store group 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s77293d04_c1(DoubleTransformImpl _dst, float _r5, float _t5, float _r4, float _t4, float _r6, float _t2, float _r3, float _t3) {
+        _dst.rY = _r5 * _t5 + _r4 * _t4 + (_r6 * _t2 - _r3 * _t3);
+        _dst.rZ = _r6 * _t5 + _r4 * _t3 + (_r3 * _t4 - _r5 * _t2);
+        _dst.rW = _r4 * _t5 - _r3 * _t2 - (_r5 * _t4 + _r6 * _t3);
+    }
+
+    /** Private store group 2 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s77293d04_c2(DoubleTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
     }
 
 
@@ -3684,25 +3926,25 @@ public final class FloatTransformImpl implements FloatTransform {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         float _t2 = axisX * _t1;
         float _t3 = axisZ * _t1;
         float _t4 = axisY * _t1;
         float _t5 = (float) Math.cosFromSin(_t1, _t0);
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t5 + this.rW * _t2 + (this.rY * _t3 - this.rZ * _t4);
-        float _buf1 = this.rY * _t5 + this.rW * _t4 + (this.rZ * _t2 - this.rX * _t3);
-        float _buf2 = this.rZ * _t5 + this.rW * _t3 + (this.rX * _t4 - this.rY * _t2);
-        d.rW = this.rW * _t5 - this.rX * _t2 - (this.rY * _t4 + this.rZ * _t3);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateAxis_s77293d04_c0(d, _r0, _r1, _r2, _r3, _t5, _r4, _t2, _r5, _t3, _r6, _t4);
+        rotateAxis_s77293d04_c1(d, _r5, _t5, _r4, _t4, _r6, _t2, _r3, _t3);
+        rotateAxis_s77293d04_c2(d, _r7, _r8, _r9);
         return d;
     }
 
@@ -3787,6 +4029,36 @@ public final class FloatTransformImpl implements FloatTransform {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s7f3aa2ea_c0(FloatTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s7f3aa2ea_c1(FloatTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s7f3aa2ea_c2(FloatTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_s7f3aa2ea_tail(FloatTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateXYZ_s7f3aa2ea_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXYZ_s7f3aa2ea_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateXYZ_s7f3aa2ea_c2(_dst, _r7, _r8, _r9);
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -3812,6 +4084,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform rotateXYZ(float angleX, float angleY, float angleZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -3828,21 +4110,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t9 * _t8 + _t13 * _t5;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXYZ_s7f3aa2ea_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s6cfb216f_c0(DoubleTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s6cfb216f_c1(DoubleTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s6cfb216f_c2(DoubleTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_s6cfb216f_tail(DoubleTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateXYZ_s6cfb216f_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXYZ_s6cfb216f_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateXYZ_s6cfb216f_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -3873,6 +4172,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform rotateXYZ(float angleX, float angleY, float angleZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -3889,21 +4198,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t9 * _t8 + _t13 * _t5;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXYZ_s6cfb216f_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s4f29d2a_c0(FloatTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s4f29d2a_c1(FloatTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s4f29d2a_c2(FloatTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s4f29d2a_tail(FloatTransformImpl _dst, float _t13, float _t5, float _t9, float _t8, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t13 * _t5 - _t9 * _t8;
+        rotateXZY_s4f29d2a_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXZY_s4f29d2a_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateXZY_s4f29d2a_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -3931,6 +4257,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -3947,21 +4283,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t13 * _t5 - _t9 * _t8;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXZY_s4f29d2a_tail(d, _t13, _t5, _t9, _t8, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1e426f2f_c0(DoubleTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1e426f2f_c1(DoubleTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1e426f2f_c2(DoubleTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s1e426f2f_tail(DoubleTransformImpl _dst, float _t13, float _t5, float _t9, float _t8, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t13 * _t5 - _t9 * _t8;
+        rotateXZY_s1e426f2f_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXZY_s1e426f2f_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateXZY_s1e426f2f_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -3992,6 +4345,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -4008,20 +4371,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t13 * _t5 - _t9 * _t8;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXZY_s1e426f2f_tail(d, _t13, _t5, _t9, _t8, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
     }
 
@@ -4106,6 +4456,36 @@ public final class FloatTransformImpl implements FloatTransform {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s754fad2a_c0(FloatTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s754fad2a_c1(FloatTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s754fad2a_c2(FloatTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s754fad2a_tail(FloatTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateYXZ_s754fad2a_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYXZ_s754fad2a_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateYXZ_s754fad2a_c2(_dst, _r7, _r8, _r9);
+    }
+
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -4131,6 +4511,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -4147,21 +4537,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t13 * _t5 - _t9 * _t8;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYXZ_s754fad2a_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s39875f2f_c0(DoubleTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s39875f2f_c1(DoubleTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s39875f2f_c2(DoubleTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s39875f2f_tail(DoubleTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateYXZ_s39875f2f_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYXZ_s39875f2f_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateYXZ_s39875f2f_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -4192,6 +4599,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -4208,21 +4625,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t13 * _t5 - _t9 * _t8;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYXZ_s39875f2f_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_sbfa1aa_c0(FloatTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_sbfa1aa_c1(FloatTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_sbfa1aa_c2(FloatTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_sbfa1aa_tail(FloatTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateYZX_sbfa1aa_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYZX_sbfa1aa_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateYZX_sbfa1aa_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -4250,6 +4684,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -4266,21 +4710,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t9 * _t8 + _t13 * _t5;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYZX_sbfa1aa_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s1c15faaf_c0(DoubleTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s1c15faaf_c1(DoubleTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s1c15faaf_c2(DoubleTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_s1c15faaf_tail(DoubleTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateYZX_s1c15faaf_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYZX_s1c15faaf_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateYZX_s1c15faaf_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -4311,6 +4772,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -4327,20 +4798,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t9 * _t8 + _t13 * _t5;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYZX_s1c15faaf_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
     }
 
@@ -4425,6 +4883,36 @@ public final class FloatTransformImpl implements FloatTransform {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s711cb1aa_c0(FloatTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s711cb1aa_c1(FloatTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s711cb1aa_c2(FloatTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s711cb1aa_tail(FloatTransformImpl _dst, float _t9, float _t8, float _t13, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t9 * _t8 + _t13 * _t5;
+        rotateZXY_s711cb1aa_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZXY_s711cb1aa_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateZXY_s711cb1aa_c2(_dst, _r7, _r8, _r9);
+    }
+
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -4450,6 +4938,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -4466,21 +4964,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t9 * _t8 + _t13 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZXY_s711cb1aa_tail(d, _t9, _t8, _t13, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s375aeaaf_c0(DoubleTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s375aeaaf_c1(DoubleTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s375aeaaf_c2(DoubleTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s375aeaaf_tail(DoubleTransformImpl _dst, float _t9, float _t8, float _t13, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t9 * _t8 + _t13 * _t5;
+        rotateZXY_s375aeaaf_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZXY_s375aeaaf_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateZXY_s375aeaaf_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -4511,6 +5026,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -4527,21 +5052,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t9 * _t8 + _t13 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZXY_s375aeaaf_tail(d, _t9, _t8, _t13, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s76d4abea_c0(FloatTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s76d4abea_c1(FloatTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s76d4abea_c2(FloatTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s76d4abea_tail(FloatTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateZYX_s76d4abea_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZYX_s76d4abea_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateZYX_s76d4abea_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -4569,6 +5111,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public FloatTransform rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -4585,21 +5137,38 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t13 * _t5 - _t9 * _t8;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZYX_s76d4abea_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s68a2386f_c0(DoubleTransformImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s68a2386f_c1(DoubleTransformImpl _dst, float _r5, float _t21, float _r4, float _t24, float _r6, float _t22, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r4 * _t24 + (_r6 * _t22 - _r3 * _t23);
+        _dst.rZ = _r6 * _t21 + _r4 * _t23 + (_r3 * _t24 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private store group 2 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s68a2386f_c2(DoubleTransformImpl _dst, float _r7, float _r8, float _r9) {
+        _dst.sX = _r7;
+        _dst.sY = _r8;
+        _dst.sZ = _r9;
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s68a2386f_tail(DoubleTransformImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _r7, float _r8, float _r9) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateZYX_s68a2386f_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZYX_s68a2386f_c1(_dst, _r5, _t21, _r4, _t24, _r6, _t22, _r3, _t23);
+        rotateZYX_s68a2386f_c2(_dst, _r7, _r8, _r9);
     }
 
 
@@ -4630,6 +5199,16 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public DoubleTransform rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
+        float _r7 = this.sX;
+        float _r8 = this.sY;
+        float _r9 = this.sZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -4646,20 +5225,7 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t13 * _t5 - _t9 * _t8;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rW * _t24 + (this.rZ * _t22 - this.rX * _t23);
-        float _buf2 = this.rZ * _t21 + this.rW * _t23 + (this.rX * _t24 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.sX = this.sX;
-        d.sY = this.sY;
-        d.sZ = this.sZ;
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZYX_s68a2386f_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _r7, _r8, _r9);
         return d;
     }
 

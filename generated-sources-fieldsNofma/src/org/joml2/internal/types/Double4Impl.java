@@ -976,6 +976,14 @@ public final class Double4Impl implements Double4 {
         return catmullRomTangent(p1.x(), p1.y(), p1.z(), p1.w(), p2.x(), p2.y(), p2.z(), p2.w(), p3.x(), p3.y(), p3.z(), p3.w(), t, dest);
     }
 
+    /** Private store group 0 of {@code catmullRomTangent}: computes and stores it; reached only through it. */
+    private void catmullRomTangent_s61a63d9e_c0(Double4Impl _dst, double _sp0, double p1X, double _r0, double p2X, double p3X, double _sp1, double p1Y, double _r1, double p2Y, double p3Y, double p1Z, double _r2, double p2Z, double p3Z, double p1W, double _r3, double p2W, double p3W) {
+        _dst.x = 0.5 * (_sp0 * (-5.0 * p1X + (_r0 + _r0 + (4.0 * p2X - p3X))) + (_sp1 * (3.0 * p1X + (p3X - _r0) - 3.0 * p2X) + (p2X - _r0)));
+        _dst.y = 0.5 * (_sp0 * (-5.0 * p1Y + (_r1 + _r1 + (4.0 * p2Y - p3Y))) + (_sp1 * (3.0 * p1Y + (p3Y - _r1) - 3.0 * p2Y) + (p2Y - _r1)));
+        _dst.z = 0.5 * (_sp0 * (-5.0 * p1Z + (_r2 + _r2 + (4.0 * p2Z - p3Z))) + (_sp1 * (3.0 * p1Z + (p3Z - _r2) - 3.0 * p2Z) + (p2Z - _r2)));
+        _dst.w = 0.5 * (_sp0 * (-5.0 * p1W + (_r3 + _r3 + (4.0 * p2W - p3W))) + (_sp1 * (3.0 * p1W + (p3W - _r3) - 3.0 * p2W) + (p2W - _r3)));
+    }
+
 
     /**
      * Compute the tangent (the unnormalized first derivative) at the parameter {@code t} of the
@@ -1012,12 +1020,13 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 catmullRomTangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
+        double _r0 = this.x;
+        double _r1 = this.y;
+        double _r2 = this.z;
+        double _r3 = this.w;
         double _sp0 = t + t;
         double _sp1 = 3.0 * t * t;
-        d.x = 0.5 * (_sp0 * (-5.0 * p1X + (this.x + this.x + (4.0 * p2X - p3X))) + (_sp1 * (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) + (p2X - this.x)));
-        d.y = 0.5 * (_sp0 * (-5.0 * p1Y + (this.y + this.y + (4.0 * p2Y - p3Y))) + (_sp1 * (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) + (p2Y - this.y)));
-        d.z = 0.5 * (_sp0 * (-5.0 * p1Z + (this.z + this.z + (4.0 * p2Z - p3Z))) + (_sp1 * (3.0 * p1Z + (p3Z - this.z) - 3.0 * p2Z) + (p2Z - this.z)));
-        d.w = 0.5 * (_sp0 * (-5.0 * p1W + (this.w + this.w + (4.0 * p2W - p3W))) + (_sp1 * (3.0 * p1W + (p3W - this.w) - 3.0 * p2W) + (p2W - this.w)));
+        catmullRomTangent_s61a63d9e_c0(d, _sp0, p1X, _r0, p2X, p3X, _sp1, p1Y, _r1, p2Y, p3Y, p1Z, _r2, p2Z, p3Z, p1W, _r3, p2W, p3W);
         return d;
     }
 

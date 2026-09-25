@@ -1188,6 +1188,42 @@ public final class FloatRigidImpl implements FloatRigid {
         return lerp(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), t, dest);
     }
 
+    /** Private store group 0 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s525d8d2_c0(FloatRigidImpl _dst, float t, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float _t63, float _t64, float _t53) {
+        _dst.tX = t * (otherTX - _r4) + _r4;
+        _dst.tY = t * (otherTY - _r5) + _r5;
+        _dst.tZ = t * (otherTZ - _r6) + _r6;
+        _dst.rX = _t63 != 0.0f ? _t64 * _t53 : 0.0f;
+    }
+
+    /** Private store group 1 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s525d8d2_c1(FloatRigidImpl _dst, float _t63, float _t64, float _t54, float _t55, float _t56) {
+        _dst.rY = _t63 != 0.0f ? _t64 * _t54 : 0.0f;
+        _dst.rZ = _t63 != 0.0f ? _t64 * _t55 : 0.0f;
+        _dst.rW = _t63 != 0.0f ? _t64 * _t56 : 0.0f;
+    }
+
+    /** Private tail of {@code lerp}; reached only through it. */
+    private void lerp_s525d8d2_tail(FloatRigidImpl _dst, float _t0, float _t19, float _t20, float _r0, float _t22, float _t24, float _t20_inv, float t, float _r1, float _t25, float _r2, float _t26, float _r3, float _t27, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6) {
+        float _t28 = (float) Math.sin(_t0 * _t19);
+        float _t53, _t54, _t55, _t56;
+        if (_t20 > 0.0f) {
+            _t53 = (_r0 * _t28 + _t22 * _t24) * _t20_inv;
+            _t54 = (_r1 * _t28 + _t22 * _t25) * _t20_inv;
+            _t55 = (_r2 * _t28 + _t22 * _t26) * _t20_inv;
+            _t56 = (_r3 * _t28 + _t22 * _t27) * _t20_inv;
+        } else {
+            _t53 = t * _t24 + _r0 * _t0;
+            _t54 = t * _t25 + _r1 * _t0;
+            _t55 = t * _t26 + _r2 * _t0;
+            _t56 = t * _t27 + _r3 * _t0;
+        }
+        float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
+        float _t64 = (1.0f / (float) Math.sqrt(_t63));
+        lerp_s525d8d2_c0(_dst, t, otherTX, _r4, otherTY, _r5, otherTZ, _r6, _t63, _t64, _t53);
+        lerp_s525d8d2_c1(_dst, _t63, _t64, _t54, _t55, _t56);
+    }
+
 
     /**
      * Interpolate between this rigid transform and ({@code otherTX}, {@code otherTY},
@@ -1219,8 +1255,15 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid lerp(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float t, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.tX;
+        float _r5 = this.tY;
+        float _r6 = this.tZ;
         float _t0 = 1.0f - t;
-        float _t15 = otherRX * this.rX + otherRY * this.rY + otherRZ * this.rZ + otherRW * this.rW;
+        float _t15 = otherRX * _r0 + otherRY * _r1 + otherRZ * _r2 + otherRW * _r3;
         float _t17 = -_t15;
         float _t19 = (float) Math.acos(Math.min(1.0f, Math.abs(_t15)));
         float _t20 = (float) Math.sin(_t19);
@@ -1238,36 +1281,44 @@ public final class FloatRigidImpl implements FloatRigid {
             _t26 = otherRZ;
             _t27 = otherRW;
         }
+        lerp_s525d8d2_tail(d, _t0, _t19, _t20, _r0, _t22, _t24, _t20_inv, t, _r1, _t25, _r2, _t26, _r3, _t27, otherTX, _r4, otherTY, _r5, otherTZ, _r6);
+        return d;
+    }
+
+    /** Private store group 0 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s521cc429_c0(DoubleRigidImpl _dst, float t, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6, float _t63, float _t64, float _t53) {
+        _dst.tX = t * (otherTX - _r4) + _r4;
+        _dst.tY = t * (otherTY - _r5) + _r5;
+        _dst.tZ = t * (otherTZ - _r6) + _r6;
+        _dst.rX = _t63 != 0.0f ? _t64 * _t53 : 0.0f;
+    }
+
+    /** Private store group 1 of {@code lerp}: computes and stores it; reached only through it. */
+    private void lerp_s521cc429_c1(DoubleRigidImpl _dst, float _t63, float _t64, float _t54, float _t55, float _t56) {
+        _dst.rY = _t63 != 0.0f ? _t64 * _t54 : 0.0f;
+        _dst.rZ = _t63 != 0.0f ? _t64 * _t55 : 0.0f;
+        _dst.rW = _t63 != 0.0f ? _t64 * _t56 : 0.0f;
+    }
+
+    /** Private tail of {@code lerp}; reached only through it. */
+    private void lerp_s521cc429_tail(DoubleRigidImpl _dst, float _t0, float _t19, float _t20, float _r0, float _t22, float _t24, float _t20_inv, float t, float _r1, float _t25, float _r2, float _t26, float _r3, float _t27, float otherTX, float _r4, float otherTY, float _r5, float otherTZ, float _r6) {
         float _t28 = (float) Math.sin(_t0 * _t19);
         float _t53, _t54, _t55, _t56;
         if (_t20 > 0.0f) {
-            _t53 = (this.rX * _t28 + _t22 * _t24) * _t20_inv;
-            _t54 = (this.rY * _t28 + _t22 * _t25) * _t20_inv;
-            _t55 = (this.rZ * _t28 + _t22 * _t26) * _t20_inv;
-            _t56 = (this.rW * _t28 + _t22 * _t27) * _t20_inv;
+            _t53 = (_r0 * _t28 + _t22 * _t24) * _t20_inv;
+            _t54 = (_r1 * _t28 + _t22 * _t25) * _t20_inv;
+            _t55 = (_r2 * _t28 + _t22 * _t26) * _t20_inv;
+            _t56 = (_r3 * _t28 + _t22 * _t27) * _t20_inv;
         } else {
-            _t53 = t * _t24 + this.rX * _t0;
-            _t54 = t * _t25 + this.rY * _t0;
-            _t55 = t * _t26 + this.rZ * _t0;
-            _t56 = t * _t27 + this.rW * _t0;
+            _t53 = t * _t24 + _r0 * _t0;
+            _t54 = t * _t25 + _r1 * _t0;
+            _t55 = t * _t26 + _r2 * _t0;
+            _t56 = t * _t27 + _r3 * _t0;
         }
         float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
         float _t64 = (1.0f / (float) Math.sqrt(_t63));
-        if (_t63 != 0.0f) {
-            d.rX = _t64 * _t53;
-            d.rY = _t64 * _t54;
-            d.rZ = _t64 * _t55;
-            d.rW = _t64 * _t56;
-        } else {
-            d.rX = 0.0f;
-            d.rY = 0.0f;
-            d.rZ = 0.0f;
-            d.rW = 0.0f;
-        }
-        d.tX = t * (otherTX - this.tX) + this.tX;
-        d.tY = t * (otherTY - this.tY) + this.tY;
-        d.tZ = t * (otherTZ - this.tZ) + this.tZ;
-        return d;
+        lerp_s521cc429_c0(_dst, t, otherTX, _r4, otherTY, _r5, otherTZ, _r6, _t63, _t64, _t53);
+        lerp_s521cc429_c1(_dst, _t63, _t64, _t54, _t55, _t56);
     }
 
 
@@ -1304,8 +1355,15 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid lerp(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float t, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.tX;
+        float _r5 = this.tY;
+        float _r6 = this.tZ;
         float _t0 = 1.0f - t;
-        float _t15 = otherRX * this.rX + otherRY * this.rY + otherRZ * this.rZ + otherRW * this.rW;
+        float _t15 = otherRX * _r0 + otherRY * _r1 + otherRZ * _r2 + otherRW * _r3;
         float _t17 = -_t15;
         float _t19 = (float) Math.acos(Math.min(1.0f, Math.abs(_t15)));
         float _t20 = (float) Math.sin(_t19);
@@ -1323,35 +1381,7 @@ public final class FloatRigidImpl implements FloatRigid {
             _t26 = otherRZ;
             _t27 = otherRW;
         }
-        float _t28 = (float) Math.sin(_t0 * _t19);
-        float _t53, _t54, _t55, _t56;
-        if (_t20 > 0.0f) {
-            _t53 = (this.rX * _t28 + _t22 * _t24) * _t20_inv;
-            _t54 = (this.rY * _t28 + _t22 * _t25) * _t20_inv;
-            _t55 = (this.rZ * _t28 + _t22 * _t26) * _t20_inv;
-            _t56 = (this.rW * _t28 + _t22 * _t27) * _t20_inv;
-        } else {
-            _t53 = t * _t24 + this.rX * _t0;
-            _t54 = t * _t25 + this.rY * _t0;
-            _t55 = t * _t26 + this.rZ * _t0;
-            _t56 = t * _t27 + this.rW * _t0;
-        }
-        float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
-        float _t64 = (1.0f / (float) Math.sqrt(_t63));
-        if (_t63 != 0.0f) {
-            d.rX = _t64 * _t53;
-            d.rY = _t64 * _t54;
-            d.rZ = _t64 * _t55;
-            d.rW = _t64 * _t56;
-        } else {
-            d.rX = 0.0f;
-            d.rY = 0.0f;
-            d.rZ = 0.0f;
-            d.rW = 0.0f;
-        }
-        d.tX = t * (otherTX - this.tX) + this.tX;
-        d.tY = t * (otherTY - this.tY) + this.tY;
-        d.tZ = t * (otherTZ - this.tZ) + this.tZ;
+        lerp_s521cc429_tail(d, _t0, _t19, _t20, _r0, _t22, _t24, _t20_inv, t, _r1, _t25, _r2, _t26, _r3, _t27, otherTX, _r4, otherTY, _r5, otherTZ, _r6);
         return d;
     }
 
@@ -1392,6 +1422,21 @@ public final class FloatRigidImpl implements FloatRigid {
         return mul(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), dest);
     }
 
+    /** Private store group 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s7a4d9c14_c0(FloatRigidImpl _dst, float _r1, float _t9, float _r3, float _t10, float _r4, float otherTX, float _r2, float _t11, float _r5, float otherTY, float _r0, float _r6, float otherTZ, float otherRX, float otherRW, float otherRZ, float otherRY) {
+        _dst.tX = _r1 * _t9 + (_r3 * _t10 + (_r4 + otherTX) - _r2 * _t11);
+        _dst.tY = _r2 * _t10 + (_r3 * _t11 + (_r5 + otherTY) - _r0 * _t9);
+        _dst.tZ = _r0 * _t11 + (_r3 * _t9 + (_r6 + otherTZ) - _r1 * _t10);
+        _dst.rX = otherRX * _r3 + otherRW * _r0 + (otherRZ * _r1 - otherRY * _r2);
+    }
+
+    /** Private store group 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s7a4d9c14_c1(FloatRigidImpl _dst, float otherRX, float _r2, float otherRW, float _r1, float otherRY, float _r3, float otherRZ, float _r0) {
+        _dst.rY = otherRX * _r2 + otherRW * _r1 + (otherRY * _r3 - otherRZ * _r0);
+        _dst.rZ = otherRY * _r0 + otherRZ * _r3 + (otherRW * _r2 - otherRX * _r1);
+        _dst.rW = otherRW * _r3 - otherRX * _r0 - (otherRY * _r1 + otherRZ * _r2);
+    }
+
 
     /**
      * Multiply this rigid transform by ({@code otherTX}, {@code otherTY}, {@code otherTZ},
@@ -1422,20 +1467,34 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid mul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
-        float _t9 = 2.0f * (otherTY * this.rX - otherTX * this.rY);
-        float _t10 = 2.0f * (otherTZ * this.rY - otherTY * this.rZ);
-        float _t11 = 2.0f * (otherTX * this.rZ - otherTZ * this.rX);
-        d.tX = this.rY * _t9 + (this.rW * _t10 + (this.tX + otherTX) - this.rZ * _t11);
-        d.tY = this.rZ * _t10 + (this.rW * _t11 + (this.tY + otherTY) - this.rX * _t9);
-        d.tZ = this.rX * _t11 + (this.rW * _t9 + (this.tZ + otherTZ) - this.rY * _t10);
-        float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
-        float _buf1 = otherRX * this.rZ + otherRW * this.rY + (otherRY * this.rW - otherRZ * this.rX);
-        float _buf2 = otherRY * this.rX + otherRZ * this.rW + (otherRW * this.rZ - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.tX;
+        float _r5 = this.tY;
+        float _r6 = this.tZ;
+        float _t9 = 2.0f * (otherTY * _r0 - otherTX * _r1);
+        float _t10 = 2.0f * (otherTZ * _r1 - otherTY * _r2);
+        float _t11 = 2.0f * (otherTX * _r2 - otherTZ * _r0);
+        mul_s7a4d9c14_c0(d, _r1, _t9, _r3, _t10, _r4, otherTX, _r2, _t11, _r5, otherTY, _r0, _r6, otherTZ, otherRX, otherRW, otherRZ, otherRY);
+        mul_s7a4d9c14_c1(d, otherRX, _r2, otherRW, _r1, otherRY, _r3, otherRZ, _r0);
         return d;
+    }
+
+    /** Private store group 0 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1ed6927_c0(DoubleRigidImpl _dst, float _r1, float _t9, float _r3, float _t10, float _r4, float otherTX, float _r2, float _t11, float _r5, float otherTY, float _r0, float _r6, float otherTZ, float otherRX, float otherRW, float otherRZ, float otherRY) {
+        _dst.tX = _r1 * _t9 + (_r3 * _t10 + (_r4 + otherTX) - _r2 * _t11);
+        _dst.tY = _r2 * _t10 + (_r3 * _t11 + (_r5 + otherTY) - _r0 * _t9);
+        _dst.tZ = _r0 * _t11 + (_r3 * _t9 + (_r6 + otherTZ) - _r1 * _t10);
+        _dst.rX = otherRX * _r3 + otherRW * _r0 + (otherRZ * _r1 - otherRY * _r2);
+    }
+
+    /** Private store group 1 of {@code mul}: computes and stores it; reached only through it. */
+    private void mul_s1ed6927_c1(DoubleRigidImpl _dst, float otherRX, float _r2, float otherRW, float _r1, float otherRY, float _r3, float otherRZ, float _r0) {
+        _dst.rY = otherRX * _r2 + otherRW * _r1 + (otherRY * _r3 - otherRZ * _r0);
+        _dst.rZ = otherRY * _r0 + otherRZ * _r3 + (otherRW * _r2 - otherRX * _r1);
+        _dst.rW = otherRW * _r3 - otherRX * _r0 - (otherRY * _r1 + otherRZ * _r2);
     }
 
 
@@ -1471,19 +1530,18 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid mul(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        float _t9 = 2.0f * (otherTY * this.rX - otherTX * this.rY);
-        float _t10 = 2.0f * (otherTZ * this.rY - otherTY * this.rZ);
-        float _t11 = 2.0f * (otherTX * this.rZ - otherTZ * this.rX);
-        d.tX = this.rY * _t9 + (this.rW * _t10 + (this.tX + otherTX) - this.rZ * _t11);
-        d.tY = this.rZ * _t10 + (this.rW * _t11 + (this.tY + otherTY) - this.rX * _t9);
-        d.tZ = this.rX * _t11 + (this.rW * _t9 + (this.tZ + otherTZ) - this.rY * _t10);
-        float _buf0 = otherRX * this.rW + otherRW * this.rX + (otherRZ * this.rY - otherRY * this.rZ);
-        float _buf1 = otherRX * this.rZ + otherRW * this.rY + (otherRY * this.rW - otherRZ * this.rX);
-        float _buf2 = otherRY * this.rX + otherRZ * this.rW + (otherRW * this.rZ - otherRX * this.rY);
-        d.rW = otherRW * this.rW - otherRX * this.rX - (otherRY * this.rY + otherRZ * this.rZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _r0 = this.rX;
+        float _r1 = this.rY;
+        float _r2 = this.rZ;
+        float _r3 = this.rW;
+        float _r4 = this.tX;
+        float _r5 = this.tY;
+        float _r6 = this.tZ;
+        float _t9 = 2.0f * (otherTY * _r0 - otherTX * _r1);
+        float _t10 = 2.0f * (otherTZ * _r1 - otherTY * _r2);
+        float _t11 = 2.0f * (otherTX * _r2 - otherTZ * _r0);
+        mul_s1ed6927_c0(d, _r1, _t9, _r3, _t10, _r4, otherTX, _r2, _t11, _r5, otherTY, _r0, _r6, otherTZ, otherRX, otherRW, otherRZ, otherRY);
+        mul_s1ed6927_c1(d, otherRX, _r2, otherRW, _r1, otherRY, _r3, otherRZ, _r0);
         return d;
     }
 
@@ -1648,6 +1706,21 @@ public final class FloatRigidImpl implements FloatRigid {
         return difference(other.tX(), other.tY(), other.tZ(), other.rX(), other.rY(), other.rZ(), other.rW(), dest);
     }
 
+    /** Private store group 0 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s7a4d9c14_c0(FloatRigidImpl _dst, float otherTX, float _r1, float _t18, float _r6, float _t19, float _r2, float _t20, float _t21, float _t22, float _t23, float _r3, float otherTY, float _r0, float _r5, float otherTZ, float _r4, float otherRX, float otherRW, float otherRY, float otherRZ) {
+        _dst.tX = otherTX + _r1 * _t18 + (_r6 * _t19 - _r2 * _t20) + (_r1 * _t21 - _r2 * _t22 + (_r6 * _t23 - _r3));
+        _dst.tY = otherTY + _r0 * _t20 + (_r6 * _t18 - _r1 * _t19) + (_r0 * _t22 - _r1 * _t23 + (_r6 * _t21 - _r5));
+        _dst.tZ = otherTZ + _r2 * _t19 + (_r6 * _t20 - _r0 * _t18) + (_r2 * _t23 - _r0 * _t21 + (_r6 * _t22 - _r4));
+        _dst.rX = otherRX * _r6 - otherRW * _r0 + (otherRY * _r1 - otherRZ * _r2);
+    }
+
+    /** Private store group 1 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s7a4d9c14_c1(FloatRigidImpl _dst, float otherRY, float _r6, float otherRZ, float _r0, float otherRW, float _r2, float otherRX, float _r1) {
+        _dst.rY = otherRY * _r6 + otherRZ * _r0 + (-(otherRW * _r2) - otherRX * _r1);
+        _dst.rZ = otherRX * _r2 - otherRW * _r1 + (otherRZ * _r6 - otherRY * _r0);
+        _dst.rW = otherRX * _r0 + otherRW * _r6 - (-(otherRY * _r2) - otherRZ * _r1);
+    }
+
 
     /**
      * Compute the difference between this rigid transform and ({@code otherTX}, {@code otherTY},
@@ -1676,23 +1749,37 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid difference(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
-        float _t18 = 2.0f * (otherTZ * this.rX - otherTX * this.rZ);
-        float _t19 = 2.0f * (otherTY * this.rZ - otherTZ * this.rY);
-        float _t20 = 2.0f * (otherTX * this.rY - otherTY * this.rX);
-        float _t21 = 2.0f * (this.tX * this.rZ - this.tZ * this.rX);
-        float _t22 = 2.0f * (this.tY * this.rX - this.tX * this.rY);
-        float _t23 = 2.0f * (this.tZ * this.rY - this.tY * this.rZ);
-        d.tX = otherTX + this.rZ * _t18 + (this.rW * _t19 - this.rY * _t20) + (this.rZ * _t21 - this.rY * _t22 + (this.rW * _t23 - this.tX));
-        d.tY = otherTY + this.rX * _t20 + (this.rW * _t18 - this.rZ * _t19) + (this.rX * _t22 - this.rZ * _t23 + (this.rW * _t21 - this.tY));
-        d.tZ = otherTZ + this.rY * _t19 + (this.rW * _t20 - this.rX * _t18) + (this.rY * _t23 - this.rX * _t21 + (this.rW * _t22 - this.tZ));
-        float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        float _buf1 = otherRY * this.rW + otherRZ * this.rX + (-(otherRW * this.rY) - otherRX * this.rZ);
-        float _buf2 = otherRX * this.rY - otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _r0 = this.rX;
+        float _r1 = this.rZ;
+        float _r2 = this.rY;
+        float _r3 = this.tX;
+        float _r4 = this.tZ;
+        float _r5 = this.tY;
+        float _r6 = this.rW;
+        float _t18 = 2.0f * (otherTZ * _r0 - otherTX * _r1);
+        float _t19 = 2.0f * (otherTY * _r1 - otherTZ * _r2);
+        float _t20 = 2.0f * (otherTX * _r2 - otherTY * _r0);
+        float _t21 = 2.0f * (_r3 * _r1 - _r4 * _r0);
+        float _t22 = 2.0f * (_r5 * _r0 - _r3 * _r2);
+        float _t23 = 2.0f * (_r4 * _r2 - _r5 * _r1);
+        difference_s7a4d9c14_c0(d, otherTX, _r1, _t18, _r6, _t19, _r2, _t20, _t21, _t22, _t23, _r3, otherTY, _r0, _r5, otherTZ, _r4, otherRX, otherRW, otherRY, otherRZ);
+        difference_s7a4d9c14_c1(d, otherRY, _r6, otherRZ, _r0, otherRW, _r2, otherRX, _r1);
         return d;
+    }
+
+    /** Private store group 0 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s1ed6927_c0(DoubleRigidImpl _dst, float otherTX, float _r1, float _t18, float _r6, float _t19, float _r2, float _t20, float _t21, float _t22, float _t23, float _r3, float otherTY, float _r0, float _r5, float otherTZ, float _r4, float otherRX, float otherRW, float otherRY, float otherRZ) {
+        _dst.tX = otherTX + _r1 * _t18 + (_r6 * _t19 - _r2 * _t20) + (_r1 * _t21 - _r2 * _t22 + (_r6 * _t23 - _r3));
+        _dst.tY = otherTY + _r0 * _t20 + (_r6 * _t18 - _r1 * _t19) + (_r0 * _t22 - _r1 * _t23 + (_r6 * _t21 - _r5));
+        _dst.tZ = otherTZ + _r2 * _t19 + (_r6 * _t20 - _r0 * _t18) + (_r2 * _t23 - _r0 * _t21 + (_r6 * _t22 - _r4));
+        _dst.rX = otherRX * _r6 - otherRW * _r0 + (otherRY * _r1 - otherRZ * _r2);
+    }
+
+    /** Private store group 1 of {@code difference}: computes and stores it; reached only through it. */
+    private void difference_s1ed6927_c1(DoubleRigidImpl _dst, float otherRY, float _r6, float otherRZ, float _r0, float otherRW, float _r2, float otherRX, float _r1) {
+        _dst.rY = otherRY * _r6 + otherRZ * _r0 + (-(otherRW * _r2) - otherRX * _r1);
+        _dst.rZ = otherRX * _r2 - otherRW * _r1 + (otherRZ * _r6 - otherRY * _r0);
+        _dst.rW = otherRX * _r0 + otherRW * _r6 - (-(otherRY * _r2) - otherRZ * _r1);
     }
 
 
@@ -1726,22 +1813,21 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid difference(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
-        float _t18 = 2.0f * (otherTZ * this.rX - otherTX * this.rZ);
-        float _t19 = 2.0f * (otherTY * this.rZ - otherTZ * this.rY);
-        float _t20 = 2.0f * (otherTX * this.rY - otherTY * this.rX);
-        float _t21 = 2.0f * (this.tX * this.rZ - this.tZ * this.rX);
-        float _t22 = 2.0f * (this.tY * this.rX - this.tX * this.rY);
-        float _t23 = 2.0f * (this.tZ * this.rY - this.tY * this.rZ);
-        d.tX = otherTX + this.rZ * _t18 + (this.rW * _t19 - this.rY * _t20) + (this.rZ * _t21 - this.rY * _t22 + (this.rW * _t23 - this.tX));
-        d.tY = otherTY + this.rX * _t20 + (this.rW * _t18 - this.rZ * _t19) + (this.rX * _t22 - this.rZ * _t23 + (this.rW * _t21 - this.tY));
-        d.tZ = otherTZ + this.rY * _t19 + (this.rW * _t20 - this.rX * _t18) + (this.rY * _t23 - this.rX * _t21 + (this.rW * _t22 - this.tZ));
-        float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
-        float _buf1 = otherRY * this.rW + otherRZ * this.rX + (-(otherRW * this.rY) - otherRX * this.rZ);
-        float _buf2 = otherRX * this.rY - otherRW * this.rZ + (otherRZ * this.rW - otherRY * this.rX);
-        d.rW = otherRX * this.rX + otherRW * this.rW - (-(otherRY * this.rY) - otherRZ * this.rZ);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        float _r0 = this.rX;
+        float _r1 = this.rZ;
+        float _r2 = this.rY;
+        float _r3 = this.tX;
+        float _r4 = this.tZ;
+        float _r5 = this.tY;
+        float _r6 = this.rW;
+        float _t18 = 2.0f * (otherTZ * _r0 - otherTX * _r1);
+        float _t19 = 2.0f * (otherTY * _r1 - otherTZ * _r2);
+        float _t20 = 2.0f * (otherTX * _r2 - otherTY * _r0);
+        float _t21 = 2.0f * (_r3 * _r1 - _r4 * _r0);
+        float _t22 = 2.0f * (_r5 * _r0 - _r3 * _r2);
+        float _t23 = 2.0f * (_r4 * _r2 - _r5 * _r1);
+        difference_s1ed6927_c0(d, otherTX, _r1, _t18, _r6, _t19, _r2, _t20, _t21, _t22, _t23, _r3, otherTY, _r0, _r5, otherTZ, _r4, otherRX, otherRW, otherRY, otherRZ);
+        difference_s1ed6927_c1(d, otherRY, _r6, otherRZ, _r0, otherRW, _r2, otherRX, _r1);
         return d;
     }
 
@@ -2954,6 +3040,21 @@ public final class FloatRigidImpl implements FloatRigid {
         return rotateAxis(angle, axis.x(), axis.y(), axis.z(), dest);
     }
 
+    /** Private store group 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s592810d6_c0(FloatRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t5, float _r4, float _t2, float _r5, float _t3, float _r6, float _t4) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t5 + _r4 * _t2 + (_r5 * _t3 - _r6 * _t4);
+    }
+
+    /** Private store group 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s592810d6_c1(FloatRigidImpl _dst, float _r5, float _t5, float _r6, float _t2, float _r4, float _t4, float _r3, float _t3) {
+        _dst.rY = _r5 * _t5 + _r6 * _t2 + (_r4 * _t4 - _r3 * _t3);
+        _dst.rZ = _r3 * _t4 + _r4 * _t3 + (_r6 * _t5 - _r5 * _t2);
+        _dst.rW = _r4 * _t5 - _r3 * _t2 - (_r5 * _t4 + _r6 * _t3);
+    }
+
 
     /**
      * Apply a rotation of {@code angle} radians about the axis ({@code axisX}, {@code axisY},
@@ -2978,23 +3079,37 @@ public final class FloatRigidImpl implements FloatRigid {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         float _t2 = axisX * _t1;
         float _t3 = axisZ * _t1;
         float _t4 = axisY * _t1;
         float _t5 = (float) Math.cosFromSin(_t1, _t0);
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t5 + this.rW * _t2 + (this.rY * _t3 - this.rZ * _t4);
-        float _buf1 = this.rY * _t5 + this.rZ * _t2 + (this.rW * _t4 - this.rX * _t3);
-        float _buf2 = this.rX * _t4 + this.rW * _t3 + (this.rZ * _t5 - this.rY * _t2);
-        d.rW = this.rW * _t5 - this.rX * _t2 - (this.rY * _t4 + this.rZ * _t3);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateAxis_s592810d6_c0(d, _r0, _r1, _r2, _r3, _t5, _r4, _t2, _r5, _t3, _r6, _t4);
+        rotateAxis_s592810d6_c1(d, _r5, _t5, _r6, _t2, _r4, _t4, _r3, _t3);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s7e618ca5_c0(DoubleRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t5, float _r4, float _t2, float _r5, float _t3, float _r6, float _t4) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t5 + _r4 * _t2 + (_r5 * _t3 - _r6 * _t4);
+    }
+
+    /** Private store group 1 of {@code rotateAxis}: computes and stores it; reached only through it. */
+    private void rotateAxis_s7e618ca5_c1(DoubleRigidImpl _dst, float _r5, float _t5, float _r6, float _t2, float _r4, float _t4, float _r3, float _t3) {
+        _dst.rY = _r5 * _t5 + _r6 * _t2 + (_r4 * _t4 - _r3 * _t3);
+        _dst.rZ = _r3 * _t4 + _r4 * _t3 + (_r6 * _t5 - _r5 * _t2);
+        _dst.rW = _r4 * _t5 - _r3 * _t2 - (_r5 * _t4 + _r6 * _t3);
     }
 
 
@@ -3024,22 +3139,21 @@ public final class FloatRigidImpl implements FloatRigid {
         if (axisX == 0 && axisZ == 0 && Math.abs(axisY) == 1) return rotateY(axisY * angle, dest);
         if (axisX == 0 && axisY == 0 && Math.abs(axisZ) == 1) return rotateZ(axisZ * angle, dest);
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
         float _t2 = axisX * _t1;
         float _t3 = axisZ * _t1;
         float _t4 = axisY * _t1;
         float _t5 = (float) Math.cosFromSin(_t1, _t0);
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t5 + this.rW * _t2 + (this.rY * _t3 - this.rZ * _t4);
-        float _buf1 = this.rY * _t5 + this.rZ * _t2 + (this.rW * _t4 - this.rX * _t3);
-        float _buf2 = this.rX * _t4 + this.rW * _t3 + (this.rZ * _t5 - this.rY * _t2);
-        d.rW = this.rW * _t5 - this.rX * _t2 - (this.rY * _t4 + this.rZ * _t3);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateAxis_s7e618ca5_c0(d, _r0, _r1, _r2, _r3, _t5, _r4, _t2, _r5, _t3, _r6, _t4);
+        rotateAxis_s7e618ca5_c1(d, _r5, _t5, _r6, _t2, _r4, _t4, _r3, _t3);
         return d;
     }
 
@@ -3106,6 +3220,28 @@ public final class FloatRigidImpl implements FloatRigid {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s492dd58b_c0(FloatRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_s492dd58b_c1(FloatRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_s492dd58b_tail(FloatRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateXYZ_s492dd58b_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXYZ_s492dd58b_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleX}, {@code angleY} and {@code angleZ} radians about the X, Y
@@ -3125,6 +3261,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid rotateXYZ(float angleX, float angleY, float angleZ, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -3141,18 +3284,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t9 * _t8 + _t13 * _t5;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXYZ_s492dd58b_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_sf145e90_c0(DoubleRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXYZ}: computes and stores it; reached only through it. */
+    private void rotateXYZ_sf145e90_c1(DoubleRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateXYZ}; reached only through it. */
+    private void rotateXYZ_sf145e90_tail(DoubleRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateXYZ_sf145e90_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXYZ_sf145e90_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3177,6 +3332,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid rotateXYZ(float angleX, float angleY, float angleZ, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -3193,18 +3355,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t9 * _t8 + _t13 * _t5;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXYZ_sf145e90_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1c7cefcb_c0(FloatRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s1c7cefcb_c1(FloatRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s1c7cefcb_tail(FloatRigidImpl _dst, float _t13, float _t5, float _t9, float _t8, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t13 * _t5 - _t9 * _t8;
+        rotateXZY_s1c7cefcb_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXZY_s1c7cefcb_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3226,6 +3400,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid rotateXZY(float angleX, float angleZ, float angleY, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -3242,18 +3423,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t13 * _t5 - _t9 * _t8;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXZY_s1c7cefcb_tail(d, _t13, _t5, _t9, _t8, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s25a88c50_c0(DoubleRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateXZY}: computes and stores it; reached only through it. */
+    private void rotateXZY_s25a88c50_c1(DoubleRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateXZY}; reached only through it. */
+    private void rotateXZY_s25a88c50_tail(DoubleRigidImpl _dst, float _t13, float _t5, float _t9, float _t8, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t13 * _t5 - _t9 * _t8;
+        rotateXZY_s25a88c50_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateXZY_s25a88c50_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3278,6 +3471,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid rotateXZY(float angleX, float angleZ, float angleY, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -3294,17 +3494,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t13 * _t5 - _t9 * _t8;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateXZY_s25a88c50_tail(d, _t13, _t5, _t9, _t8, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
     }
 
@@ -3371,6 +3561,28 @@ public final class FloatRigidImpl implements FloatRigid {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s65e1ffcb_c0(FloatRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s65e1ffcb_c1(FloatRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s65e1ffcb_tail(FloatRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateYXZ_s65e1ffcb_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYXZ_s65e1ffcb_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleY}, {@code angleX} and {@code angleZ} radians about the Y, X
@@ -3390,6 +3602,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid rotateYXZ(float angleY, float angleX, float angleZ, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -3406,18 +3625,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t13 * _t5 - _t9 * _t8;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYXZ_s65e1ffcb_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s8e57c50_c0(DoubleRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYXZ}: computes and stores it; reached only through it. */
+    private void rotateYXZ_s8e57c50_c1(DoubleRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateYXZ}; reached only through it. */
+    private void rotateYXZ_s8e57c50_tail(DoubleRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 - _t10 * _t5;
+        rotateYXZ_s8e57c50_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYXZ_s8e57c50_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3442,6 +3673,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid rotateYXZ(float angleY, float angleX, float angleZ, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
@@ -3458,18 +3696,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t10 * _t8 + _t11 * _t5;
         float _t23 = _t13 * _t5 - _t9 * _t8;
-        float _t24 = _t11 * _t8 - _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYXZ_s8e57c50_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_sc80344b_c0(FloatRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_sc80344b_c1(FloatRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_sc80344b_tail(FloatRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateYZX_sc80344b_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYZX_sc80344b_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3491,6 +3741,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid rotateYZX(float angleY, float angleZ, float angleX, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -3507,18 +3764,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t9 * _t8 + _t13 * _t5;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYZX_sc80344b_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s360dd7d0_c0(DoubleRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateYZX}: computes and stores it; reached only through it. */
+    private void rotateYZX_s360dd7d0_c1(DoubleRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateYZX}; reached only through it. */
+    private void rotateYZX_s360dd7d0_tail(DoubleRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateYZX_s360dd7d0_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateYZX_s360dd7d0_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3543,6 +3812,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid rotateYZX(float angleY, float angleZ, float angleX, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -3559,17 +3835,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t9 * _t8 + _t13 * _t5;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateYZX_s360dd7d0_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
     }
 
@@ -3636,6 +3902,28 @@ public final class FloatRigidImpl implements FloatRigid {
         return d;
     }
 
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s55e5444b_c0(FloatRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s55e5444b_c1(FloatRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s55e5444b_tail(FloatRigidImpl _dst, float _t9, float _t8, float _t13, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t9 * _t8 + _t13 * _t5;
+        rotateZXY_s55e5444b_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZXY_s55e5444b_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
+    }
+
 
     /**
      * Apply a rotation of {@code angleZ}, {@code angleX} and {@code angleY} radians about the Z, X
@@ -3655,6 +3943,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid rotateZXY(float angleZ, float angleX, float angleY, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -3671,18 +3966,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t9 * _t8 + _t13 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZXY_s55e5444b_tail(d, _t9, _t8, _t13, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s194ac7d0_c0(DoubleRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZXY}: computes and stores it; reached only through it. */
+    private void rotateZXY_s194ac7d0_c1(DoubleRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateZXY}; reached only through it. */
+    private void rotateZXY_s194ac7d0_tail(DoubleRigidImpl _dst, float _t9, float _t8, float _t13, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t9 * _t8 + _t13 * _t5;
+        rotateZXY_s194ac7d0_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZXY_s194ac7d0_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3707,6 +4014,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid rotateZXY(float angleZ, float angleX, float angleY, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
@@ -3723,18 +4037,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t13 * _t8 - _t9 * _t5;
         float _t22 = _t10 * _t8 - _t11 * _t5;
         float _t23 = _t10 * _t5 + _t11 * _t8;
-        float _t24 = _t9 * _t8 + _t13 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZXY_s194ac7d0_tail(d, _t9, _t8, _t13, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s29345e8b_c0(FloatRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s29345e8b_c1(FloatRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s29345e8b_tail(FloatRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateZYX_s29345e8b_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZYX_s29345e8b_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3756,6 +4082,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public FloatRigid rotateZYX(float angleZ, float angleY, float angleX, @Mutated FloatRigid dest) {
         FloatRigidImpl d = (FloatRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -3772,18 +4105,30 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t13 * _t5 - _t9 * _t8;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZYX_s29345e8b_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
+    }
+
+    /** Private store group 0 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s2fdef590_c0(DoubleRigidImpl _dst, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6, float _t24) {
+        _dst.tX = _r0;
+        _dst.tY = _r1;
+        _dst.tZ = _r2;
+        _dst.rX = _r3 * _t21 + _r4 * _t22 + (_r5 * _t23 - _r6 * _t24);
+    }
+
+    /** Private store group 1 of {@code rotateZYX}: computes and stores it; reached only through it. */
+    private void rotateZYX_s2fdef590_c1(DoubleRigidImpl _dst, float _r5, float _t21, float _r6, float _t22, float _r4, float _t24, float _r3, float _t23) {
+        _dst.rY = _r5 * _t21 + _r6 * _t22 + (_r4 * _t24 - _r3 * _t23);
+        _dst.rZ = _r3 * _t24 + _r4 * _t23 + (_r6 * _t21 - _r5 * _t22);
+        _dst.rW = _r4 * _t21 - _r3 * _t22 - (_r5 * _t24 + _r6 * _t23);
+    }
+
+    /** Private tail of {@code rotateZYX}; reached only through it. */
+    private void rotateZYX_s2fdef590_tail(DoubleRigidImpl _dst, float _t11, float _t8, float _t10, float _t5, float _r0, float _r1, float _r2, float _r3, float _t21, float _r4, float _t22, float _r5, float _t23, float _r6) {
+        float _t24 = _t11 * _t8 + _t10 * _t5;
+        rotateZYX_s2fdef590_c0(_dst, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6, _t24);
+        rotateZYX_s2fdef590_c1(_dst, _r5, _t21, _r6, _t22, _r4, _t24, _r3, _t23);
     }
 
 
@@ -3808,6 +4153,13 @@ public final class FloatRigidImpl implements FloatRigid {
      */
     public DoubleRigid rotateZYX(float angleZ, float angleY, float angleX, @Mutated DoubleRigid dest) {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
+        float _r0 = this.tX;
+        float _r1 = this.tY;
+        float _r2 = this.tZ;
+        float _r3 = this.rX;
+        float _r4 = this.rW;
+        float _r5 = this.rY;
+        float _r6 = this.rZ;
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
@@ -3824,17 +4176,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t21 = _t9 * _t5 + _t13 * _t8;
         float _t22 = _t13 * _t5 - _t9 * _t8;
         float _t23 = _t10 * _t8 - _t11 * _t5;
-        float _t24 = _t11 * _t8 + _t10 * _t5;
-        d.tX = this.tX;
-        d.tY = this.tY;
-        d.tZ = this.tZ;
-        float _buf0 = this.rX * _t21 + this.rW * _t22 + (this.rY * _t23 - this.rZ * _t24);
-        float _buf1 = this.rY * _t21 + this.rZ * _t22 + (this.rW * _t24 - this.rX * _t23);
-        float _buf2 = this.rX * _t24 + this.rW * _t23 + (this.rZ * _t21 - this.rY * _t22);
-        d.rW = this.rW * _t21 - this.rX * _t22 - (this.rY * _t24 + this.rZ * _t23);
-        d.rX = _buf0;
-        d.rY = _buf1;
-        d.rZ = _buf2;
+        rotateZYX_s2fdef590_tail(d, _t11, _t8, _t10, _t5, _r0, _r1, _r2, _r3, _t21, _r4, _t22, _r5, _t23, _r6);
         return d;
     }
 
