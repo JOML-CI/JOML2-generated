@@ -8698,6 +8698,52 @@ public class Double3x4Impl implements Double3x4 {
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
+    /** Private column 0 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c0(Double3x4Impl _dst, double _r0, double _t30, double _r1, double _t22, double _r2, double _t23, double _t24, double _t31, double _t26, double _t27, double _t28, double _t32) {
+        _dst.m00 = _r0 * _t30 + _r1 * _t22 + _r2 * _t23;
+        _dst.m10 = _r0 * _t24 + _r1 * _t31 + _r2 * _t26;
+        _dst.m20 = _r0 * _t27 + _r1 * _t28 + _r2 * _t32;
+    }
+
+    /** Private column 1 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c1(Double3x4Impl _dst, double _r3, double _t30, double _r4, double _t22, double _r5, double _t23, double _t24, double _t31, double _t26, double _t27, double _t28, double _t32) {
+        _dst.m01 = _r3 * _t30 + _r4 * _t22 + _r5 * _t23;
+        _dst.m11 = _r3 * _t24 + _r4 * _t31 + _r5 * _t26;
+        _dst.m21 = _r3 * _t27 + _r4 * _t28 + _r5 * _t32;
+    }
+
+    /** Private column 2 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c2(Double3x4Impl _dst, double _r6, double _t30, double _r7, double _t22, double _r8, double _t23, double _t24, double _t31, double _t26, double _t27, double _t28, double _t32) {
+        _dst.m02 = _r6 * _t30 + _r7 * _t22 + _r8 * _t23;
+        _dst.m12 = _r6 * _t24 + _r7 * _t31 + _r8 * _t26;
+        _dst.m22 = _r6 * _t27 + _r7 * _t28 + _r8 * _t32;
+    }
+
+    /** Private column 3 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c3(Double3x4Impl _dst, double _r9, double _t30, double _r10, double _t22, double _r11, double _t23, double translationX, double _t24, double _t31, double _t26, double translationY, double _t27, double _t28, double _t32, double translationZ) {
+        _dst.m03 = _r9 * _t30 + (_r10 * _t22 + (_r11 * _t23 + translationX));
+        _dst.m13 = _r9 * _t24 + (_r10 * _t31 + (_r11 * _t26 + translationY));
+        _dst.m23 = _r9 * _t27 + (_r10 * _t28 + (_r11 * _t32 + translationZ));
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s56cc878a_tail(Double3x4Impl _dst, double rotationX, double rotationW, double _t5, double _t6, double _t1, double _t7, double _t8, double _t2, double _t0, double _t10, double scaleX, double _t3, double _t4, double scaleY, double _t9, double scaleZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double translationX, double translationY, double translationZ) {
+        double _t11 = rotationX * rotationW;
+        double _t22 = (_t5 - _t6) * _t1;
+        double _t23 = (_t7 + _t8) * _t2;
+        double _t24 = (_t5 + _t6) * _t0;
+        double _t26 = (_t10 - _t11) * _t2;
+        double _t27 = (_t7 - _t8) * _t0;
+        double _t28 = (_t11 + _t10) * _t1;
+        double _t30 = scaleX - (_t3 + _t4) * _t0;
+        double _t31 = scaleY - (_t9 + _t4) * _t1;
+        double _t32 = scaleZ - (_t9 + _t3) * _t2;
+        composeTRSMul_s56cc878a_c0(_dst, _r0, _t30, _r1, _t22, _r2, _t23, _t24, _t31, _t26, _t27, _t28, _t32);
+        composeTRSMul_s56cc878a_c1(_dst, _r3, _t30, _r4, _t22, _r5, _t23, _t24, _t31, _t26, _t27, _t28, _t32);
+        composeTRSMul_s56cc878a_c2(_dst, _r6, _t30, _r7, _t22, _r8, _t23, _t24, _t31, _t26, _t27, _t28, _t32);
+        composeTRSMul_s56cc878a_c3(_dst, _r9, _t30, _r10, _t22, _r11, _t23, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+    }
+
 
     /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
@@ -8728,6 +8774,19 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double3x4R m) {
+        Double3x4Impl d = this;
+        double _r0 = m.m00();
+        double _r1 = m.m10();
+        double _r2 = m.m20();
+        double _r3 = m.m01();
+        double _r4 = m.m11();
+        double _r5 = m.m21();
+        double _r6 = m.m02();
+        double _r7 = m.m12();
+        double _r8 = m.m22();
+        double _r9 = m.m03();
+        double _r10 = m.m13();
+        double _r11 = m.m23();
         double _t0 = scaleX + scaleX;
         double _t1 = scaleY + scaleY;
         double _t2 = scaleZ + scaleZ;
@@ -8739,38 +8798,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t8 = rotationY * rotationW;
         double _t9 = rotationX * rotationX;
         double _t10 = rotationY * rotationZ;
-        double _t11 = rotationX * rotationW;
-        double _t22 = (_t5 - _t6) * _t1;
-        double _t23 = (_t7 + _t8) * _t2;
-        double _t24 = (_t5 + _t6) * _t0;
-        double _t26 = (_t10 - _t11) * _t2;
-        double _t27 = (_t7 - _t8) * _t0;
-        double _t28 = (_t11 + _t10) * _t1;
-        double _t30 = scaleX - (_t3 + _t4) * _t0;
-        double _t31 = scaleY - (_t9 + _t4) * _t1;
-        double _t32 = scaleZ - (_t9 + _t3) * _t2;
-        double _buf0 = m.m00() * _t30 + m.m10() * _t22 + m.m20() * _t23;
-        double _buf1 = m.m01() * _t30 + m.m11() * _t22 + m.m21() * _t23;
-        double _buf2 = m.m02() * _t30 + m.m12() * _t22 + m.m22() * _t23;
-        double _buf3 = m.m03() * _t30 + (m.m13() * _t22 + (m.m23() * _t23 + translationX));
-        double _buf4 = m.m00() * _t24 + m.m10() * _t31 + m.m20() * _t26;
-        double _buf5 = m.m01() * _t24 + m.m11() * _t31 + m.m21() * _t26;
-        double _buf6 = m.m02() * _t24 + m.m12() * _t31 + m.m22() * _t26;
-        double _buf7 = m.m03() * _t24 + (m.m13() * _t31 + (m.m23() * _t26 + translationY));
-        this.m20 = m.m00() * _t27 + m.m10() * _t28 + m.m20() * _t32;
-        this.m21 = m.m01() * _t27 + m.m11() * _t28 + m.m21() * _t32;
-        this.m22 = m.m02() * _t27 + m.m12() * _t28 + m.m22() * _t32;
-        this.m23 = m.m03() * _t27 + (m.m13() * _t28 + (m.m23() * _t32 + translationZ));
-        this.m00 = _buf0;
-        this.m01 = _buf1;
-        this.m02 = _buf2;
-        this.m03 = _buf3;
-        this.m10 = _buf4;
-        this.m11 = _buf5;
-        this.m12 = _buf6;
-        this.m13 = _buf7;
-        this.properties = Joml.BIT_AFFINE;
-        return this;
+        composeTRSMul_s56cc878a_tail(d, rotationX, rotationW, _t5, _t6, _t1, _t7, _t8, _t2, _t0, _t10, scaleX, _t3, _t4, scaleY, _t9, scaleZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, translationX, translationY, translationZ);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
     }
 
 
@@ -13726,6 +13756,56 @@ public class Double3x4Impl implements Double3x4 {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c0(Double3x4Impl _dst, double _t47, double _t48, double _t46) {
+        _dst.m00 = _t47;
+        _dst.m10 = _t48;
+        _dst.m20 = _t46;
+    }
+
+    /** Private column 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c1(Double3x4Impl _dst, double _t46, double _t14, double _t48, double _t13, double _t47, double _t12) {
+        _dst.m01 = _t46 * _t14 - _t48 * _t13;
+        _dst.m11 = _t47 * _t13 - _t46 * _t12;
+        _dst.m21 = _t48 * _t12 - _t47 * _t14;
+    }
+
+    /** Private column 2 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c2(Double3x4Impl _dst, double _t12, double _t14, double _t13) {
+        _dst.m02 = _t12;
+        _dst.m12 = _t14;
+        _dst.m22 = _t13;
+    }
+
+    /** Private column 3 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c3(Double3x4Impl _dst) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = 0.0;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_tail(Double3x4Impl _dst, double _t15, double _t16, double _t12, double _t13, double _t27, double _t28, double _t29, double _t26, double _t25, double _t14) {
+        double _t30 = _t15 > _t16 ? _t12 : -_t13;
+        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        double _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0) {
+            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0 / Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        makeRotationLookAlong_degenerate_s6a304d84_c0(_dst, _t47, _t48, _t46);
+        makeRotationLookAlong_degenerate_s6a304d84_c1(_dst, _t46, _t14, _t48, _t13, _t47, _t12);
+        makeRotationLookAlong_degenerate_s6a304d84_c2(_dst, _t12, _t14, _t13);
+        makeRotationLookAlong_degenerate_s6a304d84_c3(_dst);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -13733,6 +13813,7 @@ public class Double3x4Impl implements Double3x4 {
      * reached only through them.
      */
     @Mutated private Double3x4 makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        Double3x4Impl d = this;
         double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
         double _t5 = (1.0 / Math.sqrt(_t4));
         double _t9, _t10, _t11, _t12, _t13, _t14;
@@ -13753,46 +13834,20 @@ public class Double3x4Impl implements Double3x4 {
         }
         double _t15 = Math.abs(_t12);
         double _t16 = Math.abs(_t13);
-        double _t25, _t26, _t30;
+        double _t25, _t26;
         if (_t15 > _t16) {
             _t25 = 0.0;
             _t26 = -_t14;
-            _t30 = _t12;
         } else {
             _t25 = _t14;
             _t26 = 0.0;
-            _t30 = -_t13;
         }
         double _t27 = _t9 * _t12 - _t10 * _t13;
         double _t28 = _t11 * _t13 - _t9 * _t14;
         double _t29 = _t10 * _t14 - _t12 * _t11;
-        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
-        double _t45, _t46, _t47, _t48;
-        if (_t39 == 0.0) {
-            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
-            _t46 = _t45 * _t25;
-            _t47 = _t45 * _t26;
-            _t48 = _t45 * _t30;
-        } else {
-            _t45 = (1.0 / Math.sqrt(_t39));
-            _t46 = _t45 * _t29;
-            _t47 = _t45 * _t28;
-            _t48 = _t45 * _t27;
-        }
-        this.m00 = _t47;
-        this.m01 = _t46 * _t14 - _t48 * _t13;
-        this.m02 = _t12;
-        this.m03 = 0.0;
-        this.m10 = _t48;
-        this.m11 = _t47 * _t13 - _t46 * _t12;
-        this.m12 = _t14;
-        this.m13 = 0.0;
-        this.m20 = _t46;
-        this.m21 = _t48 * _t12 - _t47 * _t14;
-        this.m22 = _t13;
-        this.m23 = 0.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeRotationLookAlong_degenerate_s6a304d84_tail(d, _t15, _t16, _t12, _t13, _t27, _t28, _t29, _t26, _t25, _t14);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 

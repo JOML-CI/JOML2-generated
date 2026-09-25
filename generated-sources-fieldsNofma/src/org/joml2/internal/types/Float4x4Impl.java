@@ -24636,6 +24636,68 @@ public class Float4x4Impl implements Float4x4 {
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
+    /** Private column 0 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s66b653f8_c0(Float4x4Impl _dst, float _r0, float _t30, float _r1, float _t22, float _r2, float _t23, float _r3, float translationX, float _t24, float _t31, float _t26, float translationY, float _t27, float _t28, float _t32, float translationZ) {
+        _dst.m00 = _r0 * _t30 + _r1 * _t22 + _r2 * _t23 + _r3 * translationX;
+        _dst.m10 = _r0 * _t24 + _r1 * _t31 + _r2 * _t26 + _r3 * translationY;
+        _dst.m20 = _r0 * _t27 + _r1 * _t28 + _r2 * _t32 + _r3 * translationZ;
+        _dst.m30 = _r3;
+    }
+
+    /** Private column 1 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s66b653f8_c1(Float4x4Impl _dst, float _r4, float _t30, float _r5, float _t22, float _r6, float _t23, float _r7, float translationX, float _t24, float _t31, float _t26, float translationY, float _t27, float _t28, float _t32, float translationZ) {
+        _dst.m01 = _r4 * _t30 + _r5 * _t22 + _r6 * _t23 + _r7 * translationX;
+        _dst.m11 = _r4 * _t24 + _r5 * _t31 + _r6 * _t26 + _r7 * translationY;
+        _dst.m21 = _r4 * _t27 + _r5 * _t28 + _r6 * _t32 + _r7 * translationZ;
+        _dst.m31 = _r7;
+    }
+
+    /** Private column 2 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s66b653f8_c2(Float4x4Impl _dst, float _r8, float _t30, float _r9, float _t22, float _r10, float _t23, float _r11, float translationX, float _t24, float _t31, float _t26, float translationY, float _t27, float _t28, float _t32, float translationZ) {
+        _dst.m02 = _r8 * _t30 + _r9 * _t22 + _r10 * _t23 + _r11 * translationX;
+        _dst.m12 = _r8 * _t24 + _r9 * _t31 + _r10 * _t26 + _r11 * translationY;
+        _dst.m22 = _r8 * _t27 + _r9 * _t28 + _r10 * _t32 + _r11 * translationZ;
+        _dst.m32 = _r11;
+    }
+
+    /** Private column 3 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s66b653f8_c3(Float4x4Impl _dst, float _r12, float _t30, float _r13, float _t22, float _r14, float _t23, float _r15, float translationX, float _t24, float _t31, float _t26, float translationY, float _t27, float _t28, float _t32, float translationZ) {
+        _dst.m03 = _r12 * _t30 + _r13 * _t22 + _r14 * _t23 + _r15 * translationX;
+        _dst.m13 = _r12 * _t24 + _r13 * _t31 + _r14 * _t26 + _r15 * translationY;
+        _dst.m23 = _r12 * _t27 + _r13 * _t28 + _r14 * _t32 + _r15 * translationZ;
+        _dst.m33 = _r15;
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s66b653f8_tail(Float4x4Impl _dst, float rotationZ, float rotationX, float rotationY, float rotationW, float _t1, float _t2, float _t0, float scaleX, float _t3, float scaleY, float scaleZ, float _r0, float _r1, float _r2, float _r3, float translationX, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float translationY, float translationZ) {
+        float _t4 = rotationZ * rotationZ;
+        float _t5 = rotationX * rotationY;
+        float _t6 = rotationZ * rotationW;
+        float _t7 = rotationX * rotationZ;
+        float _t8 = rotationY * rotationW;
+        float _t9 = rotationX * rotationX;
+        float _t10 = rotationY * rotationZ;
+        float _t11 = rotationX * rotationW;
+        float _t22 = (_t5 - _t6) * _t1;
+        float _t23 = (_t7 + _t8) * _t2;
+        float _t24 = (_t5 + _t6) * _t0;
+        float _t26 = (_t10 - _t11) * _t2;
+        float _t27 = (_t7 - _t8) * _t0;
+        float _t28 = (_t11 + _t10) * _t1;
+        float _t30 = scaleX - (_t3 + _t4) * _t0;
+        float _t31 = scaleY - (_t9 + _t4) * _t1;
+        composeTRSMul_s66b653f8_tail2(_dst, scaleZ, _t9, _t3, _t2, _r0, _t30, _r1, _t22, _r2, _t23, _r3, translationX, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _t24, _t31, _t26, translationY, _t27, _t28, translationZ);
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s66b653f8_tail2(Float4x4Impl _dst, float scaleZ, float _t9, float _t3, float _t2, float _r0, float _t30, float _r1, float _t22, float _r2, float _t23, float _r3, float translationX, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14, float _r15, float _t24, float _t31, float _t26, float translationY, float _t27, float _t28, float translationZ) {
+        float _t32 = scaleZ - (_t9 + _t3) * _t2;
+        composeTRSMul_s66b653f8_c0(_dst, _r0, _t30, _r1, _t22, _r2, _t23, _r3, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+        composeTRSMul_s66b653f8_c1(_dst, _r4, _t30, _r5, _t22, _r6, _t23, _r7, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+        composeTRSMul_s66b653f8_c2(_dst, _r8, _t30, _r9, _t22, _r10, _t23, _r11, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+        composeTRSMul_s66b653f8_c3(_dst, _r12, _t30, _r13, _t22, _r14, _t23, _r15, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+    }
+
 
     /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
@@ -24666,53 +24728,30 @@ public class Float4x4Impl implements Float4x4 {
      * @return this
      */
     @Mutated public Float4x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float4x4R m) {
+        Float4x4Impl d = this;
+        float _r0 = m.m00();
+        float _r1 = m.m10();
+        float _r2 = m.m20();
+        float _r3 = m.m30();
+        float _r4 = m.m01();
+        float _r5 = m.m11();
+        float _r6 = m.m21();
+        float _r7 = m.m31();
+        float _r8 = m.m02();
+        float _r9 = m.m12();
+        float _r10 = m.m22();
+        float _r11 = m.m32();
+        float _r12 = m.m03();
+        float _r13 = m.m13();
+        float _r14 = m.m23();
+        float _r15 = m.m33();
         float _t0 = scaleX + scaleX;
         float _t1 = scaleY + scaleY;
         float _t2 = scaleZ + scaleZ;
         float _t3 = rotationY * rotationY;
-        float _t4 = rotationZ * rotationZ;
-        float _t5 = rotationX * rotationY;
-        float _t6 = rotationZ * rotationW;
-        float _t7 = rotationX * rotationZ;
-        float _t8 = rotationY * rotationW;
-        float _t9 = rotationX * rotationX;
-        float _t10 = rotationY * rotationZ;
-        float _t11 = rotationX * rotationW;
-        float _t22 = (_t5 - _t6) * _t1;
-        float _t23 = (_t7 + _t8) * _t2;
-        float _t24 = (_t5 + _t6) * _t0;
-        float _t26 = (_t10 - _t11) * _t2;
-        float _t27 = (_t7 - _t8) * _t0;
-        float _t28 = (_t11 + _t10) * _t1;
-        float _t30 = scaleX - (_t3 + _t4) * _t0;
-        float _t31 = scaleY - (_t9 + _t4) * _t1;
-        float _t32 = scaleZ - (_t9 + _t3) * _t2;
-        float _buf0 = m.m00() * _t30 + m.m10() * _t22 + m.m20() * _t23 + m.m30() * translationX;
-        float _buf1 = m.m00() * _t24 + m.m10() * _t31 + m.m20() * _t26 + m.m30() * translationY;
-        this.m20 = m.m00() * _t27 + m.m10() * _t28 + m.m20() * _t32 + m.m30() * translationZ;
-        this.m30 = m.m30();
-        float _buf2 = m.m01() * _t30 + m.m11() * _t22 + m.m21() * _t23 + m.m31() * translationX;
-        float _buf3 = m.m01() * _t24 + m.m11() * _t31 + m.m21() * _t26 + m.m31() * translationY;
-        this.m21 = m.m01() * _t27 + m.m11() * _t28 + m.m21() * _t32 + m.m31() * translationZ;
-        this.m31 = m.m31();
-        float _buf4 = m.m02() * _t30 + m.m12() * _t22 + m.m22() * _t23 + m.m32() * translationX;
-        float _buf5 = m.m02() * _t24 + m.m12() * _t31 + m.m22() * _t26 + m.m32() * translationY;
-        this.m22 = m.m02() * _t27 + m.m12() * _t28 + m.m22() * _t32 + m.m32() * translationZ;
-        this.m32 = m.m32();
-        float _buf6 = m.m03() * _t30 + m.m13() * _t22 + m.m23() * _t23 + m.m33() * translationX;
-        float _buf7 = m.m03() * _t24 + m.m13() * _t31 + m.m23() * _t26 + m.m33() * translationY;
-        this.m23 = m.m03() * _t27 + m.m13() * _t28 + m.m23() * _t32 + m.m33() * translationZ;
-        this.m33 = m.m33();
-        this.m00 = _buf0;
-        this.m10 = _buf1;
-        this.m01 = _buf2;
-        this.m11 = _buf3;
-        this.m02 = _buf4;
-        this.m12 = _buf5;
-        this.m03 = _buf6;
-        this.m13 = _buf7;
-        this.properties = 0;
-        return this;
+        composeTRSMul_s66b653f8_tail(d, rotationZ, rotationX, rotationY, rotationW, _t1, _t2, _t0, scaleX, _t3, scaleY, scaleZ, _r0, _r1, _r2, _r3, translationX, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, translationY, translationZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -32161,6 +32200,38 @@ public class Float4x4Impl implements Float4x4 {
         return makeBillboardCylindrical(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s27606544_c0(Float4x4Impl _dst, float _t19, float _t20, float _t21) {
+        _dst.m00 = _t19;
+        _dst.m10 = _t20;
+        _dst.m20 = _t21;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s27606544_c1(Float4x4Impl _dst, float upX, float upY, float upZ) {
+        _dst.m01 = upX;
+        _dst.m11 = upY;
+        _dst.m21 = upZ;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s27606544_c2(Float4x4Impl _dst, float _t28, float _t36, float _t29, float _t30) {
+        _dst.m02 = _t28 * _t36;
+        _dst.m12 = _t29 * _t36;
+        _dst.m22 = _t30 * _t36;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s27606544_c3(Float4x4Impl _dst, float objPosX, float objPosY, float objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0f;
+    }
+
 
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
@@ -32189,6 +32260,7 @@ public class Float4x4Impl implements Float4x4 {
      * @return this
      */
     @Mutated public Float4x4 makeBillboardCylindrical(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = targetPosZ - objPosZ;
         float _t1 = targetPosY - objPosY;
         float _t2 = targetPosX - objPosX;
@@ -32205,24 +32277,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t29 = upX * _t21 - upZ * _t19;
         float _t30 = upY * _t19 - upX * _t20;
         float _t36 = (1.0f / (float) Math.sqrt(_t29 * _t29 + _t28 * _t28 + _t30 * _t30));
-        this.m00 = _t19;
-        this.m10 = _t20;
-        this.m20 = _t21;
-        this.m30 = 0.0f;
-        this.m01 = upX;
-        this.m11 = upY;
-        this.m21 = upZ;
-        this.m31 = 0.0f;
-        this.m02 = _t28 * _t36;
-        this.m12 = _t29 * _t36;
-        this.m22 = _t30 * _t36;
-        this.m32 = 0.0f;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardCylindrical_s27606544_c0(d, _t19, _t20, _t21);
+        makeBillboardCylindrical_s27606544_c1(d, upX, upY, upZ);
+        makeBillboardCylindrical_s27606544_c2(d, _t28, _t36, _t29, _t30);
+        makeBillboardCylindrical_s27606544_c3(d, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -32235,6 +32295,62 @@ public class Float4x4Impl implements Float4x4 {
         return makeBillboardCylindrical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s27606544_c0(Float4x4Impl _dst, float _t35, float _t36, float _t34) {
+        _dst.m00 = _t35;
+        _dst.m10 = _t36;
+        _dst.m20 = _t34;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s27606544_c1(Float4x4Impl _dst, float upX, float upY, float upZ) {
+        _dst.m01 = upX;
+        _dst.m11 = upY;
+        _dst.m21 = upZ;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s27606544_c2(Float4x4Impl _dst, float _t44, float _t51, float _t43, float _t45) {
+        _dst.m02 = _t44 * _t51;
+        _dst.m12 = _t43 * _t51;
+        _dst.m22 = _t45 * _t51;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s27606544_c3(Float4x4Impl _dst, float objPosX, float objPosY, float objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code makeBillboardCylindrical_degenerate}; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s27606544_tail(Float4x4Impl _dst, float _t28, float _t15, float _t14, float _t13, float _t18, float _t16, float _t17, float upX, float upZ, float upY, float objPosX, float objPosY, float objPosZ) {
+        float _t33, _t34, _t35, _t36;
+        if (_t28 == 0.0f) {
+            _t33 = (1.0f / (float) Math.sqrt(_t15 * _t15 + _t14 * _t14 + _t13 * _t13));
+            _t34 = _t33 * _t13;
+            _t35 = _t33 * _t14;
+            _t36 = _t33 * _t15;
+        } else {
+            _t33 = (1.0f / (float) Math.sqrt(_t28));
+            _t34 = _t33 * _t18;
+            _t35 = _t33 * _t16;
+            _t36 = _t33 * _t17;
+        }
+        float _t43 = upX * _t34 - upZ * _t35;
+        float _t44 = upZ * _t36 - upY * _t34;
+        float _t45 = upY * _t35 - upX * _t36;
+        float _t51 = (1.0f / (float) Math.sqrt(_t43 * _t43 + _t44 * _t44 + _t45 * _t45));
+        makeBillboardCylindrical_degenerate_s27606544_c0(_dst, _t35, _t36, _t34);
+        makeBillboardCylindrical_degenerate_s27606544_c1(_dst, upX, upY, upZ);
+        makeBillboardCylindrical_degenerate_s27606544_c2(_dst, _t44, _t51, _t43, _t45);
+        makeBillboardCylindrical_degenerate_s27606544_c3(_dst, objPosX, objPosY, objPosZ);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeBillboardCylindrical}: its methods leave here when their
@@ -32242,6 +32358,7 @@ public class Float4x4Impl implements Float4x4 {
      * reached only through them.
      */
     @Mutated private Float4x4 makeBillboardCylindrical_degenerate(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = Math.abs(upX);
         float _t1 = Math.abs(upZ);
         float _t4 = targetPosZ - objPosZ;
@@ -32261,40 +32378,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t17 = upZ * _t6 - upX * _t4;
         float _t18 = upX * _t5 - upY * _t6;
         float _t28 = _t16 * _t16 + _t17 * _t17 + _t18 * _t18;
-        float _t33, _t34, _t35, _t36;
-        if (_t28 == 0.0f) {
-            _t33 = (1.0f / (float) Math.sqrt(_t15 * _t15 + _t14 * _t14 + _t13 * _t13));
-            _t34 = _t33 * _t13;
-            _t35 = _t33 * _t14;
-            _t36 = _t33 * _t15;
-        } else {
-            _t33 = (1.0f / (float) Math.sqrt(_t28));
-            _t34 = _t33 * _t18;
-            _t35 = _t33 * _t16;
-            _t36 = _t33 * _t17;
-        }
-        float _t43 = upX * _t34 - upZ * _t35;
-        float _t44 = upZ * _t36 - upY * _t34;
-        float _t45 = upY * _t35 - upX * _t36;
-        float _t51 = (1.0f / (float) Math.sqrt(_t43 * _t43 + _t44 * _t44 + _t45 * _t45));
-        this.m00 = _t35;
-        this.m10 = _t36;
-        this.m20 = _t34;
-        this.m30 = 0.0f;
-        this.m01 = upX;
-        this.m11 = upY;
-        this.m21 = upZ;
-        this.m31 = 0.0f;
-        this.m02 = _t44 * _t51;
-        this.m12 = _t43 * _t51;
-        this.m22 = _t45 * _t51;
-        this.m32 = 0.0f;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardCylindrical_degenerate_s27606544_tail(d, _t28, _t15, _t14, _t13, _t18, _t16, _t17, upX, upZ, upY, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -32313,6 +32399,38 @@ public class Float4x4Impl implements Float4x4 {
      */
     public @Mutated Float4x4 makeBillboardSpherical(Float3R objPos, Float3R targetPos, Float3R up) {
         return makeBillboardSpherical(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private column 0 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s27606544_c0(Float4x4Impl _dst, float _t28, float _t30, float _t29) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t30;
+        _dst.m20 = _t29;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s27606544_c1(Float4x4Impl _dst, float _t10, float _t29, float _t9, float _t30, float _t28, float _t11) {
+        _dst.m01 = _t10 * _t29 - _t9 * _t30;
+        _dst.m11 = _t9 * _t28 - _t11 * _t29;
+        _dst.m21 = _t11 * _t30 - _t10 * _t28;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s27606544_c2(Float4x4Impl _dst, float _t11, float _t10, float _t9) {
+        _dst.m02 = _t11;
+        _dst.m12 = _t10;
+        _dst.m22 = _t9;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s27606544_c3(Float4x4Impl _dst, float objPosX, float objPosY, float objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0f;
     }
 
 
@@ -32339,6 +32457,7 @@ public class Float4x4Impl implements Float4x4 {
      * @return this
      */
     @Mutated public Float4x4 makeBillboardSpherical(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = targetPosZ - objPosZ;
         float _t1 = targetPosX - objPosX;
         float _t2 = targetPosY - objPosY;
@@ -32355,24 +32474,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t28 = _t18 * _t27;
         float _t29 = _t20 * _t27;
         float _t30 = _t19 * _t27;
-        this.m00 = _t28;
-        this.m10 = _t30;
-        this.m20 = _t29;
-        this.m30 = 0.0f;
-        this.m01 = _t10 * _t29 - _t9 * _t30;
-        this.m11 = _t9 * _t28 - _t11 * _t29;
-        this.m21 = _t11 * _t30 - _t10 * _t28;
-        this.m31 = 0.0f;
-        this.m02 = _t11;
-        this.m12 = _t10;
-        this.m22 = _t9;
-        this.m32 = 0.0f;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardSpherical_s27606544_c0(d, _t28, _t30, _t29);
+        makeBillboardSpherical_s27606544_c1(d, _t10, _t29, _t9, _t30, _t28, _t11);
+        makeBillboardSpherical_s27606544_c2(d, _t11, _t10, _t9);
+        makeBillboardSpherical_s27606544_c3(d, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -32385,6 +32492,69 @@ public class Float4x4Impl implements Float4x4 {
         return makeBillboardSpherical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s27606544_c0(Float4x4Impl _dst, float _t50, float _t51, float _t49) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t51;
+        _dst.m20 = _t49;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s27606544_c1(Float4x4Impl _dst, float _t49, float _t17, float _t51, float _t16, float _t50, float _t15) {
+        _dst.m01 = _t49 * _t17 - _t51 * _t16;
+        _dst.m11 = _t50 * _t16 - _t49 * _t15;
+        _dst.m21 = _t51 * _t15 - _t50 * _t17;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s27606544_c2(Float4x4Impl _dst, float _t15, float _t17, float _t16) {
+        _dst.m02 = _t15;
+        _dst.m12 = _t17;
+        _dst.m22 = _t16;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s27606544_c3(Float4x4Impl _dst, float objPosX, float objPosY, float objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code makeBillboardSpherical_degenerate}; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s27606544_tail(Float4x4Impl _dst, float _t18, float _t19, float _t17, float _t15, float _t16, float _t28, float _t29, float _t30, float objPosX, float objPosY, float objPosZ) {
+        float _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0f;
+            _t32 = -_t17;
+            _t33 = _t15;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0f;
+            _t33 = -_t16;
+        }
+        float _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        float _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0f) {
+            _t48 = (1.0f / (float) Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0f / (float) Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        makeBillboardSpherical_degenerate_s27606544_c0(_dst, _t50, _t51, _t49);
+        makeBillboardSpherical_degenerate_s27606544_c1(_dst, _t49, _t17, _t51, _t16, _t50, _t15);
+        makeBillboardSpherical_degenerate_s27606544_c2(_dst, _t15, _t17, _t16);
+        makeBillboardSpherical_degenerate_s27606544_c3(_dst, objPosX, objPosY, objPosZ);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeBillboardSpherical}: its methods leave here when their
@@ -32392,6 +32562,7 @@ public class Float4x4Impl implements Float4x4 {
      * reached only through them.
      */
     @Mutated private Float4x4 makeBillboardSpherical_degenerate(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = targetPosX - objPosX;
         float _t1 = targetPosY - objPosY;
         float _t2 = targetPosZ - objPosZ;
@@ -32418,47 +32589,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t28 = _t9 * _t15 - _t10 * _t16;
         float _t29 = _t11 * _t16 - _t9 * _t17;
         float _t30 = _t10 * _t17 - _t15 * _t11;
-        float _t31, _t32, _t33;
-        if (_t18 > _t19) {
-            _t31 = 0.0f;
-            _t32 = -_t17;
-            _t33 = _t15;
-        } else {
-            _t31 = _t17;
-            _t32 = 0.0f;
-            _t33 = -_t16;
-        }
-        float _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
-        float _t48, _t49, _t50, _t51;
-        if (_t42 == 0.0f) {
-            _t48 = (1.0f / (float) Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
-            _t49 = _t48 * _t31;
-            _t50 = _t48 * _t32;
-            _t51 = _t48 * _t33;
-        } else {
-            _t48 = (1.0f / (float) Math.sqrt(_t42));
-            _t49 = _t48 * _t30;
-            _t50 = _t48 * _t29;
-            _t51 = _t48 * _t28;
-        }
-        this.m00 = _t50;
-        this.m10 = _t51;
-        this.m20 = _t49;
-        this.m30 = 0.0f;
-        this.m01 = _t49 * _t17 - _t51 * _t16;
-        this.m11 = _t50 * _t16 - _t49 * _t15;
-        this.m21 = _t51 * _t15 - _t50 * _t17;
-        this.m31 = 0.0f;
-        this.m02 = _t15;
-        this.m12 = _t17;
-        this.m22 = _t16;
-        this.m32 = 0.0f;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardSpherical_degenerate_s27606544_tail(d, _t18, _t19, _t17, _t15, _t16, _t28, _t29, _t30, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -32472,6 +32605,38 @@ public class Float4x4Impl implements Float4x4 {
      */
     public @Mutated Float4x4 makeBillboardSphericalShortest(Float3R objPos, Float3R targetPos) {
         return makeBillboardSphericalShortest(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z());
+    }
+
+    /** Private column 0 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s7fe17be2_c0(Float4x4Impl _dst, float _t36, float _t33, float _t34) {
+        _dst.m00 = _t36;
+        _dst.m10 = _t33;
+        _dst.m20 = -_t34;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s7fe17be2_c1(Float4x4Impl _dst, float _t33, float _t30, float _t31) {
+        _dst.m01 = _t33;
+        _dst.m11 = 1.0f - _t30;
+        _dst.m21 = -_t31;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s7fe17be2_c2(Float4x4Impl _dst, float _t34, float _t31, float _t36, float _t30) {
+        _dst.m02 = _t34;
+        _dst.m12 = _t31;
+        _dst.m22 = _t36 - _t30;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s7fe17be2_c3(Float4x4Impl _dst, float objPosX, float objPosY, float objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0f;
     }
 
 
@@ -32491,6 +32656,7 @@ public class Float4x4Impl implements Float4x4 {
      * @return this
      */
     @Mutated public Float4x4 makeBillboardSphericalShortest(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ) {
+        Float4x4Impl d = this;
         float _t0 = targetPosX - objPosX;
         float _t1 = targetPosY - objPosY;
         float _t2 = targetPosZ - objPosZ;
@@ -32511,24 +32677,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t33 = -(_t3 * _sp0);
         float _t34 = _sp0 * _t17;
         float _t36 = 1.0f - (_sp0 + _sp0) * _t18;
-        this.m00 = _t36;
-        this.m10 = _t33;
-        this.m20 = -_t34;
-        this.m30 = 0.0f;
-        this.m01 = _t33;
-        this.m11 = 1.0f - _t30;
-        this.m21 = -_t31;
-        this.m31 = 0.0f;
-        this.m02 = _t34;
-        this.m12 = _t31;
-        this.m22 = _t36 - _t30;
-        this.m32 = 0.0f;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardSphericalShortest_s7fe17be2_c0(d, _t36, _t33, _t34);
+        makeBillboardSphericalShortest_s7fe17be2_c1(d, _t33, _t30, _t31);
+        makeBillboardSphericalShortest_s7fe17be2_c2(d, _t34, _t31, _t36, _t30);
+        makeBillboardSphericalShortest_s7fe17be2_c3(d, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -32858,12 +33012,45 @@ public class Float4x4Impl implements Float4x4 {
         return makeLookAt_lh(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s185c1ac6_c0(Float4x4Impl _dst, float _t28, float _t37, float _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = _t11;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s185c1ac6_c1(Float4x4Impl _dst, float _t29, float _t38, float _t10) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = _t10;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s185c1ac6_c2(Float4x4Impl _dst, float _t30, float _t39, float _t9) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = _t9;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s185c1ac6_c3(Float4x4Impl _dst, float eyeX, float _t28, float eyeY, float _t29, float eyeZ, float _t30, float _t37, float _t38, float _t39, float _t11, float _t10, float _t9) {
+        _dst.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        _dst.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        _dst.m23 = -(eyeX * _t11 + eyeY * _t10 + eyeZ * _t9);
+        _dst.m33 = 1.0f;
+    }
+
 
     /**
      * Private body of {@code makeLookAt} for {@code Handedness.LEFT_HANDED}; reached only through
      * the public {@code makeLookAt} dispatcher.
      */
     @Mutated private Float4x4 makeLookAt_lh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = centerZ - eyeZ;
         float _t1 = centerX - eyeX;
         float _t2 = centerY - eyeY;
@@ -32883,24 +33070,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t37 = _t10 * _t30 - _t9 * _t29;
         float _t38 = _t9 * _t28 - _t11 * _t30;
         float _t39 = _t11 * _t29 - _t10 * _t28;
-        this.m00 = _t28;
-        this.m10 = _t37;
-        this.m20 = _t11;
-        this.m30 = 0.0f;
-        this.m01 = _t29;
-        this.m11 = _t38;
-        this.m21 = _t10;
-        this.m31 = 0.0f;
-        this.m02 = _t30;
-        this.m12 = _t39;
-        this.m22 = _t9;
-        this.m32 = 0.0f;
-        this.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
-        this.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
-        this.m23 = -(eyeX * _t11 + eyeY * _t10 + eyeZ * _t9);
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_lh_s185c1ac6_c0(d, _t28, _t37, _t11);
+        makeLookAt_lh_s185c1ac6_c1(d, _t29, _t38, _t10);
+        makeLookAt_lh_s185c1ac6_c2(d, _t30, _t39, _t9);
+        makeLookAt_lh_s185c1ac6_c3(d, eyeX, _t28, eyeY, _t29, eyeZ, _t30, _t37, _t38, _t39, _t11, _t10, _t9);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -32913,6 +33088,77 @@ public class Float4x4Impl implements Float4x4 {
         return makeLookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s185c1ac6_c0(Float4x4Impl _dst, float _t50, float _t59, float _t15) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = _t15;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s185c1ac6_c1(Float4x4Impl _dst, float _t51, float _t58, float _t17) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t17;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s185c1ac6_c2(Float4x4Impl _dst, float _t49, float _t60, float _t16) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t16;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s185c1ac6_c3(Float4x4Impl _dst, float eyeX, float _t50, float eyeY, float _t51, float eyeZ, float _t49, float _t59, float _t58, float _t60, float _t15, float _t17, float _t16) {
+        _dst.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        _dst.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        _dst.m23 = -(eyeX * _t15 + eyeY * _t17 + eyeZ * _t16);
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
+    private void makeLookAt_lh_degenerate_s185c1ac6_tail(Float4x4Impl _dst, float _t18, float _t19, float _t17, float _t15, float _t16, float _t28, float _t29, float _t30, float eyeX, float eyeY, float eyeZ) {
+        float _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0f;
+            _t32 = -_t17;
+            _t33 = _t15;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0f;
+            _t33 = -_t16;
+        }
+        float _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        float _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0f) {
+            _t48 = (1.0f / (float) Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0f / (float) Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        float _t58 = _t50 * _t16 - _t49 * _t15;
+        float _t59 = _t49 * _t17 - _t51 * _t16;
+        makeLookAt_lh_degenerate_s185c1ac6_tail2(_dst, _t51, _t15, _t50, _t17, _t49, eyeX, eyeY, eyeZ, _t59, _t58, _t16);
+    }
+
+    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
+    private void makeLookAt_lh_degenerate_s185c1ac6_tail2(Float4x4Impl _dst, float _t51, float _t15, float _t50, float _t17, float _t49, float eyeX, float eyeY, float eyeZ, float _t59, float _t58, float _t16) {
+        float _t60 = _t51 * _t15 - _t50 * _t17;
+        makeLookAt_lh_degenerate_s185c1ac6_c0(_dst, _t50, _t59, _t15);
+        makeLookAt_lh_degenerate_s185c1ac6_c1(_dst, _t51, _t58, _t17);
+        makeLookAt_lh_degenerate_s185c1ac6_c2(_dst, _t49, _t60, _t16);
+        makeLookAt_lh_degenerate_s185c1ac6_c3(_dst, eyeX, _t50, eyeY, _t51, eyeZ, _t49, _t59, _t58, _t60, _t15, _t17, _t16);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
@@ -32920,6 +33166,7 @@ public class Float4x4Impl implements Float4x4 {
      * through them.
      */
     @Mutated private Float4x4 makeLookAt_lh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = centerX - eyeX;
         float _t1 = centerY - eyeY;
         float _t2 = centerZ - eyeZ;
@@ -32946,50 +33193,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t28 = _t9 * _t15 - _t10 * _t16;
         float _t29 = _t11 * _t16 - _t9 * _t17;
         float _t30 = _t10 * _t17 - _t15 * _t11;
-        float _t31, _t32, _t33;
-        if (_t18 > _t19) {
-            _t31 = 0.0f;
-            _t32 = -_t17;
-            _t33 = _t15;
-        } else {
-            _t31 = _t17;
-            _t32 = 0.0f;
-            _t33 = -_t16;
-        }
-        float _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
-        float _t48, _t49, _t50, _t51;
-        if (_t42 == 0.0f) {
-            _t48 = (1.0f / (float) Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
-            _t49 = _t48 * _t31;
-            _t50 = _t48 * _t32;
-            _t51 = _t48 * _t33;
-        } else {
-            _t48 = (1.0f / (float) Math.sqrt(_t42));
-            _t49 = _t48 * _t30;
-            _t50 = _t48 * _t29;
-            _t51 = _t48 * _t28;
-        }
-        float _t58 = _t50 * _t16 - _t49 * _t15;
-        float _t59 = _t49 * _t17 - _t51 * _t16;
-        float _t60 = _t51 * _t15 - _t50 * _t17;
-        this.m00 = _t50;
-        this.m10 = _t59;
-        this.m20 = _t15;
-        this.m30 = 0.0f;
-        this.m01 = _t51;
-        this.m11 = _t58;
-        this.m21 = _t17;
-        this.m31 = 0.0f;
-        this.m02 = _t49;
-        this.m12 = _t60;
-        this.m22 = _t16;
-        this.m32 = 0.0f;
-        this.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
-        this.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
-        this.m23 = -(eyeX * _t15 + eyeY * _t17 + eyeZ * _t16);
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_lh_degenerate_s185c1ac6_tail(d, _t18, _t19, _t17, _t15, _t16, _t28, _t29, _t30, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -33001,12 +33207,45 @@ public class Float4x4Impl implements Float4x4 {
         return makeLookAt_rh(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s185c1ac6_c0(Float4x4Impl _dst, float _t28, float _t37, float _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = -_t11;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s185c1ac6_c1(Float4x4Impl _dst, float _t29, float _t38, float _t9) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = -_t9;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s185c1ac6_c2(Float4x4Impl _dst, float _t30, float _t39, float _t10) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = -_t10;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s185c1ac6_c3(Float4x4Impl _dst, float eyeX, float _t28, float eyeY, float _t29, float eyeZ, float _t30, float _t37, float _t38, float _t39, float _t11, float _t9, float _t10) {
+        _dst.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        _dst.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        _dst.m23 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
+        _dst.m33 = 1.0f;
+    }
+
 
     /**
      * Private body of {@code makeLookAt} for {@code Handedness.RIGHT_HANDED}; reached only through
      * the public {@code makeLookAt} dispatcher.
      */
     @Mutated private Float4x4 makeLookAt_rh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = centerY - eyeY;
         float _t1 = centerX - eyeX;
         float _t2 = centerZ - eyeZ;
@@ -33026,24 +33265,12 @@ public class Float4x4Impl implements Float4x4 {
         float _t37 = _t10 * _t29 - _t9 * _t30;
         float _t38 = _t11 * _t30 - _t10 * _t28;
         float _t39 = _t9 * _t28 - _t11 * _t29;
-        this.m00 = _t28;
-        this.m10 = _t37;
-        this.m20 = -_t11;
-        this.m30 = 0.0f;
-        this.m01 = _t29;
-        this.m11 = _t38;
-        this.m21 = -_t9;
-        this.m31 = 0.0f;
-        this.m02 = _t30;
-        this.m12 = _t39;
-        this.m22 = -_t10;
-        this.m32 = 0.0f;
-        this.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
-        this.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
-        this.m23 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_rh_s185c1ac6_c0(d, _t28, _t37, _t11);
+        makeLookAt_rh_s185c1ac6_c1(d, _t29, _t38, _t9);
+        makeLookAt_rh_s185c1ac6_c2(d, _t30, _t39, _t10);
+        makeLookAt_rh_s185c1ac6_c3(d, eyeX, _t28, eyeY, _t29, eyeZ, _t30, _t37, _t38, _t39, _t11, _t9, _t10);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -33056,6 +33283,77 @@ public class Float4x4Impl implements Float4x4 {
         return makeLookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s185c1ac6_c0(Float4x4Impl _dst, float _t50, float _t59, float _t16) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = -_t16;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s185c1ac6_c1(Float4x4Impl _dst, float _t51, float _t58, float _t20) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t20;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s185c1ac6_c2(Float4x4Impl _dst, float _t49, float _t60, float _t21) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t21;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s185c1ac6_c3(Float4x4Impl _dst, float eyeX, float _t50, float eyeY, float _t51, float eyeZ, float _t49, float _t59, float _t58, float _t60, float _t16, float _t17, float _t15) {
+        _dst.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        _dst.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        _dst.m23 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
+    private void makeLookAt_rh_degenerate_s185c1ac6_tail(Float4x4Impl _dst, float _t18, float _t19, float _t17, float _t20, float _t16, float _t21, float _t28, float _t29, float _t30, float _t15, float eyeX, float eyeY, float eyeZ) {
+        float _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0f;
+            _t32 = _t20;
+            _t33 = _t16;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0f;
+            _t33 = _t21;
+        }
+        float _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        float _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0f) {
+            _t48 = (1.0f / (float) Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0f / (float) Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        float _t58 = _t49 * _t16 - _t50 * _t15;
+        float _t59 = _t51 * _t15 - _t49 * _t17;
+        makeLookAt_rh_degenerate_s185c1ac6_tail2(_dst, _t50, _t17, _t51, _t16, _t49, eyeX, eyeY, eyeZ, _t59, _t58, _t20, _t21, _t15);
+    }
+
+    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
+    private void makeLookAt_rh_degenerate_s185c1ac6_tail2(Float4x4Impl _dst, float _t50, float _t17, float _t51, float _t16, float _t49, float eyeX, float eyeY, float eyeZ, float _t59, float _t58, float _t20, float _t21, float _t15) {
+        float _t60 = _t50 * _t17 - _t51 * _t16;
+        makeLookAt_rh_degenerate_s185c1ac6_c0(_dst, _t50, _t59, _t16);
+        makeLookAt_rh_degenerate_s185c1ac6_c1(_dst, _t51, _t58, _t20);
+        makeLookAt_rh_degenerate_s185c1ac6_c2(_dst, _t49, _t60, _t21);
+        makeLookAt_rh_degenerate_s185c1ac6_c3(_dst, eyeX, _t50, eyeY, _t51, eyeZ, _t49, _t59, _t58, _t60, _t16, _t17, _t15);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
@@ -33063,6 +33361,7 @@ public class Float4x4Impl implements Float4x4 {
      * through them.
      */
     @Mutated private Float4x4 makeLookAt_rh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t0 = centerX - eyeX;
         float _t1 = centerY - eyeY;
         float _t2 = centerZ - eyeZ;
@@ -33091,50 +33390,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t28 = _t15 * _t9 - _t10 * _t16;
         float _t29 = _t10 * _t17 - _t15 * _t11;
         float _t30 = _t16 * _t11 - _t9 * _t17;
-        float _t31, _t32, _t33;
-        if (_t18 > _t19) {
-            _t31 = 0.0f;
-            _t32 = _t20;
-            _t33 = _t16;
-        } else {
-            _t31 = _t17;
-            _t32 = 0.0f;
-            _t33 = _t21;
-        }
-        float _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
-        float _t48, _t49, _t50, _t51;
-        if (_t42 == 0.0f) {
-            _t48 = (1.0f / (float) Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
-            _t49 = _t48 * _t31;
-            _t50 = _t48 * _t32;
-            _t51 = _t48 * _t33;
-        } else {
-            _t48 = (1.0f / (float) Math.sqrt(_t42));
-            _t49 = _t48 * _t30;
-            _t50 = _t48 * _t29;
-            _t51 = _t48 * _t28;
-        }
-        float _t58 = _t49 * _t16 - _t50 * _t15;
-        float _t59 = _t51 * _t15 - _t49 * _t17;
-        float _t60 = _t50 * _t17 - _t51 * _t16;
-        this.m00 = _t50;
-        this.m10 = _t59;
-        this.m20 = -_t16;
-        this.m30 = 0.0f;
-        this.m01 = _t51;
-        this.m11 = _t58;
-        this.m21 = _t20;
-        this.m31 = 0.0f;
-        this.m02 = _t49;
-        this.m12 = _t60;
-        this.m22 = _t21;
-        this.m32 = 0.0f;
-        this.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
-        this.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
-        this.m23 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_rh_degenerate_s185c1ac6_tail(d, _t18, _t19, _t17, _t20, _t16, _t21, _t28, _t29, _t30, _t15, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -35950,29 +36208,40 @@ public class Float4x4Impl implements Float4x4 {
         return makePerspectiveOffCenterRectangleProj_no_lh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c0(Float4x4Impl _dst, float _t44, float _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0f;
+        _dst.m20 = 0.0f;
+        _dst.m30 = 0.0f;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through
-     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_no_lh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
-        float _t12 = xZ * yY - xY * yZ;
-        float _t13 = xX * yZ - xZ * yX;
-        float _t14 = xY * yX - xX * yY;
-        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
-        float _t21 = _t13 * _t20;
-        float _t22 = _t12 * _t20;
-        float _t23 = _t14 * _t20;
-        float _t24 = _t23 + (eyeZ - eyeZ);
-        float _t25 = _t22 + (eyeX - eyeX);
-        float _t26 = _t21 + (eyeY - eyeY);
-        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
-        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        float _t41 = _t24 * _t39;
-        float _t42 = _t26 * _t39;
-        float _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c1(Float4x4Impl _dst, float _t44, float _t124_inv) {
+        _dst.m01 = 0.0f;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0f;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c2(Float4x4Impl _dst, float _t116, float _t88, float _t84, float _t85, float _t122_inv, float _t121, float _t113, float _t109, float _t110, float _t124_inv, float _t45, float _t40, float _t53_inv) {
+        _dst.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
+        _dst.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
+        _dst.m22 = _t45 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? -1.0f : -((_t40 + _t45) * _t53_inv);
+        _dst.m32 = 1.0f;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c3(Float4x4Impl _dst, float _t45, float _t44, float _t40, float _t53_inv) {
+        _dst.m03 = 0.0f;
+        _dst.m13 = 0.0f;
+        _dst.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t44 : _t40 == Float.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
+        _dst.m33 = 0.0f;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail(Float4x4Impl _dst, float _t40, float nearFarDist, float yY, float _t41, float yZ, float _t42, float _t43, float yX, float pX, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ) {
         float _t44 = _t40 + _t40;
         float _t45 = _t40 + nearFarDist;
         float _t53_inv = 1.0f / (_t40 + (-nearFarDist - _t40));
@@ -35993,6 +36262,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t85 = _t71 - _t72;
         float _t88 = -_t73 - _t74;
         float _t90 = _t42 * _t65 - _t41 * _t64;
+        makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail2(_dst, _t41, _t63, _t43, _t65, _t64, _t42, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail2(Float4x4Impl _dst, float _t41, float _t63, float _t43, float _t65, float _t64, float _t42, float pX, float _t90, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ, float _t84, float _t85, float yX, float yY, float yZ, float _t88, float _t69, float _t70, float _t72, float _t71, float _t73, float _t74, float _t44, float _t45, float _t40, float _t53_inv) {
         float _t91 = _t41 * _t63 - _t43 * _t65;
         float _t92 = _t43 * _t64 - _t42 * _t63;
         float _t96 = pX * _t90;
@@ -36007,25 +36281,45 @@ public class Float4x4Impl implements Float4x4 {
         float _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         float _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         float _t122_inv = 1.0f / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3(Float4x4Impl _dst, float _t121, float _t113, float _t96, float _t97, float _t99, float _t98, float _t100, float _t101, float _t44, float _t122_inv, float _t116, float _t88, float _t84, float _t85, float _t109, float _t110, float _t45, float _t40, float _t53_inv) {
         float _t124_inv = 1.0f / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0f;
-        this.m20 = 0.0f;
-        this.m30 = 0.0f;
-        this.m01 = 0.0f;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0f;
-        this.m31 = 0.0f;
-        this.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
-        this.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
-        this.m22 = _t45 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? -1.0f : -((_t40 + _t45) * _t53_inv);
-        this.m32 = 1.0f;
-        this.m03 = 0.0f;
-        this.m13 = 0.0f;
-        this.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t44 : _t40 == Float.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
-        this.m33 = 0.0f;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _t53_inv);
+        makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_c3(_dst, _t45, _t44, _t40, _t53_inv);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through
+     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_no_lh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
+        Float4x4Impl d = this;
+        float _t12 = xZ * yY - xY * yZ;
+        float _t13 = xX * yZ - xZ * yX;
+        float _t14 = xY * yX - xX * yY;
+        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
+        float _t21 = _t13 * _t20;
+        float _t22 = _t12 * _t20;
+        float _t23 = _t14 * _t20;
+        float _t24 = _t23 + (eyeZ - eyeZ);
+        float _t25 = _t22 + (eyeX - eyeX);
+        float _t26 = _t21 + (eyeY - eyeY);
+        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
+        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        float _t41 = _t24 * _t39;
+        float _t42 = _t26 * _t39;
+        float _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail(d, _t40, nearFarDist, yY, _t41, yZ, _t42, _t43, yX, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -36038,29 +36332,40 @@ public class Float4x4Impl implements Float4x4 {
         return makePerspectiveOffCenterRectangleProj_no_rh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c0(Float4x4Impl _dst, float _t44, float _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0f;
+        _dst.m20 = 0.0f;
+        _dst.m30 = 0.0f;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through
-     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_no_rh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
-        float _t12 = xZ * yY - xY * yZ;
-        float _t13 = xX * yZ - xZ * yX;
-        float _t14 = xY * yX - xX * yY;
-        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
-        float _t21 = _t13 * _t20;
-        float _t22 = _t12 * _t20;
-        float _t23 = _t14 * _t20;
-        float _t24 = _t21 + (eyeY - eyeY);
-        float _t25 = _t22 + (eyeX - eyeX);
-        float _t26 = _t23 + (eyeZ - eyeZ);
-        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
-        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        float _t41 = _t24 * _t39;
-        float _t42 = _t26 * _t39;
-        float _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c1(Float4x4Impl _dst, float _t44, float _t124_inv) {
+        _dst.m01 = 0.0f;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0f;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c2(Float4x4Impl _dst, float _t116, float _t88, float _t84, float _t85, float _t122_inv, float _t121, float _t113, float _t109, float _t110, float _t124_inv, float _t45, float _t40, float _t53_inv) {
+        _dst.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
+        _dst.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
+        _dst.m22 = _t45 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 1.0f : (_t40 + _t45) * _t53_inv;
+        _dst.m32 = -1.0f;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c3(Float4x4Impl _dst, float _t45, float _t44, float _t40, float _t53_inv) {
+        _dst.m03 = 0.0f;
+        _dst.m13 = 0.0f;
+        _dst.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t44 : _t40 == Float.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
+        _dst.m33 = 0.0f;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail(Float4x4Impl _dst, float _t40, float nearFarDist, float yZ, float _t41, float yY, float _t42, float yX, float _t43, float pX, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ) {
         float _t44 = _t40 + _t40;
         float _t45 = _t40 + nearFarDist;
         float _t53_inv = 1.0f / (_t40 + (-nearFarDist - _t40));
@@ -36081,6 +36386,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t85 = _t71 - _t72;
         float _t88 = -_t73 - _t74;
         float _t90 = _t42 * _t64 - _t41 * _t65;
+        makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail2(_dst, _t43, _t65, _t42, _t63, _t41, _t64, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail2(Float4x4Impl _dst, float _t43, float _t65, float _t42, float _t63, float _t41, float _t64, float pX, float _t90, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ, float _t84, float _t85, float yX, float yY, float yZ, float _t88, float _t69, float _t70, float _t72, float _t71, float _t73, float _t74, float _t44, float _t45, float _t40, float _t53_inv) {
         float _t91 = _t43 * _t65 - _t42 * _t63;
         float _t92 = _t41 * _t63 - _t43 * _t64;
         float _t96 = pX * _t90;
@@ -36095,25 +36405,45 @@ public class Float4x4Impl implements Float4x4 {
         float _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         float _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         float _t122_inv = 1.0f / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3(Float4x4Impl _dst, float _t121, float _t113, float _t96, float _t97, float _t99, float _t98, float _t100, float _t101, float _t44, float _t122_inv, float _t116, float _t88, float _t84, float _t85, float _t109, float _t110, float _t45, float _t40, float _t53_inv) {
         float _t124_inv = 1.0f / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0f;
-        this.m20 = 0.0f;
-        this.m30 = 0.0f;
-        this.m01 = 0.0f;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0f;
-        this.m31 = 0.0f;
-        this.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
-        this.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
-        this.m22 = _t45 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 1.0f : (_t40 + _t45) * _t53_inv;
-        this.m32 = -1.0f;
-        this.m03 = 0.0f;
-        this.m13 = 0.0f;
-        this.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t44 : _t40 == Float.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
-        this.m33 = 0.0f;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _t53_inv);
+        makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_c3(_dst, _t45, _t44, _t40, _t53_inv);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through
+     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_no_rh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
+        Float4x4Impl d = this;
+        float _t12 = xZ * yY - xY * yZ;
+        float _t13 = xX * yZ - xZ * yX;
+        float _t14 = xY * yX - xX * yY;
+        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
+        float _t21 = _t13 * _t20;
+        float _t22 = _t12 * _t20;
+        float _t23 = _t14 * _t20;
+        float _t24 = _t21 + (eyeY - eyeY);
+        float _t25 = _t22 + (eyeX - eyeX);
+        float _t26 = _t23 + (eyeZ - eyeZ);
+        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
+        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        float _t41 = _t24 * _t39;
+        float _t42 = _t26 * _t39;
+        float _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail(d, _t40, nearFarDist, yZ, _t41, yY, _t42, yX, _t43, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -36152,29 +36482,40 @@ public class Float4x4Impl implements Float4x4 {
         return makePerspectiveOffCenterRectangleProj_zo_lh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c0(Float4x4Impl _dst, float _t44, float _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0f;
+        _dst.m20 = 0.0f;
+        _dst.m30 = 0.0f;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through the
-     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_zo_lh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
-        float _t12 = xZ * yY - xY * yZ;
-        float _t13 = xX * yZ - xZ * yX;
-        float _t14 = xY * yX - xX * yY;
-        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
-        float _t21 = _t13 * _t20;
-        float _t22 = _t12 * _t20;
-        float _t23 = _t14 * _t20;
-        float _t24 = _t23 + (eyeZ - eyeZ);
-        float _t25 = _t22 + (eyeX - eyeX);
-        float _t26 = _t21 + (eyeY - eyeY);
-        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
-        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        float _t41 = _t24 * _t39;
-        float _t42 = _t26 * _t39;
-        float _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c1(Float4x4Impl _dst, float _t44, float _t124_inv) {
+        _dst.m01 = 0.0f;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0f;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c2(Float4x4Impl _dst, float _t116, float _t88, float _t84, float _t85, float _t122_inv, float _t121, float _t113, float _t109, float _t110, float _t124_inv, float _t45, float _t40, float _sp0) {
+        _dst.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
+        _dst.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
+        _dst.m22 = _t45 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? 0.0f : -_sp0;
+        _dst.m32 = 1.0f;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c3(Float4x4Impl _dst, float _t45, float _t40, float _sp0) {
+        _dst.m03 = 0.0f;
+        _dst.m13 = 0.0f;
+        _dst.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t40 : _t40 == Float.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
+        _dst.m33 = 0.0f;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail(Float4x4Impl _dst, float _t40, float nearFarDist, float yY, float _t41, float yZ, float _t42, float _t43, float yX, float pX, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ) {
         float _t44 = _t40 + _t40;
         float _t45 = _t40 + nearFarDist;
         float _sp0 = _t45 / (_t40 + (-nearFarDist - _t40));
@@ -36195,6 +36536,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t85 = _t71 - _t72;
         float _t88 = -_t73 - _t74;
         float _t90 = _t42 * _t65 - _t41 * _t64;
+        makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail2(_dst, _t41, _t63, _t43, _t65, _t64, _t42, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail2(Float4x4Impl _dst, float _t41, float _t63, float _t43, float _t65, float _t64, float _t42, float pX, float _t90, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ, float _t84, float _t85, float yX, float yY, float yZ, float _t88, float _t69, float _t70, float _t72, float _t71, float _t73, float _t74, float _t44, float _t45, float _t40, float _sp0) {
         float _t91 = _t41 * _t63 - _t43 * _t65;
         float _t92 = _t43 * _t64 - _t42 * _t63;
         float _t96 = pX * _t90;
@@ -36209,25 +36555,45 @@ public class Float4x4Impl implements Float4x4 {
         float _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         float _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         float _t122_inv = 1.0f / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3(Float4x4Impl _dst, float _t121, float _t113, float _t96, float _t97, float _t99, float _t98, float _t100, float _t101, float _t44, float _t122_inv, float _t116, float _t88, float _t84, float _t85, float _t109, float _t110, float _t45, float _t40, float _sp0) {
         float _t124_inv = 1.0f / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0f;
-        this.m20 = 0.0f;
-        this.m30 = 0.0f;
-        this.m01 = 0.0f;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0f;
-        this.m31 = 0.0f;
-        this.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
-        this.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
-        this.m22 = _t45 == Float.POSITIVE_INFINITY ? 1.0f : _t40 == Float.POSITIVE_INFINITY ? 0.0f : -_sp0;
-        this.m32 = 1.0f;
-        this.m03 = 0.0f;
-        this.m13 = 0.0f;
-        this.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t40 : _t40 == Float.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
-        this.m33 = 0.0f;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _sp0);
+        makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_c3(_dst, _t45, _t40, _sp0);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through the
+     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_zo_lh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
+        Float4x4Impl d = this;
+        float _t12 = xZ * yY - xY * yZ;
+        float _t13 = xX * yZ - xZ * yX;
+        float _t14 = xY * yX - xX * yY;
+        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
+        float _t21 = _t13 * _t20;
+        float _t22 = _t12 * _t20;
+        float _t23 = _t14 * _t20;
+        float _t24 = _t23 + (eyeZ - eyeZ);
+        float _t25 = _t22 + (eyeX - eyeX);
+        float _t26 = _t21 + (eyeY - eyeY);
+        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
+        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        float _t41 = _t24 * _t39;
+        float _t42 = _t26 * _t39;
+        float _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail(d, _t40, nearFarDist, yY, _t41, yZ, _t42, _t43, yX, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -36240,29 +36606,40 @@ public class Float4x4Impl implements Float4x4 {
         return makePerspectiveOffCenterRectangleProj_zo_rh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c0(Float4x4Impl _dst, float _t44, float _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0f;
+        _dst.m20 = 0.0f;
+        _dst.m30 = 0.0f;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through the
-     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_zo_rh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
-        float _t12 = xZ * yY - xY * yZ;
-        float _t13 = xX * yZ - xZ * yX;
-        float _t14 = xY * yX - xX * yY;
-        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
-        float _t21 = _t13 * _t20;
-        float _t22 = _t12 * _t20;
-        float _t23 = _t14 * _t20;
-        float _t24 = _t21 + (eyeY - eyeY);
-        float _t25 = _t22 + (eyeX - eyeX);
-        float _t26 = _t23 + (eyeZ - eyeZ);
-        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
-        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        float _t41 = _t24 * _t39;
-        float _t42 = _t26 * _t39;
-        float _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c1(Float4x4Impl _dst, float _t44, float _t124_inv) {
+        _dst.m01 = 0.0f;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0f;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c2(Float4x4Impl _dst, float _t116, float _t88, float _t84, float _t85, float _t122_inv, float _t121, float _t113, float _t109, float _t110, float _t124_inv, float _t45, float _t40, float _sp0) {
+        _dst.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
+        _dst.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
+        _dst.m22 = _t45 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 0.0f : _sp0;
+        _dst.m32 = -1.0f;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c3(Float4x4Impl _dst, float _t45, float _t40, float _sp0) {
+        _dst.m03 = 0.0f;
+        _dst.m13 = 0.0f;
+        _dst.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t40 : _t40 == Float.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
+        _dst.m33 = 0.0f;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail(Float4x4Impl _dst, float _t40, float nearFarDist, float yZ, float _t41, float yY, float _t42, float yX, float _t43, float pX, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ) {
         float _t44 = _t40 + _t40;
         float _t45 = _t40 + nearFarDist;
         float _sp0 = _t45 / (_t40 + (-nearFarDist - _t40));
@@ -36283,6 +36660,11 @@ public class Float4x4Impl implements Float4x4 {
         float _t85 = _t71 - _t72;
         float _t88 = -_t73 - _t74;
         float _t90 = _t42 * _t64 - _t41 * _t65;
+        makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail2(_dst, _t43, _t65, _t42, _t63, _t41, _t64, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail2(Float4x4Impl _dst, float _t43, float _t65, float _t42, float _t63, float _t41, float _t64, float pX, float _t90, float pY, float pZ, float eyeX, float eyeY, float eyeZ, float xX, float xY, float xZ, float _t84, float _t85, float yX, float yY, float yZ, float _t88, float _t69, float _t70, float _t72, float _t71, float _t73, float _t74, float _t44, float _t45, float _t40, float _sp0) {
         float _t91 = _t43 * _t65 - _t42 * _t63;
         float _t92 = _t41 * _t63 - _t43 * _t64;
         float _t96 = pX * _t90;
@@ -36297,25 +36679,45 @@ public class Float4x4Impl implements Float4x4 {
         float _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         float _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         float _t122_inv = 1.0f / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3(Float4x4Impl _dst, float _t121, float _t113, float _t96, float _t97, float _t99, float _t98, float _t100, float _t101, float _t44, float _t122_inv, float _t116, float _t88, float _t84, float _t85, float _t109, float _t110, float _t45, float _t40, float _sp0) {
         float _t124_inv = 1.0f / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0f;
-        this.m20 = 0.0f;
-        this.m30 = 0.0f;
-        this.m01 = 0.0f;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0f;
-        this.m31 = 0.0f;
-        this.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
-        this.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
-        this.m22 = _t45 == Float.POSITIVE_INFINITY ? -1.0f : _t40 == Float.POSITIVE_INFINITY ? 0.0f : _sp0;
-        this.m32 = -1.0f;
-        this.m03 = 0.0f;
-        this.m13 = 0.0f;
-        this.m23 = _t45 == Float.POSITIVE_INFINITY ? -_t40 : _t40 == Float.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
-        this.m33 = 0.0f;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _sp0);
+        makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_c3(_dst, _t45, _t40, _sp0);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through the
+     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Float4x4 makePerspectiveOffCenterRectangleProj_zo_rh(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ, float nearFarDist) {
+        Float4x4Impl d = this;
+        float _t12 = xZ * yY - xY * yZ;
+        float _t13 = xX * yZ - xZ * yX;
+        float _t14 = xY * yX - xX * yY;
+        float _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        float _t20 = _t19 >= 0.0f ? 1.0f : -1.0f;
+        float _t21 = _t13 * _t20;
+        float _t22 = _t12 * _t20;
+        float _t23 = _t14 * _t20;
+        float _t24 = _t21 + (eyeY - eyeY);
+        float _t25 = _t22 + (eyeX - eyeX);
+        float _t26 = _t23 + (eyeZ - eyeZ);
+        float _t39 = (1.0f / (float) Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
+        float _t40 = _t19 * _t20 * (1.0f / (float) Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        float _t41 = _t24 * _t39;
+        float _t42 = _t26 * _t39;
+        float _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail(d, _t40, nearFarDist, yZ, _t41, yY, _t42, yX, _t43, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -36626,22 +37028,40 @@ public class Float4x4Impl implements Float4x4 {
         return makePerspectiveOffCenterRectangleView_lh_degenerate(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z());
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c0(Float4x4Impl _dst, float _t74, float _t83, float _t39) {
+        _dst.m00 = _t74;
+        _dst.m10 = _t83;
+        _dst.m20 = _t39;
+        _dst.m30 = 0.0f;
+    }
 
-    /**
-     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
-     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
-     * zero, NaN); reached only through them.
-     */
-    @Mutated private Float4x4 makePerspectiveOffCenterRectangleView_lh_degenerate(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ) {
-        float _t12 = xZ * yY - xY * yZ;
-        float _t13 = xX * yZ - xZ * yX;
-        float _t14 = xY * yX - xX * yY;
-        float _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0f ? 1.0f : -1.0f;
-        float _t24 = _t12 * _t20 + (eyeX - eyeX);
-        float _t25 = _t13 * _t20 + (eyeY - eyeY);
-        float _t26 = _t14 * _t20 + (eyeZ - eyeZ);
-        float _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        float _t32 = (1.0f / (float) Math.sqrt(_t31));
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c1(Float4x4Impl _dst, float _t75, float _t82, float _t41) {
+        _dst.m01 = _t75;
+        _dst.m11 = _t82;
+        _dst.m21 = _t41;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c2(Float4x4Impl _dst, float _t73, float _t84, float _t40) {
+        _dst.m02 = _t73;
+        _dst.m12 = _t84;
+        _dst.m22 = _t40;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c3(Float4x4Impl _dst, float eyeX, float _t74, float eyeY, float _t75, float eyeZ, float _t73, float _t83, float _t82, float _t84, float _t39, float _t41, float _t40) {
+        _dst.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
+        _dst.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
+        _dst.m23 = -(eyeX * _t39 + eyeY * _t41 + eyeZ * _t40);
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail(Float4x4Impl _dst, float _t31, float yZ, float yX, float yY, float _t24, float _t32, float _t26, float _t25, float eyeX, float eyeY, float eyeZ) {
         float _t33, _t34, _t35, _t39, _t40, _t41;
         if (_t31 == 0.0f) {
             _t33 = 0.0f;
@@ -36673,6 +37093,11 @@ public class Float4x4Impl implements Float4x4 {
             _t56 = 0.0f;
             _t57 = -_t40;
         }
+        makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail2(_dst, _t52, _t53, _t54, _t56, _t57, _t55, _t40, _t39, _t41, eyeX, eyeY, eyeZ);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail2(Float4x4Impl _dst, float _t52, float _t53, float _t54, float _t56, float _t57, float _t55, float _t40, float _t39, float _t41, float eyeX, float eyeY, float eyeZ) {
         float _t66 = _t52 * _t52 + _t53 * _t53 + _t54 * _t54;
         float _t72, _t73, _t74, _t75;
         if (_t66 == 0.0f) {
@@ -36689,24 +37114,32 @@ public class Float4x4Impl implements Float4x4 {
         float _t82 = _t74 * _t40 - _t73 * _t39;
         float _t83 = _t73 * _t41 - _t75 * _t40;
         float _t84 = _t75 * _t39 - _t74 * _t41;
-        this.m00 = _t74;
-        this.m10 = _t83;
-        this.m20 = _t39;
-        this.m30 = 0.0f;
-        this.m01 = _t75;
-        this.m11 = _t82;
-        this.m21 = _t41;
-        this.m31 = 0.0f;
-        this.m02 = _t73;
-        this.m12 = _t84;
-        this.m22 = _t40;
-        this.m32 = 0.0f;
-        this.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
-        this.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
-        this.m23 = -(eyeX * _t39 + eyeY * _t41 + eyeZ * _t40);
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c0(_dst, _t74, _t83, _t39);
+        makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c1(_dst, _t75, _t82, _t41);
+        makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c2(_dst, _t73, _t84, _t40);
+        makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_c3(_dst, eyeX, _t74, eyeY, _t75, eyeZ, _t73, _t83, _t82, _t84, _t39, _t41, _t40);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
+     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
+     * zero, NaN); reached only through them.
+     */
+    @Mutated private Float4x4 makePerspectiveOffCenterRectangleView_lh_degenerate(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ) {
+        Float4x4Impl d = this;
+        float _t12 = xZ * yY - xY * yZ;
+        float _t13 = xX * yZ - xZ * yX;
+        float _t14 = xY * yX - xX * yY;
+        float _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0f ? 1.0f : -1.0f;
+        float _t24 = _t12 * _t20 + (eyeX - eyeX);
+        float _t25 = _t13 * _t20 + (eyeY - eyeY);
+        float _t26 = _t14 * _t20 + (eyeZ - eyeZ);
+        float _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
+        float _t32 = (1.0f / (float) Math.sqrt(_t31));
+        makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail(d, _t31, yZ, yX, yY, _t24, _t32, _t26, _t25, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -36779,22 +37212,40 @@ public class Float4x4Impl implements Float4x4 {
         return makePerspectiveOffCenterRectangleView_rh_degenerate(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z());
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c0(Float4x4Impl _dst, float _t74, float _t83, float _t40) {
+        _dst.m00 = _t74;
+        _dst.m10 = _t83;
+        _dst.m20 = -_t40;
+        _dst.m30 = 0.0f;
+    }
 
-    /**
-     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
-     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
-     * zero, NaN); reached only through them.
-     */
-    @Mutated private Float4x4 makePerspectiveOffCenterRectangleView_rh_degenerate(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ) {
-        float _t12 = xZ * yY - xY * yZ;
-        float _t13 = xX * yZ - xZ * yX;
-        float _t14 = xY * yX - xX * yY;
-        float _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0f ? 1.0f : -1.0f;
-        float _t24 = _t12 * _t20 + (eyeX - eyeX);
-        float _t25 = _t13 * _t20 + (eyeY - eyeY);
-        float _t26 = _t14 * _t20 + (eyeZ - eyeZ);
-        float _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        float _t32 = (1.0f / (float) Math.sqrt(_t31));
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c1(Float4x4Impl _dst, float _t75, float _t82, float _t44) {
+        _dst.m01 = _t75;
+        _dst.m11 = _t82;
+        _dst.m21 = _t44;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c2(Float4x4Impl _dst, float _t73, float _t84, float _t45) {
+        _dst.m02 = _t73;
+        _dst.m12 = _t84;
+        _dst.m22 = _t45;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c3(Float4x4Impl _dst, float eyeX, float _t74, float eyeY, float _t75, float eyeZ, float _t73, float _t83, float _t82, float _t84, float _t40, float _t41, float _t39) {
+        _dst.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
+        _dst.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
+        _dst.m23 = eyeX * _t40 + eyeY * _t41 + eyeZ * _t39;
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail(Float4x4Impl _dst, float _t31, float yX, float yZ, float yY, float _t26, float _t32, float _t24, float _t25, float eyeX, float eyeY, float eyeZ) {
         float _t33, _t34, _t35, _t39, _t40, _t41;
         if (_t31 == 0.0f) {
             _t33 = 0.0f;
@@ -36828,6 +37279,11 @@ public class Float4x4Impl implements Float4x4 {
             _t56 = 0.0f;
             _t57 = _t45;
         }
+        makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail2(_dst, _t52, _t53, _t54, _t56, _t57, _t55, _t40, _t39, _t41, eyeX, eyeY, eyeZ, _t44, _t45);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail2(Float4x4Impl _dst, float _t52, float _t53, float _t54, float _t56, float _t57, float _t55, float _t40, float _t39, float _t41, float eyeX, float eyeY, float eyeZ, float _t44, float _t45) {
         float _t66 = _t52 * _t52 + _t53 * _t53 + _t54 * _t54;
         float _t72, _t73, _t74, _t75;
         if (_t66 == 0.0f) {
@@ -36844,24 +37300,32 @@ public class Float4x4Impl implements Float4x4 {
         float _t82 = _t73 * _t40 - _t74 * _t39;
         float _t83 = _t75 * _t39 - _t73 * _t41;
         float _t84 = _t74 * _t41 - _t75 * _t40;
-        this.m00 = _t74;
-        this.m10 = _t83;
-        this.m20 = -_t40;
-        this.m30 = 0.0f;
-        this.m01 = _t75;
-        this.m11 = _t82;
-        this.m21 = _t44;
-        this.m31 = 0.0f;
-        this.m02 = _t73;
-        this.m12 = _t84;
-        this.m22 = _t45;
-        this.m32 = 0.0f;
-        this.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
-        this.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
-        this.m23 = eyeX * _t40 + eyeY * _t41 + eyeZ * _t39;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c0(_dst, _t74, _t83, _t40);
+        makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c1(_dst, _t75, _t82, _t44);
+        makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c2(_dst, _t73, _t84, _t45);
+        makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_c3(_dst, eyeX, _t74, eyeY, _t75, eyeZ, _t73, _t83, _t82, _t84, _t40, _t41, _t39);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
+     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
+     * zero, NaN); reached only through them.
+     */
+    @Mutated private Float4x4 makePerspectiveOffCenterRectangleView_rh_degenerate(float eyeX, float eyeY, float eyeZ, float pX, float pY, float pZ, float xX, float xY, float xZ, float yX, float yY, float yZ) {
+        Float4x4Impl d = this;
+        float _t12 = xZ * yY - xY * yZ;
+        float _t13 = xX * yZ - xZ * yX;
+        float _t14 = xY * yX - xX * yY;
+        float _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0f ? 1.0f : -1.0f;
+        float _t24 = _t12 * _t20 + (eyeX - eyeX);
+        float _t25 = _t13 * _t20 + (eyeY - eyeY);
+        float _t26 = _t14 * _t20 + (eyeZ - eyeZ);
+        float _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
+        float _t32 = (1.0f / (float) Math.sqrt(_t31));
+        makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail(d, _t31, yX, yZ, yY, _t26, _t32, _t24, _t25, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -37211,6 +37675,60 @@ public class Float4x4Impl implements Float4x4 {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c0(Float4x4Impl _dst, float _t47, float _t48, float _t46) {
+        _dst.m00 = _t47;
+        _dst.m10 = _t48;
+        _dst.m20 = _t46;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c1(Float4x4Impl _dst, float _t46, float _t14, float _t48, float _t13, float _t47, float _t12) {
+        _dst.m01 = _t46 * _t14 - _t48 * _t13;
+        _dst.m11 = _t47 * _t13 - _t46 * _t12;
+        _dst.m21 = _t48 * _t12 - _t47 * _t14;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c2(Float4x4Impl _dst, float _t12, float _t14, float _t13) {
+        _dst.m02 = _t12;
+        _dst.m12 = _t14;
+        _dst.m22 = _t13;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c3(Float4x4Impl _dst) {
+        _dst.m03 = 0.0f;
+        _dst.m13 = 0.0f;
+        _dst.m23 = 0.0f;
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail(Float4x4Impl _dst, float _t15, float _t16, float _t12, float _t13, float _t27, float _t28, float _t29, float _t26, float _t25, float _t14) {
+        float _t30 = _t15 > _t16 ? _t12 : -_t13;
+        float _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        float _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0f) {
+            _t45 = (1.0f / (float) Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0f / (float) Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        makeRotationLookAlong_degenerate_s524747ee_c0(_dst, _t47, _t48, _t46);
+        makeRotationLookAlong_degenerate_s524747ee_c1(_dst, _t46, _t14, _t48, _t13, _t47, _t12);
+        makeRotationLookAlong_degenerate_s524747ee_c2(_dst, _t12, _t14, _t13);
+        makeRotationLookAlong_degenerate_s524747ee_c3(_dst);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -37218,6 +37736,7 @@ public class Float4x4Impl implements Float4x4 {
      * reached only through them.
      */
     @Mutated private Float4x4 makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        Float4x4Impl d = this;
         float _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
         float _t5 = (1.0f / (float) Math.sqrt(_t4));
         float _t9, _t10, _t11, _t12, _t13, _t14;
@@ -37238,50 +37757,20 @@ public class Float4x4Impl implements Float4x4 {
         }
         float _t15 = Math.abs(_t12);
         float _t16 = Math.abs(_t13);
-        float _t25, _t26, _t30;
+        float _t25, _t26;
         if (_t15 > _t16) {
             _t25 = 0.0f;
             _t26 = -_t14;
-            _t30 = _t12;
         } else {
             _t25 = _t14;
             _t26 = 0.0f;
-            _t30 = -_t13;
         }
         float _t27 = _t9 * _t12 - _t10 * _t13;
         float _t28 = _t11 * _t13 - _t9 * _t14;
         float _t29 = _t10 * _t14 - _t12 * _t11;
-        float _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
-        float _t45, _t46, _t47, _t48;
-        if (_t39 == 0.0f) {
-            _t45 = (1.0f / (float) Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
-            _t46 = _t45 * _t25;
-            _t47 = _t45 * _t26;
-            _t48 = _t45 * _t30;
-        } else {
-            _t45 = (1.0f / (float) Math.sqrt(_t39));
-            _t46 = _t45 * _t29;
-            _t47 = _t45 * _t28;
-            _t48 = _t45 * _t27;
-        }
-        this.m00 = _t47;
-        this.m10 = _t48;
-        this.m20 = _t46;
-        this.m30 = 0.0f;
-        this.m01 = _t46 * _t14 - _t48 * _t13;
-        this.m11 = _t47 * _t13 - _t46 * _t12;
-        this.m21 = _t48 * _t12 - _t47 * _t14;
-        this.m31 = 0.0f;
-        this.m02 = _t12;
-        this.m12 = _t14;
-        this.m22 = _t13;
-        this.m32 = 0.0f;
-        this.m03 = 0.0f;
-        this.m13 = 0.0f;
-        this.m23 = 0.0f;
-        this.m33 = 1.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeRotationLookAlong_degenerate_s524747ee_tail(d, _t15, _t16, _t12, _t13, _t27, _t28, _t29, _t26, _t25, _t14);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -37918,6 +38407,56 @@ public class Float4x4Impl implements Float4x4 {
         return makeTrapezoidCrop(p0.x(), p0.y(), p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
     }
 
+    /** Private column 0 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s7d5258d0_c0(Float4x4Impl _dst, float _sp1, float _t23, float _t53, float _t61) {
+        _dst.m00 = _sp1 * _t23 - _t53;
+        _dst.m10 = _t61 * _t53;
+        _dst.m20 = 0.0f;
+        _dst.m30 = _t53;
+    }
+
+    /** Private column 1 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s7d5258d0_c1(Float4x4Impl _dst, float _sp1, float _t24, float _t54, float _t61) {
+        _dst.m01 = _sp1 * _t24 - _t54;
+        _dst.m11 = _t61 * _t54;
+        _dst.m21 = 0.0f;
+        _dst.m31 = _t54;
+    }
+
+    /** Private column 2 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s7d5258d0_c2(Float4x4Impl _dst) {
+        _dst.m02 = 0.0f;
+        _dst.m12 = 0.0f;
+        _dst.m22 = 1.0f;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s7d5258d0_c3(Float4x4Impl _dst, float _sp1, float _t5, float _t30, float _t6, float _t58, float _t61, float _t60) {
+        _dst.m03 = _sp1 * (_t5 + (_t30 - _t6)) - _t58;
+        _dst.m13 = _t61 * _t58 - _t60;
+        _dst.m23 = 0.0f;
+        _dst.m33 = _t58;
+    }
+
+    /** Private tail of {@code makeTrapezoidCrop}; reached only through it. */
+    private void makeTrapezoidCrop_s7d5258d0_tail(Float4x4Impl _dst, float _t12, float _t30, float _t25, float _t26, float _t6, float _t5, float _t27, float _t28, float _t45, float _t10, float _t9, float _t7, float _t8, float _t2, float _t0, float _sp1, float _t23, float _t24) {
+        float _t47 = _t12 + (_t30 + (_t25 + _t26)) + (_t6 - _t5 + (-_t27 - _t28 - _t30));
+        float _t50 = _t45 / _t47 - _t10 - _t9;
+        float _t52 = _t7 + (_t8 + _t50);
+        float _t52_inv = 1.0f / _t52;
+        float _t53 = _t2 * _t52_inv;
+        float _t54 = _t0 * _t52_inv;
+        float _t55 = _t52 * _t47;
+        float _t58 = _t50 * _t52_inv;
+        float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
+        float _t61 = 1.0f + _t60;
+        makeTrapezoidCrop_s7d5258d0_c0(_dst, _sp1, _t23, _t53, _t61);
+        makeTrapezoidCrop_s7d5258d0_c1(_dst, _sp1, _t24, _t54, _t61);
+        makeTrapezoidCrop_s7d5258d0_c2(_dst);
+        makeTrapezoidCrop_s7d5258d0_c3(_dst, _sp1, _t5, _t30, _t6, _t58, _t61, _t60);
+    }
+
 
     /**
      * Set this matrix to a trapezoid-crop transformation mapping the given trapezoid onto the
@@ -37934,6 +38473,7 @@ public class Float4x4Impl implements Float4x4 {
      * @return this
      */
     @Mutated public Float4x4 makeTrapezoidCrop(float p0X, float p0Y, float p1X, float p1Y, float p2X, float p2Y, float p3X, float p3Y) {
+        Float4x4Impl d = this;
         float _t0 = p0X - p1X;
         float _t1 = p0Y - p1Y;
         float _t2 = p1Y - p0Y;
@@ -37956,34 +38496,9 @@ public class Float4x4Impl implements Float4x4 {
         float _t30 = _sp0 * _t14;
         float _sp1 = 2.0f / (_t5 + (_t25 + (_t26 + _t30) - _t6));
         float _t45 = (_t5 + (_t27 + (_t28 + _t30) - _t6)) * _t17;
-        float _t47 = _t12 + (_t30 + (_t25 + _t26)) + (_t6 - _t5 + (-_t27 - _t28 - _t30));
-        float _t50 = _t45 / _t47 - _t10 - _t9;
-        float _t52 = _t7 + (_t8 + _t50);
-        float _t52_inv = 1.0f / _t52;
-        float _t53 = _t2 * _t52_inv;
-        float _t54 = _t0 * _t52_inv;
-        float _t55 = _t52 * _t47;
-        float _t58 = _t50 * _t52_inv;
-        float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
-        float _t61 = 1.0f + _t60;
-        this.m00 = _sp1 * _t23 - _t53;
-        this.m10 = _t61 * _t53;
-        this.m20 = 0.0f;
-        this.m30 = _t53;
-        this.m01 = _sp1 * _t24 - _t54;
-        this.m11 = _t61 * _t54;
-        this.m21 = 0.0f;
-        this.m31 = _t54;
-        this.m02 = 0.0f;
-        this.m12 = 0.0f;
-        this.m22 = 1.0f;
-        this.m32 = 0.0f;
-        this.m03 = _sp1 * (_t5 + (_t30 - _t6)) - _t58;
-        this.m13 = _t61 * _t58 - _t60;
-        this.m23 = 0.0f;
-        this.m33 = _t58;
-        this.properties = 0;
-        return this;
+        makeTrapezoidCrop_s7d5258d0_tail(d, _t12, _t30, _t25, _t26, _t6, _t5, _t27, _t28, _t45, _t10, _t9, _t7, _t8, _t2, _t0, _sp1, _t23, _t24);
+        d.properties = 0;
+        return d;
     }
 
 

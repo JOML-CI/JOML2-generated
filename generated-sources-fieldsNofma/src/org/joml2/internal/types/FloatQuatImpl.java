@@ -469,6 +469,20 @@ public final class FloatQuatImpl implements FloatQuat {
         return this;
     }
 
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4190286d_c0(FloatQuatImpl _dst, float _t10, float _sp0, float _t1, float _r0, float _t2, float _t15, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.x = _t10 > 0.0f ? _sp0 * _t1 : _r0 > _t2 ? 0.5f * (float) Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0f ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0f ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s4190286d_tail(FloatQuatImpl _dst, float _t15, float _t10, float _sp0, float _t1, float _r0, float _t2, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        makeFromMatrix_s4190286d_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+    }
+
 
     /**
      * Set this quaternion to the rotation represented by the given matrix (which must be a
@@ -479,49 +493,48 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeFromMatrix(Float3x3R m) {
-        float _t0 = m.m00() + m.m11();
-        float _t1 = m.m21() - m.m12();
-        float _t2 = Math.max(m.m11(), m.m22());
-        float _t4 = m.m01() + m.m10();
-        float _t6 = m.m02() + m.m20();
-        float _t7 = m.m02() - m.m20();
-        float _t8 = m.m12() + m.m21();
-        float _t9 = m.m10() - m.m01();
-        float _t10 = m.m22() + _t0;
+        FloatQuatImpl d = this;
+        float _r0 = m.m00();
+        float _r1 = m.m11();
+        float _r2 = m.m21();
+        float _r3 = m.m12();
+        float _r4 = m.m22();
+        float _r5 = m.m01();
+        float _r6 = m.m10();
+        float _r7 = m.m02();
+        float _r8 = m.m20();
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t2 = Math.max(_r1, _r4);
+        float _t4 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r6 - _r5;
+        float _t10 = _r4 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (m.m00() - (m.m11() + m.m22()));
-        float _t16 = 1.0f + (m.m11() - (m.m00() + m.m22()));
-        float _t17 = 1.0f + (m.m22() - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r4));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r4));
+        float _t17 = 1.0f + (_r4 - _t0);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        makeFromMatrix_s4190286d_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s41909ccc_c0(FloatQuatImpl _dst, float _t10, float _sp0, float _t1, float _r0, float _t2, float _t15, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.x = _t10 > 0.0f ? _sp0 * _t1 : _r0 > _t2 ? 0.5f * (float) Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0f ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0f ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s41909ccc_tail(FloatQuatImpl _dst, float _t15, float _t10, float _sp0, float _t1, float _r0, float _t2, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            this.x = _sp0 * _t1;
-            this.y = _sp0 * _t7;
-            this.z = _sp0 * _t9;
-            this.w = 0.5f * (float) Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t2) {
-                this.x = 0.5f * (float) Math.sqrt(_t15);
-                this.y = _sp3 * _t4;
-                this.z = _sp3 * _t6;
-                this.w = _sp3 * _t1;
-            } else {
-                if (m.m11() > m.m22()) {
-                    this.x = _sp1 * _t4;
-                    this.y = 0.5f * (float) Math.sqrt(_t16);
-                    this.z = _sp1 * _t8;
-                    this.w = _sp1 * _t7;
-                } else {
-                    this.x = _sp2 * _t6;
-                    this.y = _sp2 * _t8;
-                    this.z = 0.5f * (float) Math.sqrt(_t17);
-                    this.w = _sp2 * _t9;
-                }
-            }
-        }
-        return this;
+        makeFromMatrix_s41909ccc_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -534,49 +547,48 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeFromMatrix(Float3x4R m) {
-        float _t0 = m.m00() + m.m11();
-        float _t1 = m.m21() - m.m12();
-        float _t2 = Math.max(m.m11(), m.m22());
-        float _t4 = m.m01() + m.m10();
-        float _t6 = m.m02() + m.m20();
-        float _t7 = m.m02() - m.m20();
-        float _t8 = m.m12() + m.m21();
-        float _t9 = m.m10() - m.m01();
-        float _t10 = m.m22() + _t0;
+        FloatQuatImpl d = this;
+        float _r0 = m.m00();
+        float _r1 = m.m11();
+        float _r2 = m.m21();
+        float _r3 = m.m12();
+        float _r4 = m.m22();
+        float _r5 = m.m01();
+        float _r6 = m.m10();
+        float _r7 = m.m02();
+        float _r8 = m.m20();
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t2 = Math.max(_r1, _r4);
+        float _t4 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r6 - _r5;
+        float _t10 = _r4 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (m.m00() - (m.m11() + m.m22()));
-        float _t16 = 1.0f + (m.m11() - (m.m00() + m.m22()));
-        float _t17 = 1.0f + (m.m22() - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r4));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r4));
+        float _t17 = 1.0f + (_r4 - _t0);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        makeFromMatrix_s41909ccc_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4345756b_c0(FloatQuatImpl _dst, float _t10, float _sp0, float _t1, float _r0, float _t2, float _t15, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.x = _t10 > 0.0f ? _sp0 * _t1 : _r0 > _t2 ? 0.5f * (float) Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0f ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0f ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s4345756b_tail(FloatQuatImpl _dst, float _t15, float _t10, float _sp0, float _t1, float _r0, float _t2, float _r1, float _r4, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            this.x = _sp0 * _t1;
-            this.y = _sp0 * _t7;
-            this.z = _sp0 * _t9;
-            this.w = 0.5f * (float) Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t2) {
-                this.x = 0.5f * (float) Math.sqrt(_t15);
-                this.y = _sp3 * _t4;
-                this.z = _sp3 * _t6;
-                this.w = _sp3 * _t1;
-            } else {
-                if (m.m11() > m.m22()) {
-                    this.x = _sp1 * _t4;
-                    this.y = 0.5f * (float) Math.sqrt(_t16);
-                    this.z = _sp1 * _t8;
-                    this.w = _sp1 * _t7;
-                } else {
-                    this.x = _sp2 * _t6;
-                    this.y = _sp2 * _t8;
-                    this.z = 0.5f * (float) Math.sqrt(_t17);
-                    this.w = _sp2 * _t9;
-                }
-            }
-        }
-        return this;
+        makeFromMatrix_s4345756b_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -589,49 +601,34 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeFromMatrix(Float4x4R m) {
-        float _t0 = m.m00() + m.m11();
-        float _t1 = m.m21() - m.m12();
-        float _t2 = Math.max(m.m11(), m.m22());
-        float _t4 = m.m01() + m.m10();
-        float _t6 = m.m02() + m.m20();
-        float _t7 = m.m02() - m.m20();
-        float _t8 = m.m12() + m.m21();
-        float _t9 = m.m10() - m.m01();
-        float _t10 = m.m22() + _t0;
+        FloatQuatImpl d = this;
+        float _r0 = m.m00();
+        float _r1 = m.m11();
+        float _r2 = m.m21();
+        float _r3 = m.m12();
+        float _r4 = m.m22();
+        float _r5 = m.m01();
+        float _r6 = m.m10();
+        float _r7 = m.m02();
+        float _r8 = m.m20();
+        float _t0 = _r0 + _r1;
+        float _t1 = _r2 - _r3;
+        float _t2 = Math.max(_r1, _r4);
+        float _t4 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r3 + _r2;
+        float _t9 = _r6 - _r5;
+        float _t10 = _r4 + _t0;
         float _t14 = 1.0f + _t10;
-        float _t15 = 1.0f + (m.m00() - (m.m11() + m.m22()));
-        float _t16 = 1.0f + (m.m11() - (m.m00() + m.m22()));
-        float _t17 = 1.0f + (m.m22() - _t0);
+        float _t15 = 1.0f + (_r0 - (_r1 + _r4));
+        float _t16 = 1.0f + (_r1 - (_r0 + _r4));
+        float _t17 = 1.0f + (_r4 - _t0);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t10 > 0.0f) {
-            this.x = _sp0 * _t1;
-            this.y = _sp0 * _t7;
-            this.z = _sp0 * _t9;
-            this.w = 0.5f * (float) Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t2) {
-                this.x = 0.5f * (float) Math.sqrt(_t15);
-                this.y = _sp3 * _t4;
-                this.z = _sp3 * _t6;
-                this.w = _sp3 * _t1;
-            } else {
-                if (m.m11() > m.m22()) {
-                    this.x = _sp1 * _t4;
-                    this.y = 0.5f * (float) Math.sqrt(_t16);
-                    this.z = _sp1 * _t8;
-                    this.w = _sp1 * _t7;
-                } else {
-                    this.x = _sp2 * _t6;
-                    this.y = _sp2 * _t8;
-                    this.z = 0.5f * (float) Math.sqrt(_t17);
-                    this.w = _sp2 * _t9;
-                }
-            }
-        }
-        return this;
+        makeFromMatrix_s4345756b_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
+        return d;
     }
 
 
@@ -6314,6 +6311,28 @@ public final class FloatQuatImpl implements FloatQuat {
         return makeRotationLookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private store group 0 of {@code makeRotationLookAlong}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_s524747ee_c0(FloatQuatImpl _dst, float _t56, float _sp0, float _t48, float _t27, float _t49, float _t58, float _t43, float _t6, float _sp1, float _t53, float _sp2, float _t37, float _t38, float _sp3, float _t59, float _t50, float _t54, float _t60, float _t57) {
+        _dst.x = _t56 > 0.0f ? _sp0 * _t48 : _t27 > _t49 ? 0.5f * (float) Math.sqrt(_t58) : _t43 > _t6 ? _sp1 * _t53 : _sp2 * _t37;
+        _dst.y = _t56 > 0.0f ? _sp0 * _t38 : _t27 > _t49 ? _sp3 * _t53 : _t43 > _t6 ? 0.5f * (float) Math.sqrt(_t59) : _sp2 * _t50;
+        _dst.z = _t56 > 0.0f ? _sp0 * _t54 : _t27 > _t49 ? _sp3 * _t37 : _t43 > _t6 ? _sp1 * _t50 : 0.5f * (float) Math.sqrt(_t60);
+        _dst.w = _t56 > 0.0f ? 0.5f * (float) Math.sqrt(_t57) : _t27 > _t49 ? _sp3 * _t48 : _t43 > _t6 ? _sp1 * _t38 : _sp2 * _t54;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private void makeRotationLookAlong_s524747ee_tail(FloatQuatImpl _dst, float _t43, float _t27, float _t6, float _t31, float _t32, float _t30, float _t48, float _t49, float _t53, float _t37, float _t38, float _t50, float _t54) {
+        float _t56 = _t43 + _t27 + _t6;
+        float _t57 = _t31 + (_t27 + (_t6 + 1.0f) - _t32);
+        float _t58 = _t27 + (_t32 + (1.0f - _t6) - _t31);
+        float _t59 = _t31 + (_t30 - _t6 - _t32);
+        float _t60 = _t6 + (_t32 + _t30 - _t31);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t57));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t59));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t58));
+        makeRotationLookAlong_s524747ee_c0(_dst, _t56, _sp0, _t48, _t27, _t49, _t58, _t43, _t6, _sp1, _t53, _sp2, _t37, _t38, _sp3, _t59, _t50, _t54, _t60, _t57);
+    }
+
 
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along ({@code dirX},
@@ -6333,6 +6352,7 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        FloatQuatImpl d = this;
         float _t5 = (1.0f / (float) Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
         float _t6 = dirZ * _t5;
         float _t7 = dirY * _t5;
@@ -6359,41 +6379,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t50 = _t44 + _t7;
         float _t53 = _t45 + _t29;
         float _t54 = _t29 - _t45;
-        float _t56 = _t43 + _t27 + _t6;
-        float _t57 = _t31 + (_t27 + (_t6 + 1.0f) - _t32);
-        float _t58 = _t27 + (_t32 + (1.0f - _t6) - _t31);
-        float _t59 = _t31 + (_t30 - _t6 - _t32);
-        float _t60 = _t6 + (_t32 + _t30 - _t31);
-        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t57));
-        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t59));
-        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t58));
-        if (_t56 > 0.0f) {
-            this.x = _sp0 * _t48;
-            this.y = _sp0 * _t38;
-            this.z = _sp0 * _t54;
-            this.w = 0.5f * (float) Math.sqrt(_t57);
-        } else {
-            if (_t27 > _t49) {
-                this.x = 0.5f * (float) Math.sqrt(_t58);
-                this.y = _sp3 * _t53;
-                this.z = _sp3 * _t37;
-                this.w = _sp3 * _t48;
-            } else {
-                if (_t43 > _t6) {
-                    this.x = _sp1 * _t53;
-                    this.y = 0.5f * (float) Math.sqrt(_t59);
-                    this.z = _sp1 * _t50;
-                    this.w = _sp1 * _t38;
-                } else {
-                    this.x = _sp2 * _t37;
-                    this.y = _sp2 * _t50;
-                    this.z = 0.5f * (float) Math.sqrt(_t60);
-                    this.w = _sp2 * _t54;
-                }
-            }
-        }
-        return this;
+        makeRotationLookAlong_s524747ee_tail(d, _t43, _t27, _t6, _t31, _t32, _t30, _t48, _t49, _t53, _t37, _t38, _t50, _t54);
+        return d;
     }
 
 
@@ -6406,6 +6393,61 @@ public final class FloatQuatImpl implements FloatQuat {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private store group 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c0(FloatQuatImpl _dst, float _t76, float _sp0, float _t75, float _t49, float _t72, float _t78, float _t67, float _t13, float _sp1, float _t85, float _sp2, float _t53, float _t54, float _sp3, float _t79, float _t74, float _t86, float _t80, float _t77) {
+        _dst.x = _t76 > 0.0f ? _sp0 * _t75 : _t49 > _t72 ? 0.5f * (float) Math.sqrt(_t78) : _t67 > _t13 ? _sp1 * _t85 : _sp2 * _t53;
+        _dst.y = _t76 > 0.0f ? _sp0 * _t54 : _t49 > _t72 ? _sp3 * _t85 : _t67 > _t13 ? 0.5f * (float) Math.sqrt(_t79) : _sp2 * _t74;
+        _dst.z = _t76 > 0.0f ? _sp0 * _t86 : _t49 > _t72 ? _sp3 * _t53 : _t67 > _t13 ? _sp1 * _t74 : 0.5f * (float) Math.sqrt(_t80);
+        _dst.w = _t76 > 0.0f ? 0.5f * (float) Math.sqrt(_t77) : _t49 > _t72 ? _sp3 * _t75 : _t67 > _t13 ? _sp1 * _t54 : _sp2 * _t86;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail(FloatQuatImpl _dst, float _t10, float _t14, float _t12, float _t11, float _t15, float _t16, float _t13, float _t29, float _t30, float _t28, float _t27, float _t17, float _t19, float _t20) {
+        float _t31 = _t10 * _t14 - _t12 * _t11;
+        float _t32 = _t15 > _t16 ? _t12 : -_t13;
+        float _t41 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        float _t47, _t48, _t49, _t50;
+        if (_t41 == 0.0f) {
+            _t47 = (1.0f / (float) Math.sqrt(_t28 * _t28 + _t32 * _t32 + _t27 * _t27));
+            _t48 = _t47 * _t27;
+            _t49 = _t47 * _t28;
+            _t50 = _t47 * _t32;
+        } else {
+            _t47 = (1.0f / (float) Math.sqrt(_t41));
+            _t48 = _t47 * _t31;
+            _t49 = _t47 * _t30;
+            _t50 = _t47 * _t29;
+        }
+        float _t51 = _t48 * _t12;
+        float _t53 = _t48 + _t12;
+        float _t54 = _t12 - _t48;
+        float _t55 = _t49 * _t13;
+        float _t57 = _t49 * _t14;
+        float _t61 = _t50 * _t12;
+        float _t67 = _t55 - _t51;
+        float _t71 = _t48 * _t14 - _t50 * _t13;
+        float _t72 = Math.max(_t67, _t13);
+        makeRotationLookAlong_degenerate_s524747ee_tail2(_dst, _t61, _t14, _t57, _t17, _t55, _t49, _t13, _t51, _t19, _t20, _t71, _t50, _t72, _t67, _t53, _t54);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail2(FloatQuatImpl _dst, float _t61, float _t14, float _t57, float _t17, float _t55, float _t49, float _t13, float _t51, float _t19, float _t20, float _t71, float _t50, float _t72, float _t67, float _t53, float _t54) {
+        float _t74 = _t61 + (_t14 - _t57);
+        float _t75 = _t61 + (_t17 - _t57);
+        float _t76 = _t55 + (_t49 + _t13 - _t51);
+        float _t77 = _t55 + (_t49 + _t19 - _t51);
+        float _t78 = _t49 + (_t51 + _t20 - _t55);
+        float _t79 = _t55 + (_t20 - _t49 - _t51);
+        float _t80 = _t51 + (_t19 - _t49) - _t55;
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t79));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t80));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t78));
+        float _t85 = _t71 + _t50;
+        float _t86 = _t50 - _t71;
+        makeRotationLookAlong_degenerate_s524747ee_c0(_dst, _t76, _sp0, _t75, _t49, _t72, _t78, _t67, _t13, _sp1, _t85, _sp2, _t53, _t54, _sp3, _t79, _t74, _t86, _t80, _t77);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -6413,6 +6455,7 @@ public final class FloatQuatImpl implements FloatQuat {
      * reached only through them.
      */
     @Mutated private FloatQuat makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        FloatQuatImpl d = this;
         float _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
         float _t5 = (1.0f / (float) Math.sqrt(_t4));
         float _t9, _t10, _t11, _t12, _t13, _t14;
@@ -6436,80 +6479,18 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t17 = -_t14;
         float _t19 = 1.0f + _t13;
         float _t20 = 1.0f - _t13;
-        float _t27, _t28, _t32;
+        float _t27, _t28;
         if (_t15 > _t16) {
             _t27 = 0.0f;
             _t28 = _t17;
-            _t32 = _t12;
         } else {
             _t27 = _t14;
             _t28 = 0.0f;
-            _t32 = -_t13;
         }
         float _t29 = _t9 * _t12 - _t10 * _t13;
         float _t30 = _t11 * _t13 - _t9 * _t14;
-        float _t31 = _t10 * _t14 - _t12 * _t11;
-        float _t41 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
-        float _t47, _t48, _t49, _t50;
-        if (_t41 == 0.0f) {
-            _t47 = (1.0f / (float) Math.sqrt(_t28 * _t28 + _t32 * _t32 + _t27 * _t27));
-            _t48 = _t47 * _t27;
-            _t49 = _t47 * _t28;
-            _t50 = _t47 * _t32;
-        } else {
-            _t47 = (1.0f / (float) Math.sqrt(_t41));
-            _t48 = _t47 * _t31;
-            _t49 = _t47 * _t30;
-            _t50 = _t47 * _t29;
-        }
-        float _t51 = _t48 * _t12;
-        float _t53 = _t48 + _t12;
-        float _t54 = _t12 - _t48;
-        float _t55 = _t49 * _t13;
-        float _t57 = _t49 * _t14;
-        float _t61 = _t50 * _t12;
-        float _t67 = _t55 - _t51;
-        float _t71 = _t48 * _t14 - _t50 * _t13;
-        float _t72 = Math.max(_t67, _t13);
-        float _t74 = _t61 + (_t14 - _t57);
-        float _t75 = _t61 + (_t17 - _t57);
-        float _t76 = _t55 + (_t49 + _t13 - _t51);
-        float _t77 = _t55 + (_t49 + _t19 - _t51);
-        float _t78 = _t49 + (_t51 + _t20 - _t55);
-        float _t79 = _t55 + (_t20 - _t49 - _t51);
-        float _t80 = _t51 + (_t19 - _t49) - _t55;
-        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
-        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t79));
-        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t80));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t78));
-        float _t85 = _t71 + _t50;
-        float _t86 = _t50 - _t71;
-        if (_t76 > 0.0f) {
-            this.x = _sp0 * _t75;
-            this.y = _sp0 * _t54;
-            this.z = _sp0 * _t86;
-            this.w = 0.5f * (float) Math.sqrt(_t77);
-        } else {
-            if (_t49 > _t72) {
-                this.x = 0.5f * (float) Math.sqrt(_t78);
-                this.y = _sp3 * _t85;
-                this.z = _sp3 * _t53;
-                this.w = _sp3 * _t75;
-            } else {
-                if (_t67 > _t13) {
-                    this.x = _sp1 * _t85;
-                    this.y = 0.5f * (float) Math.sqrt(_t79);
-                    this.z = _sp1 * _t74;
-                    this.w = _sp1 * _t54;
-                } else {
-                    this.x = _sp2 * _t53;
-                    this.y = _sp2 * _t74;
-                    this.z = 0.5f * (float) Math.sqrt(_t80);
-                    this.w = _sp2 * _t86;
-                }
-            }
-        }
-        return this;
+        makeRotationLookAlong_degenerate_s524747ee_tail(d, _t10, _t14, _t12, _t11, _t15, _t16, _t13, _t29, _t30, _t28, _t27, _t17, _t19, _t20);
+        return d;
     }
 
 
@@ -6529,6 +6510,14 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public @Mutated FloatQuat makeRotationTo(Float3R fromDir, Float3R toDir) {
         return makeRotationTo(fromDir.x(), fromDir.y(), fromDir.z(), toDir.x(), toDir.y(), toDir.z());
+    }
+
+    /** Private store group 0 of {@code makeRotationTo}: computes and stores it; reached only through it. */
+    private void makeRotationTo_sb47fb53_c0(FloatQuatImpl _dst, float _t30, float _t16, float _t40, float _t37, float _t38, float _t20, float _t17, float _t22, float _t18, float _t21) {
+        _dst.x = _t30 > 6.0E-8f ? _t16 * _t40 : _t37 != 0.0f ? _t38 * _t20 : 0.0f;
+        _dst.y = _t30 > 6.0E-8f ? _t17 * _t40 : _t37 != 0.0f ? _t38 * _t22 : 0.0f;
+        _dst.z = _t30 > 6.0E-8f ? _t18 * _t40 : _t37 != 0.0f ? _t38 * _t21 : 0.0f;
+        _dst.w = _t30 > 6.0E-8f ? _t30 * _t40 : 0.0f;
     }
 
 
@@ -6551,6 +6540,7 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeRotationTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
+        FloatQuatImpl d = this;
         float _t2 = fromDirX + toDirX;
         float _t3 = fromDirY + toDirY;
         float _t4 = fromDirZ + toDirZ;
@@ -6573,25 +6563,8 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t37 = _t20 * _t20 + _t22 * _t22 + _t21 * _t21;
         float _t38 = (1.0f / (float) Math.sqrt(_t37));
         float _t40 = (1.0f / (float) Math.sqrt(_t16 * _t16 + _t17 * _t17 + _t18 * _t18 + 0.25f * _t28 * _t28));
-        if (_t30 > 6.0E-8f) {
-            this.x = _t16 * _t40;
-            this.y = _t17 * _t40;
-            this.z = _t18 * _t40;
-            this.w = _t30 * _t40;
-        } else {
-            if (_t37 != 0.0f) {
-                this.x = _t38 * _t20;
-                this.y = _t38 * _t22;
-                this.z = _t38 * _t21;
-                this.w = 0.0f;
-            } else {
-                this.x = 0.0f;
-                this.y = 0.0f;
-                this.z = 0.0f;
-                this.w = 0.0f;
-            }
-        }
-        return this;
+        makeRotationTo_sb47fb53_c0(d, _t30, _t16, _t40, _t37, _t38, _t20, _t17, _t22, _t18, _t21);
+        return d;
     }
 
 

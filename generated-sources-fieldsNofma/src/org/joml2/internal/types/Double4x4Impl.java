@@ -19075,6 +19075,68 @@ public class Double4x4Impl implements Double4x4 {
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
+    /** Private column 0 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s58816029_c0(Double4x4Impl _dst, double _r0, double _t30, double _r1, double _t22, double _r2, double _t23, double _r3, double translationX, double _t24, double _t31, double _t26, double translationY, double _t27, double _t28, double _t32, double translationZ) {
+        _dst.m00 = _r0 * _t30 + _r1 * _t22 + _r2 * _t23 + _r3 * translationX;
+        _dst.m10 = _r0 * _t24 + _r1 * _t31 + _r2 * _t26 + _r3 * translationY;
+        _dst.m20 = _r0 * _t27 + _r1 * _t28 + _r2 * _t32 + _r3 * translationZ;
+        _dst.m30 = _r3;
+    }
+
+    /** Private column 1 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s58816029_c1(Double4x4Impl _dst, double _r4, double _t30, double _r5, double _t22, double _r6, double _t23, double _r7, double translationX, double _t24, double _t31, double _t26, double translationY, double _t27, double _t28, double _t32, double translationZ) {
+        _dst.m01 = _r4 * _t30 + _r5 * _t22 + _r6 * _t23 + _r7 * translationX;
+        _dst.m11 = _r4 * _t24 + _r5 * _t31 + _r6 * _t26 + _r7 * translationY;
+        _dst.m21 = _r4 * _t27 + _r5 * _t28 + _r6 * _t32 + _r7 * translationZ;
+        _dst.m31 = _r7;
+    }
+
+    /** Private column 2 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s58816029_c2(Double4x4Impl _dst, double _r8, double _t30, double _r9, double _t22, double _r10, double _t23, double _r11, double translationX, double _t24, double _t31, double _t26, double translationY, double _t27, double _t28, double _t32, double translationZ) {
+        _dst.m02 = _r8 * _t30 + _r9 * _t22 + _r10 * _t23 + _r11 * translationX;
+        _dst.m12 = _r8 * _t24 + _r9 * _t31 + _r10 * _t26 + _r11 * translationY;
+        _dst.m22 = _r8 * _t27 + _r9 * _t28 + _r10 * _t32 + _r11 * translationZ;
+        _dst.m32 = _r11;
+    }
+
+    /** Private column 3 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s58816029_c3(Double4x4Impl _dst, double _r12, double _t30, double _r13, double _t22, double _r14, double _t23, double _r15, double translationX, double _t24, double _t31, double _t26, double translationY, double _t27, double _t28, double _t32, double translationZ) {
+        _dst.m03 = _r12 * _t30 + _r13 * _t22 + _r14 * _t23 + _r15 * translationX;
+        _dst.m13 = _r12 * _t24 + _r13 * _t31 + _r14 * _t26 + _r15 * translationY;
+        _dst.m23 = _r12 * _t27 + _r13 * _t28 + _r14 * _t32 + _r15 * translationZ;
+        _dst.m33 = _r15;
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s58816029_tail(Double4x4Impl _dst, double rotationZ, double rotationX, double rotationY, double rotationW, double _t1, double _t2, double _t0, double scaleX, double _t3, double scaleY, double scaleZ, double _r0, double _r1, double _r2, double _r3, double translationX, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double translationY, double translationZ) {
+        double _t4 = rotationZ * rotationZ;
+        double _t5 = rotationX * rotationY;
+        double _t6 = rotationZ * rotationW;
+        double _t7 = rotationX * rotationZ;
+        double _t8 = rotationY * rotationW;
+        double _t9 = rotationX * rotationX;
+        double _t10 = rotationY * rotationZ;
+        double _t11 = rotationX * rotationW;
+        double _t22 = (_t5 - _t6) * _t1;
+        double _t23 = (_t7 + _t8) * _t2;
+        double _t24 = (_t5 + _t6) * _t0;
+        double _t26 = (_t10 - _t11) * _t2;
+        double _t27 = (_t7 - _t8) * _t0;
+        double _t28 = (_t11 + _t10) * _t1;
+        double _t30 = scaleX - (_t3 + _t4) * _t0;
+        double _t31 = scaleY - (_t9 + _t4) * _t1;
+        composeTRSMul_s58816029_tail2(_dst, scaleZ, _t9, _t3, _t2, _r0, _t30, _r1, _t22, _r2, _t23, _r3, translationX, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _t24, _t31, _t26, translationY, _t27, _t28, translationZ);
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s58816029_tail2(Double4x4Impl _dst, double scaleZ, double _t9, double _t3, double _t2, double _r0, double _t30, double _r1, double _t22, double _r2, double _t23, double _r3, double translationX, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _t24, double _t31, double _t26, double translationY, double _t27, double _t28, double translationZ) {
+        double _t32 = scaleZ - (_t9 + _t3) * _t2;
+        composeTRSMul_s58816029_c0(_dst, _r0, _t30, _r1, _t22, _r2, _t23, _r3, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+        composeTRSMul_s58816029_c1(_dst, _r4, _t30, _r5, _t22, _r6, _t23, _r7, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+        composeTRSMul_s58816029_c2(_dst, _r8, _t30, _r9, _t22, _r10, _t23, _r11, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+        composeTRSMul_s58816029_c3(_dst, _r12, _t30, _r13, _t22, _r14, _t23, _r15, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+    }
+
 
     /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
@@ -19105,53 +19167,30 @@ public class Double4x4Impl implements Double4x4 {
      * @return this
      */
     @Mutated public Double4x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double4x4R m) {
+        Double4x4Impl d = this;
+        double _r0 = m.m00();
+        double _r1 = m.m10();
+        double _r2 = m.m20();
+        double _r3 = m.m30();
+        double _r4 = m.m01();
+        double _r5 = m.m11();
+        double _r6 = m.m21();
+        double _r7 = m.m31();
+        double _r8 = m.m02();
+        double _r9 = m.m12();
+        double _r10 = m.m22();
+        double _r11 = m.m32();
+        double _r12 = m.m03();
+        double _r13 = m.m13();
+        double _r14 = m.m23();
+        double _r15 = m.m33();
         double _t0 = scaleX + scaleX;
         double _t1 = scaleY + scaleY;
         double _t2 = scaleZ + scaleZ;
         double _t3 = rotationY * rotationY;
-        double _t4 = rotationZ * rotationZ;
-        double _t5 = rotationX * rotationY;
-        double _t6 = rotationZ * rotationW;
-        double _t7 = rotationX * rotationZ;
-        double _t8 = rotationY * rotationW;
-        double _t9 = rotationX * rotationX;
-        double _t10 = rotationY * rotationZ;
-        double _t11 = rotationX * rotationW;
-        double _t22 = (_t5 - _t6) * _t1;
-        double _t23 = (_t7 + _t8) * _t2;
-        double _t24 = (_t5 + _t6) * _t0;
-        double _t26 = (_t10 - _t11) * _t2;
-        double _t27 = (_t7 - _t8) * _t0;
-        double _t28 = (_t11 + _t10) * _t1;
-        double _t30 = scaleX - (_t3 + _t4) * _t0;
-        double _t31 = scaleY - (_t9 + _t4) * _t1;
-        double _t32 = scaleZ - (_t9 + _t3) * _t2;
-        double _buf0 = m.m00() * _t30 + m.m10() * _t22 + m.m20() * _t23 + m.m30() * translationX;
-        double _buf1 = m.m00() * _t24 + m.m10() * _t31 + m.m20() * _t26 + m.m30() * translationY;
-        this.m20 = m.m00() * _t27 + m.m10() * _t28 + m.m20() * _t32 + m.m30() * translationZ;
-        this.m30 = m.m30();
-        double _buf2 = m.m01() * _t30 + m.m11() * _t22 + m.m21() * _t23 + m.m31() * translationX;
-        double _buf3 = m.m01() * _t24 + m.m11() * _t31 + m.m21() * _t26 + m.m31() * translationY;
-        this.m21 = m.m01() * _t27 + m.m11() * _t28 + m.m21() * _t32 + m.m31() * translationZ;
-        this.m31 = m.m31();
-        double _buf4 = m.m02() * _t30 + m.m12() * _t22 + m.m22() * _t23 + m.m32() * translationX;
-        double _buf5 = m.m02() * _t24 + m.m12() * _t31 + m.m22() * _t26 + m.m32() * translationY;
-        this.m22 = m.m02() * _t27 + m.m12() * _t28 + m.m22() * _t32 + m.m32() * translationZ;
-        this.m32 = m.m32();
-        double _buf6 = m.m03() * _t30 + m.m13() * _t22 + m.m23() * _t23 + m.m33() * translationX;
-        double _buf7 = m.m03() * _t24 + m.m13() * _t31 + m.m23() * _t26 + m.m33() * translationY;
-        this.m23 = m.m03() * _t27 + m.m13() * _t28 + m.m23() * _t32 + m.m33() * translationZ;
-        this.m33 = m.m33();
-        this.m00 = _buf0;
-        this.m10 = _buf1;
-        this.m01 = _buf2;
-        this.m11 = _buf3;
-        this.m02 = _buf4;
-        this.m12 = _buf5;
-        this.m03 = _buf6;
-        this.m13 = _buf7;
-        this.properties = 0;
-        return this;
+        composeTRSMul_s58816029_tail(d, rotationZ, rotationX, rotationY, rotationW, _t1, _t2, _t0, scaleX, _t3, scaleY, scaleZ, _r0, _r1, _r2, _r3, translationX, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, translationY, translationZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -25189,6 +25228,38 @@ public class Double4x4Impl implements Double4x4 {
         return makeBillboardCylindrical(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s3a37db2b_c0(Double4x4Impl _dst, double _t19, double _t20, double _t21) {
+        _dst.m00 = _t19;
+        _dst.m10 = _t20;
+        _dst.m20 = _t21;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s3a37db2b_c1(Double4x4Impl _dst, double upX, double upY, double upZ) {
+        _dst.m01 = upX;
+        _dst.m11 = upY;
+        _dst.m21 = upZ;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s3a37db2b_c2(Double4x4Impl _dst, double _t28, double _t36, double _t29, double _t30) {
+        _dst.m02 = _t28 * _t36;
+        _dst.m12 = _t29 * _t36;
+        _dst.m22 = _t30 * _t36;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeBillboardCylindrical}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_s3a37db2b_c3(Double4x4Impl _dst, double objPosX, double objPosY, double objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0;
+    }
+
 
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
@@ -25217,6 +25288,7 @@ public class Double4x4Impl implements Double4x4 {
      * @return this
      */
     @Mutated public Double4x4 makeBillboardCylindrical(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = targetPosZ - objPosZ;
         double _t1 = targetPosY - objPosY;
         double _t2 = targetPosX - objPosX;
@@ -25233,24 +25305,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t29 = upX * _t21 - upZ * _t19;
         double _t30 = upY * _t19 - upX * _t20;
         double _t36 = (1.0 / Math.sqrt(_t29 * _t29 + _t28 * _t28 + _t30 * _t30));
-        this.m00 = _t19;
-        this.m10 = _t20;
-        this.m20 = _t21;
-        this.m30 = 0.0;
-        this.m01 = upX;
-        this.m11 = upY;
-        this.m21 = upZ;
-        this.m31 = 0.0;
-        this.m02 = _t28 * _t36;
-        this.m12 = _t29 * _t36;
-        this.m22 = _t30 * _t36;
-        this.m32 = 0.0;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardCylindrical_s3a37db2b_c0(d, _t19, _t20, _t21);
+        makeBillboardCylindrical_s3a37db2b_c1(d, upX, upY, upZ);
+        makeBillboardCylindrical_s3a37db2b_c2(d, _t28, _t36, _t29, _t30);
+        makeBillboardCylindrical_s3a37db2b_c3(d, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -25263,6 +25323,62 @@ public class Double4x4Impl implements Double4x4 {
         return makeBillboardCylindrical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s3a37db2b_c0(Double4x4Impl _dst, double _t35, double _t36, double _t34) {
+        _dst.m00 = _t35;
+        _dst.m10 = _t36;
+        _dst.m20 = _t34;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s3a37db2b_c1(Double4x4Impl _dst, double upX, double upY, double upZ) {
+        _dst.m01 = upX;
+        _dst.m11 = upY;
+        _dst.m21 = upZ;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s3a37db2b_c2(Double4x4Impl _dst, double _t44, double _t51, double _t43, double _t45) {
+        _dst.m02 = _t44 * _t51;
+        _dst.m12 = _t43 * _t51;
+        _dst.m22 = _t45 * _t51;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeBillboardCylindrical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s3a37db2b_c3(Double4x4Impl _dst, double objPosX, double objPosY, double objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0;
+    }
+
+    /** Private tail of {@code makeBillboardCylindrical_degenerate}; reached only through it. */
+    private void makeBillboardCylindrical_degenerate_s3a37db2b_tail(Double4x4Impl _dst, double _t28, double _t15, double _t14, double _t13, double _t18, double _t16, double _t17, double upX, double upZ, double upY, double objPosX, double objPosY, double objPosZ) {
+        double _t33, _t34, _t35, _t36;
+        if (_t28 == 0.0) {
+            _t33 = (1.0 / Math.sqrt(_t15 * _t15 + _t14 * _t14 + _t13 * _t13));
+            _t34 = _t33 * _t13;
+            _t35 = _t33 * _t14;
+            _t36 = _t33 * _t15;
+        } else {
+            _t33 = (1.0 / Math.sqrt(_t28));
+            _t34 = _t33 * _t18;
+            _t35 = _t33 * _t16;
+            _t36 = _t33 * _t17;
+        }
+        double _t43 = upX * _t34 - upZ * _t35;
+        double _t44 = upZ * _t36 - upY * _t34;
+        double _t45 = upY * _t35 - upX * _t36;
+        double _t51 = (1.0 / Math.sqrt(_t43 * _t43 + _t44 * _t44 + _t45 * _t45));
+        makeBillboardCylindrical_degenerate_s3a37db2b_c0(_dst, _t35, _t36, _t34);
+        makeBillboardCylindrical_degenerate_s3a37db2b_c1(_dst, upX, upY, upZ);
+        makeBillboardCylindrical_degenerate_s3a37db2b_c2(_dst, _t44, _t51, _t43, _t45);
+        makeBillboardCylindrical_degenerate_s3a37db2b_c3(_dst, objPosX, objPosY, objPosZ);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeBillboardCylindrical}: its methods leave here when their
@@ -25270,6 +25386,7 @@ public class Double4x4Impl implements Double4x4 {
      * reached only through them.
      */
     @Mutated private Double4x4 makeBillboardCylindrical_degenerate(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = Math.abs(upX);
         double _t1 = Math.abs(upZ);
         double _t4 = targetPosZ - objPosZ;
@@ -25289,40 +25406,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t17 = upZ * _t6 - upX * _t4;
         double _t18 = upX * _t5 - upY * _t6;
         double _t28 = _t16 * _t16 + _t17 * _t17 + _t18 * _t18;
-        double _t33, _t34, _t35, _t36;
-        if (_t28 == 0.0) {
-            _t33 = (1.0 / Math.sqrt(_t15 * _t15 + _t14 * _t14 + _t13 * _t13));
-            _t34 = _t33 * _t13;
-            _t35 = _t33 * _t14;
-            _t36 = _t33 * _t15;
-        } else {
-            _t33 = (1.0 / Math.sqrt(_t28));
-            _t34 = _t33 * _t18;
-            _t35 = _t33 * _t16;
-            _t36 = _t33 * _t17;
-        }
-        double _t43 = upX * _t34 - upZ * _t35;
-        double _t44 = upZ * _t36 - upY * _t34;
-        double _t45 = upY * _t35 - upX * _t36;
-        double _t51 = (1.0 / Math.sqrt(_t43 * _t43 + _t44 * _t44 + _t45 * _t45));
-        this.m00 = _t35;
-        this.m10 = _t36;
-        this.m20 = _t34;
-        this.m30 = 0.0;
-        this.m01 = upX;
-        this.m11 = upY;
-        this.m21 = upZ;
-        this.m31 = 0.0;
-        this.m02 = _t44 * _t51;
-        this.m12 = _t43 * _t51;
-        this.m22 = _t45 * _t51;
-        this.m32 = 0.0;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardCylindrical_degenerate_s3a37db2b_tail(d, _t28, _t15, _t14, _t13, _t18, _t16, _t17, upX, upZ, upY, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -25341,6 +25427,38 @@ public class Double4x4Impl implements Double4x4 {
      */
     public @Mutated Double4x4 makeBillboardSpherical(Double3R objPos, Double3R targetPos, Double3R up) {
         return makeBillboardSpherical(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private column 0 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s3a37db2b_c0(Double4x4Impl _dst, double _t28, double _t30, double _t29) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t30;
+        _dst.m20 = _t29;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s3a37db2b_c1(Double4x4Impl _dst, double _t10, double _t29, double _t9, double _t30, double _t28, double _t11) {
+        _dst.m01 = _t10 * _t29 - _t9 * _t30;
+        _dst.m11 = _t9 * _t28 - _t11 * _t29;
+        _dst.m21 = _t11 * _t30 - _t10 * _t28;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s3a37db2b_c2(Double4x4Impl _dst, double _t11, double _t10, double _t9) {
+        _dst.m02 = _t11;
+        _dst.m12 = _t10;
+        _dst.m22 = _t9;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeBillboardSpherical}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_s3a37db2b_c3(Double4x4Impl _dst, double objPosX, double objPosY, double objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0;
     }
 
 
@@ -25367,6 +25485,7 @@ public class Double4x4Impl implements Double4x4 {
      * @return this
      */
     @Mutated public Double4x4 makeBillboardSpherical(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = targetPosZ - objPosZ;
         double _t1 = targetPosX - objPosX;
         double _t2 = targetPosY - objPosY;
@@ -25383,24 +25502,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t28 = _t18 * _t27;
         double _t29 = _t20 * _t27;
         double _t30 = _t19 * _t27;
-        this.m00 = _t28;
-        this.m10 = _t30;
-        this.m20 = _t29;
-        this.m30 = 0.0;
-        this.m01 = _t10 * _t29 - _t9 * _t30;
-        this.m11 = _t9 * _t28 - _t11 * _t29;
-        this.m21 = _t11 * _t30 - _t10 * _t28;
-        this.m31 = 0.0;
-        this.m02 = _t11;
-        this.m12 = _t10;
-        this.m22 = _t9;
-        this.m32 = 0.0;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardSpherical_s3a37db2b_c0(d, _t28, _t30, _t29);
+        makeBillboardSpherical_s3a37db2b_c1(d, _t10, _t29, _t9, _t30, _t28, _t11);
+        makeBillboardSpherical_s3a37db2b_c2(d, _t11, _t10, _t9);
+        makeBillboardSpherical_s3a37db2b_c3(d, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -25413,6 +25520,69 @@ public class Double4x4Impl implements Double4x4 {
         return makeBillboardSpherical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s3a37db2b_c0(Double4x4Impl _dst, double _t50, double _t51, double _t49) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t51;
+        _dst.m20 = _t49;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s3a37db2b_c1(Double4x4Impl _dst, double _t49, double _t17, double _t51, double _t16, double _t50, double _t15) {
+        _dst.m01 = _t49 * _t17 - _t51 * _t16;
+        _dst.m11 = _t50 * _t16 - _t49 * _t15;
+        _dst.m21 = _t51 * _t15 - _t50 * _t17;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s3a37db2b_c2(Double4x4Impl _dst, double _t15, double _t17, double _t16) {
+        _dst.m02 = _t15;
+        _dst.m12 = _t17;
+        _dst.m22 = _t16;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeBillboardSpherical_degenerate}: computes and stores it; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s3a37db2b_c3(Double4x4Impl _dst, double objPosX, double objPosY, double objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0;
+    }
+
+    /** Private tail of {@code makeBillboardSpherical_degenerate}; reached only through it. */
+    private void makeBillboardSpherical_degenerate_s3a37db2b_tail(Double4x4Impl _dst, double _t18, double _t19, double _t17, double _t15, double _t16, double _t28, double _t29, double _t30, double objPosX, double objPosY, double objPosZ) {
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = -_t17;
+            _t33 = _t15;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = -_t16;
+        }
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        makeBillboardSpherical_degenerate_s3a37db2b_c0(_dst, _t50, _t51, _t49);
+        makeBillboardSpherical_degenerate_s3a37db2b_c1(_dst, _t49, _t17, _t51, _t16, _t50, _t15);
+        makeBillboardSpherical_degenerate_s3a37db2b_c2(_dst, _t15, _t17, _t16);
+        makeBillboardSpherical_degenerate_s3a37db2b_c3(_dst, objPosX, objPosY, objPosZ);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeBillboardSpherical}: its methods leave here when their
@@ -25420,6 +25590,7 @@ public class Double4x4Impl implements Double4x4 {
      * reached only through them.
      */
     @Mutated private Double4x4 makeBillboardSpherical_degenerate(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = targetPosX - objPosX;
         double _t1 = targetPosY - objPosY;
         double _t2 = targetPosZ - objPosZ;
@@ -25446,47 +25617,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t28 = _t9 * _t15 - _t10 * _t16;
         double _t29 = _t11 * _t16 - _t9 * _t17;
         double _t30 = _t10 * _t17 - _t15 * _t11;
-        double _t31, _t32, _t33;
-        if (_t18 > _t19) {
-            _t31 = 0.0;
-            _t32 = -_t17;
-            _t33 = _t15;
-        } else {
-            _t31 = _t17;
-            _t32 = 0.0;
-            _t33 = -_t16;
-        }
-        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
-        double _t48, _t49, _t50, _t51;
-        if (_t42 == 0.0) {
-            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
-            _t49 = _t48 * _t31;
-            _t50 = _t48 * _t32;
-            _t51 = _t48 * _t33;
-        } else {
-            _t48 = (1.0 / Math.sqrt(_t42));
-            _t49 = _t48 * _t30;
-            _t50 = _t48 * _t29;
-            _t51 = _t48 * _t28;
-        }
-        this.m00 = _t50;
-        this.m10 = _t51;
-        this.m20 = _t49;
-        this.m30 = 0.0;
-        this.m01 = _t49 * _t17 - _t51 * _t16;
-        this.m11 = _t50 * _t16 - _t49 * _t15;
-        this.m21 = _t51 * _t15 - _t50 * _t17;
-        this.m31 = 0.0;
-        this.m02 = _t15;
-        this.m12 = _t17;
-        this.m22 = _t16;
-        this.m32 = 0.0;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardSpherical_degenerate_s3a37db2b_tail(d, _t18, _t19, _t17, _t15, _t16, _t28, _t29, _t30, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -25500,6 +25633,38 @@ public class Double4x4Impl implements Double4x4 {
      */
     public @Mutated Double4x4 makeBillboardSphericalShortest(Double3R objPos, Double3R targetPos) {
         return makeBillboardSphericalShortest(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z());
+    }
+
+    /** Private column 0 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s1fb3d462_c0(Double4x4Impl _dst, double _t36, double _t33, double _t34) {
+        _dst.m00 = _t36;
+        _dst.m10 = _t33;
+        _dst.m20 = -_t34;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s1fb3d462_c1(Double4x4Impl _dst, double _t33, double _t30, double _t31) {
+        _dst.m01 = _t33;
+        _dst.m11 = 1.0 - _t30;
+        _dst.m21 = -_t31;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s1fb3d462_c2(Double4x4Impl _dst, double _t34, double _t31, double _t36, double _t30) {
+        _dst.m02 = _t34;
+        _dst.m12 = _t31;
+        _dst.m22 = _t36 - _t30;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeBillboardSphericalShortest}: computes and stores it; reached only through it. */
+    private void makeBillboardSphericalShortest_s1fb3d462_c3(Double4x4Impl _dst, double objPosX, double objPosY, double objPosZ) {
+        _dst.m03 = objPosX;
+        _dst.m13 = objPosY;
+        _dst.m23 = objPosZ;
+        _dst.m33 = 1.0;
     }
 
 
@@ -25519,6 +25684,7 @@ public class Double4x4Impl implements Double4x4 {
      * @return this
      */
     @Mutated public Double4x4 makeBillboardSphericalShortest(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ) {
+        Double4x4Impl d = this;
         double _t0 = targetPosX - objPosX;
         double _t1 = targetPosY - objPosY;
         double _t2 = targetPosZ - objPosZ;
@@ -25539,24 +25705,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t33 = -(_t3 * _sp0);
         double _t34 = _sp0 * _t17;
         double _t36 = 1.0 - (_sp0 + _sp0) * _t18;
-        this.m00 = _t36;
-        this.m10 = _t33;
-        this.m20 = -_t34;
-        this.m30 = 0.0;
-        this.m01 = _t33;
-        this.m11 = 1.0 - _t30;
-        this.m21 = -_t31;
-        this.m31 = 0.0;
-        this.m02 = _t34;
-        this.m12 = _t31;
-        this.m22 = _t36 - _t30;
-        this.m32 = 0.0;
-        this.m03 = objPosX;
-        this.m13 = objPosY;
-        this.m23 = objPosZ;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeBillboardSphericalShortest_s1fb3d462_c0(d, _t36, _t33, _t34);
+        makeBillboardSphericalShortest_s1fb3d462_c1(d, _t33, _t30, _t31);
+        makeBillboardSphericalShortest_s1fb3d462_c2(d, _t34, _t31, _t36, _t30);
+        makeBillboardSphericalShortest_s1fb3d462_c3(d, objPosX, objPosY, objPosZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -25569,6 +25723,38 @@ public class Double4x4Impl implements Double4x4 {
      */
     public @Mutated Double4x4 makeFromDualQuat(DoubleDualQuatR dq) {
         return makeFromDualQuat(dq.rX(), dq.rY(), dq.rZ(), dq.rW(), dq.dX(), dq.dY(), dq.dZ(), dq.dW());
+    }
+
+    /** Private column 0 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c0(Double4x4Impl _dst, double _t12, double _t10, double _t3, double _t2, double _t5, double _t4) {
+        _dst.m00 = _t12 - _t10;
+        _dst.m10 = 2.0 * (_t3 + _t2);
+        _dst.m20 = -2.0 * _t5 + (_t4 + _t4);
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c1(Double4x4Impl _dst, double _t2, double _t3, double _t12, double _t11, double _t7, double _t8) {
+        _dst.m01 = -2.0 * _t2 + (_t3 + _t3);
+        _dst.m11 = _t12 - _t11;
+        _dst.m21 = 2.0 * (_t7 + _t8);
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c2(Double4x4Impl _dst, double _t4, double _t5, double _t7, double _t8, double _t10, double _t11) {
+        _dst.m02 = 2.0 * (_t4 + _t5);
+        _dst.m12 = -2.0 * _t7 + (_t8 + _t8);
+        _dst.m22 = 1.0 - _t10 - _t11;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c3(Double4x4Impl _dst, double dqRY, double dqDZ, double dqRZ, double dqDY, double dqRW, double dqDX, double dqRX, double dqDW) {
+        _dst.m03 = 2.0 * (dqRY * dqDZ - dqRZ * dqDY + (dqRW * dqDX - dqRX * dqDW));
+        _dst.m13 = 2.0 * (dqRZ * dqDX - dqRX * dqDZ + (dqRW * dqDY - dqRY * dqDW));
+        _dst.m23 = 2.0 * (dqRX * dqDY - dqRY * dqDX + (dqRW * dqDZ - dqRZ * dqDW));
+        _dst.m33 = 1.0;
     }
 
 
@@ -25600,6 +25786,7 @@ public class Double4x4Impl implements Double4x4 {
      * @return this
      */
     @Mutated public Double4x4 makeFromDualQuat(double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
+        Double4x4Impl d = this;
         double _t2 = dqRZ * dqRW;
         double _t3 = dqRX * dqRY;
         double _t4 = dqRX * dqRZ;
@@ -25609,24 +25796,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t10 = (dqRY + dqRY) * dqRY;
         double _t11 = (dqRX + dqRX) * dqRX;
         double _t12 = 1.0 - (dqRZ + dqRZ) * dqRZ;
-        this.m00 = _t12 - _t10;
-        this.m10 = 2.0 * (_t3 + _t2);
-        this.m20 = -2.0 * _t5 + (_t4 + _t4);
-        this.m30 = 0.0;
-        this.m01 = -2.0 * _t2 + (_t3 + _t3);
-        this.m11 = _t12 - _t11;
-        this.m21 = 2.0 * (_t7 + _t8);
-        this.m31 = 0.0;
-        this.m02 = 2.0 * (_t4 + _t5);
-        this.m12 = -2.0 * _t7 + (_t8 + _t8);
-        this.m22 = 1.0 - _t10 - _t11;
-        this.m32 = 0.0;
-        this.m03 = 2.0 * (dqRY * dqDZ - dqRZ * dqDY + (dqRW * dqDX - dqRX * dqDW));
-        this.m13 = 2.0 * (dqRZ * dqDX - dqRX * dqDZ + (dqRW * dqDY - dqRY * dqDW));
-        this.m23 = 2.0 * (dqRX * dqDY - dqRY * dqDX + (dqRW * dqDZ - dqRZ * dqDW));
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeFromDualQuat_s47f85f08_c0(d, _t12, _t10, _t3, _t2, _t5, _t4);
+        makeFromDualQuat_s47f85f08_c1(d, _t2, _t3, _t12, _t11, _t7, _t8);
+        makeFromDualQuat_s47f85f08_c2(d, _t4, _t5, _t7, _t8, _t10, _t11);
+        makeFromDualQuat_s47f85f08_c3(d, dqRY, dqDZ, dqRZ, dqDY, dqRW, dqDX, dqRX, dqDW);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -25886,12 +26061,45 @@ public class Double4x4Impl implements Double4x4 {
         return makeLookAt_lh(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s387ababb_c0(Double4x4Impl _dst, double _t28, double _t37, double _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = _t11;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s387ababb_c1(Double4x4Impl _dst, double _t29, double _t38, double _t10) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = _t10;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s387ababb_c2(Double4x4Impl _dst, double _t30, double _t39, double _t9) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = _t9;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeLookAt_lh}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_s387ababb_c3(Double4x4Impl _dst, double eyeX, double _t28, double eyeY, double _t29, double eyeZ, double _t30, double _t37, double _t38, double _t39, double _t11, double _t10, double _t9) {
+        _dst.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        _dst.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        _dst.m23 = -(eyeX * _t11 + eyeY * _t10 + eyeZ * _t9);
+        _dst.m33 = 1.0;
+    }
+
 
     /**
      * Private body of {@code makeLookAt} for {@code Handedness.LEFT_HANDED}; reached only through
      * the public {@code makeLookAt} dispatcher.
      */
     @Mutated private Double4x4 makeLookAt_lh(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = centerZ - eyeZ;
         double _t1 = centerX - eyeX;
         double _t2 = centerY - eyeY;
@@ -25911,24 +26119,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t37 = _t10 * _t30 - _t9 * _t29;
         double _t38 = _t9 * _t28 - _t11 * _t30;
         double _t39 = _t11 * _t29 - _t10 * _t28;
-        this.m00 = _t28;
-        this.m10 = _t37;
-        this.m20 = _t11;
-        this.m30 = 0.0;
-        this.m01 = _t29;
-        this.m11 = _t38;
-        this.m21 = _t10;
-        this.m31 = 0.0;
-        this.m02 = _t30;
-        this.m12 = _t39;
-        this.m22 = _t9;
-        this.m32 = 0.0;
-        this.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
-        this.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
-        this.m23 = -(eyeX * _t11 + eyeY * _t10 + eyeZ * _t9);
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_lh_s387ababb_c0(d, _t28, _t37, _t11);
+        makeLookAt_lh_s387ababb_c1(d, _t29, _t38, _t10);
+        makeLookAt_lh_s387ababb_c2(d, _t30, _t39, _t9);
+        makeLookAt_lh_s387ababb_c3(d, eyeX, _t28, eyeY, _t29, eyeZ, _t30, _t37, _t38, _t39, _t11, _t10, _t9);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -25941,6 +26137,77 @@ public class Double4x4Impl implements Double4x4 {
         return makeLookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s387ababb_c0(Double4x4Impl _dst, double _t50, double _t59, double _t15) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = _t15;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s387ababb_c1(Double4x4Impl _dst, double _t51, double _t58, double _t17) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t17;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s387ababb_c2(Double4x4Impl _dst, double _t49, double _t60, double _t16) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t16;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeLookAt_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_lh_degenerate_s387ababb_c3(Double4x4Impl _dst, double eyeX, double _t50, double eyeY, double _t51, double eyeZ, double _t49, double _t59, double _t58, double _t60, double _t15, double _t17, double _t16) {
+        _dst.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        _dst.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        _dst.m23 = -(eyeX * _t15 + eyeY * _t17 + eyeZ * _t16);
+        _dst.m33 = 1.0;
+    }
+
+    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
+    private void makeLookAt_lh_degenerate_s387ababb_tail(Double4x4Impl _dst, double _t18, double _t19, double _t17, double _t15, double _t16, double _t28, double _t29, double _t30, double eyeX, double eyeY, double eyeZ) {
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = -_t17;
+            _t33 = _t15;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = -_t16;
+        }
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t50 * _t16 - _t49 * _t15;
+        double _t59 = _t49 * _t17 - _t51 * _t16;
+        makeLookAt_lh_degenerate_s387ababb_tail2(_dst, _t51, _t15, _t50, _t17, _t49, eyeX, eyeY, eyeZ, _t59, _t58, _t16);
+    }
+
+    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
+    private void makeLookAt_lh_degenerate_s387ababb_tail2(Double4x4Impl _dst, double _t51, double _t15, double _t50, double _t17, double _t49, double eyeX, double eyeY, double eyeZ, double _t59, double _t58, double _t16) {
+        double _t60 = _t51 * _t15 - _t50 * _t17;
+        makeLookAt_lh_degenerate_s387ababb_c0(_dst, _t50, _t59, _t15);
+        makeLookAt_lh_degenerate_s387ababb_c1(_dst, _t51, _t58, _t17);
+        makeLookAt_lh_degenerate_s387ababb_c2(_dst, _t49, _t60, _t16);
+        makeLookAt_lh_degenerate_s387ababb_c3(_dst, eyeX, _t50, eyeY, _t51, eyeZ, _t49, _t59, _t58, _t60, _t15, _t17, _t16);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
@@ -25948,6 +26215,7 @@ public class Double4x4Impl implements Double4x4 {
      * through them.
      */
     @Mutated private Double4x4 makeLookAt_lh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = centerX - eyeX;
         double _t1 = centerY - eyeY;
         double _t2 = centerZ - eyeZ;
@@ -25974,50 +26242,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t28 = _t9 * _t15 - _t10 * _t16;
         double _t29 = _t11 * _t16 - _t9 * _t17;
         double _t30 = _t10 * _t17 - _t15 * _t11;
-        double _t31, _t32, _t33;
-        if (_t18 > _t19) {
-            _t31 = 0.0;
-            _t32 = -_t17;
-            _t33 = _t15;
-        } else {
-            _t31 = _t17;
-            _t32 = 0.0;
-            _t33 = -_t16;
-        }
-        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
-        double _t48, _t49, _t50, _t51;
-        if (_t42 == 0.0) {
-            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
-            _t49 = _t48 * _t31;
-            _t50 = _t48 * _t32;
-            _t51 = _t48 * _t33;
-        } else {
-            _t48 = (1.0 / Math.sqrt(_t42));
-            _t49 = _t48 * _t30;
-            _t50 = _t48 * _t29;
-            _t51 = _t48 * _t28;
-        }
-        double _t58 = _t50 * _t16 - _t49 * _t15;
-        double _t59 = _t49 * _t17 - _t51 * _t16;
-        double _t60 = _t51 * _t15 - _t50 * _t17;
-        this.m00 = _t50;
-        this.m10 = _t59;
-        this.m20 = _t15;
-        this.m30 = 0.0;
-        this.m01 = _t51;
-        this.m11 = _t58;
-        this.m21 = _t17;
-        this.m31 = 0.0;
-        this.m02 = _t49;
-        this.m12 = _t60;
-        this.m22 = _t16;
-        this.m32 = 0.0;
-        this.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
-        this.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
-        this.m23 = -(eyeX * _t15 + eyeY * _t17 + eyeZ * _t16);
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_lh_degenerate_s387ababb_tail(d, _t18, _t19, _t17, _t15, _t16, _t28, _t29, _t30, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -26029,12 +26256,45 @@ public class Double4x4Impl implements Double4x4 {
         return makeLookAt_rh(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s387ababb_c0(Double4x4Impl _dst, double _t28, double _t37, double _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = -_t11;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s387ababb_c1(Double4x4Impl _dst, double _t29, double _t38, double _t9) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = -_t9;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s387ababb_c2(Double4x4Impl _dst, double _t30, double _t39, double _t10) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = -_t10;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeLookAt_rh}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_s387ababb_c3(Double4x4Impl _dst, double eyeX, double _t28, double eyeY, double _t29, double eyeZ, double _t30, double _t37, double _t38, double _t39, double _t11, double _t9, double _t10) {
+        _dst.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        _dst.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        _dst.m23 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
+        _dst.m33 = 1.0;
+    }
+
 
     /**
      * Private body of {@code makeLookAt} for {@code Handedness.RIGHT_HANDED}; reached only through
      * the public {@code makeLookAt} dispatcher.
      */
     @Mutated private Double4x4 makeLookAt_rh(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = centerY - eyeY;
         double _t1 = centerX - eyeX;
         double _t2 = centerZ - eyeZ;
@@ -26054,24 +26314,12 @@ public class Double4x4Impl implements Double4x4 {
         double _t37 = _t10 * _t29 - _t9 * _t30;
         double _t38 = _t11 * _t30 - _t10 * _t28;
         double _t39 = _t9 * _t28 - _t11 * _t29;
-        this.m00 = _t28;
-        this.m10 = _t37;
-        this.m20 = -_t11;
-        this.m30 = 0.0;
-        this.m01 = _t29;
-        this.m11 = _t38;
-        this.m21 = -_t9;
-        this.m31 = 0.0;
-        this.m02 = _t30;
-        this.m12 = _t39;
-        this.m22 = -_t10;
-        this.m32 = 0.0;
-        this.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
-        this.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
-        this.m23 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_rh_s387ababb_c0(d, _t28, _t37, _t11);
+        makeLookAt_rh_s387ababb_c1(d, _t29, _t38, _t9);
+        makeLookAt_rh_s387ababb_c2(d, _t30, _t39, _t10);
+        makeLookAt_rh_s387ababb_c3(d, eyeX, _t28, eyeY, _t29, eyeZ, _t30, _t37, _t38, _t39, _t11, _t9, _t10);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -26084,6 +26332,77 @@ public class Double4x4Impl implements Double4x4 {
         return makeLookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s387ababb_c0(Double4x4Impl _dst, double _t50, double _t59, double _t16) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = -_t16;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s387ababb_c1(Double4x4Impl _dst, double _t51, double _t58, double _t20) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t20;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s387ababb_c2(Double4x4Impl _dst, double _t49, double _t60, double _t21) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t21;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeLookAt_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makeLookAt_rh_degenerate_s387ababb_c3(Double4x4Impl _dst, double eyeX, double _t50, double eyeY, double _t51, double eyeZ, double _t49, double _t59, double _t58, double _t60, double _t16, double _t17, double _t15) {
+        _dst.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        _dst.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        _dst.m23 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
+        _dst.m33 = 1.0;
+    }
+
+    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
+    private void makeLookAt_rh_degenerate_s387ababb_tail(Double4x4Impl _dst, double _t18, double _t19, double _t17, double _t20, double _t16, double _t21, double _t28, double _t29, double _t30, double _t15, double eyeX, double eyeY, double eyeZ) {
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = _t20;
+            _t33 = _t16;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = _t21;
+        }
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t49 * _t16 - _t50 * _t15;
+        double _t59 = _t51 * _t15 - _t49 * _t17;
+        makeLookAt_rh_degenerate_s387ababb_tail2(_dst, _t50, _t17, _t51, _t16, _t49, eyeX, eyeY, eyeZ, _t59, _t58, _t20, _t21, _t15);
+    }
+
+    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
+    private void makeLookAt_rh_degenerate_s387ababb_tail2(Double4x4Impl _dst, double _t50, double _t17, double _t51, double _t16, double _t49, double eyeX, double eyeY, double eyeZ, double _t59, double _t58, double _t20, double _t21, double _t15) {
+        double _t60 = _t50 * _t17 - _t51 * _t16;
+        makeLookAt_rh_degenerate_s387ababb_c0(_dst, _t50, _t59, _t16);
+        makeLookAt_rh_degenerate_s387ababb_c1(_dst, _t51, _t58, _t20);
+        makeLookAt_rh_degenerate_s387ababb_c2(_dst, _t49, _t60, _t21);
+        makeLookAt_rh_degenerate_s387ababb_c3(_dst, eyeX, _t50, eyeY, _t51, eyeZ, _t49, _t59, _t58, _t60, _t16, _t17, _t15);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
@@ -26091,6 +26410,7 @@ public class Double4x4Impl implements Double4x4 {
      * through them.
      */
     @Mutated private Double4x4 makeLookAt_rh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t0 = centerX - eyeX;
         double _t1 = centerY - eyeY;
         double _t2 = centerZ - eyeZ;
@@ -26119,50 +26439,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t28 = _t15 * _t9 - _t10 * _t16;
         double _t29 = _t10 * _t17 - _t15 * _t11;
         double _t30 = _t16 * _t11 - _t9 * _t17;
-        double _t31, _t32, _t33;
-        if (_t18 > _t19) {
-            _t31 = 0.0;
-            _t32 = _t20;
-            _t33 = _t16;
-        } else {
-            _t31 = _t17;
-            _t32 = 0.0;
-            _t33 = _t21;
-        }
-        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
-        double _t48, _t49, _t50, _t51;
-        if (_t42 == 0.0) {
-            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
-            _t49 = _t48 * _t31;
-            _t50 = _t48 * _t32;
-            _t51 = _t48 * _t33;
-        } else {
-            _t48 = (1.0 / Math.sqrt(_t42));
-            _t49 = _t48 * _t30;
-            _t50 = _t48 * _t29;
-            _t51 = _t48 * _t28;
-        }
-        double _t58 = _t49 * _t16 - _t50 * _t15;
-        double _t59 = _t51 * _t15 - _t49 * _t17;
-        double _t60 = _t50 * _t17 - _t51 * _t16;
-        this.m00 = _t50;
-        this.m10 = _t59;
-        this.m20 = -_t16;
-        this.m30 = 0.0;
-        this.m01 = _t51;
-        this.m11 = _t58;
-        this.m21 = _t20;
-        this.m31 = 0.0;
-        this.m02 = _t49;
-        this.m12 = _t60;
-        this.m22 = _t21;
-        this.m32 = 0.0;
-        this.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
-        this.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
-        this.m23 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeLookAt_rh_degenerate_s387ababb_tail(d, _t18, _t19, _t17, _t20, _t16, _t21, _t28, _t29, _t30, _t15, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -28978,29 +29257,40 @@ public class Double4x4Impl implements Double4x4 {
         return makePerspectiveOffCenterRectangleProj_no_lh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c0(Double4x4Impl _dst, double _t44, double _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0;
+        _dst.m20 = 0.0;
+        _dst.m30 = 0.0;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through
-     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_no_lh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        double _t12 = xZ * yY - xY * yZ;
-        double _t13 = xX * yZ - xZ * yX;
-        double _t14 = xY * yX - xX * yY;
-        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
-        double _t21 = _t13 * _t20;
-        double _t22 = _t12 * _t20;
-        double _t23 = _t14 * _t20;
-        double _t24 = _t23 + (eyeZ - eyeZ);
-        double _t25 = _t22 + (eyeX - eyeX);
-        double _t26 = _t21 + (eyeY - eyeY);
-        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
-        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        double _t41 = _t24 * _t39;
-        double _t42 = _t26 * _t39;
-        double _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c1(Double4x4Impl _dst, double _t44, double _t124_inv) {
+        _dst.m01 = 0.0;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c2(Double4x4Impl _dst, double _t116, double _t88, double _t84, double _t85, double _t122_inv, double _t121, double _t113, double _t109, double _t110, double _t124_inv, double _t45, double _t40, double _t53_inv) {
+        _dst.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
+        _dst.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
+        _dst.m22 = _t45 == Double.POSITIVE_INFINITY ? 1.0 : _t40 == Double.POSITIVE_INFINITY ? -1.0 : -((_t40 + _t45) * _t53_inv);
+        _dst.m32 = 1.0;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_no_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c3(Double4x4Impl _dst, double _t45, double _t44, double _t40, double _t53_inv) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t44 : _t40 == Double.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
+        _dst.m33 = 0.0;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_tail(Double4x4Impl _dst, double _t40, double nearFarDist, double yY, double _t41, double yZ, double _t42, double _t43, double yX, double pX, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ) {
         double _t44 = _t40 + _t40;
         double _t45 = _t40 + nearFarDist;
         double _t53_inv = 1.0 / (_t40 + (-nearFarDist - _t40));
@@ -29021,6 +29311,11 @@ public class Double4x4Impl implements Double4x4 {
         double _t85 = _t71 - _t72;
         double _t88 = -_t73 - _t74;
         double _t90 = _t42 * _t65 - _t41 * _t64;
+        makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_tail2(_dst, _t41, _t63, _t43, _t65, _t64, _t42, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_tail2(Double4x4Impl _dst, double _t41, double _t63, double _t43, double _t65, double _t64, double _t42, double pX, double _t90, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ, double _t84, double _t85, double yX, double yY, double yZ, double _t88, double _t69, double _t70, double _t72, double _t71, double _t73, double _t74, double _t44, double _t45, double _t40, double _t53_inv) {
         double _t91 = _t41 * _t63 - _t43 * _t65;
         double _t92 = _t43 * _t64 - _t42 * _t63;
         double _t96 = pX * _t90;
@@ -29035,25 +29330,45 @@ public class Double4x4Impl implements Double4x4 {
         double _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         double _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         double _t122_inv = 1.0 / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_tail3(Double4x4Impl _dst, double _t121, double _t113, double _t96, double _t97, double _t99, double _t98, double _t100, double _t101, double _t44, double _t122_inv, double _t116, double _t88, double _t84, double _t85, double _t109, double _t110, double _t45, double _t40, double _t53_inv) {
         double _t124_inv = 1.0 / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0;
-        this.m20 = 0.0;
-        this.m30 = 0.0;
-        this.m01 = 0.0;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0;
-        this.m31 = 0.0;
-        this.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
-        this.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
-        this.m22 = _t45 == Double.POSITIVE_INFINITY ? 1.0 : _t40 == Double.POSITIVE_INFINITY ? -1.0 : -((_t40 + _t45) * _t53_inv);
-        this.m32 = 1.0;
-        this.m03 = 0.0;
-        this.m13 = 0.0;
-        this.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t44 : _t40 == Double.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
-        this.m33 = 0.0;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _t53_inv);
+        makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_c3(_dst, _t45, _t44, _t40, _t53_inv);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through
+     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_no_lh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
+        Double4x4Impl d = this;
+        double _t12 = xZ * yY - xY * yZ;
+        double _t13 = xX * yZ - xZ * yX;
+        double _t14 = xY * yX - xX * yY;
+        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t13 * _t20;
+        double _t22 = _t12 * _t20;
+        double _t23 = _t14 * _t20;
+        double _t24 = _t23 + (eyeZ - eyeZ);
+        double _t25 = _t22 + (eyeX - eyeX);
+        double _t26 = _t21 + (eyeY - eyeY);
+        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
+        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        double _t41 = _t24 * _t39;
+        double _t42 = _t26 * _t39;
+        double _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_no_lh_s43a63ba6_tail(d, _t40, nearFarDist, yY, _t41, yZ, _t42, _t43, yX, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -29066,29 +29381,40 @@ public class Double4x4Impl implements Double4x4 {
         return makePerspectiveOffCenterRectangleProj_no_rh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c0(Double4x4Impl _dst, double _t44, double _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0;
+        _dst.m20 = 0.0;
+        _dst.m30 = 0.0;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through
-     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_no_rh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        double _t12 = xZ * yY - xY * yZ;
-        double _t13 = xX * yZ - xZ * yX;
-        double _t14 = xY * yX - xX * yY;
-        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
-        double _t21 = _t13 * _t20;
-        double _t22 = _t12 * _t20;
-        double _t23 = _t14 * _t20;
-        double _t24 = _t21 + (eyeY - eyeY);
-        double _t25 = _t22 + (eyeX - eyeX);
-        double _t26 = _t23 + (eyeZ - eyeZ);
-        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
-        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        double _t41 = _t24 * _t39;
-        double _t42 = _t26 * _t39;
-        double _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c1(Double4x4Impl _dst, double _t44, double _t124_inv) {
+        _dst.m01 = 0.0;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c2(Double4x4Impl _dst, double _t116, double _t88, double _t84, double _t85, double _t122_inv, double _t121, double _t113, double _t109, double _t110, double _t124_inv, double _t45, double _t40, double _t53_inv) {
+        _dst.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
+        _dst.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
+        _dst.m22 = _t45 == Double.POSITIVE_INFINITY ? -1.0 : _t40 == Double.POSITIVE_INFINITY ? 1.0 : (_t40 + _t45) * _t53_inv;
+        _dst.m32 = -1.0;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_no_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c3(Double4x4Impl _dst, double _t45, double _t44, double _t40, double _t53_inv) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t44 : _t40 == Double.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
+        _dst.m33 = 0.0;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_tail(Double4x4Impl _dst, double _t40, double nearFarDist, double yZ, double _t41, double yY, double _t42, double yX, double _t43, double pX, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ) {
         double _t44 = _t40 + _t40;
         double _t45 = _t40 + nearFarDist;
         double _t53_inv = 1.0 / (_t40 + (-nearFarDist - _t40));
@@ -29109,6 +29435,11 @@ public class Double4x4Impl implements Double4x4 {
         double _t85 = _t71 - _t72;
         double _t88 = -_t73 - _t74;
         double _t90 = _t42 * _t64 - _t41 * _t65;
+        makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_tail2(_dst, _t43, _t65, _t42, _t63, _t41, _t64, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_tail2(Double4x4Impl _dst, double _t43, double _t65, double _t42, double _t63, double _t41, double _t64, double pX, double _t90, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ, double _t84, double _t85, double yX, double yY, double yZ, double _t88, double _t69, double _t70, double _t72, double _t71, double _t73, double _t74, double _t44, double _t45, double _t40, double _t53_inv) {
         double _t91 = _t43 * _t65 - _t42 * _t63;
         double _t92 = _t41 * _t63 - _t43 * _t64;
         double _t96 = pX * _t90;
@@ -29123,25 +29454,45 @@ public class Double4x4Impl implements Double4x4 {
         double _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         double _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         double _t122_inv = 1.0 / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _t53_inv);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_tail3(Double4x4Impl _dst, double _t121, double _t113, double _t96, double _t97, double _t99, double _t98, double _t100, double _t101, double _t44, double _t122_inv, double _t116, double _t88, double _t84, double _t85, double _t109, double _t110, double _t45, double _t40, double _t53_inv) {
         double _t124_inv = 1.0 / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0;
-        this.m20 = 0.0;
-        this.m30 = 0.0;
-        this.m01 = 0.0;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0;
-        this.m31 = 0.0;
-        this.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
-        this.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
-        this.m22 = _t45 == Double.POSITIVE_INFINITY ? -1.0 : _t40 == Double.POSITIVE_INFINITY ? 1.0 : (_t40 + _t45) * _t53_inv;
-        this.m32 = -1.0;
-        this.m03 = 0.0;
-        this.m13 = 0.0;
-        this.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t44 : _t40 == Double.POSITIVE_INFINITY ? _t45 + _t45 : _t44 * _t45 * _t53_inv;
-        this.m33 = 0.0;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _t53_inv);
+        makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_c3(_dst, _t45, _t44, _t40, _t53_inv);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.NEGATIVE_ONE_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through
+     * the public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_no_rh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
+        Double4x4Impl d = this;
+        double _t12 = xZ * yY - xY * yZ;
+        double _t13 = xX * yZ - xZ * yX;
+        double _t14 = xY * yX - xX * yY;
+        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t13 * _t20;
+        double _t22 = _t12 * _t20;
+        double _t23 = _t14 * _t20;
+        double _t24 = _t21 + (eyeY - eyeY);
+        double _t25 = _t22 + (eyeX - eyeX);
+        double _t26 = _t23 + (eyeZ - eyeZ);
+        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
+        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        double _t41 = _t24 * _t39;
+        double _t42 = _t26 * _t39;
+        double _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_no_rh_s43a63ba6_tail(d, _t40, nearFarDist, yZ, _t41, yY, _t42, yX, _t43, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -29180,29 +29531,40 @@ public class Double4x4Impl implements Double4x4 {
         return makePerspectiveOffCenterRectangleProj_zo_lh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c0(Double4x4Impl _dst, double _t44, double _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0;
+        _dst.m20 = 0.0;
+        _dst.m30 = 0.0;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through the
-     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_zo_lh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        double _t12 = xZ * yY - xY * yZ;
-        double _t13 = xX * yZ - xZ * yX;
-        double _t14 = xY * yX - xX * yY;
-        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
-        double _t21 = _t13 * _t20;
-        double _t22 = _t12 * _t20;
-        double _t23 = _t14 * _t20;
-        double _t24 = _t23 + (eyeZ - eyeZ);
-        double _t25 = _t22 + (eyeX - eyeX);
-        double _t26 = _t21 + (eyeY - eyeY);
-        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
-        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        double _t41 = _t24 * _t39;
-        double _t42 = _t26 * _t39;
-        double _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c1(Double4x4Impl _dst, double _t44, double _t124_inv) {
+        _dst.m01 = 0.0;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c2(Double4x4Impl _dst, double _t116, double _t88, double _t84, double _t85, double _t122_inv, double _t121, double _t113, double _t109, double _t110, double _t124_inv, double _t45, double _t40, double _sp0) {
+        _dst.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
+        _dst.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
+        _dst.m22 = _t45 == Double.POSITIVE_INFINITY ? 1.0 : _t40 == Double.POSITIVE_INFINITY ? 0.0 : -_sp0;
+        _dst.m32 = 1.0;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_zo_lh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c3(Double4x4Impl _dst, double _t45, double _t40, double _sp0) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t40 : _t40 == Double.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
+        _dst.m33 = 0.0;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_tail(Double4x4Impl _dst, double _t40, double nearFarDist, double yY, double _t41, double yZ, double _t42, double _t43, double yX, double pX, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ) {
         double _t44 = _t40 + _t40;
         double _t45 = _t40 + nearFarDist;
         double _sp0 = _t45 / (_t40 + (-nearFarDist - _t40));
@@ -29223,6 +29585,11 @@ public class Double4x4Impl implements Double4x4 {
         double _t85 = _t71 - _t72;
         double _t88 = -_t73 - _t74;
         double _t90 = _t42 * _t65 - _t41 * _t64;
+        makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_tail2(_dst, _t41, _t63, _t43, _t65, _t64, _t42, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_tail2(Double4x4Impl _dst, double _t41, double _t63, double _t43, double _t65, double _t64, double _t42, double pX, double _t90, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ, double _t84, double _t85, double yX, double yY, double yZ, double _t88, double _t69, double _t70, double _t72, double _t71, double _t73, double _t74, double _t44, double _t45, double _t40, double _sp0) {
         double _t91 = _t41 * _t63 - _t43 * _t65;
         double _t92 = _t43 * _t64 - _t42 * _t63;
         double _t96 = pX * _t90;
@@ -29237,25 +29604,45 @@ public class Double4x4Impl implements Double4x4 {
         double _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         double _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         double _t122_inv = 1.0 / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_tail3(Double4x4Impl _dst, double _t121, double _t113, double _t96, double _t97, double _t99, double _t98, double _t100, double _t101, double _t44, double _t122_inv, double _t116, double _t88, double _t84, double _t85, double _t109, double _t110, double _t45, double _t40, double _sp0) {
         double _t124_inv = 1.0 / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0;
-        this.m20 = 0.0;
-        this.m30 = 0.0;
-        this.m01 = 0.0;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0;
-        this.m31 = 0.0;
-        this.m02 = -((_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv);
-        this.m12 = -((_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv);
-        this.m22 = _t45 == Double.POSITIVE_INFINITY ? 1.0 : _t40 == Double.POSITIVE_INFINITY ? 0.0 : -_sp0;
-        this.m32 = 1.0;
-        this.m03 = 0.0;
-        this.m13 = 0.0;
-        this.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t40 : _t40 == Double.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
-        this.m33 = 0.0;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _sp0);
+        makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_c3(_dst, _t45, _t40, _sp0);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.LEFT_HANDED}; reached only through the
+     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_zo_lh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
+        Double4x4Impl d = this;
+        double _t12 = xZ * yY - xY * yZ;
+        double _t13 = xX * yZ - xZ * yX;
+        double _t14 = xY * yX - xX * yY;
+        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t13 * _t20;
+        double _t22 = _t12 * _t20;
+        double _t23 = _t14 * _t20;
+        double _t24 = _t23 + (eyeZ - eyeZ);
+        double _t25 = _t22 + (eyeX - eyeX);
+        double _t26 = _t21 + (eyeY - eyeY);
+        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t26 * _t26 + _t24 * _t24));
+        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        double _t41 = _t24 * _t39;
+        double _t42 = _t26 * _t39;
+        double _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_zo_lh_s43a63ba6_tail(d, _t40, nearFarDist, yY, _t41, yZ, _t42, _t43, yX, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -29268,29 +29655,40 @@ public class Double4x4Impl implements Double4x4 {
         return makePerspectiveOffCenterRectangleProj_zo_rh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z(), nearFarDist);
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c0(Double4x4Impl _dst, double _t44, double _t122_inv) {
+        _dst.m00 = _t44 * _t122_inv;
+        _dst.m10 = 0.0;
+        _dst.m20 = 0.0;
+        _dst.m30 = 0.0;
+    }
 
-    /**
-     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
-     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through the
-     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
-     */
-    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_zo_rh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
-        double _t12 = xZ * yY - xY * yZ;
-        double _t13 = xX * yZ - xZ * yX;
-        double _t14 = xY * yX - xX * yY;
-        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
-        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
-        double _t21 = _t13 * _t20;
-        double _t22 = _t12 * _t20;
-        double _t23 = _t14 * _t20;
-        double _t24 = _t21 + (eyeY - eyeY);
-        double _t25 = _t22 + (eyeX - eyeX);
-        double _t26 = _t23 + (eyeZ - eyeZ);
-        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
-        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
-        double _t41 = _t24 * _t39;
-        double _t42 = _t26 * _t39;
-        double _t43 = _t25 * _t39;
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c1(Double4x4Impl _dst, double _t44, double _t124_inv) {
+        _dst.m01 = 0.0;
+        _dst.m11 = _t44 * _t124_inv;
+        _dst.m21 = 0.0;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c2(Double4x4Impl _dst, double _t116, double _t88, double _t84, double _t85, double _t122_inv, double _t121, double _t113, double _t109, double _t110, double _t124_inv, double _t45, double _t40, double _sp0) {
+        _dst.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
+        _dst.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
+        _dst.m22 = _t45 == Double.POSITIVE_INFINITY ? -1.0 : _t40 == Double.POSITIVE_INFINITY ? 0.0 : _sp0;
+        _dst.m32 = -1.0;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleProj_zo_rh}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c3(Double4x4Impl _dst, double _t45, double _t40, double _sp0) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t40 : _t40 == Double.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
+        _dst.m33 = 0.0;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_tail(Double4x4Impl _dst, double _t40, double nearFarDist, double yZ, double _t41, double yY, double _t42, double yX, double _t43, double pX, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ) {
         double _t44 = _t40 + _t40;
         double _t45 = _t40 + nearFarDist;
         double _sp0 = _t45 / (_t40 + (-nearFarDist - _t40));
@@ -29311,6 +29709,11 @@ public class Double4x4Impl implements Double4x4 {
         double _t85 = _t71 - _t72;
         double _t88 = -_t73 - _t74;
         double _t90 = _t42 * _t64 - _t41 * _t65;
+        makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_tail2(_dst, _t43, _t65, _t42, _t63, _t41, _t64, pX, _t90, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ, _t84, _t85, yX, yY, yZ, _t88, _t69, _t70, _t72, _t71, _t73, _t74, _t44, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_tail2(Double4x4Impl _dst, double _t43, double _t65, double _t42, double _t63, double _t41, double _t64, double pX, double _t90, double pY, double pZ, double eyeX, double eyeY, double eyeZ, double xX, double xY, double xZ, double _t84, double _t85, double yX, double yY, double yZ, double _t88, double _t69, double _t70, double _t72, double _t71, double _t73, double _t74, double _t44, double _t45, double _t40, double _sp0) {
         double _t91 = _t43 * _t65 - _t42 * _t63;
         double _t92 = _t41 * _t63 - _t43 * _t64;
         double _t96 = pX * _t90;
@@ -29325,25 +29728,45 @@ public class Double4x4Impl implements Double4x4 {
         double _t116 = xX * _t63 + (xY * _t64 + xZ * _t65) + (_t84 + _t85);
         double _t121 = yX * _t90 + (yY * _t91 + yZ * _t92) + (_t109 + _t110);
         double _t122_inv = 1.0 / (_t116 + (_t88 + (-_t69 - _t70) + (_t72 - _t71 + (_t73 + _t74))));
+        makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_tail3(_dst, _t121, _t113, _t96, _t97, _t99, _t98, _t100, _t101, _t44, _t122_inv, _t116, _t88, _t84, _t85, _t109, _t110, _t45, _t40, _sp0);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_tail3(Double4x4Impl _dst, double _t121, double _t113, double _t96, double _t97, double _t99, double _t98, double _t100, double _t101, double _t44, double _t122_inv, double _t116, double _t88, double _t84, double _t85, double _t109, double _t110, double _t45, double _t40, double _sp0) {
         double _t124_inv = 1.0 / (_t121 + (_t113 + (-_t96 - _t97) + (_t99 - _t98 + (_t100 + _t101))));
-        this.m00 = _t44 * _t122_inv;
-        this.m10 = 0.0;
-        this.m20 = 0.0;
-        this.m30 = 0.0;
-        this.m01 = 0.0;
-        this.m11 = _t44 * _t124_inv;
-        this.m21 = 0.0;
-        this.m31 = 0.0;
-        this.m02 = (_t116 + (_t88 + _t84 + (_t85 + _t88))) * _t122_inv;
-        this.m12 = (_t121 + (_t113 + _t109 + (_t110 + _t113))) * _t124_inv;
-        this.m22 = _t45 == Double.POSITIVE_INFINITY ? -1.0 : _t40 == Double.POSITIVE_INFINITY ? 0.0 : _sp0;
-        this.m32 = -1.0;
-        this.m03 = 0.0;
-        this.m13 = 0.0;
-        this.m23 = _t45 == Double.POSITIVE_INFINITY ? -_t40 : _t40 == Double.POSITIVE_INFINITY ? _t45 : _sp0 * _t40;
-        this.m33 = 0.0;
-        this.properties = 0;
-        return this;
+        makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c0(_dst, _t44, _t122_inv);
+        makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c1(_dst, _t44, _t124_inv);
+        makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c2(_dst, _t116, _t88, _t84, _t85, _t122_inv, _t121, _t113, _t109, _t110, _t124_inv, _t45, _t40, _sp0);
+        makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_c3(_dst, _t45, _t40, _sp0);
+    }
+
+
+    /**
+     * Private body of {@code makePerspectiveOffCenterRectangleProj} for
+     * {@code DepthRange.ZERO_TO_ONE}, {@code Handedness.RIGHT_HANDED}; reached only through the
+     * public {@code makePerspectiveOffCenterRectangleProj} dispatcher.
+     */
+    @Mutated private Double4x4 makePerspectiveOffCenterRectangleProj_zo_rh(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ, double nearFarDist) {
+        Double4x4Impl d = this;
+        double _t12 = xZ * yY - xY * yZ;
+        double _t13 = xX * yZ - xZ * yX;
+        double _t14 = xY * yX - xX * yY;
+        double _t19 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14;
+        double _t20 = _t19 >= 0.0 ? 1.0 : -1.0;
+        double _t21 = _t13 * _t20;
+        double _t22 = _t12 * _t20;
+        double _t23 = _t14 * _t20;
+        double _t24 = _t21 + (eyeY - eyeY);
+        double _t25 = _t22 + (eyeX - eyeX);
+        double _t26 = _t23 + (eyeZ - eyeZ);
+        double _t39 = (1.0 / Math.sqrt(_t25 * _t25 + _t24 * _t24 + _t26 * _t26));
+        double _t40 = _t19 * _t20 * (1.0 / Math.sqrt(_t21 * _t21 + _t22 * _t22 + _t23 * _t23));
+        double _t41 = _t24 * _t39;
+        double _t42 = _t26 * _t39;
+        double _t43 = _t25 * _t39;
+        makePerspectiveOffCenterRectangleProj_zo_rh_s43a63ba6_tail(d, _t40, nearFarDist, yZ, _t41, yY, _t42, yX, _t43, pX, pY, pZ, eyeX, eyeY, eyeZ, xX, xY, xZ);
+        d.properties = 0;
+        return d;
     }
 
 
@@ -29654,22 +30077,40 @@ public class Double4x4Impl implements Double4x4 {
         return makePerspectiveOffCenterRectangleView_lh_degenerate(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z());
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c0(Double4x4Impl _dst, double _t74, double _t83, double _t39) {
+        _dst.m00 = _t74;
+        _dst.m10 = _t83;
+        _dst.m20 = _t39;
+        _dst.m30 = 0.0;
+    }
 
-    /**
-     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
-     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
-     * zero, NaN); reached only through them.
-     */
-    @Mutated private Double4x4 makePerspectiveOffCenterRectangleView_lh_degenerate(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) {
-        double _t12 = xZ * yY - xY * yZ;
-        double _t13 = xX * yZ - xZ * yX;
-        double _t14 = xY * yX - xX * yY;
-        double _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0 ? 1.0 : -1.0;
-        double _t24 = _t12 * _t20 + (eyeX - eyeX);
-        double _t25 = _t13 * _t20 + (eyeY - eyeY);
-        double _t26 = _t14 * _t20 + (eyeZ - eyeZ);
-        double _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        double _t32 = (1.0 / Math.sqrt(_t31));
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c1(Double4x4Impl _dst, double _t75, double _t82, double _t41) {
+        _dst.m01 = _t75;
+        _dst.m11 = _t82;
+        _dst.m21 = _t41;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c2(Double4x4Impl _dst, double _t73, double _t84, double _t40) {
+        _dst.m02 = _t73;
+        _dst.m12 = _t84;
+        _dst.m22 = _t40;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c3(Double4x4Impl _dst, double eyeX, double _t74, double eyeY, double _t75, double eyeZ, double _t73, double _t83, double _t82, double _t84, double _t39, double _t41, double _t40) {
+        _dst.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
+        _dst.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
+        _dst.m23 = -(eyeX * _t39 + eyeY * _t41 + eyeZ * _t40);
+        _dst.m33 = 1.0;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_tail(Double4x4Impl _dst, double _t31, double yZ, double yX, double yY, double _t24, double _t32, double _t26, double _t25, double eyeX, double eyeY, double eyeZ) {
         double _t33, _t34, _t35, _t39, _t40, _t41;
         if (_t31 == 0.0) {
             _t33 = 0.0;
@@ -29701,6 +30142,11 @@ public class Double4x4Impl implements Double4x4 {
             _t56 = 0.0;
             _t57 = -_t40;
         }
+        makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_tail2(_dst, _t52, _t53, _t54, _t56, _t57, _t55, _t40, _t39, _t41, eyeX, eyeY, eyeZ);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_tail2(Double4x4Impl _dst, double _t52, double _t53, double _t54, double _t56, double _t57, double _t55, double _t40, double _t39, double _t41, double eyeX, double eyeY, double eyeZ) {
         double _t66 = _t52 * _t52 + _t53 * _t53 + _t54 * _t54;
         double _t72, _t73, _t74, _t75;
         if (_t66 == 0.0) {
@@ -29717,24 +30163,32 @@ public class Double4x4Impl implements Double4x4 {
         double _t82 = _t74 * _t40 - _t73 * _t39;
         double _t83 = _t73 * _t41 - _t75 * _t40;
         double _t84 = _t75 * _t39 - _t74 * _t41;
-        this.m00 = _t74;
-        this.m10 = _t83;
-        this.m20 = _t39;
-        this.m30 = 0.0;
-        this.m01 = _t75;
-        this.m11 = _t82;
-        this.m21 = _t41;
-        this.m31 = 0.0;
-        this.m02 = _t73;
-        this.m12 = _t84;
-        this.m22 = _t40;
-        this.m32 = 0.0;
-        this.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
-        this.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
-        this.m23 = -(eyeX * _t39 + eyeY * _t41 + eyeZ * _t40);
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c0(_dst, _t74, _t83, _t39);
+        makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c1(_dst, _t75, _t82, _t41);
+        makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c2(_dst, _t73, _t84, _t40);
+        makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_c3(_dst, eyeX, _t74, eyeY, _t75, eyeZ, _t73, _t83, _t82, _t84, _t39, _t41, _t40);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
+     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
+     * zero, NaN); reached only through them.
+     */
+    @Mutated private Double4x4 makePerspectiveOffCenterRectangleView_lh_degenerate(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) {
+        Double4x4Impl d = this;
+        double _t12 = xZ * yY - xY * yZ;
+        double _t13 = xX * yZ - xZ * yX;
+        double _t14 = xY * yX - xX * yY;
+        double _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0 ? 1.0 : -1.0;
+        double _t24 = _t12 * _t20 + (eyeX - eyeX);
+        double _t25 = _t13 * _t20 + (eyeY - eyeY);
+        double _t26 = _t14 * _t20 + (eyeZ - eyeZ);
+        double _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
+        double _t32 = (1.0 / Math.sqrt(_t31));
+        makePerspectiveOffCenterRectangleView_lh_degenerate_s4ffe26ec_tail(d, _t31, yZ, yX, yY, _t24, _t32, _t26, _t25, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -29807,22 +30261,40 @@ public class Double4x4Impl implements Double4x4 {
         return makePerspectiveOffCenterRectangleView_rh_degenerate(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z());
     }
 
+    /** Private column 0 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c0(Double4x4Impl _dst, double _t74, double _t83, double _t40) {
+        _dst.m00 = _t74;
+        _dst.m10 = _t83;
+        _dst.m20 = -_t40;
+        _dst.m30 = 0.0;
+    }
 
-    /**
-     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
-     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
-     * zero, NaN); reached only through them.
-     */
-    @Mutated private Double4x4 makePerspectiveOffCenterRectangleView_rh_degenerate(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) {
-        double _t12 = xZ * yY - xY * yZ;
-        double _t13 = xX * yZ - xZ * yX;
-        double _t14 = xY * yX - xX * yY;
-        double _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0 ? 1.0 : -1.0;
-        double _t24 = _t12 * _t20 + (eyeX - eyeX);
-        double _t25 = _t13 * _t20 + (eyeY - eyeY);
-        double _t26 = _t14 * _t20 + (eyeZ - eyeZ);
-        double _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        double _t32 = (1.0 / Math.sqrt(_t31));
+    /** Private column 1 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c1(Double4x4Impl _dst, double _t75, double _t82, double _t44) {
+        _dst.m01 = _t75;
+        _dst.m11 = _t82;
+        _dst.m21 = _t44;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c2(Double4x4Impl _dst, double _t73, double _t84, double _t45) {
+        _dst.m02 = _t73;
+        _dst.m12 = _t84;
+        _dst.m22 = _t45;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}: computes and stores it; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c3(Double4x4Impl _dst, double eyeX, double _t74, double eyeY, double _t75, double eyeZ, double _t73, double _t83, double _t82, double _t84, double _t40, double _t41, double _t39) {
+        _dst.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
+        _dst.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
+        _dst.m23 = eyeX * _t40 + eyeY * _t41 + eyeZ * _t39;
+        _dst.m33 = 1.0;
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_tail(Double4x4Impl _dst, double _t31, double yX, double yZ, double yY, double _t26, double _t32, double _t24, double _t25, double eyeX, double eyeY, double eyeZ) {
         double _t33, _t34, _t35, _t39, _t40, _t41;
         if (_t31 == 0.0) {
             _t33 = 0.0;
@@ -29856,6 +30328,11 @@ public class Double4x4Impl implements Double4x4 {
             _t56 = 0.0;
             _t57 = _t45;
         }
+        makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_tail2(_dst, _t52, _t53, _t54, _t56, _t57, _t55, _t40, _t39, _t41, eyeX, eyeY, eyeZ, _t44, _t45);
+    }
+
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}; reached only through it. */
+    private void makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_tail2(Double4x4Impl _dst, double _t52, double _t53, double _t54, double _t56, double _t57, double _t55, double _t40, double _t39, double _t41, double eyeX, double eyeY, double eyeZ, double _t44, double _t45) {
         double _t66 = _t52 * _t52 + _t53 * _t53 + _t54 * _t54;
         double _t72, _t73, _t74, _t75;
         if (_t66 == 0.0) {
@@ -29872,24 +30349,32 @@ public class Double4x4Impl implements Double4x4 {
         double _t82 = _t73 * _t40 - _t74 * _t39;
         double _t83 = _t75 * _t39 - _t73 * _t41;
         double _t84 = _t74 * _t41 - _t75 * _t40;
-        this.m00 = _t74;
-        this.m10 = _t83;
-        this.m20 = -_t40;
-        this.m30 = 0.0;
-        this.m01 = _t75;
-        this.m11 = _t82;
-        this.m21 = _t44;
-        this.m31 = 0.0;
-        this.m02 = _t73;
-        this.m12 = _t84;
-        this.m22 = _t45;
-        this.m32 = 0.0;
-        this.m03 = -(eyeX * _t74 + eyeY * _t75 + eyeZ * _t73);
-        this.m13 = -(eyeX * _t83 + eyeY * _t82 + eyeZ * _t84);
-        this.m23 = eyeX * _t40 + eyeY * _t41 + eyeZ * _t39;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c0(_dst, _t74, _t83, _t40);
+        makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c1(_dst, _t75, _t82, _t44);
+        makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c2(_dst, _t73, _t84, _t45);
+        makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_c3(_dst, eyeX, _t74, eyeY, _t75, eyeZ, _t73, _t83, _t82, _t84, _t40, _t41, _t39);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makePerspectiveOffCenterRectangleView}: its methods leave
+     * here when their input spans no proper basis (a zero direction, an up vector parallel to it or
+     * zero, NaN); reached only through them.
+     */
+    @Mutated private Double4x4 makePerspectiveOffCenterRectangleView_rh_degenerate(double eyeX, double eyeY, double eyeZ, double pX, double pY, double pZ, double xX, double xY, double xZ, double yX, double yY, double yZ) {
+        Double4x4Impl d = this;
+        double _t12 = xZ * yY - xY * yZ;
+        double _t13 = xX * yZ - xZ * yX;
+        double _t14 = xY * yX - xX * yY;
+        double _t20 = (pX - eyeX) * _t12 + (pY - eyeY) * _t13 + (pZ - eyeZ) * _t14 >= 0.0 ? 1.0 : -1.0;
+        double _t24 = _t12 * _t20 + (eyeX - eyeX);
+        double _t25 = _t13 * _t20 + (eyeY - eyeY);
+        double _t26 = _t14 * _t20 + (eyeZ - eyeZ);
+        double _t31 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
+        double _t32 = (1.0 / Math.sqrt(_t31));
+        makePerspectiveOffCenterRectangleView_rh_degenerate_s4ffe26ec_tail(d, _t31, yX, yZ, yY, _t26, _t32, _t24, _t25, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -30239,6 +30724,60 @@ public class Double4x4Impl implements Double4x4 {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c0(Double4x4Impl _dst, double _t47, double _t48, double _t46) {
+        _dst.m00 = _t47;
+        _dst.m10 = _t48;
+        _dst.m20 = _t46;
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c1(Double4x4Impl _dst, double _t46, double _t14, double _t48, double _t13, double _t47, double _t12) {
+        _dst.m01 = _t46 * _t14 - _t48 * _t13;
+        _dst.m11 = _t47 * _t13 - _t46 * _t12;
+        _dst.m21 = _t48 * _t12 - _t47 * _t14;
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c2(Double4x4Impl _dst, double _t12, double _t14, double _t13) {
+        _dst.m02 = _t12;
+        _dst.m12 = _t14;
+        _dst.m22 = _t13;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c3(Double4x4Impl _dst) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = 0.0;
+        _dst.m33 = 1.0;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_tail(Double4x4Impl _dst, double _t15, double _t16, double _t12, double _t13, double _t27, double _t28, double _t29, double _t26, double _t25, double _t14) {
+        double _t30 = _t15 > _t16 ? _t12 : -_t13;
+        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        double _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0) {
+            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0 / Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        makeRotationLookAlong_degenerate_s6a304d84_c0(_dst, _t47, _t48, _t46);
+        makeRotationLookAlong_degenerate_s6a304d84_c1(_dst, _t46, _t14, _t48, _t13, _t47, _t12);
+        makeRotationLookAlong_degenerate_s6a304d84_c2(_dst, _t12, _t14, _t13);
+        makeRotationLookAlong_degenerate_s6a304d84_c3(_dst);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -30246,6 +30785,7 @@ public class Double4x4Impl implements Double4x4 {
      * reached only through them.
      */
     @Mutated private Double4x4 makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        Double4x4Impl d = this;
         double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
         double _t5 = (1.0 / Math.sqrt(_t4));
         double _t9, _t10, _t11, _t12, _t13, _t14;
@@ -30266,50 +30806,20 @@ public class Double4x4Impl implements Double4x4 {
         }
         double _t15 = Math.abs(_t12);
         double _t16 = Math.abs(_t13);
-        double _t25, _t26, _t30;
+        double _t25, _t26;
         if (_t15 > _t16) {
             _t25 = 0.0;
             _t26 = -_t14;
-            _t30 = _t12;
         } else {
             _t25 = _t14;
             _t26 = 0.0;
-            _t30 = -_t13;
         }
         double _t27 = _t9 * _t12 - _t10 * _t13;
         double _t28 = _t11 * _t13 - _t9 * _t14;
         double _t29 = _t10 * _t14 - _t12 * _t11;
-        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
-        double _t45, _t46, _t47, _t48;
-        if (_t39 == 0.0) {
-            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
-            _t46 = _t45 * _t25;
-            _t47 = _t45 * _t26;
-            _t48 = _t45 * _t30;
-        } else {
-            _t45 = (1.0 / Math.sqrt(_t39));
-            _t46 = _t45 * _t29;
-            _t47 = _t45 * _t28;
-            _t48 = _t45 * _t27;
-        }
-        this.m00 = _t47;
-        this.m10 = _t48;
-        this.m20 = _t46;
-        this.m30 = 0.0;
-        this.m01 = _t46 * _t14 - _t48 * _t13;
-        this.m11 = _t47 * _t13 - _t46 * _t12;
-        this.m21 = _t48 * _t12 - _t47 * _t14;
-        this.m31 = 0.0;
-        this.m02 = _t12;
-        this.m12 = _t14;
-        this.m22 = _t13;
-        this.m32 = 0.0;
-        this.m03 = 0.0;
-        this.m13 = 0.0;
-        this.m23 = 0.0;
-        this.m33 = 1.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeRotationLookAlong_degenerate_s6a304d84_tail(d, _t15, _t16, _t12, _t13, _t27, _t28, _t29, _t26, _t25, _t14);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -30946,6 +31456,56 @@ public class Double4x4Impl implements Double4x4 {
         return makeTrapezoidCrop(p0.x(), p0.y(), p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
     }
 
+    /** Private column 0 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s72d34dec_c0(Double4x4Impl _dst, double _sp1, double _t23, double _t53, double _t61) {
+        _dst.m00 = _sp1 * _t23 - _t53;
+        _dst.m10 = _t61 * _t53;
+        _dst.m20 = 0.0;
+        _dst.m30 = _t53;
+    }
+
+    /** Private column 1 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s72d34dec_c1(Double4x4Impl _dst, double _sp1, double _t24, double _t54, double _t61) {
+        _dst.m01 = _sp1 * _t24 - _t54;
+        _dst.m11 = _t61 * _t54;
+        _dst.m21 = 0.0;
+        _dst.m31 = _t54;
+    }
+
+    /** Private column 2 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s72d34dec_c2(Double4x4Impl _dst) {
+        _dst.m02 = 0.0;
+        _dst.m12 = 0.0;
+        _dst.m22 = 1.0;
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code makeTrapezoidCrop}: computes and stores it; reached only through it. */
+    private void makeTrapezoidCrop_s72d34dec_c3(Double4x4Impl _dst, double _sp1, double _t5, double _t30, double _t6, double _t58, double _t61, double _t60) {
+        _dst.m03 = _sp1 * (_t5 + (_t30 - _t6)) - _t58;
+        _dst.m13 = _t61 * _t58 - _t60;
+        _dst.m23 = 0.0;
+        _dst.m33 = _t58;
+    }
+
+    /** Private tail of {@code makeTrapezoidCrop}; reached only through it. */
+    private void makeTrapezoidCrop_s72d34dec_tail(Double4x4Impl _dst, double _t12, double _t30, double _t25, double _t26, double _t6, double _t5, double _t27, double _t28, double _t45, double _t10, double _t9, double _t7, double _t8, double _t2, double _t0, double _sp1, double _t23, double _t24) {
+        double _t47 = _t12 + (_t30 + (_t25 + _t26)) + (_t6 - _t5 + (-_t27 - _t28 - _t30));
+        double _t50 = _t45 / _t47 - _t10 - _t9;
+        double _t52 = _t7 + (_t8 + _t50);
+        double _t52_inv = 1.0 / _t52;
+        double _t53 = _t2 * _t52_inv;
+        double _t54 = _t0 * _t52_inv;
+        double _t55 = _t52 * _t47;
+        double _t58 = _t50 * _t52_inv;
+        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
+        double _t61 = 1.0 + _t60;
+        makeTrapezoidCrop_s72d34dec_c0(_dst, _sp1, _t23, _t53, _t61);
+        makeTrapezoidCrop_s72d34dec_c1(_dst, _sp1, _t24, _t54, _t61);
+        makeTrapezoidCrop_s72d34dec_c2(_dst);
+        makeTrapezoidCrop_s72d34dec_c3(_dst, _sp1, _t5, _t30, _t6, _t58, _t61, _t60);
+    }
+
 
     /**
      * Set this matrix to a trapezoid-crop transformation mapping the given trapezoid onto the
@@ -30962,6 +31522,7 @@ public class Double4x4Impl implements Double4x4 {
      * @return this
      */
     @Mutated public Double4x4 makeTrapezoidCrop(double p0X, double p0Y, double p1X, double p1Y, double p2X, double p2Y, double p3X, double p3Y) {
+        Double4x4Impl d = this;
         double _t0 = p0X - p1X;
         double _t1 = p0Y - p1Y;
         double _t2 = p1Y - p0Y;
@@ -30984,34 +31545,9 @@ public class Double4x4Impl implements Double4x4 {
         double _t30 = _sp0 * _t14;
         double _sp1 = 2.0 / (_t5 + (_t25 + (_t26 + _t30) - _t6));
         double _t45 = (_t5 + (_t27 + (_t28 + _t30) - _t6)) * _t17;
-        double _t47 = _t12 + (_t30 + (_t25 + _t26)) + (_t6 - _t5 + (-_t27 - _t28 - _t30));
-        double _t50 = _t45 / _t47 - _t10 - _t9;
-        double _t52 = _t7 + (_t8 + _t50);
-        double _t52_inv = 1.0 / _t52;
-        double _t53 = _t2 * _t52_inv;
-        double _t54 = _t0 * _t52_inv;
-        double _t55 = _t52 * _t47;
-        double _t58 = _t50 * _t52_inv;
-        double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
-        double _t61 = 1.0 + _t60;
-        this.m00 = _sp1 * _t23 - _t53;
-        this.m10 = _t61 * _t53;
-        this.m20 = 0.0;
-        this.m30 = _t53;
-        this.m01 = _sp1 * _t24 - _t54;
-        this.m11 = _t61 * _t54;
-        this.m21 = 0.0;
-        this.m31 = _t54;
-        this.m02 = 0.0;
-        this.m12 = 0.0;
-        this.m22 = 1.0;
-        this.m32 = 0.0;
-        this.m03 = _sp1 * (_t5 + (_t30 - _t6)) - _t58;
-        this.m13 = _t61 * _t58 - _t60;
-        this.m23 = 0.0;
-        this.m33 = _t58;
-        this.properties = 0;
-        return this;
+        makeTrapezoidCrop_s72d34dec_tail(d, _t12, _t30, _t25, _t26, _t6, _t5, _t27, _t28, _t45, _t10, _t9, _t7, _t8, _t2, _t0, _sp1, _t23, _t24);
+        d.properties = 0;
+        return d;
     }
 
 

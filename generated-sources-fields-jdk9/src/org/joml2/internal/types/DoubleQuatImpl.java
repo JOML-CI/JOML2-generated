@@ -289,6 +289,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return this;
     }
 
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11ab8262_c0(DoubleQuatImpl _dst, double _t10, double _sp0, double _t1, double _r0, double _t2, double _t15, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _sp3, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        _dst.x = _t10 > 0.0 ? _sp0 * _t1 : _r0 > _t2 ? 0.5 * Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0 ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5 * Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0 ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5 * Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0 ? 0.5 * Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s11ab8262_tail(DoubleQuatImpl _dst, double _t15, double _t10, double _sp0, double _t1, double _r0, double _t2, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        makeFromMatrix_s11ab8262_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+    }
+
 
     /**
      * Set this quaternion to the rotation represented by the given matrix (which must be a
@@ -299,49 +313,48 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @return this
      */
     @Mutated public DoubleQuat makeFromMatrix(Double3x3R m) {
-        double _t0 = m.m00() + m.m11();
-        double _t1 = m.m21() - m.m12();
-        double _t2 = Math.max(m.m11(), m.m22());
-        double _t4 = m.m01() + m.m10();
-        double _t6 = m.m02() + m.m20();
-        double _t7 = m.m02() - m.m20();
-        double _t8 = m.m12() + m.m21();
-        double _t9 = m.m10() - m.m01();
-        double _t10 = m.m22() + _t0;
+        DoubleQuatImpl d = this;
+        double _r0 = m.m00();
+        double _r1 = m.m11();
+        double _r2 = m.m21();
+        double _r3 = m.m12();
+        double _r4 = m.m22();
+        double _r5 = m.m01();
+        double _r6 = m.m10();
+        double _r7 = m.m02();
+        double _r8 = m.m20();
+        double _t0 = _r0 + _r1;
+        double _t1 = _r2 - _r3;
+        double _t2 = Math.max(_r1, _r4);
+        double _t4 = _r5 + _r6;
+        double _t6 = _r7 + _r8;
+        double _t7 = _r7 - _r8;
+        double _t8 = _r3 + _r2;
+        double _t9 = _r6 - _r5;
+        double _t10 = _r4 + _t0;
         double _t14 = 1.0 + _t10;
-        double _t15 = 1.0 + (m.m00() - (m.m11() + m.m22()));
-        double _t16 = 1.0 + (m.m11() - (m.m00() + m.m22()));
-        double _t17 = 1.0 + (m.m22() - _t0);
+        double _t15 = 1.0 + (_r0 - (_r1 + _r4));
+        double _t16 = 1.0 + (_r1 - (_r0 + _r4));
+        double _t17 = 1.0 + (_r4 - _t0);
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        makeFromMatrix_s11ab8262_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11abf6c1_c0(DoubleQuatImpl _dst, double _t10, double _sp0, double _t1, double _r0, double _t2, double _t15, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _sp3, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        _dst.x = _t10 > 0.0 ? _sp0 * _t1 : _r0 > _t2 ? 0.5 * Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0 ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5 * Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0 ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5 * Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0 ? 0.5 * Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s11abf6c1_tail(DoubleQuatImpl _dst, double _t15, double _t10, double _sp0, double _t1, double _r0, double _t2, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _t16, double _t8, double _t9, double _t17, double _t14) {
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
-        if (_t10 > 0.0) {
-            this.x = _sp0 * _t1;
-            this.y = _sp0 * _t7;
-            this.z = _sp0 * _t9;
-            this.w = 0.5 * Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t2) {
-                this.x = 0.5 * Math.sqrt(_t15);
-                this.y = _sp3 * _t4;
-                this.z = _sp3 * _t6;
-                this.w = _sp3 * _t1;
-            } else {
-                if (m.m11() > m.m22()) {
-                    this.x = _sp1 * _t4;
-                    this.y = 0.5 * Math.sqrt(_t16);
-                    this.z = _sp1 * _t8;
-                    this.w = _sp1 * _t7;
-                } else {
-                    this.x = _sp2 * _t6;
-                    this.y = _sp2 * _t8;
-                    this.z = 0.5 * Math.sqrt(_t17);
-                    this.w = _sp2 * _t9;
-                }
-            }
-        }
-        return this;
+        makeFromMatrix_s11abf6c1_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -354,49 +367,48 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @return this
      */
     @Mutated public DoubleQuat makeFromMatrix(Double3x4R m) {
-        double _t0 = m.m00() + m.m11();
-        double _t1 = m.m21() - m.m12();
-        double _t2 = Math.max(m.m11(), m.m22());
-        double _t4 = m.m01() + m.m10();
-        double _t6 = m.m02() + m.m20();
-        double _t7 = m.m02() - m.m20();
-        double _t8 = m.m12() + m.m21();
-        double _t9 = m.m10() - m.m01();
-        double _t10 = m.m22() + _t0;
+        DoubleQuatImpl d = this;
+        double _r0 = m.m00();
+        double _r1 = m.m11();
+        double _r2 = m.m21();
+        double _r3 = m.m12();
+        double _r4 = m.m22();
+        double _r5 = m.m01();
+        double _r6 = m.m10();
+        double _r7 = m.m02();
+        double _r8 = m.m20();
+        double _t0 = _r0 + _r1;
+        double _t1 = _r2 - _r3;
+        double _t2 = Math.max(_r1, _r4);
+        double _t4 = _r5 + _r6;
+        double _t6 = _r7 + _r8;
+        double _t7 = _r7 - _r8;
+        double _t8 = _r3 + _r2;
+        double _t9 = _r6 - _r5;
+        double _t10 = _r4 + _t0;
         double _t14 = 1.0 + _t10;
-        double _t15 = 1.0 + (m.m00() - (m.m11() + m.m22()));
-        double _t16 = 1.0 + (m.m11() - (m.m00() + m.m22()));
-        double _t17 = 1.0 + (m.m22() - _t0);
+        double _t15 = 1.0 + (_r0 - (_r1 + _r4));
+        double _t16 = 1.0 + (_r1 - (_r0 + _r4));
+        double _t17 = 1.0 + (_r4 - _t0);
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        makeFromMatrix_s11abf6c1_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s1360cf60_c0(DoubleQuatImpl _dst, double _t10, double _sp0, double _t1, double _r0, double _t2, double _t15, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _sp3, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        _dst.x = _t10 > 0.0 ? _sp0 * _t1 : _r0 > _t2 ? 0.5 * Math.sqrt(_t15) : _r1 > _r4 ? _sp1 * _t4 : _sp2 * _t6;
+        _dst.y = _t10 > 0.0 ? _sp0 * _t7 : _r0 > _t2 ? _sp3 * _t4 : _r1 > _r4 ? 0.5 * Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.z = _t10 > 0.0 ? _sp0 * _t9 : _r0 > _t2 ? _sp3 * _t6 : _r1 > _r4 ? _sp1 * _t8 : 0.5 * Math.sqrt(_t17);
+        _dst.w = _t10 > 0.0 ? 0.5 * Math.sqrt(_t14) : _r0 > _t2 ? _sp3 * _t1 : _r1 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s1360cf60_tail(DoubleQuatImpl _dst, double _t15, double _t10, double _sp0, double _t1, double _r0, double _t2, double _r1, double _r4, double _sp1, double _t4, double _sp2, double _t6, double _t7, double _t16, double _t8, double _t9, double _t17, double _t14) {
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
-        if (_t10 > 0.0) {
-            this.x = _sp0 * _t1;
-            this.y = _sp0 * _t7;
-            this.z = _sp0 * _t9;
-            this.w = 0.5 * Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t2) {
-                this.x = 0.5 * Math.sqrt(_t15);
-                this.y = _sp3 * _t4;
-                this.z = _sp3 * _t6;
-                this.w = _sp3 * _t1;
-            } else {
-                if (m.m11() > m.m22()) {
-                    this.x = _sp1 * _t4;
-                    this.y = 0.5 * Math.sqrt(_t16);
-                    this.z = _sp1 * _t8;
-                    this.w = _sp1 * _t7;
-                } else {
-                    this.x = _sp2 * _t6;
-                    this.y = _sp2 * _t8;
-                    this.z = 0.5 * Math.sqrt(_t17);
-                    this.w = _sp2 * _t9;
-                }
-            }
-        }
-        return this;
+        makeFromMatrix_s1360cf60_c0(_dst, _t10, _sp0, _t1, _r0, _t2, _t15, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -409,49 +421,34 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @return this
      */
     @Mutated public DoubleQuat makeFromMatrix(Double4x4R m) {
-        double _t0 = m.m00() + m.m11();
-        double _t1 = m.m21() - m.m12();
-        double _t2 = Math.max(m.m11(), m.m22());
-        double _t4 = m.m01() + m.m10();
-        double _t6 = m.m02() + m.m20();
-        double _t7 = m.m02() - m.m20();
-        double _t8 = m.m12() + m.m21();
-        double _t9 = m.m10() - m.m01();
-        double _t10 = m.m22() + _t0;
+        DoubleQuatImpl d = this;
+        double _r0 = m.m00();
+        double _r1 = m.m11();
+        double _r2 = m.m21();
+        double _r3 = m.m12();
+        double _r4 = m.m22();
+        double _r5 = m.m01();
+        double _r6 = m.m10();
+        double _r7 = m.m02();
+        double _r8 = m.m20();
+        double _t0 = _r0 + _r1;
+        double _t1 = _r2 - _r3;
+        double _t2 = Math.max(_r1, _r4);
+        double _t4 = _r5 + _r6;
+        double _t6 = _r7 + _r8;
+        double _t7 = _r7 - _r8;
+        double _t8 = _r3 + _r2;
+        double _t9 = _r6 - _r5;
+        double _t10 = _r4 + _t0;
         double _t14 = 1.0 + _t10;
-        double _t15 = 1.0 + (m.m00() - (m.m11() + m.m22()));
-        double _t16 = 1.0 + (m.m11() - (m.m00() + m.m22()));
-        double _t17 = 1.0 + (m.m22() - _t0);
+        double _t15 = 1.0 + (_r0 - (_r1 + _r4));
+        double _t16 = 1.0 + (_r1 - (_r0 + _r4));
+        double _t17 = 1.0 + (_r4 - _t0);
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
-        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
-        if (_t10 > 0.0) {
-            this.x = _sp0 * _t1;
-            this.y = _sp0 * _t7;
-            this.z = _sp0 * _t9;
-            this.w = 0.5 * Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t2) {
-                this.x = 0.5 * Math.sqrt(_t15);
-                this.y = _sp3 * _t4;
-                this.z = _sp3 * _t6;
-                this.w = _sp3 * _t1;
-            } else {
-                if (m.m11() > m.m22()) {
-                    this.x = _sp1 * _t4;
-                    this.y = 0.5 * Math.sqrt(_t16);
-                    this.z = _sp1 * _t8;
-                    this.w = _sp1 * _t7;
-                } else {
-                    this.x = _sp2 * _t6;
-                    this.y = _sp2 * _t8;
-                    this.z = 0.5 * Math.sqrt(_t17);
-                    this.w = _sp2 * _t9;
-                }
-            }
-        }
-        return this;
+        makeFromMatrix_s1360cf60_tail(d, _t15, _t10, _sp0, _t1, _r0, _t2, _r1, _r4, _sp1, _t4, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
+        return d;
     }
 
 
@@ -3309,6 +3306,32 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return makeRotationLookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private store group 0 of {@code makeRotationLookAlong}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_s6a304d84_c0(DoubleQuatImpl _dst, double _t59, double _sp0, double _t52, double _t28, double _t53, double _t62, double _t45, double _t6, double _sp1, double _t56, double _sp2, double _t33, double _t38, double _sp3, double _t64, double _t51, double _t57, double _t63, double _t60) {
+        _dst.x = _t59 > 0.0 ? _sp0 * _t52 : _t28 > _t53 ? 0.5 * Math.sqrt(_t62) : _t45 > _t6 ? _sp1 * _t56 : _sp2 * _t33;
+        _dst.y = _t59 > 0.0 ? _sp0 * _t38 : _t28 > _t53 ? _sp3 * _t56 : _t45 > _t6 ? 0.5 * Math.sqrt(_t64) : _sp2 * _t51;
+        _dst.z = _t59 > 0.0 ? _sp0 * _t57 : _t28 > _t53 ? _sp3 * _t33 : _t45 > _t6 ? _sp1 * _t51 : 0.5 * Math.sqrt(_t63);
+        _dst.w = _t59 > 0.0 ? 0.5 * Math.sqrt(_t60) : _t28 > _t53 ? _sp3 * _t52 : _t45 > _t6 ? _sp1 * _t38 : _sp2 * _t57;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private void makeRotationLookAlong_s6a304d84_tail(DoubleQuatImpl _dst, double dirY, double _t5, double _t46, double _t45, double _t6, double _t21, double _t27, double _t48, double dirZ, double _t19, double _t28, double _t9, double _t29, double _t11, double _t8, double _t1, double _t32, double _t33, double _t38, double _t51) {
+        double _t52 = Math.fma(-dirY, _t5, _t46);
+        double _t53 = Math.max(_t45, _t6);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0))));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
+        makeRotationLookAlong_s6a304d84_c0(_dst, _t59, _sp0, _t52, _t28, _t53, _t62, _t45, _t6, _sp1, _t56, _sp2, _t33, _t38, _sp3, _t64, _t51, _t57, _t63, _t60);
+    }
+
 
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along ({@code dirX},
@@ -3328,19 +3351,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @return this
      */
     @Mutated public DoubleQuat makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
-        double _t1 = -dirZ;
+        DoubleQuatImpl d = this;
         double _t5 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
         double _t6 = dirZ * _t5;
         double _t7 = dirY * _t5;
         double _t8 = dirX * _t5;
-        double _t9 = -_t8;
-        double _t11 = -_t6;
         double _t19 = Math.fma(upY, _t6, -(upZ * _t7));
         double _t20 = Math.fma(upX, _t7, -(upY * _t8));
         double _t21 = Math.fma(upZ, _t8, -(upX * _t6));
         double _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
         if (!(_ct0 > 0.0)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
         double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t1 = -dirZ;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
         double _t28 = _t19 * _t27;
         double _t29 = _t20 * _t27;
         double _t30 = _t21 * _t27;
@@ -3351,45 +3375,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
         double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
         double _t51 = Math.fma(dirY, _t5, _t46);
-        double _t52 = Math.fma(-dirY, _t5, _t46);
-        double _t53 = Math.max(_t45, _t6);
-        double _t56 = Math.fma(_t21, _t27, _t48);
-        double _t57 = Math.fma(_t21, _t27, -_t48);
-        double _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
-        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0))));
-        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
-        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
-        double _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
-        double _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
-        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
-        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t62));
-        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
-        if (_t59 > 0.0) {
-            this.x = _sp0 * _t52;
-            this.y = _sp0 * _t38;
-            this.z = _sp0 * _t57;
-            this.w = 0.5 * Math.sqrt(_t60);
-        } else {
-            if (_t28 > _t53) {
-                this.x = 0.5 * Math.sqrt(_t62);
-                this.y = _sp3 * _t56;
-                this.z = _sp3 * _t33;
-                this.w = _sp3 * _t52;
-            } else {
-                if (_t45 > _t6) {
-                    this.x = _sp1 * _t56;
-                    this.y = 0.5 * Math.sqrt(_t64);
-                    this.z = _sp1 * _t51;
-                    this.w = _sp1 * _t38;
-                } else {
-                    this.x = _sp2 * _t33;
-                    this.y = _sp2 * _t51;
-                    this.z = 0.5 * Math.sqrt(_t63);
-                    this.w = _sp2 * _t57;
-                }
-            }
-        }
-        return this;
+        makeRotationLookAlong_s6a304d84_tail(d, dirY, _t5, _t46, _t45, _t6, _t21, _t27, _t48, dirZ, _t19, _t28, _t9, _t29, _t11, _t8, _t1, _t32, _t33, _t38, _t51);
+        return d;
     }
 
 
@@ -3402,49 +3389,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private store group 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c0(DoubleQuatImpl _dst, double _t72, double _sp0, double _t71, double _t44, double _t68, double _t74, double _t62, double _t12, double _sp1, double _t81, double _sp2, double _t48, double _t51, double _sp3, double _t76, double _t70, double _t82, double _t77, double _t73) {
+        _dst.x = _t72 > 0.0 ? _sp0 * _t71 : _t44 > _t68 ? 0.5 * Math.sqrt(_t74) : _t62 > _t12 ? _sp1 * _t81 : _sp2 * _t48;
+        _dst.y = _t72 > 0.0 ? _sp0 * _t51 : _t44 > _t68 ? _sp3 * _t81 : _t62 > _t12 ? 0.5 * Math.sqrt(_t76) : _sp2 * _t70;
+        _dst.z = _t72 > 0.0 ? _sp0 * _t82 : _t44 > _t68 ? _sp3 * _t48 : _t62 > _t12 ? _sp1 * _t70 : 0.5 * Math.sqrt(_t77);
+        _dst.w = _t72 > 0.0 ? 0.5 * Math.sqrt(_t73) : _t44 > _t68 ? _sp3 * _t71 : _t62 > _t12 ? _sp1 * _t51 : _sp2 * _t82;
+    }
 
-    /**
-     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
-     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
-     * reached only through them.
-     */
-    @Mutated private DoubleQuat makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
-        double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9, _t10, _t11, _t12;
-        if (_t2 == 0.0) {
-            _t7 = 0.0;
-            _t8 = 1.0;
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-            _t12 = 1.0;
-        } else {
-            _t7 = upX;
-            _t8 = upY;
-            _t9 = upZ;
-            _t10 = dirY * _t3;
-            _t11 = dirX * _t3;
-            _t12 = dirZ * _t3;
-        }
-        double _t13 = Math.abs(_t11);
-        double _t14 = Math.abs(_t12);
-        double _t15 = -_t10;
-        double _t17 = 1.0 + _t12;
-        double _t18 = 1.0 - _t12;
-        double _t25, _t26, _t30;
-        if (_t13 > _t14) {
-            _t25 = 0.0;
-            _t26 = _t15;
-            _t30 = _t11;
-        } else {
-            _t25 = _t10;
-            _t26 = 0.0;
-            _t30 = -_t12;
-        }
-        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
-        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_tail(DoubleQuatImpl _dst, double _t8, double _t12, double _t9, double _t10, double _t13, double _t14, double _t11, double _t27, double _t28, double _t25, double _t26, double _t15, double _t17, double _t18) {
         double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t30 = _t13 > _t14 ? _t11 : -_t12;
         double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
         double _t37, _t38, _t39, _t41;
         if (_t35 == 0.0) {
@@ -3468,6 +3424,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t51 = Math.fma(_t42, _t37, _t11);
         double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
         double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        makeRotationLookAlong_degenerate_s6a304d84_tail2(_dst, _t62, _t12, _t47, _t11, _t46, _t10, _t15, _t44, _t45, _t41, _t38, _t17, _t43, _t18, _t42, _t39, _t66, _t48, _t51);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_tail2(DoubleQuatImpl _dst, double _t62, double _t12, double _t47, double _t11, double _t46, double _t10, double _t15, double _t44, double _t45, double _t41, double _t38, double _t17, double _t43, double _t18, double _t42, double _t39, double _t66, double _t48, double _t51) {
         double _t68 = Math.max(_t62, _t12);
         double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
         double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
@@ -3482,32 +3443,52 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t77));
         double _t81 = Math.fma(_t41, _t39, _t66);
         double _t82 = Math.fma(_t41, _t39, -_t66);
-        if (_t72 > 0.0) {
-            this.x = _sp0 * _t71;
-            this.y = _sp0 * _t51;
-            this.z = _sp0 * _t82;
-            this.w = 0.5 * Math.sqrt(_t73);
+        makeRotationLookAlong_degenerate_s6a304d84_c0(_dst, _t72, _sp0, _t71, _t44, _t68, _t74, _t62, _t12, _sp1, _t81, _sp2, _t48, _t51, _sp3, _t76, _t70, _t82, _t77, _t73);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private DoubleQuat makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        DoubleQuatImpl d = this;
+        double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0) {
+            _t7 = 0.0;
+            _t8 = 1.0;
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 1.0;
         } else {
-            if (_t44 > _t68) {
-                this.x = 0.5 * Math.sqrt(_t74);
-                this.y = _sp3 * _t81;
-                this.z = _sp3 * _t48;
-                this.w = _sp3 * _t71;
-            } else {
-                if (_t62 > _t12) {
-                    this.x = _sp1 * _t81;
-                    this.y = 0.5 * Math.sqrt(_t76);
-                    this.z = _sp1 * _t70;
-                    this.w = _sp1 * _t51;
-                } else {
-                    this.x = _sp2 * _t48;
-                    this.y = _sp2 * _t70;
-                    this.z = 0.5 * Math.sqrt(_t77);
-                    this.w = _sp2 * _t82;
-                }
-            }
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        return this;
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        double _t25, _t26;
+        if (_t13 > _t14) {
+            _t25 = 0.0;
+            _t26 = _t15;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0;
+        }
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        makeRotationLookAlong_degenerate_s6a304d84_tail(d, _t8, _t12, _t9, _t10, _t13, _t14, _t11, _t27, _t28, _t25, _t26, _t15, _t17, _t18);
+        return d;
     }
 
 
@@ -3528,6 +3509,14 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     public @Mutated DoubleQuat makeRotationTo(Double3R fromDir, Double3R toDir) {
         return makeRotationTo(fromDir.x(), fromDir.y(), fromDir.z(), toDir.x(), toDir.y(), toDir.z());
+    }
+
+    /** Private store group 0 of {@code makeRotationTo}: computes and stores it; reached only through it. */
+    private void makeRotationTo_s6ca4b61d_c0(DoubleQuatImpl _dst, double _t23, double _t14, double _t32, double _t29, double _t30, double _t17, double _t16, double _t19, double _t15, double _t18) {
+        _dst.x = _t23 > 1.0E-13 ? _t14 * _t32 : _t29 != 0.0 ? _t30 * _t17 : 0.0;
+        _dst.y = _t23 > 1.0E-13 ? _t16 * _t32 : _t29 != 0.0 ? _t30 * _t19 : 0.0;
+        _dst.z = _t23 > 1.0E-13 ? _t15 * _t32 : _t29 != 0.0 ? _t30 * _t18 : 0.0;
+        _dst.w = _t23 > 1.0E-13 ? _t23 * _t32 : 0.0;
     }
 
 
@@ -3551,6 +3540,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @return this
      */
     @Mutated public DoubleQuat makeRotationTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
+        DoubleQuatImpl d = this;
         double _t2 = fromDirZ + toDirZ;
         double _t3 = fromDirX + toDirX;
         double _t4 = fromDirY + toDirY;
@@ -3573,25 +3563,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
-        if (_t23 > 1.0E-13) {
-            this.x = _t14 * _t32;
-            this.y = _t16 * _t32;
-            this.z = _t15 * _t32;
-            this.w = _t23 * _t32;
-        } else {
-            if (_t29 != 0.0) {
-                this.x = _t30 * _t17;
-                this.y = _t30 * _t19;
-                this.z = _t30 * _t18;
-                this.w = 0.0;
-            } else {
-                this.x = 0.0;
-                this.y = 0.0;
-                this.z = 0.0;
-                this.w = 0.0;
-            }
-        }
-        return this;
+        makeRotationTo_s6ca4b61d_c0(d, _t23, _t14, _t32, _t29, _t30, _t17, _t16, _t19, _t15, _t18);
+        return d;
     }
 
 

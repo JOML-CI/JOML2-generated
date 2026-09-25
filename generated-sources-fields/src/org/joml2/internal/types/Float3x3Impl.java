@@ -10962,6 +10962,47 @@ public class Float3x3Impl implements Float3x3 {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c0(Float3x3Impl _dst, float _t41, float _t42, float _t40) {
+        _dst.m00 = _t41;
+        _dst.m10 = _t42;
+        _dst.m20 = _t40;
+    }
+
+    /** Private column 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c1(Float3x3Impl _dst, float _t40, float _t10, float _t42, float _t12, float _t41, float _t11) {
+        _dst.m01 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        _dst.m11 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        _dst.m21 = Math.fma(_t42, _t11, -(_t41 * _t10));
+    }
+
+    /** Private column 2 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c2(Float3x3Impl _dst, float _t11, float _t10, float _t12) {
+        _dst.m02 = _t11;
+        _dst.m12 = _t10;
+        _dst.m22 = _t12;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail(Float3x3Impl _dst, float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t10, float _t12, float _t11) {
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        makeRotationLookAlong_degenerate_s524747ee_c0(_dst, _t41, _t42, _t40);
+        makeRotationLookAlong_degenerate_s524747ee_c1(_dst, _t40, _t10, _t42, _t12, _t41, _t11);
+        makeRotationLookAlong_degenerate_s524747ee_c2(_dst, _t11, _t10, _t12);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -10969,6 +11010,7 @@ public class Float3x3Impl implements Float3x3 {
      * reached only through them.
      */
     @Mutated private Float3x3 makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        Float3x3Impl d = this;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9, _t10, _t11, _t12;
@@ -11002,30 +11044,9 @@ public class Float3x3Impl implements Float3x3 {
         float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
         float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
         float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
-        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
-        float _t39, _t40, _t41, _t42;
-        if (_t33 == 0.0f) {
-            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
-            _t40 = _t39 * _t23;
-            _t41 = _t39 * _t24;
-            _t42 = _t39 * _t28;
-        } else {
-            _t39 = (1.0f / (float) Math.sqrt(_t33));
-            _t40 = _t39 * _t25;
-            _t41 = _t39 * _t27;
-            _t42 = _t39 * _t26;
-        }
-        this.m00 = _t41;
-        this.m10 = _t42;
-        this.m20 = _t40;
-        this.m01 = Math.fma(_t40, _t10, -(_t42 * _t12));
-        this.m11 = Math.fma(_t41, _t12, -(_t40 * _t11));
-        this.m21 = Math.fma(_t42, _t11, -(_t41 * _t10));
-        this.m02 = _t11;
-        this.m12 = _t10;
-        this.m22 = _t12;
-        this.properties = 0;
-        return this;
+        makeRotationLookAlong_degenerate_s524747ee_tail(d, _t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11);
+        d.properties = 0;
+        return d;
     }
 
 

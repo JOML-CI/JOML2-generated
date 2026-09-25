@@ -465,32 +465,30 @@ public final class DoubleTransformImpl implements DoubleTransform {
         return this;
     }
 
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11ab8262_c0(DoubleTransformImpl _dst, double _t62, double _sp0, double _t37, double _t48, double _t38, double _t64, double _t19, double _t20, double _sp1, double _t54, double _sp2, double _t55) {
+        _dst.tX = 0.0;
+        _dst.tY = 0.0;
+        _dst.tZ = 0.0;
+        _dst.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
 
-    /**
-     * Set this transform to the decomposition of the given matrix's linear {@code R * S} block,
-     * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
-     * a sheared block yields a rotation quaternion that is not unit length).
-     *
-     * @param m the matrix to convert
-     * @return this
-     */
-    @Mutated public DoubleTransform makeFromMatrix(Double3x3R m) {
-        double _t12 = m.m01() * m.m01() + m.m11() * m.m11() + m.m21() * m.m21();
-        double _t13 = m.m02() * m.m02() + m.m12() * m.m12() + m.m22() * m.m22();
-        double _t14 = m.m00() * m.m00() + m.m10() * m.m10() + m.m20() * m.m20();
-        double _t15 = (1.0 / Math.sqrt(_t12));
-        double _t16 = (1.0 / Math.sqrt(_t13));
-        double _t18 = Math.sqrt(_t14);
-        double _t17 = 1.0 / _t18;
-        double _t19 = m.m11() * _t15;
-        double _t20 = m.m22() * _t16;
-        double _t21 = m.m10() * _t17;
-        double _t22 = m.m21() * _t15;
-        double _t23 = m.m20() * _t17;
-        double _t24 = m.m02() * _t16;
-        double _t25 = m.m12() * _t16;
-        double _t26 = m.m00() * _t17;
-        double _t27 = m.m01() * _t15;
+    /** Private store group 1 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11ab8262_c1(DoubleTransformImpl _dst, double _t62, double _sp0, double _t56, double _t48, double _t38, double _sp3, double _t54, double _t19, double _t20, double _t65, double _sp2, double _t39, double _t57, double _t55, double _sp1, double _t66, double _t63, double _t37) {
+        _dst.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11ab8262_c2(DoubleTransformImpl _dst, double _t47, double _t18, double _t12, double _t13) {
+        _dst.sX = _t47 < 0.0 ? -_t18 : _t18;
+        _dst.sY = Math.sqrt(_t12);
+        _dst.sZ = Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s11ab8262_tail(DoubleTransformImpl _dst, double _t22, double _t25, double _t19, double _t20, double _t21, double _t23, double _t24, double _t26, double _t27, double _t18, double _t12, double _t13) {
         double _t37 = _t22 - _t25;
         double _t38 = Math.max(_t19, _t20);
         double _t39 = _t25 + _t22;
@@ -515,22 +513,129 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t63 = _t19 + (_t20 + _t51);
         double _t64 = _t51 - _t20 - _t19;
         double _t65 = _t19 + (_t52 - _t20);
+        makeFromMatrix_s11ab8262_tail2(_dst, _t20, _t52, _t19, _t63, _t65, _t64, _t62, _t37, _t48, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s11ab8262_tail2(DoubleTransformImpl _dst, double _t20, double _t52, double _t19, double _t63, double _t65, double _t64, double _t62, double _t37, double _t48, double _t38, double _t54, double _t55, double _t56, double _t39, double _t57, double _t47, double _t18, double _t12, double _t13) {
         double _t66 = _t20 + (_t52 - _t19);
         double _sp0 = 0.5 * (1.0 / Math.sqrt(_t63));
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t66));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
-        this.tX = 0.0;
-        this.tY = 0.0;
-        this.tZ = 0.0;
-        this.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        this.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
-        this.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
-        this.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        this.sX = _t47 < 0.0 ? -_t18 : _t18;
-        this.sY = Math.sqrt(_t12);
-        this.sZ = Math.sqrt(_t13);
-        return this;
+        makeFromMatrix_s11ab8262_c0(_dst, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        makeFromMatrix_s11ab8262_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        makeFromMatrix_s11ab8262_c2(_dst, _t47, _t18, _t12, _t13);
+    }
+
+
+    /**
+     * Set this transform to the decomposition of the given matrix's linear {@code R * S} block,
+     * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
+     * a sheared block yields a rotation quaternion that is not unit length).
+     *
+     * @param m the matrix to convert
+     * @return this
+     */
+    @Mutated public DoubleTransform makeFromMatrix(Double3x3R m) {
+        DoubleTransformImpl d = this;
+        double _r0 = m.m01();
+        double _r1 = m.m11();
+        double _r2 = m.m21();
+        double _r3 = m.m02();
+        double _r4 = m.m12();
+        double _r5 = m.m22();
+        double _r6 = m.m00();
+        double _r7 = m.m10();
+        double _r8 = m.m20();
+        double _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        double _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
+        double _t15 = (1.0 / Math.sqrt(_t12));
+        double _t16 = (1.0 / Math.sqrt(_t13));
+        double _t18 = Math.sqrt(_t14);
+        double _t17 = 1.0 / _t18;
+        double _t19 = _r1 * _t15;
+        double _t20 = _r5 * _t16;
+        double _t21 = _r7 * _t17;
+        double _t22 = _r2 * _t15;
+        double _t23 = _r8 * _t17;
+        double _t24 = _r3 * _t16;
+        double _t25 = _r4 * _t16;
+        double _t26 = _r6 * _t17;
+        double _t27 = _r0 * _t15;
+        makeFromMatrix_s11ab8262_tail(d, _t22, _t25, _t19, _t20, _t21, _t23, _t24, _t26, _t27, _t18, _t12, _t13);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11abf6c1_c0(DoubleTransformImpl _dst, double _r9, double _r10, double _r11, double _t62, double _sp0, double _t37, double _t48, double _t38, double _t64, double _t19, double _t20, double _sp1, double _t54, double _sp2, double _t55) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
+
+    /** Private store group 1 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11abf6c1_c1(DoubleTransformImpl _dst, double _t62, double _sp0, double _t56, double _t48, double _t38, double _sp3, double _t54, double _t19, double _t20, double _t65, double _sp2, double _t39, double _t57, double _t55, double _sp1, double _t66, double _t63, double _t37) {
+        _dst.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s11abf6c1_c2(DoubleTransformImpl _dst, double _t47, double _t18, double _t12, double _t13) {
+        _dst.sX = _t47 < 0.0 ? -_t18 : _t18;
+        _dst.sY = Math.sqrt(_t12);
+        _dst.sZ = Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s11abf6c1_tail(DoubleTransformImpl _dst, double _r7, double _t17, double _r2, double _t15, double _r8, double _r3, double _t16, double _r4, double _r6, double _r0, double _t19, double _t20, double _r9, double _r10, double _r11, double _t18, double _t12, double _t13) {
+        double _t21 = _r7 * _t17;
+        double _t22 = _r2 * _t15;
+        double _t23 = _r8 * _t17;
+        double _t24 = _r3 * _t16;
+        double _t25 = _r4 * _t16;
+        double _t26 = _r6 * _t17;
+        double _t27 = _r0 * _t15;
+        double _t37 = _t22 - _t25;
+        double _t38 = Math.max(_t19, _t20);
+        double _t39 = _t25 + _t22;
+        double _t47 = (_t21 * _t22 - _t19 * _t23) * _t24 + (_t19 * _t20 - _t25 * _t22) * _t26 - (_t21 * _t20 - _t25 * _t23) * _t27;
+        double _t48, _t49, _t50;
+        if (_t47 < 0.0) {
+            _t48 = -_t26;
+            _t49 = -_t21;
+            _t50 = -_t23;
+        } else {
+            _t48 = _t26;
+            _t49 = _t21;
+            _t50 = _t23;
+        }
+        double _t51 = 1.0 + _t48;
+        double _t52 = 1.0 - _t48;
+        double _t54 = _t27 + _t49;
+        double _t55 = _t24 + _t50;
+        double _t56 = _t24 - _t50;
+        double _t57 = _t49 - _t27;
+        makeFromMatrix_s11abf6c1_tail2(_dst, _t19, _t20, _t48, _t51, _t52, _r9, _r10, _r11, _t37, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s11abf6c1_tail2(DoubleTransformImpl _dst, double _t19, double _t20, double _t48, double _t51, double _t52, double _r9, double _r10, double _r11, double _t37, double _t38, double _t54, double _t55, double _t56, double _t39, double _t57, double _t47, double _t18, double _t12, double _t13) {
+        double _t62 = _t19 + (_t20 + _t48);
+        double _t63 = _t19 + (_t20 + _t51);
+        double _t64 = _t51 - _t20 - _t19;
+        double _t65 = _t19 + (_t52 - _t20);
+        double _t66 = _t20 + (_t52 - _t19);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t65));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t66));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
+        makeFromMatrix_s11abf6c1_c0(_dst, _r9, _r10, _r11, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        makeFromMatrix_s11abf6c1_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        makeFromMatrix_s11abf6c1_c2(_dst, _t47, _t18, _t12, _t13);
     }
 
 
@@ -544,22 +649,63 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * @return this
      */
     @Mutated public DoubleTransform makeFromMatrix(Double3x4R m) {
-        double _t12 = m.m01() * m.m01() + m.m11() * m.m11() + m.m21() * m.m21();
-        double _t13 = m.m02() * m.m02() + m.m12() * m.m12() + m.m22() * m.m22();
-        double _t14 = m.m00() * m.m00() + m.m10() * m.m10() + m.m20() * m.m20();
+        DoubleTransformImpl d = this;
+        double _r0 = m.m01();
+        double _r1 = m.m11();
+        double _r2 = m.m21();
+        double _r3 = m.m02();
+        double _r4 = m.m12();
+        double _r5 = m.m22();
+        double _r6 = m.m00();
+        double _r7 = m.m10();
+        double _r8 = m.m20();
+        double _r9 = m.m03();
+        double _r10 = m.m13();
+        double _r11 = m.m23();
+        double _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        double _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
         double _t15 = (1.0 / Math.sqrt(_t12));
         double _t16 = (1.0 / Math.sqrt(_t13));
         double _t18 = Math.sqrt(_t14);
         double _t17 = 1.0 / _t18;
-        double _t19 = m.m11() * _t15;
-        double _t20 = m.m22() * _t16;
-        double _t21 = m.m10() * _t17;
-        double _t22 = m.m21() * _t15;
-        double _t23 = m.m20() * _t17;
-        double _t24 = m.m02() * _t16;
-        double _t25 = m.m12() * _t16;
-        double _t26 = m.m00() * _t17;
-        double _t27 = m.m01() * _t15;
+        double _t19 = _r1 * _t15;
+        double _t20 = _r5 * _t16;
+        makeFromMatrix_s11abf6c1_tail(d, _r7, _t17, _r2, _t15, _r8, _r3, _t16, _r4, _r6, _r0, _t19, _t20, _r9, _r10, _r11, _t18, _t12, _t13);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s1360cf60_c0(DoubleTransformImpl _dst, double _r9, double _r10, double _r11, double _t62, double _sp0, double _t37, double _t48, double _t38, double _t64, double _t19, double _t20, double _sp1, double _t54, double _sp2, double _t55) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+    }
+
+    /** Private store group 1 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s1360cf60_c1(DoubleTransformImpl _dst, double _t62, double _sp0, double _t56, double _t48, double _t38, double _sp3, double _t54, double _t19, double _t20, double _t65, double _sp2, double _t39, double _t57, double _t55, double _sp1, double _t66, double _t63, double _t37) {
+        _dst.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
+        _dst.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
+        _dst.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
+    }
+
+    /** Private store group 2 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s1360cf60_c2(DoubleTransformImpl _dst, double _t47, double _t18, double _t12, double _t13) {
+        _dst.sX = _t47 < 0.0 ? -_t18 : _t18;
+        _dst.sY = Math.sqrt(_t12);
+        _dst.sZ = Math.sqrt(_t13);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s1360cf60_tail(DoubleTransformImpl _dst, double _r7, double _t17, double _r2, double _t15, double _r8, double _r3, double _t16, double _r4, double _r6, double _r0, double _t19, double _t20, double _r9, double _r10, double _r11, double _t18, double _t12, double _t13) {
+        double _t21 = _r7 * _t17;
+        double _t22 = _r2 * _t15;
+        double _t23 = _r8 * _t17;
+        double _t24 = _r3 * _t16;
+        double _t25 = _r4 * _t16;
+        double _t26 = _r6 * _t17;
+        double _t27 = _r0 * _t15;
         double _t37 = _t22 - _t25;
         double _t38 = Math.max(_t19, _t20);
         double _t39 = _t25 + _t22;
@@ -580,6 +726,11 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t55 = _t24 + _t50;
         double _t56 = _t24 - _t50;
         double _t57 = _t49 - _t27;
+        makeFromMatrix_s1360cf60_tail2(_dst, _t19, _t20, _t48, _t51, _t52, _r9, _r10, _r11, _t37, _t38, _t54, _t55, _t56, _t39, _t57, _t47, _t18, _t12, _t13);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s1360cf60_tail2(DoubleTransformImpl _dst, double _t19, double _t20, double _t48, double _t51, double _t52, double _r9, double _r10, double _r11, double _t37, double _t38, double _t54, double _t55, double _t56, double _t39, double _t57, double _t47, double _t18, double _t12, double _t13) {
         double _t62 = _t19 + (_t20 + _t48);
         double _t63 = _t19 + (_t20 + _t51);
         double _t64 = _t51 - _t20 - _t19;
@@ -589,17 +740,9 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _sp1 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sp2 = 0.5 * (1.0 / Math.sqrt(_t66));
         double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
-        this.tX = m.m03();
-        this.tY = m.m13();
-        this.tZ = m.m23();
-        this.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        this.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
-        this.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
-        this.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        this.sX = _t47 < 0.0 ? -_t18 : _t18;
-        this.sY = Math.sqrt(_t12);
-        this.sZ = Math.sqrt(_t13);
-        return this;
+        makeFromMatrix_s1360cf60_c0(_dst, _r9, _r10, _r11, _t62, _sp0, _t37, _t48, _t38, _t64, _t19, _t20, _sp1, _t54, _sp2, _t55);
+        makeFromMatrix_s1360cf60_c1(_dst, _t62, _sp0, _t56, _t48, _t38, _sp3, _t54, _t19, _t20, _t65, _sp2, _t39, _t57, _t55, _sp1, _t66, _t63, _t37);
+        makeFromMatrix_s1360cf60_c2(_dst, _t47, _t18, _t12, _t13);
     }
 
 
@@ -613,62 +756,30 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * @return this
      */
     @Mutated public DoubleTransform makeFromMatrix(Double4x4R m) {
-        double _t12 = m.m01() * m.m01() + m.m11() * m.m11() + m.m21() * m.m21();
-        double _t13 = m.m02() * m.m02() + m.m12() * m.m12() + m.m22() * m.m22();
-        double _t14 = m.m00() * m.m00() + m.m10() * m.m10() + m.m20() * m.m20();
+        DoubleTransformImpl d = this;
+        double _r0 = m.m01();
+        double _r1 = m.m11();
+        double _r2 = m.m21();
+        double _r3 = m.m02();
+        double _r4 = m.m12();
+        double _r5 = m.m22();
+        double _r6 = m.m00();
+        double _r7 = m.m10();
+        double _r8 = m.m20();
+        double _r9 = m.m03();
+        double _r10 = m.m13();
+        double _r11 = m.m23();
+        double _t12 = _r0 * _r0 + _r1 * _r1 + _r2 * _r2;
+        double _t13 = _r3 * _r3 + _r4 * _r4 + _r5 * _r5;
+        double _t14 = _r6 * _r6 + _r7 * _r7 + _r8 * _r8;
         double _t15 = (1.0 / Math.sqrt(_t12));
         double _t16 = (1.0 / Math.sqrt(_t13));
         double _t18 = Math.sqrt(_t14);
         double _t17 = 1.0 / _t18;
-        double _t19 = m.m11() * _t15;
-        double _t20 = m.m22() * _t16;
-        double _t21 = m.m10() * _t17;
-        double _t22 = m.m21() * _t15;
-        double _t23 = m.m20() * _t17;
-        double _t24 = m.m02() * _t16;
-        double _t25 = m.m12() * _t16;
-        double _t26 = m.m00() * _t17;
-        double _t27 = m.m01() * _t15;
-        double _t37 = _t22 - _t25;
-        double _t38 = Math.max(_t19, _t20);
-        double _t39 = _t25 + _t22;
-        double _t47 = (_t21 * _t22 - _t19 * _t23) * _t24 + (_t19 * _t20 - _t25 * _t22) * _t26 - (_t21 * _t20 - _t25 * _t23) * _t27;
-        double _t48, _t49, _t50;
-        if (_t47 < 0.0) {
-            _t48 = -_t26;
-            _t49 = -_t21;
-            _t50 = -_t23;
-        } else {
-            _t48 = _t26;
-            _t49 = _t21;
-            _t50 = _t23;
-        }
-        double _t51 = 1.0 + _t48;
-        double _t52 = 1.0 - _t48;
-        double _t54 = _t27 + _t49;
-        double _t55 = _t24 + _t50;
-        double _t56 = _t24 - _t50;
-        double _t57 = _t49 - _t27;
-        double _t62 = _t19 + (_t20 + _t48);
-        double _t63 = _t19 + (_t20 + _t51);
-        double _t64 = _t51 - _t20 - _t19;
-        double _t65 = _t19 + (_t52 - _t20);
-        double _t66 = _t20 + (_t52 - _t19);
-        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t63));
-        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t65));
-        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t66));
-        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
-        this.tX = m.m03();
-        this.tY = m.m13();
-        this.tZ = m.m23();
-        this.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
-        this.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
-        this.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
-        this.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
-        this.sX = _t47 < 0.0 ? -_t18 : _t18;
-        this.sY = Math.sqrt(_t12);
-        this.sZ = Math.sqrt(_t13);
-        return this;
+        double _t19 = _r1 * _t15;
+        double _t20 = _r5 * _t16;
+        makeFromMatrix_s1360cf60_tail(d, _r7, _t17, _r2, _t15, _r8, _r3, _t16, _r4, _r6, _r0, _t19, _t20, _r9, _r10, _r11, _t18, _t12, _t13);
+        return d;
     }
 
 

@@ -12036,6 +12036,49 @@ public class Float3x4Impl implements Float3x4 {
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
+    /** Private column 0 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c0(Float3x4Impl _dst, float _r0, float _t24, float _r1, float _t30, float _r2, float _t27, float _t28, float _t25, float _t31, float _t32, float _t29, float _t26) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t30, _r2 * _t27));
+        _dst.m10 = Math.fma(_r0, _t28, Math.fma(_r1, _t25, _r2 * _t31));
+        _dst.m20 = Math.fma(_r0, _t32, Math.fma(_r1, _t29, _r2 * _t26));
+    }
+
+    /** Private column 1 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c1(Float3x4Impl _dst, float _r3, float _t24, float _r4, float _t30, float _r5, float _t27, float _t28, float _t25, float _t31, float _t32, float _t29, float _t26) {
+        _dst.m01 = Math.fma(_r3, _t24, Math.fma(_r4, _t30, _r5 * _t27));
+        _dst.m11 = Math.fma(_r3, _t28, Math.fma(_r4, _t25, _r5 * _t31));
+        _dst.m21 = Math.fma(_r3, _t32, Math.fma(_r4, _t29, _r5 * _t26));
+    }
+
+    /** Private column 2 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c2(Float3x4Impl _dst, float _r6, float _t24, float _r7, float _t30, float _r8, float _t27, float _t28, float _t25, float _t31, float _t32, float _t29, float _t26) {
+        _dst.m02 = Math.fma(_r6, _t24, Math.fma(_r7, _t30, _r8 * _t27));
+        _dst.m12 = Math.fma(_r6, _t28, Math.fma(_r7, _t25, _r8 * _t31));
+        _dst.m22 = Math.fma(_r6, _t32, Math.fma(_r7, _t29, _r8 * _t26));
+    }
+
+    /** Private column 3 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c3(Float3x4Impl _dst, float _r9, float _t30, float _r10, float _t27, float _r11, float _t24, float translationX, float _t25, float _t31, float _t28, float translationY, float _t29, float _t26, float _t32, float translationZ) {
+        _dst.m03 = Math.fma(_r9, _t30, Math.fma(_r10, _t27, Math.fma(_r11, _t24, translationX)));
+        _dst.m13 = Math.fma(_r9, _t25, Math.fma(_r10, _t31, Math.fma(_r11, _t28, translationY)));
+        _dst.m23 = Math.fma(_r9, _t29, Math.fma(_r10, _t26, Math.fma(_r11, _t32, translationZ)));
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s65017b59_tail(Float3x4Impl _dst, float rotationX, float rotationW, float rotationY, float rotationZ, float _t2, float _t5, float _t0, float _t3, float _t1, float _t4, float scaleX, float scaleY, float scaleZ, float _r0, float _t24, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float translationX, float _t25, float translationY, float translationZ) {
+        float _t26 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t2;
+        float _t27 = Math.fma(rotationX, rotationY, -_t5) * _t2;
+        float _t28 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t0;
+        float _t29 = Math.fma(rotationX, rotationZ, -_t3) * _t1;
+        float _t30 = Math.fma(-Math.fma(rotationY, rotationY, _t4), _t1, scaleX);
+        float _t31 = Math.fma(-Math.fma(rotationX, rotationX, _t4), _t2, scaleY);
+        float _t32 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t0, scaleZ);
+        composeTRSMul_s65017b59_c0(_dst, _r0, _t24, _r1, _t30, _r2, _t27, _t28, _t25, _t31, _t32, _t29, _t26);
+        composeTRSMul_s65017b59_c1(_dst, _r3, _t24, _r4, _t30, _r5, _t27, _t28, _t25, _t31, _t32, _t29, _t26);
+        composeTRSMul_s65017b59_c2(_dst, _r6, _t24, _r7, _t30, _r8, _t27, _t28, _t25, _t31, _t32, _t29, _t26);
+        composeTRSMul_s65017b59_c3(_dst, _r9, _t30, _r10, _t27, _r11, _t24, translationX, _t25, _t31, _t28, translationY, _t29, _t26, _t32, translationZ);
+    }
+
 
     /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
@@ -12066,6 +12109,19 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float3x4R m) {
+        Float3x4Impl d = this;
+        float _r0 = m.m20();
+        float _r1 = m.m00();
+        float _r2 = m.m10();
+        float _r3 = m.m21();
+        float _r4 = m.m01();
+        float _r5 = m.m11();
+        float _r6 = m.m22();
+        float _r7 = m.m02();
+        float _r8 = m.m12();
+        float _r9 = m.m03();
+        float _r10 = m.m13();
+        float _r11 = m.m23();
         float _t0 = scaleZ + scaleZ;
         float _t1 = scaleX + scaleX;
         float _t2 = scaleY + scaleY;
@@ -12074,35 +12130,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t5 = rotationZ * rotationW;
         float _t24 = Math.fma(rotationX, rotationZ, _t3) * _t0;
         float _t25 = Math.fma(rotationX, rotationY, _t5) * _t1;
-        float _t26 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t2;
-        float _t27 = Math.fma(rotationX, rotationY, -_t5) * _t2;
-        float _t28 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t0;
-        float _t29 = Math.fma(rotationX, rotationZ, -_t3) * _t1;
-        float _t30 = Math.fma(-Math.fma(rotationY, rotationY, _t4), _t1, scaleX);
-        float _t31 = Math.fma(-Math.fma(rotationX, rotationX, _t4), _t2, scaleY);
-        float _t32 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t0, scaleZ);
-        float _buf0 = Math.fma(m.m20(), _t24, Math.fma(m.m00(), _t30, m.m10() * _t27));
-        float _buf1 = Math.fma(m.m21(), _t24, Math.fma(m.m01(), _t30, m.m11() * _t27));
-        float _buf2 = Math.fma(m.m22(), _t24, Math.fma(m.m02(), _t30, m.m12() * _t27));
-        float _buf3 = Math.fma(m.m03(), _t30, Math.fma(m.m13(), _t27, Math.fma(m.m23(), _t24, translationX)));
-        float _buf4 = Math.fma(m.m20(), _t28, Math.fma(m.m00(), _t25, m.m10() * _t31));
-        float _buf5 = Math.fma(m.m21(), _t28, Math.fma(m.m01(), _t25, m.m11() * _t31));
-        float _buf6 = Math.fma(m.m22(), _t28, Math.fma(m.m02(), _t25, m.m12() * _t31));
-        float _buf7 = Math.fma(m.m03(), _t25, Math.fma(m.m13(), _t31, Math.fma(m.m23(), _t28, translationY)));
-        this.m20 = Math.fma(m.m20(), _t32, Math.fma(m.m00(), _t29, m.m10() * _t26));
-        this.m21 = Math.fma(m.m21(), _t32, Math.fma(m.m01(), _t29, m.m11() * _t26));
-        this.m22 = Math.fma(m.m22(), _t32, Math.fma(m.m02(), _t29, m.m12() * _t26));
-        this.m23 = Math.fma(m.m03(), _t29, Math.fma(m.m13(), _t26, Math.fma(m.m23(), _t32, translationZ)));
-        this.m00 = _buf0;
-        this.m01 = _buf1;
-        this.m02 = _buf2;
-        this.m03 = _buf3;
-        this.m10 = _buf4;
-        this.m11 = _buf5;
-        this.m12 = _buf6;
-        this.m13 = _buf7;
-        this.properties = Joml.BIT_AFFINE;
-        return this;
+        composeTRSMul_s65017b59_tail(d, rotationX, rotationW, rotationY, rotationZ, _t2, _t5, _t0, _t3, _t1, _t4, scaleX, scaleY, scaleZ, _r0, _t24, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, translationX, _t25, translationY, translationZ);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
     }
 
 
@@ -17925,6 +17955,55 @@ public class Float3x4Impl implements Float3x4 {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c0(Float3x4Impl _dst, float _t41, float _t42, float _t40) {
+        _dst.m00 = _t41;
+        _dst.m10 = _t42;
+        _dst.m20 = _t40;
+    }
+
+    /** Private column 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c1(Float3x4Impl _dst, float _t40, float _t10, float _t42, float _t12, float _t41, float _t11) {
+        _dst.m01 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        _dst.m11 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        _dst.m21 = Math.fma(_t42, _t11, -(_t41 * _t10));
+    }
+
+    /** Private column 2 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c2(Float3x4Impl _dst, float _t11, float _t10, float _t12) {
+        _dst.m02 = _t11;
+        _dst.m12 = _t10;
+        _dst.m22 = _t12;
+    }
+
+    /** Private column 3 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c3(Float3x4Impl _dst) {
+        _dst.m03 = 0.0f;
+        _dst.m13 = 0.0f;
+        _dst.m23 = 0.0f;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail(Float3x4Impl _dst, float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t10, float _t12, float _t11) {
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        makeRotationLookAlong_degenerate_s524747ee_c0(_dst, _t41, _t42, _t40);
+        makeRotationLookAlong_degenerate_s524747ee_c1(_dst, _t40, _t10, _t42, _t12, _t41, _t11);
+        makeRotationLookAlong_degenerate_s524747ee_c2(_dst, _t11, _t10, _t12);
+        makeRotationLookAlong_degenerate_s524747ee_c3(_dst);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -17932,6 +18011,7 @@ public class Float3x4Impl implements Float3x4 {
      * reached only through them.
      */
     @Mutated private Float3x4 makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        Float3x4Impl d = this;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9, _t10, _t11, _t12;
@@ -17965,33 +18045,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
         float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
         float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
-        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
-        float _t39, _t40, _t41, _t42;
-        if (_t33 == 0.0f) {
-            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
-            _t40 = _t39 * _t23;
-            _t41 = _t39 * _t24;
-            _t42 = _t39 * _t28;
-        } else {
-            _t39 = (1.0f / (float) Math.sqrt(_t33));
-            _t40 = _t39 * _t25;
-            _t41 = _t39 * _t27;
-            _t42 = _t39 * _t26;
-        }
-        this.m00 = _t41;
-        this.m01 = Math.fma(_t40, _t10, -(_t42 * _t12));
-        this.m02 = _t11;
-        this.m03 = 0.0f;
-        this.m10 = _t42;
-        this.m11 = Math.fma(_t41, _t12, -(_t40 * _t11));
-        this.m12 = _t10;
-        this.m13 = 0.0f;
-        this.m20 = _t40;
-        this.m21 = Math.fma(_t42, _t11, -(_t41 * _t10));
-        this.m22 = _t12;
-        this.m23 = 0.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeRotationLookAlong_degenerate_s524747ee_tail(d, _t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 

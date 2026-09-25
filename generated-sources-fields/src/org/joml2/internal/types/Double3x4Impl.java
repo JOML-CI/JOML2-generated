@@ -8651,6 +8651,49 @@ public class Double3x4Impl implements Double3x4 {
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
+    /** Private column 0 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c0(Double3x4Impl _dst, double _r0, double _t24, double _r1, double _t30, double _r2, double _t27, double _t28, double _t25, double _t31, double _t32, double _t29, double _t26) {
+        _dst.m00 = Math.fma(_r0, _t24, Math.fma(_r1, _t30, _r2 * _t27));
+        _dst.m10 = Math.fma(_r0, _t28, Math.fma(_r1, _t25, _r2 * _t31));
+        _dst.m20 = Math.fma(_r0, _t32, Math.fma(_r1, _t29, _r2 * _t26));
+    }
+
+    /** Private column 1 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c1(Double3x4Impl _dst, double _r3, double _t24, double _r4, double _t30, double _r5, double _t27, double _t28, double _t25, double _t31, double _t32, double _t29, double _t26) {
+        _dst.m01 = Math.fma(_r3, _t24, Math.fma(_r4, _t30, _r5 * _t27));
+        _dst.m11 = Math.fma(_r3, _t28, Math.fma(_r4, _t25, _r5 * _t31));
+        _dst.m21 = Math.fma(_r3, _t32, Math.fma(_r4, _t29, _r5 * _t26));
+    }
+
+    /** Private column 2 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c2(Double3x4Impl _dst, double _r6, double _t24, double _r7, double _t30, double _r8, double _t27, double _t28, double _t25, double _t31, double _t32, double _t29, double _t26) {
+        _dst.m02 = Math.fma(_r6, _t24, Math.fma(_r7, _t30, _r8 * _t27));
+        _dst.m12 = Math.fma(_r6, _t28, Math.fma(_r7, _t25, _r8 * _t31));
+        _dst.m22 = Math.fma(_r6, _t32, Math.fma(_r7, _t29, _r8 * _t26));
+    }
+
+    /** Private column 3 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s56cc878a_c3(Double3x4Impl _dst, double _r9, double _t30, double _r10, double _t27, double _r11, double _t24, double translationX, double _t25, double _t31, double _t28, double translationY, double _t29, double _t26, double _t32, double translationZ) {
+        _dst.m03 = Math.fma(_r9, _t30, Math.fma(_r10, _t27, Math.fma(_r11, _t24, translationX)));
+        _dst.m13 = Math.fma(_r9, _t25, Math.fma(_r10, _t31, Math.fma(_r11, _t28, translationY)));
+        _dst.m23 = Math.fma(_r9, _t29, Math.fma(_r10, _t26, Math.fma(_r11, _t32, translationZ)));
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s56cc878a_tail(Double3x4Impl _dst, double rotationX, double rotationW, double rotationY, double rotationZ, double _t2, double _t5, double _t0, double _t3, double _t1, double _t4, double scaleX, double scaleY, double scaleZ, double _r0, double _t24, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double translationX, double _t25, double translationY, double translationZ) {
+        double _t26 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t2;
+        double _t27 = Math.fma(rotationX, rotationY, -_t5) * _t2;
+        double _t28 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t0;
+        double _t29 = Math.fma(rotationX, rotationZ, -_t3) * _t1;
+        double _t30 = Math.fma(-Math.fma(rotationY, rotationY, _t4), _t1, scaleX);
+        double _t31 = Math.fma(-Math.fma(rotationX, rotationX, _t4), _t2, scaleY);
+        double _t32 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t0, scaleZ);
+        composeTRSMul_s56cc878a_c0(_dst, _r0, _t24, _r1, _t30, _r2, _t27, _t28, _t25, _t31, _t32, _t29, _t26);
+        composeTRSMul_s56cc878a_c1(_dst, _r3, _t24, _r4, _t30, _r5, _t27, _t28, _t25, _t31, _t32, _t29, _t26);
+        composeTRSMul_s56cc878a_c2(_dst, _r6, _t24, _r7, _t30, _r8, _t27, _t28, _t25, _t31, _t32, _t29, _t26);
+        composeTRSMul_s56cc878a_c3(_dst, _r9, _t30, _r10, _t27, _r11, _t24, translationX, _t25, _t31, _t28, translationY, _t29, _t26, _t32, translationZ);
+    }
+
 
     /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
@@ -8681,6 +8724,19 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 composeTRSMul(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, Double3x4R m) {
+        Double3x4Impl d = this;
+        double _r0 = m.m20();
+        double _r1 = m.m00();
+        double _r2 = m.m10();
+        double _r3 = m.m21();
+        double _r4 = m.m01();
+        double _r5 = m.m11();
+        double _r6 = m.m22();
+        double _r7 = m.m02();
+        double _r8 = m.m12();
+        double _r9 = m.m03();
+        double _r10 = m.m13();
+        double _r11 = m.m23();
         double _t0 = scaleZ + scaleZ;
         double _t1 = scaleX + scaleX;
         double _t2 = scaleY + scaleY;
@@ -8689,35 +8745,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t5 = rotationZ * rotationW;
         double _t24 = Math.fma(rotationX, rotationZ, _t3) * _t0;
         double _t25 = Math.fma(rotationX, rotationY, _t5) * _t1;
-        double _t26 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t2;
-        double _t27 = Math.fma(rotationX, rotationY, -_t5) * _t2;
-        double _t28 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t0;
-        double _t29 = Math.fma(rotationX, rotationZ, -_t3) * _t1;
-        double _t30 = Math.fma(-Math.fma(rotationY, rotationY, _t4), _t1, scaleX);
-        double _t31 = Math.fma(-Math.fma(rotationX, rotationX, _t4), _t2, scaleY);
-        double _t32 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t0, scaleZ);
-        double _buf0 = Math.fma(m.m20(), _t24, Math.fma(m.m00(), _t30, m.m10() * _t27));
-        double _buf1 = Math.fma(m.m21(), _t24, Math.fma(m.m01(), _t30, m.m11() * _t27));
-        double _buf2 = Math.fma(m.m22(), _t24, Math.fma(m.m02(), _t30, m.m12() * _t27));
-        double _buf3 = Math.fma(m.m03(), _t30, Math.fma(m.m13(), _t27, Math.fma(m.m23(), _t24, translationX)));
-        double _buf4 = Math.fma(m.m20(), _t28, Math.fma(m.m00(), _t25, m.m10() * _t31));
-        double _buf5 = Math.fma(m.m21(), _t28, Math.fma(m.m01(), _t25, m.m11() * _t31));
-        double _buf6 = Math.fma(m.m22(), _t28, Math.fma(m.m02(), _t25, m.m12() * _t31));
-        double _buf7 = Math.fma(m.m03(), _t25, Math.fma(m.m13(), _t31, Math.fma(m.m23(), _t28, translationY)));
-        this.m20 = Math.fma(m.m20(), _t32, Math.fma(m.m00(), _t29, m.m10() * _t26));
-        this.m21 = Math.fma(m.m21(), _t32, Math.fma(m.m01(), _t29, m.m11() * _t26));
-        this.m22 = Math.fma(m.m22(), _t32, Math.fma(m.m02(), _t29, m.m12() * _t26));
-        this.m23 = Math.fma(m.m03(), _t29, Math.fma(m.m13(), _t26, Math.fma(m.m23(), _t32, translationZ)));
-        this.m00 = _buf0;
-        this.m01 = _buf1;
-        this.m02 = _buf2;
-        this.m03 = _buf3;
-        this.m10 = _buf4;
-        this.m11 = _buf5;
-        this.m12 = _buf6;
-        this.m13 = _buf7;
-        this.properties = Joml.BIT_AFFINE;
-        return this;
+        composeTRSMul_s56cc878a_tail(d, rotationX, rotationW, rotationY, rotationZ, _t2, _t5, _t0, _t3, _t1, _t4, scaleX, scaleY, scaleZ, _r0, _t24, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, translationX, _t25, translationY, translationZ);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
     }
 
 
@@ -11943,6 +11973,34 @@ public class Double3x4Impl implements Double3x4 {
         return makeFromDualQuat(dq.rX(), dq.rY(), dq.rZ(), dq.rW(), dq.dX(), dq.dY(), dq.dZ(), dq.dW());
     }
 
+    /** Private column 0 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c0(Double3x4Impl _dst, double _t0, double _t6, double dqRX, double dqRY, double _t2, double _t3, double _sp0, double dqRZ) {
+        _dst.m00 = Math.fma(-2.0, _t0, _t6);
+        _dst.m10 = 2.0 * Math.fma(dqRX, dqRY, _t2);
+        _dst.m20 = Math.fma(-2.0, _t3, _sp0 * dqRZ);
+    }
+
+    /** Private column 1 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c1(Double3x4Impl _dst, double _t2, double _sp0, double dqRY, double _t4, double _t6, double dqRX, double dqRW, double _t5) {
+        _dst.m01 = Math.fma(-2.0, _t2, _sp0 * dqRY);
+        _dst.m11 = Math.fma(-2.0, _t4, _t6);
+        _dst.m21 = 2.0 * Math.fma(dqRX, dqRW, _t5);
+    }
+
+    /** Private column 2 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c2(Double3x4Impl _dst, double dqRX, double dqRZ, double _t3, double dqRW, double _t5, double _t4, double _t0) {
+        _dst.m02 = 2.0 * Math.fma(dqRX, dqRZ, _t3);
+        _dst.m12 = Math.fma(-2.0, dqRX * dqRW, _t5 + _t5);
+        _dst.m22 = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
+    }
+
+    /** Private column 3 of {@code makeFromDualQuat}: computes and stores it; reached only through it. */
+    private void makeFromDualQuat_s47f85f08_c3(Double3x4Impl _dst, double dqRY, double dqDZ, double dqRZ, double dqDY, double dqRW, double dqDX, double dqRX, double dqDW) {
+        _dst.m03 = 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
+        _dst.m13 = 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW)));
+        _dst.m23 = 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW)));
+    }
+
 
     /**
      * Set this matrix to the rigid transformation represented by the unit dual quaternion
@@ -11972,6 +12030,7 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeFromDualQuat(double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
+        Double3x4Impl d = this;
         double _sp0 = dqRX + dqRX;
         double _t0 = dqRY * dqRY;
         double _t2 = dqRZ * dqRW;
@@ -11979,20 +12038,12 @@ public class Double3x4Impl implements Double3x4 {
         double _t4 = dqRX * dqRX;
         double _t5 = dqRY * dqRZ;
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
-        this.m00 = Math.fma(-2.0, _t0, _t6);
-        this.m01 = Math.fma(-2.0, _t2, _sp0 * dqRY);
-        this.m02 = 2.0 * Math.fma(dqRX, dqRZ, _t3);
-        this.m03 = 2.0 * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
-        this.m10 = 2.0 * Math.fma(dqRX, dqRY, _t2);
-        this.m11 = Math.fma(-2.0, _t4, _t6);
-        this.m12 = Math.fma(-2.0, dqRX * dqRW, _t5 + _t5);
-        this.m13 = 2.0 * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW)));
-        this.m20 = Math.fma(-2.0, _t3, _sp0 * dqRZ);
-        this.m21 = 2.0 * Math.fma(dqRX, dqRW, _t5);
-        this.m22 = Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0));
-        this.m23 = 2.0 * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW)));
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeFromDualQuat_s47f85f08_c0(d, _t0, _t6, dqRX, dqRY, _t2, _t3, _sp0, dqRZ);
+        makeFromDualQuat_s47f85f08_c1(d, _t2, _sp0, dqRY, _t4, _t6, dqRX, dqRW, _t5);
+        makeFromDualQuat_s47f85f08_c2(d, dqRX, dqRZ, _t3, dqRW, _t5, _t4, _t0);
+        makeFromDualQuat_s47f85f08_c3(d, dqRY, dqDZ, dqRZ, dqDY, dqRW, dqDX, dqRX, dqDW);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 
@@ -13689,6 +13740,55 @@ public class Double3x4Impl implements Double3x4 {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c0(Double3x4Impl _dst, double _t41, double _t42, double _t40) {
+        _dst.m00 = _t41;
+        _dst.m10 = _t42;
+        _dst.m20 = _t40;
+    }
+
+    /** Private column 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c1(Double3x4Impl _dst, double _t40, double _t10, double _t42, double _t12, double _t41, double _t11) {
+        _dst.m01 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        _dst.m11 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        _dst.m21 = Math.fma(_t42, _t11, -(_t41 * _t10));
+    }
+
+    /** Private column 2 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c2(Double3x4Impl _dst, double _t11, double _t10, double _t12) {
+        _dst.m02 = _t11;
+        _dst.m12 = _t10;
+        _dst.m22 = _t12;
+    }
+
+    /** Private column 3 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_c3(Double3x4Impl _dst) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = 0.0;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s6a304d84_tail(Double3x4Impl _dst, double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t10, double _t12, double _t11) {
+        double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        double _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0) {
+            _t39 = (1.0 / Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0 / Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        makeRotationLookAlong_degenerate_s6a304d84_c0(_dst, _t41, _t42, _t40);
+        makeRotationLookAlong_degenerate_s6a304d84_c1(_dst, _t40, _t10, _t42, _t12, _t41, _t11);
+        makeRotationLookAlong_degenerate_s6a304d84_c2(_dst, _t11, _t10, _t12);
+        makeRotationLookAlong_degenerate_s6a304d84_c3(_dst);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -13696,6 +13796,7 @@ public class Double3x4Impl implements Double3x4 {
      * reached only through them.
      */
     @Mutated private Double3x4 makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        Double3x4Impl d = this;
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9, _t10, _t11, _t12;
@@ -13729,33 +13830,9 @@ public class Double3x4Impl implements Double3x4 {
         double _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
         double _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
         double _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
-        double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
-        double _t39, _t40, _t41, _t42;
-        if (_t33 == 0.0) {
-            _t39 = (1.0 / Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
-            _t40 = _t39 * _t23;
-            _t41 = _t39 * _t24;
-            _t42 = _t39 * _t28;
-        } else {
-            _t39 = (1.0 / Math.sqrt(_t33));
-            _t40 = _t39 * _t25;
-            _t41 = _t39 * _t27;
-            _t42 = _t39 * _t26;
-        }
-        this.m00 = _t41;
-        this.m01 = Math.fma(_t40, _t10, -(_t42 * _t12));
-        this.m02 = _t11;
-        this.m03 = 0.0;
-        this.m10 = _t42;
-        this.m11 = Math.fma(_t41, _t12, -(_t40 * _t11));
-        this.m12 = _t10;
-        this.m13 = 0.0;
-        this.m20 = _t40;
-        this.m21 = Math.fma(_t42, _t11, -(_t41 * _t10));
-        this.m22 = _t12;
-        this.m23 = 0.0;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeRotationLookAlong_degenerate_s6a304d84_tail(d, _t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 

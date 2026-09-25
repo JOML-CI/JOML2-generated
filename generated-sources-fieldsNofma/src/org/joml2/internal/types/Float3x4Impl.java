@@ -12101,6 +12101,52 @@ public class Float3x4Impl implements Float3x4 {
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
+    /** Private column 0 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c0(Float3x4Impl _dst, float _r0, float _t30, float _r1, float _t22, float _r2, float _t23, float _t24, float _t31, float _t26, float _t27, float _t28, float _t32) {
+        _dst.m00 = _r0 * _t30 + _r1 * _t22 + _r2 * _t23;
+        _dst.m10 = _r0 * _t24 + _r1 * _t31 + _r2 * _t26;
+        _dst.m20 = _r0 * _t27 + _r1 * _t28 + _r2 * _t32;
+    }
+
+    /** Private column 1 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c1(Float3x4Impl _dst, float _r3, float _t30, float _r4, float _t22, float _r5, float _t23, float _t24, float _t31, float _t26, float _t27, float _t28, float _t32) {
+        _dst.m01 = _r3 * _t30 + _r4 * _t22 + _r5 * _t23;
+        _dst.m11 = _r3 * _t24 + _r4 * _t31 + _r5 * _t26;
+        _dst.m21 = _r3 * _t27 + _r4 * _t28 + _r5 * _t32;
+    }
+
+    /** Private column 2 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c2(Float3x4Impl _dst, float _r6, float _t30, float _r7, float _t22, float _r8, float _t23, float _t24, float _t31, float _t26, float _t27, float _t28, float _t32) {
+        _dst.m02 = _r6 * _t30 + _r7 * _t22 + _r8 * _t23;
+        _dst.m12 = _r6 * _t24 + _r7 * _t31 + _r8 * _t26;
+        _dst.m22 = _r6 * _t27 + _r7 * _t28 + _r8 * _t32;
+    }
+
+    /** Private column 3 of {@code composeTRSMul}: computes and stores it; reached only through it. */
+    private void composeTRSMul_s65017b59_c3(Float3x4Impl _dst, float _r9, float _t30, float _r10, float _t22, float _r11, float _t23, float translationX, float _t24, float _t31, float _t26, float translationY, float _t27, float _t28, float _t32, float translationZ) {
+        _dst.m03 = _r9 * _t30 + (_r10 * _t22 + (_r11 * _t23 + translationX));
+        _dst.m13 = _r9 * _t24 + (_r10 * _t31 + (_r11 * _t26 + translationY));
+        _dst.m23 = _r9 * _t27 + (_r10 * _t28 + (_r11 * _t32 + translationZ));
+    }
+
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
+    private void composeTRSMul_s65017b59_tail(Float3x4Impl _dst, float rotationX, float rotationW, float _t5, float _t6, float _t1, float _t7, float _t8, float _t2, float _t0, float _t10, float scaleX, float _t3, float _t4, float scaleY, float _t9, float scaleZ, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float translationX, float translationY, float translationZ) {
+        float _t11 = rotationX * rotationW;
+        float _t22 = (_t5 - _t6) * _t1;
+        float _t23 = (_t7 + _t8) * _t2;
+        float _t24 = (_t5 + _t6) * _t0;
+        float _t26 = (_t10 - _t11) * _t2;
+        float _t27 = (_t7 - _t8) * _t0;
+        float _t28 = (_t11 + _t10) * _t1;
+        float _t30 = scaleX - (_t3 + _t4) * _t0;
+        float _t31 = scaleY - (_t9 + _t4) * _t1;
+        float _t32 = scaleZ - (_t9 + _t3) * _t2;
+        composeTRSMul_s65017b59_c0(_dst, _r0, _t30, _r1, _t22, _r2, _t23, _t24, _t31, _t26, _t27, _t28, _t32);
+        composeTRSMul_s65017b59_c1(_dst, _r3, _t30, _r4, _t22, _r5, _t23, _t24, _t31, _t26, _t27, _t28, _t32);
+        composeTRSMul_s65017b59_c2(_dst, _r6, _t30, _r7, _t22, _r8, _t23, _t24, _t31, _t26, _t27, _t28, _t32);
+        composeTRSMul_s65017b59_c3(_dst, _r9, _t30, _r10, _t22, _r11, _t23, translationX, _t24, _t31, _t26, translationY, _t27, _t28, _t32, translationZ);
+    }
+
 
     /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
@@ -12131,6 +12177,19 @@ public class Float3x4Impl implements Float3x4 {
      * @return this
      */
     @Mutated public Float3x4 composeTRSMul(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, Float3x4R m) {
+        Float3x4Impl d = this;
+        float _r0 = m.m00();
+        float _r1 = m.m10();
+        float _r2 = m.m20();
+        float _r3 = m.m01();
+        float _r4 = m.m11();
+        float _r5 = m.m21();
+        float _r6 = m.m02();
+        float _r7 = m.m12();
+        float _r8 = m.m22();
+        float _r9 = m.m03();
+        float _r10 = m.m13();
+        float _r11 = m.m23();
         float _t0 = scaleX + scaleX;
         float _t1 = scaleY + scaleY;
         float _t2 = scaleZ + scaleZ;
@@ -12142,38 +12201,9 @@ public class Float3x4Impl implements Float3x4 {
         float _t8 = rotationY * rotationW;
         float _t9 = rotationX * rotationX;
         float _t10 = rotationY * rotationZ;
-        float _t11 = rotationX * rotationW;
-        float _t22 = (_t5 - _t6) * _t1;
-        float _t23 = (_t7 + _t8) * _t2;
-        float _t24 = (_t5 + _t6) * _t0;
-        float _t26 = (_t10 - _t11) * _t2;
-        float _t27 = (_t7 - _t8) * _t0;
-        float _t28 = (_t11 + _t10) * _t1;
-        float _t30 = scaleX - (_t3 + _t4) * _t0;
-        float _t31 = scaleY - (_t9 + _t4) * _t1;
-        float _t32 = scaleZ - (_t9 + _t3) * _t2;
-        float _buf0 = m.m00() * _t30 + m.m10() * _t22 + m.m20() * _t23;
-        float _buf1 = m.m01() * _t30 + m.m11() * _t22 + m.m21() * _t23;
-        float _buf2 = m.m02() * _t30 + m.m12() * _t22 + m.m22() * _t23;
-        float _buf3 = m.m03() * _t30 + (m.m13() * _t22 + (m.m23() * _t23 + translationX));
-        float _buf4 = m.m00() * _t24 + m.m10() * _t31 + m.m20() * _t26;
-        float _buf5 = m.m01() * _t24 + m.m11() * _t31 + m.m21() * _t26;
-        float _buf6 = m.m02() * _t24 + m.m12() * _t31 + m.m22() * _t26;
-        float _buf7 = m.m03() * _t24 + (m.m13() * _t31 + (m.m23() * _t26 + translationY));
-        this.m20 = m.m00() * _t27 + m.m10() * _t28 + m.m20() * _t32;
-        this.m21 = m.m01() * _t27 + m.m11() * _t28 + m.m21() * _t32;
-        this.m22 = m.m02() * _t27 + m.m12() * _t28 + m.m22() * _t32;
-        this.m23 = m.m03() * _t27 + (m.m13() * _t28 + (m.m23() * _t32 + translationZ));
-        this.m00 = _buf0;
-        this.m01 = _buf1;
-        this.m02 = _buf2;
-        this.m03 = _buf3;
-        this.m10 = _buf4;
-        this.m11 = _buf5;
-        this.m12 = _buf6;
-        this.m13 = _buf7;
-        this.properties = Joml.BIT_AFFINE;
-        return this;
+        composeTRSMul_s65017b59_tail(d, rotationX, rotationW, _t5, _t6, _t1, _t7, _t8, _t2, _t0, _t10, scaleX, _t3, _t4, scaleY, _t9, scaleZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, translationX, translationY, translationZ);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
     }
 
 
@@ -17974,6 +18004,56 @@ public class Float3x4Impl implements Float3x4 {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private column 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c0(Float3x4Impl _dst, float _t47, float _t48, float _t46) {
+        _dst.m00 = _t47;
+        _dst.m10 = _t48;
+        _dst.m20 = _t46;
+    }
+
+    /** Private column 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c1(Float3x4Impl _dst, float _t46, float _t14, float _t48, float _t13, float _t47, float _t12) {
+        _dst.m01 = _t46 * _t14 - _t48 * _t13;
+        _dst.m11 = _t47 * _t13 - _t46 * _t12;
+        _dst.m21 = _t48 * _t12 - _t47 * _t14;
+    }
+
+    /** Private column 2 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c2(Float3x4Impl _dst, float _t12, float _t14, float _t13) {
+        _dst.m02 = _t12;
+        _dst.m12 = _t14;
+        _dst.m22 = _t13;
+    }
+
+    /** Private column 3 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c3(Float3x4Impl _dst) {
+        _dst.m03 = 0.0f;
+        _dst.m13 = 0.0f;
+        _dst.m23 = 0.0f;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail(Float3x4Impl _dst, float _t15, float _t16, float _t12, float _t13, float _t27, float _t28, float _t29, float _t26, float _t25, float _t14) {
+        float _t30 = _t15 > _t16 ? _t12 : -_t13;
+        float _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        float _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0f) {
+            _t45 = (1.0f / (float) Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0f / (float) Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        makeRotationLookAlong_degenerate_s524747ee_c0(_dst, _t47, _t48, _t46);
+        makeRotationLookAlong_degenerate_s524747ee_c1(_dst, _t46, _t14, _t48, _t13, _t47, _t12);
+        makeRotationLookAlong_degenerate_s524747ee_c2(_dst, _t12, _t14, _t13);
+        makeRotationLookAlong_degenerate_s524747ee_c3(_dst);
+    }
+
 
     /**
      * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
@@ -17981,6 +18061,7 @@ public class Float3x4Impl implements Float3x4 {
      * reached only through them.
      */
     @Mutated private Float3x4 makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        Float3x4Impl d = this;
         float _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
         float _t5 = (1.0f / (float) Math.sqrt(_t4));
         float _t9, _t10, _t11, _t12, _t13, _t14;
@@ -18001,46 +18082,20 @@ public class Float3x4Impl implements Float3x4 {
         }
         float _t15 = Math.abs(_t12);
         float _t16 = Math.abs(_t13);
-        float _t25, _t26, _t30;
+        float _t25, _t26;
         if (_t15 > _t16) {
             _t25 = 0.0f;
             _t26 = -_t14;
-            _t30 = _t12;
         } else {
             _t25 = _t14;
             _t26 = 0.0f;
-            _t30 = -_t13;
         }
         float _t27 = _t9 * _t12 - _t10 * _t13;
         float _t28 = _t11 * _t13 - _t9 * _t14;
         float _t29 = _t10 * _t14 - _t12 * _t11;
-        float _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
-        float _t45, _t46, _t47, _t48;
-        if (_t39 == 0.0f) {
-            _t45 = (1.0f / (float) Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
-            _t46 = _t45 * _t25;
-            _t47 = _t45 * _t26;
-            _t48 = _t45 * _t30;
-        } else {
-            _t45 = (1.0f / (float) Math.sqrt(_t39));
-            _t46 = _t45 * _t29;
-            _t47 = _t45 * _t28;
-            _t48 = _t45 * _t27;
-        }
-        this.m00 = _t47;
-        this.m01 = _t46 * _t14 - _t48 * _t13;
-        this.m02 = _t12;
-        this.m03 = 0.0f;
-        this.m10 = _t48;
-        this.m11 = _t47 * _t13 - _t46 * _t12;
-        this.m12 = _t14;
-        this.m13 = 0.0f;
-        this.m20 = _t46;
-        this.m21 = _t48 * _t12 - _t47 * _t14;
-        this.m22 = _t13;
-        this.m23 = 0.0f;
-        this.properties = Joml.BIT_ORTHOGONAL;
-        return this;
+        makeRotationLookAlong_degenerate_s524747ee_tail(d, _t15, _t16, _t12, _t13, _t27, _t28, _t29, _t26, _t25, _t14);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
     }
 
 

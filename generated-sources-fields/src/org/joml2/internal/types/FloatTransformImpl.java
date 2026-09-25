@@ -624,36 +624,34 @@ public final class FloatTransformImpl implements FloatTransform {
         return this;
     }
 
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4190286d_c0(FloatTransformImpl _dst, float _t60, float _sp0, float _t33, float _t45, float _t34, float _t65, float _t22, float _t17, float _sp1, float _t52, float _sp2, float _t53) {
+        _dst.tX = 0.0f;
+        _dst.tY = 0.0f;
+        _dst.tZ = 0.0f;
+        _dst.rX = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+    }
 
-    /**
-     * Set this transform to the decomposition of the given matrix's linear {@code R * S} block,
-     * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
-     * a sheared block yields a rotation quaternion that is not unit length).
-     *
-     * @param m the matrix to convert
-     * @return this
-     */
-    @Mutated public FloatTransform makeFromMatrix(Float3x3R m) {
-        float _t0 = -m.m11();
-        float _t1 = -m.m22();
-        float _t9 = Math.fma(m.m21(), m.m21(), Math.fma(m.m01(), m.m01(), m.m11() * m.m11()));
-        float _t10 = Math.fma(m.m22(), m.m22(), Math.fma(m.m02(), m.m02(), m.m12() * m.m12()));
-        float _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
-        float _t12 = (1.0f / (float) Math.sqrt(_t9));
-        float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t15 = (float) Math.sqrt(_t11);
-        float _t14 = 1.0f / _t15;
-        float _t16 = m.m10() * _t14;
-        float _t17 = m.m22() * _t13;
-        float _t18 = m.m12() * _t13;
-        float _t19 = m.m20() * _t14;
-        float _t21 = m.m21() * _t12;
-        float _t22 = m.m11() * _t12;
-        float _t24 = m.m00() * _t14;
-        float _t29 = Math.fma(m.m12(), _t13, _t21);
-        float _t33 = Math.fma(m.m21(), _t12, -_t18);
+    /** Private store group 1 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4190286d_c1(FloatTransformImpl _dst, float _t60, float _sp0, float _t54, float _t45, float _t34, float _sp3, float _t52, float _t22, float _t17, float _t63, float _sp2, float _t29, float _t55, float _t53, float _sp1, float _t64, float _t61, float _t33) {
+        _dst.rY = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        _dst.rZ = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        _dst.rW = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
+    }
+
+    /** Private store group 2 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4190286d_c2(FloatTransformImpl _dst, float _t44, float _t15, float _t9, float _t10) {
+        _dst.sX = _t44 < 0.0f ? -_t15 : _t15;
+        _dst.sY = (float) Math.sqrt(_t9);
+        _dst.sZ = (float) Math.sqrt(_t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s4190286d_tail(FloatTransformImpl _dst, float _r5, float _t13, float _t21, float _r2, float _t12, float _t18, float _t22, float _t17, float _t16, float _t19, float _r3, float _r4, float _t24, float _r0, float _r1, float _t1, float _t0, float _t15, float _t9, float _t10) {
+        float _t29 = Math.fma(_r5, _t13, _t21);
+        float _t33 = Math.fma(_r2, _t12, -_t18);
         float _t34 = Math.max(_t22, _t17);
-        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), _r3 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), _r4 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
         float _t45, _t46, _t47;
         if (_t44 < 0.0f) {
             _t45 = -_t24;
@@ -666,30 +664,136 @@ public final class FloatTransformImpl implements FloatTransform {
         }
         float _t49 = 1.0f + _t45;
         float _t50 = 1.0f - _t45;
-        float _t52 = Math.fma(m.m01(), _t12, _t46);
-        float _t53 = Math.fma(m.m02(), _t13, _t47);
-        float _t54 = Math.fma(m.m02(), _t13, -_t47);
-        float _t55 = Math.fma(-m.m01(), _t12, _t46);
-        float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
-        float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
+        float _t52 = Math.fma(_r3, _t12, _t46);
+        float _t53 = Math.fma(_r4, _t13, _t47);
+        float _t54 = Math.fma(_r4, _t13, -_t47);
+        float _t55 = Math.fma(-_r3, _t12, _t46);
+        float _t60 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t45));
+        makeFromMatrix_s4190286d_tail2(_dst, _r0, _t12, _r1, _t13, _t49, _t1, _t50, _t0, _t60, _t33, _t45, _t34, _t22, _t17, _t52, _t53, _t54, _t29, _t55, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s4190286d_tail2(FloatTransformImpl _dst, float _r0, float _t12, float _r1, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
+        float _t61 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t49));
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
-        float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
-        float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
+        float _t63 = Math.fma(_r0, _t12, Math.fma(_t1, _t13, _t50));
+        float _t64 = Math.fma(_r1, _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
-        this.tX = 0.0f;
-        this.tY = 0.0f;
-        this.tZ = 0.0f;
-        this.rX = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
-        this.rY = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
-        this.rZ = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
-        this.rW = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
-        this.sX = _t44 < 0.0f ? -_t15 : _t15;
-        this.sY = (float) Math.sqrt(_t9);
-        this.sZ = (float) Math.sqrt(_t10);
-        return this;
+        makeFromMatrix_s4190286d_c0(_dst, _t60, _sp0, _t33, _t45, _t34, _t65, _t22, _t17, _sp1, _t52, _sp2, _t53);
+        makeFromMatrix_s4190286d_c1(_dst, _t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33);
+        makeFromMatrix_s4190286d_c2(_dst, _t44, _t15, _t9, _t10);
+    }
+
+
+    /**
+     * Set this transform to the decomposition of the given matrix's linear {@code R * S} block,
+     * with zero translation (scale is removed by normalizing the columns, but shear is not removed:
+     * a sheared block yields a rotation quaternion that is not unit length).
+     *
+     * @param m the matrix to convert
+     * @return this
+     */
+    @Mutated public FloatTransform makeFromMatrix(Float3x3R m) {
+        FloatTransformImpl d = this;
+        float _r0 = m.m11();
+        float _r1 = m.m22();
+        float _r2 = m.m21();
+        float _r3 = m.m01();
+        float _r4 = m.m02();
+        float _r5 = m.m12();
+        float _r6 = m.m20();
+        float _r7 = m.m00();
+        float _r8 = m.m10();
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t9 = Math.fma(_r2, _r2, Math.fma(_r3, _r3, _r0 * _r0));
+        float _t10 = Math.fma(_r1, _r1, Math.fma(_r4, _r4, _r5 * _r5));
+        float _t11 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
+        float _t12 = (1.0f / (float) Math.sqrt(_t9));
+        float _t13 = (1.0f / (float) Math.sqrt(_t10));
+        float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
+        float _t16 = _r8 * _t14;
+        float _t17 = _r1 * _t13;
+        float _t18 = _r5 * _t13;
+        float _t19 = _r6 * _t14;
+        float _t21 = _r2 * _t12;
+        float _t22 = _r0 * _t12;
+        float _t24 = _r7 * _t14;
+        makeFromMatrix_s4190286d_tail(d, _r5, _t13, _t21, _r2, _t12, _t18, _t22, _t17, _t16, _t19, _r3, _r4, _t24, _r0, _r1, _t1, _t0, _t15, _t9, _t10);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s41909ccc_c0(FloatTransformImpl _dst, float _r9, float _r10, float _r11, float _t60, float _sp0, float _t33, float _t45, float _t34, float _t65, float _t22, float _t17, float _sp1, float _t52, float _sp2, float _t53) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+    }
+
+    /** Private store group 1 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s41909ccc_c1(FloatTransformImpl _dst, float _t60, float _sp0, float _t54, float _t45, float _t34, float _sp3, float _t52, float _t22, float _t17, float _t63, float _sp2, float _t29, float _t55, float _t53, float _sp1, float _t64, float _t61, float _t33) {
+        _dst.rY = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        _dst.rZ = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        _dst.rW = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
+    }
+
+    /** Private store group 2 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s41909ccc_c2(FloatTransformImpl _dst, float _t44, float _t15, float _t9, float _t10) {
+        _dst.sX = _t44 < 0.0f ? -_t15 : _t15;
+        _dst.sY = (float) Math.sqrt(_t9);
+        _dst.sZ = (float) Math.sqrt(_t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s41909ccc_tail(FloatTransformImpl _dst, float _r1, float _t13, float _r5, float _r6, float _t14, float _r2, float _t12, float _r0, float _r7, float _t16, float _r3, float _r4, float _t1, float _t0, float _r9, float _r10, float _r11, float _t15, float _t9, float _t10) {
+        float _t17 = _r1 * _t13;
+        float _t18 = _r5 * _t13;
+        float _t19 = _r6 * _t14;
+        float _t21 = _r2 * _t12;
+        float _t22 = _r0 * _t12;
+        float _t24 = _r7 * _t14;
+        float _t29 = Math.fma(_r5, _t13, _t21);
+        float _t33 = Math.fma(_r2, _t12, -_t18);
+        float _t34 = Math.max(_t22, _t17);
+        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), _r3 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), _r4 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        float _t45, _t46, _t47;
+        if (_t44 < 0.0f) {
+            _t45 = -_t24;
+            _t46 = -_t16;
+            _t47 = -_t19;
+        } else {
+            _t45 = _t24;
+            _t46 = _t16;
+            _t47 = _t19;
+        }
+        float _t49 = 1.0f + _t45;
+        float _t50 = 1.0f - _t45;
+        float _t52 = Math.fma(_r3, _t12, _t46);
+        makeFromMatrix_s41909ccc_tail2(_dst, _r4, _t13, _t47, _r3, _t12, _t46, _r0, _r1, _t45, _t49, _t1, _t50, _t0, _r9, _r10, _r11, _t33, _t34, _t22, _t17, _t52, _t29, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s41909ccc_tail2(FloatTransformImpl _dst, float _r4, float _t13, float _t47, float _r3, float _t12, float _t46, float _r0, float _r1, float _t45, float _t49, float _t1, float _t50, float _t0, float _r9, float _r10, float _r11, float _t33, float _t34, float _t22, float _t17, float _t52, float _t29, float _t44, float _t15, float _t9, float _t10) {
+        float _t53 = Math.fma(_r4, _t13, _t47);
+        float _t54 = Math.fma(_r4, _t13, -_t47);
+        float _t55 = Math.fma(-_r3, _t12, _t46);
+        float _t60 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t45));
+        float _t61 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t49));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
+        float _t63 = Math.fma(_r0, _t12, Math.fma(_t1, _t13, _t50));
+        float _t64 = Math.fma(_r1, _t13, Math.fma(_t0, _t12, _t50));
+        float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        makeFromMatrix_s41909ccc_c0(_dst, _r9, _r10, _r11, _t60, _sp0, _t33, _t45, _t34, _t65, _t22, _t17, _sp1, _t52, _sp2, _t53);
+        makeFromMatrix_s41909ccc_c1(_dst, _t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33);
+        makeFromMatrix_s41909ccc_c2(_dst, _t44, _t15, _t9, _t10);
     }
 
 
@@ -703,26 +807,67 @@ public final class FloatTransformImpl implements FloatTransform {
      * @return this
      */
     @Mutated public FloatTransform makeFromMatrix(Float3x4R m) {
-        float _t0 = -m.m11();
-        float _t1 = -m.m22();
-        float _t9 = Math.fma(m.m21(), m.m21(), Math.fma(m.m01(), m.m01(), m.m11() * m.m11()));
-        float _t10 = Math.fma(m.m22(), m.m22(), Math.fma(m.m02(), m.m02(), m.m12() * m.m12()));
-        float _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
+        FloatTransformImpl d = this;
+        float _r0 = m.m11();
+        float _r1 = m.m22();
+        float _r2 = m.m21();
+        float _r3 = m.m01();
+        float _r4 = m.m02();
+        float _r5 = m.m12();
+        float _r6 = m.m20();
+        float _r7 = m.m00();
+        float _r8 = m.m10();
+        float _r9 = m.m03();
+        float _r10 = m.m13();
+        float _r11 = m.m23();
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t9 = Math.fma(_r2, _r2, Math.fma(_r3, _r3, _r0 * _r0));
+        float _t10 = Math.fma(_r1, _r1, Math.fma(_r4, _r4, _r5 * _r5));
+        float _t11 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
         float _t15 = (float) Math.sqrt(_t11);
         float _t14 = 1.0f / _t15;
-        float _t16 = m.m10() * _t14;
-        float _t17 = m.m22() * _t13;
-        float _t18 = m.m12() * _t13;
-        float _t19 = m.m20() * _t14;
-        float _t21 = m.m21() * _t12;
-        float _t22 = m.m11() * _t12;
-        float _t24 = m.m00() * _t14;
-        float _t29 = Math.fma(m.m12(), _t13, _t21);
-        float _t33 = Math.fma(m.m21(), _t12, -_t18);
+        float _t16 = _r8 * _t14;
+        makeFromMatrix_s41909ccc_tail(d, _r1, _t13, _r5, _r6, _t14, _r2, _t12, _r0, _r7, _t16, _r3, _r4, _t1, _t0, _r9, _r10, _r11, _t15, _t9, _t10);
+        return d;
+    }
+
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4345756b_c0(FloatTransformImpl _dst, float _r9, float _r10, float _r11, float _t60, float _sp0, float _t33, float _t45, float _t34, float _t65, float _t22, float _t17, float _sp1, float _t52, float _sp2, float _t53) {
+        _dst.tX = _r9;
+        _dst.tY = _r10;
+        _dst.tZ = _r11;
+        _dst.rX = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+    }
+
+    /** Private store group 1 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4345756b_c1(FloatTransformImpl _dst, float _t60, float _sp0, float _t54, float _t45, float _t34, float _sp3, float _t52, float _t22, float _t17, float _t63, float _sp2, float _t29, float _t55, float _t53, float _sp1, float _t64, float _t61, float _t33) {
+        _dst.rY = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        _dst.rZ = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        _dst.rW = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
+    }
+
+    /** Private store group 2 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4345756b_c2(FloatTransformImpl _dst, float _t44, float _t15, float _t9, float _t10) {
+        _dst.sX = _t44 < 0.0f ? -_t15 : _t15;
+        _dst.sY = (float) Math.sqrt(_t9);
+        _dst.sZ = (float) Math.sqrt(_t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s4345756b_tail(FloatTransformImpl _dst, float _r1, float _t13, float _r5, float _r6, float _t14, float _r2, float _t12, float _r0, float _r7, float _t16, float _r3, float _r4, float _t1, float _t0, float _r9, float _r10, float _r11, float _t15, float _t9, float _t10) {
+        float _t17 = _r1 * _t13;
+        float _t18 = _r5 * _t13;
+        float _t19 = _r6 * _t14;
+        float _t21 = _r2 * _t12;
+        float _t22 = _r0 * _t12;
+        float _t24 = _r7 * _t14;
+        float _t29 = Math.fma(_r5, _t13, _t21);
+        float _t33 = Math.fma(_r2, _t12, -_t18);
         float _t34 = Math.max(_t22, _t17);
-        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
+        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), _r3 * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), _r4 * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
         float _t45, _t46, _t47;
         if (_t44 < 0.0f) {
             _t45 = -_t24;
@@ -735,30 +880,27 @@ public final class FloatTransformImpl implements FloatTransform {
         }
         float _t49 = 1.0f + _t45;
         float _t50 = 1.0f - _t45;
-        float _t52 = Math.fma(m.m01(), _t12, _t46);
-        float _t53 = Math.fma(m.m02(), _t13, _t47);
-        float _t54 = Math.fma(m.m02(), _t13, -_t47);
-        float _t55 = Math.fma(-m.m01(), _t12, _t46);
-        float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
-        float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
+        float _t52 = Math.fma(_r3, _t12, _t46);
+        makeFromMatrix_s4345756b_tail2(_dst, _r4, _t13, _t47, _r3, _t12, _t46, _r0, _r1, _t45, _t49, _t1, _t50, _t0, _r9, _r10, _r11, _t33, _t34, _t22, _t17, _t52, _t29, _t44, _t15, _t9, _t10);
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s4345756b_tail2(FloatTransformImpl _dst, float _r4, float _t13, float _t47, float _r3, float _t12, float _t46, float _r0, float _r1, float _t45, float _t49, float _t1, float _t50, float _t0, float _r9, float _r10, float _r11, float _t33, float _t34, float _t22, float _t17, float _t52, float _t29, float _t44, float _t15, float _t9, float _t10) {
+        float _t53 = Math.fma(_r4, _t13, _t47);
+        float _t54 = Math.fma(_r4, _t13, -_t47);
+        float _t55 = Math.fma(-_r3, _t12, _t46);
+        float _t60 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t45));
+        float _t61 = Math.fma(_r0, _t12, Math.fma(_r1, _t13, _t49));
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
-        float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
-        float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
+        float _t63 = Math.fma(_r0, _t12, Math.fma(_t1, _t13, _t50));
+        float _t64 = Math.fma(_r1, _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
-        this.tX = m.m03();
-        this.tY = m.m13();
-        this.tZ = m.m23();
-        this.rX = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
-        this.rY = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
-        this.rZ = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
-        this.rW = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
-        this.sX = _t44 < 0.0f ? -_t15 : _t15;
-        this.sY = (float) Math.sqrt(_t9);
-        this.sZ = (float) Math.sqrt(_t10);
-        return this;
+        makeFromMatrix_s4345756b_c0(_dst, _r9, _r10, _r11, _t60, _sp0, _t33, _t45, _t34, _t65, _t22, _t17, _sp1, _t52, _sp2, _t53);
+        makeFromMatrix_s4345756b_c1(_dst, _t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33);
+        makeFromMatrix_s4345756b_c2(_dst, _t44, _t15, _t9, _t10);
     }
 
 
@@ -772,62 +914,31 @@ public final class FloatTransformImpl implements FloatTransform {
      * @return this
      */
     @Mutated public FloatTransform makeFromMatrix(Float4x4R m) {
-        float _t0 = -m.m11();
-        float _t1 = -m.m22();
-        float _t9 = Math.fma(m.m21(), m.m21(), Math.fma(m.m01(), m.m01(), m.m11() * m.m11()));
-        float _t10 = Math.fma(m.m22(), m.m22(), Math.fma(m.m02(), m.m02(), m.m12() * m.m12()));
-        float _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
+        FloatTransformImpl d = this;
+        float _r0 = m.m11();
+        float _r1 = m.m22();
+        float _r2 = m.m21();
+        float _r3 = m.m01();
+        float _r4 = m.m02();
+        float _r5 = m.m12();
+        float _r6 = m.m20();
+        float _r7 = m.m00();
+        float _r8 = m.m10();
+        float _r9 = m.m03();
+        float _r10 = m.m13();
+        float _r11 = m.m23();
+        float _t0 = -_r0;
+        float _t1 = -_r1;
+        float _t9 = Math.fma(_r2, _r2, Math.fma(_r3, _r3, _r0 * _r0));
+        float _t10 = Math.fma(_r1, _r1, Math.fma(_r4, _r4, _r5 * _r5));
+        float _t11 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
         float _t15 = (float) Math.sqrt(_t11);
         float _t14 = 1.0f / _t15;
-        float _t16 = m.m10() * _t14;
-        float _t17 = m.m22() * _t13;
-        float _t18 = m.m12() * _t13;
-        float _t19 = m.m20() * _t14;
-        float _t21 = m.m21() * _t12;
-        float _t22 = m.m11() * _t12;
-        float _t24 = m.m00() * _t14;
-        float _t29 = Math.fma(m.m12(), _t13, _t21);
-        float _t33 = Math.fma(m.m21(), _t12, -_t18);
-        float _t34 = Math.max(_t22, _t17);
-        float _t44 = Math.fma(-Math.fma(_t16, _t17, -(_t18 * _t19)), m.m01() * _t12, Math.fma(Math.fma(_t16, _t21, -(_t22 * _t19)), m.m02() * _t13, Math.fma(_t22, _t17, -(_t18 * _t21)) * _t24));
-        float _t45, _t46, _t47;
-        if (_t44 < 0.0f) {
-            _t45 = -_t24;
-            _t46 = -_t16;
-            _t47 = -_t19;
-        } else {
-            _t45 = _t24;
-            _t46 = _t16;
-            _t47 = _t19;
-        }
-        float _t49 = 1.0f + _t45;
-        float _t50 = 1.0f - _t45;
-        float _t52 = Math.fma(m.m01(), _t12, _t46);
-        float _t53 = Math.fma(m.m02(), _t13, _t47);
-        float _t54 = Math.fma(m.m02(), _t13, -_t47);
-        float _t55 = Math.fma(-m.m01(), _t12, _t46);
-        float _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
-        float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
-        float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
-        float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
-        float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
-        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
-        this.tX = m.m03();
-        this.tY = m.m13();
-        this.tZ = m.m23();
-        this.rX = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
-        this.rY = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
-        this.rZ = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
-        this.rW = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
-        this.sX = _t44 < 0.0f ? -_t15 : _t15;
-        this.sY = (float) Math.sqrt(_t9);
-        this.sZ = (float) Math.sqrt(_t10);
-        return this;
+        float _t16 = _r8 * _t14;
+        makeFromMatrix_s4345756b_tail(d, _r1, _t13, _r5, _r6, _t14, _r2, _t12, _r0, _r7, _t16, _r3, _r4, _t1, _t0, _r9, _r10, _r11, _t15, _t9, _t10);
+        return d;
     }
 
 

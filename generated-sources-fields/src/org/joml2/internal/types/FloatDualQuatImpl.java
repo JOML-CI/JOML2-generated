@@ -3450,6 +3450,29 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return this;
     }
 
+    /** Private store group 0 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4190286d_c0(FloatDualQuatImpl _dst, float _t13, float _sp0, float _t3, float _r0, float _t4, float _t15, float _r3, float _r4, float _sp1, float _t5, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        _dst.rX = _t13 > 0.0f ? _sp0 * _t3 : _r0 > _t4 ? 0.5f * (float) Math.sqrt(_t15) : _r3 > _r4 ? _sp1 * _t5 : _sp2 * _t6;
+        _dst.rY = _t13 > 0.0f ? _sp0 * _t7 : _r0 > _t4 ? _sp3 * _t5 : _r3 > _r4 ? 0.5f * (float) Math.sqrt(_t16) : _sp2 * _t8;
+        _dst.rZ = _t13 > 0.0f ? _sp0 * _t9 : _r0 > _t4 ? _sp3 * _t6 : _r3 > _r4 ? _sp1 * _t8 : 0.5f * (float) Math.sqrt(_t17);
+        _dst.rW = _t13 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : _r0 > _t4 ? _sp3 * _t3 : _r3 > _r4 ? _sp1 * _t7 : _sp2 * _t9;
+    }
+
+    /** Private store group 1 of {@code makeFromMatrix}: computes and stores it; reached only through it. */
+    private void makeFromMatrix_s4190286d_c1(FloatDualQuatImpl _dst) {
+        _dst.dX = 0.0f;
+        _dst.dY = 0.0f;
+        _dst.dZ = 0.0f;
+        _dst.dW = 0.0f;
+    }
+
+    /** Private tail of {@code makeFromMatrix}; reached only through it. */
+    private void makeFromMatrix_s4190286d_tail(FloatDualQuatImpl _dst, float _t15, float _t13, float _sp0, float _t3, float _r0, float _t4, float _r3, float _r4, float _sp1, float _t5, float _sp2, float _t6, float _t7, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        makeFromMatrix_s4190286d_c0(_dst, _t13, _sp0, _t3, _r0, _t4, _t15, _r3, _r4, _sp1, _t5, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
+        makeFromMatrix_s4190286d_c1(_dst);
+    }
+
 
     /**
      * Set this dual quaternion to the rotation represented by the given matrix (which must be a
@@ -3461,53 +3484,34 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * @return this
      */
     @Mutated public FloatDualQuat makeFromMatrix(Float3x3R m) {
-        float _t1 = 1.0f - m.m00();
-        float _t3 = m.m21() - m.m12();
-        float _t4 = Math.max(m.m11(), m.m22());
-        float _t5 = m.m01() + m.m10();
-        float _t6 = m.m02() + m.m20();
-        float _t7 = m.m02() - m.m20();
-        float _t8 = m.m12() + m.m21();
-        float _t9 = m.m10() - m.m01();
-        float _t13 = m.m22() + (m.m00() + m.m11());
+        FloatDualQuatImpl d = this;
+        float _r0 = m.m00();
+        float _r1 = m.m21();
+        float _r2 = m.m12();
+        float _r3 = m.m11();
+        float _r4 = m.m22();
+        float _r5 = m.m01();
+        float _r6 = m.m10();
+        float _r7 = m.m02();
+        float _r8 = m.m20();
+        float _t1 = 1.0f - _r0;
+        float _t3 = _r1 - _r2;
+        float _t4 = Math.max(_r3, _r4);
+        float _t5 = _r5 + _r6;
+        float _t6 = _r7 + _r8;
+        float _t7 = _r7 - _r8;
+        float _t8 = _r2 + _r1;
+        float _t9 = _r6 - _r5;
+        float _t13 = _r4 + (_r0 + _r3);
         float _t14 = 1.0f + _t13;
-        float _t15 = m.m00() + (1.0f - m.m11() - m.m22());
-        float _t16 = m.m11() + (_t1 - m.m22());
-        float _t17 = m.m22() + (_t1 - m.m11());
+        float _t15 = _r0 + (1.0f - _r3 - _r4);
+        float _t16 = _r3 + (_t1 - _r4);
+        float _t17 = _r4 + (_t1 - _r3);
         float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
         float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
-        if (_t13 > 0.0f) {
-            this.rX = _sp0 * _t3;
-            this.rY = _sp0 * _t7;
-            this.rZ = _sp0 * _t9;
-            this.rW = 0.5f * (float) Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t4) {
-                this.rX = 0.5f * (float) Math.sqrt(_t15);
-                this.rY = _sp3 * _t5;
-                this.rZ = _sp3 * _t6;
-                this.rW = _sp3 * _t3;
-            } else {
-                if (m.m11() > m.m22()) {
-                    this.rX = _sp1 * _t5;
-                    this.rY = 0.5f * (float) Math.sqrt(_t16);
-                    this.rZ = _sp1 * _t8;
-                    this.rW = _sp1 * _t7;
-                } else {
-                    this.rX = _sp2 * _t6;
-                    this.rY = _sp2 * _t8;
-                    this.rZ = 0.5f * (float) Math.sqrt(_t17);
-                    this.rW = _sp2 * _t9;
-                }
-            }
-        }
-        this.dX = 0.0f;
-        this.dY = 0.0f;
-        this.dZ = 0.0f;
-        this.dW = 0.0f;
-        return this;
+        makeFromMatrix_s4190286d_tail(d, _t15, _t13, _sp0, _t3, _r0, _t4, _r3, _r4, _sp1, _t5, _sp2, _t6, _t7, _t16, _t8, _t9, _t17, _t14);
+        return d;
     }
 
 
@@ -4874,6 +4878,41 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return makeRotationLookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private store group 0 of {@code makeRotationLookAlong}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_s524747ee_c0(FloatDualQuatImpl _dst, float _t59, float _sp0, float _t52, float _t28, float _t53, float _t62, float _t45, float _t6, float _sp1, float _t56, float _sp2, float _t33, float _t38, float _sp3, float _t64, float _t51, float _t57, float _t63, float _t60) {
+        _dst.rX = _t59 > 0.0f ? _sp0 * _t52 : _t28 > _t53 ? 0.5f * (float) Math.sqrt(_t62) : _t45 > _t6 ? _sp1 * _t56 : _sp2 * _t33;
+        _dst.rY = _t59 > 0.0f ? _sp0 * _t38 : _t28 > _t53 ? _sp3 * _t56 : _t45 > _t6 ? 0.5f * (float) Math.sqrt(_t64) : _sp2 * _t51;
+        _dst.rZ = _t59 > 0.0f ? _sp0 * _t57 : _t28 > _t53 ? _sp3 * _t33 : _t45 > _t6 ? _sp1 * _t51 : 0.5f * (float) Math.sqrt(_t63);
+        _dst.rW = _t59 > 0.0f ? 0.5f * (float) Math.sqrt(_t60) : _t28 > _t53 ? _sp3 * _t52 : _t45 > _t6 ? _sp1 * _t38 : _sp2 * _t57;
+    }
+
+    /** Private store group 1 of {@code makeRotationLookAlong}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_s524747ee_c1(FloatDualQuatImpl _dst) {
+        _dst.dX = 0.0f;
+        _dst.dY = 0.0f;
+        _dst.dZ = 0.0f;
+        _dst.dW = 0.0f;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
+    private void makeRotationLookAlong_s524747ee_tail(FloatDualQuatImpl _dst, float dirY, float _t5, float _t46, float _t45, float _t6, float _t21, float _t27, float _t48, float dirZ, float _t19, float _t28, float _t9, float _t29, float _t11, float _t8, float _t1, float _t32, float _t33, float _t38, float _t51) {
+        float _t52 = Math.fma(-dirY, _t5, _t46);
+        float _t53 = Math.max(_t45, _t6);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        makeRotationLookAlong_s524747ee_c0(_dst, _t59, _sp0, _t52, _t28, _t53, _t62, _t45, _t6, _sp1, _t56, _sp2, _t33, _t38, _sp3, _t64, _t51, _t57, _t63, _t60);
+        makeRotationLookAlong_s524747ee_c1(_dst);
+    }
+
 
     /**
      * Set this dual quaternion to a rotation that makes {@code +z} point along ({@code dirX},
@@ -4893,19 +4932,20 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
      * @return this
      */
     @Mutated public FloatDualQuat makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        float _t1 = -dirZ;
+        FloatDualQuatImpl d = this;
         float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
         float _t6 = dirZ * _t5;
         float _t7 = dirY * _t5;
         float _t8 = dirX * _t5;
-        float _t9 = -_t8;
-        float _t11 = -_t6;
         float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
         float _t20 = Math.fma(upX, _t7, -(upY * _t8));
         float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
         float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
         if (!(_ct0 > 0.0f)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
         float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t1 = -dirZ;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
         float _t28 = _t19 * _t27;
         float _t29 = _t20 * _t27;
         float _t30 = _t21 * _t27;
@@ -4916,49 +4956,8 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
         float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
         float _t51 = Math.fma(dirY, _t5, _t46);
-        float _t52 = Math.fma(-dirY, _t5, _t46);
-        float _t53 = Math.max(_t45, _t6);
-        float _t56 = Math.fma(_t21, _t27, _t48);
-        float _t57 = Math.fma(_t21, _t27, -_t48);
-        float _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
-        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
-        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
-        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
-        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
-        float _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
-        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
-        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
-        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
-        if (_t59 > 0.0f) {
-            this.rX = _sp0 * _t52;
-            this.rY = _sp0 * _t38;
-            this.rZ = _sp0 * _t57;
-            this.rW = 0.5f * (float) Math.sqrt(_t60);
-        } else {
-            if (_t28 > _t53) {
-                this.rX = 0.5f * (float) Math.sqrt(_t62);
-                this.rY = _sp3 * _t56;
-                this.rZ = _sp3 * _t33;
-                this.rW = _sp3 * _t52;
-            } else {
-                if (_t45 > _t6) {
-                    this.rX = _sp1 * _t56;
-                    this.rY = 0.5f * (float) Math.sqrt(_t64);
-                    this.rZ = _sp1 * _t51;
-                    this.rW = _sp1 * _t38;
-                } else {
-                    this.rX = _sp2 * _t33;
-                    this.rY = _sp2 * _t51;
-                    this.rZ = 0.5f * (float) Math.sqrt(_t63);
-                    this.rW = _sp2 * _t57;
-                }
-            }
-        }
-        this.dX = 0.0f;
-        this.dY = 0.0f;
-        this.dZ = 0.0f;
-        this.dW = 0.0f;
-        return this;
+        makeRotationLookAlong_s524747ee_tail(d, dirY, _t5, _t46, _t45, _t6, _t21, _t27, _t48, dirZ, _t19, _t28, _t9, _t29, _t11, _t8, _t1, _t32, _t33, _t38, _t51);
+        return d;
     }
 
 
@@ -4971,49 +4970,26 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
+    /** Private store group 0 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c0(FloatDualQuatImpl _dst, float _t72, float _sp0, float _t71, float _t44, float _t68, float _t74, float _t62, float _t12, float _sp1, float _t81, float _sp2, float _t48, float _t51, float _sp3, float _t76, float _t70, float _t82, float _t77, float _t73) {
+        _dst.rX = _t72 > 0.0f ? _sp0 * _t71 : _t44 > _t68 ? 0.5f * (float) Math.sqrt(_t74) : _t62 > _t12 ? _sp1 * _t81 : _sp2 * _t48;
+        _dst.rY = _t72 > 0.0f ? _sp0 * _t51 : _t44 > _t68 ? _sp3 * _t81 : _t62 > _t12 ? 0.5f * (float) Math.sqrt(_t76) : _sp2 * _t70;
+        _dst.rZ = _t72 > 0.0f ? _sp0 * _t82 : _t44 > _t68 ? _sp3 * _t48 : _t62 > _t12 ? _sp1 * _t70 : 0.5f * (float) Math.sqrt(_t77);
+        _dst.rW = _t72 > 0.0f ? 0.5f * (float) Math.sqrt(_t73) : _t44 > _t68 ? _sp3 * _t71 : _t62 > _t12 ? _sp1 * _t51 : _sp2 * _t82;
+    }
 
-    /**
-     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
-     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
-     * reached only through them.
-     */
-    @Mutated private FloatDualQuat makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9, _t10, _t11, _t12;
-        if (_t2 == 0.0f) {
-            _t7 = 0.0f;
-            _t8 = 1.0f;
-            _t9 = 0.0f;
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 1.0f;
-        } else {
-            _t7 = upX;
-            _t8 = upY;
-            _t9 = upZ;
-            _t10 = dirY * _t3;
-            _t11 = dirX * _t3;
-            _t12 = dirZ * _t3;
-        }
-        float _t13 = Math.abs(_t11);
-        float _t14 = Math.abs(_t12);
-        float _t15 = -_t10;
-        float _t17 = 1.0f + _t12;
-        float _t18 = 1.0f - _t12;
-        float _t25, _t26, _t30;
-        if (_t13 > _t14) {
-            _t25 = 0.0f;
-            _t26 = _t15;
-            _t30 = _t11;
-        } else {
-            _t25 = _t10;
-            _t26 = 0.0f;
-            _t30 = -_t12;
-        }
-        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
-        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+    /** Private store group 1 of {@code makeRotationLookAlong_degenerate}: computes and stores it; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_c1(FloatDualQuatImpl _dst) {
+        _dst.dX = 0.0f;
+        _dst.dY = 0.0f;
+        _dst.dZ = 0.0f;
+        _dst.dW = 0.0f;
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail(FloatDualQuatImpl _dst, float _t8, float _t12, float _t9, float _t10, float _t13, float _t14, float _t11, float _t27, float _t28, float _t25, float _t26, float _t15, float _t17, float _t18) {
         float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t30 = _t13 > _t14 ? _t11 : -_t12;
         float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
         float _t37, _t38, _t39, _t41;
         if (_t35 == 0.0f) {
@@ -5037,6 +5013,11 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _t51 = Math.fma(_t42, _t37, _t11);
         float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
         float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        makeRotationLookAlong_degenerate_s524747ee_tail2(_dst, _t62, _t12, _t47, _t11, _t46, _t10, _t15, _t44, _t45, _t41, _t38, _t17, _t43, _t18, _t42, _t39, _t66, _t48, _t51);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private void makeRotationLookAlong_degenerate_s524747ee_tail2(FloatDualQuatImpl _dst, float _t62, float _t12, float _t47, float _t11, float _t46, float _t10, float _t15, float _t44, float _t45, float _t41, float _t38, float _t17, float _t43, float _t18, float _t42, float _t39, float _t66, float _t48, float _t51) {
         float _t68 = Math.max(_t62, _t12);
         float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
         float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
@@ -5051,36 +5032,53 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
         float _t81 = Math.fma(_t41, _t39, _t66);
         float _t82 = Math.fma(_t41, _t39, -_t66);
-        if (_t72 > 0.0f) {
-            this.rX = _sp0 * _t71;
-            this.rY = _sp0 * _t51;
-            this.rZ = _sp0 * _t82;
-            this.rW = 0.5f * (float) Math.sqrt(_t73);
+        makeRotationLookAlong_degenerate_s524747ee_c0(_dst, _t72, _sp0, _t71, _t44, _t68, _t74, _t62, _t12, _sp1, _t81, _sp2, _t48, _t51, _sp3, _t76, _t70, _t82, _t77, _t73);
+        makeRotationLookAlong_degenerate_s524747ee_c1(_dst);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private FloatDualQuat makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        FloatDualQuatImpl d = this;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
         } else {
-            if (_t44 > _t68) {
-                this.rX = 0.5f * (float) Math.sqrt(_t74);
-                this.rY = _sp3 * _t81;
-                this.rZ = _sp3 * _t48;
-                this.rW = _sp3 * _t71;
-            } else {
-                if (_t62 > _t12) {
-                    this.rX = _sp1 * _t81;
-                    this.rY = 0.5f * (float) Math.sqrt(_t76);
-                    this.rZ = _sp1 * _t70;
-                    this.rW = _sp1 * _t51;
-                } else {
-                    this.rX = _sp2 * _t48;
-                    this.rY = _sp2 * _t70;
-                    this.rZ = 0.5f * (float) Math.sqrt(_t77);
-                    this.rW = _sp2 * _t82;
-                }
-            }
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        this.dX = 0.0f;
-        this.dY = 0.0f;
-        this.dZ = 0.0f;
-        this.dW = 0.0f;
-        return this;
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25, _t26;
+        if (_t13 > _t14) {
+            _t25 = 0.0f;
+            _t26 = _t15;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0f;
+        }
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        makeRotationLookAlong_degenerate_s524747ee_tail(d, _t8, _t12, _t9, _t10, _t13, _t14, _t11, _t27, _t28, _t25, _t26, _t15, _t17, _t18);
+        return d;
     }
 
 
