@@ -1834,6 +1834,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsTypedBuffer.invert_affine(dest, destOffset, src, srcOffset);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -1874,6 +1875,66 @@ public final class Float4x4OpsKernelsTypedBuffer {
         dest.put(destOffset + 13, Math.fma(_self03, _t51, Math.fma(_self00, _t47, -(_self02 * _t52))) * _t75_inv);
         dest.put(destOffset + 14, -(Math.fma(_self03, _t54, Math.fma(_self00, _t48, -(_self01 * _t52))) * _t75_inv));
         dest.put(destOffset + 15, Math.fma(_self02, _t54, Math.fma(_self00, _t46, -(_self01 * _t51))) * _t75_inv);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer invert_affine(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.invert_affine_unsafe(dest, destOffset, src, srcOffset);
+        return Float4x4OpsKernelsTypedBuffer.invert_affine_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.nio.FloatBuffer invert_affine_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        Float4x4OpsKernelsAddress.invert_affine_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer invert_affine_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 16) {
+            Float4x4OpsKernelsArray.invert_affine(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float4x4OpsKernelsSegment.invert_affine_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self20 = src.get(srcOffset + 2);
+        float _self01 = src.get(srcOffset + 4);
+        float _self11 = src.get(srcOffset + 5);
+        float _self21 = src.get(srcOffset + 6);
+        float _self02 = src.get(srcOffset + 8);
+        float _self12 = src.get(srcOffset + 9);
+        float _self22 = src.get(srcOffset + 10);
+        float _self03 = src.get(srcOffset + 12);
+        float _self13 = src.get(srcOffset + 13);
+        float _self23 = src.get(srcOffset + 14);
+        float _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        dest.put(destOffset + 0, _t12 * _t21_inv);
+        dest.put(destOffset + 1, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        dest.put(destOffset + 2, _t13 * _t21_inv);
+        dest.put(destOffset + 3, 0.0f);
+        dest.put(destOffset + 4, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        dest.put(destOffset + 5, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        dest.put(destOffset + 6, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        dest.put(destOffset + 7, 0.0f);
+        dest.put(destOffset + 8, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        dest.put(destOffset + 9, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        dest.put(destOffset + 10, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        dest.put(destOffset + 11, 0.0f);
+        dest.put(destOffset + 12, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        dest.put(destOffset + 13, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        dest.put(destOffset + 14, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        dest.put(destOffset + 15, 1.0f);
         return dest;
     }
 
@@ -2017,6 +2078,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsTypedBuffer.normal_affine(dest, destOffset, src, srcOffset);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -2057,6 +2119,66 @@ public final class Float4x4OpsKernelsTypedBuffer {
         dest.put(destOffset + 13, Math.fma(_self02, _t40, Math.fma(_self00, _t37, -(_self01 * _t41))) * _t75_inv);
         dest.put(destOffset + 14, -(Math.fma(_self02, _t48, Math.fma(_self00, _t43, -(_self01 * _t46))) * _t75_inv));
         dest.put(destOffset + 15, Math.fma(_self02, _t54, Math.fma(_self00, _t49, -(_self01 * _t52))) * _t75_inv);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer normal_affine(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.normal_affine_unsafe(dest, destOffset, src, srcOffset);
+        return Float4x4OpsKernelsTypedBuffer.normal_affine_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.nio.FloatBuffer normal_affine_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        Float4x4OpsKernelsAddress.normal_affine_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer normal_affine_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 16) {
+            Float4x4OpsKernelsArray.normal_affine(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float4x4OpsKernelsSegment.normal_affine_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self20 = src.get(srcOffset + 2);
+        float _self01 = src.get(srcOffset + 4);
+        float _self11 = src.get(srcOffset + 5);
+        float _self21 = src.get(srcOffset + 6);
+        float _self02 = src.get(srcOffset + 8);
+        float _self12 = src.get(srcOffset + 9);
+        float _self22 = src.get(srcOffset + 10);
+        float _self03 = src.get(srcOffset + 12);
+        float _self13 = src.get(srcOffset + 13);
+        float _self23 = src.get(srcOffset + 14);
+        float _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        dest.put(destOffset + 0, _t12 * _t21_inv);
+        dest.put(destOffset + 1, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        dest.put(destOffset + 2, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        dest.put(destOffset + 3, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        dest.put(destOffset + 4, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        dest.put(destOffset + 5, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        dest.put(destOffset + 6, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        dest.put(destOffset + 7, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        dest.put(destOffset + 8, _t13 * _t21_inv);
+        dest.put(destOffset + 9, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        dest.put(destOffset + 10, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        dest.put(destOffset + 11, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        dest.put(destOffset + 12, 0.0f);
+        dest.put(destOffset + 13, 0.0f);
+        dest.put(destOffset + 14, 0.0f);
+        dest.put(destOffset + 15, 1.0f);
         return dest;
     }
 

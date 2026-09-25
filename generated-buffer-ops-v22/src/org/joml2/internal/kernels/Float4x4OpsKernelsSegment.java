@@ -1454,6 +1454,7 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsSegment.invert_affine(dest, destOffset, src, srcOffset);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -1494,6 +1495,58 @@ public final class Float4x4OpsKernelsSegment {
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, Math.fma(_self03, _t51, Math.fma(_self00, _t47, -(_self02 * _t52))) * _t75_inv);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, -(Math.fma(_self03, _t54, Math.fma(_self00, _t48, -(_self01 * _t52))) * _t75_inv));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, Math.fma(_self02, _t54, Math.fma(_self00, _t46, -(_self01 * _t51))) * _t75_inv);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invert_affine(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.invert_affine_unsafe(dest, destOffset, src, srcOffset);
+        return Float4x4OpsKernelsSegment.invert_affine_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment invert_affine_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.invert_affine_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invert_affine_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t12 * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t13 * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.0f);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, 0.0f);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, 0.0f);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, 1.0f);
         return dest;
     }
 
@@ -1621,6 +1674,7 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsSegment.normal_affine(dest, destOffset, src, srcOffset);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -1661,6 +1715,58 @@ public final class Float4x4OpsKernelsSegment {
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, Math.fma(_self02, _t40, Math.fma(_self00, _t37, -(_self01 * _t41))) * _t75_inv);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, -(Math.fma(_self02, _t48, Math.fma(_self00, _t43, -(_self01 * _t46))) * _t75_inv));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, Math.fma(_self02, _t54, Math.fma(_self00, _t49, -(_self01 * _t52))) * _t75_inv);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment normal_affine(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.normal_affine_unsafe(dest, destOffset, src, srcOffset);
+        return Float4x4OpsKernelsSegment.normal_affine_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment normal_affine_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float4x4OpsKernelsAddress.normal_affine_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment normal_affine_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _self03 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 48L);
+        float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
+        float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
+        float _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t12 * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _t13 * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 48L, 0.0f);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 52L, 0.0f);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, 0.0f);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 60L, 1.0f);
         return dest;
     }
 

@@ -1129,6 +1129,7 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsAddress.invert_affine(dest, src);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -1169,6 +1170,52 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 52L, Math.fma(_self03, _t51, Math.fma(_self00, _t47, -(_self02 * _t52))) * _t75_inv);
         UnsafeOpsHolder.U.putFloat(dest + 56L, -(Math.fma(_self03, _t54, Math.fma(_self00, _t48, -(_self01 * _t52))) * _t75_inv));
         UnsafeOpsHolder.U.putFloat(dest + 60L, Math.fma(_self02, _t54, Math.fma(_self00, _t46, -(_self01 * _t51))) * _t75_inv);
+        return dest;
+    }
+
+    public static long invert_affine(long dest, long src) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.invert_affine_unsafe(dest, src);
+        Float4x4OpsKernelsSegment.invert_affine(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L);
+        return dest;
+    }
+
+    public static long invert_affine_unsafe(long dest, long src) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 16L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 20L);
+        float _self21 = UnsafeOpsHolder.U.getFloat(src + 24L);
+        float _self02 = UnsafeOpsHolder.U.getFloat(src + 32L);
+        float _self12 = UnsafeOpsHolder.U.getFloat(src + 36L);
+        float _self22 = UnsafeOpsHolder.U.getFloat(src + 40L);
+        float _self03 = UnsafeOpsHolder.U.getFloat(src + 48L);
+        float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
+        float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
+        float _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        UnsafeOpsHolder.U.putFloat(dest + 0L, _t12 * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, _t13 * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 20L, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 28L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(dest + 32L, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 36L, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 44L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(dest + 48L, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        UnsafeOpsHolder.U.putFloat(dest + 52L, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 56L, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        UnsafeOpsHolder.U.putFloat(dest + 60L, 1.0f);
         return dest;
     }
 
@@ -1281,6 +1328,7 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsAddress.normal_affine(dest, src);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -1321,6 +1369,52 @@ public final class Float4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 52L, Math.fma(_self02, _t40, Math.fma(_self00, _t37, -(_self01 * _t41))) * _t75_inv);
         UnsafeOpsHolder.U.putFloat(dest + 56L, -(Math.fma(_self02, _t48, Math.fma(_self00, _t43, -(_self01 * _t46))) * _t75_inv));
         UnsafeOpsHolder.U.putFloat(dest + 60L, Math.fma(_self02, _t54, Math.fma(_self00, _t49, -(_self01 * _t52))) * _t75_inv);
+        return dest;
+    }
+
+    public static long normal_affine(long dest, long src) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.normal_affine_unsafe(dest, src);
+        Float4x4OpsKernelsSegment.normal_affine(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L);
+        return dest;
+    }
+
+    public static long normal_affine_unsafe(long dest, long src) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 16L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 20L);
+        float _self21 = UnsafeOpsHolder.U.getFloat(src + 24L);
+        float _self02 = UnsafeOpsHolder.U.getFloat(src + 32L);
+        float _self12 = UnsafeOpsHolder.U.getFloat(src + 36L);
+        float _self22 = UnsafeOpsHolder.U.getFloat(src + 40L);
+        float _self03 = UnsafeOpsHolder.U.getFloat(src + 48L);
+        float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
+        float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
+        float _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        float _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        float _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        float _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        float _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        float _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        float _t21_inv = 1.0f / _t21;
+        UnsafeOpsHolder.U.putFloat(dest + 0L, _t12 * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        UnsafeOpsHolder.U.putFloat(dest + 16L, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 20L, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 24L, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 32L, _t13 * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 36L, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        UnsafeOpsHolder.U.putFloat(dest + 44L, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        UnsafeOpsHolder.U.putFloat(dest + 48L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(dest + 52L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(dest + 56L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(dest + 60L, 1.0f);
         return dest;
     }
 

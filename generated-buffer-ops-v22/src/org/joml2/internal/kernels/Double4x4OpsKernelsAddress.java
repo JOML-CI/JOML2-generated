@@ -1128,6 +1128,7 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        if (_self30 == 0.0 && _self31 == 0.0 && _self32 == 0.0 && _self33 == 1.0) return Double4x4OpsKernelsAddress.invert_affine(dest, src);
         double _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         double _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         double _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -1168,6 +1169,52 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 104L, Math.fma(_self03, _t51, Math.fma(_self00, _t47, -(_self02 * _t52))) * _t75_inv);
         UnsafeOpsHolder.U.putDouble(dest + 112L, -(Math.fma(_self03, _t54, Math.fma(_self00, _t48, -(_self01 * _t52))) * _t75_inv));
         UnsafeOpsHolder.U.putDouble(dest + 120L, Math.fma(_self02, _t54, Math.fma(_self00, _t46, -(_self01 * _t51))) * _t75_inv);
+        return dest;
+    }
+
+    public static long invert_affine(long dest, long src) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.invert_affine_unsafe(dest, src);
+        Double4x4OpsKernelsSegment.invert_affine(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L);
+        return dest;
+    }
+
+    public static long invert_affine_unsafe(long dest, long src) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        double _t21_inv = 1.0 / _t21;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _t12 * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, _t13 * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, 0.0);
+        UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, 0.0);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, 0.0);
+        UnsafeOpsHolder.U.putDouble(dest + 96L, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        UnsafeOpsHolder.U.putDouble(dest + 104L, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        UnsafeOpsHolder.U.putDouble(dest + 120L, 1.0);
         return dest;
     }
 
@@ -1280,6 +1327,7 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
+        if (_self30 == 0.0 && _self31 == 0.0 && _self32 == 0.0 && _self33 == 1.0) return Double4x4OpsKernelsAddress.normal_affine(dest, src);
         double _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         double _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         double _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -1320,6 +1368,52 @@ public final class Double4x4OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 104L, Math.fma(_self02, _t40, Math.fma(_self00, _t37, -(_self01 * _t41))) * _t75_inv);
         UnsafeOpsHolder.U.putDouble(dest + 112L, -(Math.fma(_self02, _t48, Math.fma(_self00, _t43, -(_self01 * _t46))) * _t75_inv));
         UnsafeOpsHolder.U.putDouble(dest + 120L, Math.fma(_self02, _t54, Math.fma(_self00, _t49, -(_self01 * _t52))) * _t75_inv);
+        return dest;
+    }
+
+    public static long normal_affine(long dest, long src) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.normal_affine_unsafe(dest, src);
+        Double4x4OpsKernelsSegment.normal_affine(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 128L), 0L);
+        return dest;
+    }
+
+    public static long normal_affine_unsafe(long dest, long src) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 40L);
+        double _self21 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 64L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 72L);
+        double _self22 = UnsafeOpsHolder.U.getDouble(src + 80L);
+        double _self03 = UnsafeOpsHolder.U.getDouble(src + 96L);
+        double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
+        double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
+        double _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        double _t21_inv = 1.0 / _t21;
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _t12 * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv));
+        UnsafeOpsHolder.U.putDouble(dest + 32L, Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 40L, Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 64L, _t13 * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 72L, Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 80L, Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv);
+        UnsafeOpsHolder.U.putDouble(dest + 88L, -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv));
+        UnsafeOpsHolder.U.putDouble(dest + 96L, 0.0);
+        UnsafeOpsHolder.U.putDouble(dest + 104L, 0.0);
+        UnsafeOpsHolder.U.putDouble(dest + 112L, 0.0);
+        UnsafeOpsHolder.U.putDouble(dest + 120L, 1.0);
         return dest;
     }
 

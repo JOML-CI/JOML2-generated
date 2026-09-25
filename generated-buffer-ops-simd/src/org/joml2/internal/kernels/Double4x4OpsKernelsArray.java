@@ -366,6 +366,86 @@ public final class Double4x4OpsKernelsArray {
         return dest;
     }
 
+    public static double[] invert_affine(double[] dest, int destOffset, double[] src, int srcOffset) {
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self20 = src[srcOffset + 2];
+        double _self01 = src[srcOffset + 4];
+        double _self11 = src[srcOffset + 5];
+        double _self21 = src[srcOffset + 6];
+        double _self02 = src[srcOffset + 8];
+        double _self12 = src[srcOffset + 9];
+        double _self22 = src[srcOffset + 10];
+        double _self03 = src[srcOffset + 12];
+        double _self13 = src[srcOffset + 13];
+        double _self23 = src[srcOffset + 14];
+        double _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        double _t21_inv = 1.0 / _t21;
+        dest[destOffset + 0] = _t12 * _t21_inv;
+        dest[destOffset + 1] = Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv;
+        dest[destOffset + 2] = _t13 * _t21_inv;
+        dest[destOffset + 3] = 0.0;
+        dest[destOffset + 4] = Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv;
+        dest[destOffset + 5] = Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv;
+        dest[destOffset + 6] = Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv;
+        dest[destOffset + 7] = 0.0;
+        dest[destOffset + 8] = Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv;
+        dest[destOffset + 9] = Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv;
+        dest[destOffset + 10] = Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv;
+        dest[destOffset + 11] = 0.0;
+        dest[destOffset + 12] = -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv);
+        dest[destOffset + 13] = Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv;
+        dest[destOffset + 14] = -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv);
+        dest[destOffset + 15] = 1.0;
+        return dest;
+    }
+
+    public static double[] normal_affine(double[] dest, int destOffset, double[] src, int srcOffset) {
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self20 = src[srcOffset + 2];
+        double _self01 = src[srcOffset + 4];
+        double _self11 = src[srcOffset + 5];
+        double _self21 = src[srcOffset + 6];
+        double _self02 = src[srcOffset + 8];
+        double _self12 = src[srcOffset + 9];
+        double _self22 = src[srcOffset + 10];
+        double _self03 = src[srcOffset + 12];
+        double _self13 = src[srcOffset + 13];
+        double _self23 = src[srcOffset + 14];
+        double _t12 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t13 = Math.fma(_self10, _self21, -(_self11 * _self20));
+        double _t14 = Math.fma(_self10, _self22, -(_self12 * _self20));
+        double _t15 = Math.fma(_self12, _self23, -(_self13 * _self22));
+        double _t16 = Math.fma(_self11, _self23, -(_self13 * _self21));
+        double _t17 = Math.fma(_self10, _self23, -(_self13 * _self20));
+        double _t21 = Math.fma(_self02, _t13, Math.fma(_self00, _t12, -(_self01 * _t14)));
+        double _t21_inv = 1.0 / _t21;
+        dest[destOffset + 0] = _t12 * _t21_inv;
+        dest[destOffset + 1] = Math.fma(_self02, _self21, -(_self01 * _self22)) * _t21_inv;
+        dest[destOffset + 2] = Math.fma(_self01, _self12, -(_self02 * _self11)) * _t21_inv;
+        dest[destOffset + 3] = -(Math.fma(_self03, _t12, Math.fma(_self01, _t15, -(_self02 * _t16))) * _t21_inv);
+        dest[destOffset + 4] = Math.fma(_self12, _self20, -(_self10 * _self22)) * _t21_inv;
+        dest[destOffset + 5] = Math.fma(_self00, _self22, -(_self02 * _self20)) * _t21_inv;
+        dest[destOffset + 6] = Math.fma(_self02, _self10, -(_self00 * _self12)) * _t21_inv;
+        dest[destOffset + 7] = Math.fma(_self03, _t14, Math.fma(_self00, _t15, -(_self02 * _t17))) * _t21_inv;
+        dest[destOffset + 8] = _t13 * _t21_inv;
+        dest[destOffset + 9] = Math.fma(_self01, _self20, -(_self00 * _self21)) * _t21_inv;
+        dest[destOffset + 10] = Math.fma(_self00, _self11, -(_self01 * _self10)) * _t21_inv;
+        dest[destOffset + 11] = -(Math.fma(_self03, _t13, Math.fma(_self00, _t16, -(_self01 * _t17))) * _t21_inv);
+        dest[destOffset + 12] = 0.0;
+        dest[destOffset + 13] = 0.0;
+        dest[destOffset + 14] = 0.0;
+        dest[destOffset + 15] = 1.0;
+        return dest;
+    }
+
     public static double[] add_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset) {
         for (int _i = 0; _i < 16; _i++) {
             double _eself = src[srcOffset + _i];

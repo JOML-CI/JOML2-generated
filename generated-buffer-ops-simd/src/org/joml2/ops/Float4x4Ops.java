@@ -2451,6 +2451,7 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsArray.invert_affine(dest, destOffset, src, srcOffset);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -2681,6 +2682,7 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
+        if (_self30 == 0.0f && _self31 == 0.0f && _self32 == 0.0f && _self33 == 1.0f) return Float4x4OpsKernelsArray.normal_affine(dest, destOffset, src, srcOffset);
         float _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         float _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         float _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));

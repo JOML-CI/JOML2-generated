@@ -2451,6 +2451,7 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
+        if (_self30 == 0.0 && _self31 == 0.0 && _self32 == 0.0 && _self33 == 1.0) return Double4x4OpsKernelsArray.invert_affine(dest, destOffset, src, srcOffset);
         double _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         double _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         double _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
@@ -2681,6 +2682,7 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
+        if (_self30 == 0.0 && _self31 == 0.0 && _self32 == 0.0 && _self33 == 1.0) return Double4x4OpsKernelsArray.normal_affine(dest, destOffset, src, srcOffset);
         double _t37 = Math.fma(_self21, _self32, -(_self22 * _self31));
         double _t38 = Math.fma(_self22, _self33, -(_self23 * _self32));
         double _t39 = Math.fma(_self21, _self33, -(_self23 * _self31));
