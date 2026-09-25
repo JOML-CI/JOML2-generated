@@ -623,8 +623,58 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] makeFromMatrixMat3x3(float[] dest, int destOffset, float[] m, int mOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeFromMatrixMat3x3(dest, destOffset, m, mOffset);
-        return FloatQuatOpsKernelsArray.makeFromMatrixMat3x3_scalar(dest, destOffset, m, mOffset);
+        float _m00 = m[mOffset + 0];
+        float _m10 = m[mOffset + 1];
+        float _m20 = m[mOffset + 2];
+        float _m01 = m[mOffset + 3];
+        float _m11 = m[mOffset + 4];
+        float _m21 = m[mOffset + 5];
+        float _m02 = m[mOffset + 6];
+        float _m12 = m[mOffset + 7];
+        float _m22 = m[mOffset + 8];
+        float _t0 = _m00 + _m11;
+        float _t1 = _m21 - _m12;
+        float _t2 = Math.max(_m11, _m22);
+        float _t4 = _m01 + _m10;
+        float _t6 = _m02 + _m20;
+        float _t7 = _m02 - _m20;
+        float _t8 = _m12 + _m21;
+        float _t9 = _m10 - _m01;
+        float _t10 = _m22 + _t0;
+        float _t14 = 1.0f + _t10;
+        float _t15 = 1.0f + (_m00 - (_m11 + _m22));
+        float _t16 = 1.0f + (_m11 - (_m00 + _m22));
+        float _t17 = 1.0f + (_m22 - _t0);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        if (_t10 > 0.0f) {
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
+            dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t14);
+        } else {
+            if (_m00 > _t2) {
+                dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t15);
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
+            } else {
+                if (_m11 > _m22) {
+                    dest[destOffset + 0] = _sp1 * _t4;
+                    dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t16);
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
+                    dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t17);
+                    dest[destOffset + 3] = _sp2 * _t9;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeFromMatrixMat3x3(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -641,7 +691,6 @@ public final class FloatQuatOps {
 
     /** {@link #makeFromMatrixMat3x3(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeFromMatrixMat3x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeFromMatrixMat3x3(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return FloatQuatOpsKernelsSegment.makeFromMatrixMat3x3_unsafe(dest, destOffset, m, mOffset);
         return FloatQuatOpsKernelsSegment.makeFromMatrixMat3x3_api(dest, destOffset, m, mOffset);
     }
@@ -665,8 +714,58 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] makeFromMatrixMat3x4(float[] dest, int destOffset, float[] m, int mOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeFromMatrixMat3x4(dest, destOffset, m, mOffset);
-        return FloatQuatOpsKernelsArray.makeFromMatrixMat3x4_scalar(dest, destOffset, m, mOffset);
+        float _m00 = m[mOffset + 0];
+        float _m01 = m[mOffset + 1];
+        float _m02 = m[mOffset + 2];
+        float _m10 = m[mOffset + 4];
+        float _m11 = m[mOffset + 5];
+        float _m12 = m[mOffset + 6];
+        float _m20 = m[mOffset + 8];
+        float _m21 = m[mOffset + 9];
+        float _m22 = m[mOffset + 10];
+        float _t0 = _m00 + _m11;
+        float _t1 = _m21 - _m12;
+        float _t2 = Math.max(_m11, _m22);
+        float _t4 = _m01 + _m10;
+        float _t6 = _m02 + _m20;
+        float _t7 = _m02 - _m20;
+        float _t8 = _m12 + _m21;
+        float _t9 = _m10 - _m01;
+        float _t10 = _m22 + _t0;
+        float _t14 = 1.0f + _t10;
+        float _t15 = 1.0f + (_m00 - (_m11 + _m22));
+        float _t16 = 1.0f + (_m11 - (_m00 + _m22));
+        float _t17 = 1.0f + (_m22 - _t0);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        if (_t10 > 0.0f) {
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
+            dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t14);
+        } else {
+            if (_m00 > _t2) {
+                dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t15);
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
+            } else {
+                if (_m11 > _m22) {
+                    dest[destOffset + 0] = _sp1 * _t4;
+                    dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t16);
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
+                    dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t17);
+                    dest[destOffset + 3] = _sp2 * _t9;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeFromMatrixMat3x4(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -683,7 +782,6 @@ public final class FloatQuatOps {
 
     /** {@link #makeFromMatrixMat3x4(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeFromMatrixMat3x4(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeFromMatrixMat3x4(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return FloatQuatOpsKernelsSegment.makeFromMatrixMat3x4_unsafe(dest, destOffset, m, mOffset);
         return FloatQuatOpsKernelsSegment.makeFromMatrixMat3x4_api(dest, destOffset, m, mOffset);
     }
@@ -707,8 +805,58 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] makeFromMatrixMat4x4(float[] dest, int destOffset, float[] m, int mOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeFromMatrixMat4x4(dest, destOffset, m, mOffset);
-        return FloatQuatOpsKernelsArray.makeFromMatrixMat4x4_scalar(dest, destOffset, m, mOffset);
+        float _m00 = m[mOffset + 0];
+        float _m10 = m[mOffset + 1];
+        float _m20 = m[mOffset + 2];
+        float _m01 = m[mOffset + 4];
+        float _m11 = m[mOffset + 5];
+        float _m21 = m[mOffset + 6];
+        float _m02 = m[mOffset + 8];
+        float _m12 = m[mOffset + 9];
+        float _m22 = m[mOffset + 10];
+        float _t0 = _m00 + _m11;
+        float _t1 = _m21 - _m12;
+        float _t2 = Math.max(_m11, _m22);
+        float _t4 = _m01 + _m10;
+        float _t6 = _m02 + _m20;
+        float _t7 = _m02 - _m20;
+        float _t8 = _m12 + _m21;
+        float _t9 = _m10 - _m01;
+        float _t10 = _m22 + _t0;
+        float _t14 = 1.0f + _t10;
+        float _t15 = 1.0f + (_m00 - (_m11 + _m22));
+        float _t16 = 1.0f + (_m11 - (_m00 + _m22));
+        float _t17 = 1.0f + (_m22 - _t0);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        if (_t10 > 0.0f) {
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
+            dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t14);
+        } else {
+            if (_m00 > _t2) {
+                dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t15);
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
+            } else {
+                if (_m11 > _m22) {
+                    dest[destOffset + 0] = _sp1 * _t4;
+                    dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t16);
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
+                    dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t17);
+                    dest[destOffset + 3] = _sp2 * _t9;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeFromMatrixMat4x4(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -725,7 +873,6 @@ public final class FloatQuatOps {
 
     /** {@link #makeFromMatrixMat4x4(float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeFromMatrixMat4x4(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeFromMatrixMat4x4(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return FloatQuatOpsKernelsSegment.makeFromMatrixMat4x4_unsafe(dest, destOffset, m, mOffset);
         return FloatQuatOpsKernelsSegment.makeFromMatrixMat4x4_api(dest, destOffset, m, mOffset);
     }
@@ -5406,8 +5553,38 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] pow(float[] dest, int destOffset, float[] src, int srcOffset, float t) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.pow(dest, destOffset, src, srcOffset, t);
-        return FloatQuatOpsKernelsArray.pow_scalar(dest, destOffset, src, srcOffset, t);
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
+        float _t10 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
+        float _t11 = (float) Math.atan2((float) Math.sqrt(_t2), _selfw) * (1.0f / (float) Math.sqrt(_t2));
+        float _t18, _t19, _t20;
+        if (_t2 > 0.0f) {
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
+        } else {
+            _t18 = t * 0.0f;
+            _t19 = t * 0.0f;
+            _t20 = t * 0.0f;
+        }
+        float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
+        float _t24 = (float) Math.sqrt(_t23);
+        float _t26 = (float) Math.sin(_t24);
+        float _t28 = _t26 * _t10 / _t24;
+        if (_t23 > 0.0f) {
+            dest[destOffset + 0] = _t19 * _t28;
+            dest[destOffset + 1] = _t20 * _t28;
+            dest[destOffset + 2] = _t18 * _t28;
+        } else {
+            dest[destOffset + 0] = 0.0f;
+            dest[destOffset + 1] = 0.0f;
+            dest[destOffset + 2] = 0.0f;
+        }
+        dest[destOffset + 3] = (float) Math.cosFromSin(_t26, _t24) * _t10;
+        return dest;
     }
 
     /** {@link #pow(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -5424,7 +5601,6 @@ public final class FloatQuatOps {
 
     /** {@link #pow(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment pow(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float t) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.pow(dest, destOffset, src, srcOffset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return FloatQuatOpsKernelsSegment.pow_unsafe(dest, destOffset, src, srcOffset, t);
         return FloatQuatOpsKernelsSegment.pow_api(dest, destOffset, src, srcOffset, t);
     }
@@ -6069,8 +6245,80 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] makeRotationLookAlong(float[] dest, int destOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
-        return FloatQuatOpsKernelsArray.makeRotationLookAlong_scalar(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
+        float _t10 = -_t9;
+        float _t11 = -_t8;
+        float _t12 = -_t7;
+        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
+        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
+        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
+        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        float _t27 = (1.0f / (float) Math.sqrt(_t26));
+        float _t31, _t32, _t33;
+        if (_t26 != 0.0f) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0f;
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+        }
+        float _t34 = 1.0f + _t31;
+        float _t37 = _t9 + _t32;
+        float _t38 = _t9 - _t32;
+        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        float _t56 = Math.max(_t49, _t7);
+        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
+        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
+        if (_t59 > 0.0f) {
+            dest[destOffset + 0] = _sp0 * _t55;
+            dest[destOffset + 1] = _sp0 * _t38;
+            dest[destOffset + 2] = _sp0 * _t58;
+            dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t60);
+        } else {
+            if (_t31 > _t56) {
+                dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t61);
+                dest[destOffset + 1] = _sp3 * _t57;
+                dest[destOffset + 2] = _sp3 * _t37;
+                dest[destOffset + 3] = _sp3 * _t55;
+            } else {
+                if (_t49 > _t7) {
+                    dest[destOffset + 0] = _sp1 * _t57;
+                    dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t62);
+                    dest[destOffset + 2] = _sp1 * _t54;
+                    dest[destOffset + 3] = _sp1 * _t38;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t37;
+                    dest[destOffset + 1] = _sp2 * _t54;
+                    dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t63);
+                    dest[destOffset + 3] = _sp2 * _t58;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationLookAlong(float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -6087,7 +6335,6 @@ public final class FloatQuatOps {
 
     /** {@link #makeRotationLookAlong(float[], int, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationLookAlong(java.lang.foreign.MemorySegment dest, long destOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return FloatQuatOpsKernelsSegment.makeRotationLookAlong_unsafe(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return FloatQuatOpsKernelsSegment.makeRotationLookAlong_api(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
@@ -6117,8 +6364,86 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] makeRotationLookAlong(float[] dest, int destOffset, float[] dir, int dirOffset, float[] up, int upOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dir, dirOffset, up, upOffset);
-        return FloatQuatOpsKernelsArray.makeRotationLookAlong_scalar(dest, destOffset, dir, dirOffset, up, upOffset);
+        float _dirx = dir[dirOffset + 0];
+        float _diry = dir[dirOffset + 1];
+        float _dirz = dir[dirOffset + 2];
+        float _upx = up[upOffset + 0];
+        float _upy = up[upOffset + 1];
+        float _upz = up[upOffset + 2];
+        float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
+        float _t10 = -_t9;
+        float _t11 = -_t8;
+        float _t12 = -_t7;
+        float _t21 = Math.fma(_upx, _t8, -(_upy * _t9));
+        float _t22 = Math.fma(_upy, _t7, -(_upz * _t8));
+        float _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
+        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        float _t27 = (1.0f / (float) Math.sqrt(_t26));
+        float _t31, _t32, _t33;
+        if (_t26 != 0.0f) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0f;
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+        }
+        float _t34 = 1.0f + _t31;
+        float _t37 = _t9 + _t32;
+        float _t38 = _t9 - _t32;
+        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        float _t56 = Math.max(_t49, _t7);
+        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
+        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
+        if (_t59 > 0.0f) {
+            dest[destOffset + 0] = _sp0 * _t55;
+            dest[destOffset + 1] = _sp0 * _t38;
+            dest[destOffset + 2] = _sp0 * _t58;
+            dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t60);
+        } else {
+            if (_t31 > _t56) {
+                dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t61);
+                dest[destOffset + 1] = _sp3 * _t57;
+                dest[destOffset + 2] = _sp3 * _t37;
+                dest[destOffset + 3] = _sp3 * _t55;
+            } else {
+                if (_t49 > _t7) {
+                    dest[destOffset + 0] = _sp1 * _t57;
+                    dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t62);
+                    dest[destOffset + 2] = _sp1 * _t54;
+                    dest[destOffset + 3] = _sp1 * _t38;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t37;
+                    dest[destOffset + 1] = _sp2 * _t54;
+                    dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t63);
+                    dest[destOffset + 3] = _sp2 * _t58;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationLookAlong(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -6135,7 +6460,6 @@ public final class FloatQuatOps {
 
     /** {@link #makeRotationLookAlong(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationLookAlong(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment dir, long dirOffset, java.lang.foreign.MemorySegment up, long upOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dir, dirOffset, up, upOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && dir.isNative() && up.isNative()) return FloatQuatOpsKernelsSegment.makeRotationLookAlong_unsafe(dest, destOffset, dir, dirOffset, up, upOffset);
         return FloatQuatOpsKernelsSegment.makeRotationLookAlong_api(dest, destOffset, dir, dirOffset, up, upOffset);
     }
@@ -6168,8 +6492,47 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] makeRotationTo(float[] dest, int destOffset, float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationTo(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
-        return FloatQuatOpsKernelsArray.makeRotationTo_scalar(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
+        float _t2 = fromDirZ + toDirZ;
+        float _t3 = fromDirX + toDirX;
+        float _t4 = fromDirY + toDirY;
+        float _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        float _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        float _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
+        float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = fromDirY;
+            _t18 = 0.0f;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
+        float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
+        if (_t23 > 6.0E-8f) {
+            dest[destOffset + 0] = _t14 * _t32;
+            dest[destOffset + 1] = _t16 * _t32;
+            dest[destOffset + 2] = _t15 * _t32;
+            dest[destOffset + 3] = _t23 * _t32;
+        } else {
+            if (_t29 != 0.0f) {
+                dest[destOffset + 0] = _t30 * _t17;
+                dest[destOffset + 1] = _t30 * _t19;
+                dest[destOffset + 2] = _t30 * _t18;
+                dest[destOffset + 3] = 0.0f;
+            } else {
+                dest[destOffset + 0] = 0.0f;
+                dest[destOffset + 1] = 0.0f;
+                dest[destOffset + 2] = 0.0f;
+                dest[destOffset + 3] = 0.0f;
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationTo(float[], int, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
@@ -6186,7 +6549,6 @@ public final class FloatQuatOps {
 
     /** {@link #makeRotationTo(float[], int, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationTo(java.lang.foreign.MemorySegment dest, long destOffset, float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationTo(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return FloatQuatOpsKernelsSegment.makeRotationTo_unsafe(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
         return FloatQuatOpsKernelsSegment.makeRotationTo_api(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
     }
@@ -6217,8 +6579,53 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] makeRotationTo(float[] dest, int destOffset, float[] fromDir, int fromDirOffset, float[] toDir, int toDirOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationTo(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
-        return FloatQuatOpsKernelsArray.makeRotationTo_scalar(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
+        float _fromDirx = fromDir[fromDirOffset + 0];
+        float _fromDiry = fromDir[fromDirOffset + 1];
+        float _fromDirz = fromDir[fromDirOffset + 2];
+        float _toDirx = toDir[toDirOffset + 0];
+        float _toDiry = toDir[toDirOffset + 1];
+        float _toDirz = toDir[toDirOffset + 2];
+        float _t2 = _fromDirz + _toDirz;
+        float _t3 = _fromDirx + _toDirx;
+        float _t4 = _fromDiry + _toDiry;
+        float _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        float _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        float _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
+        float _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = _fromDiry;
+            _t18 = 0.0f;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
+        float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        float _t23 = 0.5f * _t22;
+        float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        float _t30 = (1.0f / (float) Math.sqrt(_t29));
+        float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
+        if (_t23 > 6.0E-8f) {
+            dest[destOffset + 0] = _t14 * _t32;
+            dest[destOffset + 1] = _t16 * _t32;
+            dest[destOffset + 2] = _t15 * _t32;
+            dest[destOffset + 3] = _t23 * _t32;
+        } else {
+            if (_t29 != 0.0f) {
+                dest[destOffset + 0] = _t30 * _t17;
+                dest[destOffset + 1] = _t30 * _t19;
+                dest[destOffset + 2] = _t30 * _t18;
+                dest[destOffset + 3] = 0.0f;
+            } else {
+                dest[destOffset + 0] = 0.0f;
+                dest[destOffset + 1] = 0.0f;
+                dest[destOffset + 2] = 0.0f;
+                dest[destOffset + 3] = 0.0f;
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationTo(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
@@ -6235,7 +6642,6 @@ public final class FloatQuatOps {
 
     /** {@link #makeRotationTo(float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationTo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment fromDir, long fromDirOffset, java.lang.foreign.MemorySegment toDir, long toDirOffset) {
-        if (SimdSupport.VECTOR_API) return FloatQuatOpsSimd.makeRotationTo(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && fromDir.isNative() && toDir.isNative()) return FloatQuatOpsKernelsSegment.makeRotationTo_unsafe(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
         return FloatQuatOpsKernelsSegment.makeRotationTo_api(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
     }

@@ -541,8 +541,105 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] getNormalizedRotation(double[] dest, int destOffset, double[] src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Double4x4OpsSimd.getNormalizedRotation(dest, destOffset, src, srcOffset);
-        return Double4x4OpsKernelsArray.getNormalizedRotation_scalar(dest, destOffset, src, srcOffset);
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self20 = src[srcOffset + 2];
+        double _self01 = src[srcOffset + 4];
+        double _self11 = src[srcOffset + 5];
+        double _self21 = src[srcOffset + 6];
+        double _self02 = src[srcOffset + 8];
+        double _self12 = src[srcOffset + 9];
+        double _self22 = src[srcOffset + 10];
+        double _t6 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
+        double _t7 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
+        double _t8 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t9 = (1.0 / Math.sqrt(_t6));
+        double _t10 = (1.0 / Math.sqrt(_t7));
+        double _t11 = (1.0 / Math.sqrt(_t8));
+        double _t21, _t23, _t27;
+        if (_t6 != 0.0) {
+            _t21 = _self01 * _t9;
+            _t23 = _self11 * _t9;
+            _t27 = _self21 * _t9;
+        } else {
+            _t21 = 0.0;
+            _t23 = 0.0;
+            _t27 = 0.0;
+        }
+        double _t22, _t24, _t26;
+        if (_t7 != 0.0) {
+            _t22 = _self12 * _t10;
+            _t24 = _self02 * _t10;
+            _t26 = _self22 * _t10;
+        } else {
+            _t22 = 0.0;
+            _t24 = 0.0;
+            _t26 = 0.0;
+        }
+        double _t25, _t28, _t29;
+        if (_t8 != 0.0) {
+            _t25 = _self20 * _t11;
+            _t28 = _self00 * _t11;
+            _t29 = _self10 * _t11;
+        } else {
+            _t25 = 0.0;
+            _t28 = 0.0;
+            _t29 = 0.0;
+        }
+        double _t36 = _t27 - _t22;
+        double _t37 = Math.max(_t23, _t26);
+        double _t39 = _t27 + _t22;
+        double _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
+        double _t49, _t50, _t51;
+        if (_t48 < 0.0) {
+            _t49 = -_t28;
+            _t50 = -_t29;
+            _t51 = -_t25;
+        } else {
+            _t49 = _t28;
+            _t50 = _t29;
+            _t51 = _t25;
+        }
+        double _t52 = _t49 + _t23;
+        double _t53 = _t50 + _t21;
+        double _t55 = _t51 + _t24;
+        double _t56 = _t24 - _t51;
+        double _t57 = _t50 - _t21;
+        double _t58 = _t52 + _t26;
+        double _t62 = 1.0 + _t58;
+        double _t63 = 1.0 + (_t49 - (_t23 + _t26));
+        double _t64 = 1.0 + (_t23 - (_t49 + _t26));
+        double _t65 = 1.0 + (_t26 - _t52);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t65));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
+        if (_t58 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t36;
+            dest[destOffset + 1] = _sp0 * _t56;
+            dest[destOffset + 2] = _sp0 * _t57;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t62);
+        } else {
+            if (_t49 > _t37) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t63);
+                dest[destOffset + 1] = _sp3 * _t53;
+                dest[destOffset + 2] = _sp3 * _t55;
+                dest[destOffset + 3] = _sp3 * _t36;
+            } else {
+                if (_t23 > _t26) {
+                    dest[destOffset + 0] = _sp1 * _t53;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t64);
+                    dest[destOffset + 2] = _sp1 * _t39;
+                    dest[destOffset + 3] = _sp1 * _t56;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t55;
+                    dest[destOffset + 1] = _sp2 * _t39;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t65);
+                    dest[destOffset + 3] = _sp2 * _t57;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #getNormalizedRotation(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -726,8 +823,58 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] getUnnormalizedRotation(double[] dest, int destOffset, double[] src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Double4x4OpsSimd.getUnnormalizedRotation(dest, destOffset, src, srcOffset);
-        return Double4x4OpsKernelsArray.getUnnormalizedRotation_scalar(dest, destOffset, src, srcOffset);
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self20 = src[srcOffset + 2];
+        double _self01 = src[srcOffset + 4];
+        double _self11 = src[srcOffset + 5];
+        double _self21 = src[srcOffset + 6];
+        double _self02 = src[srcOffset + 8];
+        double _self12 = src[srcOffset + 9];
+        double _self22 = src[srcOffset + 10];
+        double _t0 = _self00 + _self11;
+        double _t1 = _self21 - _self12;
+        double _t2 = Math.max(_self11, _self22);
+        double _t4 = _self01 + _self10;
+        double _t6 = _self02 + _self20;
+        double _t7 = _self02 - _self20;
+        double _t8 = _self12 + _self21;
+        double _t9 = _self10 - _self01;
+        double _t10 = _self22 + _t0;
+        double _t14 = 1.0 + _t10;
+        double _t15 = 1.0 + (_self00 - (_self11 + _self22));
+        double _t16 = 1.0 + (_self11 - (_self00 + _self22));
+        double _t17 = 1.0 + (_self22 - _t0);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        if (_t10 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
+        } else {
+            if (_self00 > _t2) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
+            } else {
+                if (_self11 > _self22) {
+                    dest[destOffset + 0] = _sp1 * _t4;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
+                    dest[destOffset + 3] = _sp2 * _t9;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #getUnnormalizedRotation(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -3489,8 +3636,114 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] decomposeRotation(double[] dest, int destOffset, double[] src, int srcOffset) {
-        if (SimdSupport.VECTOR_API) return Double4x4OpsSimd.decomposeRotation(dest, destOffset, src, srcOffset);
-        return Double4x4OpsKernelsArray.decomposeRotation_scalar(dest, destOffset, src, srcOffset);
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self20 = src[srcOffset + 2];
+        double _self01 = src[srcOffset + 4];
+        double _self11 = src[srcOffset + 5];
+        double _self21 = src[srcOffset + 6];
+        double _self02 = src[srcOffset + 8];
+        double _self12 = src[srcOffset + 9];
+        double _self22 = src[srcOffset + 10];
+        double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _self20 * _t3;
+            _t8 = _self00 * _t3;
+            _t9 = _self10 * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
+        double _t19 = -Math.fma(_self21, _t7, Math.fma(_self01, _t8, _self11 * _t9));
+        double _t20 = -Math.fma(_self22, _t7, Math.fma(_self02, _t8, _self12 * _t9));
+        double _t21 = Math.fma(_t19, _t7, _self21);
+        double _t22 = Math.fma(_t19, _t8, _self01);
+        double _t23 = Math.fma(_t19, _t9, _self11);
+        double _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        double _t30 = (1.0 / Math.sqrt(_t29));
+        double _t34, _t35, _t36;
+        if (_t29 != 0.0) {
+            _t34 = _t22 * _t30;
+            _t35 = _t21 * _t30;
+            _t36 = _t23 * _t30;
+        } else {
+            _t34 = 0.0;
+            _t35 = 0.0;
+            _t36 = 0.0;
+        }
+        double _t40 = -Math.fma(Math.fma(_t20, _t7, _self22), _t35, Math.fma(Math.fma(_t20, _t8, _self02), _t34, Math.fma(_t20, _t9, _self12) * _t36));
+        double _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _self22));
+        double _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _self02));
+        double _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _self12));
+        double _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
+        double _t50 = (1.0 / Math.sqrt(_t49));
+        double _t54, _t55, _t56;
+        if (_t49 != 0.0) {
+            _t54 = _t46 * _t50;
+            _t55 = _t45 * _t50;
+            _t56 = _t44 * _t50;
+        } else {
+            _t54 = 0.0;
+            _t55 = 0.0;
+            _t56 = 0.0;
+        }
+        double _t60 = _t35 - _t54;
+        double _t61 = Math.max(_t36, _t56);
+        double _t63 = _t35 + _t54;
+        double _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
+        double _t73, _t74, _t75;
+        if (_t72 < 0.0) {
+            _t73 = -_t8;
+            _t74 = -_t9;
+            _t75 = -_t7;
+        } else {
+            _t73 = _t8;
+            _t74 = _t9;
+            _t75 = _t7;
+        }
+        double _t76 = _t73 + _t36;
+        double _t77 = _t74 + _t34;
+        double _t78 = _t74 - _t34;
+        double _t80 = _t75 + _t55;
+        double _t81 = _t55 - _t75;
+        double _t82 = _t76 + _t56;
+        double _t86 = 1.0 + _t82;
+        double _t87 = 1.0 + (_t73 - (_t36 + _t56));
+        double _t88 = 1.0 + (_t36 - (_t73 + _t56));
+        double _t89 = 1.0 + (_t56 - _t76);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t86));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t88));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t89));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t87));
+        if (_t82 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t60;
+            dest[destOffset + 1] = _sp0 * _t81;
+            dest[destOffset + 2] = _sp0 * _t78;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t86);
+        } else {
+            if (_t73 > _t61) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t87);
+                dest[destOffset + 1] = _sp3 * _t77;
+                dest[destOffset + 2] = _sp3 * _t80;
+                dest[destOffset + 3] = _sp3 * _t60;
+            } else {
+                if (_t36 > _t56) {
+                    dest[destOffset + 0] = _sp1 * _t77;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t88);
+                    dest[destOffset + 2] = _sp1 * _t63;
+                    dest[destOffset + 3] = _sp1 * _t81;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t80;
+                    dest[destOffset + 1] = _sp2 * _t63;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t89);
+                    dest[destOffset + 3] = _sp2 * _t78;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #decomposeRotation(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */

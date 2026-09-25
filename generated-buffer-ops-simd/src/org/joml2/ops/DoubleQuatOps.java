@@ -623,8 +623,58 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] makeFromMatrixMat3x3(double[] dest, int destOffset, double[] m, int mOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeFromMatrixMat3x3(dest, destOffset, m, mOffset);
-        return DoubleQuatOpsKernelsArray.makeFromMatrixMat3x3_scalar(dest, destOffset, m, mOffset);
+        double _m00 = m[mOffset + 0];
+        double _m10 = m[mOffset + 1];
+        double _m20 = m[mOffset + 2];
+        double _m01 = m[mOffset + 3];
+        double _m11 = m[mOffset + 4];
+        double _m21 = m[mOffset + 5];
+        double _m02 = m[mOffset + 6];
+        double _m12 = m[mOffset + 7];
+        double _m22 = m[mOffset + 8];
+        double _t0 = _m00 + _m11;
+        double _t1 = _m21 - _m12;
+        double _t2 = Math.max(_m11, _m22);
+        double _t4 = _m01 + _m10;
+        double _t6 = _m02 + _m20;
+        double _t7 = _m02 - _m20;
+        double _t8 = _m12 + _m21;
+        double _t9 = _m10 - _m01;
+        double _t10 = _m22 + _t0;
+        double _t14 = 1.0 + _t10;
+        double _t15 = 1.0 + (_m00 - (_m11 + _m22));
+        double _t16 = 1.0 + (_m11 - (_m00 + _m22));
+        double _t17 = 1.0 + (_m22 - _t0);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        if (_t10 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
+        } else {
+            if (_m00 > _t2) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
+            } else {
+                if (_m11 > _m22) {
+                    dest[destOffset + 0] = _sp1 * _t4;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
+                    dest[destOffset + 3] = _sp2 * _t9;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeFromMatrixMat3x3(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -641,7 +691,6 @@ public final class DoubleQuatOps {
 
     /** {@link #makeFromMatrixMat3x3(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeFromMatrixMat3x3(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeFromMatrixMat3x3(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return DoubleQuatOpsKernelsSegment.makeFromMatrixMat3x3_unsafe(dest, destOffset, m, mOffset);
         return DoubleQuatOpsKernelsSegment.makeFromMatrixMat3x3_api(dest, destOffset, m, mOffset);
     }
@@ -665,8 +714,58 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] makeFromMatrixMat3x4(double[] dest, int destOffset, double[] m, int mOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeFromMatrixMat3x4(dest, destOffset, m, mOffset);
-        return DoubleQuatOpsKernelsArray.makeFromMatrixMat3x4_scalar(dest, destOffset, m, mOffset);
+        double _m00 = m[mOffset + 0];
+        double _m01 = m[mOffset + 1];
+        double _m02 = m[mOffset + 2];
+        double _m10 = m[mOffset + 4];
+        double _m11 = m[mOffset + 5];
+        double _m12 = m[mOffset + 6];
+        double _m20 = m[mOffset + 8];
+        double _m21 = m[mOffset + 9];
+        double _m22 = m[mOffset + 10];
+        double _t0 = _m00 + _m11;
+        double _t1 = _m21 - _m12;
+        double _t2 = Math.max(_m11, _m22);
+        double _t4 = _m01 + _m10;
+        double _t6 = _m02 + _m20;
+        double _t7 = _m02 - _m20;
+        double _t8 = _m12 + _m21;
+        double _t9 = _m10 - _m01;
+        double _t10 = _m22 + _t0;
+        double _t14 = 1.0 + _t10;
+        double _t15 = 1.0 + (_m00 - (_m11 + _m22));
+        double _t16 = 1.0 + (_m11 - (_m00 + _m22));
+        double _t17 = 1.0 + (_m22 - _t0);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        if (_t10 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
+        } else {
+            if (_m00 > _t2) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
+            } else {
+                if (_m11 > _m22) {
+                    dest[destOffset + 0] = _sp1 * _t4;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
+                    dest[destOffset + 3] = _sp2 * _t9;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeFromMatrixMat3x4(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -683,7 +782,6 @@ public final class DoubleQuatOps {
 
     /** {@link #makeFromMatrixMat3x4(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeFromMatrixMat3x4(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeFromMatrixMat3x4(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return DoubleQuatOpsKernelsSegment.makeFromMatrixMat3x4_unsafe(dest, destOffset, m, mOffset);
         return DoubleQuatOpsKernelsSegment.makeFromMatrixMat3x4_api(dest, destOffset, m, mOffset);
     }
@@ -707,8 +805,58 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] makeFromMatrixMat4x4(double[] dest, int destOffset, double[] m, int mOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeFromMatrixMat4x4(dest, destOffset, m, mOffset);
-        return DoubleQuatOpsKernelsArray.makeFromMatrixMat4x4_scalar(dest, destOffset, m, mOffset);
+        double _m00 = m[mOffset + 0];
+        double _m10 = m[mOffset + 1];
+        double _m20 = m[mOffset + 2];
+        double _m01 = m[mOffset + 4];
+        double _m11 = m[mOffset + 5];
+        double _m21 = m[mOffset + 6];
+        double _m02 = m[mOffset + 8];
+        double _m12 = m[mOffset + 9];
+        double _m22 = m[mOffset + 10];
+        double _t0 = _m00 + _m11;
+        double _t1 = _m21 - _m12;
+        double _t2 = Math.max(_m11, _m22);
+        double _t4 = _m01 + _m10;
+        double _t6 = _m02 + _m20;
+        double _t7 = _m02 - _m20;
+        double _t8 = _m12 + _m21;
+        double _t9 = _m10 - _m01;
+        double _t10 = _m22 + _t0;
+        double _t14 = 1.0 + _t10;
+        double _t15 = 1.0 + (_m00 - (_m11 + _m22));
+        double _t16 = 1.0 + (_m11 - (_m00 + _m22));
+        double _t17 = 1.0 + (_m22 - _t0);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        if (_t10 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
+        } else {
+            if (_m00 > _t2) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
+            } else {
+                if (_m11 > _m22) {
+                    dest[destOffset + 0] = _sp1 * _t4;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
+                    dest[destOffset + 3] = _sp2 * _t9;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeFromMatrixMat4x4(double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -725,7 +873,6 @@ public final class DoubleQuatOps {
 
     /** {@link #makeFromMatrixMat4x4(double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeFromMatrixMat4x4(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeFromMatrixMat4x4(dest, destOffset, m, mOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && m.isNative()) return DoubleQuatOpsKernelsSegment.makeFromMatrixMat4x4_unsafe(dest, destOffset, m, mOffset);
         return DoubleQuatOpsKernelsSegment.makeFromMatrixMat4x4_api(dest, destOffset, m, mOffset);
     }
@@ -5406,8 +5553,38 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] pow(double[] dest, int destOffset, double[] src, int srcOffset, double t) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.pow(dest, destOffset, src, srcOffset, t);
-        return DoubleQuatOpsKernelsArray.pow_scalar(dest, destOffset, src, srcOffset, t);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
+        double _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
+        double _t10 = Math.exp(t * Math.log(Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
+        double _t11 = Math.atan2(Math.sqrt(_t2), _selfw) * (1.0 / Math.sqrt(_t2));
+        double _t18, _t19, _t20;
+        if (_t2 > 0.0) {
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
+        } else {
+            _t18 = t * 0.0;
+            _t19 = t * 0.0;
+            _t20 = t * 0.0;
+        }
+        double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
+        double _t24 = Math.sqrt(_t23);
+        double _t26 = Math.sin(_t24);
+        double _t28 = _t26 * _t10 / _t24;
+        if (_t23 > 0.0) {
+            dest[destOffset + 0] = _t19 * _t28;
+            dest[destOffset + 1] = _t20 * _t28;
+            dest[destOffset + 2] = _t18 * _t28;
+        } else {
+            dest[destOffset + 0] = 0.0;
+            dest[destOffset + 1] = 0.0;
+            dest[destOffset + 2] = 0.0;
+        }
+        dest[destOffset + 3] = Math.cosFromSin(_t26, _t24) * _t10;
+        return dest;
     }
 
     /** {@link #pow(double[], int, double[], int, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -5424,7 +5601,6 @@ public final class DoubleQuatOps {
 
     /** {@link #pow(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment pow(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double t) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.pow(dest, destOffset, src, srcOffset, t);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return DoubleQuatOpsKernelsSegment.pow_unsafe(dest, destOffset, src, srcOffset, t);
         return DoubleQuatOpsKernelsSegment.pow_api(dest, destOffset, src, srcOffset, t);
     }
@@ -6069,8 +6245,80 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] makeRotationLookAlong(double[] dest, int destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
-        return DoubleQuatOpsKernelsArray.makeRotationLookAlong_scalar(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
+        double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
+        double _t10 = -_t9;
+        double _t11 = -_t8;
+        double _t12 = -_t7;
+        double _t21 = Math.fma(upX, _t8, -(upY * _t9));
+        double _t22 = Math.fma(upY, _t7, -(upZ * _t8));
+        double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
+        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        double _t27 = (1.0 / Math.sqrt(_t26));
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
+        double _t34 = 1.0 + _t31;
+        double _t37 = _t9 + _t32;
+        double _t38 = _t9 - _t32;
+        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        double _t56 = Math.max(_t49, _t7);
+        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
+        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t61));
+        if (_t59 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t55;
+            dest[destOffset + 1] = _sp0 * _t38;
+            dest[destOffset + 2] = _sp0 * _t58;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t60);
+        } else {
+            if (_t31 > _t56) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t61);
+                dest[destOffset + 1] = _sp3 * _t57;
+                dest[destOffset + 2] = _sp3 * _t37;
+                dest[destOffset + 3] = _sp3 * _t55;
+            } else {
+                if (_t49 > _t7) {
+                    dest[destOffset + 0] = _sp1 * _t57;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t62);
+                    dest[destOffset + 2] = _sp1 * _t54;
+                    dest[destOffset + 3] = _sp1 * _t38;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t37;
+                    dest[destOffset + 1] = _sp2 * _t54;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t63);
+                    dest[destOffset + 3] = _sp2 * _t58;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationLookAlong(double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -6087,7 +6335,6 @@ public final class DoubleQuatOps {
 
     /** {@link #makeRotationLookAlong(double[], int, double, double, double, double, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationLookAlong(java.lang.foreign.MemorySegment dest, long destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return DoubleQuatOpsKernelsSegment.makeRotationLookAlong_unsafe(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
         return DoubleQuatOpsKernelsSegment.makeRotationLookAlong_api(dest, destOffset, dirX, dirY, dirZ, upX, upY, upZ);
     }
@@ -6117,8 +6364,86 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] makeRotationLookAlong(double[] dest, int destOffset, double[] dir, int dirOffset, double[] up, int upOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dir, dirOffset, up, upOffset);
-        return DoubleQuatOpsKernelsArray.makeRotationLookAlong_scalar(dest, destOffset, dir, dirOffset, up, upOffset);
+        double _dirx = dir[dirOffset + 0];
+        double _diry = dir[dirOffset + 1];
+        double _dirz = dir[dirOffset + 2];
+        double _upx = up[upOffset + 0];
+        double _upy = up[upOffset + 1];
+        double _upz = up[upOffset + 2];
+        double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
+        double _t10 = -_t9;
+        double _t11 = -_t8;
+        double _t12 = -_t7;
+        double _t21 = Math.fma(_upx, _t8, -(_upy * _t9));
+        double _t22 = Math.fma(_upy, _t7, -(_upz * _t8));
+        double _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
+        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
+        double _t27 = (1.0 / Math.sqrt(_t26));
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
+        double _t34 = 1.0 + _t31;
+        double _t37 = _t9 + _t32;
+        double _t38 = _t9 - _t32;
+        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
+        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
+        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
+        double _t56 = Math.max(_t49, _t7);
+        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
+        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
+        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
+        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
+        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
+        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
+        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t61));
+        if (_t59 > 0.0) {
+            dest[destOffset + 0] = _sp0 * _t55;
+            dest[destOffset + 1] = _sp0 * _t38;
+            dest[destOffset + 2] = _sp0 * _t58;
+            dest[destOffset + 3] = 0.5 * Math.sqrt(_t60);
+        } else {
+            if (_t31 > _t56) {
+                dest[destOffset + 0] = 0.5 * Math.sqrt(_t61);
+                dest[destOffset + 1] = _sp3 * _t57;
+                dest[destOffset + 2] = _sp3 * _t37;
+                dest[destOffset + 3] = _sp3 * _t55;
+            } else {
+                if (_t49 > _t7) {
+                    dest[destOffset + 0] = _sp1 * _t57;
+                    dest[destOffset + 1] = 0.5 * Math.sqrt(_t62);
+                    dest[destOffset + 2] = _sp1 * _t54;
+                    dest[destOffset + 3] = _sp1 * _t38;
+                } else {
+                    dest[destOffset + 0] = _sp2 * _t37;
+                    dest[destOffset + 1] = _sp2 * _t54;
+                    dest[destOffset + 2] = 0.5 * Math.sqrt(_t63);
+                    dest[destOffset + 3] = _sp2 * _t58;
+                }
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationLookAlong(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -6135,7 +6460,6 @@ public final class DoubleQuatOps {
 
     /** {@link #makeRotationLookAlong(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationLookAlong(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment dir, long dirOffset, java.lang.foreign.MemorySegment up, long upOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationLookAlong(dest, destOffset, dir, dirOffset, up, upOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && dir.isNative() && up.isNative()) return DoubleQuatOpsKernelsSegment.makeRotationLookAlong_unsafe(dest, destOffset, dir, dirOffset, up, upOffset);
         return DoubleQuatOpsKernelsSegment.makeRotationLookAlong_api(dest, destOffset, dir, dirOffset, up, upOffset);
     }
@@ -6169,8 +6493,47 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] makeRotationTo(double[] dest, int destOffset, double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationTo(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
-        return DoubleQuatOpsKernelsArray.makeRotationTo_scalar(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
+        double _t2 = fromDirZ + toDirZ;
+        double _t3 = fromDirX + toDirX;
+        double _t4 = fromDirY + toDirY;
+        double _t12 = Math.fma(fromDirX, fromDirX, fromDirY * fromDirY);
+        double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
+        double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
+        double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
+            _t18 = 0.0;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t23 = 0.5 * _t22;
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t30 = (1.0 / Math.sqrt(_t29));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
+        if (_t23 > 1.0E-13) {
+            dest[destOffset + 0] = _t14 * _t32;
+            dest[destOffset + 1] = _t16 * _t32;
+            dest[destOffset + 2] = _t15 * _t32;
+            dest[destOffset + 3] = _t23 * _t32;
+        } else {
+            if (_t29 != 0.0) {
+                dest[destOffset + 0] = _t30 * _t17;
+                dest[destOffset + 1] = _t30 * _t19;
+                dest[destOffset + 2] = _t30 * _t18;
+                dest[destOffset + 3] = 0.0;
+            } else {
+                dest[destOffset + 0] = 0.0;
+                dest[destOffset + 1] = 0.0;
+                dest[destOffset + 2] = 0.0;
+                dest[destOffset + 3] = 0.0;
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationTo(double[], int, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
@@ -6187,7 +6550,6 @@ public final class DoubleQuatOps {
 
     /** {@link #makeRotationTo(double[], int, double, double, double, double, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationTo(java.lang.foreign.MemorySegment dest, long destOffset, double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationTo(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return DoubleQuatOpsKernelsSegment.makeRotationTo_unsafe(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
         return DoubleQuatOpsKernelsSegment.makeRotationTo_api(dest, destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
     }
@@ -6219,8 +6581,53 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] makeRotationTo(double[] dest, int destOffset, double[] fromDir, int fromDirOffset, double[] toDir, int toDirOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationTo(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
-        return DoubleQuatOpsKernelsArray.makeRotationTo_scalar(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
+        double _fromDirx = fromDir[fromDirOffset + 0];
+        double _fromDiry = fromDir[fromDirOffset + 1];
+        double _fromDirz = fromDir[fromDirOffset + 2];
+        double _toDirx = toDir[toDirOffset + 0];
+        double _toDiry = toDir[toDirOffset + 1];
+        double _toDirz = toDir[toDirOffset + 2];
+        double _t2 = _fromDirz + _toDirz;
+        double _t3 = _fromDirx + _toDirx;
+        double _t4 = _fromDiry + _toDiry;
+        double _t12 = Math.fma(_fromDirx, _fromDirx, _fromDiry * _fromDiry);
+        double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
+        double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
+        double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
+            _t18 = 0.0;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
+        double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
+        double _t23 = 0.5 * _t22;
+        double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
+        double _t30 = (1.0 / Math.sqrt(_t29));
+        double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
+        if (_t23 > 1.0E-13) {
+            dest[destOffset + 0] = _t14 * _t32;
+            dest[destOffset + 1] = _t16 * _t32;
+            dest[destOffset + 2] = _t15 * _t32;
+            dest[destOffset + 3] = _t23 * _t32;
+        } else {
+            if (_t29 != 0.0) {
+                dest[destOffset + 0] = _t30 * _t17;
+                dest[destOffset + 1] = _t30 * _t19;
+                dest[destOffset + 2] = _t30 * _t18;
+                dest[destOffset + 3] = 0.0;
+            } else {
+                dest[destOffset + 0] = 0.0;
+                dest[destOffset + 1] = 0.0;
+                dest[destOffset + 2] = 0.0;
+                dest[destOffset + 3] = 0.0;
+            }
+        }
+        return dest;
     }
 
     /** {@link #makeRotationTo(double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
@@ -6237,7 +6644,6 @@ public final class DoubleQuatOps {
 
     /** {@link #makeRotationTo(double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
     public static java.lang.foreign.MemorySegment makeRotationTo(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment fromDir, long fromDirOffset, java.lang.foreign.MemorySegment toDir, long toDirOffset) {
-        if (SimdSupport.VECTOR_API) return DoubleQuatOpsSimd.makeRotationTo(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && fromDir.isNative() && toDir.isNative()) return DoubleQuatOpsKernelsSegment.makeRotationTo_unsafe(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
         return DoubleQuatOpsKernelsSegment.makeRotationTo_api(dest, destOffset, fromDir, fromDirOffset, toDir, toDirOffset);
     }

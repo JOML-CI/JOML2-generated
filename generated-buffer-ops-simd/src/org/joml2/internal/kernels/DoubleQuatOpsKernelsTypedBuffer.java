@@ -309,6 +309,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFromMatrixMat3x3_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && m.hasArray() && mOffset >= 0 && mOffset <= m.limit() - 9) {
+            DoubleQuatOps.makeFromMatrixMat3x3(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.makeFromMatrixMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+            return dest;
+        }
         double _m00 = m.get(mOffset + 0);
         double _m10 = m.get(mOffset + 1);
         double _m20 = m.get(mOffset + 2);
@@ -371,6 +379,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFromMatrixMat3x4_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && m.hasArray() && mOffset >= 0 && mOffset <= m.limit() - 12) {
+            DoubleQuatOps.makeFromMatrixMat3x4(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.makeFromMatrixMat3x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+            return dest;
+        }
         double _m00 = m.get(mOffset + 0);
         double _m01 = m.get(mOffset + 1);
         double _m02 = m.get(mOffset + 2);
@@ -433,6 +449,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFromMatrixMat4x4_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && m.hasArray() && mOffset >= 0 && mOffset <= m.limit() - 16) {
+            DoubleQuatOps.makeFromMatrixMat4x4(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && m.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.makeFromMatrixMat4x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(m.duplicate().position(0)), (long) mOffset * 8L);
+            return dest;
+        }
         double _m00 = m.get(mOffset + 0);
         double _m10 = m.get(mOffset + 1);
         double _m20 = m.get(mOffset + 2);
@@ -3299,6 +3323,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer pow_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double t) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
+            DoubleQuatOps.pow(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, t);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.pow_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, t);
+            return dest;
+        }
         double _selfx = src.get(srcOffset + 0);
         double _selfy = src.get(srcOffset + 1);
         double _selfz = src.get(srcOffset + 2);
@@ -3739,6 +3771,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationLookAlong_api(java.nio.DoubleBuffer dest, int destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
+            DoubleQuatOps.makeRotationLookAlong(dest.array(), dest.arrayOffset() + destOffset, dirX, dirY, dirZ, upX, upY, upZ);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.makeRotationLookAlong_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, dirX, dirY, dirZ, upX, upY, upZ);
+            return dest;
+        }
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
@@ -3824,6 +3864,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationLookAlong_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer dir, int dirOffset, java.nio.DoubleBuffer up, int upOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && dir.hasArray() && dirOffset >= 0 && dirOffset <= dir.limit() - 3 && up.hasArray() && upOffset >= 0 && upOffset <= up.limit() - 3) {
+            DoubleQuatOps.makeRotationLookAlong(dest.array(), dest.arrayOffset() + destOffset, dir.array(), dir.arrayOffset() + dirOffset, up.array(), up.arrayOffset() + upOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && dir.order() == java.nio.ByteOrder.nativeOrder() && up.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.makeRotationLookAlong_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(dir.duplicate().position(0)), (long) dirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(up.duplicate().position(0)), (long) upOffset * 8L);
+            return dest;
+        }
         double _dirx = dir.get(dirOffset + 0);
         double _diry = dir.get(dirOffset + 1);
         double _dirz = dir.get(dirOffset + 2);
@@ -3913,6 +3961,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationTo_api(java.nio.DoubleBuffer dest, int destOffset, double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
+            DoubleQuatOps.makeRotationTo(dest.array(), dest.arrayOffset() + destOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.makeRotationTo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
+            return dest;
+        }
         double _t2 = fromDirZ + toDirZ;
         double _t3 = fromDirX + toDirX;
         double _t4 = fromDirY + toDirY;
@@ -3965,6 +4021,14 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationTo_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer fromDir, int fromDirOffset, java.nio.DoubleBuffer toDir, int toDirOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && fromDir.hasArray() && fromDirOffset >= 0 && fromDirOffset <= fromDir.limit() - 3 && toDir.hasArray() && toDirOffset >= 0 && toDirOffset <= toDir.limit() - 3) {
+            DoubleQuatOps.makeRotationTo(dest.array(), dest.arrayOffset() + destOffset, fromDir.array(), fromDir.arrayOffset() + fromDirOffset, toDir.array(), toDir.arrayOffset() + toDirOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && fromDir.order() == java.nio.ByteOrder.nativeOrder() && toDir.order() == java.nio.ByteOrder.nativeOrder()) {
+            DoubleQuatOpsKernelsSegment.makeRotationTo_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(fromDir.duplicate().position(0)), (long) fromDirOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(toDir.duplicate().position(0)), (long) toDirOffset * 8L);
+            return dest;
+        }
         double _fromDirx = fromDir.get(fromDirOffset + 0);
         double _fromDiry = fromDir.get(fromDirOffset + 1);
         double _fromDirz = fromDir.get(fromDirOffset + 2);
