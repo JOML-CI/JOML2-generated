@@ -1871,10 +1871,13 @@ public interface Int3R {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    int compAdd();
+    long compAdd();
 
     /**
      * Compute the largest component of this vector.
@@ -1892,10 +1895,13 @@ public interface Int3R {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the product of all components of this vector
      */
-    int compMul();
+    long compMul();
 
     /**
      * Compute the cross product of this vector and {@code other}, in that order
@@ -1977,71 +1983,95 @@ public interface Int3R {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    int distanceSquared(Int3R other);
+    long distanceSquared(Int3R other);
 
     /**
      * Compute the squared distance between this vector and ({@code x}, {@code y}, {@code z}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @return the squared distance between this vector and ({@code x}, {@code y}, {@code z})
      */
-    int distanceSquared(int x, int y, int z);
+    long distanceSquared(int x, int y, int z);
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    int dot(Int3R other);
+    long dot(Int3R other);
 
     /**
      * Compute the dot product of this vector and ({@code x}, {@code y}, {@code z}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @return the dot product of this vector and ({@code x}, {@code y}, {@code z})
      */
-    int dot(int x, int y, int z);
+    long dot(int x, int y, int z);
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the squared length of this vector
      */
-    int lengthSquared();
+    long lengthSquared();
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    int manhattanDistance(Int3R other);
+    long manhattanDistance(Int3R other);
 
     /**
      * Compute the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z}).
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
      * @return the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z})
      */
-    int manhattanDistance(int x, int y, int z);
+    long manhattanDistance(int x, int y, int z);
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    int manhattanLength();
+    long manhattanLength();
 
     /**
      * Set each component of this vector to the larger of itself and {@code scalar} and store the

@@ -37,7 +37,7 @@ inline operator fun Short3.minus(other: Short3): Short3 = sub(other)
 /** [Short3.cross] as an infix function, so `a cross b` parses. */
 inline infix fun Short3.cross(other: Short3): Short3 = cross(other)
 /** [Short3.dot] as an infix function, so `a dot b` parses. */
-inline infix fun Short3.dot(other: Short3): Short = dot(other)
+inline infix fun Short3.dot(other: Short3): Long = dot(other)
 /** Component 1 of this Short3 (`x()`), for destructuring declarations. */
 inline operator fun Short3.component1(): Short = x()
 /** Component 2 of this Short3 (`y()`), for destructuring declarations. */

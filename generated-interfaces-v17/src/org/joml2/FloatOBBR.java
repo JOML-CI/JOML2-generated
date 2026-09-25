@@ -296,10 +296,12 @@ public interface FloatOBBR {
     DoubleOBB toDouble(@Mutated DoubleOBB dest);
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      *
      * @param m the transformation matrix to apply
      * @param dest will hold the result
@@ -308,10 +310,12 @@ public interface FloatOBBR {
     FloatOBB transform(Float3x4R m, @Mutated FloatOBB dest);
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -323,10 +327,12 @@ public interface FloatOBBR {
     DoubleOBB transform(Float3x4R m, @Mutated DoubleOBB dest);
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -338,10 +344,12 @@ public interface FloatOBBR {
     FloatOBB transform(Float4x4R m, @Mutated FloatOBB dest);
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.

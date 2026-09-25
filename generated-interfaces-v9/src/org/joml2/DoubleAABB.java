@@ -59,9 +59,9 @@ public interface DoubleAABB extends DoubleAABBR {
      * Set the maximum corner of this axis-aligned bounding box to {@code max}.
      *
      * @param max the maximum corner of the box
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleAABB setMax(Double3R max) { return setMax(max, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
+    @Mutated default DoubleAABB setMax(Double3R max) { return setMax(max, this); }
 
     /**
      * Set the maximum corner of this axis-aligned bounding box to ({@code x}, {@code y},
@@ -70,17 +70,17 @@ public interface DoubleAABB extends DoubleAABBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleAABB setMax(double x, double y, double z) { return setMax(x, y, z, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
+    @Mutated default DoubleAABB setMax(double x, double y, double z) { return setMax(x, y, z, this); }
 
     /**
      * Set the minimum corner of this axis-aligned bounding box to {@code min}.
      *
      * @param min the minimum corner of the box
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleAABB setMin(Double3R min) { return setMin(min, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
+    @Mutated default DoubleAABB setMin(Double3R min) { return setMin(min, this); }
 
     /**
      * Set the minimum corner of this axis-aligned bounding box to ({@code x}, {@code y},
@@ -89,9 +89,9 @@ public interface DoubleAABB extends DoubleAABBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleAABB setMin(double x, double y, double z) { return setMin(x, y, z, Joml.RETURN_NEW ? Joml.doubleAABB() : this); }
+    @Mutated default DoubleAABB setMin(double x, double y, double z) { return setMin(x, y, z, this); }
 
     /**
      * Convert this axis-aligned bounding box to {@code float} precision, returning the result as a

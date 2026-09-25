@@ -465,7 +465,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
@@ -484,32 +486,32 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t15 = 1.0f + (m.m00() - (m.m11() + m.m22()));
         float _t16 = 1.0f + (m.m11() - (m.m00() + m.m22()));
         float _t17 = 1.0f + (m.m22() - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            this.x = 0.5f * _t1 * _t18;
-            this.y = 0.5f * _t7 * _t18;
-            this.z = 0.5f * _t9 * _t18;
+            this.x = _sp0 * _t1;
+            this.y = _sp0 * _t7;
+            this.z = _sp0 * _t9;
             this.w = 0.5f * (float) Math.sqrt(_t14);
         } else {
             if (m.m00() > _t2) {
                 this.x = 0.5f * (float) Math.sqrt(_t15);
-                this.y = 0.5f * _t4 * _t21;
-                this.z = 0.5f * _t6 * _t21;
-                this.w = 0.5f * _t1 * _t21;
+                this.y = _sp3 * _t4;
+                this.z = _sp3 * _t6;
+                this.w = _sp3 * _t1;
             } else {
                 if (m.m11() > m.m22()) {
-                    this.x = 0.5f * _t4 * _t19;
+                    this.x = _sp1 * _t4;
                     this.y = 0.5f * (float) Math.sqrt(_t16);
-                    this.z = 0.5f * _t8 * _t19;
-                    this.w = 0.5f * _t7 * _t19;
+                    this.z = _sp1 * _t8;
+                    this.w = _sp1 * _t7;
                 } else {
-                    this.x = 0.5f * _t6 * _t20;
-                    this.y = 0.5f * _t8 * _t20;
+                    this.x = _sp2 * _t6;
+                    this.y = _sp2 * _t8;
                     this.z = 0.5f * (float) Math.sqrt(_t17);
-                    this.w = 0.5f * _t9 * _t20;
+                    this.w = _sp2 * _t9;
                 }
             }
         }
@@ -518,7 +520,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
@@ -537,32 +541,32 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t15 = 1.0f + (m.m00() - (m.m11() + m.m22()));
         float _t16 = 1.0f + (m.m11() - (m.m00() + m.m22()));
         float _t17 = 1.0f + (m.m22() - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            this.x = 0.5f * _t1 * _t18;
-            this.y = 0.5f * _t7 * _t18;
-            this.z = 0.5f * _t9 * _t18;
+            this.x = _sp0 * _t1;
+            this.y = _sp0 * _t7;
+            this.z = _sp0 * _t9;
             this.w = 0.5f * (float) Math.sqrt(_t14);
         } else {
             if (m.m00() > _t2) {
                 this.x = 0.5f * (float) Math.sqrt(_t15);
-                this.y = 0.5f * _t4 * _t21;
-                this.z = 0.5f * _t6 * _t21;
-                this.w = 0.5f * _t1 * _t21;
+                this.y = _sp3 * _t4;
+                this.z = _sp3 * _t6;
+                this.w = _sp3 * _t1;
             } else {
                 if (m.m11() > m.m22()) {
-                    this.x = 0.5f * _t4 * _t19;
+                    this.x = _sp1 * _t4;
                     this.y = 0.5f * (float) Math.sqrt(_t16);
-                    this.z = 0.5f * _t8 * _t19;
-                    this.w = 0.5f * _t7 * _t19;
+                    this.z = _sp1 * _t8;
+                    this.w = _sp1 * _t7;
                 } else {
-                    this.x = 0.5f * _t6 * _t20;
-                    this.y = 0.5f * _t8 * _t20;
+                    this.x = _sp2 * _t6;
+                    this.y = _sp2 * _t8;
                     this.z = 0.5f * (float) Math.sqrt(_t17);
-                    this.w = 0.5f * _t9 * _t20;
+                    this.w = _sp2 * _t9;
                 }
             }
         }
@@ -571,7 +575,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
@@ -590,32 +596,32 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t15 = 1.0f + (m.m00() - (m.m11() + m.m22()));
         float _t16 = 1.0f + (m.m11() - (m.m00() + m.m22()));
         float _t17 = 1.0f + (m.m22() - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            this.x = 0.5f * _t1 * _t18;
-            this.y = 0.5f * _t7 * _t18;
-            this.z = 0.5f * _t9 * _t18;
+            this.x = _sp0 * _t1;
+            this.y = _sp0 * _t7;
+            this.z = _sp0 * _t9;
             this.w = 0.5f * (float) Math.sqrt(_t14);
         } else {
             if (m.m00() > _t2) {
                 this.x = 0.5f * (float) Math.sqrt(_t15);
-                this.y = 0.5f * _t4 * _t21;
-                this.z = 0.5f * _t6 * _t21;
-                this.w = 0.5f * _t1 * _t21;
+                this.y = _sp3 * _t4;
+                this.z = _sp3 * _t6;
+                this.w = _sp3 * _t1;
             } else {
                 if (m.m11() > m.m22()) {
-                    this.x = 0.5f * _t4 * _t19;
+                    this.x = _sp1 * _t4;
                     this.y = 0.5f * (float) Math.sqrt(_t16);
-                    this.z = 0.5f * _t8 * _t19;
-                    this.w = 0.5f * _t7 * _t19;
+                    this.z = _sp1 * _t8;
+                    this.w = _sp1 * _t7;
                 } else {
-                    this.x = 0.5f * _t6 * _t20;
-                    this.y = 0.5f * _t8 * _t20;
+                    this.x = _sp2 * _t6;
+                    this.y = _sp2 * _t8;
                     this.z = 0.5f * (float) Math.sqrt(_t17);
-                    this.w = 0.5f * _t9 * _t20;
+                    this.w = _sp2 * _t9;
                 }
             }
         }
@@ -1479,7 +1485,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = Math.fma(alpha, targetY - this.y, this.y);
         float _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
+        if (_t11 != 0.0f) {
             d.x = _t6 * _t12;
             d.y = _t7 * _t12;
             d.z = _t5 * _t12;
@@ -1530,7 +1536,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = Math.fma(alpha, targetY - this.y, this.y);
         float _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
+        if (_t11 != 0.0f) {
             d.x = _t6 * _t12;
             d.y = _t7 * _t12;
             d.z = _t5 * _t12;
@@ -1634,7 +1640,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             d.x = _t19 * _t25;
             d.y = _t20 * _t25;
             d.z = _t18 * _t25;
@@ -1694,7 +1700,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             d.x = _t19 * _t25;
             d.y = _t20 * _t25;
             d.z = _t18 * _t25;
@@ -1784,23 +1790,34 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat slerp(float targetX, float targetY, float targetZ, float targetW, float alpha, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(this.w, targetW, Math.fma(this.z, targetZ, Math.fma(this.x, targetX, this.y * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        float _t8_inv = 1.0f / _t8;
-        float _t9 = Math.abs(_t8);
-        float _t11 = (float) Math.sin(alpha * _t7);
-        float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 1.0E-6f) {
-            d.x = Math.fma(this.x, _t13, targetX * _t11) * _t8_inv;
-            d.y = Math.fma(this.y, _t13, targetY * _t11) * _t8_inv;
-            d.z = Math.fma(this.z, _t13, targetZ * _t11) * _t8_inv;
-            d.w = Math.fma(this.w, _t13, targetW * _t11) * _t8_inv;
+        float _t1 = this.w + targetW;
+        float _t2 = this.z + targetZ;
+        float _t3 = this.x + targetX;
+        float _t4 = this.y + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _t26, _t27;
+        if (_t19 > 2.0E-6f) {
+            _t26 = _t21 * (float) Math.sin(alpha * _t12);
+            _t27 = _t21 * (float) Math.sin(_t0 * _t12);
         } else {
-            d.x = Math.fma(alpha, targetX, this.x * _t0);
-            d.y = Math.fma(alpha, targetY, this.y * _t0);
-            d.z = Math.fma(alpha, targetZ, this.z * _t0);
-            d.w = Math.fma(alpha, targetW, this.w * _t0);
+            if (_t11 > _t13) {
+                _t26 = alpha;
+                _t27 = _t0;
+            } else {
+                _t26 = 1.0f - _t5;
+                _t27 = _t5;
+            }
         }
+        d.x = Math.fma(this.x, _t27, targetX * _t26);
+        d.y = Math.fma(this.y, _t27, targetY * _t26);
+        d.z = Math.fma(this.z, _t27, targetZ * _t26);
+        d.w = Math.fma(this.w, _t27, targetW * _t26);
         return d;
     }
 
@@ -1836,23 +1853,34 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat slerp(float targetX, float targetY, float targetZ, float targetW, float alpha, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(this.w, targetW, Math.fma(this.z, targetZ, Math.fma(this.x, targetX, this.y * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        float _t8_inv = 1.0f / _t8;
-        float _t9 = Math.abs(_t8);
-        float _t11 = (float) Math.sin(alpha * _t7);
-        float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 1.0E-6f) {
-            d.x = Math.fma(this.x, _t13, targetX * _t11) * _t8_inv;
-            d.y = Math.fma(this.y, _t13, targetY * _t11) * _t8_inv;
-            d.z = Math.fma(this.z, _t13, targetZ * _t11) * _t8_inv;
-            d.w = Math.fma(this.w, _t13, targetW * _t11) * _t8_inv;
+        float _t1 = this.w + targetW;
+        float _t2 = this.z + targetZ;
+        float _t3 = this.x + targetX;
+        float _t4 = this.y + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _t26, _t27;
+        if (_t19 > 2.0E-6f) {
+            _t26 = _t21 * (float) Math.sin(alpha * _t12);
+            _t27 = _t21 * (float) Math.sin(_t0 * _t12);
         } else {
-            d.x = Math.fma(alpha, targetX, this.x * _t0);
-            d.y = Math.fma(alpha, targetY, this.y * _t0);
-            d.z = Math.fma(alpha, targetZ, this.z * _t0);
-            d.w = Math.fma(alpha, targetW, this.w * _t0);
+            if (_t11 > _t13) {
+                _t26 = alpha;
+                _t27 = _t0;
+            } else {
+                _t26 = 1.0f - _t5;
+                _t27 = _t5;
+            }
         }
+        d.x = Math.fma(this.x, _t27, targetX * _t26);
+        d.y = Math.fma(this.y, _t27, targetY * _t26);
+        d.z = Math.fma(this.z, _t27, targetZ * _t26);
+        d.w = Math.fma(this.w, _t27, targetW * _t26);
         return d;
     }
 
@@ -1953,7 +1981,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             d.x = _t50 * _t44;
             d.y = _t50 * _t45;
             d.z = _t50 * _t43;
@@ -2028,7 +2056,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             d.x = _t50 * _t44;
             d.y = _t50 * _t45;
             d.z = _t50 * _t43;
@@ -2117,61 +2145,92 @@ public final class FloatQuatImpl implements FloatQuat {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t0 = 1.0f - t;
         float _t1 = t + t;
+        float _t3 = control0W + control1W;
+        float _t4 = control0Z + control1Z;
+        float _t5 = control0X + control1X;
+        float _t6 = control0Y + control1Y;
+        float _t7 = t < 0.5f ? 1.0f : 0.0f;
+        float _t8 = this.w + targetW;
+        float _t9 = this.z + targetZ;
+        float _t10 = this.x + targetX;
+        float _t11 = this.y + targetY;
+        float _t12 = 1.0f - _t7;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
-        float _t34 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(this.w, targetW, Math.fma(this.z, targetZ, Math.fma(this.x, targetX, this.y * targetY))))));
-        float _t35 = (float) Math.sin(_t33);
-        float _t35_inv = 1.0f / _t35;
-        float _t36 = (float) Math.sin(_t34);
-        float _t36_inv = 1.0f / _t36;
-        float _t37 = Math.abs(_t35);
-        float _t39 = Math.abs(_t36);
-        float _t41 = (float) Math.sin(t * _t33);
-        float _t42 = (float) Math.sin(t * _t34);
-        float _t45 = (float) Math.sin(_t0 * _t33);
-        float _t46 = (float) Math.sin(_t0 * _t34);
-        float _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6f) {
-            _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
-            _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t27 = quatArcAngle(_t25);
+        float _t28 = quatArcAngle(_t26);
+        float _t29 = 4.0f - _t25;
+        float _t30 = 4.0f - _t26;
+        float _t39 = _t29 * _t25;
+        float _t40 = _t30 * _t26;
+        float _t41 = (float) Math.sqrt(_t39);
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t45 = 2.0f / _t41;
+        float _t46 = 2.0f / _t43;
+        float _t55, _t57;
+        if (_t41 > 2.0E-6f) {
+            _t55 = _t45 * (float) Math.sin(t * _t27);
+            _t57 = _t45 * (float) Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1W, control0W * _t0);
-            _t73 = Math.fma(t, control1Z, control0Z * _t0);
-            _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        float _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6f) {
-            _t72 = Math.fma(this.w, _t46, targetW * _t42) * _t36_inv;
-            _t74 = Math.fma(this.z, _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(this.x, _t46, targetX * _t42) * _t36_inv;
-            _t78 = Math.fma(this.y, _t46, targetY * _t42) * _t36_inv;
+        float _t56, _t58;
+        if (_t43 > 2.0E-6f) {
+            _t56 = _t46 * (float) Math.sin(t * _t28);
+            _t58 = _t46 * (float) Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetW, this.w * _t0);
-            _t74 = Math.fma(t, targetZ, this.z * _t0);
-            _t76 = Math.fma(t, targetX, this.x * _t0);
-            _t78 = Math.fma(t, targetY, this.y * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        float _t85 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        float _t86 = (float) Math.sin(_t85);
-        float _t86_inv = 1.0f / _t86;
-        float _t87 = Math.abs(_t86);
-        float _t89 = (float) Math.sin(_t13 * _t85);
-        float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6f) {
-            d.x = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            d.y = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            d.z = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            d.w = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        float _t67 = Math.fma(control0X, _t57, control1X * _t55);
+        float _t68 = Math.fma(control0W, _t57, control1W * _t55);
+        float _t69 = Math.fma(this.w, _t58, targetW * _t56);
+        float _t70 = Math.fma(control0Z, _t57, control1Z * _t55);
+        float _t71 = Math.fma(this.z, _t58, targetZ * _t56);
+        float _t72 = Math.fma(this.x, _t58, targetX * _t56);
+        float _t73 = Math.fma(control0Y, _t57, control1Y * _t55);
+        float _t74 = Math.fma(this.y, _t58, targetY * _t56);
+        float _t75 = _t68 + _t69;
+        float _t76 = _t70 + _t71;
+        float _t77 = _t67 + _t72;
+        float _t78 = _t73 + _t74;
+        float _t83 = Math.min(4.0f, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        float _t84 = quatArcAngle(_t83);
+        float _t85 = 4.0f - _t83;
+        float _t90 = _t85 * _t83;
+        float _t91 = (float) Math.sqrt(_t90);
+        float _t93 = 2.0f / _t91;
+        float _t98, _t99;
+        if (_t91 > 2.0E-6f) {
+            _t98 = _t93 * (float) Math.sin(_t13 * _t84);
+            _t99 = _t93 * (float) Math.sin(_t14 * _t84);
         } else {
-            d.x = Math.fma(_t14, _t76, _t13 * _t75);
-            d.y = Math.fma(_t14, _t78, _t13 * _t77);
-            d.z = Math.fma(_t14, _t74, _t13 * _t73);
-            d.w = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0f - _t17;
+                _t99 = _t17;
+            }
         }
+        d.x = Math.fma(_t67, _t98, _t72 * _t99);
+        d.y = Math.fma(_t73, _t98, _t74 * _t99);
+        d.z = Math.fma(_t70, _t98, _t71 * _t99);
+        d.w = Math.fma(_t68, _t98, _t69 * _t99);
         return d;
     }
 
@@ -2216,61 +2275,92 @@ public final class FloatQuatImpl implements FloatQuat {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t0 = 1.0f - t;
         float _t1 = t + t;
+        float _t3 = control0W + control1W;
+        float _t4 = control0Z + control1Z;
+        float _t5 = control0X + control1X;
+        float _t6 = control0Y + control1Y;
+        float _t7 = t < 0.5f ? 1.0f : 0.0f;
+        float _t8 = this.w + targetW;
+        float _t9 = this.z + targetZ;
+        float _t10 = this.x + targetX;
+        float _t11 = this.y + targetY;
+        float _t12 = 1.0f - _t7;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
-        float _t34 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(this.w, targetW, Math.fma(this.z, targetZ, Math.fma(this.x, targetX, this.y * targetY))))));
-        float _t35 = (float) Math.sin(_t33);
-        float _t35_inv = 1.0f / _t35;
-        float _t36 = (float) Math.sin(_t34);
-        float _t36_inv = 1.0f / _t36;
-        float _t37 = Math.abs(_t35);
-        float _t39 = Math.abs(_t36);
-        float _t41 = (float) Math.sin(t * _t33);
-        float _t42 = (float) Math.sin(t * _t34);
-        float _t45 = (float) Math.sin(_t0 * _t33);
-        float _t46 = (float) Math.sin(_t0 * _t34);
-        float _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6f) {
-            _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
-            _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t27 = quatArcAngle(_t25);
+        float _t28 = quatArcAngle(_t26);
+        float _t29 = 4.0f - _t25;
+        float _t30 = 4.0f - _t26;
+        float _t39 = _t29 * _t25;
+        float _t40 = _t30 * _t26;
+        float _t41 = (float) Math.sqrt(_t39);
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t45 = 2.0f / _t41;
+        float _t46 = 2.0f / _t43;
+        float _t55, _t57;
+        if (_t41 > 2.0E-6f) {
+            _t55 = _t45 * (float) Math.sin(t * _t27);
+            _t57 = _t45 * (float) Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1W, control0W * _t0);
-            _t73 = Math.fma(t, control1Z, control0Z * _t0);
-            _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        float _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6f) {
-            _t72 = Math.fma(this.w, _t46, targetW * _t42) * _t36_inv;
-            _t74 = Math.fma(this.z, _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(this.x, _t46, targetX * _t42) * _t36_inv;
-            _t78 = Math.fma(this.y, _t46, targetY * _t42) * _t36_inv;
+        float _t56, _t58;
+        if (_t43 > 2.0E-6f) {
+            _t56 = _t46 * (float) Math.sin(t * _t28);
+            _t58 = _t46 * (float) Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetW, this.w * _t0);
-            _t74 = Math.fma(t, targetZ, this.z * _t0);
-            _t76 = Math.fma(t, targetX, this.x * _t0);
-            _t78 = Math.fma(t, targetY, this.y * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        float _t85 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        float _t86 = (float) Math.sin(_t85);
-        float _t86_inv = 1.0f / _t86;
-        float _t87 = Math.abs(_t86);
-        float _t89 = (float) Math.sin(_t13 * _t85);
-        float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6f) {
-            d.x = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            d.y = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            d.z = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            d.w = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        float _t67 = Math.fma(control0X, _t57, control1X * _t55);
+        float _t68 = Math.fma(control0W, _t57, control1W * _t55);
+        float _t69 = Math.fma(this.w, _t58, targetW * _t56);
+        float _t70 = Math.fma(control0Z, _t57, control1Z * _t55);
+        float _t71 = Math.fma(this.z, _t58, targetZ * _t56);
+        float _t72 = Math.fma(this.x, _t58, targetX * _t56);
+        float _t73 = Math.fma(control0Y, _t57, control1Y * _t55);
+        float _t74 = Math.fma(this.y, _t58, targetY * _t56);
+        float _t75 = _t68 + _t69;
+        float _t76 = _t70 + _t71;
+        float _t77 = _t67 + _t72;
+        float _t78 = _t73 + _t74;
+        float _t83 = Math.min(4.0f, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        float _t84 = quatArcAngle(_t83);
+        float _t85 = 4.0f - _t83;
+        float _t90 = _t85 * _t83;
+        float _t91 = (float) Math.sqrt(_t90);
+        float _t93 = 2.0f / _t91;
+        float _t98, _t99;
+        if (_t91 > 2.0E-6f) {
+            _t98 = _t93 * (float) Math.sin(_t13 * _t84);
+            _t99 = _t93 * (float) Math.sin(_t14 * _t84);
         } else {
-            d.x = Math.fma(_t14, _t76, _t13 * _t75);
-            d.y = Math.fma(_t14, _t78, _t13 * _t77);
-            d.z = Math.fma(_t14, _t74, _t13 * _t73);
-            d.w = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0f - _t17;
+                _t99 = _t17;
+            }
         }
+        d.x = Math.fma(_t67, _t98, _t72 * _t99);
+        d.y = Math.fma(_t73, _t98, _t74 * _t99);
+        d.z = Math.fma(_t70, _t98, _t71 * _t99);
+        d.w = Math.fma(_t68, _t98, _t69 * _t99);
         return d;
     }
 
@@ -2501,6 +2591,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param other the quaternion to measure the angle to
      * @return the angle in radians between this quaternion and {@code other}
@@ -2516,6 +2608,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -2821,15 +2915,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public FloatQuat difference(float otherX, float otherY, float otherZ, float otherW, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
-        float _t3_inv = 1.0f / _t3;
+        float _t3_inv = 1.0f / Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
+        float _sp1 = _t3_inv * this.z;
+        float _sp0 = this.y * _t3_inv;
         float _buf0 = (Math.fma(otherX, this.w, -(otherW * this.x)) + Math.fma(otherY, this.z, -(otherZ * this.y))) * _t3_inv;
-        float _buf1 = -(otherW * this.y * _t3_inv) - otherX * this.z * _t3_inv + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv;
-        float _buf2 = (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv;
-        d.w = Math.fma(otherX, this.x, otherW * this.w) * _t3_inv - (-(otherY * this.y * _t3_inv) - otherZ * this.z * _t3_inv);
+        float _buf1 = -(otherW * _sp0) - otherX * _sp1 + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv;
+        d.z = (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv;
+        d.w = Math.fma(otherX, this.x, otherW * this.w) * _t3_inv - (-(otherY * _sp0) - otherZ * _sp1);
         d.x = _buf0;
         d.y = _buf1;
-        d.z = _buf2;
         return d;
     }
 
@@ -2856,15 +2950,15 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public DoubleQuat difference(float otherX, float otherY, float otherZ, float otherW, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
-        float _t3_inv = 1.0f / _t3;
+        float _t3_inv = 1.0f / Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
+        float _sp1 = _t3_inv * this.z;
+        float _sp0 = this.y * _t3_inv;
         float _buf0 = (Math.fma(otherX, this.w, -(otherW * this.x)) + Math.fma(otherY, this.z, -(otherZ * this.y))) * _t3_inv;
-        float _buf1 = -(otherW * this.y * _t3_inv) - otherX * this.z * _t3_inv + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv;
-        float _buf2 = (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv;
-        d.w = Math.fma(otherX, this.x, otherW * this.w) * _t3_inv - (-(otherY * this.y * _t3_inv) - otherZ * this.z * _t3_inv);
+        float _buf1 = -(otherW * _sp0) - otherX * _sp1 + Math.fma(otherY, this.w, otherZ * this.x) * _t3_inv;
+        d.z = (Math.fma(otherX, this.y, -(otherW * this.z)) + Math.fma(otherZ, this.w, -(otherY * this.x))) * _t3_inv;
+        d.w = Math.fma(otherX, this.x, otherW * this.w) * _t3_inv - (-(otherY * _sp0) - otherZ * _sp1);
         d.x = _buf0;
         d.y = _buf1;
-        d.z = _buf2;
         return d;
     }
 
@@ -2912,7 +3006,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
         float _t4 = (float) Math.sqrt(_t3);
         float _t6 = (float) Math.sin(_t4);
-        float _t8 = _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3));
+        float _t8 = _t6 * _t0 / _t4;
         if (_t3 > 0.0f) {
             d.x = this.x * _t8;
             d.y = this.y * _t8;
@@ -2942,7 +3036,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
         float _t4 = (float) Math.sqrt(_t3);
         float _t6 = (float) Math.sin(_t4);
-        float _t8 = _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3));
+        float _t8 = _t6 * _t0 / _t4;
         if (_t3 > 0.0f) {
             d.x = this.x * _t8;
             d.y = this.y * _t8;
@@ -2961,11 +3055,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2997,6 +3098,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3005,6 +3111,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3036,11 +3144,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3072,6 +3187,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3080,6 +3200,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3111,11 +3233,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3146,6 +3275,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3154,6 +3288,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3184,11 +3320,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3219,6 +3362,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3227,6 +3375,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3257,11 +3407,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3292,6 +3449,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3300,6 +3462,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3330,11 +3494,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3365,6 +3536,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3373,6 +3549,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3454,7 +3632,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = (float) Math.sqrt(_t6);
         float _t9 = (float) Math.sin(_t7);
         float _t10 = (float) Math.cosFromSin(_t9, _t7);
-        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
+        float _t11 = _t9 / _t7;
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3503,7 +3681,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = (float) Math.sqrt(_t6);
         float _t9 = (float) Math.sin(_t7);
         float _t10 = (float) Math.cosFromSin(_t9, _t7);
-        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
+        float _t11 = _t9 / _t7;
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3544,7 +3722,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t12 * _t16);
             d.y = -(_t10 * _t16);
             d.z = -(_t9 * _t16);
@@ -3579,7 +3757,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t12 * _t16);
             d.y = -(_t10 * _t16);
             d.z = -(_t9 * _t16);
@@ -3611,7 +3789,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t9 * _t16);
             d.y = -(_t12 * _t16);
             d.z = -(_t10 * _t16);
@@ -3646,7 +3824,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t9 * _t16);
             d.y = -(_t12 * _t16);
             d.z = -(_t10 * _t16);
@@ -3678,7 +3856,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t10 * _t16);
             d.y = -(_t9 * _t16);
             d.z = -(_t12 * _t16);
@@ -3713,7 +3891,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t10 * _t16);
             d.y = -(_t9 * _t16);
             d.z = -(_t12 * _t16);
@@ -4015,7 +4193,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t12 * _t16;
             d.y = _t10 * _t16;
             d.z = _t9 * _t16;
@@ -4050,7 +4228,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t12 * _t16;
             d.y = _t10 * _t16;
             d.z = _t9 * _t16;
@@ -4082,7 +4260,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t9 * _t16;
             d.y = _t12 * _t16;
             d.z = _t10 * _t16;
@@ -4117,7 +4295,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t9 * _t16;
             d.y = _t12 * _t16;
             d.z = _t10 * _t16;
@@ -4149,7 +4327,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t10 * _t16;
             d.y = _t9 * _t16;
             d.z = _t12 * _t16;
@@ -4184,7 +4362,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t10 * _t16;
             d.y = _t9 * _t16;
             d.z = _t12 * _t16;
@@ -4297,7 +4475,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t12 * _t16);
             d.y = -(_t9 * _t16);
             d.z = -(_t10 * _t16);
@@ -4332,7 +4510,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t12 * _t16);
             d.y = -(_t9 * _t16);
             d.z = -(_t10 * _t16);
@@ -4364,7 +4542,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t10 * _t16);
             d.y = -(_t12 * _t16);
             d.z = -(_t9 * _t16);
@@ -4399,7 +4577,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t10 * _t16);
             d.y = -(_t12 * _t16);
             d.z = -(_t9 * _t16);
@@ -4431,7 +4609,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t9 * _t16);
             d.y = -(_t10 * _t16);
             d.z = -(_t12 * _t16);
@@ -4466,7 +4644,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = -(_t9 * _t16);
             d.y = -(_t10 * _t16);
             d.z = -(_t12 * _t16);
@@ -4493,7 +4671,7 @@ public final class FloatQuatImpl implements FloatQuat {
         FloatQuatImpl d = (FloatQuatImpl) dest;
         float _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             d.x = this.x * _t4;
             d.y = this.y * _t4;
             d.z = this.z * _t4;
@@ -4525,7 +4703,7 @@ public final class FloatQuatImpl implements FloatQuat {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
         float _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             d.x = this.x * _t4;
             d.y = this.y * _t4;
             d.z = this.z * _t4;
@@ -4829,7 +5007,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t12 * _t16;
             d.y = _t9 * _t16;
             d.z = _t10 * _t16;
@@ -4864,7 +5042,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.x, this.x, this.w * this.w)));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t12 * _t16;
             d.y = _t9 * _t16;
             d.z = _t10 * _t16;
@@ -4896,7 +5074,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t10 * _t16;
             d.y = _t12 * _t16;
             d.z = _t9 * _t16;
@@ -4931,7 +5109,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-this.z, this.z, Math.fma(this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t10 * _t16;
             d.y = _t12 * _t16;
             d.z = _t9 * _t16;
@@ -4963,7 +5141,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t9 * _t16;
             d.y = _t10 * _t16;
             d.z = _t12 * _t16;
@@ -4998,7 +5176,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(this.z, this.z, Math.fma(-this.y, this.y, Math.fma(this.w, this.w, -(this.x * this.x))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             d.x = _t9 * _t16;
             d.y = _t10 * _t16;
             d.z = _t12 * _t16;
@@ -5040,7 +5218,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
         float _t26 = (float) Math.sin(_t24);
-        float _t28 = _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23));
+        float _t28 = _t26 * _t10 / _t24;
         if (_t23 > 0.0f) {
             d.x = _t19 * _t28;
             d.y = _t20 * _t28;
@@ -5087,7 +5265,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
         float _t26 = (float) Math.sin(_t24);
-        float _t28 = _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23));
+        float _t28 = _t26 * _t10 / _t24;
         if (_t23 > 0.0f) {
             d.x = _t19 * _t28;
             d.y = _t20 * _t28;
@@ -5206,6 +5384,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
      * down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -5226,6 +5406,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -5243,6 +5425,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
      * down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -5302,7 +5486,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         float _t73 = (1.0f / (float) Math.sqrt(_t72));
-        if (_t72 > 0.0f) {
+        if (_t72 != 0.0f) {
             d.x = _t73 * _t67;
             d.y = _t73 * _t68;
             d.z = _t73 * _t66;
@@ -5326,6 +5510,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -5385,7 +5571,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         float _t73 = (1.0f / (float) Math.sqrt(_t72));
-        if (_t72 > 0.0f) {
+        if (_t72 != 0.0f) {
             d.x = _t73 * _t67;
             d.y = _t73 * _t68;
             d.z = _t73 * _t66;
@@ -5407,6 +5593,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -5426,6 +5617,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5448,6 +5644,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -5460,84 +5661,72 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public FloatQuat lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated FloatQuat dest) {
         FloatQuatImpl d = (FloatQuatImpl) dest;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0f;
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-        }
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 - _t32;
-        float _t38 = _t9 + _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.max(_t49, _t7);
-        float _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        float _t1 = -dirZ;
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t6 = dirZ * _t5;
+        float _t7 = dirY * _t5;
+        float _t8 = dirX * _t5;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        float _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirX, _t5, _t29);
+        float _t37 = Math.fma(dirX, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirY, _t5, _t47);
+        float _t52 = Math.max(_t45, _t6);
+        float _t53 = Math.fma(-dirY, _t5, _t47);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _t108, _t109, _t110, _t111;
         if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
-            _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
+            _t108 = _sp0 * _t53;
+            _t109 = _sp0 * _t57;
+            _t110 = _sp0 * _t37;
+            _t111 = 0.5f * (float) Math.sqrt(_t60);
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
-                _t110 = 0.5f * _t56 * _t65;
-                _t111 = 0.5f * (float) Math.sqrt(_t61);
+            if (_t28 > _t52) {
+                _t108 = 0.5f * (float) Math.sqrt(_t62);
+                _t109 = _sp3 * _t33;
+                _t110 = _sp3 * _t56;
+                _t111 = _sp3 * _t53;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
-                    _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
+                if (_t45 > _t6) {
+                    _t108 = _sp1 * _t56;
+                    _t109 = _sp1 * _t51;
+                    _t110 = 0.5f * (float) Math.sqrt(_t66);
+                    _t111 = _sp1 * _t37;
                 } else {
-                    _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
+                    _t108 = _sp2 * _t33;
+                    _t109 = 0.5f * (float) Math.sqrt(_t63);
+                    _t110 = _sp2 * _t51;
+                    _t111 = _sp2 * _t57;
                 }
             }
         }
-        float _buf0 = Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109));
-        float _buf1 = Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108));
-        float _buf2 = Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111));
-        d.w = Math.fma(this.w, _t110, -(this.x * _t111)) - Math.fma(this.y, _t109, this.z * _t108);
+        float _buf0 = Math.fma(this.x, _t111, this.w * _t108) + Math.fma(this.y, _t109, -(this.z * _t110));
+        float _buf1 = Math.fma(this.y, _t111, this.z * _t108) + Math.fma(this.w, _t110, -(this.x * _t109));
+        float _buf2 = Math.fma(this.x, _t110, this.w * _t109) + Math.fma(this.z, _t111, -(this.y * _t108));
+        d.w = Math.fma(this.w, _t111, -(this.x * _t108)) - Math.fma(this.y, _t110, this.z * _t109);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -5553,6 +5742,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -5567,84 +5761,336 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     public DoubleQuat lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated DoubleQuat dest) {
         DoubleQuatImpl d = (DoubleQuatImpl) dest;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0f;
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-        }
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 - _t32;
-        float _t38 = _t9 + _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.max(_t49, _t7);
-        float _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        float _t1 = -dirZ;
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t6 = dirZ * _t5;
+        float _t7 = dirY * _t5;
+        float _t8 = dirX * _t5;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        float _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirX, _t5, _t29);
+        float _t37 = Math.fma(dirX, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirY, _t5, _t47);
+        float _t52 = Math.max(_t45, _t6);
+        float _t53 = Math.fma(-dirY, _t5, _t47);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _t108, _t109, _t110, _t111;
         if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
-            _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
+            _t108 = _sp0 * _t53;
+            _t109 = _sp0 * _t57;
+            _t110 = _sp0 * _t37;
+            _t111 = 0.5f * (float) Math.sqrt(_t60);
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
-                _t110 = 0.5f * _t56 * _t65;
-                _t111 = 0.5f * (float) Math.sqrt(_t61);
+            if (_t28 > _t52) {
+                _t108 = 0.5f * (float) Math.sqrt(_t62);
+                _t109 = _sp3 * _t33;
+                _t110 = _sp3 * _t56;
+                _t111 = _sp3 * _t53;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
-                    _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
+                if (_t45 > _t6) {
+                    _t108 = _sp1 * _t56;
+                    _t109 = _sp1 * _t51;
+                    _t110 = 0.5f * (float) Math.sqrt(_t66);
+                    _t111 = _sp1 * _t37;
                 } else {
-                    _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
+                    _t108 = _sp2 * _t33;
+                    _t109 = 0.5f * (float) Math.sqrt(_t63);
+                    _t110 = _sp2 * _t51;
+                    _t111 = _sp2 * _t57;
                 }
             }
         }
-        float _buf0 = Math.fma(this.x, _t110, this.w * _t111) + Math.fma(this.y, _t108, -(this.z * _t109));
-        float _buf1 = Math.fma(this.y, _t110, this.z * _t111) + Math.fma(this.w, _t109, -(this.x * _t108));
-        float _buf2 = Math.fma(this.x, _t109, this.w * _t108) + Math.fma(this.z, _t110, -(this.y * _t111));
-        d.w = Math.fma(this.w, _t110, -(this.x * _t111)) - Math.fma(this.y, _t109, this.z * _t108);
+        float _buf0 = Math.fma(this.x, _t111, this.w * _t108) + Math.fma(this.y, _t109, -(this.z * _t110));
+        float _buf1 = Math.fma(this.y, _t111, this.z * _t108) + Math.fma(this.w, _t110, -(this.x * _t109));
+        float _buf2 = Math.fma(this.x, _t110, this.w * _t109) + Math.fma(this.z, _t111, -(this.y * _t108));
+        d.w = Math.fma(this.w, _t111, -(this.x * _t108)) - Math.fma(this.y, _t110, this.z * _t109);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private FloatQuat lookAlong_degenerate(Float3R dir, Float3R up, @Mutated FloatQuat dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleQuat lookAlong_degenerate(Float3R dir, Float3R up, @Mutated DoubleQuat dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private FloatQuat lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated FloatQuat dest) {
+        FloatQuatImpl d = (FloatQuatImpl) dest;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0f;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0f;
+            _t30 = -_t12;
+        }
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0f) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0f / (float) Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0f / (float) Math.sqrt(_t35));
+        }
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t68 = Math.max(_t62, _t12);
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t74));
+        float _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t78));
+        float _t89 = Math.fma(_t41, _t39, _t66);
+        float _t90 = Math.fma(_t41, _t39, -_t66);
+        float _t123, _t124, _t125, _t126;
+        if (_t72 > 0.0f) {
+            _t123 = _sp0 * _t71;
+            _t124 = _sp0 * _t90;
+            _t125 = _sp0 * _t51;
+            _t126 = 0.5f * (float) Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5f * (float) Math.sqrt(_t74);
+                _t124 = _sp3 * _t48;
+                _t125 = _sp3 * _t89;
+                _t126 = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = _sp1 * _t89;
+                    _t124 = _sp1 * _t70;
+                    _t125 = 0.5f * (float) Math.sqrt(_t77);
+                    _t126 = _sp1 * _t51;
+                } else {
+                    _t123 = _sp2 * _t48;
+                    _t124 = 0.5f * (float) Math.sqrt(_t78);
+                    _t125 = _sp2 * _t70;
+                    _t126 = _sp2 * _t90;
+                }
+            }
+        }
+        float _buf0 = Math.fma(this.x, _t126, this.w * _t123) + Math.fma(this.y, _t124, -(this.z * _t125));
+        float _buf1 = Math.fma(this.y, _t126, this.z * _t123) + Math.fma(this.w, _t125, -(this.x * _t124));
+        float _buf2 = Math.fma(this.x, _t125, this.w * _t124) + Math.fma(this.z, _t126, -(this.y * _t123));
+        d.w = Math.fma(this.w, _t126, -(this.x * _t123)) - Math.fma(this.y, _t125, this.z * _t124);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private FloatQuat lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.floatQuat() : this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleQuat lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated DoubleQuat dest) {
+        DoubleQuatImpl d = (DoubleQuatImpl) dest;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0f;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0f;
+            _t30 = -_t12;
+        }
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0f) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0f / (float) Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0f / (float) Math.sqrt(_t35));
+        }
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t68 = Math.max(_t62, _t12);
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t74));
+        float _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t78));
+        float _t89 = Math.fma(_t41, _t39, _t66);
+        float _t90 = Math.fma(_t41, _t39, -_t66);
+        float _t123, _t124, _t125, _t126;
+        if (_t72 > 0.0f) {
+            _t123 = _sp0 * _t71;
+            _t124 = _sp0 * _t90;
+            _t125 = _sp0 * _t51;
+            _t126 = 0.5f * (float) Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5f * (float) Math.sqrt(_t74);
+                _t124 = _sp3 * _t48;
+                _t125 = _sp3 * _t89;
+                _t126 = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = _sp1 * _t89;
+                    _t124 = _sp1 * _t70;
+                    _t125 = 0.5f * (float) Math.sqrt(_t77);
+                    _t126 = _sp1 * _t51;
+                } else {
+                    _t123 = _sp2 * _t48;
+                    _t124 = 0.5f * (float) Math.sqrt(_t78);
+                    _t125 = _sp2 * _t70;
+                    _t126 = _sp2 * _t90;
+                }
+            }
+        }
+        float _buf0 = Math.fma(this.x, _t126, this.w * _t123) + Math.fma(this.y, _t124, -(this.z * _t125));
+        float _buf1 = Math.fma(this.y, _t126, this.z * _t123) + Math.fma(this.w, _t125, -(this.x * _t124));
+        float _buf2 = Math.fma(this.x, _t125, this.w * _t124) + Math.fma(this.z, _t126, -(this.y * _t123));
+        d.w = Math.fma(this.w, _t126, -(this.x * _t123)) - Math.fma(this.y, _t125, this.z * _t124);
         d.x = _buf0;
         d.y = _buf1;
         d.z = _buf2;
@@ -5693,6 +6139,11 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -5707,6 +6158,11 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along ({@code dirX},
      * {@code dirY}, {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -5717,76 +6173,182 @@ public final class FloatQuatImpl implements FloatQuat {
      * @return this
      */
     @Mutated public FloatQuat makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0f;
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-        }
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 + _t32;
-        float _t38 = _t9 - _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t56 = Math.max(_t49, _t7);
-        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t64 = (1.0f / (float) Math.sqrt(_t60));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
+        float _t1 = -dirZ;
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t6 = dirZ * _t5;
+        float _t7 = dirY * _t5;
+        float _t8 = dirX * _t5;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        float _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirX, _t5, _t29);
+        float _t38 = Math.fma(dirX, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirY, _t5, _t46);
+        float _t52 = Math.fma(-dirY, _t5, _t46);
+        float _t53 = Math.max(_t45, _t6);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            this.x = 0.5f * _t55 * _t64;
-            this.y = 0.5f * _t38 * _t64;
-            this.z = 0.5f * _t58 * _t64;
+            this.x = _sp0 * _t52;
+            this.y = _sp0 * _t38;
+            this.z = _sp0 * _t57;
             this.w = 0.5f * (float) Math.sqrt(_t60);
         } else {
-            if (_t31 > _t56) {
-                this.x = 0.5f * (float) Math.sqrt(_t61);
-                this.y = 0.5f * _t57 * _t67;
-                this.z = 0.5f * _t37 * _t67;
-                this.w = 0.5f * _t55 * _t67;
+            if (_t28 > _t53) {
+                this.x = 0.5f * (float) Math.sqrt(_t62);
+                this.y = _sp3 * _t56;
+                this.z = _sp3 * _t33;
+                this.w = _sp3 * _t52;
             } else {
-                if (_t49 > _t7) {
-                    this.x = 0.5f * _t57 * _t65;
-                    this.y = 0.5f * (float) Math.sqrt(_t62);
-                    this.z = 0.5f * _t54 * _t65;
-                    this.w = 0.5f * _t38 * _t65;
+                if (_t45 > _t6) {
+                    this.x = _sp1 * _t56;
+                    this.y = 0.5f * (float) Math.sqrt(_t64);
+                    this.z = _sp1 * _t51;
+                    this.w = _sp1 * _t38;
                 } else {
-                    this.x = 0.5f * _t37 * _t66;
-                    this.y = 0.5f * _t54 * _t66;
+                    this.x = _sp2 * _t33;
+                    this.y = _sp2 * _t51;
                     this.z = 0.5f * (float) Math.sqrt(_t63);
-                    this.w = 0.5f * _t58 * _t66;
+                    this.w = _sp2 * _t57;
+                }
+            }
+        }
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated FloatQuat makeRotationLookAlong_degenerate(Float3R dir, Float3R up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private FloatQuat makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0f;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0f;
+            _t30 = -_t12;
+        }
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0f) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0f / (float) Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0f / (float) Math.sqrt(_t35));
+        }
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t68 = Math.max(_t62, _t12);
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
+        float _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t74));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t76));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
+        float _t81 = Math.fma(_t41, _t39, _t66);
+        float _t82 = Math.fma(_t41, _t39, -_t66);
+        if (_t72 > 0.0f) {
+            this.x = _sp0 * _t71;
+            this.y = _sp0 * _t51;
+            this.z = _sp0 * _t82;
+            this.w = 0.5f * (float) Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                this.x = 0.5f * (float) Math.sqrt(_t74);
+                this.y = _sp3 * _t81;
+                this.z = _sp3 * _t48;
+                this.w = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    this.x = _sp1 * _t81;
+                    this.y = 0.5f * (float) Math.sqrt(_t76);
+                    this.z = _sp1 * _t70;
+                    this.w = _sp1 * _t51;
+                } else {
+                    this.x = _sp2 * _t48;
+                    this.y = _sp2 * _t70;
+                    this.z = 0.5f * (float) Math.sqrt(_t77);
+                    this.w = _sp2 * _t82;
                 }
             }
         }
@@ -5799,10 +6361,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDir the direction to rotate from (must be a unit vector)
      * @param toDir the direction to rotate onto (must be a unit vector)
@@ -5818,10 +6380,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * {@code fromDirZ}) onto ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -5854,13 +6416,13 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
-        if (_t23 > 1.0E-6f) {
+        if (_t23 > 6.0E-8f) {
             this.x = _t14 * _t32;
             this.y = _t16 * _t32;
             this.z = _t15 * _t32;
-            this.w = 0.5f * _t22 * _t32;
+            this.w = _t23 * _t32;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 this.x = _t30 * _t17;
                 this.y = _t30 * _t19;
                 this.z = _t30 * _t18;
@@ -6421,10 +6983,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDir the direction to rotate from (must be a unit vector)
      * @param toDir the direction to rotate onto (must be a unit vector)
@@ -6445,10 +7007,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6473,10 +7035,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -6512,13 +7074,13 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         float _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6f) {
-            _t41 = 0.5f * _t22 * _t35;
+        if (_t23 > 6.0E-8f) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 _t41 = 0.0f;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -6551,10 +7113,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6593,13 +7155,13 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         float _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6f) {
-            _t41 = 0.5f * _t22 * _t35;
+        if (_t23 > 6.0E-8f) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 _t41 = 0.0f;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -7341,6 +7903,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -7356,6 +7920,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -7369,6 +7935,8 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this quaternion and store the result in
      * {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -7396,6 +7964,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -7604,4 +8174,20 @@ public final class FloatQuatImpl implements FloatQuat {
         return RAW_OPS.loadDoubleUnsafe(this, address);
     }
 
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
+    }
 }

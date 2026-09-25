@@ -52,7 +52,12 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to add
      * @param dest will hold the result
@@ -64,7 +69,12 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -79,8 +89,13 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Add ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) to this
-     * rectangle and store the result in {@code dest}.
+     * Add each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) to the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -105,8 +120,13 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Add ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) to this
-     * rectangle and store the result in {@code dest}.
+     * Add each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) to the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -134,7 +154,8 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -142,16 +163,19 @@ public final class FloatRectImpl implements FloatRect {
     public FloatRect negate(@Mutated FloatRect dest) {
         float[] sd = this.data;
         float[] dd = ((FloatRectImpl) dest).data;
-        dd[0] = -sd[0];
-        dd[1] = -sd[1];
-        dd[2] = -sd[2];
-        dd[3] = -sd[3];
+        float _buf0 = -sd[2];
+        float _buf1 = -sd[3];
+        dd[2] = -sd[0];
+        dd[3] = -sd[1];
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -162,16 +186,23 @@ public final class FloatRectImpl implements FloatRect {
     public DoubleRect negate(@Mutated DoubleRect dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleRectImpl) dest).data;
-        dd[0] = -sd[0];
-        dd[1] = -sd[1];
-        dd[2] = -sd[2];
-        dd[3] = -sd[3];
+        float _buf0 = -sd[2];
+        float _buf1 = -sd[3];
+        dd[2] = -sd[0];
+        dd[3] = -sd[1];
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to subtract
      * @param dest will hold the result
@@ -183,7 +214,12 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -198,8 +234,13 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Subtract ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) from
-     * this rectangle and store the result in {@code dest}.
+     * Subtract each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) from the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -224,8 +265,13 @@ public final class FloatRectImpl implements FloatRect {
 
 
     /**
-     * Subtract ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) from
-     * this rectangle and store the result in {@code dest}.
+     * Subtract each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) from the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

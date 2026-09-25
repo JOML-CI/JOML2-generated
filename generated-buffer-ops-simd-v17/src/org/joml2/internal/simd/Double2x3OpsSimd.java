@@ -150,7 +150,7 @@ public final class Double2x3OpsSimd {
     }
 
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 6) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -162,7 +162,7 @@ public final class Double2x3OpsSimd {
     }
 
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 357913941 ? -1 : count * 6) >= 0 && srcOffset <= src.limit() - (count > 357913941 ? -1 : count * 6)) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr(dest, destOffset, _srcArr, _srcOff, count * 6);
@@ -174,7 +174,7 @@ public final class Double2x3OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 6) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr_one(_destArr, _destOff, src, srcOffset);
@@ -186,7 +186,7 @@ public final class Double2x3OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 357913941 ? -1 : count * 6) >= 0 && destOffset <= dest.limit() - (count > 357913941 ? -1 : count * 6)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr(_destArr, _destOff, src, srcOffset, count * 6);
@@ -198,10 +198,10 @@ public final class Double2x3OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 6) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 6) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr_one(_destArr, _destOff, _srcArr, _srcOff);
@@ -210,7 +210,7 @@ public final class Double2x3OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 6) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < 6; _i++)
@@ -224,10 +224,10 @@ public final class Double2x3OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 357913941 ? -1 : count * 6) >= 0 && destOffset <= dest.limit() - (count > 357913941 ? -1 : count * 6)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 357913941 ? -1 : count * 6) >= 0 && srcOffset <= src.limit() - (count > 357913941 ? -1 : count * 6)) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr(_destArr, _destOff, _srcArr, _srcOff, count * 6);
@@ -236,7 +236,7 @@ public final class Double2x3OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 357913941 ? -1 : count * 6) >= 0 && srcOffset <= src.limit() - (count > 357913941 ? -1 : count * 6)) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < count * 6; _i++)

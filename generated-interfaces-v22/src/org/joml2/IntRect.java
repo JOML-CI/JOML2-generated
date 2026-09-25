@@ -28,7 +28,11 @@ import java.lang.foreign.MemorySegment;
 public interface IntRect extends IntRectR {
 
     /**
-     * Add {@code other} to this rectangle.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to add
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -36,7 +40,12 @@ public interface IntRect extends IntRectR {
     @Mutated default IntRect add(IntRectR other) { return add(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
     /**
-     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle.
+     * Add each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to the
+     * corresponding bound of this rectangle.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -47,14 +56,19 @@ public interface IntRect extends IntRectR {
     @Mutated default IntRect add(int minX, int minY, int maxX, int maxY) { return add(minX, minY, maxX, maxY, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
     /**
-     * Negate this rectangle.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)}.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default IntRect negate() { return negate(Joml.RETURN_NEW ? Joml.intRect() : this); }
 
     /**
-     * Subtract {@code other} from this rectangle.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to subtract
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -62,7 +76,12 @@ public interface IntRect extends IntRectR {
     @Mutated default IntRect sub(IntRectR other) { return sub(other, Joml.RETURN_NEW ? Joml.intRect() : this); }
 
     /**
-     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle.
+     * Subtract each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from the
+     * corresponding bound of this rectangle.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -95,35 +114,35 @@ public interface IntRect extends IntRectR {
      * Set the maximum corner of this rectangle to {@code max}.
      *
      * @param max the maximum corner of the box
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default IntRect setMax(Int2R max) { return setMax(max, Joml.RETURN_NEW ? Joml.intRect() : this); }
+    @Mutated default IntRect setMax(Int2R max) { return setMax(max, this); }
 
     /**
      * Set the maximum corner of this rectangle to ({@code x}, {@code y}).
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default IntRect setMax(int x, int y) { return setMax(x, y, Joml.RETURN_NEW ? Joml.intRect() : this); }
+    @Mutated default IntRect setMax(int x, int y) { return setMax(x, y, this); }
 
     /**
      * Set the minimum corner of this rectangle to {@code min}.
      *
      * @param min the minimum corner of the box
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default IntRect setMin(Int2R min) { return setMin(min, Joml.RETURN_NEW ? Joml.intRect() : this); }
+    @Mutated default IntRect setMin(Int2R min) { return setMin(min, this); }
 
     /**
      * Set the minimum corner of this rectangle to ({@code x}, {@code y}).
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default IntRect setMin(int x, int y) { return setMin(x, y, Joml.RETURN_NEW ? Joml.intRect() : this); }
+    @Mutated default IntRect setMin(int x, int y) { return setMin(x, y, this); }
 
     /**
      * Convert this rectangle to {@code float} precision, returning the result as a new instance.

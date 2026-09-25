@@ -45,10 +45,10 @@ import org.joml2.internal.simd.*;
  * the flags its overload reads. Every non-bulk buffer and raw-address overload - and the
  * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
  * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
- * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
- * element-wise operations loop over the buffer API directly and freeze nothing. Every overload with
- * a Vector-API or fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization
- * snapshots {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma},
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads dispatch through
+ * {@code SimdSupport} like every other SIMD path (below). Every overload with a Vector-API or
+ * fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization snapshots
+ * {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma}, {@code cosFromSin},
  * {@code fastmath}, {@code sinLookup}, {@code strictMath}) - and {@code Joml.VECTOR_API}, freezing
  * the {@link JomlConfig} flags as well; the scalar kernels call {@link Math} for their
  * multiply-adds and transcendentals, which freezes the {@code Math} flags likewise. Only the array
@@ -536,7 +536,9 @@ public final class DoubleQuatOps {
     }
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -569,7 +571,9 @@ public final class DoubleQuatOps {
     }
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -602,7 +606,9 @@ public final class DoubleQuatOps {
     }
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -1412,7 +1418,7 @@ public final class DoubleQuatOps {
         double _t7 = Math.fma(alpha, targetY - _selfy, _selfy);
         double _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
+        if (_t11 != 0.0) {
             dest[destOffset + 0] = _t6 * _t12;
             dest[destOffset + 1] = _t7 * _t12;
             dest[destOffset + 2] = _t5 * _t12;
@@ -1536,7 +1542,7 @@ public final class DoubleQuatOps {
         }
         double _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         double _t25 = (1.0 / Math.sqrt(_t24));
-        if (_t24 > 0.0) {
+        if (_t24 != 0.0) {
             dest[destOffset + 0] = _t19 * _t25;
             dest[destOffset + 1] = _t20 * _t25;
             dest[destOffset + 2] = _t18 * _t25;
@@ -1772,7 +1778,7 @@ public final class DoubleQuatOps {
         }
         double _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         double _t50 = (1.0 / Math.sqrt(_t49));
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             dest[destOffset + 0] = _t50 * _t44;
             dest[destOffset + 1] = _t50 * _t45;
             dest[destOffset + 2] = _t50 * _t43;
@@ -1889,61 +1895,92 @@ public final class DoubleQuatOps {
         double _selfw = src[srcOffset + 3];
         double _t0 = 1.0 - t;
         double _t1 = t + t;
+        double _t3 = control0W + control1W;
+        double _t4 = control0Z + control1Z;
+        double _t5 = control0X + control1X;
+        double _t6 = control0Y + control1Y;
+        double _t7 = t < 0.5 ? 1.0 : 0.0;
+        double _t8 = _selfw + targetW;
+        double _t9 = _selfz + targetZ;
+        double _t10 = _selfx + targetX;
+        double _t11 = _selfy + targetY;
+        double _t12 = 1.0 - _t7;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
-        double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
-        double _t34 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_selfw, targetW, Math.fma(_selfz, targetZ, Math.fma(_selfx, targetX, _selfy * targetY))))));
-        double _t35 = Math.sin(_t33);
-        double _t35_inv = 1.0 / _t35;
-        double _t36 = Math.sin(_t34);
-        double _t36_inv = 1.0 / _t36;
-        double _t37 = Math.abs(_t35);
-        double _t39 = Math.abs(_t36);
-        double _t41 = Math.sin(t * _t33);
-        double _t42 = Math.sin(t * _t34);
-        double _t45 = Math.sin(_t0 * _t33);
-        double _t46 = Math.sin(_t0 * _t34);
-        double _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6) {
-            _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
-            _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
+        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
+        double _t25 = Math.min(4.0, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        double _t27 = quatArcAngle(_t25);
+        double _t28 = quatArcAngle(_t26);
+        double _t29 = 4.0 - _t25;
+        double _t30 = 4.0 - _t26;
+        double _t39 = _t29 * _t25;
+        double _t40 = _t30 * _t26;
+        double _t41 = Math.sqrt(_t39);
+        double _t43 = Math.sqrt(_t40);
+        double _t45 = 2.0 / _t41;
+        double _t46 = 2.0 / _t43;
+        double _t55, _t57;
+        if (_t41 > 2.0E-14) {
+            _t55 = _t45 * Math.sin(t * _t27);
+            _t57 = _t45 * Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1W, control0W * _t0);
-            _t73 = Math.fma(t, control1Z, control0Z * _t0);
-            _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        double _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6) {
-            _t72 = Math.fma(_selfw, _t46, targetW * _t42) * _t36_inv;
-            _t74 = Math.fma(_selfz, _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(_selfx, _t46, targetX * _t42) * _t36_inv;
-            _t78 = Math.fma(_selfy, _t46, targetY * _t42) * _t36_inv;
+        double _t56, _t58;
+        if (_t43 > 2.0E-14) {
+            _t56 = _t46 * Math.sin(t * _t28);
+            _t58 = _t46 * Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetW, _selfw * _t0);
-            _t74 = Math.fma(t, targetZ, _selfz * _t0);
-            _t76 = Math.fma(t, targetX, _selfx * _t0);
-            _t78 = Math.fma(t, targetY, _selfy * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        double _t85 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        double _t86 = Math.sin(_t85);
-        double _t86_inv = 1.0 / _t86;
-        double _t87 = Math.abs(_t86);
-        double _t89 = Math.sin(_t13 * _t85);
-        double _t91 = Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6) {
-            dest[destOffset + 0] = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            dest[destOffset + 1] = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            dest[destOffset + 2] = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            dest[destOffset + 3] = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        double _t67 = Math.fma(control0X, _t57, control1X * _t55);
+        double _t68 = Math.fma(control0W, _t57, control1W * _t55);
+        double _t69 = Math.fma(_selfw, _t58, targetW * _t56);
+        double _t70 = Math.fma(control0Z, _t57, control1Z * _t55);
+        double _t71 = Math.fma(_selfz, _t58, targetZ * _t56);
+        double _t72 = Math.fma(_selfx, _t58, targetX * _t56);
+        double _t73 = Math.fma(control0Y, _t57, control1Y * _t55);
+        double _t74 = Math.fma(_selfy, _t58, targetY * _t56);
+        double _t75 = _t68 + _t69;
+        double _t76 = _t70 + _t71;
+        double _t77 = _t67 + _t72;
+        double _t78 = _t73 + _t74;
+        double _t83 = Math.min(4.0, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        double _t84 = quatArcAngle(_t83);
+        double _t85 = 4.0 - _t83;
+        double _t90 = _t85 * _t83;
+        double _t91 = Math.sqrt(_t90);
+        double _t93 = 2.0 / _t91;
+        double _t98, _t99;
+        if (_t91 > 2.0E-14) {
+            _t98 = _t93 * Math.sin(_t13 * _t84);
+            _t99 = _t93 * Math.sin(_t14 * _t84);
         } else {
-            dest[destOffset + 0] = Math.fma(_t14, _t76, _t13 * _t75);
-            dest[destOffset + 1] = Math.fma(_t14, _t78, _t13 * _t77);
-            dest[destOffset + 2] = Math.fma(_t14, _t74, _t13 * _t73);
-            dest[destOffset + 3] = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0 - _t17;
+                _t99 = _t17;
+            }
         }
+        dest[destOffset + 0] = Math.fma(_t67, _t98, _t72 * _t99);
+        dest[destOffset + 1] = Math.fma(_t73, _t98, _t74 * _t99);
+        dest[destOffset + 2] = Math.fma(_t70, _t98, _t71 * _t99);
+        dest[destOffset + 3] = Math.fma(_t68, _t98, _t69 * _t99);
         return dest;
     }
 
@@ -2005,61 +2042,92 @@ public final class DoubleQuatOps {
         double _targetw = target[targetOffset + 3];
         double _t0 = 1.0 - t;
         double _t1 = t + t;
+        double _t3 = _control0w + _control1w;
+        double _t4 = _control0z + _control1z;
+        double _t5 = _control0x + _control1x;
+        double _t6 = _control0y + _control1y;
+        double _t7 = t < 0.5 ? 1.0 : 0.0;
+        double _t8 = _selfw + _targetw;
+        double _t9 = _selfz + _targetz;
+        double _t10 = _selfx + _targetx;
+        double _t11 = _selfy + _targety;
+        double _t12 = 1.0 - _t7;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
-        double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_control0w, _control1w, Math.fma(_control0z, _control1z, Math.fma(_control0x, _control1x, _control0y * _control1y))))));
-        double _t34 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))));
-        double _t35 = Math.sin(_t33);
-        double _t35_inv = 1.0 / _t35;
-        double _t36 = Math.sin(_t34);
-        double _t36_inv = 1.0 / _t36;
-        double _t37 = Math.abs(_t35);
-        double _t39 = Math.abs(_t36);
-        double _t41 = Math.sin(t * _t33);
-        double _t42 = Math.sin(t * _t34);
-        double _t45 = Math.sin(_t0 * _t33);
-        double _t46 = Math.sin(_t0 * _t34);
-        double _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6) {
-            _t71 = Math.fma(_control0w, _t45, _control1w * _t41) * _t35_inv;
-            _t73 = Math.fma(_control0z, _t45, _control1z * _t41) * _t35_inv;
-            _t75 = Math.fma(_control0x, _t45, _control1x * _t41) * _t35_inv;
-            _t77 = Math.fma(_control0y, _t45, _control1y * _t41) * _t35_inv;
+        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
+        double _t25 = Math.min(4.0, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        double _t27 = quatArcAngle(_t25);
+        double _t28 = quatArcAngle(_t26);
+        double _t29 = 4.0 - _t25;
+        double _t30 = 4.0 - _t26;
+        double _t39 = _t29 * _t25;
+        double _t40 = _t30 * _t26;
+        double _t41 = Math.sqrt(_t39);
+        double _t43 = Math.sqrt(_t40);
+        double _t45 = 2.0 / _t41;
+        double _t46 = 2.0 / _t43;
+        double _t55, _t57;
+        if (_t41 > 2.0E-14) {
+            _t55 = _t45 * Math.sin(t * _t27);
+            _t57 = _t45 * Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, _control1w, _control0w * _t0);
-            _t73 = Math.fma(t, _control1z, _control0z * _t0);
-            _t75 = Math.fma(t, _control1x, _control0x * _t0);
-            _t77 = Math.fma(t, _control1y, _control0y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        double _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6) {
-            _t72 = Math.fma(_selfw, _t46, _targetw * _t42) * _t36_inv;
-            _t74 = Math.fma(_selfz, _t46, _targetz * _t42) * _t36_inv;
-            _t76 = Math.fma(_selfx, _t46, _targetx * _t42) * _t36_inv;
-            _t78 = Math.fma(_selfy, _t46, _targety * _t42) * _t36_inv;
+        double _t56, _t58;
+        if (_t43 > 2.0E-14) {
+            _t56 = _t46 * Math.sin(t * _t28);
+            _t58 = _t46 * Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, _targetw, _selfw * _t0);
-            _t74 = Math.fma(t, _targetz, _selfz * _t0);
-            _t76 = Math.fma(t, _targetx, _selfx * _t0);
-            _t78 = Math.fma(t, _targety, _selfy * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        double _t85 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        double _t86 = Math.sin(_t85);
-        double _t86_inv = 1.0 / _t86;
-        double _t87 = Math.abs(_t86);
-        double _t89 = Math.sin(_t13 * _t85);
-        double _t91 = Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6) {
-            dest[destOffset + 0] = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            dest[destOffset + 1] = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            dest[destOffset + 2] = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            dest[destOffset + 3] = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        double _t67 = Math.fma(_control0x, _t57, _control1x * _t55);
+        double _t68 = Math.fma(_control0w, _t57, _control1w * _t55);
+        double _t69 = Math.fma(_selfw, _t58, _targetw * _t56);
+        double _t70 = Math.fma(_control0z, _t57, _control1z * _t55);
+        double _t71 = Math.fma(_selfz, _t58, _targetz * _t56);
+        double _t72 = Math.fma(_selfx, _t58, _targetx * _t56);
+        double _t73 = Math.fma(_control0y, _t57, _control1y * _t55);
+        double _t74 = Math.fma(_selfy, _t58, _targety * _t56);
+        double _t75 = _t68 + _t69;
+        double _t76 = _t70 + _t71;
+        double _t77 = _t67 + _t72;
+        double _t78 = _t73 + _t74;
+        double _t83 = Math.min(4.0, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        double _t84 = quatArcAngle(_t83);
+        double _t85 = 4.0 - _t83;
+        double _t90 = _t85 * _t83;
+        double _t91 = Math.sqrt(_t90);
+        double _t93 = 2.0 / _t91;
+        double _t98, _t99;
+        if (_t91 > 2.0E-14) {
+            _t98 = _t93 * Math.sin(_t13 * _t84);
+            _t99 = _t93 * Math.sin(_t14 * _t84);
         } else {
-            dest[destOffset + 0] = Math.fma(_t14, _t76, _t13 * _t75);
-            dest[destOffset + 1] = Math.fma(_t14, _t78, _t13 * _t77);
-            dest[destOffset + 2] = Math.fma(_t14, _t74, _t13 * _t73);
-            dest[destOffset + 3] = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0 - _t17;
+                _t99 = _t17;
+            }
         }
+        dest[destOffset + 0] = Math.fma(_t67, _t98, _t72 * _t99);
+        dest[destOffset + 1] = Math.fma(_t73, _t98, _t74 * _t99);
+        dest[destOffset + 2] = Math.fma(_t70, _t98, _t71 * _t99);
+        dest[destOffset + 3] = Math.fma(_t68, _t98, _t69 * _t99);
         return dest;
     }
 
@@ -2332,6 +2400,8 @@ public final class DoubleQuatOps {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
@@ -2398,6 +2468,8 @@ public final class DoubleQuatOps {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param src the storage holding the quaternion
      * @param srcOffset the element index in {@code src} at which the quaternion starts
@@ -2705,12 +2777,13 @@ public final class DoubleQuatOps {
         double _selfy = src[srcOffset + 1];
         double _selfz = src[srcOffset + 2];
         double _selfw = src[srcOffset + 3];
-        double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        double _t3_inv = 1.0 / _t3;
+        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        double _sp1 = _t3_inv * _selfz;
+        double _sp0 = _selfy * _t3_inv;
         dest[destOffset + 0] = (Math.fma(otherX, _selfw, -(otherW * _selfx)) + Math.fma(otherY, _selfz, -(otherZ * _selfy))) * _t3_inv;
-        dest[destOffset + 1] = -(otherW * _selfy * _t3_inv) - otherX * _selfz * _t3_inv + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv;
+        dest[destOffset + 1] = -(otherW * _sp0) - otherX * _sp1 + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv;
         dest[destOffset + 2] = (Math.fma(otherX, _selfy, -(otherW * _selfz)) + Math.fma(otherZ, _selfw, -(otherY * _selfx))) * _t3_inv;
-        dest[destOffset + 3] = Math.fma(otherX, _selfx, otherW * _selfw) * _t3_inv - (-(otherY * _selfy * _t3_inv) - otherZ * _selfz * _t3_inv);
+        dest[destOffset + 3] = Math.fma(otherX, _selfx, otherW * _selfw) * _t3_inv - (-(otherY * _sp0) - otherZ * _sp1);
         return dest;
     }
 
@@ -2756,12 +2829,13 @@ public final class DoubleQuatOps {
         double _othery = other[otherOffset + 1];
         double _otherz = other[otherOffset + 2];
         double _otherw = other[otherOffset + 3];
-        double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        double _t3_inv = 1.0 / _t3;
+        double _t3_inv = 1.0 / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        double _sp1 = _t3_inv * _selfz;
+        double _sp0 = _selfy * _t3_inv;
         dest[destOffset + 0] = (Math.fma(_otherx, _selfw, -(_otherw * _selfx)) + Math.fma(_othery, _selfz, -(_otherz * _selfy))) * _t3_inv;
-        dest[destOffset + 1] = -(_otherw * _selfy * _t3_inv) - _otherx * _selfz * _t3_inv + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv;
+        dest[destOffset + 1] = -(_otherw * _sp0) - _otherx * _sp1 + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv;
         dest[destOffset + 2] = (Math.fma(_otherx, _selfy, -(_otherw * _selfz)) + Math.fma(_otherz, _selfw, -(_othery * _selfx))) * _t3_inv;
-        dest[destOffset + 3] = Math.fma(_otherx, _selfx, _otherw * _selfw) * _t3_inv - (-(_othery * _selfy * _t3_inv) - _otherz * _selfz * _t3_inv);
+        dest[destOffset + 3] = Math.fma(_otherx, _selfx, _otherw * _selfw) * _t3_inv - (-(_othery * _sp0) - _otherz * _sp1);
         return dest;
     }
 
@@ -2903,11 +2977,18 @@ public final class DoubleQuatOps {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -2961,11 +3042,18 @@ public final class DoubleQuatOps {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3019,11 +3107,18 @@ public final class DoubleQuatOps {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3076,11 +3171,18 @@ public final class DoubleQuatOps {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3133,11 +3235,18 @@ public final class DoubleQuatOps {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3190,11 +3299,18 @@ public final class DoubleQuatOps {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -3273,7 +3389,7 @@ public final class DoubleQuatOps {
         double _t7 = Math.sqrt(_t6);
         double _t9 = Math.sin(_t7);
         double _t10 = Math.cosFromSin(_t9, _t7);
-        double _t11 = _t9 * (1.0 / Math.sqrt(_t6));
+        double _t11 = _t9 / _t7;
         double _t15, _t16, _t17;
         if (_t6 > 0.0) {
             _t15 = _t2 * _t11;
@@ -3340,7 +3456,7 @@ public final class DoubleQuatOps {
         double _t7 = Math.sqrt(_t6);
         double _t9 = Math.sin(_t7);
         double _t10 = Math.cosFromSin(_t9, _t7);
-        double _t11 = _t9 * (1.0 / Math.sqrt(_t6));
+        double _t11 = _t9 / _t7;
         double _t15, _t16, _t17;
         if (_t6 > 0.0) {
             _t15 = _t2 * _t11;
@@ -3402,7 +3518,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = -(_t12 * _t16);
             dest[destOffset + 1] = -(_t10 * _t16);
             dest[destOffset + 2] = -(_t9 * _t16);
@@ -3458,7 +3574,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = -(_t9 * _t16);
             dest[destOffset + 1] = -(_t12 * _t16);
             dest[destOffset + 2] = -(_t10 * _t16);
@@ -3514,7 +3630,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = -(_t10 * _t16);
             dest[destOffset + 1] = -(_t9 * _t16);
             dest[destOffset + 2] = -(_t12 * _t16);
@@ -3828,7 +3944,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = _t12 * _t16;
             dest[destOffset + 1] = _t10 * _t16;
             dest[destOffset + 2] = _t9 * _t16;
@@ -3884,7 +4000,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = _t9 * _t16;
             dest[destOffset + 1] = _t12 * _t16;
             dest[destOffset + 2] = _t10 * _t16;
@@ -3940,7 +4056,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = _t10 * _t16;
             dest[destOffset + 1] = _t9 * _t16;
             dest[destOffset + 2] = _t12 * _t16;
@@ -4104,7 +4220,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = -(_t12 * _t16);
             dest[destOffset + 1] = -(_t9 * _t16);
             dest[destOffset + 2] = -(_t10 * _t16);
@@ -4160,7 +4276,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = -(_t10 * _t16);
             dest[destOffset + 1] = -(_t12 * _t16);
             dest[destOffset + 2] = -(_t9 * _t16);
@@ -4216,7 +4332,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = -(_t9 * _t16);
             dest[destOffset + 1] = -(_t10 * _t16);
             dest[destOffset + 2] = -(_t12 * _t16);
@@ -4567,7 +4683,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = _t12 * _t16;
             dest[destOffset + 1] = _t9 * _t16;
             dest[destOffset + 2] = _t10 * _t16;
@@ -4623,7 +4739,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = _t10 * _t16;
             dest[destOffset + 1] = _t12 * _t16;
             dest[destOffset + 2] = _t9 * _t16;
@@ -4679,7 +4795,7 @@ public final class DoubleQuatOps {
         double _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dest[destOffset + 0] = _t9 * _t16;
             dest[destOffset + 1] = _t10 * _t16;
             dest[destOffset + 2] = _t12 * _t16;
@@ -4836,6 +4952,8 @@ public final class DoubleQuatOps {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
      * resolution down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -4901,7 +5019,7 @@ public final class DoubleQuatOps {
         }
         double _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         double _t73 = (1.0 / Math.sqrt(_t72));
-        if (_t72 > 0.0) {
+        if (_t72 != 0.0) {
             dest[destOffset + 0] = _t73 * _t67;
             dest[destOffset + 1] = _t73 * _t68;
             dest[destOffset + 2] = _t73 * _t66;
@@ -4940,6 +5058,8 @@ public final class DoubleQuatOps {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
      * resolution down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -4981,6 +5101,11 @@ public final class DoubleQuatOps {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -5002,7 +5127,7 @@ public final class DoubleQuatOps {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirZ * _t3;
             _t8 = dirY * _t3;
             _t9 = dirX * _t3;
@@ -5020,7 +5145,7 @@ public final class DoubleQuatOps {
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -5043,33 +5168,33 @@ public final class DoubleQuatOps {
         double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t65 = (1.0 / Math.sqrt(_t61));
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t63));
-        double _t68 = (1.0 / Math.sqrt(_t60));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t61));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t108, _t109, _t110, _t111;
         if (_t59 > 0.0) {
-            _t108 = 0.5 * _t57 * _t68;
-            _t109 = 0.5 * _t37 * _t68;
+            _t108 = _sp0 * _t57;
+            _t109 = _sp0 * _t37;
             _t110 = 0.5 * Math.sqrt(_t60);
-            _t111 = 0.5 * _t56 * _t68;
+            _t111 = _sp0 * _t56;
         } else {
             if (_t31 > _t55) {
-                _t108 = 0.5 * _t38 * _t65;
-                _t109 = 0.5 * _t58 * _t65;
-                _t110 = 0.5 * _t56 * _t65;
+                _t108 = _sp1 * _t38;
+                _t109 = _sp1 * _t58;
+                _t110 = _sp1 * _t56;
                 _t111 = 0.5 * Math.sqrt(_t61);
             } else {
                 if (_t49 > _t7) {
-                    _t108 = 0.5 * _t54 * _t66;
+                    _t108 = _sp2 * _t54;
                     _t109 = 0.5 * Math.sqrt(_t62);
-                    _t110 = 0.5 * _t37 * _t66;
-                    _t111 = 0.5 * _t58 * _t66;
+                    _t110 = _sp2 * _t37;
+                    _t111 = _sp2 * _t58;
                 } else {
                     _t108 = 0.5 * Math.sqrt(_t63);
-                    _t109 = 0.5 * _t54 * _t67;
-                    _t110 = 0.5 * _t57 * _t67;
-                    _t111 = 0.5 * _t38 * _t67;
+                    _t109 = _sp3 * _t54;
+                    _t110 = _sp3 * _t57;
+                    _t111 = _sp3 * _t38;
                 }
             }
         }
@@ -5106,6 +5231,11 @@ public final class DoubleQuatOps {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -5132,7 +5262,7 @@ public final class DoubleQuatOps {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _dirz * _t3;
             _t8 = _diry * _t3;
             _t9 = _dirx * _t3;
@@ -5150,7 +5280,7 @@ public final class DoubleQuatOps {
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -5173,33 +5303,33 @@ public final class DoubleQuatOps {
         double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t65 = (1.0 / Math.sqrt(_t61));
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t63));
-        double _t68 = (1.0 / Math.sqrt(_t60));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t61));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t108, _t109, _t110, _t111;
         if (_t59 > 0.0) {
-            _t108 = 0.5 * _t57 * _t68;
-            _t109 = 0.5 * _t37 * _t68;
+            _t108 = _sp0 * _t57;
+            _t109 = _sp0 * _t37;
             _t110 = 0.5 * Math.sqrt(_t60);
-            _t111 = 0.5 * _t56 * _t68;
+            _t111 = _sp0 * _t56;
         } else {
             if (_t31 > _t55) {
-                _t108 = 0.5 * _t38 * _t65;
-                _t109 = 0.5 * _t58 * _t65;
-                _t110 = 0.5 * _t56 * _t65;
+                _t108 = _sp1 * _t38;
+                _t109 = _sp1 * _t58;
+                _t110 = _sp1 * _t56;
                 _t111 = 0.5 * Math.sqrt(_t61);
             } else {
                 if (_t49 > _t7) {
-                    _t108 = 0.5 * _t54 * _t66;
+                    _t108 = _sp2 * _t54;
                     _t109 = 0.5 * Math.sqrt(_t62);
-                    _t110 = 0.5 * _t37 * _t66;
-                    _t111 = 0.5 * _t58 * _t66;
+                    _t110 = _sp2 * _t37;
+                    _t111 = _sp2 * _t58;
                 } else {
                     _t108 = 0.5 * Math.sqrt(_t63);
-                    _t109 = 0.5 * _t54 * _t67;
-                    _t110 = 0.5 * _t57 * _t67;
-                    _t111 = 0.5 * _t38 * _t67;
+                    _t109 = _sp3 * _t54;
+                    _t110 = _sp3 * _t57;
+                    _t111 = _sp3 * _t38;
                 }
             }
         }
@@ -5303,6 +5433,11 @@ public final class DoubleQuatOps {
 
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -5340,6 +5475,11 @@ public final class DoubleQuatOps {
 
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -5379,10 +5519,11 @@ public final class DoubleQuatOps {
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -5423,10 +5564,11 @@ public final class DoubleQuatOps {
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -6138,10 +6280,11 @@ public final class DoubleQuatOps {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -6183,13 +6326,13 @@ public final class DoubleQuatOps {
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         double _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6) {
-            _t41 = 0.5 * _t22 * _t35;
+        if (_t23 > 1.0E-13) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0) {
+            if (_t29 != 0.0) {
                 _t41 = 0.0;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -6236,10 +6379,11 @@ public final class DoubleQuatOps {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the quaternion starts
@@ -6285,13 +6429,13 @@ public final class DoubleQuatOps {
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         double _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6) {
-            _t41 = 0.5 * _t22 * _t35;
+        if (_t23 > 1.0E-13) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0) {
+            if (_t29 != 0.0) {
                 _t41 = 0.0;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -6868,6 +7012,8 @@ public final class DoubleQuatOps {
 
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -6913,6 +7059,8 @@ public final class DoubleQuatOps {
 
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -7267,7 +7415,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 4, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, 32L);
             return dest;
@@ -7292,7 +7440,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 536870911 ? -1 : count * 4), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, (long) count * 32L);
             return dest;
@@ -7403,7 +7551,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && destOffset <= dest.limit() - 32) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 32, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), 32L);
             return dest;
@@ -7429,7 +7577,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && (count > 67108863 ? -1 : count * 32) >= 0 && destOffset <= dest.limit() - (count > 67108863 ? -1 : count * 32)) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 67108863 ? -1 : count * 32), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), (long) count * 32L);
             return dest;
@@ -7484,7 +7632,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, dest, 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 4, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, 32L);
             return dest;
@@ -7509,7 +7657,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, dest, (long) count * 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 536870911 ? -1 : count * 4), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, (long) count * 32L);
             return dest;
@@ -7535,7 +7683,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest, 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && srcOffset <= src.limit() - 32) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 32, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, 32L);
             return dest;
@@ -7561,7 +7709,7 @@ public final class DoubleQuatOps {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest, (long) count * 32L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && (count > 67108863 ? -1 : count * 32) >= 0 && srcOffset <= src.limit() - (count > 67108863 ? -1 : count * 32)) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 67108863 ? -1 : count * 32), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, (long) count * 32L);
             return dest;
@@ -7601,5 +7749,21 @@ public final class DoubleQuatOps {
             return dest;
         }
         throw new UnsupportedOperationException("raw long address copy requires storeLoadBackend=UNSAFE");
+    }
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
     }
 }

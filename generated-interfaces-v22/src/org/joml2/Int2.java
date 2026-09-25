@@ -406,9 +406,9 @@ public interface Int2 extends Int2R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default Int2 set(int s) { return set(s, Joml.RETURN_NEW ? Joml.int2() : this); }
+    @Mutated default Int2 set(int s) { return set(s, this); }
 
     /**
      * Convert this vector to {@code float} precision, returning the result as a new instance.

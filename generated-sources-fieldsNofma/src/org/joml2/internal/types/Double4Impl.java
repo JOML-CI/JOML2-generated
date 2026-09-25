@@ -1012,11 +1012,12 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 catmullRomTangent(double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        double _t0 = t * t;
-        d.x = 0.5 * (t * 2.0 * (-5.0 * p1X + (this.x + this.x + (4.0 * p2X - p3X))) + (3.0 * (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) * _t0 + (p2X - this.x)));
-        d.y = 0.5 * (t * 2.0 * (-5.0 * p1Y + (this.y + this.y + (4.0 * p2Y - p3Y))) + (3.0 * (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) * _t0 + (p2Y - this.y)));
-        d.z = 0.5 * (t * 2.0 * (-5.0 * p1Z + (this.z + this.z + (4.0 * p2Z - p3Z))) + (3.0 * (3.0 * p1Z + (p3Z - this.z) - 3.0 * p2Z) * _t0 + (p2Z - this.z)));
-        d.w = 0.5 * (t * 2.0 * (-5.0 * p1W + (this.w + this.w + (4.0 * p2W - p3W))) + (3.0 * (3.0 * p1W + (p3W - this.w) - 3.0 * p2W) * _t0 + (p2W - this.w)));
+        double _sp0 = t + t;
+        double _sp1 = 3.0 * t * t;
+        d.x = 0.5 * (_sp0 * (-5.0 * p1X + (this.x + this.x + (4.0 * p2X - p3X))) + (_sp1 * (3.0 * p1X + (p3X - this.x) - 3.0 * p2X) + (p2X - this.x)));
+        d.y = 0.5 * (_sp0 * (-5.0 * p1Y + (this.y + this.y + (4.0 * p2Y - p3Y))) + (_sp1 * (3.0 * p1Y + (p3Y - this.y) - 3.0 * p2Y) + (p2Y - this.y)));
+        d.z = 0.5 * (_sp0 * (-5.0 * p1Z + (this.z + this.z + (4.0 * p2Z - p3Z))) + (_sp1 * (3.0 * p1Z + (p3Z - this.z) - 3.0 * p2Z) + (p2Z - this.z)));
+        d.w = 0.5 * (_sp0 * (-5.0 * p1W + (this.w + this.w + (4.0 * p2W - p3W))) + (_sp1 * (3.0 * p1W + (p3W - this.w) - 3.0 * p2W) + (p2W - this.w)));
         return d;
     }
 
@@ -1349,7 +1350,9 @@ public final class Double4Impl implements Double4 {
      * Compute the angle in radians between this vector and {@code other}.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code double} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
@@ -1364,7 +1367,9 @@ public final class Double4Impl implements Double4 {
      * {@code otherZ}, {@code otherW}).
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code double} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -1380,7 +1385,52 @@ public final class Double4Impl implements Double4 {
         double _t15 = otherZ * this.y - otherY * this.z;
         double _t16 = otherW * this.y - otherY * this.w;
         double _t17 = otherW * this.z - otherZ * this.w;
-        return Math.atan2(Math.sqrt(_t12 * _t12 + _t13 * _t13 + _t14 * _t14 + _t15 * _t15 + _t16 * _t16 + _t17 * _t17), otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w);
+        double _ct0 = _t12 * _t12 + _t13 * _t13 + _t14 * _t14 + _t15 * _t15 + _t16 * _t16 + _t17 * _t17;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return angleBetween_degenerate(otherX, otherY, otherZ, otherW);
+        return Math.atan2(Math.sqrt(_ct0), otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w);
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private double angleBetween_degenerate(Double4R other) {
+        return angleBetween_degenerate(other.x(), other.y(), other.z(), other.w());
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private double angleBetween_degenerate(double otherX, double otherY, double otherZ, double otherW) {
+        double _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        double _t7 = unitScale(this.z, this.w, Math.max(Math.abs(this.x), Math.abs(this.y)));
+        double _t16 = otherY * _t6;
+        double _t17 = this.x * _t7;
+        double _t18 = otherX * _t6;
+        double _t19 = this.y * _t7;
+        double _t20 = otherZ * _t6;
+        double _t21 = this.z * _t7;
+        double _t22 = otherW * _t6;
+        double _t23 = this.w * _t7;
+        double _t36 = _t16 * _t17 - _t18 * _t19;
+        double _t37 = _t20 * _t17 - _t18 * _t21;
+        double _t38 = _t22 * _t17 - _t18 * _t23;
+        double _t39 = _t20 * _t19 - _t16 * _t21;
+        double _t40 = _t22 * _t19 - _t16 * _t23;
+        double _t41 = _t22 * _t21 - _t20 * _t23;
+        double _t51 = unitScale(Math.max(Math.abs(_t36), Math.abs(_t37)), Math.max(Math.abs(_t38), Math.abs(_t39)), Math.max(Math.abs(_t40), Math.abs(_t41)));
+        double _t58 = _t36 * _t51;
+        double _t59 = _t37 * _t51;
+        double _t60 = _t38 * _t51;
+        double _t61 = _t39 * _t51;
+        double _t62 = _t40 * _t51;
+        double _t63 = _t41 * _t51;
+        return Math.atan2(Math.sqrt(_t58 * _t58 + _t59 * _t59 + _t60 * _t60 + _t61 * _t61 + _t62 * _t62 + _t63 * _t63), (_t18 * _t17 + _t16 * _t19 + _t20 * _t21 + _t22 * _t23) * _t51);
     }
 
 
@@ -2238,8 +2288,9 @@ public final class Double4Impl implements Double4 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2254,8 +2305,9 @@ public final class Double4Impl implements Double4 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2270,9 +2322,10 @@ public final class Double4Impl implements Double4 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}, {@code yZ}, {@code yW}) and store the result
-     * in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY},
+     * {@code yZ}, {@code yW}) ({@code x % y}, plus {@code y} when that remainder is non-zero and
+     * its sign differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
+     * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2286,10 +2339,10 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 mod(double yX, double yY, double yZ, double yW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = this.x - yX * Math.floor(this.x / yX);
-        d.y = this.y - yY * Math.floor(this.y / yY);
-        d.z = this.z - yZ * Math.floor(this.z / yZ);
-        d.w = this.w - yW * Math.floor(this.w / yW);
+        d.x = flooredMod(this.x, yX);
+        d.y = flooredMod(this.y, yY);
+        d.z = flooredMod(this.z, yZ);
+        d.w = flooredMod(this.w, yW);
         return d;
     }
 
@@ -2344,7 +2397,7 @@ public final class Double4Impl implements Double4 {
         Double4Impl d = (Double4Impl) dest;
         double _t6 = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
         double _t7 = (1.0 / Math.sqrt(_t6));
-        if (_t6 > 0.0) {
+        if (_t6 != 0.0) {
             d.x = this.x * _t7;
             d.y = this.y * _t7;
             d.z = this.z * _t7;
@@ -2371,7 +2424,7 @@ public final class Double4Impl implements Double4 {
         Double4Impl d = (Double4Impl) dest;
         double _t6 = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
         double _t8 = length * (1.0 / Math.sqrt(_t6));
-        if (_t6 > 0.0) {
+        if (_t6 != 0.0) {
             d.x = this.x * _t8;
             d.y = this.y * _t8;
             d.z = this.z * _t8;
@@ -2513,13 +2566,11 @@ public final class Double4Impl implements Double4 {
      */
     public Double4 project(double ontoX, double ontoY, double ontoZ, double ontoW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        double _t12 = ontoX * this.x + ontoY * this.y + ontoZ * this.z + ontoW * this.w;
-        double _t13 = ontoX * ontoX + ontoY * ontoY + ontoZ * ontoZ + ontoW * ontoW;
-        double _t13_inv = 1.0 / _t13;
-        d.x = ontoX * _t12 * _t13_inv;
-        d.y = ontoY * _t12 * _t13_inv;
-        d.z = ontoZ * _t12 * _t13_inv;
-        d.w = ontoW * _t12 * _t13_inv;
+        double _sp0 = (ontoX * this.x + ontoY * this.y + ontoZ * this.z + ontoW * this.w) / (ontoX * ontoX + ontoY * ontoY + ontoZ * ontoZ + ontoW * ontoW);
+        d.x = ontoX * _sp0;
+        d.y = ontoY * _sp0;
+        d.z = ontoZ * _sp0;
+        d.w = ontoW * _sp0;
         return d;
     }
 
@@ -2621,6 +2672,10 @@ public final class Double4Impl implements Double4 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -2637,6 +2692,10 @@ public final class Double4Impl implements Double4 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normalX the {@code x} component of the vector
      *        {@code (normalX, normalY, normalZ, normalW)} (the vector must have unit length)
@@ -3040,11 +3099,10 @@ public final class Double4Impl implements Double4 {
         Double4Impl d = (Double4Impl) dest;
         double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
-        double _t5 = 1.0 - _t1;
-        double _t7 = axisX * this.x + axisY * this.y + axisZ * this.z;
-        double _buf0 = this.x * _t1 + (axisY * this.z - axisZ * this.y) * _t0 + _t5 * axisX * _t7;
-        double _buf1 = this.y * _t1 + (axisZ * this.x - axisX * this.z) * _t0 + _t5 * axisY * _t7;
-        d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _t5 * axisZ * _t7;
+        double _sp0 = (1.0 - _t1) * (axisX * this.x + axisY * this.y + axisZ * this.z);
+        double _buf0 = this.x * _t1 + (axisY * this.z - axisZ * this.y) * _t0 + _sp0 * axisX;
+        double _buf1 = this.y * _t1 + (axisZ * this.x - axisX * this.z) * _t0 + _sp0 * axisY;
+        d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _sp0 * axisZ;
         d.w = this.w;
         d.x = _buf0;
         d.y = _buf1;
@@ -7079,4 +7137,48 @@ public final class Double4Impl implements Double4 {
         return SEG_OPS.loadFloat(this, offset, src);
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = x - y * q;
+            return r * java.lang.Math.signum(y) < 0 ? x - y * (q - 1.0f) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = x - y * q;
+            return r * java.lang.Math.signum(y) < 0 ? x - y * (q - 1.0) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

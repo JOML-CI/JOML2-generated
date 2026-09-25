@@ -1650,7 +1650,9 @@ public interface Float4R {
      * Compute the angle in radians between this vector and {@code other}.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
@@ -1662,7 +1664,9 @@ public interface Float4R {
      * {@code w}).
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -2725,8 +2729,9 @@ public interface Float4R {
     Double4 min(float x, float y, float z, float w, @Mutated Double4 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2738,8 +2743,9 @@ public interface Float4R {
     Float4 mod(float y, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2754,8 +2760,9 @@ public interface Float4R {
     Double4 mod(float y, @Mutated Double4 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2767,8 +2774,9 @@ public interface Float4R {
     Float4 mod(Float4R y, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2783,8 +2791,9 @@ public interface Float4R {
     Double4 mod(Float4R y, @Mutated Double4 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in
+     * Compute the component-wise floored modulo of this vector divided by ({@code x}, {@code y},
+     * {@code z}, {@code w}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its
+     * sign differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
      * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
@@ -2800,8 +2809,9 @@ public interface Float4R {
     Float4 mod(float x, float y, float z, float w, @Mutated Float4 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code x}, {@code y}, {@code z}, {@code w}) and store the result in
+     * Compute the component-wise floored modulo of this vector divided by ({@code x}, {@code y},
+     * {@code z}, {@code w}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its
+     * sign differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
      * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
@@ -3233,6 +3243,10 @@ public interface Float4R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -3246,6 +3260,10 @@ public interface Float4R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3262,6 +3280,10 @@ public interface Float4R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)} (the vector must have
      *        unit length)
@@ -3282,6 +3304,10 @@ public interface Float4R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

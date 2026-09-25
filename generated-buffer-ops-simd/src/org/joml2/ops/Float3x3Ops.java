@@ -51,10 +51,10 @@ import org.joml2.internal.simd.*;
  * the flags its overload reads. Every non-bulk buffer, segment and raw-address overload - and the
  * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
  * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
- * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
- * element-wise operations loop over the buffer API directly and freeze nothing. Every overload with
- * a Vector-API or fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization
- * snapshots {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma},
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads dispatch through
+ * {@code SimdSupport} like every other SIMD path (below). Every overload with a Vector-API or
+ * fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization snapshots
+ * {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma}, {@code cosFromSin},
  * {@code fastmath}, {@code sinLookup}, {@code strictMath}) - and {@code Joml.VECTOR_API}, freezing
  * the {@link JomlConfig} flags as well; the scalar kernels call {@link Math} for their
  * multiply-adds and transcendentals, which freezes the {@code Math} flags likewise. Only the array
@@ -135,15 +135,21 @@ public final class Float3x3Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -201,15 +207,21 @@ public final class Float3x3Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -267,15 +279,21 @@ public final class Float3x3Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -333,15 +351,21 @@ public final class Float3x3Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -399,15 +423,21 @@ public final class Float3x3Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -465,15 +495,21 @@ public final class Float3x3Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -559,7 +595,7 @@ public final class Float3x3Ops {
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
         float _t21, _t23, _t27;
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             _t21 = _self01 * _t9;
             _t23 = _self11 * _t9;
             _t27 = _self21 * _t9;
@@ -569,7 +605,7 @@ public final class Float3x3Ops {
             _t27 = 0.0f;
         }
         float _t22, _t24, _t26;
-        if (_t7 > 0.0f) {
+        if (_t7 != 0.0f) {
             _t22 = _self12 * _t10;
             _t24 = _self02 * _t10;
             _t26 = _self22 * _t10;
@@ -579,7 +615,7 @@ public final class Float3x3Ops {
             _t26 = 0.0f;
         }
         float _t25, _t28, _t29;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t25 = _self20 * _t11;
             _t28 = _self00 * _t11;
             _t29 = _self10 * _t11;
@@ -612,32 +648,32 @@ public final class Float3x3Ops {
         float _t63 = 1.0f + (_t49 - (_t23 + _t26));
         float _t64 = 1.0f + (_t23 - (_t49 + _t26));
         float _t65 = 1.0f + (_t26 - _t52);
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t63));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         if (_t58 > 0.0f) {
-            dest[destOffset + 0] = 0.5f * _t36 * _t66;
-            dest[destOffset + 1] = 0.5f * _t56 * _t66;
-            dest[destOffset + 2] = 0.5f * _t57 * _t66;
+            dest[destOffset + 0] = _sp0 * _t36;
+            dest[destOffset + 1] = _sp0 * _t56;
+            dest[destOffset + 2] = _sp0 * _t57;
             dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t62);
         } else {
             if (_t49 > _t37) {
                 dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t63);
-                dest[destOffset + 1] = 0.5f * _t53 * _t69;
-                dest[destOffset + 2] = 0.5f * _t55 * _t69;
-                dest[destOffset + 3] = 0.5f * _t36 * _t69;
+                dest[destOffset + 1] = _sp3 * _t53;
+                dest[destOffset + 2] = _sp3 * _t55;
+                dest[destOffset + 3] = _sp3 * _t36;
             } else {
                 if (_t23 > _t26) {
-                    dest[destOffset + 0] = 0.5f * _t53 * _t67;
+                    dest[destOffset + 0] = _sp1 * _t53;
                     dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t64);
-                    dest[destOffset + 2] = 0.5f * _t39 * _t67;
-                    dest[destOffset + 3] = 0.5f * _t56 * _t67;
+                    dest[destOffset + 2] = _sp1 * _t39;
+                    dest[destOffset + 3] = _sp1 * _t56;
                 } else {
-                    dest[destOffset + 0] = 0.5f * _t55 * _t68;
-                    dest[destOffset + 1] = 0.5f * _t39 * _t68;
+                    dest[destOffset + 0] = _sp2 * _t55;
+                    dest[destOffset + 1] = _sp2 * _t39;
                     dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t65);
-                    dest[destOffset + 3] = 0.5f * _t57 * _t68;
+                    dest[destOffset + 3] = _sp2 * _t57;
                 }
             }
         }
@@ -863,32 +899,32 @@ public final class Float3x3Ops {
         float _t15 = 1.0f + (_self00 - (_self11 + _self22));
         float _t16 = 1.0f + (_self11 - (_self00 + _self22));
         float _t17 = 1.0f + (_self22 - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            dest[destOffset + 0] = 0.5f * _t1 * _t18;
-            dest[destOffset + 1] = 0.5f * _t7 * _t18;
-            dest[destOffset + 2] = 0.5f * _t9 * _t18;
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
             dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t14);
         } else {
             if (_self00 > _t2) {
                 dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t15);
-                dest[destOffset + 1] = 0.5f * _t4 * _t21;
-                dest[destOffset + 2] = 0.5f * _t6 * _t21;
-                dest[destOffset + 3] = 0.5f * _t1 * _t21;
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
             } else {
                 if (_self11 > _self22) {
-                    dest[destOffset + 0] = 0.5f * _t4 * _t19;
+                    dest[destOffset + 0] = _sp1 * _t4;
                     dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t16);
-                    dest[destOffset + 2] = 0.5f * _t8 * _t19;
-                    dest[destOffset + 3] = 0.5f * _t7 * _t19;
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
                 } else {
-                    dest[destOffset + 0] = 0.5f * _t6 * _t20;
-                    dest[destOffset + 1] = 0.5f * _t8 * _t20;
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
                     dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t17);
-                    dest[destOffset + 3] = 0.5f * _t9 * _t20;
+                    dest[destOffset + 3] = _sp2 * _t9;
                 }
             }
         }
@@ -1923,13 +1959,17 @@ public final class Float3x3Ops {
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -2233,32 +2273,32 @@ public final class Float3x3Ops {
         float _t15 = _self00 + (1.0f - _self11 - _self22);
         float _t16 = _self11 + (_t1 - _self22);
         float _t17 = _self22 + (_t1 - _self11);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t13 > 0.0f) {
-            dest[destOffset + 0] = 0.5f * _t3 * _t18;
-            dest[destOffset + 1] = 0.5f * _t7 * _t18;
-            dest[destOffset + 2] = 0.5f * _t9 * _t18;
+            dest[destOffset + 0] = _sp0 * _t3;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
             dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t14);
         } else {
             if (_self00 > _t4) {
                 dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t15);
-                dest[destOffset + 1] = 0.5f * _t5 * _t21;
-                dest[destOffset + 2] = 0.5f * _t6 * _t21;
-                dest[destOffset + 3] = 0.5f * _t3 * _t21;
+                dest[destOffset + 1] = _sp3 * _t5;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t3;
             } else {
                 if (_self11 > _self22) {
-                    dest[destOffset + 0] = 0.5f * _t5 * _t19;
+                    dest[destOffset + 0] = _sp1 * _t5;
                     dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t16);
-                    dest[destOffset + 2] = 0.5f * _t8 * _t19;
-                    dest[destOffset + 3] = 0.5f * _t7 * _t19;
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
                 } else {
-                    dest[destOffset + 0] = 0.5f * _t6 * _t20;
-                    dest[destOffset + 1] = 0.5f * _t8 * _t20;
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
                     dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t17);
-                    dest[destOffset + 3] = 0.5f * _t9 * _t20;
+                    dest[destOffset + 3] = _sp2 * _t9;
                 }
             }
         }
@@ -2349,35 +2389,35 @@ public final class Float3x3Ops {
         float _t54 = Math.fma(-_self01, _t12, _t45);
         float _t59 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t44));
         float _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dest[destOffset + 3] = 0.5f * _t32 * _t61;
-            dest[destOffset + 4] = 0.5f * _t53 * _t61;
-            dest[destOffset + 5] = 0.5f * _t54 * _t61;
+            dest[destOffset + 3] = _sp0 * _t32;
+            dest[destOffset + 4] = _sp0 * _t53;
+            dest[destOffset + 5] = _sp0 * _t54;
             dest[destOffset + 6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t64);
-                dest[destOffset + 4] = 0.5f * _t51 * _t67;
-                dest[destOffset + 5] = 0.5f * _t52 * _t67;
-                dest[destOffset + 6] = 0.5f * _t32 * _t67;
+                dest[destOffset + 4] = _sp3 * _t51;
+                dest[destOffset + 5] = _sp3 * _t52;
+                dest[destOffset + 6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dest[destOffset + 3] = 0.5f * _t51 * _t65;
+                    dest[destOffset + 3] = _sp1 * _t51;
                     dest[destOffset + 4] = 0.5f * (float) Math.sqrt(_t62);
-                    dest[destOffset + 5] = 0.5f * _t28 * _t65;
-                    dest[destOffset + 6] = 0.5f * _t53 * _t65;
+                    dest[destOffset + 5] = _sp1 * _t28;
+                    dest[destOffset + 6] = _sp1 * _t53;
                 } else {
-                    dest[destOffset + 3] = 0.5f * _t52 * _t66;
-                    dest[destOffset + 4] = 0.5f * _t28 * _t66;
+                    dest[destOffset + 3] = _sp2 * _t52;
+                    dest[destOffset + 4] = _sp2 * _t28;
                     dest[destOffset + 5] = 0.5f * (float) Math.sqrt(_t63);
-                    dest[destOffset + 6] = 0.5f * _t54 * _t66;
+                    dest[destOffset + 6] = _sp2 * _t54;
                 }
             }
         }
@@ -2440,8 +2480,8 @@ public final class Float3x3Ops {
         float _t11 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = _self10 * _t14;
         float _t17 = _self22 * _t13;
         float _t18 = _self12 * _t13;
@@ -2471,20 +2511,20 @@ public final class Float3x3Ops {
         float _t55 = Math.fma(-_self01, _t12, _t46);
         float _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t45));
         float _t61 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         dest[destOffset + 0] = 0.0f;
         dest[destOffset + 1] = 0.0f;
         dest[destOffset + 2] = 0.0f;
-        dest[destOffset + 3] = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        dest[destOffset + 4] = _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67;
-        dest[destOffset + 5] = _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64);
-        dest[destOffset + 6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67;
+        dest[destOffset + 3] = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dest[destOffset + 4] = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        dest[destOffset + 5] = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        dest[destOffset + 6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dest[destOffset + 7] = _t44 < 0.0f ? -_t15 : _t15;
         dest[destOffset + 8] = (float) Math.sqrt(_t9);
         dest[destOffset + 9] = (float) Math.sqrt(_t10);
@@ -2542,7 +2582,7 @@ public final class Float3x3Ops {
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -2559,7 +2599,7 @@ public final class Float3x3Ops {
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t34, _t35, _t36;
-        if (_t29 > 0.0f) {
+        if (_t29 != 0.0f) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -2575,7 +2615,7 @@ public final class Float3x3Ops {
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
         float _t54, _t55, _t56;
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -2608,32 +2648,32 @@ public final class Float3x3Ops {
         float _t87 = 1.0f + (_t73 - (_t36 + _t56));
         float _t88 = 1.0f + (_t36 - (_t73 + _t56));
         float _t89 = 1.0f + (_t56 - _t76);
-        float _t90 = (1.0f / (float) Math.sqrt(_t86));
-        float _t91 = (1.0f / (float) Math.sqrt(_t88));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t87));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t86));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
         if (_t82 > 0.0f) {
-            dest[destOffset + 0] = 0.5f * _t60 * _t90;
-            dest[destOffset + 1] = 0.5f * _t81 * _t90;
-            dest[destOffset + 2] = 0.5f * _t78 * _t90;
+            dest[destOffset + 0] = _sp0 * _t60;
+            dest[destOffset + 1] = _sp0 * _t81;
+            dest[destOffset + 2] = _sp0 * _t78;
             dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t86);
         } else {
             if (_t73 > _t61) {
                 dest[destOffset + 0] = 0.5f * (float) Math.sqrt(_t87);
-                dest[destOffset + 1] = 0.5f * _t77 * _t93;
-                dest[destOffset + 2] = 0.5f * _t80 * _t93;
-                dest[destOffset + 3] = 0.5f * _t60 * _t93;
+                dest[destOffset + 1] = _sp3 * _t77;
+                dest[destOffset + 2] = _sp3 * _t80;
+                dest[destOffset + 3] = _sp3 * _t60;
             } else {
                 if (_t36 > _t56) {
-                    dest[destOffset + 0] = 0.5f * _t77 * _t91;
+                    dest[destOffset + 0] = _sp1 * _t77;
                     dest[destOffset + 1] = 0.5f * (float) Math.sqrt(_t88);
-                    dest[destOffset + 2] = 0.5f * _t63 * _t91;
-                    dest[destOffset + 3] = 0.5f * _t81 * _t91;
+                    dest[destOffset + 2] = _sp1 * _t63;
+                    dest[destOffset + 3] = _sp1 * _t81;
                 } else {
-                    dest[destOffset + 0] = 0.5f * _t80 * _t92;
-                    dest[destOffset + 1] = 0.5f * _t63 * _t92;
+                    dest[destOffset + 0] = _sp2 * _t80;
+                    dest[destOffset + 1] = _sp2 * _t63;
                     dest[destOffset + 2] = 0.5f * (float) Math.sqrt(_t89);
-                    dest[destOffset + 3] = 0.5f * _t78 * _t92;
+                    dest[destOffset + 3] = _sp2 * _t78;
                 }
             }
         }
@@ -2691,10 +2731,10 @@ public final class Float3x3Ops {
         float _self12 = src[srcOffset + 7];
         float _self22 = src[srcOffset + 8];
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -2711,7 +2751,7 @@ public final class Float3x3Ops {
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -2727,7 +2767,7 @@ public final class Float3x3Ops {
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -2795,7 +2835,7 @@ public final class Float3x3Ops {
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -2815,7 +2855,7 @@ public final class Float3x3Ops {
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -2833,7 +2873,7 @@ public final class Float3x3Ops {
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -3474,6 +3514,11 @@ public final class Float3x3Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -3500,7 +3545,7 @@ public final class Float3x3Ops {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -3515,7 +3560,7 @@ public final class Float3x3Ops {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -3571,6 +3616,11 @@ public final class Float3x3Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -3602,7 +3652,7 @@ public final class Float3x3Ops {
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -3617,7 +3667,7 @@ public final class Float3x3Ops {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -3695,6 +3745,7 @@ public final class Float3x3Ops {
      * @return {@code dest}
      */
     public static float[] makeFromDualQuat(float[] dest, int destOffset, float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
+        float _sp0 = dqRX + dqRX;
         float _t0 = dqRY * dqRY;
         float _t2 = dqRZ * dqRW;
         float _t3 = dqRY * dqRW;
@@ -3703,8 +3754,8 @@ public final class Float3x3Ops {
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dest[destOffset + 0] = Math.fma(-2.0f, _t0, _t6);
         dest[destOffset + 1] = 2.0f * Math.fma(dqRX, dqRY, _t2);
-        dest[destOffset + 2] = Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ);
-        dest[destOffset + 3] = Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY);
+        dest[destOffset + 2] = Math.fma(-2.0f, _t3, _sp0 * dqRZ);
+        dest[destOffset + 3] = Math.fma(-2.0f, _t2, _sp0 * dqRY);
         dest[destOffset + 4] = Math.fma(-2.0f, _t4, _t6);
         dest[destOffset + 5] = 2.0f * Math.fma(dqRX, dqRW, _t5);
         dest[destOffset + 6] = 2.0f * Math.fma(dqRX, dqRZ, _t3);
@@ -3903,6 +3954,11 @@ public final class Float3x3Ops {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -3918,7 +3974,7 @@ public final class Float3x3Ops {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -3933,7 +3989,7 @@ public final class Float3x3Ops {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -3981,6 +4037,11 @@ public final class Float3x3Ops {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -4001,7 +4062,7 @@ public final class Float3x3Ops {
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -4016,7 +4077,7 @@ public final class Float3x3Ops {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -5677,16 +5738,17 @@ public final class Float3x3Ops {
         float _self02 = src[srcOffset + 6];
         float _self12 = src[srcOffset + 7];
         float _self22 = src[srcOffset + 8];
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        dest[destOffset + 0] = Math.fma(s, _self00, _self20 * _t0);
-        dest[destOffset + 1] = Math.fma(s, _self10, _self20 * _t1);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        dest[destOffset + 0] = Math.fma(s, _self00, _self20 * _t1);
+        dest[destOffset + 1] = Math.fma(s, _self10, _self20 * _t2);
         dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = Math.fma(s, _self01, _self21 * _t0);
-        dest[destOffset + 4] = Math.fma(s, _self11, _self21 * _t1);
+        dest[destOffset + 3] = Math.fma(s, _self01, _self21 * _t1);
+        dest[destOffset + 4] = Math.fma(s, _self11, _self21 * _t2);
         dest[destOffset + 5] = _self21;
-        dest[destOffset + 6] = Math.fma(s, _self02, _self22 * _t0);
-        dest[destOffset + 7] = Math.fma(s, _self12, _self22 * _t1);
+        dest[destOffset + 6] = Math.fma(s, _self02, _self22 * _t1);
+        dest[destOffset + 7] = Math.fma(s, _self12, _self22 * _t2);
         dest[destOffset + 8] = _self22;
         return dest;
     }
@@ -5746,16 +5808,17 @@ public final class Float3x3Ops {
         float _self22 = src[srcOffset + 8];
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
-        float _t0 = Math.fma(-s, _pivotx, _pivotx);
-        float _t1 = Math.fma(-s, _pivoty, _pivoty);
-        dest[destOffset + 0] = Math.fma(s, _self00, _self20 * _t0);
-        dest[destOffset + 1] = Math.fma(s, _self10, _self20 * _t1);
+        float _t0 = 1.0f - s;
+        float _t1 = _pivotx * _t0;
+        float _t2 = _pivoty * _t0;
+        dest[destOffset + 0] = Math.fma(s, _self00, _self20 * _t1);
+        dest[destOffset + 1] = Math.fma(s, _self10, _self20 * _t2);
         dest[destOffset + 2] = _self20;
-        dest[destOffset + 3] = Math.fma(s, _self01, _self21 * _t0);
-        dest[destOffset + 4] = Math.fma(s, _self11, _self21 * _t1);
+        dest[destOffset + 3] = Math.fma(s, _self01, _self21 * _t1);
+        dest[destOffset + 4] = Math.fma(s, _self11, _self21 * _t2);
         dest[destOffset + 5] = _self21;
-        dest[destOffset + 6] = Math.fma(s, _self02, _self22 * _t0);
-        dest[destOffset + 7] = Math.fma(s, _self12, _self22 * _t1);
+        dest[destOffset + 6] = Math.fma(s, _self02, _self22 * _t1);
+        dest[destOffset + 7] = Math.fma(s, _self12, _self22 * _t2);
         dest[destOffset + 8] = _self22;
         return dest;
     }
@@ -5813,8 +5876,8 @@ public final class Float3x3Ops {
         float _self02 = src[srcOffset + 6];
         float _self12 = src[srcOffset + 7];
         float _self22 = src[srcOffset + 8];
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         dest[destOffset + 0] = Math.fma(sX, _self00, _self20 * _t2);
         dest[destOffset + 1] = Math.fma(sY, _self10, _self20 * _t3);
         dest[destOffset + 2] = _self20;
@@ -5884,8 +5947,8 @@ public final class Float3x3Ops {
         float _sy = s[sOffset + 1];
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
-        float _t2 = Math.fma(-_pivotx, _sx, _pivotx);
-        float _t3 = Math.fma(-_pivoty, _sy, _pivoty);
+        float _t2 = _pivotx * (1.0f - _sx);
+        float _t3 = _pivoty * (1.0f - _sy);
         dest[destOffset + 0] = Math.fma(_sx, _self00, _self20 * _t2);
         dest[destOffset + 1] = Math.fma(_sy, _self10, _self20 * _t3);
         dest[destOffset + 2] = _self20;
@@ -8172,17 +8235,18 @@ public final class Float3x3Ops {
         float _self02 = src[srcOffset + 6];
         float _self12 = src[srcOffset + 7];
         float _self22 = src[srcOffset + 8];
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self20;
         dest[destOffset + 3] = s * _self01;
         dest[destOffset + 4] = s * _self11;
         dest[destOffset + 5] = s * _self21;
-        dest[destOffset + 6] = Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02));
-        dest[destOffset + 7] = Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12));
-        dest[destOffset + 8] = Math.fma(_self20, _t0, Math.fma(_self21, _t1, _self22));
+        dest[destOffset + 6] = Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02));
+        dest[destOffset + 7] = Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12));
+        dest[destOffset + 8] = Math.fma(_self20, _t1, Math.fma(_self21, _t2, _self22));
         return dest;
     }
 
@@ -8241,17 +8305,18 @@ public final class Float3x3Ops {
         float _self22 = src[srcOffset + 8];
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
-        float _t0 = Math.fma(-s, _pivotx, _pivotx);
-        float _t1 = Math.fma(-s, _pivoty, _pivoty);
+        float _t0 = 1.0f - s;
+        float _t1 = _pivotx * _t0;
+        float _t2 = _pivoty * _t0;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self20;
         dest[destOffset + 3] = s * _self01;
         dest[destOffset + 4] = s * _self11;
         dest[destOffset + 5] = s * _self21;
-        dest[destOffset + 6] = Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02));
-        dest[destOffset + 7] = Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12));
-        dest[destOffset + 8] = Math.fma(_self20, _t0, Math.fma(_self21, _t1, _self22));
+        dest[destOffset + 6] = Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02));
+        dest[destOffset + 7] = Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12));
+        dest[destOffset + 8] = Math.fma(_self20, _t1, Math.fma(_self21, _t2, _self22));
         return dest;
     }
 
@@ -8308,8 +8373,8 @@ public final class Float3x3Ops {
         float _self02 = src[srcOffset + 6];
         float _self12 = src[srcOffset + 7];
         float _self22 = src[srcOffset + 8];
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         dest[destOffset + 0] = sX * _self00;
         dest[destOffset + 1] = sX * _self10;
         dest[destOffset + 2] = sX * _self20;
@@ -8379,8 +8444,8 @@ public final class Float3x3Ops {
         float _sy = s[sOffset + 1];
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
-        float _t2 = Math.fma(-_pivotx, _sx, _pivotx);
-        float _t3 = Math.fma(-_pivoty, _sy, _pivoty);
+        float _t2 = _pivotx * (1.0f - _sx);
+        float _t3 = _pivoty * (1.0f - _sy);
         dest[destOffset + 0] = _sx * _self00;
         dest[destOffset + 1] = _sx * _self10;
         dest[destOffset + 2] = _sx * _self20;
@@ -8538,21 +8603,21 @@ public final class Float3x3Ops {
         float _self02 = src[srcOffset + 6];
         float _self12 = src[srcOffset + 7];
         float _self22 = src[srcOffset + 8];
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
-        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
-        dest[destOffset + 2] = (_self20 + _self20) * _t0_inv;
-        dest[destOffset + 3] = (_self01 + _self01) * _t1_inv;
-        dest[destOffset + 4] = (_self11 + _self11) * _t1_inv;
-        dest[destOffset + 5] = (_self21 + _self21) * _t1_inv;
-        dest[destOffset + 6] = _self02 + (-(_self00 * _t2 * _t0_inv) - _self01 * _t3 * _t1_inv);
-        dest[destOffset + 7] = _self12 + (-(_self10 * _t2 * _t0_inv) - _self11 * _t3 * _t1_inv);
-        dest[destOffset + 8] = _self22 + (-(_self20 * _t2 * _t0_inv) - _self21 * _t3 * _t1_inv);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        dest[destOffset + 0] = _sp0 * _self00;
+        dest[destOffset + 1] = _sp0 * _self10;
+        dest[destOffset + 2] = _sp0 * _self20;
+        dest[destOffset + 3] = _sp1 * _self01;
+        dest[destOffset + 4] = _sp1 * _self11;
+        dest[destOffset + 5] = _sp1 * _self21;
+        dest[destOffset + 6] = _self02 + (-(_self00 * _sp2) - _self01 * _sp3);
+        dest[destOffset + 7] = _self12 + (-(_self10 * _sp2) - _self11 * _sp3);
+        dest[destOffset + 8] = _self22 + (-(_self20 * _sp2) - _self21 * _sp3);
         return dest;
     }
 

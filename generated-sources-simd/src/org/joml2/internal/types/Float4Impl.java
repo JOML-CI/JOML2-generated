@@ -1697,17 +1697,6 @@ public final class Float4Impl implements Float4 {
      * @param dest will hold the result
      * @return dest
      */
-    /** Private vector tail of {@code catmullRom_s50da4988}: loads, computes and stores every column; reached only through it. */
-    private static void catmullRom_s50da4988_tail(float[] dd, float _t0, float t, float[] sd, float[] p1Data, float[] p2Data, float[] p3Data) {
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, p1Data, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, p2Data, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv3 = FloatVector.fromArray(COL_SPECIES, p3Data, 0);
-        var _sv4 = FloatVector.broadcast(COL_SPECIES, 2.0f);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, 0.5f).mul(_sv4.mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, t).mul(_sv1.sub(_sv2))).add(FloatVector.broadcast(COL_SPECIES, -5.0f).mul(_sv0).add(_sv4.mul(_sv2).add(FloatVector.broadcast(COL_SPECIES, 4.0f).mul(_sv1).add(_sv3.neg()))).mul(FloatVector.broadcast(COL_SPECIES, _t0)).add(FloatVector.broadcast(COL_SPECIES, -3.0f).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, 3.0f).mul(_sv0).add(_sv3.sub(_sv2))).mul(FloatVector.broadcast(COL_SPECIES, t * _t0)))));
-        _col0.intoArray(dd, 0);
-    }
-
     public Float4 catmullRom(Float4R p1, Float4R p2, Float4R p3, float t, @Mutated Float4 dest) {
         if (SimdMath.USE_FMA) return catmullRom_fma(p1, p2, p3, t, dest);
         return catmullRom_mulAdd(p1, p2, p3, t, dest);
@@ -1739,6 +1728,17 @@ public final class Float4Impl implements Float4 {
         float _t0 = t * t;
         catmullRom_s50da4988_tail(dd, _t0, t, sd, p1Data, p2Data, p3Data);
         return dest;
+    }
+
+    /** Private vector tail of {@code catmullRom_s50da4988}: loads, computes and stores every column; reached only through it. */
+    private static void catmullRom_s50da4988_tail(float[] dd, float _t0, float t, float[] sd, float[] p1Data, float[] p2Data, float[] p3Data) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, p1Data, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, p2Data, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, p3Data, 0);
+        var _sv4 = FloatVector.broadcast(COL_SPECIES, 2.0f);
+        var _col0 = FloatVector.broadcast(COL_SPECIES, 0.5f).mul(_sv4.mul(_sv0).add(FloatVector.broadcast(COL_SPECIES, t).mul(_sv1.sub(_sv2))).add(FloatVector.broadcast(COL_SPECIES, -5.0f).mul(_sv0).add(_sv4.mul(_sv2).add(FloatVector.broadcast(COL_SPECIES, 4.0f).mul(_sv1).add(_sv3.neg()))).mul(FloatVector.broadcast(COL_SPECIES, _t0)).add(FloatVector.broadcast(COL_SPECIES, -3.0f).mul(_sv1).add(FloatVector.broadcast(COL_SPECIES, 3.0f).mul(_sv0).add(_sv3.sub(_sv2))).mul(FloatVector.broadcast(COL_SPECIES, t * _t0)))));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -2897,7 +2897,9 @@ public final class Float4Impl implements Float4 {
      * Compute the angle in radians between this vector and {@code other}.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
@@ -2912,7 +2914,9 @@ public final class Float4Impl implements Float4 {
      * {@code otherZ}, {@code otherW}).
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -2929,7 +2933,53 @@ public final class Float4Impl implements Float4 {
         float _t15 = Math.fma(otherW, sd[0], -(otherX * sd[3]));
         float _t16 = Math.fma(otherY, sd[0], -(otherX * sd[1]));
         float _t17 = Math.fma(otherZ, sd[0], -(otherX * sd[2]));
-        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, sd[3], Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1]))));
+        float _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return angleBetween_degenerate(otherX, otherY, otherZ, otherW);
+        return (float) Math.atan2((float) Math.sqrt(_ct0), Math.fma(otherW, sd[3], Math.fma(otherZ, sd[2], Math.fma(otherX, sd[0], otherY * sd[1]))));
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float angleBetween_degenerate(Float4R other) {
+        return angleBetween_degenerate(other.x(), other.y(), other.z(), other.w());
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float angleBetween_degenerate(float otherX, float otherY, float otherZ, float otherW) {
+        float[] sd = this.data;
+        float _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        float _t7 = unitScale(sd[2], sd[3], Math.max(Math.abs(sd[0]), Math.abs(sd[1])));
+        float _t16 = otherW * _t6;
+        float _t17 = sd[2] * _t7;
+        float _t18 = otherZ * _t6;
+        float _t19 = sd[3] * _t7;
+        float _t20 = otherY * _t6;
+        float _t21 = sd[0] * _t7;
+        float _t22 = otherX * _t6;
+        float _t23 = sd[1] * _t7;
+        float _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        float _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        float _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        float _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        float _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        float _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        float _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        float _t58 = _t36 * _t51;
+        float _t59 = _t41 * _t51;
+        float _t60 = _t40 * _t51;
+        float _t61 = _t39 * _t51;
+        float _t62 = _t37 * _t51;
+        float _t63 = _t38 * _t51;
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
     }
 
 
@@ -4659,8 +4709,9 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4670,32 +4721,20 @@ public final class Float4Impl implements Float4 {
      * @return dest
      */
     public Float4 mod(float y, @Mutated Float4 dest) {
-        if (SimdMath.USE_FMA) return mod_fma(y, dest);
-        return mod_mulAdd(y, dest);
-    }
-
-    private Float4 mod_fma(float y, @Mutated Float4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -y).fma(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.floor(sd[0] * 1.0f / y)).withLane(1, (float) Math.floor(sd[1] * 1.0f / y)).withLane(2, (float) Math.floor(sd[2] * 1.0f / y)).withLane(3, (float) Math.floor(sd[3] * 1.0f / y)), _sv0);
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private Float4 mod_mulAdd(float y, @Mutated Float4 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, -y).mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.floor(sd[0] * 1.0f / y)).withLane(1, (float) Math.floor(sd[1] * 1.0f / y)).withLane(2, (float) Math.floor(sd[2] * 1.0f / y)).withLane(3, (float) Math.floor(sd[3] * 1.0f / y))).add(_sv0);
-        _col0.intoArray(dd, 0);
+        dd[0] = flooredMod(sd[0], y);
+        dd[1] = flooredMod(sd[1], y);
+        dd[2] = flooredMod(sd[2], y);
+        dd[3] = flooredMod(sd[3], y);
         return dest;
     }
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4710,18 +4749,18 @@ public final class Float4Impl implements Float4 {
     public Double4 mod(float y, @Mutated Double4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        float _rcp0 = 1.0f / y;
-        dd[0] = Math.fma(-y, (float) Math.floor(sd[0] * _rcp0), sd[0]);
-        dd[1] = Math.fma(-y, (float) Math.floor(sd[1] * _rcp0), sd[1]);
-        dd[2] = Math.fma(-y, (float) Math.floor(sd[2] * _rcp0), sd[2]);
-        dd[3] = Math.fma(-y, (float) Math.floor(sd[3] * _rcp0), sd[3]);
+        dd[0] = flooredMod(sd[0], y);
+        dd[1] = flooredMod(sd[1], y);
+        dd[2] = flooredMod(sd[2], y);
+        dd[3] = flooredMod(sd[3], y);
         return dest;
     }
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4731,36 +4770,21 @@ public final class Float4Impl implements Float4 {
      * @return dest
      */
     public Float4 mod(Float4R y, @Mutated Float4 dest) {
-        if (SimdMath.USE_FMA) return mod_fma(y, dest);
-        return mod_mulAdd(y, dest);
-    }
-
-    private Float4 mod_fma(Float4R y, @Mutated Float4 dest) {
         float[] sd = this.data;
         float[] yData = ((Float4Impl) y).data;
         float[] dd = ((Float4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, yData, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = _sv0.neg().fma(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.floor(sd[0] / yData[0])).withLane(1, (float) Math.floor(sd[1] / yData[1])).withLane(2, (float) Math.floor(sd[2] / yData[2])).withLane(3, (float) Math.floor(sd[3] / yData[3])), _sv1);
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private Float4 mod_mulAdd(Float4R y, @Mutated Float4 dest) {
-        float[] sd = this.data;
-        float[] yData = ((Float4Impl) y).data;
-        float[] dd = ((Float4Impl) dest).data;
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, yData, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = _sv0.neg().mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.floor(sd[0] / yData[0])).withLane(1, (float) Math.floor(sd[1] / yData[1])).withLane(2, (float) Math.floor(sd[2] / yData[2])).withLane(3, (float) Math.floor(sd[3] / yData[3]))).add(_sv1);
-        _col0.intoArray(dd, 0);
+        dd[0] = flooredMod(sd[0], yData[0]);
+        dd[1] = flooredMod(sd[1], yData[1]);
+        dd[2] = flooredMod(sd[2], yData[2]);
+        dd[3] = flooredMod(sd[3], yData[3]);
         return dest;
     }
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4778,9 +4802,10 @@ public final class Float4Impl implements Float4 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}, {@code yZ}, {@code yW}) and store the result
-     * in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY},
+     * {@code yZ}, {@code yW}) ({@code x % y}, plus {@code y} when that remainder is non-zero and
+     * its sign differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
+     * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4793,35 +4818,21 @@ public final class Float4Impl implements Float4 {
      * @return dest
      */
     public Float4 mod(float yX, float yY, float yZ, float yW, @Mutated Float4 dest) {
-        if (SimdMath.USE_FMA) return mod_fma(yX, yY, yZ, yW, dest);
-        return mod_mulAdd(yX, yY, yZ, yW, dest);
-    }
-
-    private Float4 mod_fma(float yX, float yY, float yZ, float yW, @Mutated Float4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float4Impl) dest).data;
-        var _sv0 = FloatVector.zero(COL_SPECIES).withLane(0, yX).withLane(1, yY).withLane(2, yZ).withLane(3, yW);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = _sv0.neg().fma(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.floor(sd[0] / yX)).withLane(1, (float) Math.floor(sd[1] / yY)).withLane(2, (float) Math.floor(sd[2] / yZ)).withLane(3, (float) Math.floor(sd[3] / yW)), _sv1);
-        _col0.intoArray(dd, 0);
-        return dest;
-    }
-
-    private Float4 mod_mulAdd(float yX, float yY, float yZ, float yW, @Mutated Float4 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float4Impl) dest).data;
-        var _sv0 = FloatVector.zero(COL_SPECIES).withLane(0, yX).withLane(1, yY).withLane(2, yZ).withLane(3, yW);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _col0 = _sv0.neg().mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.floor(sd[0] / yX)).withLane(1, (float) Math.floor(sd[1] / yY)).withLane(2, (float) Math.floor(sd[2] / yZ)).withLane(3, (float) Math.floor(sd[3] / yW))).add(_sv1);
-        _col0.intoArray(dd, 0);
+        dd[0] = flooredMod(sd[0], yX);
+        dd[1] = flooredMod(sd[1], yY);
+        dd[2] = flooredMod(sd[2], yZ);
+        dd[3] = flooredMod(sd[3], yW);
         return dest;
     }
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}, {@code yZ}, {@code yW}) and store the result
-     * in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY},
+     * {@code yZ}, {@code yW}) ({@code x % y}, plus {@code y} when that remainder is non-zero and
+     * its sign differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
+     * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4839,10 +4850,10 @@ public final class Float4Impl implements Float4 {
     public Double4 mod(float yX, float yY, float yZ, float yW, @Mutated Double4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        dd[0] = Math.fma(-yX, (float) Math.floor(sd[0] / yX), sd[0]);
-        dd[1] = Math.fma(-yY, (float) Math.floor(sd[1] / yY), sd[1]);
-        dd[2] = Math.fma(-yZ, (float) Math.floor(sd[2] / yZ), sd[2]);
-        dd[3] = Math.fma(-yW, (float) Math.floor(sd[3] / yW), sd[3]);
+        dd[0] = flooredMod(sd[0], yX);
+        dd[1] = flooredMod(sd[1], yY);
+        dd[2] = flooredMod(sd[2], yZ);
+        dd[3] = flooredMod(sd[3], yW);
         return dest;
     }
 
@@ -4938,7 +4949,7 @@ public final class Float4Impl implements Float4 {
         float[] dd = ((Float4Impl) dest).data;
         var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
         float _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t3 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t3 != 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -4964,7 +4975,7 @@ public final class Float4Impl implements Float4 {
         double[] dd = ((Double4Impl) dest).data;
         float _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dd[0] = sd[0] * _t4;
             dd[1] = sd[1] * _t4;
             dd[2] = sd[2] * _t4;
@@ -4991,7 +5002,7 @@ public final class Float4Impl implements Float4 {
         float[] sd = this.data;
         float[] dd = ((Float4Impl) dest).data;
         float _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
-        var _col0 = (_t3 > 0.0f ? FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t3 != 0.0f ? FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -5013,7 +5024,7 @@ public final class Float4Impl implements Float4 {
         double[] dd = ((Double4Impl) dest).data;
         float _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
         float _t5 = length * (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dd[0] = sd[0] * _t5;
             dd[1] = sd[1] * _t5;
             dd[2] = sd[2] * _t5;
@@ -5582,6 +5593,10 @@ public final class Float4Impl implements Float4 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -5622,6 +5637,10 @@ public final class Float4Impl implements Float4 {
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
      * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -5640,6 +5659,10 @@ public final class Float4Impl implements Float4 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normalX the {@code x} component of the vector
      *        {@code (normalX, normalY, normalZ, normalW)} (the vector must have unit length)
@@ -5684,6 +5707,10 @@ public final class Float4Impl implements Float4 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -11147,4 +11174,48 @@ public final class Float4Impl implements Float4 {
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

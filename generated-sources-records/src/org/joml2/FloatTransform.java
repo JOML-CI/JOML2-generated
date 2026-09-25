@@ -16,6 +16,11 @@ import java.nio.DoubleBuffer;
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
  * <p>
+ * Its rotation is a unit quaternion. Every operation that applies, composes, inverts or converts
+ * this transform assumes its rotation has unit length and does not divide it out. A value that has
+ * drifted from unit length (after many multiplications, say) gives wrong results rather than an
+ * error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
@@ -434,41 +439,41 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static FloatTransform makeFromMatrix_s37cad23f_tail2(Float3x3 m, float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
         float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sfx0 = 0.0f;
         float _sfx1 = 0.0f;
         float _sfx2 = 0.0f;
-        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        return makeFromMatrix_s37cad23f_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+        float _sfx3 = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        return makeFromMatrix_s37cad23f_tail3(_t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static FloatTransform makeFromMatrix_s37cad23f_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+    private static FloatTransform makeFromMatrix_s37cad23f_tail3(float _t60, float _sp0, float _t54, float _t45, float _t34, float _sp3, float _t52, float _t22, float _t17, float _t63, float _sp2, float _t29, float _t55, float _t53, float _sp1, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
         float _sfx4, _sfx5, _sfx6;
         if (_t60 > 0.0f) {
-            _sfx4 = 0.5f * _t54 * _t62;
-            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx4 = _sp0 * _t54;
+            _sfx5 = _sp0 * _t55;
             _sfx6 = 0.5f * (float) Math.sqrt(_t61);
         } else {
             if (_t45 > _t34) {
-                _sfx4 = 0.5f * _t52 * _t68;
-                _sfx5 = 0.5f * _t53 * _t68;
-                _sfx6 = 0.5f * _t33 * _t68;
+                _sfx4 = _sp3 * _t52;
+                _sfx5 = _sp3 * _t53;
+                _sfx6 = _sp3 * _t33;
             } else {
                 if (_t22 > _t17) {
                     _sfx4 = 0.5f * (float) Math.sqrt(_t63);
-                    _sfx5 = 0.5f * _t29 * _t66;
-                    _sfx6 = 0.5f * _t54 * _t66;
+                    _sfx5 = _sp1 * _t29;
+                    _sfx6 = _sp1 * _t54;
                 } else {
-                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx4 = _sp2 * _t29;
                     _sfx5 = 0.5f * (float) Math.sqrt(_t64);
-                    _sfx6 = 0.5f * _t55 * _t67;
+                    _sfx6 = _sp2 * _t55;
                 }
             }
         }
@@ -495,8 +500,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = m.m10() * _t14;
         float _t17 = m.m22() * _t13;
         float _t18 = m.m12() * _t13;
@@ -536,41 +541,41 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static FloatTransform makeFromMatrix_s37cad600_tail2(Float3x4 m, float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
         float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sfx0 = m.m03();
         float _sfx1 = m.m13();
         float _sfx2 = m.m23();
-        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        return makeFromMatrix_s37cad600_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+        float _sfx3 = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        return makeFromMatrix_s37cad600_tail3(_t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static FloatTransform makeFromMatrix_s37cad600_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+    private static FloatTransform makeFromMatrix_s37cad600_tail3(float _t60, float _sp0, float _t54, float _t45, float _t34, float _sp3, float _t52, float _t22, float _t17, float _t63, float _sp2, float _t29, float _t55, float _t53, float _sp1, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
         float _sfx4, _sfx5, _sfx6;
         if (_t60 > 0.0f) {
-            _sfx4 = 0.5f * _t54 * _t62;
-            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx4 = _sp0 * _t54;
+            _sfx5 = _sp0 * _t55;
             _sfx6 = 0.5f * (float) Math.sqrt(_t61);
         } else {
             if (_t45 > _t34) {
-                _sfx4 = 0.5f * _t52 * _t68;
-                _sfx5 = 0.5f * _t53 * _t68;
-                _sfx6 = 0.5f * _t33 * _t68;
+                _sfx4 = _sp3 * _t52;
+                _sfx5 = _sp3 * _t53;
+                _sfx6 = _sp3 * _t33;
             } else {
                 if (_t22 > _t17) {
                     _sfx4 = 0.5f * (float) Math.sqrt(_t63);
-                    _sfx5 = 0.5f * _t29 * _t66;
-                    _sfx6 = 0.5f * _t54 * _t66;
+                    _sfx5 = _sp1 * _t29;
+                    _sfx6 = _sp1 * _t54;
                 } else {
-                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx4 = _sp2 * _t29;
                     _sfx5 = 0.5f * (float) Math.sqrt(_t64);
-                    _sfx6 = 0.5f * _t55 * _t67;
+                    _sfx6 = _sp2 * _t55;
                 }
             }
         }
@@ -598,8 +603,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = m.m10() * _t14;
         float _t17 = m.m22() * _t13;
         float _t18 = m.m12() * _t13;
@@ -639,41 +644,41 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static FloatTransform makeFromMatrix_s37d8ed81_tail2(Float4x4 m, float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
         float _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sfx0 = m.m03();
         float _sfx1 = m.m13();
         float _sfx2 = m.m23();
-        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        return makeFromMatrix_s37d8ed81_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+        float _sfx3 = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        return makeFromMatrix_s37d8ed81_tail3(_t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static FloatTransform makeFromMatrix_s37d8ed81_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+    private static FloatTransform makeFromMatrix_s37d8ed81_tail3(float _t60, float _sp0, float _t54, float _t45, float _t34, float _sp3, float _t52, float _t22, float _t17, float _t63, float _sp2, float _t29, float _t55, float _t53, float _sp1, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
         float _sfx4, _sfx5, _sfx6;
         if (_t60 > 0.0f) {
-            _sfx4 = 0.5f * _t54 * _t62;
-            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx4 = _sp0 * _t54;
+            _sfx5 = _sp0 * _t55;
             _sfx6 = 0.5f * (float) Math.sqrt(_t61);
         } else {
             if (_t45 > _t34) {
-                _sfx4 = 0.5f * _t52 * _t68;
-                _sfx5 = 0.5f * _t53 * _t68;
-                _sfx6 = 0.5f * _t33 * _t68;
+                _sfx4 = _sp3 * _t52;
+                _sfx5 = _sp3 * _t53;
+                _sfx6 = _sp3 * _t33;
             } else {
                 if (_t22 > _t17) {
                     _sfx4 = 0.5f * (float) Math.sqrt(_t63);
-                    _sfx5 = 0.5f * _t29 * _t66;
-                    _sfx6 = 0.5f * _t54 * _t66;
+                    _sfx5 = _sp1 * _t29;
+                    _sfx6 = _sp1 * _t54;
                 } else {
-                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx4 = _sp2 * _t29;
                     _sfx5 = 0.5f * (float) Math.sqrt(_t64);
-                    _sfx6 = 0.5f * _t55 * _t67;
+                    _sfx6 = _sp2 * _t55;
                 }
             }
         }
@@ -701,8 +706,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = m.m10() * _t14;
         float _t17 = m.m22() * _t13;
         float _t18 = m.m12() * _t13;
@@ -785,7 +790,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
 
 
     /**
-     * Compute the matrix representation of this transform, returning the result as a value.
+     * Compute the matrix representation of this transform (whose rotation must be a unit
+     * quaternion), returning the result as a value.
      *
      * @return the resulting matrix
      */
@@ -818,8 +824,9 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
 
 
     /**
-     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}), returning the result as a value.
+     * Compute the 3x4 matrix representation of this transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}), returning the result as a
+     * value.
      *
      * @return the resulting matrix
      */
@@ -1034,7 +1041,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
         float _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
         float _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
         float _sfx3, _sfx4, _sfx5, _sfx6;
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             _sfx3 = _t50 * _t44;
             _sfx4 = _t50 * _t45;
             _sfx5 = _t50 * _t43;
@@ -1289,16 +1296,15 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private FloatTransform difference_s7c2aaf6f_tail(float _rcp0, float _rcp2, float _t30, float _t31, float _t32, float otherTX, float _rcp1, float _t33, float _t34, float otherTY, float otherTZ, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float otherSY, float otherSZ) {
-        float _t35 = 2.0f * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
-        float _sfx0 = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, otherTX * _rcp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -(this.tX * _rcp1)));
-        float _sfx1 = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, otherTY * _rcp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -(this.tY * _rcp2)));
-        return difference_s7c2aaf6f_tail2(_t32, _t30, _t31, otherTZ, _rcp0, _t35, _t33, _t34, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _sfx0, _sfx1);
+    private FloatTransform difference_s7c2aaf6f_tail(float _t30, float _t31, float _t32, float _sp1, float _t33, float _t34, float _t35, float _sp3, float _sp2, float _sp5, float _sp0, float _sp4, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _rcp0) {
+        float _sfx0 = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, _sp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -_sp3));
+        float _sfx1 = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, _sp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -_sp5));
+        float _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, _sp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -_sp4));
+        return difference_s7c2aaf6f_tail2(otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private FloatTransform difference_s7c2aaf6f_tail2(float _t32, float _t30, float _t31, float otherTZ, float _rcp0, float _t35, float _t33, float _t34, float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _sfx0, float _sfx1) {
-        float _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, otherTZ * _rcp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -(this.tZ * _rcp0)));
+    private FloatTransform difference_s7c2aaf6f_tail2(float otherRX, float otherRW, float otherRY, float otherRZ, float otherSX, float _rcp1, float otherSY, float _rcp2, float otherSZ, float _rcp0, float _sfx0, float _sfx1, float _sfx2) {
         float _sfx3 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         float _sfx4 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         float _sfx5 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
@@ -1350,34 +1356,54 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      */
     public FloatTransform difference(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ) {
         float _rcp0 = 1.0f / this.sZ;
+        float _sp4 = _rcp0 * this.tZ;
+        float _sp0 = otherTZ * _rcp0;
         float _rcp1 = 1.0f / this.sX;
+        float _sp3 = _rcp1 * this.tX;
+        float _sp1 = otherTX * _rcp1;
         float _rcp2 = 1.0f / this.sY;
-        float _t30 = 2.0f * (otherTZ * this.rX * _rcp0 - otherTX * this.rZ * _rcp1);
-        float _t31 = 2.0f * (otherTX * this.rY * _rcp1 - otherTY * this.rX * _rcp2);
-        float _t32 = 2.0f * (otherTY * this.rZ * _rcp2 - otherTZ * this.rY * _rcp0);
-        float _t33 = 2.0f * (this.tX * this.rZ * _rcp1 - this.tZ * this.rX * _rcp0);
-        float _t34 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp1);
-        return difference_s7c2aaf6f_tail(_rcp0, _rcp2, _t30, _t31, _t32, otherTX, _rcp1, _t33, _t34, otherTY, otherTZ, otherRX, otherRW, otherRY, otherRZ, otherSX, otherSY, otherSZ);
+        float _sp5 = _rcp2 * this.tY;
+        float _sp2 = otherTY * _rcp2;
+        float _t30 = 2.0f * (_sp0 * this.rX - _sp1 * this.rZ);
+        float _t31 = 2.0f * (_sp1 * this.rY - _sp2 * this.rX);
+        float _t32 = 2.0f * (_sp2 * this.rZ - _sp0 * this.rY);
+        float _t33 = 2.0f * (_sp3 * this.rZ - _sp4 * this.rX);
+        float _t34 = 2.0f * (_sp5 * this.rX - _sp3 * this.rY);
+        float _t35 = 2.0f * (_sp4 * this.rY - _sp5 * this.rZ);
+        return difference_s7c2aaf6f_tail(_t30, _t31, _t32, _sp1, _t33, _t34, _t35, _sp3, _sp2, _sp5, _sp0, _sp4, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0);
     }
 
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale, returning the result as a value.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity), returning the result as a value.
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @return the resulting transform
      */
     public FloatTransform invert() {
         float _rcp0 = 1.0f / this.sX;
+        float _sp0 = this.tX * _rcp0;
         float _rcp1 = 1.0f / this.sZ;
+        float _sp1 = this.tZ * _rcp1;
         float _rcp2 = 1.0f / this.sY;
+        float _sp2 = this.tY * _rcp2;
         float _t0 = -this.rY;
         float _t1 = -this.rZ;
         float _t2 = -this.rX;
-        float _t18 = 2.0f * (this.tX * this.rZ * _rcp0 - this.tZ * this.rX * _rcp1);
-        float _t19 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp0);
-        float _t20 = 2.0f * (this.tZ * this.rY * _rcp1 - this.tY * this.rZ * _rcp2);
-        return new FloatTransform(Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -(this.tX * _rcp0)))), Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -(this.tY * _rcp2)))), Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -(this.tZ * _rcp1)))), _t2, _t0, _t1, this.rW, _rcp0, _rcp2, _rcp1);
+        float _t18 = 2.0f * (_sp0 * this.rZ - _sp1 * this.rX);
+        float _t19 = 2.0f * (_sp2 * this.rX - _sp0 * this.rY);
+        float _t20 = 2.0f * (_sp1 * this.rY - _sp2 * this.rZ);
+        return new FloatTransform(Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -_sp0))), Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -_sp2))), Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -_sp1))), _t2, _t0, _t1, this.rW, _rcp0, _rcp2, _rcp1);
     }
 
 
@@ -1395,7 +1421,7 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     public FloatTransform normalize() {
         float _t3 = Math.fma(this.rW, this.rW, Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY)));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             return new FloatTransform(this.tX, this.tY, this.tZ, this.rX * _t4, this.rY * _t4, this.rZ * _t4, this.rW * _t4, this.sX, this.sY, this.sZ);
         } else {
             return new FloatTransform(this.tX, this.tY, this.tZ, 0.0f, 0.0f, 0.0f, 0.0f, this.sX, this.sY, this.sZ);
@@ -1407,13 +1433,21 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesXYZ() {
         float _t1 = this.rY * this.rZ;
@@ -1435,13 +1469,21 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesXZY() {
         float _t0 = this.rZ * this.rZ;
@@ -1463,13 +1505,21 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesYXZ() {
         float _t3 = this.rZ * this.rZ;
@@ -1490,13 +1540,21 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesYZX() {
         float _t0 = this.rZ * this.rZ;
@@ -1517,13 +1575,21 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesZXY() {
         float _t1 = this.rZ * this.rZ;
@@ -1544,13 +1610,21 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesZYX() {
         float _t0 = this.rZ * this.rZ;
@@ -2440,6 +2514,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
 
     /**
      * Transform {@code v} by this transform, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -2452,6 +2528,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this transform, returning the result as a
      * value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2472,6 +2550,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @return the resulting vector
@@ -2484,6 +2564,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2502,6 +2584,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()}, returning the result
      * as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @return the resulting vector
@@ -2515,6 +2599,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()}, returning the result
      * as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2531,6 +2617,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
 
     /**
      * Transform {@code p} by the inverse of this transform, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -2543,6 +2631,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this transform, returning
      * the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -2563,6 +2653,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform
      * @return the resulting vector
@@ -2575,6 +2667,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2589,6 +2683,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -2601,6 +2697,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -2615,6 +2713,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -2627,6 +2727,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2648,6 +2750,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -2661,6 +2765,8 @@ public record FloatTransform(float tX, float tY, float tZ, float rX, float rY, f
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}

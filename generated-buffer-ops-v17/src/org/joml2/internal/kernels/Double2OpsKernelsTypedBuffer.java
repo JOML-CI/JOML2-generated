@@ -1681,9 +1681,8 @@ public final class Double2OpsKernelsTypedBuffer {
     public static java.nio.DoubleBuffer mod_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double y) {
         double _selfx = src.get(srcOffset + 0);
         double _selfy = src.get(srcOffset + 1);
-        double _rcp0 = 1.0 / y;
-        dest.put(destOffset + 0, Math.fma(-y, Math.floor(_selfx * _rcp0), _selfx));
-        dest.put(destOffset + 1, Math.fma(-y, Math.floor(_selfy * _rcp0), _selfy));
+        dest.put(destOffset + 0, flooredMod(_selfx, y));
+        dest.put(destOffset + 1, flooredMod(_selfy, y));
         return dest;
     }
 
@@ -1697,8 +1696,8 @@ public final class Double2OpsKernelsTypedBuffer {
     public static java.nio.DoubleBuffer mod_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double yX, double yY) {
         double _selfx = src.get(srcOffset + 0);
         double _selfy = src.get(srcOffset + 1);
-        dest.put(destOffset + 0, Math.fma(-yX, Math.floor(_selfx / yX), _selfx));
-        dest.put(destOffset + 1, Math.fma(-yY, Math.floor(_selfy / yY), _selfy));
+        dest.put(destOffset + 0, flooredMod(_selfx, yX));
+        dest.put(destOffset + 1, flooredMod(_selfy, yY));
         return dest;
     }
 
@@ -1715,8 +1714,8 @@ public final class Double2OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _yx = y.get(yOffset + 0);
         double _yy = y.get(yOffset + 1);
-        dest.put(destOffset + 0, Math.fma(-_yx, Math.floor(_selfx / _yx), _selfx));
-        dest.put(destOffset + 1, Math.fma(-_yy, Math.floor(_selfy / _yy), _selfy));
+        dest.put(destOffset + 0, flooredMod(_selfx, _yx));
+        dest.put(destOffset + 1, flooredMod(_selfy, _yy));
         return dest;
     }
 
@@ -1762,7 +1761,7 @@ public final class Double2OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _t1 = Math.fma(_selfx, _selfx, _selfy * _selfy);
         double _t2 = (1.0 / Math.sqrt(_t1));
-        if (_t1 > 0.0) {
+        if (_t1 != 0.0) {
             dest.put(destOffset + 0, _selfx * _t2);
             dest.put(destOffset + 1, _selfy * _t2);
         } else {
@@ -1784,7 +1783,7 @@ public final class Double2OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _t1 = Math.fma(_selfx, _selfx, _selfy * _selfy);
         double _t3 = length * (1.0 / Math.sqrt(_t1));
-        if (_t1 > 0.0) {
+        if (_t1 != 0.0) {
             dest.put(destOffset + 0, _selfx * _t3);
             dest.put(destOffset + 1, _selfy * _t3);
         } else {
@@ -1914,11 +1913,9 @@ public final class Double2OpsKernelsTypedBuffer {
     public static java.nio.DoubleBuffer project_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double ontoX, double ontoY) {
         double _selfx = src.get(srcOffset + 0);
         double _selfy = src.get(srcOffset + 1);
-        double _t2 = Math.fma(ontoX, _selfx, ontoY * _selfy);
-        double _t3 = Math.fma(ontoX, ontoX, ontoY * ontoY);
-        double _t3_inv = 1.0 / _t3;
-        dest.put(destOffset + 0, ontoX * _t2 * _t3_inv);
-        dest.put(destOffset + 1, ontoY * _t2 * _t3_inv);
+        double _sp0 = Math.fma(ontoX, _selfx, ontoY * _selfy) / Math.fma(ontoX, ontoX, ontoY * ontoY);
+        dest.put(destOffset + 0, ontoX * _sp0);
+        dest.put(destOffset + 1, ontoY * _sp0);
         return dest;
     }
 
@@ -1935,11 +1932,9 @@ public final class Double2OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _ontox = onto.get(ontoOffset + 0);
         double _ontoy = onto.get(ontoOffset + 1);
-        double _t2 = Math.fma(_ontox, _selfx, _ontoy * _selfy);
-        double _t3 = Math.fma(_ontox, _ontox, _ontoy * _ontoy);
-        double _t3_inv = 1.0 / _t3;
-        dest.put(destOffset + 0, _ontox * _t2 * _t3_inv);
-        dest.put(destOffset + 1, _ontoy * _t2 * _t3_inv);
+        double _sp0 = Math.fma(_ontox, _selfx, _ontoy * _selfy) / Math.fma(_ontox, _ontox, _ontoy * _ontoy);
+        dest.put(destOffset + 0, _ontox * _sp0);
+        dest.put(destOffset + 1, _ontoy * _sp0);
         return dest;
     }
 
@@ -2398,4 +2393,29 @@ public final class Double2OpsKernelsTypedBuffer {
         return dest;
     }
 
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

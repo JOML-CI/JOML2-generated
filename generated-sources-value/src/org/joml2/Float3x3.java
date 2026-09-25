@@ -394,17 +394,24 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesXYZ() {
         int p = this.properties;
@@ -428,11 +435,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code getEulerAnglesXZY} dispatcher.
      */
     private Float3 getEulerAnglesXZY_translation() {
-        if (1.0f < 1.0E-7f) {
-            return new Float3((float) Math.atan2(-this.m12, 1.0f), 0.0f, 0.0f);
-        } else {
-            return new Float3(0.0f, (float) Math.atan2(this.m02, 1.0f), 0.0f);
-        }
+        return new Float3(0.0f, (float) Math.atan2(this.m02, 1.0f), 0.0f);
     }
 
 
@@ -455,17 +458,24 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesXZY() {
         int p = this.properties;
@@ -513,17 +523,24 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesYXZ() {
         int p = this.properties;
@@ -576,17 +593,24 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesYZX() {
         int p = this.properties;
@@ -609,6 +633,16 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
      * only through the public {@code getEulerAnglesZXY} dispatcher.
      */
+    private Float3 getEulerAnglesZXY_orthogonal() {
+        float _t1 = Math.fma(this.m01, this.m01, this.m11 * this.m11);
+        return new Float3(0.0f, 0.0f, _t1 < _t1 * 1.0E-7f ? (float) Math.atan2(this.m10, this.m00) : (float) Math.atan2(-this.m01, this.m11));
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZXY} dispatcher.
+     */
     private Float3 getEulerAnglesZXY_general() {
         float _t1 = Math.fma(this.m01, this.m01, this.m11 * this.m11);
         float _t3 = Math.fma(this.m21, this.m21, _t1) * 1.0E-7f;
@@ -624,21 +658,29 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesZXY() {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesZXY_identity();
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getEulerAnglesZXY_orthogonal();
         return getEulerAnglesZXY_general();
     }
 
@@ -657,7 +699,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code getEulerAnglesZYX} dispatcher.
      */
     private Float3 getEulerAnglesZYX_orthogonal() {
-        return new Float3(0.0f, 0.0f, 1.0f < 1.0E-7f ? (float) Math.atan2(-this.m01, this.m11) : (float) Math.atan2(this.m10, this.m00));
+        return new Float3(0.0f, 0.0f, (float) Math.atan2(this.m10, this.m00));
     }
 
 
@@ -680,17 +722,24 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Float3 getEulerAnglesZYX() {
         int p = this.properties;
@@ -709,18 +758,18 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     }
 
     /** Private tail of {@code getNormalizedRotation_translation}; reached only through it. */
-    private FloatQuat getNormalizedRotation_translation_s0_tail(float _t20, float _t13, float _t21, float _t8, float _t10, float _t6, float _t18, float _t5, float _t22, float _t9, float _t23, float _t19, float _t17) {
+    private FloatQuat getNormalizedRotation_translation_s0_tail(float _t20, float _t13, float _sp0, float _t21, float _t10, float _t6, float _t18, float _t5, float _sp1, float _t22, float _t23, float _t19, float _t17) {
         float _t24 = (1.0f / (float) Math.sqrt(_t20));
         if (_t13 > 0.0f) {
-            return new FloatQuat(-(0.5f * _t21 * _t8), 0.5f * _t21 * _t9, 0.0f, 0.5f * (float) Math.sqrt(_t17));
+            return new FloatQuat(-(_sp0 * _t21), _sp1 * _t21, 0.0f, 0.5f * (float) Math.sqrt(_t17));
         } else {
             if (_t10 > _t6) {
-                return new FloatQuat(0.5f * (float) Math.sqrt(_t18), 0.0f, 0.5f * _t23 * _t9, -(0.5f * _t23 * _t8));
+                return new FloatQuat(0.5f * (float) Math.sqrt(_t18), 0.0f, _sp1 * _t23, -(_sp0 * _t23));
             } else {
                 if (1.0f > _t5) {
-                    return new FloatQuat(0.0f, 0.5f * (float) Math.sqrt(_t20), 0.5f * _t24 * _t8, 0.5f * _t24 * _t9);
+                    return new FloatQuat(0.0f, 0.5f * (float) Math.sqrt(_t20), _sp0 * _t24, _sp1 * _t24);
                 } else {
-                    return new FloatQuat(0.5f * _t22 * _t9, 0.5f * _t22 * _t8, 0.5f * (float) Math.sqrt(_t19), 0.0f);
+                    return new FloatQuat(_sp1 * _t22, _sp0 * _t22, 0.5f * (float) Math.sqrt(_t19), 0.0f);
                 }
             }
         }
@@ -734,17 +783,16 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private FloatQuat getNormalizedRotation_translation() {
         float _t1 = Math.fma(this.m02, this.m02, Math.fma(this.m12, this.m12, 1.0f));
         float _t2 = (1.0f / (float) Math.sqrt(_t1));
-        float _t5, _t8, _t9;
-        if (_t1 > 0.0f) {
-            _t5 = _t2;
-            _t8 = this.m12 * _t2;
-            _t9 = this.m02 * _t2;
-        } else {
-            _t5 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
+        float _t5 = _t1 != 0.0f ? _t2 : 0.0f;
         float _t6 = Math.max(1.0f, _t5);
+        float _sp0, _sp1;
+        if (_t1 != 0.0f) {
+            _sp0 = 0.5f * this.m12 * _t2;
+            _sp1 = 0.5f * this.m02 * _t2;
+        } else {
+            _sp0 = 0.5f * 0.0f;
+            _sp1 = 0.5f * 0.0f;
+        }
         float _t10 = _t5 < 0.0f ? -1.0f : 1.0f;
         float _t11 = 1.0f + _t10;
         float _t13 = _t11 + _t5;
@@ -755,15 +803,15 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t21 = (1.0f / (float) Math.sqrt(_t17));
         float _t22 = (1.0f / (float) Math.sqrt(_t19));
         float _t23 = (1.0f / (float) Math.sqrt(_t18));
-        return getNormalizedRotation_translation_s0_tail(_t20, _t13, _t21, _t8, _t10, _t6, _t18, _t5, _t22, _t9, _t23, _t19, _t17);
+        return getNormalizedRotation_translation_s0_tail(_t20, _t13, _sp0, _t21, _t10, _t6, _t18, _t5, _sp1, _t22, _t23, _t19, _t17);
     }
 
     /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
     private FloatQuat getNormalizedRotation_general_s0_tail(float _t7, float _t10, float _t6, float _t9, float _t8, float _t11, float _t22, float _t23, float _t21, float _t24, float _t25) {
-        float _t26 = _t7 > 0.0f ? this.m22 * _t10 : 0.0f;
-        float _t27 = _t6 > 0.0f ? this.m21 * _t9 : 0.0f;
+        float _t26 = _t7 != 0.0f ? this.m22 * _t10 : 0.0f;
+        float _t27 = _t6 != 0.0f ? this.m21 * _t9 : 0.0f;
         float _t28, _t29;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t28 = this.m00 * _t11;
             _t29 = this.m10 * _t11;
         } else {
@@ -799,35 +847,38 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t63 = 1.0f + (_t49 - (_t23 + _t26));
         float _t64 = 1.0f + (_t23 - (_t49 + _t26));
         float _t65 = 1.0f + (_t26 - _t52);
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t63));
-        float _sfx0 = _t58 > 0.0f ? 0.5f * _t36 * _t66 : _t49 > _t37 ? 0.5f * (float) Math.sqrt(_t63) : _t23 > _t26 ? 0.5f * _t53 * _t67 : 0.5f * _t55 * _t68;
-        return getNormalizedRotation_general_s0_tail3(_t58, _t56, _t66, _t49, _t37, _t53, _t69, _t23, _t26, _t64, _t39, _t68, _t57, _t55, _t67, _t65, _t62, _t36, _sfx0);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        return getNormalizedRotation_general_s0_tail3(_t58, _sp0, _t36, _t49, _t37, _t63, _t23, _t26, _sp1, _t53, _sp2, _t55, _t56, _sp3, _t64, _t39, _t57, _t65, _t62);
     }
 
     /** Private tail of {@code getNormalizedRotation_general}; reached only through it. */
-    private FloatQuat getNormalizedRotation_general_s0_tail3(float _t58, float _t56, float _t66, float _t49, float _t37, float _t53, float _t69, float _t23, float _t26, float _t64, float _t39, float _t68, float _t57, float _t55, float _t67, float _t65, float _t62, float _t36, float _sfx0) {
-        float _sfx1, _sfx2, _sfx3;
+    private FloatQuat getNormalizedRotation_general_s0_tail3(float _t58, float _sp0, float _t36, float _t49, float _t37, float _t63, float _t23, float _t26, float _sp1, float _t53, float _sp2, float _t55, float _t56, float _sp3, float _t64, float _t39, float _t57, float _t65, float _t62) {
+        float _sfx0, _sfx1, _sfx2, _sfx3;
         if (_t58 > 0.0f) {
-            _sfx1 = 0.5f * _t56 * _t66;
-            _sfx2 = 0.5f * _t57 * _t66;
+            _sfx0 = _sp0 * _t36;
+            _sfx1 = _sp0 * _t56;
+            _sfx2 = _sp0 * _t57;
             _sfx3 = 0.5f * (float) Math.sqrt(_t62);
         } else {
             if (_t49 > _t37) {
-                _sfx1 = 0.5f * _t53 * _t69;
-                _sfx2 = 0.5f * _t55 * _t69;
-                _sfx3 = 0.5f * _t36 * _t69;
+                _sfx0 = 0.5f * (float) Math.sqrt(_t63);
+                _sfx1 = _sp3 * _t53;
+                _sfx2 = _sp3 * _t55;
+                _sfx3 = _sp3 * _t36;
             } else {
                 if (_t23 > _t26) {
+                    _sfx0 = _sp1 * _t53;
                     _sfx1 = 0.5f * (float) Math.sqrt(_t64);
-                    _sfx2 = 0.5f * _t39 * _t67;
-                    _sfx3 = 0.5f * _t56 * _t67;
+                    _sfx2 = _sp1 * _t39;
+                    _sfx3 = _sp1 * _t56;
                 } else {
-                    _sfx1 = 0.5f * _t39 * _t68;
+                    _sfx0 = _sp2 * _t55;
+                    _sfx1 = _sp2 * _t39;
                     _sfx2 = 0.5f * (float) Math.sqrt(_t65);
-                    _sfx3 = 0.5f * _t57 * _t68;
+                    _sfx3 = _sp2 * _t57;
                 }
             }
         }
@@ -847,7 +898,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
         float _t21, _t23;
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             _t21 = this.m01 * _t9;
             _t23 = this.m11 * _t9;
         } else {
@@ -855,14 +906,14 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
             _t23 = 0.0f;
         }
         float _t22, _t24;
-        if (_t7 > 0.0f) {
+        if (_t7 != 0.0f) {
             _t22 = this.m12 * _t10;
             _t24 = this.m02 * _t10;
         } else {
             _t22 = 0.0f;
             _t24 = 0.0f;
         }
-        float _t25 = _t8 > 0.0f ? this.m20 * _t11 : 0.0f;
+        float _t25 = _t8 != 0.0f ? this.m20 * _t11 : 0.0f;
         return getNormalizedRotation_general_s0_tail(_t7, _t10, _t6, _t9, _t8, _t11, _t22, _t23, _t21, _t24, _t25);
     }
 
@@ -1031,7 +1082,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     public Float3 getScale() {
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getScale_identity();
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getScale_translation();
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getScale_translation();
         return getScale_general();
     }
 
@@ -1085,30 +1136,21 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     }
 
     /** Private tail of {@code getUnnormalizedRotation_orthogonal}; reached only through it. */
-    private FloatQuat getUnnormalizedRotation_orthogonal_s0_tail(float _t6, float _t14, float _t0, float _t4, float _t17, float _t12, float _t16, float _t5, float _t15, float _t13, float _t10, float _sfx0) {
-        float _sfx1, _sfx2, _sfx3;
+    private FloatQuat getUnnormalizedRotation_orthogonal_s0_tail(float _t11, float _t6, float _sp0, float _t14, float _t0, float _sp2, float _t15, float _sp1, float _t16, float _t12, float _sp3, float _t13, float _t10) {
+        float _t17 = (1.0f / (float) Math.sqrt(_t11));
         if (_t6 > 0.0f) {
-            _sfx1 = 0.5f * this.m02 * _t14;
-            _sfx2 = 0.5f * _t5 * _t14;
-            _sfx3 = 0.5f * (float) Math.sqrt(_t10);
+            return new FloatQuat(-(_sp0 * _t14), _sp1 * _t14, _sp3 * _t14, 0.5f * (float) Math.sqrt(_t10));
         } else {
             if (this.m00 > _t0) {
-                _sfx1 = 0.5f * _t4 * _t17;
-                _sfx2 = 0.5f * this.m02 * _t17;
-                _sfx3 = -(0.5f * this.m12 * _t17);
+                return new FloatQuat(0.5f * (float) Math.sqrt(_t11), _sp2 * _t17, _sp1 * _t17, -(_sp0 * _t17));
             } else {
                 if (this.m11 > 1.0f) {
-                    _sfx1 = 0.5f * (float) Math.sqrt(_t12);
-                    _sfx2 = 0.5f * this.m12 * _t15;
-                    _sfx3 = 0.5f * this.m02 * _t15;
+                    return new FloatQuat(_sp2 * _t15, 0.5f * (float) Math.sqrt(_t12), _sp0 * _t15, _sp1 * _t15);
                 } else {
-                    _sfx1 = 0.5f * this.m12 * _t16;
-                    _sfx2 = 0.5f * (float) Math.sqrt(_t13);
-                    _sfx3 = 0.5f * _t5 * _t16;
+                    return new FloatQuat(_sp1 * _t16, _sp0 * _t16, 0.5f * (float) Math.sqrt(_t13), _sp3 * _t16);
                 }
             }
         }
-        return new FloatQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 
@@ -1117,10 +1159,12 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * reached only through the public {@code getUnnormalizedRotation} dispatcher.
      */
     private FloatQuat getUnnormalizedRotation_orthogonal() {
+        float _sp1 = 0.5f * this.m02;
+        float _sp0 = 0.5f * this.m12;
         float _t0 = Math.max(this.m11, 1.0f);
         float _t3 = this.m00 + this.m11;
-        float _t4 = this.m01 + this.m10;
-        float _t5 = this.m10 - this.m01;
+        float _sp2 = 0.5f * (this.m01 + this.m10);
+        float _sp3 = 0.5f * (this.m10 - this.m01);
         float _t6 = 1.0f + _t3;
         float _t10 = 1.0f + _t6;
         float _t11 = 1.0f + (this.m00 - (1.0f + this.m11));
@@ -1129,54 +1173,39 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t14 = (1.0f / (float) Math.sqrt(_t10));
         float _t15 = (1.0f / (float) Math.sqrt(_t12));
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t11));
-        float _sfx0 = _t6 > 0.0f ? -(0.5f * this.m12 * _t14) : this.m00 > _t0 ? 0.5f * (float) Math.sqrt(_t11) : this.m11 > 1.0f ? 0.5f * _t4 * _t15 : 0.5f * this.m02 * _t16;
-        return getUnnormalizedRotation_orthogonal_s0_tail(_t6, _t14, _t0, _t4, _t17, _t12, _t16, _t5, _t15, _t13, _t10, _sfx0);
+        return getUnnormalizedRotation_orthogonal_s0_tail(_t11, _t6, _sp0, _t14, _t0, _sp2, _t15, _sp1, _t16, _t12, _sp3, _t13, _t10);
     }
 
     /** Private tail of {@code getUnnormalizedRotation_general}; reached only through it. */
-    private FloatQuat getUnnormalizedRotation_general_s0_tail(float _t10, float _t1, float _t18, float _t2, float _t15, float _t4, float _t19, float _t6, float _t20, float _t7, float _t21, float _t16, float _t8, float _t9, float _t17, float _t14) {
-        float _sfx0, _sfx1;
+    private FloatQuat getUnnormalizedRotation_general_s0_tail(float _t10, float _sp0, float _t1, float _t2, float _t15, float _sp1, float _t4, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sfx0, _sfx1, _sfx2;
         if (_t10 > 0.0f) {
-            _sfx0 = 0.5f * _t1 * _t18;
-            _sfx1 = 0.5f * _t7 * _t18;
+            _sfx0 = _sp0 * _t1;
+            _sfx1 = _sp0 * _t7;
+            _sfx2 = _sp0 * _t9;
         } else {
             if (this.m00 > _t2) {
                 _sfx0 = 0.5f * (float) Math.sqrt(_t15);
-                _sfx1 = 0.5f * _t4 * _t21;
+                _sfx1 = _sp3 * _t4;
+                _sfx2 = _sp3 * _t6;
             } else {
                 if (this.m11 > this.m22) {
-                    _sfx0 = 0.5f * _t4 * _t19;
+                    _sfx0 = _sp1 * _t4;
                     _sfx1 = 0.5f * (float) Math.sqrt(_t16);
+                    _sfx2 = _sp1 * _t8;
                 } else {
-                    _sfx0 = 0.5f * _t6 * _t20;
-                    _sfx1 = 0.5f * _t8 * _t20;
+                    _sfx0 = _sp2 * _t6;
+                    _sfx1 = _sp2 * _t8;
+                    _sfx2 = 0.5f * (float) Math.sqrt(_t17);
                 }
             }
         }
-        return getUnnormalizedRotation_general_s0_tail2(_t10, _t9, _t18, _t2, _t6, _t21, _t8, _t19, _t17, _t14, _t1, _t7, _t20, _sfx0, _sfx1);
+        return getUnnormalizedRotation_general_s0_tail2(_t10, _t14, _t2, _sp3, _t1, _sp1, _t7, _sp2, _t9, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code getUnnormalizedRotation_general}; reached only through it. */
-    private FloatQuat getUnnormalizedRotation_general_s0_tail2(float _t10, float _t9, float _t18, float _t2, float _t6, float _t21, float _t8, float _t19, float _t17, float _t14, float _t1, float _t7, float _t20, float _sfx0, float _sfx1) {
-        float _sfx2, _sfx3;
-        if (_t10 > 0.0f) {
-            _sfx2 = 0.5f * _t9 * _t18;
-            _sfx3 = 0.5f * (float) Math.sqrt(_t14);
-        } else {
-            if (this.m00 > _t2) {
-                _sfx2 = 0.5f * _t6 * _t21;
-                _sfx3 = 0.5f * _t1 * _t21;
-            } else {
-                if (this.m11 > this.m22) {
-                    _sfx2 = 0.5f * _t8 * _t19;
-                    _sfx3 = 0.5f * _t7 * _t19;
-                } else {
-                    _sfx2 = 0.5f * (float) Math.sqrt(_t17);
-                    _sfx3 = 0.5f * _t9 * _t20;
-                }
-            }
-        }
+    private FloatQuat getUnnormalizedRotation_general_s0_tail2(float _t10, float _t14, float _t2, float _sp3, float _t1, float _sp1, float _t7, float _sp2, float _t9, float _sfx0, float _sfx1, float _sfx2) {
+        float _sfx3 = _t10 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : this.m00 > _t2 ? _sp3 * _t1 : this.m11 > this.m22 ? _sp1 * _t7 : _sp2 * _t9;
         return new FloatQuat(_sfx0, _sfx1, _sfx2, _sfx3);
     }
 
@@ -1199,11 +1228,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t15 = 1.0f + (this.m00 - (this.m11 + this.m22));
         float _t16 = 1.0f + (this.m11 - (this.m00 + this.m22));
         float _t17 = 1.0f + (this.m22 - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
-        return getUnnormalizedRotation_general_s0_tail(_t10, _t1, _t18, _t2, _t15, _t4, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        return getUnnormalizedRotation_general_s0_tail(_t10, _sp0, _t1, _t2, _t15, _sp1, _t4, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -2627,7 +2656,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Create the given transform's linear block {@code R * S} (the translation is dropped).
      *
-     * @param t the transform to convert
+     * @param t the transform to convert (whose rotation must be a unit quaternion)
      * @return the resulting matrix
      */
     public static Float3x3 makeFromTransform(FloatTransform t) {
@@ -2645,13 +2674,17 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -2873,26 +2906,26 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     }
 
     /** Private tail of {@code toDualQuat_orthogonal}; reached only through it. */
-    private FloatDualQuat toDualQuat_orthogonal_s0_tail(float _t8, float _t14, float _t0, float _t4, float _t17, float _t12, float _t16, float _t5, float _t15, float _t13, float _t10, float _sfx0) {
+    private FloatDualQuat toDualQuat_orthogonal_s0_tail(float _t8, float _sp1, float _t14, float _t0, float _sp2, float _t17, float _t12, float _sp0, float _t16, float _sp3, float _t15, float _t13, float _t10, float _sfx0) {
         float _sfx1, _sfx2, _sfx3;
         if (_t8 > 0.0f) {
-            _sfx1 = 0.5f * this.m02 * _t14;
-            _sfx2 = 0.5f * _t5 * _t14;
+            _sfx1 = _sp1 * _t14;
+            _sfx2 = _sp3 * _t14;
             _sfx3 = 0.5f * (float) Math.sqrt(_t10);
         } else {
             if (this.m00 > _t0) {
-                _sfx1 = 0.5f * _t4 * _t17;
-                _sfx2 = 0.5f * this.m02 * _t17;
-                _sfx3 = -(0.5f * this.m12 * _t17);
+                _sfx1 = _sp2 * _t17;
+                _sfx2 = _sp1 * _t17;
+                _sfx3 = -(_sp0 * _t17);
             } else {
                 if (this.m11 > 1.0f) {
                     _sfx1 = 0.5f * (float) Math.sqrt(_t12);
-                    _sfx2 = 0.5f * this.m12 * _t15;
-                    _sfx3 = 0.5f * this.m02 * _t15;
+                    _sfx2 = _sp0 * _t15;
+                    _sfx3 = _sp1 * _t15;
                 } else {
-                    _sfx1 = 0.5f * this.m12 * _t16;
+                    _sfx1 = _sp0 * _t16;
                     _sfx2 = 0.5f * (float) Math.sqrt(_t13);
-                    _sfx3 = 0.5f * _t5 * _t16;
+                    _sfx3 = _sp3 * _t16;
                 }
             }
         }
@@ -2909,10 +2942,12 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code toDualQuat} dispatcher.
      */
     private FloatDualQuat toDualQuat_orthogonal() {
+        float _sp1 = 0.5f * this.m02;
+        float _sp0 = 0.5f * this.m12;
         float _t0 = Math.max(this.m11, 1.0f);
         float _t2 = 1.0f - this.m00;
-        float _t4 = this.m01 + this.m10;
-        float _t5 = this.m10 - this.m01;
+        float _sp2 = 0.5f * (this.m01 + this.m10);
+        float _sp3 = 0.5f * (this.m10 - this.m01);
         float _t8 = 1.0f + (this.m00 + this.m11);
         float _t10 = 1.0f + _t8;
         float _t11 = this.m00 + (1.0f - this.m11 - 1.0f);
@@ -2922,53 +2957,40 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t15 = (1.0f / (float) Math.sqrt(_t12));
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
         float _t17 = (1.0f / (float) Math.sqrt(_t11));
-        float _sfx0 = _t8 > 0.0f ? -(0.5f * this.m12 * _t14) : this.m00 > _t0 ? 0.5f * (float) Math.sqrt(_t11) : this.m11 > 1.0f ? 0.5f * _t4 * _t15 : 0.5f * this.m02 * _t16;
-        return toDualQuat_orthogonal_s0_tail(_t8, _t14, _t0, _t4, _t17, _t12, _t16, _t5, _t15, _t13, _t10, _sfx0);
+        float _sfx0 = _t8 > 0.0f ? -(_sp0 * _t14) : this.m00 > _t0 ? 0.5f * (float) Math.sqrt(_t11) : this.m11 > 1.0f ? _sp2 * _t15 : _sp1 * _t16;
+        return toDualQuat_orthogonal_s0_tail(_t8, _sp1, _t14, _t0, _sp2, _t17, _t12, _sp0, _t16, _sp3, _t15, _t13, _t10, _sfx0);
     }
 
     /** Private tail of {@code toDualQuat_general}; reached only through it. */
-    private FloatDualQuat toDualQuat_general_s0_tail(float _t13, float _t3, float _t18, float _t4, float _t15, float _t5, float _t19, float _t6, float _t20, float _t7, float _t21, float _t16, float _t8, float _t9, float _t17, float _t14) {
-        float _sfx0, _sfx1;
+    private FloatDualQuat toDualQuat_general_s0_tail(float _t13, float _sp0, float _t3, float _t4, float _t15, float _sp1, float _t5, float _sp2, float _t6, float _t7, float _sp3, float _t16, float _t8, float _t9, float _t17, float _t14) {
+        float _sfx0, _sfx1, _sfx2;
         if (_t13 > 0.0f) {
-            _sfx0 = 0.5f * _t3 * _t18;
-            _sfx1 = 0.5f * _t7 * _t18;
+            _sfx0 = _sp0 * _t3;
+            _sfx1 = _sp0 * _t7;
+            _sfx2 = _sp0 * _t9;
         } else {
             if (this.m00 > _t4) {
                 _sfx0 = 0.5f * (float) Math.sqrt(_t15);
-                _sfx1 = 0.5f * _t5 * _t21;
+                _sfx1 = _sp3 * _t5;
+                _sfx2 = _sp3 * _t6;
             } else {
                 if (this.m11 > this.m22) {
-                    _sfx0 = 0.5f * _t5 * _t19;
+                    _sfx0 = _sp1 * _t5;
                     _sfx1 = 0.5f * (float) Math.sqrt(_t16);
+                    _sfx2 = _sp1 * _t8;
                 } else {
-                    _sfx0 = 0.5f * _t6 * _t20;
-                    _sfx1 = 0.5f * _t8 * _t20;
+                    _sfx0 = _sp2 * _t6;
+                    _sfx1 = _sp2 * _t8;
+                    _sfx2 = 0.5f * (float) Math.sqrt(_t17);
                 }
             }
         }
-        return toDualQuat_general_s0_tail2(_t13, _t9, _t18, _t4, _t6, _t21, _t8, _t19, _t17, _t14, _t3, _t7, _t20, _sfx0, _sfx1);
+        return toDualQuat_general_s0_tail2(_t13, _t14, _t4, _sp3, _t3, _sp1, _t7, _sp2, _t9, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code toDualQuat_general}; reached only through it. */
-    private FloatDualQuat toDualQuat_general_s0_tail2(float _t13, float _t9, float _t18, float _t4, float _t6, float _t21, float _t8, float _t19, float _t17, float _t14, float _t3, float _t7, float _t20, float _sfx0, float _sfx1) {
-        float _sfx2, _sfx3;
-        if (_t13 > 0.0f) {
-            _sfx2 = 0.5f * _t9 * _t18;
-            _sfx3 = 0.5f * (float) Math.sqrt(_t14);
-        } else {
-            if (this.m00 > _t4) {
-                _sfx2 = 0.5f * _t6 * _t21;
-                _sfx3 = 0.5f * _t3 * _t21;
-            } else {
-                if (this.m11 > this.m22) {
-                    _sfx2 = 0.5f * _t8 * _t19;
-                    _sfx3 = 0.5f * _t7 * _t19;
-                } else {
-                    _sfx2 = 0.5f * (float) Math.sqrt(_t17);
-                    _sfx3 = 0.5f * _t9 * _t20;
-                }
-            }
-        }
+    private FloatDualQuat toDualQuat_general_s0_tail2(float _t13, float _t14, float _t4, float _sp3, float _t3, float _sp1, float _t7, float _sp2, float _t9, float _sfx0, float _sfx1, float _sfx2) {
+        float _sfx3 = _t13 > 0.0f ? 0.5f * (float) Math.sqrt(_t14) : this.m00 > _t4 ? _sp3 * _t3 : this.m11 > this.m22 ? _sp1 * _t7 : _sp2 * _t9;
         float _sfx4 = 0.0f;
         float _sfx5 = 0.0f;
         float _sfx6 = 0.0f;
@@ -2995,11 +3017,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t15 = this.m00 + (1.0f - this.m11 - this.m22);
         float _t16 = this.m11 + (_t1 - this.m22);
         float _t17 = this.m22 + (_t1 - this.m11);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
-        return toDualQuat_general_s0_tail(_t13, _t3, _t18, _t4, _t15, _t5, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        return toDualQuat_general_s0_tail(_t13, _sp0, _t3, _t4, _t15, _sp1, _t5, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
@@ -3027,18 +3049,18 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     }
 
     /** Private tail of {@code toRigid_translation}; reached only through it. */
-    private FloatRigid toRigid_translation_s0_tail(float _t16, float _t11, float _t5, float _t18, float _t7, float _t3, float _t2, float _t6, float _t19, float _t13, float _t14, float _t17, float _t15) {
+    private FloatRigid toRigid_translation_s0_tail(float _t16, float _t11, float _sp0, float _t18, float _t7, float _t3, float _t2, float _sp1, float _t19, float _t13, float _t14, float _t17, float _t15) {
         float _t20 = (1.0f / (float) Math.sqrt(_t16));
         if (_t11 > 0.0f) {
-            return new FloatRigid(0.0f, 0.0f, 0.0f, -(0.5f * _t5 * _t18), 0.5f * _t6 * _t18, 0.0f, 0.5f * (float) Math.sqrt(_t15));
+            return new FloatRigid(0.0f, 0.0f, 0.0f, -(_sp0 * _t18), _sp1 * _t18, 0.0f, 0.5f * (float) Math.sqrt(_t15));
         } else {
             if (_t7 > _t3) {
-                return new FloatRigid(0.0f, 0.0f, 0.0f, 0.5f * (float) Math.sqrt(_t16), 0.0f, 0.5f * _t6 * _t20, -(0.5f * _t5 * _t20));
+                return new FloatRigid(0.0f, 0.0f, 0.0f, 0.5f * (float) Math.sqrt(_t16), 0.0f, _sp1 * _t20, -(_sp0 * _t20));
             } else {
                 if (1.0f > _t2) {
-                    return new FloatRigid(0.0f, 0.0f, 0.0f, 0.0f, 0.5f * (float) Math.sqrt(_t13), 0.5f * _t5 * _t14, 0.5f * _t6 * _t14);
+                    return new FloatRigid(0.0f, 0.0f, 0.0f, 0.0f, 0.5f * (float) Math.sqrt(_t13), _sp0 * _t14, _sp1 * _t14);
                 } else {
-                    return new FloatRigid(0.0f, 0.0f, 0.0f, 0.5f * _t6 * _t19, 0.5f * _t5 * _t19, 0.5f * (float) Math.sqrt(_t17), 0.0f);
+                    return new FloatRigid(0.0f, 0.0f, 0.0f, _sp1 * _t19, _sp0 * _t19, 0.5f * (float) Math.sqrt(_t17), 0.0f);
                 }
             }
         }
@@ -3052,8 +3074,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     private FloatRigid toRigid_translation() {
         float _t2 = (1.0f / (float) Math.sqrt(Math.fma(this.m02, this.m02, Math.fma(this.m12, this.m12, 1.0f))));
         float _t3 = Math.max(1.0f, _t2);
-        float _t5 = this.m12 * _t2;
-        float _t6 = this.m02 * _t2;
+        float _sp0 = 0.5f * this.m12 * _t2;
+        float _sp1 = 0.5f * this.m02 * _t2;
         float _t7 = _t2 < 0.0f ? -1.0f : 1.0f;
         float _t8 = 1.0f + _t7;
         float _t11 = _t8 + _t2;
@@ -3064,7 +3086,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t17 = 1.0f + _t2 - _t7 - 1.0f;
         float _t18 = (1.0f / (float) Math.sqrt(_t15));
         float _t19 = (1.0f / (float) Math.sqrt(_t17));
-        return toRigid_translation_s0_tail(_t16, _t11, _t5, _t18, _t7, _t3, _t2, _t6, _t19, _t13, _t14, _t17, _t15);
+        return toRigid_translation_s0_tail(_t16, _t11, _sp0, _t18, _t7, _t3, _t2, _sp1, _t19, _t13, _t14, _t17, _t15);
     }
 
     /** Private tail of {@code toRigid_general}; reached only through it. */
@@ -3093,41 +3115,44 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /** Private tail of {@code toRigid_general}; reached only through it. */
     private FloatRigid toRigid_general_s0_tail2(float _t60, float _t12, float _t1, float _t13, float _t49, float _t0, float _t48, float _t59, float _t32, float _t44, float _t33, float _t21, float _t16, float _t51, float _t52, float _t53, float _t28, float _t54) {
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         float _sfx0 = 0.0f;
         float _sfx1 = 0.0f;
         float _sfx2 = 0.0f;
-        float _sfx3 = _t59 > 0.0f ? 0.5f * _t32 * _t61 : _t44 > _t33 ? 0.5f * (float) Math.sqrt(_t64) : _t21 > _t16 ? 0.5f * _t51 * _t65 : 0.5f * _t52 * _t66;
-        return toRigid_general_s0_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+        return toRigid_general_s0_tail3(_t59, _sp0, _t32, _t44, _t33, _t64, _t21, _t16, _sp1, _t51, _sp2, _t52, _t53, _sp3, _t62, _t28, _t54, _t63, _t60, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code toRigid_general}; reached only through it. */
-    private FloatRigid toRigid_general_s0_tail3(float _t59, float _t53, float _t61, float _t44, float _t33, float _t51, float _t67, float _t21, float _t16, float _t62, float _t28, float _t66, float _t54, float _t52, float _t65, float _t63, float _t60, float _t32, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
-        float _sfx4, _sfx5, _sfx6;
+    private FloatRigid toRigid_general_s0_tail3(float _t59, float _sp0, float _t32, float _t44, float _t33, float _t64, float _t21, float _t16, float _sp1, float _t51, float _sp2, float _t52, float _t53, float _sp3, float _t62, float _t28, float _t54, float _t63, float _t60, float _sfx0, float _sfx1, float _sfx2) {
+        float _sfx3, _sfx4, _sfx5, _sfx6;
         if (_t59 > 0.0f) {
-            _sfx4 = 0.5f * _t53 * _t61;
-            _sfx5 = 0.5f * _t54 * _t61;
+            _sfx3 = _sp0 * _t32;
+            _sfx4 = _sp0 * _t53;
+            _sfx5 = _sp0 * _t54;
             _sfx6 = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
-                _sfx4 = 0.5f * _t51 * _t67;
-                _sfx5 = 0.5f * _t52 * _t67;
-                _sfx6 = 0.5f * _t32 * _t67;
+                _sfx3 = 0.5f * (float) Math.sqrt(_t64);
+                _sfx4 = _sp3 * _t51;
+                _sfx5 = _sp3 * _t52;
+                _sfx6 = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
+                    _sfx3 = _sp1 * _t51;
                     _sfx4 = 0.5f * (float) Math.sqrt(_t62);
-                    _sfx5 = 0.5f * _t28 * _t65;
-                    _sfx6 = 0.5f * _t53 * _t65;
+                    _sfx5 = _sp1 * _t28;
+                    _sfx6 = _sp1 * _t53;
                 } else {
-                    _sfx4 = 0.5f * _t28 * _t66;
+                    _sfx3 = _sp2 * _t52;
+                    _sfx4 = _sp2 * _t28;
                     _sfx5 = 0.5f * (float) Math.sqrt(_t63);
-                    _sfx6 = 0.5f * _t54 * _t66;
+                    _sfx6 = _sp2 * _t54;
                 }
             }
         }
@@ -3183,33 +3208,21 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     }
 
     /** Private tail of {@code toTransform_translation}; reached only through it. */
-    private FloatTransform toTransform_translation_s0_tail(float _t11, float _t6, float _t18, float _t7, float _t3, float _t2, float _t13, float _t5, float _t19, float _t20, float _t14, float _t17, float _t15, float _t1, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
-        float _sfx4, _sfx5, _sfx6;
+    private FloatTransform toTransform_translation_s0_tail(float _t16, float _t11, float _sp0, float _t18, float _t7, float _t3, float _t2, float _sp1, float _t19, float _t13, float _t14, float _t17, float _t15, float _t1) {
+        float _t20 = (1.0f / (float) Math.sqrt(_t16));
         if (_t11 > 0.0f) {
-            _sfx4 = 0.5f * _t6 * _t18;
-            _sfx5 = 0.0f;
-            _sfx6 = 0.5f * (float) Math.sqrt(_t15);
+            return new FloatTransform(0.0f, 0.0f, 0.0f, -(_sp0 * _t18), _sp1 * _t18, 0.0f, 0.5f * (float) Math.sqrt(_t15), _t7, 1.0f, (float) Math.sqrt(_t1));
         } else {
             if (_t7 > _t3) {
-                _sfx4 = 0.0f;
-                _sfx5 = 0.5f * _t6 * _t20;
-                _sfx6 = -(0.5f * _t5 * _t20);
+                return new FloatTransform(0.0f, 0.0f, 0.0f, 0.5f * (float) Math.sqrt(_t16), 0.0f, _sp1 * _t20, -(_sp0 * _t20), _t7, 1.0f, (float) Math.sqrt(_t1));
             } else {
                 if (1.0f > _t2) {
-                    _sfx4 = 0.5f * (float) Math.sqrt(_t13);
-                    _sfx5 = 0.5f * _t5 * _t14;
-                    _sfx6 = 0.5f * _t6 * _t14;
+                    return new FloatTransform(0.0f, 0.0f, 0.0f, 0.0f, 0.5f * (float) Math.sqrt(_t13), _sp0 * _t14, _sp1 * _t14, _t7, 1.0f, (float) Math.sqrt(_t1));
                 } else {
-                    _sfx4 = 0.5f * _t5 * _t19;
-                    _sfx5 = 0.5f * (float) Math.sqrt(_t17);
-                    _sfx6 = 0.0f;
+                    return new FloatTransform(0.0f, 0.0f, 0.0f, _sp1 * _t19, _sp0 * _t19, 0.5f * (float) Math.sqrt(_t17), 0.0f, _t7, 1.0f, (float) Math.sqrt(_t1));
                 }
             }
         }
-        float _sfx7 = _t7;
-        float _sfx8 = 1.0f;
-        float _sfx9 = (float) Math.sqrt(_t1);
-        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
     }
 
 
@@ -3221,8 +3234,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t1 = Math.fma(this.m02, this.m02, Math.fma(this.m12, this.m12, 1.0f));
         float _t2 = (1.0f / (float) Math.sqrt(_t1));
         float _t3 = Math.max(1.0f, _t2);
-        float _t5 = this.m12 * _t2;
-        float _t6 = this.m02 * _t2;
+        float _sp0 = 0.5f * this.m12 * _t2;
+        float _sp1 = 0.5f * this.m02 * _t2;
         float _t7 = _t2 < 0.0f ? -1.0f : 1.0f;
         float _t8 = 1.0f + _t7;
         float _t11 = _t8 + _t2;
@@ -3233,12 +3246,172 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t17 = 1.0f + _t2 - _t7 - 1.0f;
         float _t18 = (1.0f / (float) Math.sqrt(_t15));
         float _t19 = (1.0f / (float) Math.sqrt(_t17));
-        float _t20 = (1.0f / (float) Math.sqrt(_t16));
+        return toTransform_translation_s0_tail(_t16, _t11, _sp0, _t18, _t7, _t3, _t2, _sp1, _t19, _t13, _t14, _t17, _t15, _t1);
+    }
+
+    /** Private tail of {@code toTransform_orthogonal}; reached only through it. */
+    private FloatTransform toTransform_orthogonal_s0_tail(float _t7, float _t28, float _t27, float _t11, float _t29, float _t0, float _sp0, float _t23, float _t13, float _sp2, float _sp1, float _t26, float _t10, float _t9) {
+        float _sp3 = 0.5f * Math.fma(-this.m01, _t7, _t28);
+        float _t38 = Math.fma(this.m11, _t7, _t27 + _t11);
+        float _t39 = Math.fma(this.m11, _t7, _t29 + _t11);
+        float _t40 = Math.fma(this.m11, _t7, 1.0f - _t27 - _t11);
+        float _t41 = (1.0f / (float) Math.sqrt(_t39));
+        float _t42 = Math.fma(_t0, _t7, _t29 - _t11);
+        float _t43 = (1.0f / (float) Math.sqrt(_t40));
+        float _t44 = Math.fma(_t0, _t7, 1.0f + _t11 - _t27);
+        float _t45 = (1.0f / (float) Math.sqrt(_t44));
+        float _t46 = (1.0f / (float) Math.sqrt(_t42));
         float _sfx0 = 0.0f;
         float _sfx1 = 0.0f;
         float _sfx2 = 0.0f;
-        float _sfx3 = _t11 > 0.0f ? -(0.5f * _t5 * _t18) : _t7 > _t3 ? 0.5f * (float) Math.sqrt(_t16) : 1.0f > _t2 ? 0.0f : 0.5f * _t6 * _t19;
-        return toTransform_translation_s0_tail(_t11, _t6, _t18, _t7, _t3, _t2, _t13, _t5, _t19, _t20, _t14, _t17, _t15, _t1, _sfx0, _sfx1, _sfx2, _sfx3);
+        float _sfx3 = _t38 > 0.0f ? -(_sp0 * _t41) : _t27 > _t23 ? 0.5f * (float) Math.sqrt(_t42) : _t13 > _t11 ? _sp2 * _t43 : _sp1 * _t45;
+        return toTransform_orthogonal_s0_tail2(_t38, _sp1, _t41, _t27, _t23, _sp2, _t46, _t13, _t11, _t40, _sp0, _t45, _sp3, _t43, _t44, _t39, _t26, _t10, _t9, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code toTransform_orthogonal}; reached only through it. */
+    private FloatTransform toTransform_orthogonal_s0_tail2(float _t38, float _sp1, float _t41, float _t27, float _t23, float _sp2, float _t46, float _t13, float _t11, float _t40, float _sp0, float _t45, float _sp3, float _t43, float _t44, float _t39, float _t26, float _t10, float _t9, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t38 > 0.0f) {
+            _sfx4 = _sp1 * _t41;
+            _sfx5 = _sp3 * _t41;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t39);
+        } else {
+            if (_t27 > _t23) {
+                _sfx4 = _sp2 * _t46;
+                _sfx5 = _sp1 * _t46;
+                _sfx6 = -(_sp0 * _t46);
+            } else {
+                if (_t13 > _t11) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t40);
+                    _sfx5 = _sp0 * _t43;
+                    _sfx6 = _sp1 * _t43;
+                } else {
+                    _sfx4 = _sp0 * _t45;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t44);
+                    _sfx6 = _sp3 * _t45;
+                }
+            }
+        }
+        float _sfx7 = _t26 < 0.0f ? -_t10 : _t10;
+        float _sfx8 = 1.0f;
+        float _sfx9 = (float) Math.sqrt(_t9);
+        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private FloatTransform toTransform_orthogonal() {
+        float _t0 = -this.m11;
+        float _t6 = Math.fma(this.m00, this.m00, this.m10 * this.m10);
+        float _t7 = (1.0f / (float) Math.sqrt(Math.fma(this.m01, this.m01, this.m11 * this.m11)));
+        float _t9 = Math.fma(this.m02, this.m02, Math.fma(this.m12, this.m12, 1.0f));
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t9));
+        float _t12 = this.m00 * _t8;
+        float _t13 = this.m11 * _t7;
+        float _t15 = this.m10 * _t8;
+        float _sp0 = 0.5f * this.m12 * _t11;
+        float _sp1 = 0.5f * this.m02 * _t11;
+        float _t23 = Math.max(_t13, _t11);
+        float _t26 = Math.fma(_t12, _t13 * _t11, -(this.m01 * _t7 * _t15 * _t11));
+        float _t27, _t28;
+        if (_t26 < 0.0f) {
+            _t27 = -_t12;
+            _t28 = -_t15;
+        } else {
+            _t27 = _t12;
+            _t28 = _t15;
+        }
+        float _t29 = 1.0f + _t27;
+        float _sp2 = 0.5f * Math.fma(this.m01, _t7, _t28);
+        return toTransform_orthogonal_s0_tail(_t7, _t28, _t27, _t11, _t29, _t0, _sp0, _t23, _t13, _sp2, _sp1, _t26, _t10, _t9);
+    }
+
+    /** Private tail of {@code toTransform_affine}; reached only through it. */
+    private FloatTransform toTransform_affine_s0_tail(float _t7, float _t28, float _t27, float _t11, float _t29, float _t0, float _sp0, float _t23, float _t13, float _sp1, float _t26, float _t10, float _t5, float _t9) {
+        float _sp2 = 0.5f * Math.fma(this.m01, _t7, _t28);
+        float _sp3 = 0.5f * Math.fma(-this.m01, _t7, _t28);
+        float _t38 = Math.fma(this.m11, _t7, _t27 + _t11);
+        float _t39 = Math.fma(this.m11, _t7, _t29 + _t11);
+        float _t40 = Math.fma(this.m11, _t7, 1.0f - _t27 - _t11);
+        float _t41 = (1.0f / (float) Math.sqrt(_t39));
+        float _t42 = Math.fma(_t0, _t7, _t29 - _t11);
+        float _t43 = (1.0f / (float) Math.sqrt(_t40));
+        float _t44 = Math.fma(_t0, _t7, 1.0f + _t11 - _t27);
+        float _t45 = (1.0f / (float) Math.sqrt(_t44));
+        float _t46 = (1.0f / (float) Math.sqrt(_t42));
+        float _sfx0 = 0.0f;
+        float _sfx1 = 0.0f;
+        float _sfx2 = 0.0f;
+        float _sfx3 = _t38 > 0.0f ? -(_sp0 * _t41) : _t27 > _t23 ? 0.5f * (float) Math.sqrt(_t42) : _t13 > _t11 ? _sp2 * _t43 : _sp1 * _t45;
+        return toTransform_affine_s0_tail2(_t38, _sp1, _t41, _t27, _t23, _sp2, _t46, _t13, _t11, _t40, _sp0, _t45, _sp3, _t43, _t44, _t39, _t26, _t10, _t5, _t9, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code toTransform_affine}; reached only through it. */
+    private FloatTransform toTransform_affine_s0_tail2(float _t38, float _sp1, float _t41, float _t27, float _t23, float _sp2, float _t46, float _t13, float _t11, float _t40, float _sp0, float _t45, float _sp3, float _t43, float _t44, float _t39, float _t26, float _t10, float _t5, float _t9, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+        float _sfx4, _sfx5, _sfx6;
+        if (_t38 > 0.0f) {
+            _sfx4 = _sp1 * _t41;
+            _sfx5 = _sp3 * _t41;
+            _sfx6 = 0.5f * (float) Math.sqrt(_t39);
+        } else {
+            if (_t27 > _t23) {
+                _sfx4 = _sp2 * _t46;
+                _sfx5 = _sp1 * _t46;
+                _sfx6 = -(_sp0 * _t46);
+            } else {
+                if (_t13 > _t11) {
+                    _sfx4 = 0.5f * (float) Math.sqrt(_t40);
+                    _sfx5 = _sp0 * _t43;
+                    _sfx6 = _sp1 * _t43;
+                } else {
+                    _sfx4 = _sp0 * _t45;
+                    _sfx5 = 0.5f * (float) Math.sqrt(_t44);
+                    _sfx6 = _sp3 * _t45;
+                }
+            }
+        }
+        float _sfx7 = _t26 < 0.0f ? -_t10 : _t10;
+        float _sfx8 = (float) Math.sqrt(_t5);
+        float _sfx9 = (float) Math.sqrt(_t9);
+        return new FloatTransform(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7, _sfx8, _sfx9);
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private FloatTransform toTransform_affine() {
+        float _t0 = -this.m11;
+        float _t5 = Math.fma(this.m01, this.m01, this.m11 * this.m11);
+        float _t6 = Math.fma(this.m00, this.m00, this.m10 * this.m10);
+        float _t7 = (1.0f / (float) Math.sqrt(_t5));
+        float _t9 = Math.fma(this.m02, this.m02, Math.fma(this.m12, this.m12, 1.0f));
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t9));
+        float _t12 = this.m00 * _t8;
+        float _t13 = this.m11 * _t7;
+        float _t15 = this.m10 * _t8;
+        float _sp0 = 0.5f * this.m12 * _t11;
+        float _sp1 = 0.5f * this.m02 * _t11;
+        float _t23 = Math.max(_t13, _t11);
+        float _t26 = Math.fma(_t12, _t13 * _t11, -(this.m01 * _t7 * _t15 * _t11));
+        float _t27, _t28;
+        if (_t26 < 0.0f) {
+            _t27 = -_t12;
+            _t28 = -_t15;
+        } else {
+            _t27 = _t12;
+            _t28 = _t15;
+        }
+        float _t29 = 1.0f + _t27;
+        return toTransform_affine_s0_tail(_t7, _t28, _t27, _t11, _t29, _t0, _sp0, _t23, _t13, _sp1, _t26, _t10, _t5, _t9);
     }
 
     /** Private tail of {@code toTransform_general}; reached only through it. */
@@ -3267,41 +3440,41 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /** Private tail of {@code toTransform_general}; reached only through it. */
     private FloatTransform toTransform_general_s0_tail2(float _t12, float _t13, float _t49, float _t1, float _t50, float _t0, float _t60, float _t33, float _t45, float _t34, float _t22, float _t17, float _t52, float _t53, float _t54, float _t29, float _t55, float _t44, float _t15, float _t9, float _t10) {
         float _t61 = Math.fma(this.m11, _t12, Math.fma(this.m22, _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(this.m11, _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(this.m22, _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         float _sfx0 = 0.0f;
         float _sfx1 = 0.0f;
         float _sfx2 = 0.0f;
-        float _sfx3 = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        return toTransform_general_s0_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+        float _sfx3 = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        return toTransform_general_s0_tail3(_t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code toTransform_general}; reached only through it. */
-    private FloatTransform toTransform_general_s0_tail3(float _t60, float _t54, float _t62, float _t45, float _t34, float _t52, float _t68, float _t22, float _t17, float _t63, float _t29, float _t67, float _t55, float _t53, float _t66, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
+    private FloatTransform toTransform_general_s0_tail3(float _t60, float _sp0, float _t54, float _t45, float _t34, float _sp3, float _t52, float _t22, float _t17, float _t63, float _sp2, float _t29, float _t55, float _t53, float _sp1, float _t64, float _t61, float _t33, float _t44, float _t15, float _t9, float _t10, float _sfx0, float _sfx1, float _sfx2, float _sfx3) {
         float _sfx4, _sfx5, _sfx6;
         if (_t60 > 0.0f) {
-            _sfx4 = 0.5f * _t54 * _t62;
-            _sfx5 = 0.5f * _t55 * _t62;
+            _sfx4 = _sp0 * _t54;
+            _sfx5 = _sp0 * _t55;
             _sfx6 = 0.5f * (float) Math.sqrt(_t61);
         } else {
             if (_t45 > _t34) {
-                _sfx4 = 0.5f * _t52 * _t68;
-                _sfx5 = 0.5f * _t53 * _t68;
-                _sfx6 = 0.5f * _t33 * _t68;
+                _sfx4 = _sp3 * _t52;
+                _sfx5 = _sp3 * _t53;
+                _sfx6 = _sp3 * _t33;
             } else {
                 if (_t22 > _t17) {
                     _sfx4 = 0.5f * (float) Math.sqrt(_t63);
-                    _sfx5 = 0.5f * _t29 * _t66;
-                    _sfx6 = 0.5f * _t54 * _t66;
+                    _sfx5 = _sp1 * _t29;
+                    _sfx6 = _sp1 * _t54;
                 } else {
-                    _sfx4 = 0.5f * _t29 * _t67;
+                    _sfx4 = _sp2 * _t29;
                     _sfx5 = 0.5f * (float) Math.sqrt(_t64);
-                    _sfx6 = 0.5f * _t55 * _t67;
+                    _sfx6 = _sp2 * _t55;
                 }
             }
         }
@@ -3324,8 +3497,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t11 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = this.m10 * _t14;
         float _t17 = this.m22 * _t13;
         float _t18 = this.m12 * _t13;
@@ -3351,6 +3524,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return toTransform_identity();
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return toTransform_translation();
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return toTransform_orthogonal();
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return toTransform_affine();
         return toTransform_general();
     }
 
@@ -3364,12 +3539,14 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     }
 
     /** Private tail of {@code decomposeRotation_general}; reached only through it. */
-    private FloatQuat decomposeRotation_general_s0_tail(float _t29, float _t21, float _t30, float _t23, float _t20, float _t7, float _t8, float _t34, float _t9) {
-        float _t35, _t36;
-        if (_t29 > 0.0f) {
+    private FloatQuat decomposeRotation_general_s0_tail(float _t29, float _t22, float _t30, float _t21, float _t23, float _t20, float _t7, float _t8, float _t9) {
+        float _t34, _t35, _t36;
+        if (_t29 != 0.0f) {
+            _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
         } else {
+            _t34 = 0.0f;
             _t35 = 0.0f;
             _t36 = 0.0f;
         }
@@ -3379,8 +3556,13 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, this.m12));
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
+        return decomposeRotation_general_s0_tail2(_t49, _t46, _t50, _t45, _t44, _t35, _t36, _t34, _t7, _t8, _t9);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private FloatQuat decomposeRotation_general_s0_tail2(float _t49, float _t46, float _t50, float _t45, float _t44, float _t35, float _t36, float _t34, float _t7, float _t8, float _t9) {
         float _t54, _t55, _t56;
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -3391,11 +3573,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         }
         float _t60 = _t35 - _t54;
         float _t61 = Math.max(_t36, _t56);
-        return decomposeRotation_general_s0_tail2(_t35, _t54, _t34, _t36, _t55, _t7, _t56, _t8, _t9, _t60, _t61);
-    }
-
-    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
-    private FloatQuat decomposeRotation_general_s0_tail2(float _t35, float _t54, float _t34, float _t36, float _t55, float _t7, float _t56, float _t8, float _t9, float _t60, float _t61) {
         float _t63 = _t35 + _t54;
         float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
         float _t73, _t74, _t75;
@@ -3414,57 +3591,47 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t80 = _t75 + _t55;
         float _t81 = _t55 - _t75;
         float _t82 = _t76 + _t56;
+        return decomposeRotation_general_s0_tail3(_t82, _t73, _t36, _t56, _t76, _t60, _t61, _t77, _t80, _t81, _t63, _t78);
+    }
+
+    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
+    private FloatQuat decomposeRotation_general_s0_tail3(float _t82, float _t73, float _t36, float _t56, float _t76, float _t60, float _t61, float _t77, float _t80, float _t81, float _t63, float _t78) {
         float _t86 = 1.0f + _t82;
         float _t87 = 1.0f + (_t73 - (_t36 + _t56));
         float _t88 = 1.0f + (_t36 - (_t73 + _t56));
         float _t89 = 1.0f + (_t56 - _t76);
-        float _t90 = (1.0f / (float) Math.sqrt(_t86));
-        float _t91 = (1.0f / (float) Math.sqrt(_t88));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t87));
-        return decomposeRotation_general_s0_tail3(_t82, _t60, _t90, _t73, _t61, _t87, _t36, _t56, _t77, _t91, _t80, _t92, _t81, _t93, _t88, _t63, _t78, _t89, _t86);
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t86));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
+        return decomposeRotation_general_s0_tail4(_t82, _sp0, _t60, _t73, _t61, _t87, _t36, _t56, _sp1, _t77, _sp2, _t80, _t81, _sp3, _t88, _t63, _t78, _t89, _t86);
     }
 
     /** Private tail of {@code decomposeRotation_general}; reached only through it. */
-    private FloatQuat decomposeRotation_general_s0_tail3(float _t82, float _t60, float _t90, float _t73, float _t61, float _t87, float _t36, float _t56, float _t77, float _t91, float _t80, float _t92, float _t81, float _t93, float _t88, float _t63, float _t78, float _t89, float _t86) {
-        float _sfx0, _sfx1;
+    private FloatQuat decomposeRotation_general_s0_tail4(float _t82, float _sp0, float _t60, float _t73, float _t61, float _t87, float _t36, float _t56, float _sp1, float _t77, float _sp2, float _t80, float _t81, float _sp3, float _t88, float _t63, float _t78, float _t89, float _t86) {
+        float _sfx0, _sfx1, _sfx2, _sfx3;
         if (_t82 > 0.0f) {
-            _sfx0 = 0.5f * _t60 * _t90;
-            _sfx1 = 0.5f * _t81 * _t90;
-        } else {
-            if (_t73 > _t61) {
-                _sfx0 = 0.5f * (float) Math.sqrt(_t87);
-                _sfx1 = 0.5f * _t77 * _t93;
-            } else {
-                if (_t36 > _t56) {
-                    _sfx0 = 0.5f * _t77 * _t91;
-                    _sfx1 = 0.5f * (float) Math.sqrt(_t88);
-                } else {
-                    _sfx0 = 0.5f * _t80 * _t92;
-                    _sfx1 = 0.5f * _t63 * _t92;
-                }
-            }
-        }
-        return decomposeRotation_general_s0_tail4(_t82, _t78, _t90, _t73, _t61, _t80, _t93, _t36, _t56, _t63, _t91, _t89, _t86, _t60, _t81, _t92, _sfx0, _sfx1);
-    }
-
-    /** Private tail of {@code decomposeRotation_general}; reached only through it. */
-    private FloatQuat decomposeRotation_general_s0_tail4(float _t82, float _t78, float _t90, float _t73, float _t61, float _t80, float _t93, float _t36, float _t56, float _t63, float _t91, float _t89, float _t86, float _t60, float _t81, float _t92, float _sfx0, float _sfx1) {
-        float _sfx2, _sfx3;
-        if (_t82 > 0.0f) {
-            _sfx2 = 0.5f * _t78 * _t90;
+            _sfx0 = _sp0 * _t60;
+            _sfx1 = _sp0 * _t81;
+            _sfx2 = _sp0 * _t78;
             _sfx3 = 0.5f * (float) Math.sqrt(_t86);
         } else {
             if (_t73 > _t61) {
-                _sfx2 = 0.5f * _t80 * _t93;
-                _sfx3 = 0.5f * _t60 * _t93;
+                _sfx0 = 0.5f * (float) Math.sqrt(_t87);
+                _sfx1 = _sp3 * _t77;
+                _sfx2 = _sp3 * _t80;
+                _sfx3 = _sp3 * _t60;
             } else {
                 if (_t36 > _t56) {
-                    _sfx2 = 0.5f * _t63 * _t91;
-                    _sfx3 = 0.5f * _t81 * _t91;
+                    _sfx0 = _sp1 * _t77;
+                    _sfx1 = 0.5f * (float) Math.sqrt(_t88);
+                    _sfx2 = _sp1 * _t63;
+                    _sfx3 = _sp1 * _t81;
                 } else {
+                    _sfx0 = _sp2 * _t80;
+                    _sfx1 = _sp2 * _t63;
                     _sfx2 = 0.5f * (float) Math.sqrt(_t89);
-                    _sfx3 = 0.5f * _t78 * _t92;
+                    _sfx3 = _sp2 * _t78;
                 }
             }
         }
@@ -3480,7 +3647,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t2 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = this.m20 * _t3;
             _t8 = this.m00 * _t3;
             _t9 = this.m10 * _t3;
@@ -3496,8 +3663,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t23 = Math.fma(_t19, _t9, this.m11);
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
-        return decomposeRotation_general_s0_tail(_t29, _t21, _t30, _t23, _t20, _t7, _t8, _t34, _t9);
+        return decomposeRotation_general_s0_tail(_t29, _t22, _t30, _t21, _t23, _t20, _t7, _t8, _t9);
     }
 
 
@@ -3528,7 +3694,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /** Private tail of {@code decomposeScale_general}; reached only through it. */
     private Float3 decomposeScale_general_s0_tail(float _t27, float _t20, float _t28, float _t19, float _t21, float _t18, float _t8, float _t9, float _t10, float _t4) {
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -3549,7 +3715,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /** Private tail of {@code decomposeScale_general}; reached only through it. */
     private Float3 decomposeScale_general_s0_tail2(float _t47, float _t44, float _t48, float _t43, float _t42, float _t32, float _t34, float _t8, float _t33, float _t9, float _t10, float _t4, float _t27) {
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -3571,10 +3737,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      */
     private Float3 decomposeScale_general() {
         float _t2 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = this.m20 * _t3;
             _t9 = this.m00 * _t3;
             _t10 = this.m10 * _t3;
@@ -3632,7 +3798,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /** Private tail of {@code decomposeSkew_general}; reached only through it. */
     private Float3 decomposeSkew_general_s0_tail(float _t26, float _t19, float _t27, float _t20, float _t21, float _t16, float _t7, float _t8, float _t9, float _t14, float _t28) {
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -3655,7 +3821,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /** Private tail of {@code decomposeSkew_general}; reached only through it. */
     private Float3 decomposeSkew_general_s0_tail2(float _t47, float _t44, float _t48, float _t43, float _t42, float _t33, float _t34, float _t7, float _t32, float _t8, float _t9, float _t37, float _t49, float _t28) {
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -3686,7 +3852,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         float _t2 = Math.fma(this.m20, this.m20, Math.fma(this.m00, this.m00, this.m10 * this.m10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = this.m20 * _t3;
             _t8 = this.m00 * _t3;
             _t9 = this.m10 * _t3;
@@ -4666,6 +4832,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -4676,19 +4847,171 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return lookAlong(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private per-column body of {@code lookAlong}; reached only through it. */
-    private Float3 lookAlong_s524747ee_c0(float _t26, float _t27, float _t28) {
-        return new Float3(Math.fma(this.m02, _t26, Math.fma(this.m00, _t27, this.m01 * _t28)), Math.fma(this.m12, _t26, Math.fma(this.m10, _t27, this.m11 * _t28)), Math.fma(this.m22, _t26, Math.fma(this.m20, _t27, this.m21 * _t28)));
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_identity(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        return new Float3x3(_t21, Math.fma(_t5, _t22, -(_t4 * _t23)), _t6, _t23, Math.fma(_t4, _t21, -(_t6 * _t22)), _t5, _t22, Math.fma(_t6, _t23, -(_t5 * _t21)), _t4, 0);
     }
 
-    /** Private per-column body of {@code lookAlong}; reached only through it. */
-    private Float3 lookAlong_s524747ee_c1(float _t35, float _t36, float _t37) {
-        return new Float3(Math.fma(this.m02, _t35, Math.fma(this.m00, _t36, this.m01 * _t37)), Math.fma(this.m12, _t35, Math.fma(this.m10, _t36, this.m11 * _t37)), Math.fma(this.m22, _t35, Math.fma(this.m20, _t36, this.m21 * _t37)));
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_translation(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct1 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct1 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct1));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t26 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        return new Float3x3(Math.fma(this.m02, _t21, _t22), Math.fma(this.m02, _t26, Math.fma(_t4, _t21, -(_t6 * _t23))), Math.fma(dirX, _t3, this.m02 * _t6), Math.fma(this.m12, _t21, _t23), Math.fma(this.m12, _t26, Math.fma(_t6, _t22, -(_t5 * _t21))), Math.fma(dirY, _t3, this.m12 * _t6), _t21, _t26, _t6, 0);
     }
 
-    /** Private per-column body of {@code lookAlong}; reached only through it. */
-    private Float3 lookAlong_s524747ee_c2(float _t9, float _t8, float _t7) {
-        return new Float3(Math.fma(this.m02, _t9, Math.fma(this.m00, _t8, this.m01 * _t7)), Math.fma(this.m12, _t9, Math.fma(this.m10, _t8, this.m11 * _t7)), Math.fma(this.m22, _t9, Math.fma(this.m20, _t8, this.m21 * _t7)));
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_orthogonal(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float _t0 = -upY;
+        float _t1 = -upZ;
+        float _t2 = dirZ * this.m11;
+        float _t3 = dirY * this.m11;
+        float _t4 = dirZ * this.m10;
+        float _t5 = dirX * this.m10;
+        float _t6 = dirY * dirY;
+        float _t7 = dirY * this.m10;
+        float _t8 = dirX * this.m11;
+        float _t9 = dirX * dirZ;
+        float _t10 = dirX * dirX;
+        float _t11 = dirY * dirZ;
+        float _t12 = dirY * _t5;
+        float _t13 = dirZ * _t4;
+        float _t14 = dirY * _t8;
+        float _t15 = dirZ * _t2;
+        float _t18 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, _t6))));
+        float _sp0 = _t18 * _t18;
+        float _sp11 = _sp0 * upZ * this.m12;
+        float _sp8 = upY * _sp0;
+        float _t19 = dirY * _t18;
+        float _t20 = dirX * _t18;
+        float _sp4 = upY * _t20;
+        float _t21 = dirZ * _t18;
+        float _t28 = Math.fma(upX, _t19, -_sp4);
+        float _t29 = Math.fma(upY, _t21, -(upZ * _t19));
+        float _t30 = Math.fma(upZ, _t20, -(upX * _t21));
+        float _ct2 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        if (!(_ct2 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t35 = (1.0f / (float) Math.sqrt(_ct2));
+        float _sp2 = _t18 * _t35;
+        float _sp1 = _t35 * _sp0;
+        float _sp9 = this.m12 * _sp1;
+        return new Float3x3(Math.fma(upX, dirY * this.m02, Math.fma(_t0, dirX * this.m02, Math.fma(upY, _t2, Math.fma(_t1, _t3, Math.fma(upX, _t4, -(upZ * _t5)))))) * _sp2, (Math.fma(upX, _t12, Math.fma(upZ, dirZ * _t7, -(upY * dirX * _t5))) + Math.fma(_t0, _t13, Math.fma(_t1, dirZ * _t8, -(upY * _t14))) + (Math.fma(upX, dirY * _t3, Math.fma(upX, _t15, -(upX * this.m02 * _t9))) + Math.fma(upZ, this.m02 * _t10, Math.fma(upZ, this.m02 * _t6, -(upY * this.m02 * _t11))))) * _sp1, Math.fma(dirZ, this.m02, Math.fma(dirX, this.m11, -_t7)) * _t18, Math.fma(upX, dirY * this.m12, Math.fma(_t0, dirX * this.m12, Math.fma(-upX, _t2, Math.fma(upZ, _t8, Math.fma(upY, _t4, -(upZ * _t7)))))) * _sp2, Math.fma(-(_sp8 * _t12), _t35, Math.fma(upX * _t19 * _t7 * _t18, _t35, -(_t5 * upZ * _t21 * _sp2))) + Math.fma(upX * _t13 * _sp0, _t35, Math.fma(_sp4 * _t8 * _t18, _t35, -(upX * _t14 * _sp1))) + (Math.fma(-(upZ * _t21 * _t3 * _t18), _t35, Math.fma(_sp8 * _t15, _t35, -(upX * _t9 * _sp9))) + Math.fma(_sp11 * _t10, _t35, Math.fma(_sp11 * _t6, _t35, -(upY * _t11 * _sp9)))), Math.fma(dirZ, this.m12, Math.fma(dirX, this.m10, _t3)) * _t18, Math.fma(dirY, upX, -(dirX * upY)) * _sp2, Math.fma(upZ, _t6, Math.fma(_t0, _t11, Math.fma(upZ, _t10, -(upX * _t9)))) * _sp1, _t21, 0);
+    }
+
+    /** Private per-column body of {@code lookAlong_affine}; reached only through it. */
+    private Float3 lookAlong_affine_s524747ee_c0(float _t21, float _t22, float _t23) {
+        return new Float3(Math.fma(this.m02, _t21, Math.fma(this.m00, _t22, this.m01 * _t23)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t22, this.m11 * _t23)), _t21);
+    }
+
+    /** Private per-column body of {@code lookAlong_affine}; reached only through it. */
+    private Float3 lookAlong_affine_s524747ee_c1(float _t30, float _t31, float _t32) {
+        return new Float3(Math.fma(this.m02, _t30, Math.fma(this.m00, _t31, this.m01 * _t32)), Math.fma(this.m12, _t30, Math.fma(this.m10, _t31, this.m11 * _t32)), _t30);
+    }
+
+    /** Private per-column body of {@code lookAlong_affine}; reached only through it. */
+    private Float3 lookAlong_affine_s524747ee_c2(float _t6, float _t5, float _t4) {
+        return new Float3(Math.fma(this.m02, _t6, Math.fma(this.m00, _t5, this.m01 * _t4)), Math.fma(this.m12, _t6, Math.fma(this.m10, _t5, this.m11 * _t4)), _t6);
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_affine(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct3 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct3 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct3));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        return new Float3x3(lookAlong_affine_s524747ee_c0(_t21, _t22, _t23), lookAlong_affine_s524747ee_c1(_t30, _t31, _t32), lookAlong_affine_s524747ee_c2(_t6, _t5, _t4), 0);
+    }
+
+    /** Private per-column body of {@code lookAlong_general}; reached only through it. */
+    private Float3 lookAlong_general_s524747ee_c0(float _t21, float _t22, float _t23) {
+        return new Float3(Math.fma(this.m02, _t21, Math.fma(this.m00, _t22, this.m01 * _t23)), Math.fma(this.m12, _t21, Math.fma(this.m10, _t22, this.m11 * _t23)), Math.fma(this.m22, _t21, Math.fma(this.m20, _t22, this.m21 * _t23)));
+    }
+
+    /** Private per-column body of {@code lookAlong_general}; reached only through it. */
+    private Float3 lookAlong_general_s524747ee_c1(float _t30, float _t31, float _t32) {
+        return new Float3(Math.fma(this.m02, _t30, Math.fma(this.m00, _t31, this.m01 * _t32)), Math.fma(this.m12, _t30, Math.fma(this.m10, _t31, this.m11 * _t32)), Math.fma(this.m22, _t30, Math.fma(this.m20, _t31, this.m21 * _t32)));
+    }
+
+    /** Private per-column body of {@code lookAlong_general}; reached only through it. */
+    private Float3 lookAlong_general_s524747ee_c2(float _t6, float _t5, float _t4) {
+        return new Float3(Math.fma(this.m02, _t6, Math.fma(this.m00, _t5, this.m01 * _t4)), Math.fma(this.m12, _t6, Math.fma(this.m10, _t5, this.m11 * _t4)), Math.fma(this.m22, _t6, Math.fma(this.m20, _t5, this.m21 * _t4)));
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_general(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct4 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct4 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct4));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        return new Float3x3(lookAlong_general_s524747ee_c0(_t21, _t22, _t23), lookAlong_general_s524747ee_c1(_t30, _t31, _t32), lookAlong_general_s524747ee_c2(_t6, _t5, _t4), 0);
     }
 
 
@@ -4699,6 +5022,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -4709,37 +5037,101 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * @return the resulting matrix
      */
     public Float3x3 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_identity(dirX, dirY, dirZ, upX, upY, upZ);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation(dirX, dirY, dirZ, upX, upY, upZ);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_orthogonal(dirX, dirY, dirZ, upX, upY, upZ);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAlong_affine(dirX, dirY, dirZ, upX, upY, upZ);
+        return lookAlong_general(dirX, dirY, dirZ, upX, upY, upZ);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x3 lookAlong_degenerate(Float3 dir, Float3 up) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    /** Private per-column body of {@code lookAlong_degenerate_s524747ee_tail}; reached only through it. */
+    private Float3 lookAlong_degenerate_s524747ee_tail_s51adb80c_c0(float _t40, float _t41, float _t42) {
+        return new Float3(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)));
+    }
+
+    /** Private per-column body of {@code lookAlong_degenerate_s524747ee_tail}; reached only through it. */
+    private Float3 lookAlong_degenerate_s524747ee_tail_s51adb80c_c1(float _t51, float _t50, float _t49) {
+        return new Float3(Math.fma(this.m02, _t51, Math.fma(this.m00, _t50, this.m01 * _t49)), Math.fma(this.m12, _t51, Math.fma(this.m10, _t50, this.m11 * _t49)), Math.fma(this.m22, _t51, Math.fma(this.m20, _t50, this.m21 * _t49)));
+    }
+
+    /** Private per-column body of {@code lookAlong_degenerate_s524747ee_tail}; reached only through it. */
+    private Float3 lookAlong_degenerate_s524747ee_tail_s51adb80c_c2(float _t12, float _t11, float _t10) {
+        return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t11, this.m01 * _t10)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t11, this.m11 * _t10)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t11, this.m21 * _t10)));
+    }
+
+    private Float3x3 lookAlong_degenerate_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t12, float _t11, float _t10, int _props) {
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        float _t49 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        float _t50 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        float _t51 = Math.fma(_t42, _t11, -(_t41 * _t10));
+        return new Float3x3(lookAlong_degenerate_s524747ee_tail_s51adb80c_c0(_t40, _t41, _t42), lookAlong_degenerate_s524747ee_tail_s51adb80c_c1(_t51, _t50, _t49), lookAlong_degenerate_s524747ee_tail_s51adb80c_c2(_t12, _t11, _t10), _props);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x3 lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
             _t7 = 0.0f;
-            _t8 = 0.0f;
+            _t8 = 1.0f;
             _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
         } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        return new Float3x3(lookAlong_s524747ee_c0(_t26, _t27, _t28), lookAlong_s524747ee_c1(_t35, _t36, _t37), lookAlong_s524747ee_c2(_t9, _t8, _t7), 0);
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        return lookAlong_degenerate_s524747ee_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t12, _t11, _t10, 0);
     }
 
 
@@ -4783,13 +5175,14 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * @return the resulting matrix
      */
     public static Float3x3 makeFromDualQuat(float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
+        float _sp0 = dqRX + dqRX;
         float _t0 = dqRY * dqRY;
         float _t2 = dqRZ * dqRW;
         float _t3 = dqRY * dqRW;
         float _t4 = dqRX * dqRX;
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
-        return new Float3x3(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5), Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 0);
+        return new Float3x3(Math.fma(-2.0f, _t0, _t6), Math.fma(-2.0f, _t2, _sp0 * dqRY), 2.0f * Math.fma(dqRX, dqRZ, _t3), 2.0f * Math.fma(dqRX, dqRY, _t2), Math.fma(-2.0f, _t4, _t6), Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5), Math.fma(-2.0f, _t3, _sp0 * dqRZ), 2.0f * Math.fma(dqRX, dqRW, _t5), Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)), 0);
     }
 
 
@@ -4847,6 +5240,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
 
     /**
      * Create a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -4861,6 +5259,11 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
     /**
      * Create a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -4871,34 +5274,106 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * @return the resulting matrix
      */
     public static Float3x3 makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        return new Float3x3(_t21, Math.fma(_t5, _t22, -(_t4 * _t23)), _t6, _t23, Math.fma(_t4, _t21, -(_t6 * _t22)), _t5, _t22, Math.fma(_t6, _t23, -(_t5 * _t21)), _t4, 0);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private static Float3x3 makeRotationLookAlong_degenerate(Float3 dir, Float3 up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    /** Private per-column body of {@code makeRotationLookAlong_degenerate_s524747ee_tail}; reached only through it. */
+    private static Float3 makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c0(float _t41, float _t42, float _t40) {
+        return new Float3(_t41, _t42, _t40);
+    }
+
+    /** Private per-column body of {@code makeRotationLookAlong_degenerate_s524747ee_tail}; reached only through it. */
+    private static Float3 makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c1(float _t40, float _t10, float _t42, float _t12, float _t41, float _t11) {
+        return new Float3(Math.fma(_t40, _t10, -(_t42 * _t12)), Math.fma(_t41, _t12, -(_t40 * _t11)), Math.fma(_t42, _t11, -(_t41 * _t10)));
+    }
+
+    /** Private per-column body of {@code makeRotationLookAlong_degenerate_s524747ee_tail}; reached only through it. */
+    private static Float3 makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c2(float _t11, float _t10, float _t12) {
+        return new Float3(_t11, _t10, _t12);
+    }
+
+    private static Float3x3 makeRotationLookAlong_degenerate_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t10, float _t12, float _t11, int _props) {
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        return new Float3x3(makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c0(_t41, _t42, _t40), makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c1(_t40, _t10, _t42, _t12, _t41, _t11), makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c2(_t11, _t10, _t12), _props);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private static Float3x3 makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
             _t7 = 0.0f;
-            _t8 = 0.0f;
+            _t8 = 1.0f;
             _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t17 * _t22;
-            _t27 = _t16 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
         } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        return new Float3x3(_t26, Math.fma(_t7, _t27, -(_t9 * _t28)), _t8, _t28, Math.fma(_t9, _t26, -(_t8 * _t27)), _t7, _t27, Math.fma(_t8, _t28, -(_t7 * _t26)), _t9, 0);
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        return makeRotationLookAlong_degenerate_s524747ee_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11, 0);
     }
 
 
@@ -5740,7 +6215,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_identity(float s, float pivotX, float pivotY) {
-        return new Float3x3(s, 0.0f, Math.fma(-s, pivotX, pivotX), 0.0f, s, Math.fma(-s, pivotY, pivotY), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float3x3(s, 0.0f, pivotX * _t0, 0.0f, s, pivotY * _t0, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -5749,7 +6225,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_translation(float s, float pivotX, float pivotY) {
-        return new Float3x3(s, 0.0f, Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX)), 0.0f, s, Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float3x3(s, 0.0f, Math.fma(s, this.m02, pivotX * _t0), 0.0f, s, Math.fma(s, this.m12, pivotY * _t0), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -5758,7 +6235,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_orthogonal(float s, float pivotX, float pivotY) {
-        return new Float3x3(s * this.m00, s * this.m01, Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX)), s * this.m10, s * this.m11, Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float3x3(s * this.m00, s * this.m01, Math.fma(s, this.m02, pivotX * _t0), s * this.m10, s * this.m11, Math.fma(s, this.m12, pivotY * _t0), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -5767,9 +6245,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_general(float s, float pivotX, float pivotY) {
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        return new Float3x3(Math.fma(s, this.m00, this.m20 * _t0), Math.fma(s, this.m01, this.m21 * _t0), Math.fma(s, this.m02, this.m22 * _t0), Math.fma(s, this.m10, this.m20 * _t1), Math.fma(s, this.m11, this.m21 * _t1), Math.fma(s, this.m12, this.m22 * _t1), this.m20, this.m21, this.m22, 0);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        return new Float3x3(Math.fma(s, this.m00, this.m20 * _t1), Math.fma(s, this.m01, this.m21 * _t1), Math.fma(s, this.m02, this.m22 * _t1), Math.fma(s, this.m10, this.m20 * _t2), Math.fma(s, this.m11, this.m21 * _t2), Math.fma(s, this.m12, this.m22 * _t2), this.m20, this.m21, this.m22, 0);
     }
 
 
@@ -5818,7 +6297,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_identity(float sX, float sY, float pivotX, float pivotY) {
-        return new Float3x3(sX, 0.0f, Math.fma(-pivotX, sX, pivotX), 0.0f, sY, Math.fma(-pivotY, sY, pivotY), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3(sX, 0.0f, pivotX * (1.0f - sX), 0.0f, sY, pivotY * (1.0f - sY), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -5827,7 +6306,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_translation(float sX, float sY, float pivotX, float pivotY) {
-        return new Float3x3(sX, 0.0f, Math.fma(-pivotX, sX, Math.fma(sX, this.m02, pivotX)), 0.0f, sY, Math.fma(-pivotY, sY, Math.fma(sY, this.m12, pivotY)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3(sX, 0.0f, Math.fma(pivotX, 1.0f - sX, sX * this.m02), 0.0f, sY, Math.fma(pivotY, 1.0f - sY, sY * this.m12), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -5836,7 +6315,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_orthogonal(float sX, float sY, float pivotX, float pivotY) {
-        return new Float3x3(sX * this.m00, sX * this.m01, Math.fma(-pivotX, sX, Math.fma(sX, this.m02, pivotX)), sY * this.m10, sY * this.m11, Math.fma(-pivotY, sY, Math.fma(sY, this.m12, pivotY)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3(sX * this.m00, sX * this.m01, Math.fma(pivotX, 1.0f - sX, sX * this.m02), sY * this.m10, sY * this.m11, Math.fma(pivotY, 1.0f - sY, sY * this.m12), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -5845,8 +6324,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float3x3 preScaleAround_general(float sX, float sY, float pivotX, float pivotY) {
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         return new Float3x3(Math.fma(sX, this.m00, this.m20 * _t2), Math.fma(sX, this.m01, this.m21 * _t2), Math.fma(sX, this.m02, this.m22 * _t2), Math.fma(sY, this.m10, this.m20 * _t3), Math.fma(sY, this.m11, this.m21 * _t3), Math.fma(sY, this.m12, this.m22 * _t3), this.m20, this.m21, this.m22, 0);
     }
 
@@ -8026,7 +8505,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code scaleAround} dispatcher.
      */
     private Float3x3 scaleAround_translation(float s, float pivotX, float pivotY) {
-        return new Float3x3(s, 0.0f, Math.fma(-s, pivotX, this.m02 + pivotX), 0.0f, s, Math.fma(-s, pivotY, this.m12 + pivotY), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float3x3(s, 0.0f, Math.fma(pivotX, _t0, this.m02), 0.0f, s, Math.fma(pivotY, _t0, this.m12), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -8035,9 +8515,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code scaleAround} dispatcher.
      */
     private Float3x3 scaleAround_orthogonal(float s, float pivotX, float pivotY) {
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        return new Float3x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t0, Math.fma(this.m01, _t1, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t0, Math.fma(this.m11, _t1, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        return new Float3x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t1, Math.fma(this.m01, _t2, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t1, Math.fma(this.m11, _t2, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -8046,9 +8527,10 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code scaleAround} dispatcher.
      */
     private Float3x3 scaleAround_general(float s, float pivotX, float pivotY) {
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        return new Float3x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t0, Math.fma(this.m01, _t1, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t0, Math.fma(this.m11, _t1, this.m12)), s * this.m20, s * this.m21, Math.fma(this.m20, _t0, Math.fma(this.m21, _t1, this.m22)), 0);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        return new Float3x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t1, Math.fma(this.m01, _t2, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t1, Math.fma(this.m11, _t2, this.m12)), s * this.m20, s * this.m21, Math.fma(this.m20, _t1, Math.fma(this.m21, _t2, this.m22)), 0);
     }
 
 
@@ -8106,7 +8588,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code scaleAround} dispatcher.
      */
     private Float3x3 scaleAround_translation(float sX, float sY, float pivotX, float pivotY) {
-        return new Float3x3(sX, 0.0f, Math.fma(-pivotX, sX, this.m02 + pivotX), 0.0f, sY, Math.fma(-pivotY, sY, this.m12 + pivotY), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        return new Float3x3(sX, 0.0f, Math.fma(pivotX, 1.0f - sX, this.m02), 0.0f, sY, Math.fma(pivotY, 1.0f - sY, this.m12), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -8115,8 +8597,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code scaleAround} dispatcher.
      */
     private Float3x3 scaleAround_orthogonal(float sX, float sY, float pivotX, float pivotY) {
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         return new Float3x3(sX * this.m00, sY * this.m01, Math.fma(this.m00, _t2, Math.fma(this.m01, _t3, this.m02)), sX * this.m10, sY * this.m11, Math.fma(this.m10, _t2, Math.fma(this.m11, _t3, this.m12)), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
@@ -8126,8 +8608,8 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * through the public {@code scaleAround} dispatcher.
      */
     private Float3x3 scaleAround_general(float sX, float sY, float pivotX, float pivotY) {
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         return new Float3x3(sX * this.m00, sY * this.m01, Math.fma(this.m00, _t2, Math.fma(this.m01, _t3, this.m02)), sX * this.m10, sY * this.m11, Math.fma(this.m10, _t2, Math.fma(this.m11, _t3, this.m12)), sX * this.m20, sY * this.m21, Math.fma(this.m20, _t2, Math.fma(this.m21, _t3, this.m22)), 0);
     }
 
@@ -8268,13 +8750,13 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * the public {@code view} dispatcher.
      */
     private Float3x3 view_orthogonal(float left, float right, float bottom, float top) {
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        return new Float3x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        return new Float3x3(_sp0 * this.m00, _sp1 * this.m01, this.m02 - this.m00 * _sp2 - this.m01 * _sp3, _sp0 * this.m10, _sp1 * this.m11, this.m12 - this.m10 * _sp2 - this.m11 * _sp3, 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -8283,13 +8765,13 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * the public {@code view} dispatcher.
      */
     private Float3x3 view_affine(float left, float right, float bottom, float top) {
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        return new Float3x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        return new Float3x3(_sp0 * this.m00, _sp1 * this.m01, this.m02 + (-(this.m00 * _sp2) - this.m01 * _sp3), _sp0 * this.m10, _sp1 * this.m11, this.m12 + (-(this.m10 * _sp2) - this.m11 * _sp3), 0.0f, 0.0f, 1.0f, Joml.BIT_AFFINE);
     }
 
 
@@ -8298,13 +8780,13 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
      * the public {@code view} dispatcher.
      */
     private Float3x3 view_general(float left, float right, float bottom, float top) {
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        return new Float3x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), (this.m20 + this.m20) * _t0_inv, (this.m21 + this.m21) * _t1_inv, this.m22 + (-(this.m20 * _t2 * _t0_inv) - this.m21 * _t3 * _t1_inv), 0);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        return new Float3x3(_sp0 * this.m00, _sp1 * this.m01, this.m02 + (-(this.m00 * _sp2) - this.m01 * _sp3), _sp0 * this.m10, _sp1 * this.m11, this.m12 + (-(this.m10 * _sp2) - this.m11 * _sp3), _sp0 * this.m20, _sp1 * this.m21, this.m22 + (-(this.m20 * _sp2) - this.m21 * _sp3), 0);
     }
 
 

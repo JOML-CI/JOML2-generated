@@ -452,35 +452,35 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t54 = Math.fma(-mData[3], _t12, _t45);
         float _t59 = Math.fma(mData[4], _t12, Math.fma(mData[8], _t13, _t44));
         float _t60 = Math.fma(mData[4], _t12, Math.fma(mData[8], _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(mData[4], _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(mData[8], _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dd[3] = 0.5f * _t32 * _t61;
-            dd[4] = 0.5f * _t53 * _t61;
-            dd[5] = 0.5f * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t64);
-                dd[4] = 0.5f * _t51 * _t67;
-                dd[5] = 0.5f * _t52 * _t67;
-                dd[6] = 0.5f * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5f * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5f * (float) Math.sqrt(_t62);
-                    dd[5] = 0.5f * _t28 * _t65;
-                    dd[6] = 0.5f * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5f * _t52 * _t66;
-                    dd[4] = 0.5f * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5f * (float) Math.sqrt(_t63);
-                    dd[6] = 0.5f * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -537,35 +537,35 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t54 = Math.fma(-mData[1], _t12, _t45);
         float _t59 = Math.fma(mData[5], _t12, Math.fma(mData[10], _t13, _t44));
         float _t60 = Math.fma(mData[5], _t12, Math.fma(mData[10], _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(mData[5], _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(mData[10], _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dd[3] = 0.5f * _t32 * _t61;
-            dd[4] = 0.5f * _t53 * _t61;
-            dd[5] = 0.5f * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t64);
-                dd[4] = 0.5f * _t51 * _t67;
-                dd[5] = 0.5f * _t52 * _t67;
-                dd[6] = 0.5f * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5f * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5f * (float) Math.sqrt(_t62);
-                    dd[5] = 0.5f * _t28 * _t65;
-                    dd[6] = 0.5f * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5f * _t52 * _t66;
-                    dd[4] = 0.5f * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5f * (float) Math.sqrt(_t63);
-                    dd[6] = 0.5f * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -622,35 +622,35 @@ public final class FloatRigidImpl implements FloatRigid {
         float _t54 = Math.fma(-mData[4], _t12, _t45);
         float _t59 = Math.fma(mData[5], _t12, Math.fma(mData[10], _t13, _t44));
         float _t60 = Math.fma(mData[5], _t12, Math.fma(mData[10], _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(mData[5], _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(mData[10], _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dd[3] = 0.5f * _t32 * _t61;
-            dd[4] = 0.5f * _t53 * _t61;
-            dd[5] = 0.5f * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t64);
-                dd[4] = 0.5f * _t51 * _t67;
-                dd[5] = 0.5f * _t52 * _t67;
-                dd[6] = 0.5f * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5f * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5f * (float) Math.sqrt(_t62);
-                    dd[5] = 0.5f * _t28 * _t65;
-                    dd[6] = 0.5f * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5f * _t52 * _t66;
-                    dd[4] = 0.5f * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5f * (float) Math.sqrt(_t63);
-                    dd[6] = 0.5f * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -1264,7 +1264,7 @@ public final class FloatRigidImpl implements FloatRigid {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             dd[3] = _t50 * _t44;
             dd[4] = _t50 * _t45;
             dd[5] = _t50 * _t43;
@@ -1350,7 +1350,7 @@ public final class FloatRigidImpl implements FloatRigid {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             dd[3] = _t50 * _t44;
             dd[4] = _t50 * _t45;
             dd[5] = _t50 * _t43;
@@ -1767,6 +1767,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Invert this rigid transform; exact for any rigid motion (no scale divisions) and store the
      * result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1797,6 +1799,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1838,7 +1842,7 @@ public final class FloatRigidImpl implements FloatRigid {
         float[] dd = ((FloatRigidImpl) dest).data;
         float _t3 = Math.fma(sd[6], sd[6], Math.fma(sd[5], sd[5], Math.fma(sd[3], sd[3], sd[4] * sd[4])));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dd[3] = sd[3] * _t4;
             dd[4] = sd[4] * _t4;
             dd[5] = sd[5] * _t4;
@@ -1876,7 +1880,7 @@ public final class FloatRigidImpl implements FloatRigid {
         double[] dd = ((DoubleRigidImpl) dest).data;
         float _t3 = Math.fma(sd[6], sd[6], Math.fma(sd[5], sd[5], Math.fma(sd[3], sd[3], sd[4] * sd[4])));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dd[3] = sd[3] * _t4;
             dd[4] = sd[4] * _t4;
             dd[5] = sd[5] * _t4;
@@ -1898,11 +1902,18 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Y and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1933,6 +1944,11 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Y and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1941,6 +1957,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1971,11 +1989,18 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Z and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2006,6 +2031,11 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Z and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2014,6 +2044,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2044,11 +2076,18 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, X and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2078,6 +2117,11 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, X and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2086,6 +2130,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2115,11 +2161,18 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, Z and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2149,6 +2202,11 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, Z and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2157,6 +2215,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2186,11 +2246,18 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, X and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2220,6 +2287,11 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, X and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2228,6 +2300,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2257,11 +2331,18 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, Y and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2291,6 +2372,11 @@ public final class FloatRigidImpl implements FloatRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, Y and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2299,6 +2385,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3897,6 +3985,8 @@ public final class FloatRigidImpl implements FloatRigid {
 
     /**
      * Transform {@code v} by this rigid transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -3912,6 +4002,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -3925,6 +4017,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this rigid transform and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -3951,6 +4045,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -3974,6 +4070,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -3990,6 +4088,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -4003,6 +4103,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4029,6 +4131,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4053,6 +4157,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -4070,6 +4176,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -4084,6 +4192,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4111,6 +4221,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4134,6 +4246,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform {@code p} by the inverse of this rigid transform and store the result in
      * {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -4150,6 +4264,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -4163,6 +4279,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this rigid transform and
      * store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -4192,6 +4310,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -4218,6 +4338,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -4234,6 +4356,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -4247,6 +4371,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4265,6 +4391,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4280,6 +4408,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -4296,6 +4426,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -4309,6 +4441,8 @@ public final class FloatRigidImpl implements FloatRigid {
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -4327,6 +4461,8 @@ public final class FloatRigidImpl implements FloatRigid {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}

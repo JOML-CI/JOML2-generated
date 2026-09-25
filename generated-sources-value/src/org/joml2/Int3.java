@@ -779,11 +779,14 @@ public value record Int3(int x, int y, int z) {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public int compAdd() {
-        return this.z + (this.x + this.y);
+    public long compAdd() {
+        return (long) this.z + ((long) this.x + (long) this.y);
     }
 
 
@@ -809,11 +812,14 @@ public value record Int3(int x, int y, int z) {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the product of all components of this vector
      */
-    public int compMul() {
-        return this.z * this.x * this.y;
+    public long compMul() {
+        return (long) this.z * (long) this.x * (long) this.y;
     }
 
 
@@ -846,11 +852,14 @@ public value record Int3(int x, int y, int z) {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public int distanceSquared(Int3 other) {
+    public long distanceSquared(Int3 other) {
         return distanceSquared(other.x(), other.y(), other.z());
     }
 
@@ -858,6 +867,9 @@ public value record Int3(int x, int y, int z) {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -865,55 +877,67 @@ public value record Int3(int x, int y, int z) {
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public int distanceSquared(int otherX, int otherY, int otherZ) {
-        int _t0 = this.x - otherX;
-        int _t1 = this.y - otherY;
-        int _t2 = this.z - otherZ;
+    public long distanceSquared(int otherX, int otherY, int otherZ) {
+        long _t0 = (long) this.x - (long) otherX;
+        long _t1 = (long) this.y - (long) otherY;
+        long _t2 = (long) this.z - (long) otherZ;
         return _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public int dot(Int3 other) {
+    public long dot(Int3 other) {
         return dot(other.x(), other.y(), other.z());
     }
 
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      */
-    public int dot(int otherX, int otherY, int otherZ) {
-        return otherX * this.x + otherY * this.y + otherZ * this.z;
+    public long dot(int otherX, int otherY, int otherZ) {
+        return (long) otherX * (long) this.x + (long) otherY * (long) this.y + (long) otherZ * (long) this.z;
     }
 
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the squared length of this vector
      */
-    public int lengthSquared() {
-        return this.x * this.x + this.y * this.y + this.z * this.z;
+    public long lengthSquared() {
+        return (long) this.x * (long) this.x + (long) this.y * (long) this.y + (long) this.z * (long) this.z;
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public int manhattanDistance(Int3 other) {
+    public long manhattanDistance(Int3 other) {
         return manhattanDistance(other.x(), other.y(), other.z());
     }
 
@@ -921,6 +945,9 @@ public value record Int3(int x, int y, int z) {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -928,18 +955,21 @@ public value record Int3(int x, int y, int z) {
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public int manhattanDistance(int otherX, int otherY, int otherZ) {
-        return Math.abs(this.x - otherX) + Math.abs(this.y - otherY) + Math.abs(this.z - otherZ);
+    public long manhattanDistance(int otherX, int otherY, int otherZ) {
+        return Math.abs((long) this.x - (long) otherX) + Math.abs((long) this.y - (long) otherY) + Math.abs((long) this.z - (long) otherZ);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public int manhattanLength() {
-        return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z);
+    public long manhattanLength() {
+        return Math.abs((long) this.x) + Math.abs((long) this.y) + Math.abs((long) this.z);
     }
 
 

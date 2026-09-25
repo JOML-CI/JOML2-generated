@@ -19,6 +19,11 @@ import java.nio.ByteBuffer;
  * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
  * arguments.
  * <p>
+ * Its rotation is a unit quaternion. Every operation that applies, composes, inverts or converts
+ * this rigid transform assumes its rotation has unit length and does not divide it out. A value
+ * that has drifted from unit length (after many multiplications, say) gives wrong results rather
+ * than an error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
@@ -608,6 +613,8 @@ public interface FloatRigidR {
     /**
      * Invert this rigid transform; exact for any rigid motion (no scale divisions) and store the
      * result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -620,6 +627,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -661,11 +670,18 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Y and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -676,6 +692,11 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Y and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -684,6 +705,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -694,11 +717,18 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Z and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -709,6 +739,11 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Z and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -717,6 +752,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -727,11 +764,18 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, X and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -742,6 +786,11 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, X and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -750,6 +799,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -760,11 +811,18 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, Z and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -775,6 +833,11 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, Z and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -783,6 +846,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -793,11 +858,18 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, X and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -808,6 +880,11 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, X and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -816,6 +893,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -826,11 +905,18 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, Y and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -841,6 +927,11 @@ public interface FloatRigidR {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, Y and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -849,6 +940,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1444,6 +1537,8 @@ public interface FloatRigidR {
 
     /**
      * Transform {@code v} by this rigid transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -1456,6 +1551,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -1466,6 +1563,8 @@ public interface FloatRigidR {
     /**
      * Transform ({@code x}, {@code y}, {@code z}) by this rigid transform and store the result in
      * {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1481,6 +1580,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1492,6 +1593,8 @@ public interface FloatRigidR {
 
     /**
      * Transform {@code v} by this rigid transform and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the vector to transform (also receives the result)
      * @return {@code v}
@@ -1501,6 +1604,8 @@ public interface FloatRigidR {
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -1514,6 +1619,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -1524,6 +1631,8 @@ public interface FloatRigidR {
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1539,6 +1648,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1551,6 +1662,8 @@ public interface FloatRigidR {
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform (also receives the result)
      * @return {@code v}
@@ -1561,6 +1674,8 @@ public interface FloatRigidR {
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -1575,6 +1690,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -1586,6 +1703,8 @@ public interface FloatRigidR {
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1602,6 +1721,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1615,6 +1736,8 @@ public interface FloatRigidR {
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * back into {@code v}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform (also receives the result)
      * @return {@code v}
@@ -1624,6 +1747,8 @@ public interface FloatRigidR {
     /**
      * Transform {@code p} by the inverse of this rigid transform and store the result in
      * {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -1637,6 +1762,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -1647,6 +1774,8 @@ public interface FloatRigidR {
     /**
      * Transform ({@code x}, {@code y}, {@code z}) by the inverse of this rigid transform and store
      * the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1662,6 +1791,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1674,6 +1805,8 @@ public interface FloatRigidR {
     /**
      * Transform {@code p} by the inverse of this rigid transform and store the result back into
      * {@code p}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform (also receives the result)
      * @return {@code p}
@@ -1683,6 +1816,8 @@ public interface FloatRigidR {
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -1696,6 +1831,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -1706,6 +1843,8 @@ public interface FloatRigidR {
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1721,6 +1860,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1733,6 +1874,8 @@ public interface FloatRigidR {
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the position to transform (also receives the result)
      * @return {@code v}
@@ -1742,6 +1885,8 @@ public interface FloatRigidR {
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -1755,6 +1900,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -1765,6 +1912,8 @@ public interface FloatRigidR {
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1780,6 +1929,8 @@ public interface FloatRigidR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1792,6 +1943,8 @@ public interface FloatRigidR {
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result back into {@code p}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform (also receives the result)
      * @return {@code p}

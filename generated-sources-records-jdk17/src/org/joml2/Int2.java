@@ -734,11 +734,14 @@ public record Int2(int x, int y) {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public int compAdd() {
-        return this.x + this.y;
+    public long compAdd() {
+        return (long) this.x + (long) this.y;
     }
 
 
@@ -764,102 +767,129 @@ public record Int2(int x, int y) {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the product of all components of this vector
      */
-    public int compMul() {
-        return this.x * this.y;
+    public long compMul() {
+        return (long) this.x * (long) this.y;
     }
 
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public int distanceSquared(Int2 other) {
+    public long distanceSquared(Int2 other) {
         return distanceSquared(other.x(), other.y());
     }
 
 
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public int distanceSquared(int otherX, int otherY) {
-        int _t0 = this.x - otherX;
-        int _t1 = this.y - otherY;
+    public long distanceSquared(int otherX, int otherY) {
+        long _t0 = (long) this.x - (long) otherX;
+        long _t1 = (long) this.y - (long) otherY;
         return _t0 * _t0 + _t1 * _t1;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public int dot(Int2 other) {
+    public long dot(Int2 other) {
         return dot(other.x(), other.y());
     }
 
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY})
      */
-    public int dot(int otherX, int otherY) {
-        return otherX * this.x + otherY * this.y;
+    public long dot(int otherX, int otherY) {
+        return (long) otherX * (long) this.x + (long) otherY * (long) this.y;
     }
 
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the squared length of this vector
      */
-    public int lengthSquared() {
-        return this.x * this.x + this.y * this.y;
+    public long lengthSquared() {
+        return (long) this.x * (long) this.x + (long) this.y * (long) this.y;
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public int manhattanDistance(Int2 other) {
+    public long manhattanDistance(Int2 other) {
         return manhattanDistance(other.x(), other.y());
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public int manhattanDistance(int otherX, int otherY) {
-        return Math.abs(this.x - otherX) + Math.abs(this.y - otherY);
+    public long manhattanDistance(int otherX, int otherY) {
+        return Math.abs((long) this.x - (long) otherX) + Math.abs((long) this.y - (long) otherY);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public int manhattanLength() {
-        return Math.abs(this.x) + Math.abs(this.y);
+    public long manhattanLength() {
+        return Math.abs((long) this.x) + Math.abs((long) this.y);
     }
 
 

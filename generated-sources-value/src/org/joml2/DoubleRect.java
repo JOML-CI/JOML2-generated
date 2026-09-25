@@ -90,7 +90,12 @@ public value record DoubleRect(double minX, double minY, double maxX, double max
 
 
     /**
-     * Add {@code other} to this rectangle, returning the result as a value.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle, returning the
+     * result as a value.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to add
      * @return the resulting rectangle
@@ -101,8 +106,13 @@ public value record DoubleRect(double minX, double minY, double maxX, double max
 
 
     /**
-     * Add ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) to this
-     * rectangle, returning the result as a value.
+     * Add each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) to the corresponding bound of this rectangle, returning the result as a
+     * value.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -120,17 +130,23 @@ public value record DoubleRect(double minX, double minY, double maxX, double max
 
 
     /**
-     * Negate this rectangle, returning the result as a value.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)}, returning the result as a value.
      *
      * @return the resulting rectangle
      */
     public DoubleRect negate() {
-        return new DoubleRect(-this.minX, -this.minY, -this.maxX, -this.maxY);
+        return new DoubleRect(-this.maxX, -this.maxY, -this.minX, -this.minY);
     }
 
 
     /**
-     * Subtract {@code other} from this rectangle, returning the result as a value.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle,
+     * returning the result as a value.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to subtract
      * @return the resulting rectangle
@@ -141,8 +157,13 @@ public value record DoubleRect(double minX, double minY, double maxX, double max
 
 
     /**
-     * Subtract ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) from
-     * this rectangle, returning the result as a value.
+     * Subtract each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) from the corresponding bound of this rectangle, returning the result as a
+     * value.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -255,15 +276,6 @@ public value record DoubleRect(double minX, double minY, double maxX, double max
         return new IntRect((int) (this.minX), (int) (this.minY), (int) (this.maxX), (int) (this.maxY));
     }
 
-
-    /**
-     * Convert this rectangle to {@code int} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code IntRect} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toInt(RoundingMode)}; reached only through it. */
     private IntRect toInt_floor() {
         return new IntRect((int) Math.floor(this.minX), (int) Math.floor(this.minY), (int) Math.floor(this.maxX), (int) Math.floor(this.maxY));
@@ -289,6 +301,15 @@ public value record DoubleRect(double minX, double minY, double maxX, double max
         return new IntRect((int) Math.rint(this.minX), (int) Math.rint(this.minY), (int) Math.rint(this.maxX), (int) Math.rint(this.maxY));
     }
 
+
+    /**
+     * Convert this rectangle to {@code int} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code IntRect} holding the result
+     */
     public IntRect toInt(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toInt();

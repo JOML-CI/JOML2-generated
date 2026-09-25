@@ -2494,8 +2494,9 @@ public interface Float2R {
     Double2 min(float x, float y, @Mutated Double2 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2507,8 +2508,9 @@ public interface Float2R {
     Float2 mod(float y, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2523,8 +2525,9 @@ public interface Float2R {
     Double2 mod(float y, @Mutated Double2 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2536,8 +2539,9 @@ public interface Float2R {
     Float2 mod(Float2R y, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2552,8 +2556,9 @@ public interface Float2R {
     Double2 mod(Float2R y, @Mutated Double2 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code x}, {@code y}) and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by ({@code x}, {@code y})
+     * ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign differs from
+     * {@code y}'s - exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2566,8 +2571,9 @@ public interface Float2R {
     Float2 mod(float x, float y, @Mutated Float2 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code x}, {@code y}) and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by ({@code x}, {@code y})
+     * ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign differs from
+     * {@code y}'s - exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2997,6 +3003,10 @@ public interface Float2R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -3010,6 +3020,10 @@ public interface Float2R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3026,6 +3040,10 @@ public interface Float2R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param x the {@code x} component of the vector {@code (x, y)} (the vector must have unit
      *        length)
@@ -3042,6 +3060,10 @@ public interface Float2R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

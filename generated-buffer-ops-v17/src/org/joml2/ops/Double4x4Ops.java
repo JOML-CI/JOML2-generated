@@ -44,11 +44,13 @@ import org.joml2.internal.unsafe.*;
  * the flags its overload reads. Every non-bulk buffer and raw-address overload - and the
  * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
  * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
- * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
- * element-wise operations loop over the buffer API directly and freeze nothing. An array overload
- * whose arithmetic contains a fused multiply-add or a transcendental function calls {@link Math}
- * ({@code fma}, {@code sin}, {@code cos}, {@code atan2}, ...), which snapshots and freezes the
- * {@code Math} flags ({@code useFma}, {@code fastmath}, {@code sinLookup}, {@code strictMath}) on
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads loop over the
+ * buffer API directly, and freeze the {@code Math} flags only when their arithmetic calls
+ * {@link Math}: the bulk {@code fma} and the batched matrix transforms do (through
+ * {@code Math.fma}), the other bulk overloads freeze nothing. An array overload whose arithmetic
+ * contains a fused multiply-add or a transcendental function calls {@link Math} ({@code fma},
+ * {@code sin}, {@code cos}, {@code atan2}, ...), which snapshots and freezes the {@code Math} flags
+ * ({@code useFma}, {@code cosFromSin}, {@code fastmath}, {@code sinLookup}, {@code strictMath}) on
  * its first use; the array overloads of the remaining operations (no multiply-add, no
  * transcendental) freeze nothing.</p>
  *
@@ -130,15 +132,21 @@ public final class Double4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -190,15 +198,21 @@ public final class Double4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -250,15 +264,21 @@ public final class Double4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -310,15 +330,21 @@ public final class Double4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -370,15 +396,21 @@ public final class Double4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -430,15 +462,21 @@ public final class Double4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -518,7 +556,7 @@ public final class Double4x4Ops {
         double _t10 = (1.0 / Math.sqrt(_t7));
         double _t11 = (1.0 / Math.sqrt(_t8));
         double _t21, _t23, _t27;
-        if (_t6 > 0.0) {
+        if (_t6 != 0.0) {
             _t21 = _self01 * _t9;
             _t23 = _self11 * _t9;
             _t27 = _self21 * _t9;
@@ -528,7 +566,7 @@ public final class Double4x4Ops {
             _t27 = 0.0;
         }
         double _t22, _t24, _t26;
-        if (_t7 > 0.0) {
+        if (_t7 != 0.0) {
             _t22 = _self12 * _t10;
             _t24 = _self02 * _t10;
             _t26 = _self22 * _t10;
@@ -538,7 +576,7 @@ public final class Double4x4Ops {
             _t26 = 0.0;
         }
         double _t25, _t28, _t29;
-        if (_t8 > 0.0) {
+        if (_t8 != 0.0) {
             _t25 = _self20 * _t11;
             _t28 = _self00 * _t11;
             _t29 = _self10 * _t11;
@@ -571,32 +609,32 @@ public final class Double4x4Ops {
         double _t63 = 1.0 + (_t49 - (_t23 + _t26));
         double _t64 = 1.0 + (_t23 - (_t49 + _t26));
         double _t65 = 1.0 + (_t26 - _t52);
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
-        double _t69 = (1.0 / Math.sqrt(_t63));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t65));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
         if (_t58 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t36 * _t66;
-            dest[destOffset + 1] = 0.5 * _t56 * _t66;
-            dest[destOffset + 2] = 0.5 * _t57 * _t66;
+            dest[destOffset + 0] = _sp0 * _t36;
+            dest[destOffset + 1] = _sp0 * _t56;
+            dest[destOffset + 2] = _sp0 * _t57;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t62);
         } else {
             if (_t49 > _t37) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t63);
-                dest[destOffset + 1] = 0.5 * _t53 * _t69;
-                dest[destOffset + 2] = 0.5 * _t55 * _t69;
-                dest[destOffset + 3] = 0.5 * _t36 * _t69;
+                dest[destOffset + 1] = _sp3 * _t53;
+                dest[destOffset + 2] = _sp3 * _t55;
+                dest[destOffset + 3] = _sp3 * _t36;
             } else {
                 if (_t23 > _t26) {
-                    dest[destOffset + 0] = 0.5 * _t53 * _t67;
+                    dest[destOffset + 0] = _sp1 * _t53;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t64);
-                    dest[destOffset + 2] = 0.5 * _t39 * _t67;
-                    dest[destOffset + 3] = 0.5 * _t56 * _t67;
+                    dest[destOffset + 2] = _sp1 * _t39;
+                    dest[destOffset + 3] = _sp1 * _t56;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t55 * _t68;
-                    dest[destOffset + 1] = 0.5 * _t39 * _t68;
+                    dest[destOffset + 0] = _sp2 * _t55;
+                    dest[destOffset + 1] = _sp2 * _t39;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t65);
-                    dest[destOffset + 3] = 0.5 * _t57 * _t68;
+                    dest[destOffset + 3] = _sp2 * _t57;
                 }
             }
         }
@@ -806,32 +844,32 @@ public final class Double4x4Ops {
         double _t15 = 1.0 + (_self00 - (_self11 + _self22));
         double _t16 = 1.0 + (_self11 - (_self00 + _self22));
         double _t17 = 1.0 + (_self22 - _t0);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t10 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t1 * _t18;
-            dest[destOffset + 1] = 0.5 * _t7 * _t18;
-            dest[destOffset + 2] = 0.5 * _t9 * _t18;
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
         } else {
             if (_self00 > _t2) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
-                dest[destOffset + 1] = 0.5 * _t4 * _t21;
-                dest[destOffset + 2] = 0.5 * _t6 * _t21;
-                dest[destOffset + 3] = 0.5 * _t1 * _t21;
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
             } else {
                 if (_self11 > _self22) {
-                    dest[destOffset + 0] = 0.5 * _t4 * _t19;
+                    dest[destOffset + 0] = _sp1 * _t4;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
-                    dest[destOffset + 2] = 0.5 * _t8 * _t19;
-                    dest[destOffset + 3] = 0.5 * _t7 * _t19;
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t6 * _t20;
-                    dest[destOffset + 1] = 0.5 * _t8 * _t20;
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
-                    dest[destOffset + 3] = 0.5 * _t9 * _t20;
+                    dest[destOffset + 3] = _sp2 * _t9;
                 }
             }
         }
@@ -861,10 +899,10 @@ public final class Double4x4Ops {
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -879,20 +917,15 @@ public final class Double4x4Ops {
         double _self21 = src[srcOffset + 6];
         double _self12 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
-        double _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        double _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t6 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t7 = Math.fma(_self10, _self21, -(_self11 * _self20));
         double _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
-        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
-            dest[destOffset + 0] = -(_t7 * _t12);
-            dest[destOffset + 1] = -(_t8 * _t12);
-            dest[destOffset + 2] = -(_t6 * _t12);
-        } else {
-            dest[destOffset + 0] = -0.0;
-            dest[destOffset + 1] = -0.0;
-            dest[destOffset + 2] = -0.0;
-        }
+        double _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4x4OpsKernelsArray.invNegativeX_degenerate(dest, destOffset, src, srcOffset);
+        double _t13 = (1.0 / Math.sqrt(_ct0));
+        dest[destOffset + 0] = -(_t6 * _t13);
+        dest[destOffset + 1] = -(_t8 * _t13);
+        dest[destOffset + 2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -919,10 +952,10 @@ public final class Double4x4Ops {
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -937,20 +970,15 @@ public final class Double4x4Ops {
         double _self21 = src[srcOffset + 6];
         double _self02 = src[srcOffset + 8];
         double _self22 = src[srcOffset + 10];
-        double _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
-        double _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
-        double _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
-        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
-            dest[destOffset + 0] = -(_t8 * _t12);
-            dest[destOffset + 1] = -(_t7 * _t12);
-            dest[destOffset + 2] = -(_t6 * _t12);
-        } else {
-            dest[destOffset + 0] = -0.0;
-            dest[destOffset + 1] = -0.0;
-            dest[destOffset + 2] = -0.0;
-        }
+        double _t6 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        double _t7 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        double _t8 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        double _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4x4OpsKernelsArray.invNegativeY_degenerate(dest, destOffset, src, srcOffset);
+        double _t13 = (1.0 / Math.sqrt(_ct0));
+        dest[destOffset + 0] = -(_t6 * _t13);
+        dest[destOffset + 1] = -(_t8 * _t13);
+        dest[destOffset + 2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -977,10 +1005,10 @@ public final class Double4x4Ops {
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -995,20 +1023,15 @@ public final class Double4x4Ops {
         double _self11 = src[srcOffset + 5];
         double _self02 = src[srcOffset + 8];
         double _self12 = src[srcOffset + 9];
-        double _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
-        double _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        double _t6 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        double _t7 = Math.fma(_self00, _self11, -(_self01 * _self10));
         double _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
-        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
-            dest[destOffset + 0] = -(_t7 * _t12);
-            dest[destOffset + 1] = -(_t8 * _t12);
-            dest[destOffset + 2] = -(_t6 * _t12);
-        } else {
-            dest[destOffset + 0] = -0.0;
-            dest[destOffset + 1] = -0.0;
-            dest[destOffset + 2] = -0.0;
-        }
+        double _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4x4OpsKernelsArray.invNegativeZ_degenerate(dest, destOffset, src, srcOffset);
+        double _t13 = (1.0 / Math.sqrt(_ct0));
+        dest[destOffset + 0] = -(_t6 * _t13);
+        dest[destOffset + 1] = -(_t8 * _t13);
+        dest[destOffset + 2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -1287,10 +1310,10 @@ public final class Double4x4Ops {
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1305,20 +1328,15 @@ public final class Double4x4Ops {
         double _self21 = src[srcOffset + 6];
         double _self12 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
-        double _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        double _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t6 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        double _t7 = Math.fma(_self10, _self21, -(_self11 * _self20));
         double _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
-        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
-            dest[destOffset + 0] = _t7 * _t12;
-            dest[destOffset + 1] = _t8 * _t12;
-            dest[destOffset + 2] = _t6 * _t12;
-        } else {
-            dest[destOffset + 0] = 0.0;
-            dest[destOffset + 1] = 0.0;
-            dest[destOffset + 2] = 0.0;
-        }
+        double _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4x4OpsKernelsArray.invPositiveX_degenerate(dest, destOffset, src, srcOffset);
+        double _t13 = (1.0 / Math.sqrt(_ct0));
+        dest[destOffset + 0] = _t6 * _t13;
+        dest[destOffset + 1] = _t8 * _t13;
+        dest[destOffset + 2] = _t7 * _t13;
         return dest;
     }
 
@@ -1345,10 +1363,10 @@ public final class Double4x4Ops {
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1363,20 +1381,15 @@ public final class Double4x4Ops {
         double _self21 = src[srcOffset + 6];
         double _self02 = src[srcOffset + 8];
         double _self22 = src[srcOffset + 10];
-        double _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
-        double _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
-        double _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
-        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
-            dest[destOffset + 0] = _t8 * _t12;
-            dest[destOffset + 1] = _t7 * _t12;
-            dest[destOffset + 2] = _t6 * _t12;
-        } else {
-            dest[destOffset + 0] = 0.0;
-            dest[destOffset + 1] = 0.0;
-            dest[destOffset + 2] = 0.0;
-        }
+        double _t6 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        double _t7 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        double _t8 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        double _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4x4OpsKernelsArray.invPositiveY_degenerate(dest, destOffset, src, srcOffset);
+        double _t13 = (1.0 / Math.sqrt(_ct0));
+        dest[destOffset + 0] = _t6 * _t13;
+        dest[destOffset + 1] = _t8 * _t13;
+        dest[destOffset + 2] = _t7 * _t13;
         return dest;
     }
 
@@ -1403,10 +1416,10 @@ public final class Double4x4Ops {
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1421,20 +1434,15 @@ public final class Double4x4Ops {
         double _self11 = src[srcOffset + 5];
         double _self02 = src[srcOffset + 8];
         double _self12 = src[srcOffset + 9];
-        double _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
-        double _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        double _t6 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        double _t7 = Math.fma(_self00, _self11, -(_self01 * _self10));
         double _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
-        double _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
-            dest[destOffset + 0] = _t7 * _t12;
-            dest[destOffset + 1] = _t8 * _t12;
-            dest[destOffset + 2] = _t6 * _t12;
-        } else {
-            dest[destOffset + 0] = 0.0;
-            dest[destOffset + 1] = 0.0;
-            dest[destOffset + 2] = 0.0;
-        }
+        double _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4x4OpsKernelsArray.invPositiveZ_degenerate(dest, destOffset, src, srcOffset);
+        double _t13 = (1.0 / Math.sqrt(_ct0));
+        dest[destOffset + 0] = _t6 * _t13;
+        dest[destOffset + 1] = _t8 * _t13;
+        dest[destOffset + 2] = _t7 * _t13;
         return dest;
     }
 
@@ -1478,7 +1486,7 @@ public final class Double4x4Ops {
         double _self20 = src[srcOffset + 2];
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest[destOffset + 0] = -(_self00 * _t3);
             dest[destOffset + 1] = -(_self10 * _t3);
             dest[destOffset + 2] = -(_self20 * _t3);
@@ -1530,7 +1538,7 @@ public final class Double4x4Ops {
         double _self21 = src[srcOffset + 6];
         double _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest[destOffset + 0] = -(_self01 * _t3);
             dest[destOffset + 1] = -(_self11 * _t3);
             dest[destOffset + 2] = -(_self21 * _t3);
@@ -1582,7 +1590,7 @@ public final class Double4x4Ops {
         double _self22 = src[srcOffset + 10];
         double _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest[destOffset + 0] = -(_self02 * _t3);
             dest[destOffset + 1] = -(_self12 * _t3);
             dest[destOffset + 2] = -(_self22 * _t3);
@@ -1996,7 +2004,7 @@ public final class Double4x4Ops {
         double _self20 = src[srcOffset + 2];
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest[destOffset + 0] = _self00 * _t3;
             dest[destOffset + 1] = _self10 * _t3;
             dest[destOffset + 2] = _self20 * _t3;
@@ -2048,7 +2056,7 @@ public final class Double4x4Ops {
         double _self21 = src[srcOffset + 6];
         double _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest[destOffset + 0] = _self01 * _t3;
             dest[destOffset + 1] = _self11 * _t3;
             dest[destOffset + 2] = _self21 * _t3;
@@ -2100,7 +2108,7 @@ public final class Double4x4Ops {
         double _self22 = src[srcOffset + 10];
         double _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest[destOffset + 0] = _self02 * _t3;
             dest[destOffset + 1] = _self12 * _t3;
             dest[destOffset + 2] = _self22 * _t3;
@@ -3205,13 +3213,17 @@ public final class Double4x4Ops {
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -3402,33 +3414,33 @@ public final class Double4x4Ops {
         double _t16 = _self00 + (1.0 - _self11 - _self22);
         double _t17 = _self11 + (_t2 - _self22);
         double _t18 = _self22 + (_t2 - _self11);
-        double _t19 = (1.0 / Math.sqrt(_t15));
-        double _t21 = (1.0 / Math.sqrt(_t17));
-        double _t22 = (1.0 / Math.sqrt(_t18));
-        double _t23 = (1.0 / Math.sqrt(_t16));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t15));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t18));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t16));
         double _t63, _t64, _t65, _t66;
         if (_t14 > 0.0) {
-            _t63 = 0.5 * _t4 * _t19;
-            _t64 = 0.5 * _t8 * _t19;
-            _t65 = 0.5 * _t10 * _t19;
+            _t63 = _sp0 * _t4;
+            _t64 = _sp0 * _t8;
+            _t65 = _sp0 * _t10;
             _t66 = 0.5 * Math.sqrt(_t15);
         } else {
             if (_self00 > _t5) {
                 _t63 = 0.5 * Math.sqrt(_t16);
-                _t64 = 0.5 * _t6 * _t23;
-                _t65 = 0.5 * _t7 * _t23;
-                _t66 = 0.5 * _t4 * _t23;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t7;
+                _t66 = _sp3 * _t4;
             } else {
                 if (_self11 > _self22) {
-                    _t63 = 0.5 * _t6 * _t21;
+                    _t63 = _sp1 * _t6;
                     _t64 = 0.5 * Math.sqrt(_t17);
-                    _t65 = 0.5 * _t9 * _t21;
-                    _t66 = 0.5 * _t8 * _t21;
+                    _t65 = _sp1 * _t9;
+                    _t66 = _sp1 * _t8;
                 } else {
-                    _t63 = 0.5 * _t7 * _t22;
-                    _t64 = 0.5 * _t9 * _t22;
+                    _t63 = _sp2 * _t7;
+                    _t64 = _sp2 * _t9;
                     _t65 = 0.5 * Math.sqrt(_t18);
-                    _t66 = 0.5 * _t10 * _t22;
+                    _t66 = _sp2 * _t10;
                 }
             }
         }
@@ -3521,35 +3533,35 @@ public final class Double4x4Ops {
         double _t54 = Math.fma(-_self01, _t12, _t45);
         double _t59 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t44));
         double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         if (_t59 > 0.0) {
-            dest[destOffset + 3] = 0.5 * _t32 * _t61;
-            dest[destOffset + 4] = 0.5 * _t53 * _t61;
-            dest[destOffset + 5] = 0.5 * _t54 * _t61;
+            dest[destOffset + 3] = _sp0 * _t32;
+            dest[destOffset + 4] = _sp0 * _t53;
+            dest[destOffset + 5] = _sp0 * _t54;
             dest[destOffset + 6] = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dest[destOffset + 3] = 0.5 * Math.sqrt(_t64);
-                dest[destOffset + 4] = 0.5 * _t51 * _t67;
-                dest[destOffset + 5] = 0.5 * _t52 * _t67;
-                dest[destOffset + 6] = 0.5 * _t32 * _t67;
+                dest[destOffset + 4] = _sp3 * _t51;
+                dest[destOffset + 5] = _sp3 * _t52;
+                dest[destOffset + 6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dest[destOffset + 3] = 0.5 * _t51 * _t65;
+                    dest[destOffset + 3] = _sp1 * _t51;
                     dest[destOffset + 4] = 0.5 * Math.sqrt(_t62);
-                    dest[destOffset + 5] = 0.5 * _t28 * _t65;
-                    dest[destOffset + 6] = 0.5 * _t53 * _t65;
+                    dest[destOffset + 5] = _sp1 * _t28;
+                    dest[destOffset + 6] = _sp1 * _t53;
                 } else {
-                    dest[destOffset + 3] = 0.5 * _t52 * _t66;
-                    dest[destOffset + 4] = 0.5 * _t28 * _t66;
+                    dest[destOffset + 3] = _sp2 * _t52;
+                    dest[destOffset + 4] = _sp2 * _t28;
                     dest[destOffset + 5] = 0.5 * Math.sqrt(_t63);
-                    dest[destOffset + 6] = 0.5 * _t54 * _t66;
+                    dest[destOffset + 6] = _sp2 * _t54;
                 }
             }
         }
@@ -3610,8 +3622,8 @@ public final class Double4x4Ops {
         double _t11 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = _self10 * _t14;
         double _t17 = _self22 * _t13;
         double _t18 = _self12 * _t13;
@@ -3641,20 +3653,20 @@ public final class Double4x4Ops {
         double _t55 = Math.fma(-_self01, _t12, _t46);
         double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t45));
         double _t61 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         dest[destOffset + 0] = _self03;
         dest[destOffset + 1] = _self13;
         dest[destOffset + 2] = _self23;
-        dest[destOffset + 3] = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        dest[destOffset + 4] = _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67;
-        dest[destOffset + 5] = _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64);
-        dest[destOffset + 6] = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67;
+        dest[destOffset + 3] = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dest[destOffset + 4] = _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29;
+        dest[destOffset + 5] = _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64);
+        dest[destOffset + 6] = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dest[destOffset + 7] = _t44 < 0.0 ? -_t15 : _t15;
         dest[destOffset + 8] = Math.sqrt(_t9);
         dest[destOffset + 9] = Math.sqrt(_t10);
@@ -3706,7 +3718,7 @@ public final class Double4x4Ops {
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -3723,7 +3735,7 @@ public final class Double4x4Ops {
         double _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t34, _t35, _t36;
-        if (_t29 > 0.0) {
+        if (_t29 != 0.0) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -3739,7 +3751,7 @@ public final class Double4x4Ops {
         double _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         double _t50 = (1.0 / Math.sqrt(_t49));
         double _t54, _t55, _t56;
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -3772,32 +3784,32 @@ public final class Double4x4Ops {
         double _t87 = 1.0 + (_t73 - (_t36 + _t56));
         double _t88 = 1.0 + (_t36 - (_t73 + _t56));
         double _t89 = 1.0 + (_t56 - _t76);
-        double _t90 = (1.0 / Math.sqrt(_t86));
-        double _t91 = (1.0 / Math.sqrt(_t88));
-        double _t92 = (1.0 / Math.sqrt(_t89));
-        double _t93 = (1.0 / Math.sqrt(_t87));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t86));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t88));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t89));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t87));
         if (_t82 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t60 * _t90;
-            dest[destOffset + 1] = 0.5 * _t81 * _t90;
-            dest[destOffset + 2] = 0.5 * _t78 * _t90;
+            dest[destOffset + 0] = _sp0 * _t60;
+            dest[destOffset + 1] = _sp0 * _t81;
+            dest[destOffset + 2] = _sp0 * _t78;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t86);
         } else {
             if (_t73 > _t61) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t87);
-                dest[destOffset + 1] = 0.5 * _t77 * _t93;
-                dest[destOffset + 2] = 0.5 * _t80 * _t93;
-                dest[destOffset + 3] = 0.5 * _t60 * _t93;
+                dest[destOffset + 1] = _sp3 * _t77;
+                dest[destOffset + 2] = _sp3 * _t80;
+                dest[destOffset + 3] = _sp3 * _t60;
             } else {
                 if (_t36 > _t56) {
-                    dest[destOffset + 0] = 0.5 * _t77 * _t91;
+                    dest[destOffset + 0] = _sp1 * _t77;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t88);
-                    dest[destOffset + 2] = 0.5 * _t63 * _t91;
-                    dest[destOffset + 3] = 0.5 * _t81 * _t91;
+                    dest[destOffset + 2] = _sp1 * _t63;
+                    dest[destOffset + 3] = _sp1 * _t81;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t80 * _t92;
-                    dest[destOffset + 1] = 0.5 * _t63 * _t92;
+                    dest[destOffset + 0] = _sp2 * _t80;
+                    dest[destOffset + 1] = _sp2 * _t63;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t89);
-                    dest[destOffset + 3] = 0.5 * _t78 * _t92;
+                    dest[destOffset + 3] = _sp2 * _t78;
                 }
             }
         }
@@ -3849,10 +3861,10 @@ public final class Double4x4Ops {
         double _self12 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        double _t3 = (1.0 / Math.sqrt(_t2));
         double _t4 = Math.sqrt(_t2);
+        double _t3 = 1.0 / _t4;
         double _t8, _t9, _t10;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -3869,7 +3881,7 @@ public final class Double4x4Ops {
         double _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t28 = (1.0 / Math.sqrt(_t27));
         double _t32, _t33, _t34;
-        if (_t27 > 0.0) {
+        if (_t27 != 0.0) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -3885,7 +3897,7 @@ public final class Double4x4Ops {
         double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t52, _t53, _t54;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -3947,7 +3959,7 @@ public final class Double4x4Ops {
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -3967,7 +3979,7 @@ public final class Double4x4Ops {
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t28 = _t15 * _t27;
         double _t32, _t33, _t34;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -3985,7 +3997,7 @@ public final class Double4x4Ops {
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t49 = _t14 * _t48;
         double _t53, _t54, _t55;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -4057,10 +4069,10 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        double _t3 = (1.0 / Math.sqrt(_t2));
         double _t4 = Math.sqrt(_t2);
+        double _t3 = 1.0 / _t4;
         double _t8, _t9, _t10;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -4077,7 +4089,7 @@ public final class Double4x4Ops {
         double _t30 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         double _t31 = (1.0 / Math.sqrt(_t30));
         double _t35, _t36, _t37;
-        if (_t30 > 0.0) {
+        if (_t30 != 0.0) {
             _t35 = _t23 * _t31;
             _t36 = _t22 * _t31;
             _t37 = _t24 * _t31;
@@ -4093,7 +4105,7 @@ public final class Double4x4Ops {
         double _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
         double _t51 = (1.0 / Math.sqrt(_t50));
         double _t55, _t56, _t57;
-        if (_t50 > 0.0) {
+        if (_t50 != 0.0) {
             _t55 = _t47 * _t51;
             _t56 = _t46 * _t51;
             _t57 = _t45 * _t51;
@@ -4126,35 +4138,35 @@ public final class Double4x4Ops {
         double _t88 = 1.0 + (_t74 - (_t37 + _t57));
         double _t89 = 1.0 + (_t37 - (_t74 + _t57));
         double _t90 = 1.0 + (_t57 - _t77);
-        double _t91 = (1.0 / Math.sqrt(_t87));
-        double _t92 = (1.0 / Math.sqrt(_t89));
-        double _t93 = (1.0 / Math.sqrt(_t90));
-        double _t94 = (1.0 / Math.sqrt(_t88));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t87));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t89));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t90));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t88));
         translation[translationOffset + 0] = _self03;
         translation[translationOffset + 1] = _self13;
         translation[translationOffset + 2] = _self23;
         if (_t83 > 0.0) {
-            rotation[rotationOffset + 0] = 0.5 * _t61 * _t91;
-            rotation[rotationOffset + 1] = 0.5 * _t82 * _t91;
-            rotation[rotationOffset + 2] = 0.5 * _t79 * _t91;
+            rotation[rotationOffset + 0] = _sp0 * _t61;
+            rotation[rotationOffset + 1] = _sp0 * _t82;
+            rotation[rotationOffset + 2] = _sp0 * _t79;
             rotation[rotationOffset + 3] = 0.5 * Math.sqrt(_t87);
         } else {
             if (_t74 > _t62) {
                 rotation[rotationOffset + 0] = 0.5 * Math.sqrt(_t88);
-                rotation[rotationOffset + 1] = 0.5 * _t78 * _t94;
-                rotation[rotationOffset + 2] = 0.5 * _t81 * _t94;
-                rotation[rotationOffset + 3] = 0.5 * _t61 * _t94;
+                rotation[rotationOffset + 1] = _sp3 * _t78;
+                rotation[rotationOffset + 2] = _sp3 * _t81;
+                rotation[rotationOffset + 3] = _sp3 * _t61;
             } else {
                 if (_t37 > _t57) {
-                    rotation[rotationOffset + 0] = 0.5 * _t78 * _t92;
+                    rotation[rotationOffset + 0] = _sp1 * _t78;
                     rotation[rotationOffset + 1] = 0.5 * Math.sqrt(_t89);
-                    rotation[rotationOffset + 2] = 0.5 * _t64 * _t92;
-                    rotation[rotationOffset + 3] = 0.5 * _t82 * _t92;
+                    rotation[rotationOffset + 2] = _sp1 * _t64;
+                    rotation[rotationOffset + 3] = _sp1 * _t82;
                 } else {
-                    rotation[rotationOffset + 0] = 0.5 * _t81 * _t93;
-                    rotation[rotationOffset + 1] = 0.5 * _t64 * _t93;
+                    rotation[rotationOffset + 0] = _sp2 * _t81;
+                    rotation[rotationOffset + 1] = _sp2 * _t64;
                     rotation[rotationOffset + 2] = 0.5 * Math.sqrt(_t90);
-                    rotation[rotationOffset + 3] = 0.5 * _t79 * _t93;
+                    rotation[rotationOffset + 3] = _sp2 * _t79;
                 }
             }
         }
@@ -4266,7 +4278,8 @@ public final class Double4x4Ops {
      * <p>
      * Each constant names a corner of the clip-space cube by the sign its three coordinates take
      * there, so {@code NXNYNZ} is the bottom-left corner of the near plane and {@code PXPYPZ} the
-     * top-right corner of the far plane.
+     * top-right corner of the far plane. A corner on a depth plane at infinity is infinite, with
+     * each component's sign giving the side the frustum recedes to.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -4289,7 +4302,8 @@ public final class Double4x4Ops {
      * <p>
      * Each constant names a corner of the clip-space cube by the sign its three coordinates take
      * there, so {@code NXNYNZ} is the bottom-left corner of the near plane and {@code PXPYPZ} the
-     * top-right corner of the far plane.
+     * top-right corner of the far plane. A corner on a depth plane at infinity is infinite, with
+     * each component's sign giving the side the frustum recedes to.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -4804,6 +4818,11 @@ public final class Double4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      *
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
@@ -4826,6 +4845,11 @@ public final class Double4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -4879,6 +4903,11 @@ public final class Double4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      *
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
@@ -4900,6 +4929,11 @@ public final class Double4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -5188,8 +5222,8 @@ public final class Double4x4Ops {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -5230,14 +5264,14 @@ public final class Double4x4Ops {
         dest[destOffset + 5] = Math.fma(_right01, _self10, _right11 * _self11);
         dest[destOffset + 6] = Math.fma(_right01, _self20, _right11 * _self21);
         dest[destOffset + 7] = Math.fma(_right01, _self30, _right11 * _self31);
-        dest[destOffset + 8] = Math.fma(_right02, _self00, Math.fma(_right12, _self01, _self02));
-        dest[destOffset + 9] = Math.fma(_right02, _self10, Math.fma(_right12, _self11, _self12));
-        dest[destOffset + 10] = Math.fma(_right02, _self20, Math.fma(_right12, _self21, _self22));
-        dest[destOffset + 11] = Math.fma(_right02, _self30, Math.fma(_right12, _self31, _self32));
-        dest[destOffset + 12] = _self03;
-        dest[destOffset + 13] = _self13;
-        dest[destOffset + 14] = _self23;
-        dest[destOffset + 15] = _self33;
+        dest[destOffset + 8] = _self02;
+        dest[destOffset + 9] = _self12;
+        dest[destOffset + 10] = _self22;
+        dest[destOffset + 11] = _self32;
+        dest[destOffset + 12] = Math.fma(_right02, _self00, Math.fma(_right12, _self01, _self03));
+        dest[destOffset + 13] = Math.fma(_right02, _self10, Math.fma(_right12, _self11, _self13));
+        dest[destOffset + 14] = Math.fma(_right02, _self20, Math.fma(_right12, _self21, _self23));
+        dest[destOffset + 15] = Math.fma(_right02, _self30, Math.fma(_right12, _self31, _self33));
         return dest;
     }
 
@@ -5556,8 +5590,8 @@ public final class Double4x4Ops {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -5580,8 +5614,8 @@ public final class Double4x4Ops {
             double _eself1 = src[srcOffset + _lo + 1];
             double _eself2 = src[srcOffset + _lo + 2];
             double _eself3 = src[srcOffset + _lo + 3];
-            dest[destOffset + _lo] = Math.fma(_other02, _eself2, Math.fma(_other00, _eself0, _other01 * _eself1));
-            dest[destOffset + _lo + 1] = Math.fma(_other12, _eself2, Math.fma(_other10, _eself0, _other11 * _eself1));
+            dest[destOffset + _lo] = Math.fma(_other02, _eself3, Math.fma(_other00, _eself0, _other01 * _eself1));
+            dest[destOffset + _lo + 1] = Math.fma(_other12, _eself3, Math.fma(_other10, _eself0, _other11 * _eself1));
             dest[destOffset + _lo + 2] = _eself2;
             dest[destOffset + _lo + 3] = _eself3;
         }
@@ -6058,13 +6092,14 @@ public final class Double4x4Ops {
         double _self33 = src[srcOffset + 15];
         double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
+        double _sp0 = _t1 * 0.5;
         double _t2 = Math.cosFromSin(_t0, alpha);
         double _t4 = _self00 * _t1;
         double _t5 = _self10 * _t1;
         double _t6 = _self20 * _t1;
         double _t7 = _self30 * _t1;
-        double _t9 = 0.5 * _t0 * _t1;
-        double _t10 = 0.5 * _t2 * _t1;
+        double _t9 = _sp0 * _t0;
+        double _t10 = _sp0 * _t2;
         dest[destOffset + 0] = Math.fma(-_self02, _t10, Math.fma(_self01, _t9, 0.5 * _t4));
         dest[destOffset + 1] = Math.fma(-_self12, _t10, Math.fma(_self11, _t9, 0.5 * _t5));
         dest[destOffset + 2] = Math.fma(-_self22, _t10, Math.fma(_self21, _t9, 0.5 * _t6));
@@ -6137,6 +6172,7 @@ public final class Double4x4Ops {
         double _t0 = Math.sqrt(3.0);
         double _t1 = Math.sqrt(2.0);
         double _t2 = Math.sqrt(6.0);
+        double _sp0 = 0.16666666666666666 * _t2;
         double _t3 = _self02 * _t0;
         double _t4 = _self00 * _t1;
         double _t6 = _self12 * _t0;
@@ -6145,10 +6181,10 @@ public final class Double4x4Ops {
         double _t10 = _self20 * _t1;
         double _t12 = _self32 * _t0;
         double _t13 = _self30 * _t1;
-        double _t15 = 0.16666666666666666 * _self01 * _t2;
-        double _t16 = 0.16666666666666666 * _self11 * _t2;
-        double _t17 = 0.16666666666666666 * _self21 * _t2;
-        double _t18 = 0.16666666666666666 * _self31 * _t2;
+        double _t15 = _sp0 * _self01;
+        double _t16 = _sp0 * _self11;
+        double _t17 = _sp0 * _self21;
+        double _t18 = _sp0 * _self31;
         dest[destOffset + 0] = Math.fma(-0.3333333333333333, _t3, Math.fma(0.5, _t4, _t15));
         dest[destOffset + 1] = Math.fma(-0.3333333333333333, _t6, Math.fma(0.5, _t7, _t16));
         dest[destOffset + 2] = Math.fma(-0.3333333333333333, _t9, Math.fma(0.5, _t10, _t17));
@@ -6800,6 +6836,11 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6833,7 +6874,7 @@ public final class Double4x4Ops {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -6848,7 +6889,7 @@ public final class Double4x4Ops {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -6905,6 +6946,11 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6943,7 +6989,7 @@ public final class Double4x4Ops {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -6958,7 +7004,7 @@ public final class Double4x4Ops {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -7015,6 +7061,11 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7046,6 +7097,11 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -7108,6 +7164,11 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7136,6 +7197,11 @@ public final class Double4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -7326,12 +7392,11 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] makeAxonometricDimetric(double[] dest, int destOffset, double alpha) {
-        double _t0 = Math.sqrt(2.0);
         double _t1 = Math.sin(alpha);
-        double _t2 = 0.5 * _t0;
+        double _t2 = 0.5 * Math.sqrt(2.0);
         double _t3 = Math.cosFromSin(_t1, alpha);
-        double _t5 = 0.5 * _t1 * _t0;
-        double _t7 = 0.5 * _t3 * _t0;
+        double _t5 = _t2 * _t1;
+        double _t7 = _t2 * _t3;
         dest[destOffset + 0] = _t2;
         dest[destOffset + 1] = _t5;
         dest[destOffset + 2] = -_t7;
@@ -7477,6 +7542,11 @@ public final class Double4x4Ops {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7507,7 +7577,7 @@ public final class Double4x4Ops {
         double _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
         double _t15 = (1.0 / Math.sqrt(_t14));
         double _t19, _t20, _t21;
-        if (_t14 > 0.0) {
+        if (_t14 != 0.0) {
             _t19 = _t10 * _t15;
             _t20 = _t11 * _t15;
             _t21 = _t9 * _t15;
@@ -7521,7 +7591,7 @@ public final class Double4x4Ops {
         double _t30 = Math.fma(upZ, _t20, -(upY * _t21));
         double _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
         double _t34 = (1.0 / Math.sqrt(_t33));
-        if (_t33 > 0.0) {
+        if (_t33 != 0.0) {
             dest[destOffset + 8] = _t30 * _t34;
             dest[destOffset + 9] = _t29 * _t34;
             dest[destOffset + 10] = _t28 * _t34;
@@ -7568,6 +7638,11 @@ public final class Double4x4Ops {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7598,7 +7673,7 @@ public final class Double4x4Ops {
         double _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
         double _t15 = (1.0 / Math.sqrt(_t14));
         double _t19, _t20, _t21;
-        if (_t14 > 0.0) {
+        if (_t14 != 0.0) {
             _t19 = _t10 * _t15;
             _t20 = _t11 * _t15;
             _t21 = _t9 * _t15;
@@ -7612,7 +7687,7 @@ public final class Double4x4Ops {
         double _t30 = Math.fma(_upz, _t20, -(_upy * _t21));
         double _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
         double _t34 = (1.0 / Math.sqrt(_t33));
-        if (_t33 > 0.0) {
+        if (_t33 != 0.0) {
             dest[destOffset + 8] = _t30 * _t34;
             dest[destOffset + 9] = _t29 * _t34;
             dest[destOffset + 10] = _t28 * _t34;
@@ -7658,6 +7733,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7682,7 +7762,7 @@ public final class Double4x4Ops {
         double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         double _t6 = (1.0 / Math.sqrt(_t5));
         double _t10, _t11, _t12;
-        if (_t5 > 0.0) {
+        if (_t5 != 0.0) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -7697,7 +7777,7 @@ public final class Double4x4Ops {
         double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t25 = (1.0 / Math.sqrt(_t24));
         double _t29, _t30, _t31;
-        if (_t24 > 0.0) {
+        if (_t24 != 0.0) {
             _t29 = _t20 * _t25;
             _t30 = _t19 * _t25;
             _t31 = _t21 * _t25;
@@ -7746,6 +7826,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7773,7 +7858,7 @@ public final class Double4x4Ops {
         double _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         double _t6 = (1.0 / Math.sqrt(_t5));
         double _t10, _t11, _t12;
-        if (_t5 > 0.0) {
+        if (_t5 != 0.0) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -7788,7 +7873,7 @@ public final class Double4x4Ops {
         double _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t25 = (1.0 / Math.sqrt(_t24));
         double _t29, _t30, _t31;
-        if (_t24 > 0.0) {
+        if (_t24 != 0.0) {
             _t29 = _t20 * _t25;
             _t30 = _t19 * _t25;
             _t31 = _t21 * _t25;
@@ -7853,33 +7938,36 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] makeBillboardSphericalShortest(double[] dest, int destOffset, double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ) {
-        double _t0 = targetPosX - objPosX;
-        double _t1 = targetPosZ - objPosZ;
+        double _t0 = targetPosZ - objPosZ;
+        double _t1 = targetPosX - objPosX;
         double _t2 = targetPosY - objPosY;
-        double _t3 = objPosY - targetPosY;
-        double _t10 = _t1 + Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
-        double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
-        double _t13 = _t0 * _t12;
-        double _t14 = _t3 * _t12;
-        double _t15 = _t13 + _t13;
-        double _t16 = _t14 + _t14;
-        double _t17 = -_t15;
-        double _t19 = _t10 * _t12;
-        double _t20 = _t16 * _t13;
-        double _t21 = Math.fma(-_t16, _t14, 1.0);
-        double _t22 = _t15 * _t19;
-        double _t23 = _t16 * _t19;
-        dest[destOffset + 0] = Math.fma(_t17, _t13, 1.0);
-        dest[destOffset + 1] = _t20;
-        dest[destOffset + 2] = -_t22;
+        double _t3 = _t2 + _t2;
+        double _t6 = Math.fma(_t1, _t1, _t2 * _t2);
+        double _t8 = Math.max(Math.fma(_t0, _t0, _t6), 8.900295434028806E-308);
+        double _t9 = Math.sqrt(_t8);
+        double _t11 = _t0 + _t9;
+        double _t12 = Math.fma(_t11, _t11, _t6);
+        double _t14 = _t12 / _t9;
+        double _t15 = _t12 > 2.2250738585072014E-308 ? _t1 : _t9;
+        double _t25_inv = 1.0 / Math.fma(0.25, _t14 * _t14, Math.fma(_t2, _t2, _t15 * _t15));
+        double _sp1 = _t2 * _t25_inv;
+        double _sp0 = _t15 * _t25_inv;
+        double _t26 = _sp1 * _t3;
+        double _t27 = _sp1 * _t14;
+        double _t29 = -(_t3 * _sp0);
+        double _t30 = _sp0 * _t14;
+        double _t32 = 1.0 - (_sp0 + _sp0) * _t15;
+        dest[destOffset + 0] = _t32;
+        dest[destOffset + 1] = _t29;
+        dest[destOffset + 2] = -_t30;
         dest[destOffset + 3] = 0.0;
-        dest[destOffset + 4] = _t20;
-        dest[destOffset + 5] = _t21;
-        dest[destOffset + 6] = _t23;
+        dest[destOffset + 4] = _t29;
+        dest[destOffset + 5] = 1.0 - _t26;
+        dest[destOffset + 6] = -_t27;
         dest[destOffset + 7] = 0.0;
-        dest[destOffset + 8] = _t22;
-        dest[destOffset + 9] = -_t23;
-        dest[destOffset + 10] = Math.fma(_t17, _t13, _t21);
+        dest[destOffset + 8] = _t30;
+        dest[destOffset + 9] = _t27;
+        dest[destOffset + 10] = _t32 - _t26;
         dest[destOffset + 11] = 0.0;
         dest[destOffset + 12] = objPosX;
         dest[destOffset + 13] = objPosY;
@@ -7926,33 +8014,36 @@ public final class Double4x4Ops {
         double _targetPosx = targetPos[targetPosOffset + 0];
         double _targetPosy = targetPos[targetPosOffset + 1];
         double _targetPosz = targetPos[targetPosOffset + 2];
-        double _t0 = _targetPosx - _objPosx;
-        double _t1 = _targetPosz - _objPosz;
+        double _t0 = _targetPosz - _objPosz;
+        double _t1 = _targetPosx - _objPosx;
         double _t2 = _targetPosy - _objPosy;
-        double _t3 = _objPosy - _targetPosy;
-        double _t10 = _t1 + Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
-        double _t12 = (1.0 / Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
-        double _t13 = _t0 * _t12;
-        double _t14 = _t3 * _t12;
-        double _t15 = _t13 + _t13;
-        double _t16 = _t14 + _t14;
-        double _t17 = -_t15;
-        double _t19 = _t10 * _t12;
-        double _t20 = _t16 * _t13;
-        double _t21 = Math.fma(-_t16, _t14, 1.0);
-        double _t22 = _t15 * _t19;
-        double _t23 = _t16 * _t19;
-        dest[destOffset + 0] = Math.fma(_t17, _t13, 1.0);
-        dest[destOffset + 1] = _t20;
-        dest[destOffset + 2] = -_t22;
+        double _t3 = _t2 + _t2;
+        double _t6 = Math.fma(_t1, _t1, _t2 * _t2);
+        double _t8 = Math.max(Math.fma(_t0, _t0, _t6), 8.900295434028806E-308);
+        double _t9 = Math.sqrt(_t8);
+        double _t11 = _t0 + _t9;
+        double _t12 = Math.fma(_t11, _t11, _t6);
+        double _t14 = _t12 / _t9;
+        double _t15 = _t12 > 2.2250738585072014E-308 ? _t1 : _t9;
+        double _t25_inv = 1.0 / Math.fma(0.25, _t14 * _t14, Math.fma(_t2, _t2, _t15 * _t15));
+        double _sp1 = _t2 * _t25_inv;
+        double _sp0 = _t15 * _t25_inv;
+        double _t26 = _sp1 * _t3;
+        double _t27 = _sp1 * _t14;
+        double _t29 = -(_t3 * _sp0);
+        double _t30 = _sp0 * _t14;
+        double _t32 = 1.0 - (_sp0 + _sp0) * _t15;
+        dest[destOffset + 0] = _t32;
+        dest[destOffset + 1] = _t29;
+        dest[destOffset + 2] = -_t30;
         dest[destOffset + 3] = 0.0;
-        dest[destOffset + 4] = _t20;
-        dest[destOffset + 5] = _t21;
-        dest[destOffset + 6] = _t23;
+        dest[destOffset + 4] = _t29;
+        dest[destOffset + 5] = 1.0 - _t26;
+        dest[destOffset + 6] = -_t27;
         dest[destOffset + 7] = 0.0;
-        dest[destOffset + 8] = _t22;
-        dest[destOffset + 9] = -_t23;
-        dest[destOffset + 10] = Math.fma(_t17, _t13, _t21);
+        dest[destOffset + 8] = _t30;
+        dest[destOffset + 9] = _t27;
+        dest[destOffset + 10] = _t32 - _t26;
         dest[destOffset + 11] = 0.0;
         dest[destOffset + 12] = _objPosx;
         dest[destOffset + 13] = _objPosy;
@@ -8009,6 +8100,7 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] makeFromDualQuat(double[] dest, int destOffset, double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
+        double _sp0 = dqRX + dqRX;
         double _t0 = dqRY * dqRY;
         double _t2 = dqRZ * dqRW;
         double _t3 = dqRY * dqRW;
@@ -8017,9 +8109,9 @@ public final class Double4x4Ops {
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dest[destOffset + 0] = Math.fma(-2.0, _t0, _t6);
         dest[destOffset + 1] = 2.0 * Math.fma(dqRX, dqRY, _t2);
-        dest[destOffset + 2] = Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ);
+        dest[destOffset + 2] = Math.fma(-2.0, _t3, _sp0 * dqRZ);
         dest[destOffset + 3] = 0.0;
-        dest[destOffset + 4] = Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY);
+        dest[destOffset + 4] = Math.fma(-2.0, _t2, _sp0 * dqRY);
         dest[destOffset + 5] = Math.fma(-2.0, _t4, _t6);
         dest[destOffset + 6] = 2.0 * Math.fma(dqRX, dqRW, _t5);
         dest[destOffset + 7] = 0.0;
@@ -8215,6 +8307,11 @@ public final class Double4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -8240,6 +8337,11 @@ public final class Double4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -8296,6 +8398,11 @@ public final class Double4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -8318,6 +8425,11 @@ public final class Double4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -10704,12 +10816,15 @@ public final class Double4x4Ops {
     }
 
     /**
-     * Set this matrix to an oblique military projection shear (compose with an orthographic
+     * Set this matrix to an oblique projection shear drawing the XZ plane true shape and the Y axis
+     * at {@code angle}, depth {@code -y} (the military projection of a Y-up scene seen from below
+     * by a right-handed orthographic projection, or the cavalier projection of a Z-up scene;
+     * {@code obliquePlanometric} shows a Y-up scene from above; compose with an orthographic
      * projection for the full transform).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param angle the angle in radians
+     * @param angle the angle, in radians, at which the Y axis is drawn from the screen's +x axis
      * @return {@code dest}
      */
     public static double[] makeObliqueMilitary(double[] dest, int destOffset, double angle) {
@@ -10749,6 +10864,58 @@ public final class Double4x4Ops {
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long makeObliqueMilitary(long dest, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeObliqueMilitary_unsafe(dest, angle);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Set this matrix to a military (planometric) projection of a Y-up scene seen from above: the
+     * XZ plan true shape turned by {@code angle}, verticals drawn straight up at full length, depth
+     * {@code y} (compose with an orthographic projection for the full transform).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param angle the angle, in radians, by which the XZ plan is turned counter-clockwise on
+     *        screen
+     * @return {@code dest}
+     */
+    public static double[] makeObliquePlanometric(double[] dest, int destOffset, double angle) {
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest[destOffset + 0] = _t1;
+        dest[destOffset + 1] = _t0;
+        dest[destOffset + 2] = 0.0;
+        dest[destOffset + 3] = 0.0;
+        dest[destOffset + 4] = 0.0;
+        dest[destOffset + 5] = 1.0;
+        dest[destOffset + 6] = 1.0;
+        dest[destOffset + 7] = 0.0;
+        dest[destOffset + 8] = _t0;
+        dest[destOffset + 9] = -_t1;
+        dest[destOffset + 10] = 0.0;
+        dest[destOffset + 11] = 0.0;
+        dest[destOffset + 12] = 0.0;
+        dest[destOffset + 13] = 0.0;
+        dest[destOffset + 14] = 0.0;
+        dest[destOffset + 15] = 1.0;
+        return dest;
+    }
+
+    /** {@link #makeObliquePlanometric(double[], int, double)} on {@link java.nio.DoubleBuffer} storage. */
+    public static java.nio.DoubleBuffer makeObliquePlanometric(java.nio.DoubleBuffer dest, int destOffset, double angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.makeObliquePlanometric_unsafe(dest, destOffset, angle);
+        return Double4x4OpsKernelsTypedBuffer.makeObliquePlanometric_api(dest, destOffset, angle);
+    }
+
+    /** {@link #makeObliquePlanometric(double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer makeObliquePlanometric(java.nio.ByteBuffer dest, int destOffset, double angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.makeObliquePlanometric_unsafe(dest, destOffset, angle);
+        return Double4x4OpsKernelsByteBuffer.makeObliquePlanometric_api(dest, destOffset, angle);
+    }
+
+    /** {@link #makeObliquePlanometric(double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long makeObliquePlanometric(long dest, double angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.makeObliquePlanometric_unsafe(dest, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 
@@ -11871,6 +12038,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11907,6 +12079,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -11974,6 +12151,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -11997,6 +12179,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -12120,8 +12307,9 @@ public final class Double4x4Ops {
      * @return {@code dest}
      */
     public static double[] makeReflection(double[] dest, int destOffset, double normalX, double normalY, double normalZ) {
-        double _t6 = -((normalX + normalX) * normalY);
-        double _t7 = -((normalX + normalX) * normalZ);
+        double _sp0 = normalX + normalX;
+        double _t6 = -(_sp0 * normalY);
+        double _t7 = -(_sp0 * normalZ);
         double _t8 = -((normalY + normalY) * normalZ);
         dest[destOffset + 0] = Math.fma(-2.0, normalX * normalX, 1.0);
         dest[destOffset + 1] = _t6;
@@ -12175,8 +12363,9 @@ public final class Double4x4Ops {
         double _normalx = normal[normalOffset + 0];
         double _normaly = normal[normalOffset + 1];
         double _normalz = normal[normalOffset + 2];
-        double _t6 = -((_normalx + _normalx) * _normaly);
-        double _t7 = -((_normalx + _normalx) * _normalz);
+        double _sp0 = _normalx + _normalx;
+        double _t6 = -(_sp0 * _normaly);
+        double _t7 = -(_sp0 * _normalz);
         double _t8 = -((_normaly + _normaly) * _normalz);
         dest[destOffset + 0] = Math.fma(-2.0, _normalx * _normalx, 1.0);
         dest[destOffset + 1] = _t6;
@@ -12335,6 +12524,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12350,7 +12544,7 @@ public final class Double4x4Ops {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -12365,7 +12559,7 @@ public final class Double4x4Ops {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -12414,6 +12608,11 @@ public final class Double4x4Ops {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12434,7 +12633,7 @@ public final class Double4x4Ops {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -12449,7 +12648,7 @@ public final class Double4x4Ops {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -13602,13 +13801,11 @@ public final class Double4x4Ops {
         double _t15 = Math.fma(p0X, _t5, p0Y * _t3);
         double _t16 = Math.fma(p0Y, _t5, -(p0X * _t3));
         double _t18 = Math.fma(p3X, _t5, p3Y * _t3) - _t15;
-        double _t18_inv = 1.0 / _t18;
-        double _t19 = Math.fma(p3X, _t3, p3Y * _t4) + _t16;
-        double _t25 = _t3 - _t19 * _t5 * _t18_inv;
-        double _t26 = _t4 - _t19 * _t3 * _t18_inv;
-        double _t30 = _t19 * _t15 * _t18_inv;
-        double _t41 = Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t30))));
-        double _t41_inv = 1.0 / _t41;
+        double _sp0 = (Math.fma(p3X, _t3, p3Y * _t4) + _t16) / _t18;
+        double _t25 = _t3 - _sp0 * _t5;
+        double _t26 = _t4 - _sp0 * _t3;
+        double _t30 = _sp0 * _t15;
+        double _sp1 = 2.0 / Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t30))));
         double _t45 = Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p1X, _t25, Math.fma(p1Y, _t26, _t30)))) * _t18;
         double _t47 = _t16 + (_t30 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t3, -(p0Y * _t5)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t30));
         double _t50 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t45 / _t47));
@@ -13620,20 +13817,20 @@ public final class Double4x4Ops {
         double _t58 = _t50 * _t52_inv;
         double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
-        dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
+        dest[destOffset + 0] = _sp1 * _t25 - _t53;
+        dest[destOffset + 1] = _t61 * _t53;
         dest[destOffset + 2] = 0.0;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
-        dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
+        dest[destOffset + 4] = _sp1 * _t26 - _t54;
+        dest[destOffset + 5] = _t61 * _t54;
         dest[destOffset + 6] = 0.0;
         dest[destOffset + 7] = _t54;
         dest[destOffset + 8] = 0.0;
         dest[destOffset + 9] = 0.0;
         dest[destOffset + 10] = 1.0;
         dest[destOffset + 11] = 0.0;
-        dest[destOffset + 12] = 2.0 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58;
-        dest[destOffset + 13] = _t61 * _t50 * _t52_inv - _t60;
+        dest[destOffset + 12] = _sp1 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) - _t58;
+        dest[destOffset + 13] = _t61 * _t58 - _t60;
         dest[destOffset + 14] = 0.0;
         dest[destOffset + 15] = _t58;
         return dest;
@@ -13690,13 +13887,11 @@ public final class Double4x4Ops {
         double _t15 = Math.fma(_p0x, _t5, _p0y * _t3);
         double _t16 = Math.fma(_p0y, _t5, -(_p0x * _t3));
         double _t18 = Math.fma(_p3x, _t5, _p3y * _t3) - _t15;
-        double _t18_inv = 1.0 / _t18;
-        double _t19 = Math.fma(_p3x, _t3, _p3y * _t4) + _t16;
-        double _t25 = _t3 - _t19 * _t5 * _t18_inv;
-        double _t26 = _t4 - _t19 * _t3 * _t18_inv;
-        double _t30 = _t19 * _t15 * _t18_inv;
-        double _t41 = Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t30))));
-        double _t41_inv = 1.0 / _t41;
+        double _sp0 = (Math.fma(_p3x, _t3, _p3y * _t4) + _t16) / _t18;
+        double _t25 = _t3 - _sp0 * _t5;
+        double _t26 = _t4 - _sp0 * _t3;
+        double _t30 = _sp0 * _t15;
+        double _sp1 = 2.0 / Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t30))));
         double _t45 = Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p1x, _t25, Math.fma(_p1y, _t26, _t30)))) * _t18;
         double _t47 = _t16 + (_t30 + Math.fma(_p2x, _t25, _p2y * _t26)) + (Math.fma(_p0x, _t3, -(_p0y * _t5)) + (Math.fma(-_p1y, _t26, -(_p1x * _t25)) - _t30));
         double _t50 = Math.fma(_t0, _t5, Math.fma(-_p0y, _t3, _t45 / _t47));
@@ -13708,20 +13903,20 @@ public final class Double4x4Ops {
         double _t58 = _t50 * _t52_inv;
         double _t60 = (_t45 + _t45) / ((1.0 - _t45 / _t55) * _t55);
         double _t61 = 1.0 + _t60;
-        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
-        dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
+        dest[destOffset + 0] = _sp1 * _t25 - _t53;
+        dest[destOffset + 1] = _t61 * _t53;
         dest[destOffset + 2] = 0.0;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
-        dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
+        dest[destOffset + 4] = _sp1 * _t26 - _t54;
+        dest[destOffset + 5] = _t61 * _t54;
         dest[destOffset + 6] = 0.0;
         dest[destOffset + 7] = _t54;
         dest[destOffset + 8] = 0.0;
         dest[destOffset + 9] = 0.0;
         dest[destOffset + 10] = 1.0;
         dest[destOffset + 11] = 0.0;
-        dest[destOffset + 12] = 2.0 * Math.fma(_p0y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58;
-        dest[destOffset + 13] = _t61 * _t50 * _t52_inv - _t60;
+        dest[destOffset + 12] = _sp1 * Math.fma(_p0y, _t5, Math.fma(_t0, _t3, _t30)) - _t58;
+        dest[destOffset + 13] = _t61 * _t58 - _t60;
         dest[destOffset + 14] = 0.0;
         dest[destOffset + 15] = _t58;
         return dest;
@@ -17176,8 +17371,11 @@ public final class Double4x4Ops {
     }
 
     /**
-     * Apply an oblique military projection shear (compose with an orthographic projection for the
-     * full transform) to this matrix and store the result in {@code dest}.
+     * Apply an oblique projection shear drawing the XZ plane true shape and the Y axis at
+     * {@code angle}, depth {@code -y} (the military projection of a Y-up scene seen from below by a
+     * right-handed orthographic projection, or the cavalier projection of a Z-up scene;
+     * {@code obliquePlanometric} shows a Y-up scene from above; compose with an orthographic
+     * projection for the full transform) to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
      * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
@@ -17187,7 +17385,7 @@ public final class Double4x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param angle the angle in radians
+     * @param angle the angle, in radians, at which the Y axis is drawn from the screen's +x axis
      * @return {@code dest}
      */
     public static double[] obliqueMilitary(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
@@ -17244,6 +17442,81 @@ public final class Double4x4Ops {
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long obliqueMilitary(long dest, long src, double angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliqueMilitary_unsafe(dest, src, angle);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Apply a military (planometric) projection of a Y-up scene seen from above: the XZ plan true
+     * shape turned by {@code angle}, verticals drawn straight up at full length, depth {@code y}
+     * (compose with an orthographic projection for the full transform) to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
+     * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * O * v}, the oblique shear will be applied first.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param angle the angle, in radians, by which the XZ plan is turned counter-clockwise on
+     *        screen
+     * @return {@code dest}
+     */
+    public static double[] obliquePlanometric(double[] dest, int destOffset, double[] src, int srcOffset, double angle) {
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self20 = src[srcOffset + 2];
+        double _self30 = src[srcOffset + 3];
+        double _self01 = src[srcOffset + 4];
+        double _self11 = src[srcOffset + 5];
+        double _self21 = src[srcOffset + 6];
+        double _self31 = src[srcOffset + 7];
+        double _self02 = src[srcOffset + 8];
+        double _self12 = src[srcOffset + 9];
+        double _self22 = src[srcOffset + 10];
+        double _self32 = src[srcOffset + 11];
+        double _self03 = src[srcOffset + 12];
+        double _self13 = src[srcOffset + 13];
+        double _self23 = src[srcOffset + 14];
+        double _self33 = src[srcOffset + 15];
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        dest[destOffset + 0] = Math.fma(_self00, _t1, _self01 * _t0);
+        dest[destOffset + 1] = Math.fma(_self10, _t1, _self11 * _t0);
+        dest[destOffset + 2] = Math.fma(_self20, _t1, _self21 * _t0);
+        dest[destOffset + 3] = Math.fma(_self30, _t1, _self31 * _t0);
+        dest[destOffset + 4] = _self01 + _self02;
+        dest[destOffset + 5] = _self11 + _self12;
+        dest[destOffset + 6] = _self21 + _self22;
+        dest[destOffset + 7] = _self31 + _self32;
+        dest[destOffset + 8] = Math.fma(_self00, _t0, -(_self01 * _t1));
+        dest[destOffset + 9] = Math.fma(_self10, _t0, -(_self11 * _t1));
+        dest[destOffset + 10] = Math.fma(_self20, _t0, -(_self21 * _t1));
+        dest[destOffset + 11] = Math.fma(_self30, _t0, -(_self31 * _t1));
+        dest[destOffset + 12] = _self03;
+        dest[destOffset + 13] = _self13;
+        dest[destOffset + 14] = _self23;
+        dest[destOffset + 15] = _self33;
+        return dest;
+    }
+
+    /** {@link #obliquePlanometric(double[], int, double[], int, double)} on {@link java.nio.DoubleBuffer} storage. */
+    public static java.nio.DoubleBuffer obliquePlanometric(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.obliquePlanometric_unsafe(dest, destOffset, src, srcOffset, angle);
+        return Double4x4OpsKernelsTypedBuffer.obliquePlanometric_api(dest, destOffset, src, srcOffset, angle);
+    }
+
+    /** {@link #obliquePlanometric(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer obliquePlanometric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.obliquePlanometric_unsafe(dest, destOffset, src, srcOffset, angle);
+        return Double4x4OpsKernelsByteBuffer.obliquePlanometric_api(dest, destOffset, src, srcOffset, angle);
+    }
+
+    /** {@link #obliquePlanometric(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long obliquePlanometric(long dest, long src, double angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.obliquePlanometric_unsafe(dest, src, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 
@@ -19045,25 +19318,27 @@ public final class Double4x4Ops {
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
         double _rcp0 = 1.0 / deltaX;
+        double _sp0 = vpW * _rcp0;
         double _rcp1 = 1.0 / deltaY;
-        double _t2 = Math.fma(-2.0, centerX - vpX, vpW);
-        double _t3 = Math.fma(-2.0, centerY - vpY, vpH);
-        dest[destOffset + 0] = vpW * _self00 * _rcp0;
-        dest[destOffset + 1] = vpW * _self10 * _rcp0;
-        dest[destOffset + 2] = vpW * _self20 * _rcp0;
-        dest[destOffset + 3] = vpW * _self30 * _rcp0;
-        dest[destOffset + 4] = vpH * _self01 * _rcp1;
-        dest[destOffset + 5] = vpH * _self11 * _rcp1;
-        dest[destOffset + 6] = vpH * _self21 * _rcp1;
-        dest[destOffset + 7] = vpH * _self31 * _rcp1;
+        double _sp1 = vpH * _rcp1;
+        double _sp2 = _rcp0 * Math.fma(-2.0, centerX - vpX, vpW);
+        double _sp3 = _rcp1 * Math.fma(-2.0, centerY - vpY, vpH);
+        dest[destOffset + 0] = _sp0 * _self00;
+        dest[destOffset + 1] = _sp0 * _self10;
+        dest[destOffset + 2] = _sp0 * _self20;
+        dest[destOffset + 3] = _sp0 * _self30;
+        dest[destOffset + 4] = _sp1 * _self01;
+        dest[destOffset + 5] = _sp1 * _self11;
+        dest[destOffset + 6] = _sp1 * _self21;
+        dest[destOffset + 7] = _sp1 * _self31;
         dest[destOffset + 8] = _self02;
         dest[destOffset + 9] = _self12;
         dest[destOffset + 10] = _self22;
         dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = _self03 + (_self00 * _t2 * _rcp0 + _self01 * _t3 * _rcp1);
-        dest[destOffset + 13] = _self13 + (_self10 * _t2 * _rcp0 + _self11 * _t3 * _rcp1);
-        dest[destOffset + 14] = _self23 + (_self20 * _t2 * _rcp0 + _self21 * _t3 * _rcp1);
-        dest[destOffset + 15] = _self33 + (_self30 * _t2 * _rcp0 + _self31 * _t3 * _rcp1);
+        dest[destOffset + 12] = _self03 + (_self00 * _sp2 + _self01 * _sp3);
+        dest[destOffset + 13] = _self13 + (_self10 * _sp2 + _self11 * _sp3);
+        dest[destOffset + 14] = _self23 + (_self20 * _sp2 + _self21 * _sp3);
+        dest[destOffset + 15] = _self33 + (_self30 * _sp2 + _self31 * _sp3);
         return dest;
     }
 
@@ -20070,24 +20345,25 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
-        double _t2 = Math.fma(-s, pivotZ, pivotZ);
-        dest[destOffset + 0] = Math.fma(s, _self00, _self30 * _t0);
-        dest[destOffset + 1] = Math.fma(s, _self10, _self30 * _t1);
-        dest[destOffset + 2] = Math.fma(s, _self20, _self30 * _t2);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
+        double _t3 = pivotZ * _t0;
+        dest[destOffset + 0] = Math.fma(s, _self00, _self30 * _t1);
+        dest[destOffset + 1] = Math.fma(s, _self10, _self30 * _t2);
+        dest[destOffset + 2] = Math.fma(s, _self20, _self30 * _t3);
         dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = Math.fma(s, _self01, _self31 * _t0);
-        dest[destOffset + 5] = Math.fma(s, _self11, _self31 * _t1);
-        dest[destOffset + 6] = Math.fma(s, _self21, _self31 * _t2);
+        dest[destOffset + 4] = Math.fma(s, _self01, _self31 * _t1);
+        dest[destOffset + 5] = Math.fma(s, _self11, _self31 * _t2);
+        dest[destOffset + 6] = Math.fma(s, _self21, _self31 * _t3);
         dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = Math.fma(s, _self02, _self32 * _t0);
-        dest[destOffset + 9] = Math.fma(s, _self12, _self32 * _t1);
-        dest[destOffset + 10] = Math.fma(s, _self22, _self32 * _t2);
+        dest[destOffset + 8] = Math.fma(s, _self02, _self32 * _t1);
+        dest[destOffset + 9] = Math.fma(s, _self12, _self32 * _t2);
+        dest[destOffset + 10] = Math.fma(s, _self22, _self32 * _t3);
         dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = Math.fma(s, _self03, _self33 * _t0);
-        dest[destOffset + 13] = Math.fma(s, _self13, _self33 * _t1);
-        dest[destOffset + 14] = Math.fma(s, _self23, _self33 * _t2);
+        dest[destOffset + 12] = Math.fma(s, _self03, _self33 * _t1);
+        dest[destOffset + 13] = Math.fma(s, _self13, _self33 * _t2);
+        dest[destOffset + 14] = Math.fma(s, _self23, _self33 * _t3);
         dest[destOffset + 15] = _self33;
         return dest;
     }
@@ -20148,24 +20424,25 @@ public final class Double4x4Ops {
         double _pivotx = pivot[pivotOffset + 0];
         double _pivoty = pivot[pivotOffset + 1];
         double _pivotz = pivot[pivotOffset + 2];
-        double _t0 = Math.fma(-s, _pivotx, _pivotx);
-        double _t1 = Math.fma(-s, _pivoty, _pivoty);
-        double _t2 = Math.fma(-s, _pivotz, _pivotz);
-        dest[destOffset + 0] = Math.fma(s, _self00, _self30 * _t0);
-        dest[destOffset + 1] = Math.fma(s, _self10, _self30 * _t1);
-        dest[destOffset + 2] = Math.fma(s, _self20, _self30 * _t2);
+        double _t0 = 1.0 - s;
+        double _t1 = _pivotx * _t0;
+        double _t2 = _pivoty * _t0;
+        double _t3 = _pivotz * _t0;
+        dest[destOffset + 0] = Math.fma(s, _self00, _self30 * _t1);
+        dest[destOffset + 1] = Math.fma(s, _self10, _self30 * _t2);
+        dest[destOffset + 2] = Math.fma(s, _self20, _self30 * _t3);
         dest[destOffset + 3] = _self30;
-        dest[destOffset + 4] = Math.fma(s, _self01, _self31 * _t0);
-        dest[destOffset + 5] = Math.fma(s, _self11, _self31 * _t1);
-        dest[destOffset + 6] = Math.fma(s, _self21, _self31 * _t2);
+        dest[destOffset + 4] = Math.fma(s, _self01, _self31 * _t1);
+        dest[destOffset + 5] = Math.fma(s, _self11, _self31 * _t2);
+        dest[destOffset + 6] = Math.fma(s, _self21, _self31 * _t3);
         dest[destOffset + 7] = _self31;
-        dest[destOffset + 8] = Math.fma(s, _self02, _self32 * _t0);
-        dest[destOffset + 9] = Math.fma(s, _self12, _self32 * _t1);
-        dest[destOffset + 10] = Math.fma(s, _self22, _self32 * _t2);
+        dest[destOffset + 8] = Math.fma(s, _self02, _self32 * _t1);
+        dest[destOffset + 9] = Math.fma(s, _self12, _self32 * _t2);
+        dest[destOffset + 10] = Math.fma(s, _self22, _self32 * _t3);
         dest[destOffset + 11] = _self32;
-        dest[destOffset + 12] = Math.fma(s, _self03, _self33 * _t0);
-        dest[destOffset + 13] = Math.fma(s, _self13, _self33 * _t1);
-        dest[destOffset + 14] = Math.fma(s, _self23, _self33 * _t2);
+        dest[destOffset + 12] = Math.fma(s, _self03, _self33 * _t1);
+        dest[destOffset + 13] = Math.fma(s, _self13, _self33 * _t2);
+        dest[destOffset + 14] = Math.fma(s, _self23, _self33 * _t3);
         dest[destOffset + 15] = _self33;
         return dest;
     }
@@ -20226,9 +20503,9 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t3 = Math.fma(-pivotX, sX, pivotX);
-        double _t4 = Math.fma(-pivotY, sY, pivotY);
-        double _t5 = Math.fma(-pivotZ, sZ, pivotZ);
+        double _t3 = pivotX * (1.0 - sX);
+        double _t4 = pivotY * (1.0 - sY);
+        double _t5 = pivotZ * (1.0 - sZ);
         dest[destOffset + 0] = Math.fma(sX, _self00, _self30 * _t3);
         dest[destOffset + 1] = Math.fma(sY, _self10, _self30 * _t4);
         dest[destOffset + 2] = Math.fma(sZ, _self20, _self30 * _t5);
@@ -20308,9 +20585,9 @@ public final class Double4x4Ops {
         double _pivotx = pivot[pivotOffset + 0];
         double _pivoty = pivot[pivotOffset + 1];
         double _pivotz = pivot[pivotOffset + 2];
-        double _t3 = Math.fma(-_pivotx, _sx, _pivotx);
-        double _t4 = Math.fma(-_pivoty, _sy, _pivoty);
-        double _t5 = Math.fma(-_pivotz, _sz, _pivotz);
+        double _t3 = _pivotx * (1.0 - _sx);
+        double _t4 = _pivoty * (1.0 - _sy);
+        double _t5 = _pivotz * (1.0 - _sz);
         dest[destOffset + 0] = Math.fma(_sx, _self00, _self30 * _t3);
         dest[destOffset + 1] = Math.fma(_sy, _self10, _self30 * _t4);
         dest[destOffset + 2] = Math.fma(_sz, _self20, _self30 * _t5);
@@ -20660,12 +20937,13 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
+        double _sp0 = normalX + normalX;
         double _t0 = -_self02;
         double _t1 = -_self12;
         double _t2 = -_self22;
         double _t3 = -_self32;
-        double _t10 = (normalX + normalX) * normalZ;
-        double _t11 = (normalX + normalX) * normalY;
+        double _t10 = _sp0 * normalZ;
+        double _t11 = _sp0 * normalY;
         double _t12 = (normalY + normalY) * normalZ;
         double _t13 = Math.fma(-2.0, normalX * normalX, 1.0);
         double _t14 = Math.fma(-2.0, normalY * normalY, 1.0);
@@ -20745,12 +21023,13 @@ public final class Double4x4Ops {
         double _normalx = normal[normalOffset + 0];
         double _normaly = normal[normalOffset + 1];
         double _normalz = normal[normalOffset + 2];
+        double _sp0 = _normalx + _normalx;
         double _t0 = -_self02;
         double _t1 = -_self12;
         double _t2 = -_self22;
         double _t3 = -_self32;
-        double _t10 = (_normalx + _normalx) * _normalz;
-        double _t11 = (_normalx + _normalx) * _normaly;
+        double _t10 = _sp0 * _normalz;
+        double _t11 = _sp0 * _normaly;
         double _t12 = (_normaly + _normaly) * _normalz;
         double _t13 = Math.fma(-2.0, _normalx * _normalx, 1.0);
         double _t14 = Math.fma(-2.0, _normaly * _normaly, 1.0);
@@ -22986,9 +23265,10 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
-        double _t2 = Math.fma(-s, pivotZ, pivotZ);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
+        double _t3 = pivotZ * _t0;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self20;
@@ -23001,10 +23281,10 @@ public final class Double4x4Ops {
         dest[destOffset + 9] = s * _self12;
         dest[destOffset + 10] = s * _self22;
         dest[destOffset + 11] = s * _self32;
-        dest[destOffset + 12] = Math.fma(_self00, _t0, Math.fma(_self01, _t1, Math.fma(_self02, _t2, _self03)));
-        dest[destOffset + 13] = Math.fma(_self10, _t0, Math.fma(_self11, _t1, Math.fma(_self12, _t2, _self13)));
-        dest[destOffset + 14] = Math.fma(_self20, _t0, Math.fma(_self21, _t1, Math.fma(_self22, _t2, _self23)));
-        dest[destOffset + 15] = Math.fma(_self30, _t0, Math.fma(_self31, _t1, Math.fma(_self32, _t2, _self33)));
+        dest[destOffset + 12] = Math.fma(_self00, _t1, Math.fma(_self01, _t2, Math.fma(_self02, _t3, _self03)));
+        dest[destOffset + 13] = Math.fma(_self10, _t1, Math.fma(_self11, _t2, Math.fma(_self12, _t3, _self13)));
+        dest[destOffset + 14] = Math.fma(_self20, _t1, Math.fma(_self21, _t2, Math.fma(_self22, _t3, _self23)));
+        dest[destOffset + 15] = Math.fma(_self30, _t1, Math.fma(_self31, _t2, Math.fma(_self32, _t3, _self33)));
         return dest;
     }
 
@@ -23064,9 +23344,10 @@ public final class Double4x4Ops {
         double _pivotx = pivot[pivotOffset + 0];
         double _pivoty = pivot[pivotOffset + 1];
         double _pivotz = pivot[pivotOffset + 2];
-        double _t0 = Math.fma(-s, _pivotx, _pivotx);
-        double _t1 = Math.fma(-s, _pivoty, _pivoty);
-        double _t2 = Math.fma(-s, _pivotz, _pivotz);
+        double _t0 = 1.0 - s;
+        double _t1 = _pivotx * _t0;
+        double _t2 = _pivoty * _t0;
+        double _t3 = _pivotz * _t0;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self20;
@@ -23079,10 +23360,10 @@ public final class Double4x4Ops {
         dest[destOffset + 9] = s * _self12;
         dest[destOffset + 10] = s * _self22;
         dest[destOffset + 11] = s * _self32;
-        dest[destOffset + 12] = Math.fma(_self00, _t0, Math.fma(_self01, _t1, Math.fma(_self02, _t2, _self03)));
-        dest[destOffset + 13] = Math.fma(_self10, _t0, Math.fma(_self11, _t1, Math.fma(_self12, _t2, _self13)));
-        dest[destOffset + 14] = Math.fma(_self20, _t0, Math.fma(_self21, _t1, Math.fma(_self22, _t2, _self23)));
-        dest[destOffset + 15] = Math.fma(_self30, _t0, Math.fma(_self31, _t1, Math.fma(_self32, _t2, _self33)));
+        dest[destOffset + 12] = Math.fma(_self00, _t1, Math.fma(_self01, _t2, Math.fma(_self02, _t3, _self03)));
+        dest[destOffset + 13] = Math.fma(_self10, _t1, Math.fma(_self11, _t2, Math.fma(_self12, _t3, _self13)));
+        dest[destOffset + 14] = Math.fma(_self20, _t1, Math.fma(_self21, _t2, Math.fma(_self22, _t3, _self23)));
+        dest[destOffset + 15] = Math.fma(_self30, _t1, Math.fma(_self31, _t2, Math.fma(_self32, _t3, _self33)));
         return dest;
     }
 
@@ -23142,9 +23423,9 @@ public final class Double4x4Ops {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t3 = Math.fma(-pivotX, sX, pivotX);
-        double _t4 = Math.fma(-pivotY, sY, pivotY);
-        double _t5 = Math.fma(-pivotZ, sZ, pivotZ);
+        double _t3 = pivotX * (1.0 - sX);
+        double _t4 = pivotY * (1.0 - sY);
+        double _t5 = pivotZ * (1.0 - sZ);
         dest[destOffset + 0] = sX * _self00;
         dest[destOffset + 1] = sX * _self10;
         dest[destOffset + 2] = sX * _self20;
@@ -23224,9 +23505,9 @@ public final class Double4x4Ops {
         double _pivotx = pivot[pivotOffset + 0];
         double _pivoty = pivot[pivotOffset + 1];
         double _pivotz = pivot[pivotOffset + 2];
-        double _t3 = Math.fma(-_pivotx, _sx, _pivotx);
-        double _t4 = Math.fma(-_pivoty, _sy, _pivoty);
-        double _t5 = Math.fma(-_pivotz, _sz, _pivotz);
+        double _t3 = _pivotx * (1.0 - _sx);
+        double _t4 = _pivoty * (1.0 - _sy);
+        double _t5 = _pivotz * (1.0 - _sz);
         dest[destOffset + 0] = _sx * _self00;
         dest[destOffset + 1] = _sx * _self10;
         dest[destOffset + 2] = _sx * _self20;
@@ -23824,27 +24105,26 @@ public final class Double4x4Ops {
         double _t14 = Math.fma(p0X, _t3, p0Y * _t4);
         double _t16 = Math.fma(p0Y, _t3, -(p0X * _t4));
         double _t18 = Math.fma(p3X, _t3, p3Y * _t4) - _t14;
-        double _t18_inv = 1.0 / _t18;
-        double _t19 = Math.fma(p3X, _t4, p3Y * _t5) + _t16;
-        double _t25 = _t4 - _t19 * _t3 * _t18_inv;
-        double _t26 = _t5 - _t19 * _t4 * _t18_inv;
-        double _t32 = _t19 * _t14 * _t18_inv;
-        double _t46 = Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t32))));
-        double _t46_inv = 1.0 / _t46;
+        double _sp0 = (Math.fma(p3X, _t4, p3Y * _t5) + _t16) / _t18;
+        double _t25 = _t4 - _sp0 * _t3;
+        double _t26 = _t5 - _sp0 * _t4;
+        double _t32 = _sp0 * _t14;
+        double _sp1 = 2.0 / Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t32))));
         double _t50 = Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p1X, _t25, Math.fma(p1Y, _t26, _t32)))) * _t18;
         double _t55 = _t16 + (_t32 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t4, -(p0Y * _t3)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t32));
         double _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
         double _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
         double _t60_inv = 1.0 / _t60;
-        double _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
-        double _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
+        double _sp2 = _t60_inv * _t58;
+        double _t63 = _sp1 * _t25 - _t3 * _t60_inv;
+        double _t64 = _sp1 * _t26 - _t4 * _t60_inv;
         double _t65 = _t60 * _t55;
-        double _t69 = 2.0 * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
+        double _t69 = _sp1 * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) - _sp2;
         double _t71 = (_t50 + _t50) / ((1.0 - _t50 / _t65) * _t65);
         double _t72 = 1.0 + _t71;
         double _t73 = _t72 * _t3;
         double _t74 = _t72 * _t4;
-        double _t77 = _t72 * _t58 * _t60_inv - _t71;
+        double _t77 = _t72 * _sp2 - _t71;
         dest[destOffset + 0] = Math.fma(_self30, _t69, Math.fma(_self00, _t63, _self10 * _t64));
         dest[destOffset + 1] = Math.fma(_self30, _t77, Math.fma(_self00, _t73, _self10 * _t74) * _t60_inv);
         dest[destOffset + 2] = _self20;
@@ -23937,27 +24217,26 @@ public final class Double4x4Ops {
         double _t14 = Math.fma(_p0x, _t3, _p0y * _t4);
         double _t16 = Math.fma(_p0y, _t3, -(_p0x * _t4));
         double _t18 = Math.fma(_p3x, _t3, _p3y * _t4) - _t14;
-        double _t18_inv = 1.0 / _t18;
-        double _t19 = Math.fma(_p3x, _t4, _p3y * _t5) + _t16;
-        double _t25 = _t4 - _t19 * _t3 * _t18_inv;
-        double _t26 = _t5 - _t19 * _t4 * _t18_inv;
-        double _t32 = _t19 * _t14 * _t18_inv;
-        double _t46 = Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t32))));
-        double _t46_inv = 1.0 / _t46;
+        double _sp0 = (Math.fma(_p3x, _t4, _p3y * _t5) + _t16) / _t18;
+        double _t25 = _t4 - _sp0 * _t3;
+        double _t26 = _t5 - _sp0 * _t4;
+        double _t32 = _sp0 * _t14;
+        double _sp1 = 2.0 / Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t32))));
         double _t50 = Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p1x, _t25, Math.fma(_p1y, _t26, _t32)))) * _t18;
         double _t55 = _t16 + (_t32 + Math.fma(_p2x, _t25, _p2y * _t26)) + (Math.fma(_p0x, _t4, -(_p0y * _t3)) + (Math.fma(-_p1y, _t26, -(_p1x * _t25)) - _t32));
         double _t58 = Math.fma(_t0, _t3, Math.fma(-_p0y, _t4, _t50 / _t55));
         double _t60 = Math.fma(_p3x, _t3, Math.fma(_p3y, _t4, _t58));
         double _t60_inv = 1.0 / _t60;
-        double _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
-        double _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
+        double _sp2 = _t60_inv * _t58;
+        double _t63 = _sp1 * _t25 - _t3 * _t60_inv;
+        double _t64 = _sp1 * _t26 - _t4 * _t60_inv;
         double _t65 = _t60 * _t55;
-        double _t69 = 2.0 * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
+        double _t69 = _sp1 * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) - _sp2;
         double _t71 = (_t50 + _t50) / ((1.0 - _t50 / _t65) * _t65);
         double _t72 = 1.0 + _t71;
         double _t73 = _t72 * _t3;
         double _t74 = _t72 * _t4;
-        double _t77 = _t72 * _t58 * _t60_inv - _t71;
+        double _t77 = _t72 * _sp2 - _t71;
         dest[destOffset + 0] = Math.fma(_self30, _t69, Math.fma(_self00, _t63, _self10 * _t64));
         dest[destOffset + 1] = Math.fma(_self30, _t77, Math.fma(_self00, _t73, _self10 * _t74) * _t60_inv);
         dest[destOffset + 2] = _self20;
@@ -24895,30 +25174,40 @@ public final class Double4x4Ops {
         double _self03 = src[srcOffset + 12];
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
-        double _t0 = minX * _self00;
-        double _t1 = maxX * _self00;
-        double _t2 = minY * _self01;
-        double _t3 = maxY * _self01;
-        double _t4 = minZ * _self02;
-        double _t5 = maxZ * _self02;
-        double _t6 = minX * _self10;
-        double _t7 = maxX * _self10;
-        double _t8 = minY * _self11;
-        double _t9 = maxY * _self11;
-        double _t10 = minZ * _self12;
-        double _t11 = maxZ * _self12;
-        double _t12 = minX * _self20;
-        double _t13 = maxX * _self20;
-        double _t14 = minY * _self21;
-        double _t15 = maxY * _self21;
-        double _t16 = minZ * _self22;
-        double _t17 = maxZ * _self22;
-        dest[destOffset + 0] = _self03 + Math.min(_t0, _t1) + Math.min(_t2, _t3) + Math.min(_t4, _t5);
-        dest[destOffset + 1] = _self13 + Math.min(_t6, _t7) + Math.min(_t8, _t9) + Math.min(_t10, _t11);
-        dest[destOffset + 2] = _self23 + Math.min(_t12, _t13) + Math.min(_t14, _t15) + Math.min(_t16, _t17);
-        dest[destOffset + 3] = _self03 + Math.max(_t0, _t1) + Math.max(_t2, _t3) + Math.max(_t4, _t5);
-        dest[destOffset + 4] = _self13 + Math.max(_t6, _t7) + Math.max(_t8, _t9) + Math.max(_t10, _t11);
-        dest[destOffset + 5] = _self23 + Math.max(_t12, _t13) + Math.max(_t14, _t15) + Math.max(_t16, _t17);
+        double _t3 = minX * _self00;
+        double _t4 = maxX * _self00;
+        double _t5 = minY * _self01;
+        double _t6 = maxY * _self01;
+        double _t7 = minZ * _self02;
+        double _t8 = maxZ * _self02;
+        double _t9 = minX * _self10;
+        double _t10 = maxX * _self10;
+        double _t11 = minY * _self11;
+        double _t12 = maxY * _self11;
+        double _t13 = minZ * _self12;
+        double _t14 = maxZ * _self12;
+        double _t15 = minX * _self20;
+        double _t16 = maxX * _self20;
+        double _t17 = minY * _self21;
+        double _t18 = maxY * _self21;
+        double _t19 = minZ * _self22;
+        double _t20 = maxZ * _self22;
+        double _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t22 < 0.0) {
+            dest[destOffset + 0] = Double.POSITIVE_INFINITY;
+            dest[destOffset + 1] = Double.POSITIVE_INFINITY;
+            dest[destOffset + 2] = Double.POSITIVE_INFINITY;
+            dest[destOffset + 3] = Double.NEGATIVE_INFINITY;
+            dest[destOffset + 4] = Double.NEGATIVE_INFINITY;
+            dest[destOffset + 5] = Double.NEGATIVE_INFINITY;
+        } else {
+            dest[destOffset + 0] = _self03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+            dest[destOffset + 1] = _self13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+            dest[destOffset + 2] = _self23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+            dest[destOffset + 3] = _self03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+            dest[destOffset + 4] = _self13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+            dest[destOffset + 5] = _self23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+        }
         return dest;
     }
 
@@ -25601,7 +25890,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && destOffset <= dest.limit() - 16) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 16, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, 128L);
             return dest;
@@ -25626,7 +25915,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L, (long) count * 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && (count > 134217727 ? -1 : count * 16) >= 0 && destOffset <= dest.limit() - (count > 134217727 ? -1 : count * 16)) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 134217727 ? -1 : count * 16), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 8L, (long) count * 128L);
             return dest;
@@ -25737,7 +26026,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && destOffset <= dest.limit() - 128) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 128, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), 128L);
             return dest;
@@ -25763,7 +26052,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && (count > 16777215 ? -1 : count * 128) >= 0 && destOffset <= dest.limit() - (count > 16777215 ? -1 : count * 128)) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 16777215 ? -1 : count * 128), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), (long) count * 128L);
             return dest;
@@ -25818,7 +26107,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, dest, 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && srcOffset <= src.limit() - 16) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 16, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, 128L);
             return dest;
@@ -25843,7 +26132,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L, null, dest, (long) count * 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && (count > 134217727 ? -1 : count * 16) >= 0 && srcOffset <= src.limit() - (count > 134217727 ? -1 : count * 16)) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 134217727 ? -1 : count * 16), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.DOUBLE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 8L, null, dest, (long) count * 128L);
             return dest;
@@ -25869,7 +26158,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest, 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && srcOffset <= src.limit() - 128) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 128, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, 128L);
             return dest;
@@ -25895,7 +26184,7 @@ public final class Double4x4Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest, (long) count * 128L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && (count > 16777215 ? -1 : count * 128) >= 0 && srcOffset <= src.limit() - (count > 16777215 ? -1 : count * 128)) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 16777215 ? -1 : count * 128), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, (long) count * 128L);
             return dest;

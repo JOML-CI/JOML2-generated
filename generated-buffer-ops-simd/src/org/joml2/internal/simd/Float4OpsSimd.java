@@ -896,7 +896,7 @@ public final class Float4OpsSimd {
     public static float[] normalize(float[] dest, int destOffset, float[] src, int srcOffset) {
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         float _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t3  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t3  !=  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -904,7 +904,7 @@ public final class Float4OpsSimd {
     public static java.lang.foreign.MemorySegment normalize(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         var _sv0 = FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         float _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t3  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t3  !=  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -915,7 +915,7 @@ public final class Float4OpsSimd {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = (_t3  >  0.0f ? FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t3  !=  0.0f ? FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -932,7 +932,7 @@ public final class Float4OpsSimd {
         float _selfx = UnsafeOpsHolder.U.getFloat(_srcBase + 0L);
         float _selfy = UnsafeOpsHolder.U.getFloat(_srcBase + 4L);
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = (_t3  >  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(FloatVector.broadcast(SIMD_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t3  !=  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(FloatVector.broadcast(SIMD_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -943,7 +943,7 @@ public final class Float4OpsSimd {
         float _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = (_t3  >  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(FloatVector.broadcast(SIMD_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t3  !=  0.0f ? FloatVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(FloatVector.broadcast(SIMD_SPECIES, length * (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2078,7 +2078,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -2090,7 +2090,7 @@ public final class Float4OpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr(dest, destOffset, _srcArr, _srcOff, count * 4);
@@ -2124,7 +2124,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr_one(_destArr, _destOff, src, srcOffset);
@@ -2136,7 +2136,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr(_destArr, _destOff, src, srcOffset, count * 4);
@@ -2148,10 +2148,10 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr_one(_destArr, _destOff, _srcArr, _srcOff);
@@ -2161,7 +2161,7 @@ public final class Float4OpsSimd {
             }
         } else {
             java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copySegArr_one(_destSeg, (long) destOffset * 4, _srcArr, _srcOff);
@@ -2174,10 +2174,10 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr(_destArr, _destOff, _srcArr, _srcOff, count * 4);
@@ -2187,7 +2187,7 @@ public final class Float4OpsSimd {
             }
         } else {
             java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copySegArr(_destSeg, (long) destOffset * 4, _srcArr, _srcOff, count * 4);
@@ -2200,7 +2200,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             java.lang.foreign.MemorySegment _srcSeg = java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0));
@@ -2214,7 +2214,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             java.lang.foreign.MemorySegment _srcSeg = java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0));
@@ -2228,7 +2228,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrSeg_one(_destArr, _destOff, src, srcOffset);
@@ -2240,7 +2240,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrSeg(_destArr, _destOff, src, srcOffset, count * 4);
@@ -2265,7 +2265,7 @@ public final class Float4OpsSimd {
 
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
         java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr_one(_destSeg, destOffset, _srcArr, _srcOff);
@@ -2278,7 +2278,7 @@ public final class Float4OpsSimd {
 
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
         java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr(_destSeg, destOffset, _srcArr, _srcOff, count * 4);
@@ -2326,7 +2326,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -2338,7 +2338,7 @@ public final class Float4OpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr(dest, destOffset, _srcArr, _srcOff, count * 4);

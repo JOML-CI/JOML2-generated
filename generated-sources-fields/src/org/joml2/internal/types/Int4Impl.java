@@ -268,10 +268,13 @@ public final class Int4Impl implements Int4 {
      */
     public Int4 ceilDiv(int otherX, int otherY, int otherZ, int otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
-        d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = java.lang.Math.ceilDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -292,10 +295,13 @@ public final class Int4Impl implements Int4 {
      */
     public Long4 ceilDiv(int otherX, int otherY, int otherZ, int otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
-        d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = java.lang.Math.ceilDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -316,10 +322,13 @@ public final class Int4Impl implements Int4 {
      */
     public Double4 ceilDiv(int otherX, int otherY, int otherZ, int otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
-        d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = java.lang.Math.ceilDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -427,10 +436,13 @@ public final class Int4Impl implements Int4 {
      */
     public Int4 ceilMod(int otherX, int otherY, int otherZ, int otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
-        d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = java.lang.Math.ceilMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -451,10 +463,13 @@ public final class Int4Impl implements Int4 {
      */
     public Long4 ceilMod(int otherX, int otherY, int otherZ, int otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
-        d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = java.lang.Math.ceilMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -475,10 +490,13 @@ public final class Int4Impl implements Int4 {
      */
     public Double4 ceilMod(int otherX, int otherY, int otherZ, int otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
-        d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = java.lang.Math.ceilMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -587,10 +605,13 @@ public final class Int4Impl implements Int4 {
      */
     public Int4 div(int otherX, int otherY, int otherZ, int otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
-        d.z = this.z / otherZ;
+        int _buf0 = this.x / otherX;
+        int _buf1 = this.y / otherY;
+        int _buf2 = this.z / otherZ;
         d.w = this.w / otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -612,10 +633,13 @@ public final class Int4Impl implements Int4 {
      */
     public Long4 div(int otherX, int otherY, int otherZ, int otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
-        d.z = this.z / otherZ;
+        int _buf0 = this.x / otherX;
+        int _buf1 = this.y / otherY;
+        int _buf2 = this.z / otherZ;
         d.w = this.w / otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -637,10 +661,13 @@ public final class Int4Impl implements Int4 {
      */
     public Double4 div(int otherX, int otherY, int otherZ, int otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
-        d.z = this.z / otherZ;
+        int _buf0 = this.x / otherX;
+        int _buf1 = this.y / otherY;
+        int _buf2 = this.z / otherZ;
         d.w = this.w / otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -748,10 +775,13 @@ public final class Int4Impl implements Int4 {
      */
     public Int4 floorDiv(int otherX, int otherY, int otherZ, int otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
-        d.z = Math.floorDiv(this.z, otherZ);
+        int _buf0 = Math.floorDiv(this.x, otherX);
+        int _buf1 = Math.floorDiv(this.y, otherY);
+        int _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = Math.floorDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -772,10 +802,13 @@ public final class Int4Impl implements Int4 {
      */
     public Long4 floorDiv(int otherX, int otherY, int otherZ, int otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
-        d.z = Math.floorDiv(this.z, otherZ);
+        int _buf0 = Math.floorDiv(this.x, otherX);
+        int _buf1 = Math.floorDiv(this.y, otherY);
+        int _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = Math.floorDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -796,10 +829,13 @@ public final class Int4Impl implements Int4 {
      */
     public Double4 floorDiv(int otherX, int otherY, int otherZ, int otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
-        d.z = Math.floorDiv(this.z, otherZ);
+        int _buf0 = Math.floorDiv(this.x, otherX);
+        int _buf1 = Math.floorDiv(this.y, otherY);
+        int _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = Math.floorDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -907,10 +943,13 @@ public final class Int4Impl implements Int4 {
      */
     public Int4 floorMod(int otherX, int otherY, int otherZ, int otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
-        d.z = Math.floorMod(this.z, otherZ);
+        int _buf0 = Math.floorMod(this.x, otherX);
+        int _buf1 = Math.floorMod(this.y, otherY);
+        int _buf2 = Math.floorMod(this.z, otherZ);
         d.w = Math.floorMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -931,10 +970,13 @@ public final class Int4Impl implements Int4 {
      */
     public Long4 floorMod(int otherX, int otherY, int otherZ, int otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
-        d.z = Math.floorMod(this.z, otherZ);
+        int _buf0 = Math.floorMod(this.x, otherX);
+        int _buf1 = Math.floorMod(this.y, otherY);
+        int _buf2 = Math.floorMod(this.z, otherZ);
         d.w = Math.floorMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -955,10 +997,13 @@ public final class Int4Impl implements Int4 {
      */
     public Double4 floorMod(int otherX, int otherY, int otherZ, int otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
-        d.z = Math.floorMod(this.z, otherZ);
+        int _buf0 = Math.floorMod(this.x, otherX);
+        int _buf1 = Math.floorMod(this.y, otherY);
+        int _buf2 = Math.floorMod(this.z, otherZ);
         d.w = Math.floorMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1284,10 +1329,13 @@ public final class Int4Impl implements Int4 {
      */
     public Int4 rem(int otherX, int otherY, int otherZ, int otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
-        d.z = this.z % otherZ;
+        int _buf0 = this.x % otherX;
+        int _buf1 = this.y % otherY;
+        int _buf2 = this.z % otherZ;
         d.w = this.w % otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1310,10 +1358,13 @@ public final class Int4Impl implements Int4 {
      */
     public Long4 rem(int otherX, int otherY, int otherZ, int otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
-        d.z = this.z % otherZ;
+        int _buf0 = this.x % otherX;
+        int _buf1 = this.y % otherY;
+        int _buf2 = this.z % otherZ;
         d.w = this.w % otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1336,10 +1387,13 @@ public final class Int4Impl implements Int4 {
      */
     public Double4 rem(int otherX, int otherY, int otherZ, int otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
-        d.z = this.z % otherZ;
+        int _buf0 = this.x % otherX;
+        int _buf1 = this.y % otherY;
+        int _buf2 = this.z % otherZ;
         d.w = this.w % otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -2879,11 +2933,14 @@ public final class Int4Impl implements Int4 {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public int compAdd() {
-        return this.w + (this.z + (this.x + this.y));
+    public long compAdd() {
+        return (long) this.w + ((long) this.z + ((long) this.x + (long) this.y));
     }
 
 
@@ -2909,21 +2966,27 @@ public final class Int4Impl implements Int4 {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the product of all components of this vector
      */
-    public int compMul() {
-        return this.w * this.z * this.x * this.y;
+    public long compMul() {
+        return (long) this.w * (long) this.z * (long) this.x * (long) this.y;
     }
 
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public int distanceSquared(Int4R other) {
+    public long distanceSquared(Int4R other) {
         return distanceSquared(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -2931,6 +2994,9 @@ public final class Int4Impl implements Int4 {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -2939,22 +3005,25 @@ public final class Int4Impl implements Int4 {
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ}, {@code otherW})
      */
-    public int distanceSquared(int otherX, int otherY, int otherZ, int otherW) {
-        int _t0 = this.x - otherX;
-        int _t1 = this.y - otherY;
-        int _t2 = this.z - otherZ;
-        int _t3 = this.w - otherW;
+    public long distanceSquared(int otherX, int otherY, int otherZ, int otherW) {
+        long _t0 = (long) this.x - (long) otherX;
+        long _t1 = (long) this.y - (long) otherY;
+        long _t2 = (long) this.z - (long) otherZ;
+        long _t3 = (long) this.w - (long) otherW;
         return _t0 * _t0 + _t1 * _t1 + _t2 * _t2 + _t3 * _t3;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public int dot(Int4R other) {
+    public long dot(Int4R other) {
         return dot(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -2962,6 +3031,9 @@ public final class Int4Impl implements Int4 {
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      * {@code otherW}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -2970,28 +3042,34 @@ public final class Int4Impl implements Int4 {
      * @return the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      *        {@code otherW})
      */
-    public int dot(int otherX, int otherY, int otherZ, int otherW) {
-        return otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w;
+    public long dot(int otherX, int otherY, int otherZ, int otherW) {
+        return (long) otherX * (long) this.x + (long) otherY * (long) this.y + (long) otherZ * (long) this.z + (long) otherW * (long) this.w;
     }
 
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the squared length of this vector
      */
-    public int lengthSquared() {
-        return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+    public long lengthSquared() {
+        return (long) this.x * (long) this.x + (long) this.y * (long) this.y + (long) this.z * (long) this.z + (long) this.w * (long) this.w;
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public int manhattanDistance(Int4R other) {
+    public long manhattanDistance(Int4R other) {
         return manhattanDistance(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -2999,6 +3077,9 @@ public final class Int4Impl implements Int4 {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -3007,18 +3088,21 @@ public final class Int4Impl implements Int4 {
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ}, {@code otherW})
      */
-    public int manhattanDistance(int otherX, int otherY, int otherZ, int otherW) {
-        return Math.abs(this.x - otherX) + Math.abs(this.y - otherY) + Math.abs(this.z - otherZ) + Math.abs(this.w - otherW);
+    public long manhattanDistance(int otherX, int otherY, int otherZ, int otherW) {
+        return Math.abs((long) this.x - (long) otherX) + Math.abs((long) this.y - (long) otherY) + Math.abs((long) this.z - (long) otherZ) + Math.abs((long) this.w - (long) otherW);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public int manhattanLength() {
-        return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z) + Math.abs(this.w);
+    public long manhattanLength() {
+        return Math.abs((long) this.x) + Math.abs((long) this.y) + Math.abs((long) this.z) + Math.abs((long) this.w);
     }
 
 

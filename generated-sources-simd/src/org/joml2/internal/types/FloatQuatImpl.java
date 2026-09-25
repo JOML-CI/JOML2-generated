@@ -514,25 +514,13 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
      */
-    /** Private vector tail of {@code makeFromMatrix_s334d9f64}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s334d9f64_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeFromMatrix_s42701f13}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s42701f13_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public FloatQuat makeFromMatrix(Float3x3R m) {
         if (SimdMath.USE_FMA) return makeFromMatrix_fma(m);
         return makeFromMatrix_mulAdd(m);
@@ -596,27 +584,29 @@ public final class FloatQuatImpl implements FloatQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeFromMatrix_s334d9f64}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s334d9f64_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeFromMatrix_s42701f13}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s42701f13_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
      */
-    /** Private vector tail of {@code makeFromMatrix_s1b2ecc43}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s1b2ecc43_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeFromMatrix_s5754d1d4}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s5754d1d4_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public FloatQuat makeFromMatrix(Float3x4R m) {
         if (SimdMath.USE_FMA) return makeFromMatrix_fma(m);
         return makeFromMatrix_mulAdd(m);
@@ -680,27 +670,29 @@ public final class FloatQuatImpl implements FloatQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeFromMatrix_s1b2ecc43}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s1b2ecc43_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeFromMatrix_s5754d1d4}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s5754d1d4_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
      */
-    /** Private vector tail of {@code makeFromMatrix_sf783d62}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_sf783d62_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeFromMatrix_s45d7d855}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s45d7d855_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public FloatQuat makeFromMatrix(Float4x4R m) {
         if (SimdMath.USE_FMA) return makeFromMatrix_fma(m);
         return makeFromMatrix_mulAdd(m);
@@ -764,6 +756,20 @@ public final class FloatQuatImpl implements FloatQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeFromMatrix_sf783d62}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_sf783d62_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeFromMatrix_s45d7d855}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s45d7d855_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
      * Convert this quaternion to a pure-rotation dual quaternion (zero dual part) and store the
@@ -776,7 +782,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
-        VEC_2.intoArray(dd, 4);
+        VEC_1.intoArray(dd, 4);
         return dest;
     }
 
@@ -830,7 +836,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf2 = 2.0f * Math.fma(sd[0], sd[2], _t2);
         dd[9] = 2.0f * Math.fma(sd[1], sd[2], -(sd[0] * sd[3]));
         dd[10] = Math.fma(-2.0f, Math.fma(sd[0], sd[0], sd[1] * sd[1]), 1.0f);
-        VEC_2.intoArray(dd, 11);
+        VEC_1.intoArray(dd, 11);
         dd[15] = 1.0f;
         dd[0] = _buf0;
         dd[4] = _buf1;
@@ -1425,7 +1431,7 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     @Mutated public FloatQuat makeIdentity() {
         float[] dd = this.data;
-        VEC_1.intoArray(dd, 0);
+        VEC_2.intoArray(dd, 0);
         return this;
     }
 
@@ -1609,7 +1615,7 @@ public final class FloatQuatImpl implements FloatQuat {
         var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, alpha).fma(FloatVector.fromArray(COL_SPECIES, targetData, 0).sub(_sv0), _sv0);
         float _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t11 > 0.0f ? _sv1.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t11 != 0.0f ? _sv1.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1621,7 +1627,7 @@ public final class FloatQuatImpl implements FloatQuat {
         var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
         var _sv1 = FloatVector.broadcast(COL_SPECIES, alpha).mul(FloatVector.fromArray(COL_SPECIES, targetData, 0).sub(_sv0)).add(_sv0);
         float _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t11 > 0.0f ? _sv1.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t11 != 0.0f ? _sv1.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1685,7 +1691,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = Math.fma(alpha, targetY - sd[1], sd[1]);
         float _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
+        if (_t11 != 0.0f) {
             dd[0] = _t6 * _t12;
             dd[1] = _t7 * _t12;
             dd[2] = _t5 * _t12;
@@ -1737,7 +1743,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = Math.fma(alpha, targetY - sd[1], sd[1]);
         float _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
+        if (_t11 != 0.0f) {
             dd[0] = _t6 * _t12;
             dd[1] = _t7 * _t12;
             dd[2] = _t5 * _t12;
@@ -1769,28 +1775,6 @@ public final class FloatQuatImpl implements FloatQuat {
      * @param dest will hold the result
      * @return dest
      */
-    /** Private vector tail of {@code nlerpShortest_s4e786d40}: loads, computes and stores every column; reached only through it. */
-    private static void nlerpShortest_s4e786d40_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float alpha, float[] sd, float[] targetData) {
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, targetData, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = _sv0.neg();
-        var _sv3 = FloatVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1), _sv1);
-        float _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t24 > 0.0f ? FloatVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1), _sv1).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code nlerpShortest_s3c9a33b7}: loads, computes and stores every column; reached only through it. */
-    private static void nlerpShortest_s3c9a33b7_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float alpha, float[] sd, float[] targetData) {
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, targetData, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = _sv0.neg();
-        var _sv3 = FloatVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1)).add(_sv1);
-        float _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t24 > 0.0f ? FloatVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1)).add(_sv1).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
-        _col0.intoArray(dd, 0);
-    }
-
     public FloatQuat nlerpShortest(FloatQuatR target, float alpha, @Mutated FloatQuat dest) {
         if (SimdMath.USE_FMA) return nlerpShortest_fma(target, alpha, dest);
         return nlerpShortest_mulAdd(target, alpha, dest);
@@ -1826,6 +1810,28 @@ public final class FloatQuatImpl implements FloatQuat {
         float _r7 = targetData[1];
         nlerpShortest_s3c9a33b7_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, alpha, sd, targetData);
         return dest;
+    }
+
+    /** Private vector tail of {@code nlerpShortest_s4e786d40}: loads, computes and stores every column; reached only through it. */
+    private static void nlerpShortest_s4e786d40_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float alpha, float[] sd, float[] targetData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, targetData, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = _sv0.neg();
+        var _sv3 = FloatVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1), _sv1);
+        float _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
+        var _col0 = (_t24 != 0.0f ? FloatVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1), _sv1).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code nlerpShortest_s3c9a33b7}: loads, computes and stores every column; reached only through it. */
+    private static void nlerpShortest_s3c9a33b7_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float alpha, float[] sd, float[] targetData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, targetData, 0);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = _sv0.neg();
+        var _sv3 = FloatVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1)).add(_sv1);
+        float _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
+        var _col0 = (_t24 != 0.0f ? FloatVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0f ? _sv2 : _sv0).sub(_sv1)).add(_sv1).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -1897,7 +1903,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             dd[0] = _t19 * _t25;
             dd[1] = _t20 * _t25;
             dd[2] = _t18 * _t25;
@@ -1958,7 +1964,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             dd[0] = _t19 * _t25;
             dd[1] = _t20 * _t25;
             dd[2] = _t18 * _t25;
@@ -2000,11 +2006,18 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] targetData = ((FloatQuatImpl) target).data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, targetData, 0);
-        var _col0 = (Math.abs(_t8) > 1.0E-6f ? _sv0.fma(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0 * _t7)), _sv1.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(COL_SPECIES, alpha).fma(_sv1, _sv0.mul(FloatVector.broadcast(COL_SPECIES, _t0))));
+        float _t1 = sd[3] + targetData[3];
+        float _t2 = sd[2] + targetData[2];
+        float _t3 = sd[0] + targetData[0];
+        float _t4 = sd[1] + targetData[1];
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f * (1.0f / (float) Math.sqrt(_t18));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).fma(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5), FloatVector.fromArray(COL_SPECIES, targetData, 0).mul(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0f - _t5)));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -2014,11 +2027,18 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] targetData = ((FloatQuatImpl) target).data;
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, targetData, 0);
-        var _col0 = (Math.abs(_t8) > 1.0E-6f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0 * _t7))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(COL_SPECIES, alpha).mul(_sv1).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, _t0))));
+        float _t1 = sd[3] + targetData[3];
+        float _t2 = sd[2] + targetData[2];
+        float _t3 = sd[0] + targetData[0];
+        float _t4 = sd[1] + targetData[1];
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f * (1.0f / (float) Math.sqrt(_t18));
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).mul(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5)).add(FloatVector.fromArray(COL_SPECIES, targetData, 0).mul(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0f - _t5)));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -2082,27 +2102,61 @@ public final class FloatQuatImpl implements FloatQuat {
     private FloatQuat slerp_fma(float targetX, float targetY, float targetZ, float targetW, float alpha, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
+        float _r0 = sd[3];
+        float _r1 = sd[2];
+        float _r2 = sd[0];
+        float _r3 = sd[1];
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _col0 = (Math.abs(_t8) > 1.0E-6f ? _sv0.fma(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0 * _t7)), _sv1.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(COL_SPECIES, alpha).fma(_sv1, _sv0.mul(FloatVector.broadcast(COL_SPECIES, _t0))));
-        _col0.intoArray(dd, 0);
+        float _t1 = _r0 + targetW;
+        float _t2 = _r1 + targetZ;
+        float _t3 = _r2 + targetX;
+        float _t4 = _r3 + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f * (1.0f / (float) Math.sqrt(_t18));
+        slerp_s13d4cf38_tail(dd, _t0, _t5, _t11, _t12, _t13, _t19, _t21, targetX, targetY, targetZ, targetW, alpha, sd);
         return dest;
     }
 
     private FloatQuat slerp_mulAdd(float targetX, float targetY, float targetZ, float targetW, float alpha, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
+        float _r0 = sd[3];
+        float _r1 = sd[2];
+        float _r2 = sd[0];
+        float _r3 = sd[1];
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = FloatVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _col0 = (Math.abs(_t8) > 1.0E-6f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(_t0 * _t7))).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(COL_SPECIES, alpha).mul(_sv1).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, _t0))));
-        _col0.intoArray(dd, 0);
+        float _t1 = _r0 + targetW;
+        float _t2 = _r1 + targetZ;
+        float _t3 = _r2 + targetX;
+        float _t4 = _r3 + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f * (1.0f / (float) Math.sqrt(_t18));
+        slerp_s5646eebf_tail(dd, _t0, _t5, _t11, _t12, _t13, _t19, _t21, targetX, targetY, targetZ, targetW, alpha, sd);
         return dest;
+    }
+
+    /** Private vector tail of {@code slerp_s13d4cf38}: loads, computes and stores every column; reached only through it. */
+    private static void slerp_s13d4cf38_tail(float[] dd, float _t0, float _t5, float _t11, float _t12, float _t13, float _t19, float _t21, float targetX, float targetY, float targetZ, float targetW, float alpha, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5), FloatVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0f - _t5)));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code slerp_s5646eebf}: loads, computes and stores every column; reached only through it. */
+    private static void slerp_s5646eebf_tail(float[] dd, float _t0, float _t5, float _t11, float _t12, float _t13, float _t19, float _t21, float targetX, float targetY, float targetZ, float targetW, float alpha, float[] sd) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5)).add(FloatVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(FloatVector.broadcast(COL_SPECIES, _t19 > 2.0E-6f ? _t21 * (float) Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0f - _t5)));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -2138,23 +2192,34 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        float _t8_inv = 1.0f / _t8;
-        float _t9 = Math.abs(_t8);
-        float _t11 = (float) Math.sin(alpha * _t7);
-        float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 1.0E-6f) {
-            dd[0] = Math.fma(sd[0], _t13, targetX * _t11) * _t8_inv;
-            dd[1] = Math.fma(sd[1], _t13, targetY * _t11) * _t8_inv;
-            dd[2] = Math.fma(sd[2], _t13, targetZ * _t11) * _t8_inv;
-            dd[3] = Math.fma(sd[3], _t13, targetW * _t11) * _t8_inv;
+        float _t1 = sd[3] + targetW;
+        float _t2 = sd[2] + targetZ;
+        float _t3 = sd[0] + targetX;
+        float _t4 = sd[1] + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _t26, _t27;
+        if (_t19 > 2.0E-6f) {
+            _t26 = _t21 * (float) Math.sin(alpha * _t12);
+            _t27 = _t21 * (float) Math.sin(_t0 * _t12);
         } else {
-            dd[0] = Math.fma(alpha, targetX, sd[0] * _t0);
-            dd[1] = Math.fma(alpha, targetY, sd[1] * _t0);
-            dd[2] = Math.fma(alpha, targetZ, sd[2] * _t0);
-            dd[3] = Math.fma(alpha, targetW, sd[3] * _t0);
+            if (_t11 > _t13) {
+                _t26 = alpha;
+                _t27 = _t0;
+            } else {
+                _t26 = 1.0f - _t5;
+                _t27 = _t5;
+            }
         }
+        dd[0] = Math.fma(sd[0], _t27, targetX * _t26);
+        dd[1] = Math.fma(sd[1], _t27, targetY * _t26);
+        dd[2] = Math.fma(sd[2], _t27, targetZ * _t26);
+        dd[3] = Math.fma(sd[3], _t27, targetW * _t26);
         return dest;
     }
 
@@ -2186,7 +2251,7 @@ public final class FloatQuatImpl implements FloatQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0f ? _sv0.fma(FloatVector.broadcast(COL_SPECIES, (float) Math.sin((1.0f - alpha) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))), FloatVector.broadcast(COL_SPECIES, (float) Math.sin(alpha * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))).mul(_sv2)).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : FloatVector.broadcast(COL_SPECIES, alpha).fma(_sv2, _sv0.mul(FloatVector.broadcast(COL_SPECIES, 1.0f - alpha))));
         float _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t49 > 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t49 != 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -2200,7 +2265,7 @@ public final class FloatQuatImpl implements FloatQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin((1.0f - alpha) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))).add(FloatVector.broadcast(COL_SPECIES, (float) Math.sin(alpha * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))).mul(_sv2)).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : FloatVector.broadcast(COL_SPECIES, alpha).mul(_sv2).add(_sv0.mul(FloatVector.broadcast(COL_SPECIES, 1.0f - alpha))));
         float _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t49 > 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t49 != 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -2285,7 +2350,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             dd[0] = _t50 * _t44;
             dd[1] = _t50 * _t45;
             dd[2] = _t50 * _t43;
@@ -2361,7 +2426,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             dd[0] = _t50 * _t44;
             dd[1] = _t50 * _t45;
             dd[2] = _t50 * _t43;
@@ -2396,61 +2461,92 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 1.0f - t;
         float _t1 = t + t;
+        float _t3 = control0Data[3] + control1Data[3];
+        float _t4 = control0Data[2] + control1Data[2];
+        float _t5 = control0Data[0] + control1Data[0];
+        float _t6 = control0Data[1] + control1Data[1];
+        float _t7 = t < 0.5f ? 1.0f : 0.0f;
+        float _t8 = sd[3] + targetData[3];
+        float _t9 = sd[2] + targetData[2];
+        float _t10 = sd[0] + targetData[0];
+        float _t11 = sd[1] + targetData[1];
+        float _t12 = 1.0f - _t7;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(control0Data[3], control1Data[3], Math.fma(control0Data[2], control1Data[2], Math.fma(control0Data[0], control1Data[0], control0Data[1] * control1Data[1]))))));
-        float _t34 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))));
-        float _t35 = (float) Math.sin(_t33);
-        float _t35_inv = 1.0f / _t35;
-        float _t36 = (float) Math.sin(_t34);
-        float _t36_inv = 1.0f / _t36;
-        float _t37 = Math.abs(_t35);
-        float _t39 = Math.abs(_t36);
-        float _t41 = (float) Math.sin(t * _t33);
-        float _t42 = (float) Math.sin(t * _t34);
-        float _t45 = (float) Math.sin(_t0 * _t33);
-        float _t46 = (float) Math.sin(_t0 * _t34);
-        float _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6f) {
-            _t71 = Math.fma(control0Data[3], _t45, control1Data[3] * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Data[2], _t45, control1Data[2] * _t41) * _t35_inv;
-            _t75 = Math.fma(control0Data[0], _t45, control1Data[0] * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Data[1], _t45, control1Data[1] * _t41) * _t35_inv;
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t27 = quatArcAngle(_t25);
+        float _t28 = quatArcAngle(_t26);
+        float _t29 = 4.0f - _t25;
+        float _t30 = 4.0f - _t26;
+        float _t39 = _t29 * _t25;
+        float _t40 = _t30 * _t26;
+        float _t41 = (float) Math.sqrt(_t39);
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t45 = 2.0f / _t41;
+        float _t46 = 2.0f / _t43;
+        float _t55, _t57;
+        if (_t41 > 2.0E-6f) {
+            _t55 = _t45 * (float) Math.sin(t * _t27);
+            _t57 = _t45 * (float) Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1Data[3], control0Data[3] * _t0);
-            _t73 = Math.fma(t, control1Data[2], control0Data[2] * _t0);
-            _t75 = Math.fma(t, control1Data[0], control0Data[0] * _t0);
-            _t77 = Math.fma(t, control1Data[1], control0Data[1] * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        float _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6f) {
-            _t72 = Math.fma(sd[3], _t46, targetData[3] * _t42) * _t36_inv;
-            _t74 = Math.fma(sd[2], _t46, targetData[2] * _t42) * _t36_inv;
-            _t76 = Math.fma(sd[0], _t46, targetData[0] * _t42) * _t36_inv;
-            _t78 = Math.fma(sd[1], _t46, targetData[1] * _t42) * _t36_inv;
+        float _t56, _t58;
+        if (_t43 > 2.0E-6f) {
+            _t56 = _t46 * (float) Math.sin(t * _t28);
+            _t58 = _t46 * (float) Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetData[3], sd[3] * _t0);
-            _t74 = Math.fma(t, targetData[2], sd[2] * _t0);
-            _t76 = Math.fma(t, targetData[0], sd[0] * _t0);
-            _t78 = Math.fma(t, targetData[1], sd[1] * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        float _t85 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        float _t86 = (float) Math.sin(_t85);
-        float _t86_inv = 1.0f / _t86;
-        float _t87 = Math.abs(_t86);
-        float _t89 = (float) Math.sin(_t13 * _t85);
-        float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6f) {
-            dd[0] = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            dd[1] = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            dd[2] = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            dd[3] = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        float _t67 = Math.fma(control0Data[0], _t57, control1Data[0] * _t55);
+        float _t68 = Math.fma(control0Data[3], _t57, control1Data[3] * _t55);
+        float _t69 = Math.fma(sd[3], _t58, targetData[3] * _t56);
+        float _t70 = Math.fma(control0Data[2], _t57, control1Data[2] * _t55);
+        float _t71 = Math.fma(sd[2], _t58, targetData[2] * _t56);
+        float _t72 = Math.fma(sd[0], _t58, targetData[0] * _t56);
+        float _t73 = Math.fma(control0Data[1], _t57, control1Data[1] * _t55);
+        float _t74 = Math.fma(sd[1], _t58, targetData[1] * _t56);
+        float _t75 = _t68 + _t69;
+        float _t76 = _t70 + _t71;
+        float _t77 = _t67 + _t72;
+        float _t78 = _t73 + _t74;
+        float _t83 = Math.min(4.0f, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        float _t84 = quatArcAngle(_t83);
+        float _t85 = 4.0f - _t83;
+        float _t90 = _t85 * _t83;
+        float _t91 = (float) Math.sqrt(_t90);
+        float _t93 = 2.0f / _t91;
+        float _t98, _t99;
+        if (_t91 > 2.0E-6f) {
+            _t98 = _t93 * (float) Math.sin(_t13 * _t84);
+            _t99 = _t93 * (float) Math.sin(_t14 * _t84);
         } else {
-            dd[0] = Math.fma(_t14, _t76, _t13 * _t75);
-            dd[1] = Math.fma(_t14, _t78, _t13 * _t77);
-            dd[2] = Math.fma(_t14, _t74, _t13 * _t73);
-            dd[3] = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0f - _t17;
+                _t99 = _t17;
+            }
         }
+        dd[0] = Math.fma(_t67, _t98, _t72 * _t99);
+        dd[1] = Math.fma(_t73, _t98, _t74 * _t99);
+        dd[2] = Math.fma(_t70, _t98, _t71 * _t99);
+        dd[3] = Math.fma(_t68, _t98, _t69 * _t99);
         return dest;
     }
 
@@ -2513,61 +2609,92 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         float _t0 = 1.0f - t;
         float _t1 = t + t;
+        float _t3 = control0W + control1W;
+        float _t4 = control0Z + control1Z;
+        float _t5 = control0X + control1X;
+        float _t6 = control0Y + control1Y;
+        float _t7 = t < 0.5f ? 1.0f : 0.0f;
+        float _t8 = sd[3] + targetW;
+        float _t9 = sd[2] + targetZ;
+        float _t10 = sd[0] + targetX;
+        float _t11 = sd[1] + targetY;
+        float _t12 = 1.0f - _t7;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
-        float _t34 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        float _t35 = (float) Math.sin(_t33);
-        float _t35_inv = 1.0f / _t35;
-        float _t36 = (float) Math.sin(_t34);
-        float _t36_inv = 1.0f / _t36;
-        float _t37 = Math.abs(_t35);
-        float _t39 = Math.abs(_t36);
-        float _t41 = (float) Math.sin(t * _t33);
-        float _t42 = (float) Math.sin(t * _t34);
-        float _t45 = (float) Math.sin(_t0 * _t33);
-        float _t46 = (float) Math.sin(_t0 * _t34);
-        float _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6f) {
-            _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
-            _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t27 = quatArcAngle(_t25);
+        float _t28 = quatArcAngle(_t26);
+        float _t29 = 4.0f - _t25;
+        float _t30 = 4.0f - _t26;
+        float _t39 = _t29 * _t25;
+        float _t40 = _t30 * _t26;
+        float _t41 = (float) Math.sqrt(_t39);
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t45 = 2.0f / _t41;
+        float _t46 = 2.0f / _t43;
+        float _t55, _t57;
+        if (_t41 > 2.0E-6f) {
+            _t55 = _t45 * (float) Math.sin(t * _t27);
+            _t57 = _t45 * (float) Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1W, control0W * _t0);
-            _t73 = Math.fma(t, control1Z, control0Z * _t0);
-            _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        float _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6f) {
-            _t72 = Math.fma(sd[3], _t46, targetW * _t42) * _t36_inv;
-            _t74 = Math.fma(sd[2], _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(sd[0], _t46, targetX * _t42) * _t36_inv;
-            _t78 = Math.fma(sd[1], _t46, targetY * _t42) * _t36_inv;
+        float _t56, _t58;
+        if (_t43 > 2.0E-6f) {
+            _t56 = _t46 * (float) Math.sin(t * _t28);
+            _t58 = _t46 * (float) Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetW, sd[3] * _t0);
-            _t74 = Math.fma(t, targetZ, sd[2] * _t0);
-            _t76 = Math.fma(t, targetX, sd[0] * _t0);
-            _t78 = Math.fma(t, targetY, sd[1] * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        float _t85 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        float _t86 = (float) Math.sin(_t85);
-        float _t86_inv = 1.0f / _t86;
-        float _t87 = Math.abs(_t86);
-        float _t89 = (float) Math.sin(_t13 * _t85);
-        float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6f) {
-            dd[0] = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            dd[1] = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            dd[2] = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            dd[3] = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        float _t67 = Math.fma(control0X, _t57, control1X * _t55);
+        float _t68 = Math.fma(control0W, _t57, control1W * _t55);
+        float _t69 = Math.fma(sd[3], _t58, targetW * _t56);
+        float _t70 = Math.fma(control0Z, _t57, control1Z * _t55);
+        float _t71 = Math.fma(sd[2], _t58, targetZ * _t56);
+        float _t72 = Math.fma(sd[0], _t58, targetX * _t56);
+        float _t73 = Math.fma(control0Y, _t57, control1Y * _t55);
+        float _t74 = Math.fma(sd[1], _t58, targetY * _t56);
+        float _t75 = _t68 + _t69;
+        float _t76 = _t70 + _t71;
+        float _t77 = _t67 + _t72;
+        float _t78 = _t73 + _t74;
+        float _t83 = Math.min(4.0f, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        float _t84 = quatArcAngle(_t83);
+        float _t85 = 4.0f - _t83;
+        float _t90 = _t85 * _t83;
+        float _t91 = (float) Math.sqrt(_t90);
+        float _t93 = 2.0f / _t91;
+        float _t98, _t99;
+        if (_t91 > 2.0E-6f) {
+            _t98 = _t93 * (float) Math.sin(_t13 * _t84);
+            _t99 = _t93 * (float) Math.sin(_t14 * _t84);
         } else {
-            dd[0] = Math.fma(_t14, _t76, _t13 * _t75);
-            dd[1] = Math.fma(_t14, _t78, _t13 * _t77);
-            dd[2] = Math.fma(_t14, _t74, _t13 * _t73);
-            dd[3] = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0f - _t17;
+                _t99 = _t17;
+            }
         }
+        dd[0] = Math.fma(_t67, _t98, _t72 * _t99);
+        dd[1] = Math.fma(_t73, _t98, _t74 * _t99);
+        dd[2] = Math.fma(_t70, _t98, _t71 * _t99);
+        dd[3] = Math.fma(_t68, _t98, _t69 * _t99);
         return dest;
     }
 
@@ -2613,61 +2740,92 @@ public final class FloatQuatImpl implements FloatQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t0 = 1.0f - t;
         float _t1 = t + t;
+        float _t3 = control0W + control1W;
+        float _t4 = control0Z + control1Z;
+        float _t5 = control0X + control1X;
+        float _t6 = control0Y + control1Y;
+        float _t7 = t < 0.5f ? 1.0f : 0.0f;
+        float _t8 = sd[3] + targetW;
+        float _t9 = sd[2] + targetZ;
+        float _t10 = sd[0] + targetX;
+        float _t11 = sd[1] + targetY;
+        float _t12 = 1.0f - _t7;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
-        float _t34 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        float _t35 = (float) Math.sin(_t33);
-        float _t35_inv = 1.0f / _t35;
-        float _t36 = (float) Math.sin(_t34);
-        float _t36_inv = 1.0f / _t36;
-        float _t37 = Math.abs(_t35);
-        float _t39 = Math.abs(_t36);
-        float _t41 = (float) Math.sin(t * _t33);
-        float _t42 = (float) Math.sin(t * _t34);
-        float _t45 = (float) Math.sin(_t0 * _t33);
-        float _t46 = (float) Math.sin(_t0 * _t34);
-        float _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6f) {
-            _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
-            _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t27 = quatArcAngle(_t25);
+        float _t28 = quatArcAngle(_t26);
+        float _t29 = 4.0f - _t25;
+        float _t30 = 4.0f - _t26;
+        float _t39 = _t29 * _t25;
+        float _t40 = _t30 * _t26;
+        float _t41 = (float) Math.sqrt(_t39);
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t45 = 2.0f / _t41;
+        float _t46 = 2.0f / _t43;
+        float _t55, _t57;
+        if (_t41 > 2.0E-6f) {
+            _t55 = _t45 * (float) Math.sin(t * _t27);
+            _t57 = _t45 * (float) Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1W, control0W * _t0);
-            _t73 = Math.fma(t, control1Z, control0Z * _t0);
-            _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        float _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6f) {
-            _t72 = Math.fma(sd[3], _t46, targetW * _t42) * _t36_inv;
-            _t74 = Math.fma(sd[2], _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(sd[0], _t46, targetX * _t42) * _t36_inv;
-            _t78 = Math.fma(sd[1], _t46, targetY * _t42) * _t36_inv;
+        float _t56, _t58;
+        if (_t43 > 2.0E-6f) {
+            _t56 = _t46 * (float) Math.sin(t * _t28);
+            _t58 = _t46 * (float) Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetW, sd[3] * _t0);
-            _t74 = Math.fma(t, targetZ, sd[2] * _t0);
-            _t76 = Math.fma(t, targetX, sd[0] * _t0);
-            _t78 = Math.fma(t, targetY, sd[1] * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        float _t85 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        float _t86 = (float) Math.sin(_t85);
-        float _t86_inv = 1.0f / _t86;
-        float _t87 = Math.abs(_t86);
-        float _t89 = (float) Math.sin(_t13 * _t85);
-        float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6f) {
-            dd[0] = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            dd[1] = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            dd[2] = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            dd[3] = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        float _t67 = Math.fma(control0X, _t57, control1X * _t55);
+        float _t68 = Math.fma(control0W, _t57, control1W * _t55);
+        float _t69 = Math.fma(sd[3], _t58, targetW * _t56);
+        float _t70 = Math.fma(control0Z, _t57, control1Z * _t55);
+        float _t71 = Math.fma(sd[2], _t58, targetZ * _t56);
+        float _t72 = Math.fma(sd[0], _t58, targetX * _t56);
+        float _t73 = Math.fma(control0Y, _t57, control1Y * _t55);
+        float _t74 = Math.fma(sd[1], _t58, targetY * _t56);
+        float _t75 = _t68 + _t69;
+        float _t76 = _t70 + _t71;
+        float _t77 = _t67 + _t72;
+        float _t78 = _t73 + _t74;
+        float _t83 = Math.min(4.0f, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        float _t84 = quatArcAngle(_t83);
+        float _t85 = 4.0f - _t83;
+        float _t90 = _t85 * _t83;
+        float _t91 = (float) Math.sqrt(_t90);
+        float _t93 = 2.0f / _t91;
+        float _t98, _t99;
+        if (_t91 > 2.0E-6f) {
+            _t98 = _t93 * (float) Math.sin(_t13 * _t84);
+            _t99 = _t93 * (float) Math.sin(_t14 * _t84);
         } else {
-            dd[0] = Math.fma(_t14, _t76, _t13 * _t75);
-            dd[1] = Math.fma(_t14, _t78, _t13 * _t77);
-            dd[2] = Math.fma(_t14, _t74, _t13 * _t73);
-            dd[3] = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0f - _t17;
+                _t99 = _t17;
+            }
         }
+        dd[0] = Math.fma(_t67, _t98, _t72 * _t99);
+        dd[1] = Math.fma(_t73, _t98, _t74 * _t99);
+        dd[2] = Math.fma(_t70, _t98, _t71 * _t99);
+        dd[3] = Math.fma(_t68, _t98, _t69 * _t99);
         return dest;
     }
 
@@ -2923,6 +3081,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param other the quaternion to measure the angle to
      * @return the angle in radians between this quaternion and {@code other}
@@ -2938,6 +3098,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -3223,12 +3385,13 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         float[] otherData = ((FloatQuatImpl) other).data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
-        float _t3_inv = 1.0f / _t3;
+        float _t3_inv = 1.0f / Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        float _sp1 = _t3_inv * sd[2];
+        float _sp0 = sd[1] * _t3_inv;
         float _buf0 = (Math.fma(otherData[0], sd[3], -(otherData[3] * sd[0])) + Math.fma(otherData[1], sd[2], -(otherData[2] * sd[1]))) * _t3_inv;
-        float _buf1 = -(otherData[3] * sd[1] * _t3_inv) - otherData[0] * sd[2] * _t3_inv + Math.fma(otherData[1], sd[3], otherData[2] * sd[0]) * _t3_inv;
+        float _buf1 = -(otherData[3] * _sp0) - otherData[0] * _sp1 + Math.fma(otherData[1], sd[3], otherData[2] * sd[0]) * _t3_inv;
         float _buf2 = (Math.fma(otherData[0], sd[1], -(otherData[3] * sd[2])) + Math.fma(otherData[2], sd[3], -(otherData[1] * sd[0]))) * _t3_inv;
-        dd[3] = Math.fma(otherData[0], sd[0], otherData[3] * sd[3]) * _t3_inv - (-(otherData[1] * sd[1] * _t3_inv) - otherData[2] * sd[2] * _t3_inv);
+        dd[3] = Math.fma(otherData[0], sd[0], otherData[3] * sd[3]) * _t3_inv - (-(otherData[1] * _sp0) - otherData[2] * _sp1);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3273,15 +3436,15 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat difference(float otherX, float otherY, float otherZ, float otherW, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
-        float _t3_inv = 1.0f / _t3;
+        float _t3_inv = 1.0f / Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        float _sp1 = _t3_inv * sd[2];
+        float _sp0 = sd[1] * _t3_inv;
         float _buf0 = (Math.fma(otherX, sd[3], -(otherW * sd[0])) + Math.fma(otherY, sd[2], -(otherZ * sd[1]))) * _t3_inv;
-        float _buf1 = -(otherW * sd[1] * _t3_inv) - otherX * sd[2] * _t3_inv + Math.fma(otherY, sd[3], otherZ * sd[0]) * _t3_inv;
-        float _buf2 = (Math.fma(otherX, sd[1], -(otherW * sd[2])) + Math.fma(otherZ, sd[3], -(otherY * sd[0]))) * _t3_inv;
-        dd[3] = Math.fma(otherX, sd[0], otherW * sd[3]) * _t3_inv - (-(otherY * sd[1] * _t3_inv) - otherZ * sd[2] * _t3_inv);
+        float _buf1 = -(otherW * _sp0) - otherX * _sp1 + Math.fma(otherY, sd[3], otherZ * sd[0]) * _t3_inv;
+        dd[2] = (Math.fma(otherX, sd[1], -(otherW * sd[2])) + Math.fma(otherZ, sd[3], -(otherY * sd[0]))) * _t3_inv;
+        dd[3] = Math.fma(otherX, sd[0], otherW * sd[3]) * _t3_inv - (-(otherY * _sp0) - otherZ * _sp1);
         dd[0] = _buf0;
         dd[1] = _buf1;
-        dd[2] = _buf2;
         return dest;
     }
 
@@ -3389,7 +3552,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t3 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t4 = (float) Math.sqrt(_t3);
         float _t6 = (float) Math.sin(_t4);
-        float _t8 = _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3));
+        float _t8 = _t6 * _t0 / _t4;
         if (_t3 > 0.0f) {
             dd[0] = sd[0] * _t8;
             dd[1] = sd[1] * _t8;
@@ -3408,11 +3571,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3445,6 +3615,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3453,6 +3628,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3485,11 +3662,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3522,6 +3706,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3530,6 +3719,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3562,11 +3753,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3598,6 +3796,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3606,6 +3809,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3637,11 +3842,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3673,6 +3885,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3681,6 +3898,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3712,11 +3931,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3748,6 +3974,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3756,6 +3987,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3787,11 +4020,18 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3823,6 +4063,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -3831,6 +4076,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -3879,7 +4126,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = (float) Math.sqrt(_t6);
         float _t9 = (float) Math.sin(_t7);
         float _t10 = (float) Math.cosFromSin(_t9, _t7);
-        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
+        float _t11 = _t9 / _t7;
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3943,7 +4190,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = (float) Math.sqrt(_t6);
         float _t9 = (float) Math.sin(_t7);
         float _t10 = (float) Math.cosFromSin(_t9, _t7);
-        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
+        float _t11 = _t9 / _t7;
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -3993,7 +4240,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t7 = (float) Math.sqrt(_t6);
         float _t9 = (float) Math.sin(_t7);
         float _t10 = (float) Math.cosFromSin(_t9, _t7);
-        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
+        float _t11 = _t9 / _t7;
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -4035,7 +4282,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t12 * _t16);
             dd[1] = -(_t10 * _t16);
             dd[2] = -(_t9 * _t16);
@@ -4071,7 +4318,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t12 * _t16);
             dd[1] = -(_t10 * _t16);
             dd[2] = -(_t9 * _t16);
@@ -4104,7 +4351,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t9 * _t16);
             dd[1] = -(_t12 * _t16);
             dd[2] = -(_t10 * _t16);
@@ -4140,7 +4387,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t9 * _t16);
             dd[1] = -(_t12 * _t16);
             dd[2] = -(_t10 * _t16);
@@ -4173,7 +4420,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t10 * _t16);
             dd[1] = -(_t9 * _t16);
             dd[2] = -(_t12 * _t16);
@@ -4209,7 +4456,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t10 * _t16);
             dd[1] = -(_t9 * _t16);
             dd[2] = -(_t12 * _t16);
@@ -4524,7 +4771,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t12 * _t16;
             dd[1] = _t10 * _t16;
             dd[2] = _t9 * _t16;
@@ -4560,7 +4807,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t12 * _t16;
             dd[1] = _t10 * _t16;
             dd[2] = _t9 * _t16;
@@ -4593,7 +4840,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t9 * _t16;
             dd[1] = _t12 * _t16;
             dd[2] = _t10 * _t16;
@@ -4629,7 +4876,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t9 * _t16;
             dd[1] = _t12 * _t16;
             dd[2] = _t10 * _t16;
@@ -4662,7 +4909,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t10 * _t16;
             dd[1] = _t9 * _t16;
             dd[2] = _t12 * _t16;
@@ -4698,7 +4945,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t10 * _t16;
             dd[1] = _t9 * _t16;
             dd[2] = _t12 * _t16;
@@ -4807,7 +5054,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t12 * _t16);
             dd[1] = -(_t9 * _t16);
             dd[2] = -(_t10 * _t16);
@@ -4843,7 +5090,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t12 * _t16);
             dd[1] = -(_t9 * _t16);
             dd[2] = -(_t10 * _t16);
@@ -4876,7 +5123,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t10 * _t16);
             dd[1] = -(_t12 * _t16);
             dd[2] = -(_t9 * _t16);
@@ -4912,7 +5159,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t10 * _t16);
             dd[1] = -(_t12 * _t16);
             dd[2] = -(_t9 * _t16);
@@ -4945,7 +5192,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t9 * _t16);
             dd[1] = -(_t10 * _t16);
             dd[2] = -(_t12 * _t16);
@@ -4981,7 +5228,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = -(_t9 * _t16);
             dd[1] = -(_t10 * _t16);
             dd[2] = -(_t12 * _t16);
@@ -5009,7 +5256,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = ((FloatQuatImpl) dest).data;
         var _sv0 = FloatVector.fromArray(COL_SPECIES, sd, 0);
         float _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t3 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t3 != 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -5033,7 +5280,7 @@ public final class FloatQuatImpl implements FloatQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         float _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dd[0] = sd[0] * _t4;
             dd[1] = sd[1] * _t4;
             dd[2] = sd[2] * _t4;
@@ -5350,7 +5597,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t12 * _t16;
             dd[1] = _t9 * _t16;
             dd[2] = _t10 * _t16;
@@ -5386,7 +5633,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t12 * _t16;
             dd[1] = _t9 * _t16;
             dd[2] = _t10 * _t16;
@@ -5419,7 +5666,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t10 * _t16;
             dd[1] = _t12 * _t16;
             dd[2] = _t9 * _t16;
@@ -5455,7 +5702,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t10 * _t16;
             dd[1] = _t12 * _t16;
             dd[2] = _t9 * _t16;
@@ -5488,7 +5735,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t9 * _t16;
             dd[1] = _t10 * _t16;
             dd[2] = _t12 * _t16;
@@ -5524,7 +5771,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dd[0] = _t9 * _t16;
             dd[1] = _t10 * _t16;
             dd[2] = _t12 * _t16;
@@ -5548,12 +5795,6 @@ public final class FloatQuatImpl implements FloatQuat {
      * @param dest will hold the result
      * @return dest
      */
-    /** Private vector tail of {@code pow_s48ee4524}: loads, computes and stores every column; reached only through it. */
-    private static void pow_s48ee4524_tail(float[] dd, float _t10, float _t18, float _t19, float _t20, float _t23, float _t24, float _t26) {
-        var _col0 = (_t23 > 0.0f ? FloatVector.zero(COL_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cosFromSin(_t26, _t24)).mul(FloatVector.broadcast(COL_SPECIES, _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t26, _t24) * _t10));
-        _col0.intoArray(dd, 0);
-    }
-
     public FloatQuat pow(float t, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
@@ -5572,6 +5813,12 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t26 = (float) Math.sin(_t24);
         pow_s48ee4524_tail(dd, _t10, _t18, _t19, _t20, _t23, _t24, _t26);
         return dest;
+    }
+
+    /** Private vector tail of {@code pow_s48ee4524}: loads, computes and stores every column; reached only through it. */
+    private static void pow_s48ee4524_tail(float[] dd, float _t10, float _t18, float _t19, float _t20, float _t23, float _t24, float _t26) {
+        var _col0 = (_t23 > 0.0f ? FloatVector.zero(COL_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, (float) Math.cosFromSin(_t26, _t24)).mul(FloatVector.broadcast(COL_SPECIES, _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23))).withLane(3, _t10)) : FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t26, _t24) * _t10));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -5608,7 +5855,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
         float _t26 = (float) Math.sin(_t24);
-        float _t28 = _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23));
+        float _t28 = _t26 * _t10 / _t24;
         if (_t23 > 0.0f) {
             dd[0] = _t19 * _t28;
             dd[1] = _t20 * _t28;
@@ -5727,6 +5974,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
      * down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -5747,7 +5996,7 @@ public final class FloatQuatImpl implements FloatQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0f ? _sv0.fma(FloatVector.broadcast(COL_SPECIES, (float) Math.sin((1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f)) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))), FloatVector.broadcast(COL_SPECIES, (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))) * (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f))).mul(_sv2)).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : _sv0.fma(FloatVector.broadcast(COL_SPECIES, 1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f)), _sv2.mul(FloatVector.broadcast(COL_SPECIES, 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f))));
         float _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t72 > 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t72 != 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -5761,7 +6010,7 @@ public final class FloatQuatImpl implements FloatQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sin((1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f)) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))).add(FloatVector.broadcast(COL_SPECIES, (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))) * (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f))).mul(_sv2)).mul(FloatVector.broadcast(COL_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : _sv0.mul(FloatVector.broadcast(COL_SPECIES, 1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f))).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])))))), (float) Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0f ? -targetData[1] : targetData[1]))))))))) : 0.0f))));
         float _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t72 > 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
+        var _col0 = (_t72 != 0.0f ? _sv3.mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(COL_SPECIES, 0.0f));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -5776,6 +6025,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -5793,6 +6044,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
      * down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -5853,7 +6106,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         float _t73 = (1.0f / (float) Math.sqrt(_t72));
-        if (_t72 > 0.0f) {
+        if (_t72 != 0.0f) {
             dd[0] = _t73 * _t67;
             dd[1] = _t73 * _t68;
             dd[2] = _t73 * _t66;
@@ -5877,6 +6130,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -5937,7 +6192,7 @@ public final class FloatQuatImpl implements FloatQuat {
         }
         float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         float _t73 = (1.0f / (float) Math.sqrt(_t72));
-        if (_t72 > 0.0f) {
+        if (_t72 != 0.0f) {
             dd[0] = _t73 * _t67;
             dd[1] = _t73 * _t68;
             dd[2] = _t73 * _t66;
@@ -5959,6 +6214,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -5971,84 +6231,72 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dirData = ((Float3Impl) dir).data;
         float[] upData = ((Float3Impl) up).data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t2 = Math.fma(dirData[2], dirData[2], Math.fma(dirData[0], dirData[0], dirData[1] * dirData[1]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirData[2] * _t3;
-            _t8 = dirData[1] * _t3;
-            _t9 = dirData[0] * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upData[0], _t8, -(upData[1] * _t9));
-        float _t22 = Math.fma(upData[1], _t7, -(upData[2] * _t8));
-        float _t23 = Math.fma(upData[2], _t9, -(upData[0] * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0f;
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-        }
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 - _t32;
-        float _t38 = _t9 + _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.max(_t49, _t7);
-        float _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        float _t1 = -dirData[2];
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirData[2], dirData[2], Math.fma(dirData[0], dirData[0], dirData[1] * dirData[1]))));
+        float _t6 = dirData[2] * _t5;
+        float _t7 = dirData[1] * _t5;
+        float _t8 = dirData[0] * _t5;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t19 = Math.fma(upData[1], _t6, -(upData[2] * _t7));
+        float _t20 = Math.fma(upData[0], _t7, -(upData[1] * _t8));
+        float _t21 = Math.fma(upData[2], _t8, -(upData[0] * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dir, up, dest);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirData[0], _t5, _t29);
+        float _t37 = Math.fma(dirData[0], _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirData[1], _t5, _t47);
+        float _t52 = Math.max(_t45, _t6);
+        float _t53 = Math.fma(-dirData[1], _t5, _t47);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t59 = Math.fma(dirData[2], _t5, Math.fma(_t19, _t27, _t45));
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirData[2], _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirData[2], _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _t108, _t109, _t110, _t111;
         if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
-            _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
+            _t108 = _sp0 * _t53;
+            _t109 = _sp0 * _t57;
+            _t110 = _sp0 * _t37;
+            _t111 = 0.5f * (float) Math.sqrt(_t60);
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
-                _t110 = 0.5f * _t56 * _t65;
-                _t111 = 0.5f * (float) Math.sqrt(_t61);
+            if (_t28 > _t52) {
+                _t108 = 0.5f * (float) Math.sqrt(_t62);
+                _t109 = _sp3 * _t33;
+                _t110 = _sp3 * _t56;
+                _t111 = _sp3 * _t53;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
-                    _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
+                if (_t45 > _t6) {
+                    _t108 = _sp1 * _t56;
+                    _t109 = _sp1 * _t51;
+                    _t110 = 0.5f * (float) Math.sqrt(_t66);
+                    _t111 = _sp1 * _t37;
                 } else {
-                    _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
+                    _t108 = _sp2 * _t33;
+                    _t109 = 0.5f * (float) Math.sqrt(_t63);
+                    _t110 = _sp2 * _t51;
+                    _t111 = _sp2 * _t57;
                 }
             }
         }
-        float _buf0 = Math.fma(sd[0], _t110, sd[3] * _t111) + Math.fma(sd[1], _t108, -(sd[2] * _t109));
-        float _buf1 = Math.fma(sd[1], _t110, sd[2] * _t111) + Math.fma(sd[3], _t109, -(sd[0] * _t108));
-        float _buf2 = Math.fma(sd[0], _t109, sd[3] * _t108) + Math.fma(sd[2], _t110, -(sd[1] * _t111));
-        dd[3] = Math.fma(sd[3], _t110, -(sd[0] * _t111)) - Math.fma(sd[1], _t109, sd[2] * _t108);
+        float _buf0 = Math.fma(sd[0], _t111, sd[3] * _t108) + Math.fma(sd[1], _t109, -(sd[2] * _t110));
+        float _buf1 = Math.fma(sd[1], _t111, sd[2] * _t108) + Math.fma(sd[3], _t110, -(sd[0] * _t109));
+        float _buf2 = Math.fma(sd[0], _t110, sd[3] * _t109) + Math.fma(sd[2], _t111, -(sd[1] * _t108));
+        dd[3] = Math.fma(sd[3], _t111, -(sd[0] * _t108)) - Math.fma(sd[1], _t110, sd[2] * _t109);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -6063,6 +6311,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6085,6 +6338,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -6098,84 +6356,72 @@ public final class FloatQuatImpl implements FloatQuat {
     public FloatQuat lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated FloatQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatQuatImpl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0f;
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-        }
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 - _t32;
-        float _t38 = _t9 + _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.max(_t49, _t7);
-        float _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        float _t1 = -dirZ;
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t6 = dirZ * _t5;
+        float _t7 = dirY * _t5;
+        float _t8 = dirX * _t5;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        float _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirX, _t5, _t29);
+        float _t37 = Math.fma(dirX, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirY, _t5, _t47);
+        float _t52 = Math.max(_t45, _t6);
+        float _t53 = Math.fma(-dirY, _t5, _t47);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
         float _t108, _t109, _t110, _t111;
         if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
-            _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
+            _t108 = _sp0 * _t53;
+            _t109 = _sp0 * _t57;
+            _t110 = _sp0 * _t37;
+            _t111 = 0.5f * (float) Math.sqrt(_t60);
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
-                _t110 = 0.5f * _t56 * _t65;
-                _t111 = 0.5f * (float) Math.sqrt(_t61);
+            if (_t28 > _t52) {
+                _t108 = 0.5f * (float) Math.sqrt(_t62);
+                _t109 = _sp3 * _t33;
+                _t110 = _sp3 * _t56;
+                _t111 = _sp3 * _t53;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
-                    _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
+                if (_t45 > _t6) {
+                    _t108 = _sp1 * _t56;
+                    _t109 = _sp1 * _t51;
+                    _t110 = 0.5f * (float) Math.sqrt(_t66);
+                    _t111 = _sp1 * _t37;
                 } else {
-                    _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
+                    _t108 = _sp2 * _t33;
+                    _t109 = 0.5f * (float) Math.sqrt(_t63);
+                    _t110 = _sp2 * _t51;
+                    _t111 = _sp2 * _t57;
                 }
             }
         }
-        float _buf0 = Math.fma(sd[0], _t110, sd[3] * _t111) + Math.fma(sd[1], _t108, -(sd[2] * _t109));
-        float _buf1 = Math.fma(sd[1], _t110, sd[2] * _t111) + Math.fma(sd[3], _t109, -(sd[0] * _t108));
-        float _buf2 = Math.fma(sd[0], _t109, sd[3] * _t108) + Math.fma(sd[2], _t110, -(sd[1] * _t111));
-        dd[3] = Math.fma(sd[3], _t110, -(sd[0] * _t111)) - Math.fma(sd[1], _t109, sd[2] * _t108);
+        float _buf0 = Math.fma(sd[0], _t111, sd[3] * _t108) + Math.fma(sd[1], _t109, -(sd[2] * _t110));
+        float _buf1 = Math.fma(sd[1], _t111, sd[2] * _t108) + Math.fma(sd[3], _t110, -(sd[0] * _t109));
+        float _buf2 = Math.fma(sd[0], _t110, sd[3] * _t109) + Math.fma(sd[2], _t111, -(sd[1] * _t108));
+        dd[3] = Math.fma(sd[3], _t111, -(sd[0] * _t108)) - Math.fma(sd[1], _t110, sd[2] * _t109);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -6190,6 +6436,11 @@ public final class FloatQuatImpl implements FloatQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -6206,84 +6457,458 @@ public final class FloatQuatImpl implements FloatQuat {
     public DoubleQuat lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated DoubleQuat dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0f;
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-        }
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 - _t32;
-        float _t38 = _t9 + _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.max(_t49, _t7);
-        float _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
+        float _t1 = -dirZ;
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t6 = dirZ * _t5;
+        float _t7 = dirY * _t5;
+        float _t8 = dirX * _t5;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        float _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirX, _t5, _t29);
+        float _t37 = Math.fma(dirX, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirY, _t5, _t47);
+        float _t52 = Math.max(_t45, _t6);
+        float _t53 = Math.fma(-dirY, _t5, _t47);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _t64 = (1.0f / (float) Math.sqrt(_t60));
+        float _t65 = (1.0f / (float) Math.sqrt(_t62));
+        float _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
         float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        float _t71 = (1.0f / (float) Math.sqrt(_t66));
         float _t108, _t109, _t110, _t111;
         if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
-            _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
+            _t108 = 0.5f * _t53 * _t64;
+            _t109 = 0.5f * _t57 * _t64;
+            _t110 = 0.5f * _t37 * _t64;
+            _t111 = 0.5f * (float) Math.sqrt(_t60);
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
+            if (_t28 > _t52) {
+                _t108 = 0.5f * (float) Math.sqrt(_t62);
+                _t109 = 0.5f * _t33 * _t65;
                 _t110 = 0.5f * _t56 * _t65;
-                _t111 = 0.5f * (float) Math.sqrt(_t61);
+                _t111 = 0.5f * _t53 * _t65;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
-                    _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
+                if (_t45 > _t6) {
+                    _t108 = 0.5f * _t56 * _t71;
+                    _t109 = 0.5f * _t51 * _t71;
+                    _t110 = 0.5f * (float) Math.sqrt(_t66);
+                    _t111 = 0.5f * _t37 * _t71;
                 } else {
-                    _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
+                    _t108 = 0.5f * _t33 * _t67;
+                    _t109 = 0.5f * (float) Math.sqrt(_t63);
+                    _t110 = 0.5f * _t51 * _t67;
+                    _t111 = 0.5f * _t57 * _t67;
                 }
             }
         }
-        float _buf0 = Math.fma(sd[0], _t110, sd[3] * _t111) + Math.fma(sd[1], _t108, -(sd[2] * _t109));
-        float _buf1 = Math.fma(sd[1], _t110, sd[2] * _t111) + Math.fma(sd[3], _t109, -(sd[0] * _t108));
-        float _buf2 = Math.fma(sd[0], _t109, sd[3] * _t108) + Math.fma(sd[2], _t110, -(sd[1] * _t111));
-        dd[3] = Math.fma(sd[3], _t110, -(sd[0] * _t111)) - Math.fma(sd[1], _t109, sd[2] * _t108);
+        float _buf0 = Math.fma(sd[0], _t111, sd[3] * _t108) + Math.fma(sd[1], _t109, -(sd[2] * _t110));
+        float _buf1 = Math.fma(sd[1], _t111, sd[2] * _t108) + Math.fma(sd[3], _t110, -(sd[0] * _t109));
+        float _buf2 = Math.fma(sd[0], _t110, sd[3] * _t109) + Math.fma(sd[2], _t111, -(sd[1] * _t108));
+        dd[3] = Math.fma(sd[3], _t111, -(sd[0] * _t108)) - Math.fma(sd[1], _t110, sd[2] * _t109);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private FloatQuat lookAlong_degenerate(Float3R dir, Float3R up, @Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dirData = ((Float3Impl) dir).data;
+        float[] upData = ((Float3Impl) up).data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        float _t2 = Math.fma(dirData[2], dirData[2], Math.fma(dirData[0], dirData[0], dirData[1] * dirData[1]));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upData[0];
+            _t8 = upData[1];
+            _t9 = upData[2];
+            _t10 = dirData[1] * _t3;
+            _t11 = dirData[0] * _t3;
+            _t12 = dirData[2] * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0f;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0f;
+            _t30 = -_t12;
+        }
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0f) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0f / (float) Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0f / (float) Math.sqrt(_t35));
+        }
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t68 = Math.max(_t62, _t12);
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t74));
+        float _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t78));
+        float _t89 = Math.fma(_t41, _t39, _t66);
+        float _t90 = Math.fma(_t41, _t39, -_t66);
+        float _t123, _t124, _t125, _t126;
+        if (_t72 > 0.0f) {
+            _t123 = _sp0 * _t71;
+            _t124 = _sp0 * _t90;
+            _t125 = _sp0 * _t51;
+            _t126 = 0.5f * (float) Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5f * (float) Math.sqrt(_t74);
+                _t124 = _sp3 * _t48;
+                _t125 = _sp3 * _t89;
+                _t126 = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = _sp1 * _t89;
+                    _t124 = _sp1 * _t70;
+                    _t125 = 0.5f * (float) Math.sqrt(_t77);
+                    _t126 = _sp1 * _t51;
+                } else {
+                    _t123 = _sp2 * _t48;
+                    _t124 = 0.5f * (float) Math.sqrt(_t78);
+                    _t125 = _sp2 * _t70;
+                    _t126 = _sp2 * _t90;
+                }
+            }
+        }
+        float _buf0 = Math.fma(sd[0], _t126, sd[3] * _t123) + Math.fma(sd[1], _t124, -(sd[2] * _t125));
+        float _buf1 = Math.fma(sd[1], _t126, sd[2] * _t123) + Math.fma(sd[3], _t125, -(sd[0] * _t124));
+        float _buf2 = Math.fma(sd[0], _t125, sd[3] * _t124) + Math.fma(sd[2], _t126, -(sd[1] * _t123));
+        dd[3] = Math.fma(sd[3], _t126, -(sd[0] * _t123)) - Math.fma(sd[1], _t125, sd[2] * _t124);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private FloatQuat lookAlong_degenerate(Float3R dir, Float3R up) {
+        return lookAlong_degenerate(dir, up, Joml.RETURN_NEW ? Joml.floatQuat() : this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleQuat lookAlong_degenerate(Float3R dir, Float3R up, @Mutated DoubleQuat dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private FloatQuat lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0f;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0f;
+            _t30 = -_t12;
+        }
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0f) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0f / (float) Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0f / (float) Math.sqrt(_t35));
+        }
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t68 = Math.max(_t62, _t12);
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t74));
+        float _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t73));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t77));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t78));
+        float _t89 = Math.fma(_t41, _t39, _t66);
+        float _t90 = Math.fma(_t41, _t39, -_t66);
+        float _t123, _t124, _t125, _t126;
+        if (_t72 > 0.0f) {
+            _t123 = _sp0 * _t71;
+            _t124 = _sp0 * _t90;
+            _t125 = _sp0 * _t51;
+            _t126 = 0.5f * (float) Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5f * (float) Math.sqrt(_t74);
+                _t124 = _sp3 * _t48;
+                _t125 = _sp3 * _t89;
+                _t126 = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = _sp1 * _t89;
+                    _t124 = _sp1 * _t70;
+                    _t125 = 0.5f * (float) Math.sqrt(_t77);
+                    _t126 = _sp1 * _t51;
+                } else {
+                    _t123 = _sp2 * _t48;
+                    _t124 = 0.5f * (float) Math.sqrt(_t78);
+                    _t125 = _sp2 * _t70;
+                    _t126 = _sp2 * _t90;
+                }
+            }
+        }
+        float _buf0 = Math.fma(sd[0], _t126, sd[3] * _t123) + Math.fma(sd[1], _t124, -(sd[2] * _t125));
+        float _buf1 = Math.fma(sd[1], _t126, sd[2] * _t123) + Math.fma(sd[3], _t125, -(sd[0] * _t124));
+        float _buf2 = Math.fma(sd[0], _t125, sd[3] * _t124) + Math.fma(sd[2], _t126, -(sd[1] * _t123));
+        dd[3] = Math.fma(sd[3], _t126, -(sd[0] * _t123)) - Math.fma(sd[1], _t125, sd[2] * _t124);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private FloatQuat lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.floatQuat() : this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleQuat lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated DoubleQuat dest) {
+        float[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0f;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0f;
+            _t30 = -_t12;
+        }
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0f) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0f / (float) Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0f / (float) Math.sqrt(_t35));
+        }
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t68 = Math.max(_t62, _t12);
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _t76 = (1.0f / (float) Math.sqrt(_t74));
+        float _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _t79 = (1.0f / (float) Math.sqrt(_t73));
+        float _t81 = (1.0f / (float) Math.sqrt(_t77));
+        float _t82 = (1.0f / (float) Math.sqrt(_t78));
+        float _t89 = Math.fma(_t41, _t39, _t66);
+        float _t90 = Math.fma(_t41, _t39, -_t66);
+        float _t123, _t124, _t125, _t126;
+        if (_t72 > 0.0f) {
+            _t123 = 0.5f * _t71 * _t79;
+            _t124 = 0.5f * _t90 * _t79;
+            _t125 = 0.5f * _t51 * _t79;
+            _t126 = 0.5f * (float) Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5f * (float) Math.sqrt(_t74);
+                _t124 = 0.5f * _t48 * _t76;
+                _t125 = 0.5f * _t89 * _t76;
+                _t126 = 0.5f * _t71 * _t76;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = 0.5f * _t89 * _t81;
+                    _t124 = 0.5f * _t70 * _t81;
+                    _t125 = 0.5f * (float) Math.sqrt(_t77);
+                    _t126 = 0.5f * _t51 * _t81;
+                } else {
+                    _t123 = 0.5f * _t48 * _t82;
+                    _t124 = 0.5f * (float) Math.sqrt(_t78);
+                    _t125 = 0.5f * _t70 * _t82;
+                    _t126 = 0.5f * _t90 * _t82;
+                }
+            }
+        }
+        float _buf0 = Math.fma(sd[0], _t126, sd[3] * _t123) + Math.fma(sd[1], _t124, -(sd[2] * _t125));
+        float _buf1 = Math.fma(sd[1], _t126, sd[2] * _t123) + Math.fma(sd[3], _t125, -(sd[0] * _t124));
+        float _buf2 = Math.fma(sd[0], _t125, sd[3] * _t124) + Math.fma(sd[2], _t126, -(sd[1] * _t123));
+        dd[3] = Math.fma(sd[3], _t126, -(sd[0] * _t123)) - Math.fma(sd[1], _t125, sd[2] * _t124);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -6311,7 +6936,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] axisData = ((Float3Impl) axis).data;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).fma(FloatVector.broadcast(COL_SPECIES, _t1), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6321,7 +6946,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] axisData = ((Float3Impl) axis).data;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(FloatVector.broadcast(COL_SPECIES, _t1)).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6352,7 +6977,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).fma(FloatVector.broadcast(COL_SPECIES, _t1), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6361,7 +6986,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] dd = this.data;
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _col0 = FloatVector.broadcast(COL_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(COL_SPECIES, _t1)).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -6369,78 +6994,17 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
      * @param up the direction of "up"
      * @return this
      */
-    /** Private vector tail of {@code makeRotationLookAlong_s1a8fa3b3}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s1a8fa3b3_tail3(float[] dd, float _t7, float _t10, float _t31, float _t32, float _t37, float _t38, float _t49, float _t54, float _t55, float _t57, float _t58, float _t60, float _t61, float _t62, float _t63, float _t67) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t60)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s1a8fa3b3}; reached only through it. */
-    private static void makeRotationLookAlong_s1a8fa3b3_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t21, float _t22, float _t23, float _t26, float _t27) {
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 + _t32;
-        float _t38 = _t9 - _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        makeRotationLookAlong_s1a8fa3b3_tail2(dd, _t7, _t9, _t10, _t12, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s1a8fa3b3}; reached only through it. */
-    private static void makeRotationLookAlong_s1a8fa3b3_tail2(float[] dd, float _t7, float _t9, float _t10, float _t12, float _t31, float _t32, float _t37, float _t38, float _t49, float _t54, float _t55, float _t57, float _t58, float _t60, float _t61, float _t62) {
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
-        makeRotationLookAlong_s1a8fa3b3_tail3(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
-    /** Private vector tail of {@code makeRotationLookAlong_s7de38464}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s7de38464_tail3(float[] dd, float _t7, float _t10, float _t31, float _t32, float _t37, float _t38, float _t49, float _t54, float _t55, float _t57, float _t58, float _t60, float _t61, float _t62, float _t63, float _t67) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t60)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s7de38464}; reached only through it. */
-    private static void makeRotationLookAlong_s7de38464_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t21, float _t22, float _t23, float _t26, float _t27) {
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 + _t32;
-        float _t38 = _t9 - _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        makeRotationLookAlong_s7de38464_tail2(dd, _t7, _t9, _t10, _t12, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s7de38464}; reached only through it. */
-    private static void makeRotationLookAlong_s7de38464_tail2(float[] dd, float _t7, float _t9, float _t10, float _t12, float _t31, float _t32, float _t37, float _t38, float _t49, float _t54, float _t55, float _t57, float _t58, float _t60, float _t61, float _t62) {
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
-        makeRotationLookAlong_s7de38464_tail3(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
     @Mutated public FloatQuat makeRotationLookAlong(Float3R dir, Float3R up) {
         if (SimdMath.USE_FMA) return makeRotationLookAlong_fma(dir, up);
         return makeRotationLookAlong_mulAdd(dir, up);
@@ -6453,27 +7017,246 @@ public final class FloatQuatImpl implements FloatQuat {
         float _r0 = dirData[2];
         float _r1 = dirData[0];
         float _r2 = dirData[1];
-        float _r3 = upData[0];
-        float _r4 = upData[1];
-        float _r5 = upData[2];
-        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _r0 * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _r2 * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _r1 * _t3 : 0.0f;
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(_r3, _t8, -(_r4 * _t9));
-        float _t22 = Math.fma(_r4, _t7, -(_r5 * _t8));
-        float _t23 = Math.fma(_r5, _t9, -(_r3 * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        makeRotationLookAlong_s1a8fa3b3_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t21, _t22, _t23, _t26, _t27);
+        float _r3 = upData[1];
+        float _r4 = upData[2];
+        float _r5 = upData[0];
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2))));
+        float _t6 = _r0 * _t5;
+        float _t7 = _r2 * _t5;
+        float _t8 = _r1 * _t5;
+        float _t19 = Math.fma(_r3, _t6, -(_r4 * _t7));
+        float _t20 = Math.fma(_r5, _t7, -(_r3 * _t8));
+        float _t21 = Math.fma(_r4, _t8, -(_r5 * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return makeRotationLookAlong_degenerate(dir, up);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t1 = -_r0;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(_r1, _t5, _t29);
+        makeRotationLookAlong_s1a8fa3b3_tail(dd, _r0, _r1, _r2, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33);
         return this;
     }
 
     private FloatQuat makeRotationLookAlong_mulAdd(Float3R dir, Float3R up) {
+        float[] dd = this.data;
+        float[] dirData = ((Float3Impl) dir).data;
+        float[] upData = ((Float3Impl) up).data;
+        float _r0 = dirData[2];
+        float _r1 = dirData[0];
+        float _r2 = dirData[1];
+        float _r3 = upData[1];
+        float _r4 = upData[2];
+        float _r5 = upData[0];
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2))));
+        float _t6 = _r0 * _t5;
+        float _t7 = _r2 * _t5;
+        float _t8 = _r1 * _t5;
+        float _t19 = Math.fma(_r3, _t6, -(_r4 * _t7));
+        float _t20 = Math.fma(_r5, _t7, -(_r3 * _t8));
+        float _t21 = Math.fma(_r4, _t8, -(_r5 * _t6));
+        float _ct1 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct1 > 0.0f)) return makeRotationLookAlong_degenerate(dir, up);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct1));
+        float _t1 = -_r0;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(_r1, _t5, _t29);
+        makeRotationLookAlong_s7de38464_tail(dd, _r0, _r1, _r2, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33);
+        return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s1a8fa3b3}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s1a8fa3b3_tail2(float[] dd, float _r0, float _t5, float _t6, float _t19, float _t27, float _t28, float _t33, float _t38, float _t45, float _t51, float _t52, float _t56, float _t57, float _t60, float _t62, float _t63, float _t64, float _t66) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(_r0, _t5, Math.fma(_t19, _t27, _t45)) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s1a8fa3b3}; reached only through it. */
+    private static void makeRotationLookAlong_s1a8fa3b3_tail(float[] dd, float _r0, float _r1, float _r2, float _t5, float _t6, float _t7, float _t8, float _t19, float _t21, float _t27, float _t1, float _t9, float _t11, float _t28, float _t29, float _t30, float _t32, float _t33) {
+        float _t38 = Math.fma(_r1, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(_r2, _t5, _t46);
+        float _t52 = Math.fma(-_r2, _t5, _t46);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(_r0, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(_r0, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _t66 = (1.0f / (float) Math.sqrt(_t62));
+        makeRotationLookAlong_s1a8fa3b3_tail2(dd, _r0, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s7de38464}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s7de38464_tail2(float[] dd, float _r0, float _t5, float _t6, float _t19, float _t27, float _t28, float _t33, float _t38, float _t45, float _t51, float _t52, float _t56, float _t57, float _t60, float _t62, float _t63, float _t64, float _t66) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(_r0, _t5, Math.fma(_t19, _t27, _t45)) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s7de38464}; reached only through it. */
+    private static void makeRotationLookAlong_s7de38464_tail(float[] dd, float _r0, float _r1, float _r2, float _t5, float _t6, float _t7, float _t8, float _t19, float _t21, float _t27, float _t1, float _t9, float _t11, float _t28, float _t29, float _t30, float _t32, float _t33) {
+        float _t38 = Math.fma(_r1, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(_r2, _t5, _t46);
+        float _t52 = Math.fma(-_r2, _t5, _t46);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(_r0, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(_r0, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _t66 = (1.0f / (float) Math.sqrt(_t62));
+        makeRotationLookAlong_s7de38464_tail2(dd, _r0, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66);
+    }
+
+
+    /**
+     * Set this quaternion to a rotation that makes {@code +z} point along ({@code dirX},
+     * {@code dirY}, {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     *
+     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
+     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
+     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
+     * @return this
+     */
+    @Mutated public FloatQuat makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        if (SimdMath.USE_FMA) return makeRotationLookAlong_fma(dirX, dirY, dirZ, upX, upY, upZ);
+        return makeRotationLookAlong_mulAdd(dirX, dirY, dirZ, upX, upY, upZ);
+    }
+
+    private FloatQuat makeRotationLookAlong_fma(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t6 = dirZ * _t5;
+        float _t7 = dirY * _t5;
+        float _t8 = dirX * _t5;
+        float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        float _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t1 = -dirZ;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirX, _t5, _t29);
+        float _t38 = Math.fma(dirX, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        makeRotationLookAlong_s4c771665_tail(dd, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33, _t38, _t45, _t46, dirY, dirZ);
+        return this;
+    }
+
+    private FloatQuat makeRotationLookAlong_mulAdd(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
+        float _t5 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t6 = dirZ * _t5;
+        float _t7 = dirY * _t5;
+        float _t8 = dirX * _t5;
+        float _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        float _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        float _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        float _ct1 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct1 > 0.0f)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t27 = (1.0f / (float) Math.sqrt(_ct1));
+        float _t1 = -dirZ;
+        float _t9 = -_t8;
+        float _t11 = -_t6;
+        float _t28 = _t19 * _t27;
+        float _t29 = _t20 * _t27;
+        float _t30 = _t21 * _t27;
+        float _t32 = Math.fma(-_t19, _t27, 1.0f);
+        float _t33 = Math.fma(dirX, _t5, _t29);
+        float _t38 = Math.fma(dirX, _t5, -_t29);
+        float _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        float _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        makeRotationLookAlong_s62bfbc72_tail(dd, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33, _t38, _t45, _t46, dirY, dirZ);
+        return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s4c771665}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s4c771665_tail2(float[] dd, float _t5, float _t6, float _t19, float _t27, float _t28, float _t33, float _t38, float _t45, float _t51, float _t52, float _t56, float _t57, float _t60, float _t62, float _t63, float _t64, float _t66, float dirZ) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45)) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s4c771665}; reached only through it. */
+    private static void makeRotationLookAlong_s4c771665_tail(float[] dd, float _t5, float _t6, float _t7, float _t8, float _t19, float _t21, float _t27, float _t1, float _t9, float _t11, float _t28, float _t29, float _t30, float _t32, float _t33, float _t38, float _t45, float _t46, float dirY, float dirZ) {
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirY, _t5, _t46);
+        float _t52 = Math.fma(-dirY, _t5, _t46);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _t66 = (1.0f / (float) Math.sqrt(_t62));
+        makeRotationLookAlong_s4c771665_tail2(dd, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66, dirZ);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s62bfbc72}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s62bfbc72_tail2(float[] dd, float _t5, float _t6, float _t19, float _t27, float _t28, float _t33, float _t38, float _t45, float _t51, float _t52, float _t56, float _t57, float _t60, float _t62, float _t63, float _t64, float _t66, float dirZ) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45)) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s62bfbc72}; reached only through it. */
+    private static void makeRotationLookAlong_s62bfbc72_tail(float[] dd, float _t5, float _t6, float _t7, float _t8, float _t19, float _t21, float _t27, float _t1, float _t9, float _t11, float _t28, float _t29, float _t30, float _t32, float _t33, float _t38, float _t45, float _t46, float dirY, float dirZ) {
+        float _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        float _t51 = Math.fma(dirY, _t5, _t46);
+        float _t52 = Math.fma(-dirY, _t5, _t46);
+        float _t56 = Math.fma(_t21, _t27, _t48);
+        float _t57 = Math.fma(_t21, _t27, -_t48);
+        float _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0f))));
+        float _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0f))));
+        float _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        float _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        float _t66 = (1.0f / (float) Math.sqrt(_t62));
+        makeRotationLookAlong_s62bfbc72_tail2(dd, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66, dirZ);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private FloatQuat makeRotationLookAlong_degenerate(Float3R dir, Float3R up) {
+        if (SimdMath.USE_FMA) return makeRotationLookAlong_degenerate_fma(dir, up);
+        return makeRotationLookAlong_degenerate_mulAdd(dir, up);
+    }
+
+    private FloatQuat makeRotationLookAlong_degenerate_fma(Float3R dir, Float3R up) {
         float[] dd = this.data;
         float[] dirData = ((Float3Impl) dir).data;
         float[] upData = ((Float3Impl) up).data;
@@ -6485,131 +7268,283 @@ public final class FloatQuatImpl implements FloatQuat {
         float _r5 = upData[2];
         float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _r0 * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _r2 * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _r1 * _t3 : 0.0f;
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(_r3, _t8, -(_r4 * _t9));
-        float _t22 = Math.fma(_r4, _t7, -(_r5 * _t8));
-        float _t23 = Math.fma(_r5, _t9, -(_r3 * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        makeRotationLookAlong_s7de38464_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t21, _t22, _t23, _t26, _t27);
+        float _t7 = _t2 == 0.0f ? 0.0f : _r3;
+        float _t8 = _t2 == 0.0f ? 1.0f : _r4;
+        float _t9 = _t2 == 0.0f ? 0.0f : _r5;
+        float _t10 = _t2 == 0.0f ? 0.0f : _r2 * _t3;
+        float _t11 = _t2 == 0.0f ? 0.0f : _r1 * _t3;
+        float _t12 = _t2 == 0.0f ? 1.0f : _r0 * _t3;
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        makeRotationLookAlong_degenerate_s1a8fa3b3_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18);
         return this;
+    }
+
+    private FloatQuat makeRotationLookAlong_degenerate_mulAdd(Float3R dir, Float3R up) {
+        float[] dd = this.data;
+        float[] dirData = ((Float3Impl) dir).data;
+        float[] upData = ((Float3Impl) up).data;
+        float _r0 = dirData[2];
+        float _r1 = dirData[0];
+        float _r2 = dirData[1];
+        float _r3 = upData[0];
+        float _r4 = upData[1];
+        float _r5 = upData[2];
+        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7 = _t2 == 0.0f ? 0.0f : _r3;
+        float _t8 = _t2 == 0.0f ? 1.0f : _r4;
+        float _t9 = _t2 == 0.0f ? 0.0f : _r5;
+        float _t10 = _t2 == 0.0f ? 0.0f : _r2 * _t3;
+        float _t11 = _t2 == 0.0f ? 0.0f : _r1 * _t3;
+        float _t12 = _t2 == 0.0f ? 1.0f : _r0 * _t3;
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        makeRotationLookAlong_degenerate_s7de38464_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18);
+        return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s1a8fa3b3}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s1a8fa3b3_tail3(float[] dd, float _t11, float _t12, float _t38, float _t41, float _t44, float _t45, float _t48, float _t51, float _t62, float _t70, float _t71, float _t73, float _t74, float _t76, float _t77, float _t78, float _t81, float _t82) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t73))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t76)))).withLane(1, (float) Math.sqrt(_t76))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t77)))).withLane(2, (float) Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s1a8fa3b3}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s1a8fa3b3_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _t15, float _t17, float _t18) {
+        float _t25 = _t13 > _t14 ? 0.0f : _t10;
+        float _t26 = _t13 > _t14 ? _t15 : 0.0f;
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t30 = _t13 > _t14 ? _t11 : -_t12;
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37 = _t35 == 0.0f ? _t25 : _t27;
+        float _t38 = _t35 == 0.0f ? _t26 : _t29;
+        float _t39 = _t35 == 0.0f ? _t30 : _t28;
+        float _t41 = (1.0f / (float) Math.sqrt(_t35 == 0.0f ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        makeRotationLookAlong_degenerate_s1a8fa3b3_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t37, _t38, _t39, _t41, _t42, _t43, _t44);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s1a8fa3b3}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s1a8fa3b3_tail2(float[] dd, float _t10, float _t11, float _t12, float _t15, float _t17, float _t18, float _t37, float _t38, float _t39, float _t41, float _t42, float _t43, float _t44) {
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _t78 = (1.0f / (float) Math.sqrt(_t74));
+        float _t81 = Math.fma(_t41, _t39, _t66);
+        float _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s1a8fa3b3_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s7de38464}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s7de38464_tail3(float[] dd, float _t11, float _t12, float _t38, float _t41, float _t44, float _t45, float _t48, float _t51, float _t62, float _t70, float _t71, float _t73, float _t74, float _t76, float _t77, float _t78, float _t81, float _t82) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t73)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t76)))).withLane(1, (float) Math.sqrt(_t76))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t77)))).withLane(2, (float) Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s7de38464}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s7de38464_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _t15, float _t17, float _t18) {
+        float _t25 = _t13 > _t14 ? 0.0f : _t10;
+        float _t26 = _t13 > _t14 ? _t15 : 0.0f;
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t30 = _t13 > _t14 ? _t11 : -_t12;
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37 = _t35 == 0.0f ? _t25 : _t27;
+        float _t38 = _t35 == 0.0f ? _t26 : _t29;
+        float _t39 = _t35 == 0.0f ? _t30 : _t28;
+        float _t41 = (1.0f / (float) Math.sqrt(_t35 == 0.0f ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        makeRotationLookAlong_degenerate_s7de38464_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t37, _t38, _t39, _t41, _t42, _t43, _t44);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s7de38464}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s7de38464_tail2(float[] dd, float _t10, float _t11, float _t12, float _t15, float _t17, float _t18, float _t37, float _t38, float _t39, float _t41, float _t42, float _t43, float _t44) {
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _t78 = (1.0f / (float) Math.sqrt(_t74));
+        float _t81 = Math.fma(_t41, _t39, _t66);
+        float _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s7de38464_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
     }
 
 
     /**
-     * Set this quaternion to a rotation that makes {@code +z} point along ({@code dirX},
-     * {@code dirY}, {@code dirZ}).
-     *
-     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
-     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
-     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
      */
-    /** Private vector tail of {@code makeRotationLookAlong_s4c771665}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s4c771665_tail2(float[] dd, float _t7, float _t10, float _t31, float _t32, float _t37, float _t38, float _t49, float _t54, float _t55, float _t57, float _t58, float _t60, float _t61, float _t62, float _t63, float _t67) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t60)).fma(VEC_1, FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
+    @Mutated private FloatQuat makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        if (SimdMath.USE_FMA) return makeRotationLookAlong_degenerate_fma(dirX, dirY, dirZ, upX, upY, upZ);
+        return makeRotationLookAlong_degenerate_mulAdd(dirX, dirY, dirZ, upX, upY, upZ);
     }
 
-    /** Private tail of {@code makeRotationLookAlong_s4c771665}; reached only through it. */
-    private static void makeRotationLookAlong_s4c771665_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t31, float _t32, float _t33) {
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 + _t32;
-        float _t38 = _t9 - _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
-        makeRotationLookAlong_s4c771665_tail2(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
-    /** Private vector tail of {@code makeRotationLookAlong_s62bfbc72}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s62bfbc72_tail2(float[] dd, float _t7, float _t10, float _t31, float _t32, float _t37, float _t38, float _t49, float _t54, float _t55, float _t57, float _t58, float _t60, float _t61, float _t62, float _t63, float _t67) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t60)).mul(VEC_1).add(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s62bfbc72}; reached only through it. */
-    private static void makeRotationLookAlong_s62bfbc72_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t31, float _t32, float _t33) {
-        float _t34 = 1.0f + _t31;
-        float _t37 = _t9 + _t32;
-        float _t38 = _t9 - _t32;
-        float _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        float _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        float _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        float _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        float _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        float _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
-        float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
-        makeRotationLookAlong_s62bfbc72_tail2(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
-    @Mutated public FloatQuat makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (SimdMath.USE_FMA) return makeRotationLookAlong_fma(dirX, dirY, dirZ, upX, upY, upZ);
-        return makeRotationLookAlong_mulAdd(dirX, dirY, dirZ, upX, upY, upZ);
-    }
-
-    private FloatQuat makeRotationLookAlong_fma(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+    private FloatQuat makeRotationLookAlong_degenerate_fma(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float[] dd = this.data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? dirZ * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? dirY * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? dirX * _t3 : 0.0f;
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
-        makeRotationLookAlong_s4c771665_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t31, _t32, _t33);
+        float _t7 = _t2 == 0.0f ? 0.0f : upX;
+        float _t8 = _t2 == 0.0f ? 1.0f : upY;
+        float _t9 = _t2 == 0.0f ? 0.0f : upZ;
+        float _t10 = _t2 == 0.0f ? 0.0f : dirY * _t3;
+        float _t11 = _t2 == 0.0f ? 0.0f : dirX * _t3;
+        float _t12 = _t2 == 0.0f ? 1.0f : dirZ * _t3;
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25 = _t13 > _t14 ? 0.0f : _t10;
+        float _t26 = _t13 > _t14 ? _t15 : 0.0f;
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        makeRotationLookAlong_degenerate_s4c771665_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18, _t25, _t26, _t27);
         return this;
     }
 
-    private FloatQuat makeRotationLookAlong_mulAdd(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+    private FloatQuat makeRotationLookAlong_degenerate_mulAdd(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float[] dd = this.data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? dirZ * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? dirY * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? dirX * _t3 : 0.0f;
-        float _t10 = -_t9;
-        float _t11 = -_t8;
-        float _t12 = -_t7;
-        float _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        float _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
-        makeRotationLookAlong_s62bfbc72_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t31, _t32, _t33);
+        float _t7 = _t2 == 0.0f ? 0.0f : upX;
+        float _t8 = _t2 == 0.0f ? 1.0f : upY;
+        float _t9 = _t2 == 0.0f ? 0.0f : upZ;
+        float _t10 = _t2 == 0.0f ? 0.0f : dirY * _t3;
+        float _t11 = _t2 == 0.0f ? 0.0f : dirX * _t3;
+        float _t12 = _t2 == 0.0f ? 1.0f : dirZ * _t3;
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t15 = -_t10;
+        float _t17 = 1.0f + _t12;
+        float _t18 = 1.0f - _t12;
+        float _t25 = _t13 > _t14 ? 0.0f : _t10;
+        float _t26 = _t13 > _t14 ? _t15 : 0.0f;
+        float _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        makeRotationLookAlong_degenerate_s62bfbc72_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18, _t25, _t26, _t27);
         return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s4c771665}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s4c771665_tail3(float[] dd, float _t11, float _t12, float _t38, float _t41, float _t44, float _t45, float _t48, float _t51, float _t62, float _t70, float _t71, float _t73, float _t74, float _t76, float _t77, float _t78, float _t81, float _t82) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t73))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t76)))).withLane(1, (float) Math.sqrt(_t76))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t77)))).withLane(2, (float) Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s4c771665}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s4c771665_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _t15, float _t17, float _t18, float _t25, float _t26, float _t27) {
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t30 = _t13 > _t14 ? _t11 : -_t12;
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37 = _t35 == 0.0f ? _t25 : _t27;
+        float _t38 = _t35 == 0.0f ? _t26 : _t29;
+        float _t39 = _t35 == 0.0f ? _t30 : _t28;
+        float _t41 = (1.0f / (float) Math.sqrt(_t35 == 0.0f ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        makeRotationLookAlong_degenerate_s4c771665_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t38, _t39, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t48, _t51);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s4c771665}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s4c771665_tail2(float[] dd, float _t10, float _t11, float _t12, float _t15, float _t17, float _t18, float _t38, float _t39, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, float _t48, float _t51) {
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _t78 = (1.0f / (float) Math.sqrt(_t74));
+        float _t81 = Math.fma(_t41, _t39, _t66);
+        float _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s4c771665_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s62bfbc72}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s62bfbc72_tail3(float[] dd, float _t11, float _t12, float _t38, float _t41, float _t44, float _t45, float _t48, float _t51, float _t62, float _t70, float _t71, float _t73, float _t74, float _t76, float _t77, float _t78, float _t81, float _t82) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t73)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t76)))).withLane(1, (float) Math.sqrt(_t76))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t77)))).withLane(2, (float) Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s62bfbc72}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s62bfbc72_tail(float[] dd, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _t15, float _t17, float _t18, float _t25, float _t26, float _t27) {
+        float _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t30 = _t13 > _t14 ? _t11 : -_t12;
+        float _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        float _t37 = _t35 == 0.0f ? _t25 : _t27;
+        float _t38 = _t35 == 0.0f ? _t26 : _t29;
+        float _t39 = _t35 == 0.0f ? _t30 : _t28;
+        float _t41 = (1.0f / (float) Math.sqrt(_t35 == 0.0f ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        float _t42 = -_t41;
+        float _t43 = _t41 * _t37;
+        float _t44 = _t41 * _t38;
+        float _t45 = -_t43;
+        float _t46 = -_t44;
+        float _t47 = _t41 * _t39;
+        float _t48 = Math.fma(_t41, _t37, _t11);
+        float _t51 = Math.fma(_t42, _t37, _t11);
+        makeRotationLookAlong_degenerate_s62bfbc72_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t38, _t39, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t48, _t51);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s62bfbc72}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s62bfbc72_tail2(float[] dd, float _t10, float _t11, float _t12, float _t15, float _t17, float _t18, float _t38, float _t39, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, float _t48, float _t51) {
+        float _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        float _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        float _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        float _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        float _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        float _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        float _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        float _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        float _t78 = (1.0f / (float) Math.sqrt(_t74));
+        float _t81 = Math.fma(_t41, _t39, _t66);
+        float _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s62bfbc72_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
     }
 
 
@@ -6618,29 +7553,15 @@ public final class FloatQuatImpl implements FloatQuat {
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDir the direction to rotate from (must be a unit vector)
      * @param toDir the direction to rotate onto (must be a unit vector)
      * @return this
      */
-    /** Private vector tail of {@code makeRotationTo_s247afd92}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s247afd92_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = (0.5f * _t22 > 1.0E-6f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0f ? _sv0.fma(VEC_1, FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeRotationTo_s50f2ea25}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s50f2ea25_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = (0.5f * _t22 > 1.0E-6f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0f ? _sv0.mul(VEC_1).add(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public FloatQuat makeRotationTo(Float3R fromDir, Float3R toDir) {
         if (SimdMath.USE_FMA) return makeRotationTo_fma(fromDir, toDir);
         return makeRotationTo_mulAdd(fromDir, toDir);
@@ -6700,16 +7621,30 @@ public final class FloatQuatImpl implements FloatQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeRotationTo_s247afd92}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s247afd92_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = (0.5f * _t22 > 6.0E-8f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0f ? FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).fma(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0f)) : _sv0));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeRotationTo_s50f2ea25}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s50f2ea25_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = (0.5f * _t22 > 6.0E-8f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0f ? FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0f)) : _sv0));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
      * Set this quaternion to the rotation that rotates ({@code fromDirX}, {@code fromDirY},
      * {@code fromDirZ}) onto ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -6719,20 +7654,6 @@ public final class FloatQuatImpl implements FloatQuat {
      * @param toDirZ the {@code z} component of the vector {@code (toDirX, toDirY, toDirZ)}
      * @return this
      */
-    /** Private vector tail of {@code makeRotationTo_s65758f4a}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s65758f4a_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = (0.5f * _t22 > 1.0E-6f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0f ? _sv0.fma(VEC_1, FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeRotationTo_s77f65d6d}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s77f65d6d_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
-        var _col0 = (0.5f * _t22 > 1.0E-6f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0f ? _sv0.mul(VEC_1).add(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public FloatQuat makeRotationTo(float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
         if (SimdMath.USE_FMA) return makeRotationTo_fma(fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
         return makeRotationTo_mulAdd(fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
@@ -6774,6 +7695,20 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         makeRotationTo_s77f65d6d_tail(dd, _t14, _t15, _t16, _t17, _t18, _t19, _t22, _t29, _t32);
         return this;
+    }
+
+    /** Private vector tail of {@code makeRotationTo_s65758f4a}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s65758f4a_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = (0.5f * _t22 > 6.0E-8f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0f ? FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).fma(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0f)) : _sv0));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeRotationTo_s77f65d6d}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s77f65d6d_tail(float[] dd, float _t14, float _t15, float _t16, float _t17, float _t18, float _t19, float _t22, float _t29, float _t32) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = (0.5f * _t22 > 6.0E-8f ? FloatVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0f ? FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0f)) : _sv0));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -7381,10 +8316,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDir the direction to rotate from (must be a unit vector)
      * @param toDir the direction to rotate onto (must be a unit vector)
@@ -7419,13 +8354,13 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         float _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6f) {
-            _t41 = 0.5f * _t22 * _t35;
+        if (_t23 > 6.0E-8f) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 _t41 = 0.0f;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -7457,10 +8392,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -7485,10 +8420,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -7525,13 +8460,13 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         float _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6f) {
-            _t41 = 0.5f * _t22 * _t35;
+        if (_t23 > 6.0E-8f) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 _t41 = 0.0f;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -7564,10 +8499,10 @@ public final class FloatQuatImpl implements FloatQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -7607,13 +8542,13 @@ public final class FloatQuatImpl implements FloatQuat {
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         float _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6f) {
+        if (_t23 > 6.0E-8f) {
             _t41 = 0.5f * _t22 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 _t41 = 0.0f;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -8373,6 +9308,8 @@ public final class FloatQuatImpl implements FloatQuat {
 
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -8388,6 +9325,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -8401,6 +9340,8 @@ public final class FloatQuatImpl implements FloatQuat {
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this quaternion and store the result in
      * {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -8429,6 +9370,8 @@ public final class FloatQuatImpl implements FloatQuat {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -8680,7 +9623,23 @@ public final class FloatQuatImpl implements FloatQuat {
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
     private static final VectorMask<Float> MASK_0 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final FloatVector VEC_1 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
-    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_1 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
 
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
+    }
 }

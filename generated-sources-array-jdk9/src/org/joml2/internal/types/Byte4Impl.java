@@ -410,10 +410,13 @@ public final class Byte4Impl implements Byte4 {
     public Byte4 ceilDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Byte4 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte4Impl) dest).data;
-        dd[0] = (byte) (Math.ceilDiv(sd[0], otherX));
-        dd[1] = (byte) (Math.ceilDiv(sd[1], otherY));
-        dd[2] = (byte) (Math.ceilDiv(sd[2], otherZ));
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
+        int _buf2 = Math.ceilDiv(sd[2], otherZ);
         dd[3] = (byte) (Math.ceilDiv(sd[3], otherW));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
+        dd[2] = (byte) (_buf2);
         return dest;
     }
 
@@ -435,10 +438,13 @@ public final class Byte4Impl implements Byte4 {
     public Short4 ceilDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Short4 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short4Impl) dest).data;
-        dd[0] = (short) (Math.ceilDiv(sd[0], otherX));
-        dd[1] = (short) (Math.ceilDiv(sd[1], otherY));
-        dd[2] = (short) (Math.ceilDiv(sd[2], otherZ));
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
+        int _buf2 = Math.ceilDiv(sd[2], otherZ);
         dd[3] = (short) (Math.ceilDiv(sd[3], otherW));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
         return dest;
     }
 
@@ -460,10 +466,13 @@ public final class Byte4Impl implements Byte4 {
     public Int4 ceilDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Int4 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int4Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
-        dd[2] = Math.ceilDiv(sd[2], otherZ);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
+        int _buf2 = Math.ceilDiv(sd[2], otherZ);
         dd[3] = Math.ceilDiv(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -485,10 +494,13 @@ public final class Byte4Impl implements Byte4 {
     public Long4 ceilDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Long4 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long4Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
-        dd[2] = Math.ceilDiv(sd[2], otherZ);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
+        int _buf2 = Math.ceilDiv(sd[2], otherZ);
         dd[3] = Math.ceilDiv(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -510,10 +522,13 @@ public final class Byte4Impl implements Byte4 {
     public Double4 ceilDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Double4 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
-        dd[2] = Math.ceilDiv(sd[2], otherZ);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
+        int _buf2 = Math.ceilDiv(sd[2], otherZ);
         dd[3] = Math.ceilDiv(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -686,10 +701,13 @@ public final class Byte4Impl implements Byte4 {
     public Byte4 ceilMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Byte4 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte4Impl) dest).data;
-        dd[0] = (byte) (Math.ceilMod(sd[0], otherX));
-        dd[1] = (byte) (Math.ceilMod(sd[1], otherY));
-        dd[2] = (byte) (Math.ceilMod(sd[2], otherZ));
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
+        int _buf2 = Math.ceilMod(sd[2], otherZ);
         dd[3] = (byte) (Math.ceilMod(sd[3], otherW));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
+        dd[2] = (byte) (_buf2);
         return dest;
     }
 
@@ -711,10 +729,13 @@ public final class Byte4Impl implements Byte4 {
     public Short4 ceilMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Short4 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short4Impl) dest).data;
-        dd[0] = (short) (Math.ceilMod(sd[0], otherX));
-        dd[1] = (short) (Math.ceilMod(sd[1], otherY));
-        dd[2] = (short) (Math.ceilMod(sd[2], otherZ));
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
+        int _buf2 = Math.ceilMod(sd[2], otherZ);
         dd[3] = (short) (Math.ceilMod(sd[3], otherW));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
         return dest;
     }
 
@@ -736,10 +757,13 @@ public final class Byte4Impl implements Byte4 {
     public Int4 ceilMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Int4 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int4Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
-        dd[2] = Math.ceilMod(sd[2], otherZ);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
+        int _buf2 = Math.ceilMod(sd[2], otherZ);
         dd[3] = Math.ceilMod(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -761,10 +785,13 @@ public final class Byte4Impl implements Byte4 {
     public Long4 ceilMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Long4 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long4Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
-        dd[2] = Math.ceilMod(sd[2], otherZ);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
+        int _buf2 = Math.ceilMod(sd[2], otherZ);
         dd[3] = Math.ceilMod(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -786,10 +813,13 @@ public final class Byte4Impl implements Byte4 {
     public Double4 ceilMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Double4 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
-        dd[2] = Math.ceilMod(sd[2], otherZ);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
+        int _buf2 = Math.ceilMod(sd[2], otherZ);
         dd[3] = Math.ceilMod(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -963,10 +993,13 @@ public final class Byte4Impl implements Byte4 {
     public Byte4 div(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Byte4 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte4Impl) dest).data;
-        dd[0] = (byte) (sd[0] / otherX);
-        dd[1] = (byte) (sd[1] / otherY);
-        dd[2] = (byte) (sd[2] / otherZ);
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
+        int _buf2 = sd[2] / otherZ;
         dd[3] = (byte) (sd[3] / otherW);
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
+        dd[2] = (byte) (_buf2);
         return dest;
     }
 
@@ -989,10 +1022,13 @@ public final class Byte4Impl implements Byte4 {
     public Short4 div(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Short4 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short4Impl) dest).data;
-        dd[0] = (short) (sd[0] / otherX);
-        dd[1] = (short) (sd[1] / otherY);
-        dd[2] = (short) (sd[2] / otherZ);
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
+        int _buf2 = sd[2] / otherZ;
         dd[3] = (short) (sd[3] / otherW);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
         return dest;
     }
 
@@ -1015,10 +1051,13 @@ public final class Byte4Impl implements Byte4 {
     public Int4 div(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Int4 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int4Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
-        dd[2] = sd[2] / otherZ;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
+        int _buf2 = sd[2] / otherZ;
         dd[3] = sd[3] / otherW;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1041,10 +1080,13 @@ public final class Byte4Impl implements Byte4 {
     public Long4 div(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Long4 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long4Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
-        dd[2] = sd[2] / otherZ;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
+        int _buf2 = sd[2] / otherZ;
         dd[3] = sd[3] / otherW;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1067,10 +1109,13 @@ public final class Byte4Impl implements Byte4 {
     public Double4 div(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Double4 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
-        dd[2] = sd[2] / otherZ;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
+        int _buf2 = sd[2] / otherZ;
         dd[3] = sd[3] / otherW;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1243,10 +1288,13 @@ public final class Byte4Impl implements Byte4 {
     public Byte4 floorDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Byte4 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte4Impl) dest).data;
-        dd[0] = (byte) (Math.floorDiv(sd[0], otherX));
-        dd[1] = (byte) (Math.floorDiv(sd[1], otherY));
-        dd[2] = (byte) (Math.floorDiv(sd[2], otherZ));
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
+        int _buf2 = Math.floorDiv(sd[2], otherZ);
         dd[3] = (byte) (Math.floorDiv(sd[3], otherW));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
+        dd[2] = (byte) (_buf2);
         return dest;
     }
 
@@ -1268,10 +1316,13 @@ public final class Byte4Impl implements Byte4 {
     public Short4 floorDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Short4 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short4Impl) dest).data;
-        dd[0] = (short) (Math.floorDiv(sd[0], otherX));
-        dd[1] = (short) (Math.floorDiv(sd[1], otherY));
-        dd[2] = (short) (Math.floorDiv(sd[2], otherZ));
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
+        int _buf2 = Math.floorDiv(sd[2], otherZ);
         dd[3] = (short) (Math.floorDiv(sd[3], otherW));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
         return dest;
     }
 
@@ -1293,10 +1344,13 @@ public final class Byte4Impl implements Byte4 {
     public Int4 floorDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Int4 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int4Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
-        dd[2] = Math.floorDiv(sd[2], otherZ);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
+        int _buf2 = Math.floorDiv(sd[2], otherZ);
         dd[3] = Math.floorDiv(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1318,10 +1372,13 @@ public final class Byte4Impl implements Byte4 {
     public Long4 floorDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Long4 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long4Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
-        dd[2] = Math.floorDiv(sd[2], otherZ);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
+        int _buf2 = Math.floorDiv(sd[2], otherZ);
         dd[3] = Math.floorDiv(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1343,10 +1400,13 @@ public final class Byte4Impl implements Byte4 {
     public Double4 floorDiv(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Double4 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
-        dd[2] = Math.floorDiv(sd[2], otherZ);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
+        int _buf2 = Math.floorDiv(sd[2], otherZ);
         dd[3] = Math.floorDiv(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1519,10 +1579,13 @@ public final class Byte4Impl implements Byte4 {
     public Byte4 floorMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Byte4 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte4Impl) dest).data;
-        dd[0] = (byte) (Math.floorMod(sd[0], otherX));
-        dd[1] = (byte) (Math.floorMod(sd[1], otherY));
-        dd[2] = (byte) (Math.floorMod(sd[2], otherZ));
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
+        int _buf2 = Math.floorMod(sd[2], otherZ);
         dd[3] = (byte) (Math.floorMod(sd[3], otherW));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
+        dd[2] = (byte) (_buf2);
         return dest;
     }
 
@@ -1544,10 +1607,13 @@ public final class Byte4Impl implements Byte4 {
     public Short4 floorMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Short4 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short4Impl) dest).data;
-        dd[0] = (short) (Math.floorMod(sd[0], otherX));
-        dd[1] = (short) (Math.floorMod(sd[1], otherY));
-        dd[2] = (short) (Math.floorMod(sd[2], otherZ));
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
+        int _buf2 = Math.floorMod(sd[2], otherZ);
         dd[3] = (short) (Math.floorMod(sd[3], otherW));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
         return dest;
     }
 
@@ -1569,10 +1635,13 @@ public final class Byte4Impl implements Byte4 {
     public Int4 floorMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Int4 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int4Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
-        dd[2] = Math.floorMod(sd[2], otherZ);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
+        int _buf2 = Math.floorMod(sd[2], otherZ);
         dd[3] = Math.floorMod(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1594,10 +1663,13 @@ public final class Byte4Impl implements Byte4 {
     public Long4 floorMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Long4 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long4Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
-        dd[2] = Math.floorMod(sd[2], otherZ);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
+        int _buf2 = Math.floorMod(sd[2], otherZ);
         dd[3] = Math.floorMod(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -1619,10 +1691,13 @@ public final class Byte4Impl implements Byte4 {
     public Double4 floorMod(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Double4 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
-        dd[2] = Math.floorMod(sd[2], otherZ);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
+        int _buf2 = Math.floorMod(sd[2], otherZ);
         dd[3] = Math.floorMod(sd[3], otherW);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -2175,10 +2250,13 @@ public final class Byte4Impl implements Byte4 {
     public Byte4 rem(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Byte4 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte4Impl) dest).data;
-        dd[0] = (byte) (sd[0] % otherX);
-        dd[1] = (byte) (sd[1] % otherY);
-        dd[2] = (byte) (sd[2] % otherZ);
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
+        int _buf2 = sd[2] % otherZ;
         dd[3] = (byte) (sd[3] % otherW);
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
+        dd[2] = (byte) (_buf2);
         return dest;
     }
 
@@ -2202,10 +2280,13 @@ public final class Byte4Impl implements Byte4 {
     public Short4 rem(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Short4 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short4Impl) dest).data;
-        dd[0] = (short) (sd[0] % otherX);
-        dd[1] = (short) (sd[1] % otherY);
-        dd[2] = (short) (sd[2] % otherZ);
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
+        int _buf2 = sd[2] % otherZ;
         dd[3] = (short) (sd[3] % otherW);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
         return dest;
     }
 
@@ -2229,10 +2310,13 @@ public final class Byte4Impl implements Byte4 {
     public Int4 rem(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Int4 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int4Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
-        dd[2] = sd[2] % otherZ;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
+        int _buf2 = sd[2] % otherZ;
         dd[3] = sd[3] % otherW;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -2256,10 +2340,13 @@ public final class Byte4Impl implements Byte4 {
     public Long4 rem(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Long4 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long4Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
-        dd[2] = sd[2] % otherZ;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
+        int _buf2 = sd[2] % otherZ;
         dd[3] = sd[3] % otherW;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -2283,10 +2370,13 @@ public final class Byte4Impl implements Byte4 {
     public Double4 rem(byte otherX, byte otherY, byte otherZ, byte otherW, @Mutated Double4 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double4Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
-        dd[2] = sd[2] % otherZ;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
+        int _buf2 = sd[2] % otherZ;
         dd[3] = sd[3] % otherW;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 
@@ -3970,9 +4060,10 @@ public final class Byte4Impl implements Byte4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3990,13 +4081,15 @@ public final class Byte4Impl implements Byte4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}. The shift
-     * count is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code short}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -4014,13 +4107,15 @@ public final class Byte4Impl implements Byte4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}. The shift count
-     * is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code int}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -4038,13 +4133,15 @@ public final class Byte4Impl implements Byte4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}. The shift count
-     * is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code long}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -4062,13 +4159,15 @@ public final class Byte4Impl implements Byte4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}. The shift
-     * count is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code double}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -4962,14 +5061,14 @@ public final class Byte4Impl implements Byte4 {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public byte compAdd() {
+    public int compAdd() {
         byte[] sd = this.data;
-        return (byte) (sd[3] + (sd[2] + (sd[0] + sd[1])));
+        return sd[3] + (sd[2] + (sd[0] + sd[1]));
     }
 
 
@@ -4998,27 +5097,27 @@ public final class Byte4Impl implements Byte4 {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    public byte compMul() {
+    public int compMul() {
         byte[] sd = this.data;
-        return (byte) (sd[3] * sd[2] * sd[0] * sd[1]);
+        return sd[3] * sd[2] * sd[0] * sd[1];
     }
 
 
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public byte distanceSquared(Byte4R other) {
+    public int distanceSquared(Byte4R other) {
         return distanceSquared(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -5027,8 +5126,8 @@ public final class Byte4Impl implements Byte4 {
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5037,26 +5136,26 @@ public final class Byte4Impl implements Byte4 {
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ}, {@code otherW})
      */
-    public byte distanceSquared(byte otherX, byte otherY, byte otherZ, byte otherW) {
+    public int distanceSquared(byte otherX, byte otherY, byte otherZ, byte otherW) {
         byte[] sd = this.data;
-        byte _t0 = (byte) (sd[0] - otherX);
-        byte _t1 = (byte) (sd[1] - otherY);
-        byte _t2 = (byte) (sd[2] - otherZ);
-        byte _t3 = (byte) (sd[3] - otherW);
-        return (byte) (_t0 * _t0 + _t1 * _t1 + _t2 * _t2 + _t3 * _t3);
+        int _t0 = sd[0] - otherX;
+        int _t1 = sd[1] - otherY;
+        int _t2 = sd[2] - otherZ;
+        int _t3 = sd[3] - otherW;
+        return _t0 * _t0 + _t1 * _t1 + _t2 * _t2 + _t3 * _t3;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public byte dot(Byte4R other) {
+    public int dot(Byte4R other) {
         return dot(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -5065,8 +5164,8 @@ public final class Byte4Impl implements Byte4 {
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      * {@code otherW}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5075,36 +5174,36 @@ public final class Byte4Impl implements Byte4 {
      * @return the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      *        {@code otherW})
      */
-    public byte dot(byte otherX, byte otherY, byte otherZ, byte otherW) {
+    public int dot(byte otherX, byte otherY, byte otherZ, byte otherW) {
         byte[] sd = this.data;
-        return (byte) (otherX * sd[0] + otherY * sd[1] + otherZ * sd[2] + otherW * sd[3]);
+        return otherX * sd[0] + otherY * sd[1] + otherZ * sd[2] + otherW * sd[3];
     }
 
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    public byte lengthSquared() {
+    public int lengthSquared() {
         byte[] sd = this.data;
-        return (byte) (sd[0] * sd[0] + sd[1] * sd[1] + sd[2] * sd[2] + sd[3] * sd[3]);
+        return sd[0] * sd[0] + sd[1] * sd[1] + sd[2] * sd[2] + sd[3] * sd[3];
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public byte manhattanDistance(Byte4R other) {
+    public int manhattanDistance(Byte4R other) {
         return manhattanDistance(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -5113,8 +5212,8 @@ public final class Byte4Impl implements Byte4 {
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -5123,23 +5222,23 @@ public final class Byte4Impl implements Byte4 {
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ}, {@code otherW})
      */
-    public byte manhattanDistance(byte otherX, byte otherY, byte otherZ, byte otherW) {
+    public int manhattanDistance(byte otherX, byte otherY, byte otherZ, byte otherW) {
         byte[] sd = this.data;
-        return (byte) (Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY) + Math.abs(sd[2] - otherZ) + Math.abs(sd[3] - otherW));
+        return Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY) + Math.abs(sd[2] - otherZ) + Math.abs(sd[3] - otherW);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public byte manhattanLength() {
+    public int manhattanLength() {
         byte[] sd = this.data;
-        return (byte) (Math.abs(sd[0]) + Math.abs(sd[1]) + Math.abs(sd[2]) + Math.abs(sd[3]));
+        return Math.abs(sd[0]) + Math.abs(sd[1]) + Math.abs(sd[2]) + Math.abs(sd[3]);
     }
 
 

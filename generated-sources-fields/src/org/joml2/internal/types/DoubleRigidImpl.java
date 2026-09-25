@@ -361,35 +361,35 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t54 = Math.fma(-m.m01(), _t12, _t45);
         double _t59 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t44));
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         if (_t59 > 0.0) {
-            this.rX = 0.5 * _t32 * _t61;
-            this.rY = 0.5 * _t53 * _t61;
-            this.rZ = 0.5 * _t54 * _t61;
+            this.rX = _sp0 * _t32;
+            this.rY = _sp0 * _t53;
+            this.rZ = _sp0 * _t54;
             this.rW = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 this.rX = 0.5 * Math.sqrt(_t64);
-                this.rY = 0.5 * _t51 * _t67;
-                this.rZ = 0.5 * _t52 * _t67;
-                this.rW = 0.5 * _t32 * _t67;
+                this.rY = _sp3 * _t51;
+                this.rZ = _sp3 * _t52;
+                this.rW = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    this.rX = 0.5 * _t51 * _t65;
+                    this.rX = _sp1 * _t51;
                     this.rY = 0.5 * Math.sqrt(_t62);
-                    this.rZ = 0.5 * _t28 * _t65;
-                    this.rW = 0.5 * _t53 * _t65;
+                    this.rZ = _sp1 * _t28;
+                    this.rW = _sp1 * _t53;
                 } else {
-                    this.rX = 0.5 * _t52 * _t66;
-                    this.rY = 0.5 * _t28 * _t66;
+                    this.rX = _sp2 * _t52;
+                    this.rY = _sp2 * _t28;
                     this.rZ = 0.5 * Math.sqrt(_t63);
-                    this.rW = 0.5 * _t54 * _t66;
+                    this.rW = _sp2 * _t54;
                 }
             }
         }
@@ -444,35 +444,35 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t54 = Math.fma(-m.m01(), _t12, _t45);
         double _t59 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t44));
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         if (_t59 > 0.0) {
-            this.rX = 0.5 * _t32 * _t61;
-            this.rY = 0.5 * _t53 * _t61;
-            this.rZ = 0.5 * _t54 * _t61;
+            this.rX = _sp0 * _t32;
+            this.rY = _sp0 * _t53;
+            this.rZ = _sp0 * _t54;
             this.rW = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 this.rX = 0.5 * Math.sqrt(_t64);
-                this.rY = 0.5 * _t51 * _t67;
-                this.rZ = 0.5 * _t52 * _t67;
-                this.rW = 0.5 * _t32 * _t67;
+                this.rY = _sp3 * _t51;
+                this.rZ = _sp3 * _t52;
+                this.rW = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    this.rX = 0.5 * _t51 * _t65;
+                    this.rX = _sp1 * _t51;
                     this.rY = 0.5 * Math.sqrt(_t62);
-                    this.rZ = 0.5 * _t28 * _t65;
-                    this.rW = 0.5 * _t53 * _t65;
+                    this.rZ = _sp1 * _t28;
+                    this.rW = _sp1 * _t53;
                 } else {
-                    this.rX = 0.5 * _t52 * _t66;
-                    this.rY = 0.5 * _t28 * _t66;
+                    this.rX = _sp2 * _t52;
+                    this.rY = _sp2 * _t28;
                     this.rZ = 0.5 * Math.sqrt(_t63);
-                    this.rW = 0.5 * _t54 * _t66;
+                    this.rW = _sp2 * _t54;
                 }
             }
         }
@@ -527,35 +527,35 @@ public final class DoubleRigidImpl implements DoubleRigid {
         double _t54 = Math.fma(-m.m01(), _t12, _t45);
         double _t59 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t44));
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         if (_t59 > 0.0) {
-            this.rX = 0.5 * _t32 * _t61;
-            this.rY = 0.5 * _t53 * _t61;
-            this.rZ = 0.5 * _t54 * _t61;
+            this.rX = _sp0 * _t32;
+            this.rY = _sp0 * _t53;
+            this.rZ = _sp0 * _t54;
             this.rW = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 this.rX = 0.5 * Math.sqrt(_t64);
-                this.rY = 0.5 * _t51 * _t67;
-                this.rZ = 0.5 * _t52 * _t67;
-                this.rW = 0.5 * _t32 * _t67;
+                this.rY = _sp3 * _t51;
+                this.rZ = _sp3 * _t52;
+                this.rW = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    this.rX = 0.5 * _t51 * _t65;
+                    this.rX = _sp1 * _t51;
                     this.rY = 0.5 * Math.sqrt(_t62);
-                    this.rZ = 0.5 * _t28 * _t65;
-                    this.rW = 0.5 * _t53 * _t65;
+                    this.rZ = _sp1 * _t28;
+                    this.rW = _sp1 * _t53;
                 } else {
-                    this.rX = 0.5 * _t52 * _t66;
-                    this.rY = 0.5 * _t28 * _t66;
+                    this.rX = _sp2 * _t52;
+                    this.rY = _sp2 * _t28;
                     this.rZ = 0.5 * Math.sqrt(_t63);
-                    this.rW = 0.5 * _t54 * _t66;
+                    this.rW = _sp2 * _t54;
                 }
             }
         }
@@ -664,6 +664,38 @@ public final class DoubleRigidImpl implements DoubleRigid {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c0(Double4x4Impl _dst, double _r2, double _t0, double _r3, double _t1, double _r0, double _t2) {
+        _dst.m00 = Math.fma(-2.0, Math.fma(_r2, _r2, _t0), 1.0);
+        _dst.m10 = 2.0 * Math.fma(_r3, _r2, _t1);
+        _dst.m20 = 2.0 * Math.fma(_r3, _r0, -_t2);
+        _dst.m30 = 0.0;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c1(Double4x4Impl _dst, double _r3, double _r2, double _t1, double _t0, double _r1, double _r0) {
+        _dst.m01 = 2.0 * Math.fma(_r3, _r2, -_t1);
+        _dst.m11 = Math.fma(-2.0, Math.fma(_r3, _r3, _t0), 1.0);
+        _dst.m21 = 2.0 * Math.fma(_r3, _r1, _r2 * _r0);
+        _dst.m31 = 0.0;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c2(Double4x4Impl _dst, double _r3, double _r0, double _t2, double _r2, double _r1) {
+        _dst.m02 = 2.0 * Math.fma(_r3, _r0, _t2);
+        _dst.m12 = 2.0 * Math.fma(_r2, _r0, -(_r3 * _r1));
+        _dst.m22 = Math.fma(-2.0, Math.fma(_r3, _r3, _r2 * _r2), 1.0);
+        _dst.m32 = 0.0;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c3(Double4x4Impl _dst, double _r4, double _r5, double _r6) {
+        _dst.m03 = _r4;
+        _dst.m13 = _r5;
+        _dst.m23 = _r6;
+        _dst.m33 = 1.0;
+    }
+
 
     /**
      * Compute the matrix representation of this rigid transform (whose rotation must be a unit
@@ -674,30 +706,20 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        double _buf0 = Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0);
-        double _buf1 = 2.0 * Math.fma(this.rX, this.rY, _t1);
-        d.m20 = 2.0 * Math.fma(this.rX, this.rZ, -_t2);
-        d.m30 = 0.0;
-        double _buf2 = 2.0 * Math.fma(this.rX, this.rY, -_t1);
-        double _buf3 = Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0);
-        d.m21 = 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ);
-        d.m31 = 0.0;
-        double _buf4 = 2.0 * Math.fma(this.rX, this.rZ, _t2);
-        d.m12 = 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW));
-        d.m22 = Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0);
-        d.m32 = 0.0;
-        d.m03 = this.tX;
-        d.m13 = this.tY;
-        d.m23 = this.tZ;
-        d.m33 = 1.0;
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
-        d.m02 = _buf4;
+        double _r0 = this.rZ;
+        double _r1 = this.rW;
+        double _r2 = this.rY;
+        double _r3 = this.rX;
+        double _r4 = this.tX;
+        double _r5 = this.tY;
+        double _r6 = this.tZ;
+        double _t0 = _r0 * _r0;
+        double _t1 = _r0 * _r1;
+        double _t2 = _r2 * _r1;
+        toMatrix_s20bb8ca5_c0(d, _r2, _t0, _r3, _t1, _r0, _t2);
+        toMatrix_s20bb8ca5_c1(d, _r3, _r2, _t1, _t0, _r1, _r0);
+        toMatrix_s20bb8ca5_c2(d, _r3, _r0, _t2, _r2, _r1);
+        toMatrix_s20bb8ca5_c3(d, _r4, _r5, _r6);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -731,6 +753,34 @@ public final class DoubleRigidImpl implements DoubleRigid {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c0(Double3x4Impl _dst, double _r2, double _t0, double _r3, double _t1, double _r0, double _t2) {
+        _dst.m00 = Math.fma(-2.0, Math.fma(_r2, _r2, _t0), 1.0);
+        _dst.m10 = 2.0 * Math.fma(_r3, _r2, _t1);
+        _dst.m20 = 2.0 * Math.fma(_r3, _r0, -_t2);
+    }
+
+    /** Private column 1 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c1(Double3x4Impl _dst, double _r3, double _r2, double _t1, double _t0, double _r1, double _r0) {
+        _dst.m01 = 2.0 * Math.fma(_r3, _r2, -_t1);
+        _dst.m11 = Math.fma(-2.0, Math.fma(_r3, _r3, _t0), 1.0);
+        _dst.m21 = 2.0 * Math.fma(_r3, _r1, _r2 * _r0);
+    }
+
+    /** Private column 2 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c2(Double3x4Impl _dst, double _r3, double _r0, double _t2, double _r2, double _r1) {
+        _dst.m02 = 2.0 * Math.fma(_r3, _r0, _t2);
+        _dst.m12 = 2.0 * Math.fma(_r2, _r0, -(_r3 * _r1));
+        _dst.m22 = Math.fma(-2.0, Math.fma(_r3, _r3, _r2 * _r2), 1.0);
+    }
+
+    /** Private column 3 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c3(Double3x4Impl _dst, double _r4, double _r5, double _r6) {
+        _dst.m03 = _r4;
+        _dst.m13 = _r5;
+        _dst.m23 = _r6;
+    }
+
 
     /**
      * Compute the 3x4 matrix representation of this rigid transform (whose rotation must be a unit
@@ -742,28 +792,20 @@ public final class DoubleRigidImpl implements DoubleRigid {
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = this.rZ * this.rZ;
-        double _t1 = this.rZ * this.rW;
-        double _t2 = this.rY * this.rW;
-        double _buf0 = Math.fma(-2.0, Math.fma(this.rY, this.rY, _t0), 1.0);
-        double _buf1 = 2.0 * Math.fma(this.rX, this.rY, -_t1);
-        double _buf2 = 2.0 * Math.fma(this.rX, this.rZ, _t2);
-        double _buf3 = this.tX;
-        double _buf4 = 2.0 * Math.fma(this.rX, this.rY, _t1);
-        double _buf5 = Math.fma(-2.0, Math.fma(this.rX, this.rX, _t0), 1.0);
-        double _buf6 = 2.0 * Math.fma(this.rY, this.rZ, -(this.rX * this.rW));
-        d.m13 = this.tY;
-        d.m20 = 2.0 * Math.fma(this.rX, this.rZ, -_t2);
-        d.m21 = 2.0 * Math.fma(this.rX, this.rW, this.rY * this.rZ);
-        d.m22 = Math.fma(-2.0, Math.fma(this.rX, this.rX, this.rY * this.rY), 1.0);
-        d.m23 = this.tZ;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
+        double _r0 = this.rZ;
+        double _r1 = this.rW;
+        double _r2 = this.rY;
+        double _r3 = this.rX;
+        double _r4 = this.tX;
+        double _r5 = this.tY;
+        double _r6 = this.tZ;
+        double _t0 = _r0 * _r0;
+        double _t1 = _r0 * _r1;
+        double _t2 = _r2 * _r1;
+        toMatrix3x4_s38da5fc6_c0(d, _r2, _t0, _r3, _t1, _r0, _t2);
+        toMatrix3x4_s38da5fc6_c1(d, _r3, _r2, _t1, _t0, _r1, _r0);
+        toMatrix3x4_s38da5fc6_c2(d, _r3, _r0, _t2, _r2, _r1);
+        toMatrix3x4_s38da5fc6_c3(d, _r4, _r5, _r6);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -963,7 +1005,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         }
         double _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         double _t50 = (1.0 / Math.sqrt(_t49));
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             d.rX = _t50 * _t44;
             d.rY = _t50 * _t45;
             d.rZ = _t50 * _t43;
@@ -1170,6 +1212,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Invert this rigid transform; exact for any rigid motion (no scale divisions) and store the
      * result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1209,7 +1253,7 @@ public final class DoubleRigidImpl implements DoubleRigid {
         DoubleRigidImpl d = (DoubleRigidImpl) dest;
         double _t3 = Math.fma(this.rW, this.rW, Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY)));
         double _t4 = (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             d.rX = this.rX * _t4;
             d.rY = this.rY * _t4;
             d.rZ = this.rZ * _t4;
@@ -1231,11 +1275,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Y and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1265,11 +1316,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Z and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1299,11 +1357,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, X and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1332,11 +1397,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, Z and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1365,11 +1437,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, X and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1398,11 +1477,18 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, Y and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2326,6 +2412,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
 
     /**
      * Transform {@code v} by this rigid transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -2339,6 +2427,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this rigid transform and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2361,6 +2451,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -2374,6 +2466,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2397,6 +2491,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -2411,6 +2507,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2433,6 +2531,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform {@code p} by the inverse of this rigid transform and store the result in
      * {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -2446,6 +2546,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this rigid transform and
      * store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -2471,6 +2573,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -2484,6 +2588,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2499,6 +2605,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -2512,6 +2620,8 @@ public final class DoubleRigidImpl implements DoubleRigid {
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}

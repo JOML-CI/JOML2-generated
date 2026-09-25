@@ -54,9 +54,9 @@ public interface FloatRay extends FloatRayR {
      * Set the direction of this ray to {@code d}.
      *
      * @param d the new direction
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatRay setDirection(Float3R d) { return setDirection(d, Joml.RETURN_NEW ? Joml.floatRay() : this); }
+    @Mutated default FloatRay setDirection(Float3R d) { return setDirection(d, this); }
 
     /**
      * Set the direction of this ray to ({@code x}, {@code y}, {@code z}).
@@ -64,17 +64,17 @@ public interface FloatRay extends FloatRayR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatRay setDirection(float x, float y, float z) { return setDirection(x, y, z, Joml.RETURN_NEW ? Joml.floatRay() : this); }
+    @Mutated default FloatRay setDirection(float x, float y, float z) { return setDirection(x, y, z, this); }
 
     /**
      * Set the origin of this ray to {@code o}.
      *
      * @param o the new origin
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatRay setOrigin(Float3R o) { return setOrigin(o, Joml.RETURN_NEW ? Joml.floatRay() : this); }
+    @Mutated default FloatRay setOrigin(Float3R o) { return setOrigin(o, this); }
 
     /**
      * Set the origin of this ray to ({@code x}, {@code y}, {@code z}).
@@ -82,9 +82,9 @@ public interface FloatRay extends FloatRayR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatRay setOrigin(float x, float y, float z) { return setOrigin(x, y, z, Joml.RETURN_NEW ? Joml.floatRay() : this); }
+    @Mutated default FloatRay setOrigin(float x, float y, float z) { return setOrigin(x, y, z, this); }
 
     /**
      * Convert this ray to {@code double} precision, returning the result as a new instance.

@@ -37,8 +37,8 @@ public final class Joml {
     /** Whether the computing no-dest self-form operations ({@code v.add(o)}, {@code m.mul(n)},
      *  {@code q.normalize()}, ...) leave {@code this} unchanged and return a freshly allocated
      *  instance holding the result instead of mutating and returning {@code this}. The
-     *  {@code set*}, {@code make*}, {@code load*} and {@code composeTRS*} methods are setters,
-     *  not computations: they always mutate and return {@code this}. Resolved once at class
+     *  {@code set*}, {@code make*}, {@code load*}, {@code composeTRS*} and {@code targetTo} methods
+     *  are setters, not computations: they always mutate and return {@code this}. Resolved once at class
      *  initialization from {@link JomlConfig#setReturnNew} or the {@code joml.returnNew} system
      *  property; accepted spellings are {@code -Djoml.returnNew=true} / {@code =false}
      *  (case-insensitive) and a bare {@code -Djoml.returnNew}, which means {@code true}. */

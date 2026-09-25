@@ -277,15 +277,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -302,15 +308,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -353,13 +365,8 @@ public class Float3x3Impl implements Float3x3 {
     private Float3 getEulerAnglesXZY_translation(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        if (1.0f < 1.0E-7f) {
-            dd[0] = (float) Math.atan2(-sd[7], 1.0f);
-            dd[1] = 0.0f;
-        } else {
-            dd[0] = 0.0f;
-            dd[1] = (float) Math.atan2(sd[6], 1.0f);
-        }
+        dd[0] = 0.0f;
+        dd[1] = (float) Math.atan2(sd[6], 1.0f);
         dd[2] = 0.0f;
         return dest;
     }
@@ -394,15 +401,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -419,15 +432,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -505,15 +524,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -530,15 +555,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -620,15 +651,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -645,15 +682,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -693,6 +736,23 @@ public class Float3x3Impl implements Float3x3 {
      * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
      * only through the public {@code getEulerAnglesZXY} dispatcher.
      */
+    private Float3 getEulerAnglesZXY_orthogonal(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t1 = Math.fma(sd[3], sd[3], sd[4] * sd[4]);
+        float _buf0 = 0.0f;
+        float _buf1 = 0.0f;
+        dd[2] = _t1 < _t1 * 1.0E-7f ? (float) Math.atan2(sd[1], sd[0]) : (float) Math.atan2(-sd[3], sd[4]);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZXY} dispatcher.
+     */
     private Float3 getEulerAnglesZXY_general(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
@@ -716,15 +776,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -732,6 +798,7 @@ public class Float3x3Impl implements Float3x3 {
     public Float3 getEulerAnglesZXY(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesZXY_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getEulerAnglesZXY_orthogonal(dest);
         return getEulerAnglesZXY_general(dest);
     }
 
@@ -740,15 +807,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -792,10 +865,9 @@ public class Float3x3Impl implements Float3x3 {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
         float _buf0 = 0.0f;
-        float _buf1 = 0.0f;
-        dd[2] = 1.0f < 1.0E-7f ? (float) Math.atan2(-sd[3], sd[4]) : (float) Math.atan2(sd[1], sd[0]);
+        dd[1] = 0.0f;
+        dd[2] = (float) Math.atan2(sd[1], sd[0]);
         dd[0] = _buf0;
-        dd[1] = _buf1;
         return dest;
     }
 
@@ -827,15 +899,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -852,15 +930,21 @@ public class Float3x3Impl implements Float3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -903,20 +987,77 @@ public class Float3x3Impl implements Float3x3 {
      * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
      * reached only through the public {@code getNormalizedRotation} dispatcher.
      */
+    private FloatQuat getNormalizedRotation_translation(@Mutated FloatQuat dest) {
+        if (SimdMath.USE_FMA) return getNormalizedRotation_translation_fma(dest);
+        return getNormalizedRotation_translation_mulAdd(dest);
+    }
+
+    private FloatQuat getNormalizedRotation_translation_fma(@Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        float _r0 = sd[5];
+        float _r1 = sd[3];
+        float _r2 = sd[4];
+        float _r3 = sd[8];
+        float _r4 = sd[6];
+        float _r5 = sd[7];
+        float _r6 = sd[2];
+        float _r7 = sd[0];
+        float _r8 = sd[1];
+        float _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
+        float _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
+        float _t9 = (1.0f / (float) Math.sqrt(_t6));
+        float _t10 = (1.0f / (float) Math.sqrt(_t7));
+        float _t11 = (1.0f / (float) Math.sqrt(_t8));
+        float _t21 = _t6 != 0.0f ? _r1 * _t9 : 0.0f;
+        float _t22 = _t7 != 0.0f ? _r5 * _t10 : 0.0f;
+        float _t23 = _t6 != 0.0f ? _r2 * _t9 : 0.0f;
+        float _t24 = _t7 != 0.0f ? _r4 * _t10 : 0.0f;
+        getNormalizedRotation_translation_sfb8b4c8_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
+        return dest;
+    }
+
+    private FloatQuat getNormalizedRotation_translation_mulAdd(@Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        float _r0 = sd[5];
+        float _r1 = sd[3];
+        float _r2 = sd[4];
+        float _r3 = sd[8];
+        float _r4 = sd[6];
+        float _r5 = sd[7];
+        float _r6 = sd[2];
+        float _r7 = sd[0];
+        float _r8 = sd[1];
+        float _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
+        float _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
+        float _t9 = (1.0f / (float) Math.sqrt(_t6));
+        float _t10 = (1.0f / (float) Math.sqrt(_t7));
+        float _t11 = (1.0f / (float) Math.sqrt(_t8));
+        float _t21 = _t6 != 0.0f ? _r1 * _t9 : 0.0f;
+        float _t22 = _t7 != 0.0f ? _r5 * _t10 : 0.0f;
+        float _t23 = _t6 != 0.0f ? _r2 * _t9 : 0.0f;
+        float _t24 = _t7 != 0.0f ? _r4 * _t10 : 0.0f;
+        getNormalizedRotation_translation_s13de5f2f_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
+        return dest;
+    }
+
     /** Private vector tail of {@code getNormalizedRotation_translation_sfb8b4c8}: loads, computes and stores every column; reached only through it. */
     private static void getNormalizedRotation_translation_sfb8b4c8_tail3(float[] dd, float _t23, float _t26, float _t36, float _t39, float _t49, float _t53, float _t55, float _t56, float _t57, float _t58, float _t62, float _t63, float _t64, float _t65, float _t69) {
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t62)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
+        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t62)))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
         _col0.intoArray(dd, 0);
     }
 
     /** Private tail of {@code getNormalizedRotation_translation_sfb8b4c8}; reached only through it. */
     private static void getNormalizedRotation_translation_sfb8b4c8_tail(float[] dd, float _r0, float _r3, float _r6, float _r7, float _r8, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t21, float _t22, float _t23, float _t24) {
-        float _t25 = _t8 > 0.0f ? _r6 * _t11 : 0.0f;
-        float _t26 = _t7 > 0.0f ? _r3 * _t10 : 0.0f;
-        float _t27 = _t6 > 0.0f ? _r0 * _t9 : 0.0f;
-        float _t28 = _t8 > 0.0f ? _r7 * _t11 : 0.0f;
-        float _t29 = _t8 > 0.0f ? _r8 * _t11 : 0.0f;
+        float _t25 = _t8 != 0.0f ? _r6 * _t11 : 0.0f;
+        float _t26 = _t7 != 0.0f ? _r3 * _t10 : 0.0f;
+        float _t27 = _t6 != 0.0f ? _r0 * _t9 : 0.0f;
+        float _t28 = _t8 != 0.0f ? _r7 * _t11 : 0.0f;
+        float _t29 = _t8 != 0.0f ? _r8 * _t11 : 0.0f;
         float _t36 = _t27 - _t22;
         float _t39 = _t27 + _t22;
         float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
@@ -945,17 +1086,17 @@ public class Float3x3Impl implements Float3x3 {
     /** Private vector tail of {@code getNormalizedRotation_translation_s13de5f2f}: loads, computes and stores every column; reached only through it. */
     private static void getNormalizedRotation_translation_s13de5f2f_tail3(float[] dd, float _t23, float _t26, float _t36, float _t39, float _t49, float _t53, float _t55, float _t56, float _t57, float _t58, float _t62, float _t63, float _t64, float _t65, float _t69) {
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t62)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
+        var _col0 = (_t58 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t62)))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
         _col0.intoArray(dd, 0);
     }
 
     /** Private tail of {@code getNormalizedRotation_translation_s13de5f2f}; reached only through it. */
     private static void getNormalizedRotation_translation_s13de5f2f_tail(float[] dd, float _r0, float _r3, float _r6, float _r7, float _r8, float _t6, float _t7, float _t8, float _t9, float _t10, float _t11, float _t21, float _t22, float _t23, float _t24) {
-        float _t25 = _t8 > 0.0f ? _r6 * _t11 : 0.0f;
-        float _t26 = _t7 > 0.0f ? _r3 * _t10 : 0.0f;
-        float _t27 = _t6 > 0.0f ? _r0 * _t9 : 0.0f;
-        float _t28 = _t8 > 0.0f ? _r7 * _t11 : 0.0f;
-        float _t29 = _t8 > 0.0f ? _r8 * _t11 : 0.0f;
+        float _t25 = _t8 != 0.0f ? _r6 * _t11 : 0.0f;
+        float _t26 = _t7 != 0.0f ? _r3 * _t10 : 0.0f;
+        float _t27 = _t6 != 0.0f ? _r0 * _t9 : 0.0f;
+        float _t28 = _t8 != 0.0f ? _r7 * _t11 : 0.0f;
+        float _t29 = _t8 != 0.0f ? _r8 * _t11 : 0.0f;
         float _t36 = _t27 - _t22;
         float _t39 = _t27 + _t22;
         float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
@@ -981,64 +1122,11 @@ public class Float3x3Impl implements Float3x3 {
         getNormalizedRotation_translation_s13de5f2f_tail3(dd, _t23, _t26, _t36, _t39, _t49, _t53, _t55, _t56, _t57, _t58, _t62, _t63, _t64, _t65, _t69);
     }
 
-    private FloatQuat getNormalizedRotation_translation(@Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return getNormalizedRotation_translation_fma(dest);
-        return getNormalizedRotation_translation_mulAdd(dest);
-    }
 
-    private FloatQuat getNormalizedRotation_translation_fma(@Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _r0 = sd[5];
-        float _r1 = sd[3];
-        float _r2 = sd[4];
-        float _r3 = sd[8];
-        float _r4 = sd[6];
-        float _r5 = sd[7];
-        float _r6 = sd[2];
-        float _r7 = sd[0];
-        float _r8 = sd[1];
-        float _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        float _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
-        float _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
-        float _t9 = (1.0f / (float) Math.sqrt(_t6));
-        float _t10 = (1.0f / (float) Math.sqrt(_t7));
-        float _t11 = (1.0f / (float) Math.sqrt(_t8));
-        float _t21 = _t6 > 0.0f ? _r1 * _t9 : 0.0f;
-        float _t22 = _t7 > 0.0f ? _r5 * _t10 : 0.0f;
-        float _t23 = _t6 > 0.0f ? _r2 * _t9 : 0.0f;
-        float _t24 = _t7 > 0.0f ? _r4 * _t10 : 0.0f;
-        getNormalizedRotation_translation_sfb8b4c8_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
-        return dest;
-    }
-
-    private FloatQuat getNormalizedRotation_translation_mulAdd(@Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _r0 = sd[5];
-        float _r1 = sd[3];
-        float _r2 = sd[4];
-        float _r3 = sd[8];
-        float _r4 = sd[6];
-        float _r5 = sd[7];
-        float _r6 = sd[2];
-        float _r7 = sd[0];
-        float _r8 = sd[1];
-        float _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        float _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
-        float _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
-        float _t9 = (1.0f / (float) Math.sqrt(_t6));
-        float _t10 = (1.0f / (float) Math.sqrt(_t7));
-        float _t11 = (1.0f / (float) Math.sqrt(_t8));
-        float _t21 = _t6 > 0.0f ? _r1 * _t9 : 0.0f;
-        float _t22 = _t7 > 0.0f ? _r5 * _t10 : 0.0f;
-        float _t23 = _t6 > 0.0f ? _r2 * _t9 : 0.0f;
-        float _t24 = _t7 > 0.0f ? _r4 * _t10 : 0.0f;
-        getNormalizedRotation_translation_s13de5f2f_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
-        return dest;
-    }
-
-
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
     private FloatQuat getNormalizedRotation_general(@Mutated FloatQuat dest) {
         return getNormalizedRotation_translation(dest);
     }
@@ -1089,7 +1177,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
         float _t21, _t23, _t27;
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             _t21 = sd[3] * _t9;
             _t23 = sd[4] * _t9;
             _t27 = sd[5] * _t9;
@@ -1099,7 +1187,7 @@ public class Float3x3Impl implements Float3x3 {
             _t27 = 0.0f;
         }
         float _t22, _t24, _t26;
-        if (_t7 > 0.0f) {
+        if (_t7 != 0.0f) {
             _t22 = sd[7] * _t10;
             _t24 = sd[6] * _t10;
             _t26 = sd[8] * _t10;
@@ -1109,7 +1197,7 @@ public class Float3x3Impl implements Float3x3 {
             _t26 = 0.0f;
         }
         float _t25, _t28, _t29;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t25 = sd[2] * _t11;
             _t28 = sd[0] * _t11;
             _t29 = sd[1] * _t11;
@@ -1349,7 +1437,7 @@ public class Float3x3Impl implements Float3x3 {
     public Float3 getScale(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getScale_identity(dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getScale_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getScale_translation(dest);
         return getScale_general(dest);
     }
 
@@ -1468,20 +1556,6 @@ public class Float3x3Impl implements Float3x3 {
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
      * reached only through the public {@code getUnnormalizedRotation} dispatcher.
      */
-    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_sfb8b4c8}: loads, computes and stores every column; reached only through it. */
-    private static void getUnnormalizedRotation_orthogonal_sfb8b4c8_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_s13de5f2f}: loads, computes and stores every column; reached only through it. */
-    private static void getUnnormalizedRotation_orthogonal_s13de5f2f_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
-        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t14)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     private FloatQuat getUnnormalizedRotation_orthogonal(@Mutated FloatQuat dest) {
         if (SimdMath.USE_FMA) return getUnnormalizedRotation_orthogonal_fma(dest);
         return getUnnormalizedRotation_orthogonal_mulAdd(dest);
@@ -1545,7 +1619,25 @@ public class Float3x3Impl implements Float3x3 {
         return dest;
     }
 
+    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_sfb8b4c8}: loads, computes and stores every column; reached only through it. */
+    private static void getUnnormalizedRotation_orthogonal_sfb8b4c8_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
 
+    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_s13de5f2f}: loads, computes and stores every column; reached only through it. */
+    private static void getUnnormalizedRotation_orthogonal_s13de5f2f_tail(float[] dd, float _r0, float _r1, float _r8, float _t1, float _t4, float _t6, float _t7, float _t8, float _t9, float _t10, float _t14, float _t15, float _t16, float _t17, float _t21) {
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
+        var _col0 = (_t10 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+
+    /**
+     * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getUnnormalizedRotation} dispatcher.
+     */
     private FloatQuat getUnnormalizedRotation_general(@Mutated FloatQuat dest) {
         return getUnnormalizedRotation_orthogonal(dest);
     }
@@ -4765,7 +4857,7 @@ public class Float3x3Impl implements Float3x3 {
      * Set this matrix to the given transform's linear block {@code R * S} (the translation is
      * dropped).
      *
-     * @param t the transform to convert
+     * @param t the transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     public @Mutated Float3x3 makeFromTransform(FloatTransformR t) {
@@ -4784,13 +4876,17 @@ public class Float3x3Impl implements Float3x3 {
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -5304,10 +5400,12 @@ public class Float3x3Impl implements Float3x3 {
     private FloatDualQuat toDualQuat_orthogonal(@Mutated FloatDualQuat dest) {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
+        float _sp1 = 0.5f * sd[6];
+        float _sp0 = 0.5f * sd[7];
         float _t0 = Math.max(sd[4], 1.0f);
         float _t2 = 1.0f - sd[0];
-        float _t4 = sd[3] + sd[1];
-        float _t5 = sd[1] - sd[3];
+        float _sp2 = 0.5f * (sd[3] + sd[1]);
+        float _sp3 = 0.5f * (sd[1] - sd[3]);
         float _t8 = 1.0f + (sd[0] + sd[4]);
         float _t10 = 1.0f + _t8;
         float _t11 = sd[0] + (1.0f - sd[4] - 1.0f);
@@ -5318,35 +5416,31 @@ public class Float3x3Impl implements Float3x3 {
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
         float _t17 = (1.0f / (float) Math.sqrt(_t11));
         if (_t8 > 0.0f) {
-            float _buf0 = -(0.5f * sd[7] * _t14);
-            dd[1] = 0.5f * sd[6] * _t14;
-            float _buf1 = 0.5f * _t5 * _t14;
+            float _buf0 = -(_sp0 * _t14);
+            dd[1] = _sp1 * _t14;
+            dd[2] = _sp3 * _t14;
             dd[3] = 0.5f * (float) Math.sqrt(_t10);
             dd[0] = _buf0;
-            dd[2] = _buf1;
         } else {
             if (sd[0] > _t0) {
                 float _buf0 = 0.5f * (float) Math.sqrt(_t11);
-                dd[1] = 0.5f * _t4 * _t17;
-                float _buf1 = 0.5f * sd[6] * _t17;
-                dd[3] = -(0.5f * sd[7] * _t17);
+                dd[1] = _sp2 * _t17;
+                dd[2] = _sp1 * _t17;
+                dd[3] = -(_sp0 * _t17);
                 dd[0] = _buf0;
-                dd[2] = _buf1;
             } else {
                 if (sd[4] > 1.0f) {
-                    float _buf0 = 0.5f * _t4 * _t15;
+                    float _buf0 = _sp2 * _t15;
                     dd[1] = 0.5f * (float) Math.sqrt(_t12);
-                    float _buf1 = 0.5f * sd[7] * _t15;
-                    dd[3] = 0.5f * sd[6] * _t15;
+                    dd[2] = _sp0 * _t15;
+                    dd[3] = _sp1 * _t15;
                     dd[0] = _buf0;
-                    dd[2] = _buf1;
                 } else {
-                    float _buf0 = 0.5f * sd[6] * _t16;
-                    dd[1] = 0.5f * sd[7] * _t16;
-                    float _buf1 = 0.5f * (float) Math.sqrt(_t13);
-                    dd[3] = 0.5f * _t5 * _t16;
+                    float _buf0 = _sp1 * _t16;
+                    dd[1] = _sp0 * _t16;
+                    dd[2] = 0.5f * (float) Math.sqrt(_t13);
+                    dd[3] = _sp3 * _t16;
                     dd[0] = _buf0;
-                    dd[2] = _buf1;
                 }
             }
         }
@@ -5375,35 +5469,35 @@ public class Float3x3Impl implements Float3x3 {
         float _t15 = sd[0] + (1.0f - sd[4] - sd[8]);
         float _t16 = sd[4] + (_t1 - sd[8]);
         float _t17 = sd[8] + (_t1 - sd[4]);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t13 > 0.0f) {
-            float _buf0 = 0.5f * _t3 * _t18;
-            dd[1] = 0.5f * _t7 * _t18;
-            dd[2] = 0.5f * _t9 * _t18;
+            float _buf0 = _sp0 * _t3;
+            dd[1] = _sp0 * _t7;
+            dd[2] = _sp0 * _t9;
             dd[3] = 0.5f * (float) Math.sqrt(_t14);
             dd[0] = _buf0;
         } else {
             if (sd[0] > _t4) {
                 float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                dd[1] = 0.5f * _t5 * _t21;
-                dd[2] = 0.5f * _t6 * _t21;
-                dd[3] = 0.5f * _t3 * _t21;
+                dd[1] = _sp3 * _t5;
+                dd[2] = _sp3 * _t6;
+                dd[3] = _sp3 * _t3;
                 dd[0] = _buf0;
             } else {
                 if (sd[4] > sd[8]) {
-                    float _buf0 = 0.5f * _t5 * _t19;
+                    float _buf0 = _sp1 * _t5;
                     dd[1] = 0.5f * (float) Math.sqrt(_t16);
-                    dd[2] = 0.5f * _t8 * _t19;
-                    dd[3] = 0.5f * _t7 * _t19;
+                    dd[2] = _sp1 * _t8;
+                    dd[3] = _sp1 * _t7;
                     dd[0] = _buf0;
                 } else {
-                    float _buf0 = 0.5f * _t6 * _t20;
-                    dd[1] = 0.5f * _t8 * _t20;
+                    float _buf0 = _sp2 * _t6;
+                    dd[1] = _sp2 * _t8;
                     dd[2] = 0.5f * (float) Math.sqrt(_t17);
-                    dd[3] = 0.5f * _t9 * _t20;
+                    dd[3] = _sp2 * _t9;
                     dd[0] = _buf0;
                 }
             }
@@ -5455,35 +5549,35 @@ public class Float3x3Impl implements Float3x3 {
         float _t15 = sd[0] + (1.0f - sd[4] - sd[8]);
         float _t16 = sd[4] + (_t1 - sd[8]);
         float _t17 = sd[8] + (_t1 - sd[4]);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t13 > 0.0f) {
-            float _buf0 = 0.5f * _t3 * _t18;
-            dd[1] = 0.5f * _t7 * _t18;
-            dd[2] = 0.5f * _t9 * _t18;
+            float _buf0 = _sp0 * _t3;
+            dd[1] = _sp0 * _t7;
+            dd[2] = _sp0 * _t9;
             dd[3] = 0.5f * (float) Math.sqrt(_t14);
             dd[0] = _buf0;
         } else {
             if (sd[0] > _t4) {
                 float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                dd[1] = 0.5f * _t5 * _t21;
-                dd[2] = 0.5f * _t6 * _t21;
-                dd[3] = 0.5f * _t3 * _t21;
+                dd[1] = _sp3 * _t5;
+                dd[2] = _sp3 * _t6;
+                dd[3] = _sp3 * _t3;
                 dd[0] = _buf0;
             } else {
                 if (sd[4] > sd[8]) {
-                    float _buf0 = 0.5f * _t5 * _t19;
+                    float _buf0 = _sp1 * _t5;
                     dd[1] = 0.5f * (float) Math.sqrt(_t16);
-                    dd[2] = 0.5f * _t8 * _t19;
-                    dd[3] = 0.5f * _t7 * _t19;
+                    dd[2] = _sp1 * _t8;
+                    dd[3] = _sp1 * _t7;
                     dd[0] = _buf0;
                 } else {
-                    float _buf0 = 0.5f * _t6 * _t20;
-                    dd[1] = 0.5f * _t8 * _t20;
+                    float _buf0 = _sp2 * _t6;
+                    dd[1] = _sp2 * _t8;
                     dd[2] = 0.5f * (float) Math.sqrt(_t17);
-                    dd[3] = 0.5f * _t9 * _t20;
+                    dd[3] = _sp2 * _t9;
                     dd[0] = _buf0;
                 }
             }
@@ -5516,9 +5610,10 @@ public class Float3x3Impl implements Float3x3 {
         float[] sd = this.data;
         float[] dd = ((FloatRigidImpl) dest).data;
         float _t2 = (1.0f / (float) Math.sqrt(Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0f))));
+        float _sp2 = 0.5f * _t2;
         float _t3 = Math.max(1.0f, _t2);
-        float _t5 = sd[7] * _t2;
-        float _t6 = sd[6] * _t2;
+        float _sp0 = _sp2 * sd[7];
+        float _sp1 = _sp2 * sd[6];
         float _t7 = _t2 < 0.0f ? -1.0f : 1.0f;
         float _t8 = 1.0f + _t7;
         float _t11 = _t8 + _t2;
@@ -5531,25 +5626,25 @@ public class Float3x3Impl implements Float3x3 {
         float _t19 = (1.0f / (float) Math.sqrt(_t17));
         float _t20 = (1.0f / (float) Math.sqrt(_t16));
         if (_t11 > 0.0f) {
-            dd[3] = -(0.5f * _t5 * _t18);
-            dd[4] = 0.5f * _t6 * _t18;
+            dd[3] = -(_sp0 * _t18);
+            dd[4] = _sp1 * _t18;
             dd[5] = 0.0f;
             dd[6] = 0.5f * (float) Math.sqrt(_t15);
         } else {
             if (_t7 > _t3) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t16);
                 dd[4] = 0.0f;
-                dd[5] = 0.5f * _t6 * _t20;
-                dd[6] = -(0.5f * _t5 * _t20);
+                dd[5] = _sp1 * _t20;
+                dd[6] = -(_sp0 * _t20);
             } else {
                 if (1.0f > _t2) {
                     dd[3] = 0.0f;
                     dd[4] = 0.5f * (float) Math.sqrt(_t13);
-                    dd[5] = 0.5f * _t5 * _t14;
-                    dd[6] = 0.5f * _t6 * _t14;
+                    dd[5] = _sp0 * _t14;
+                    dd[6] = _sp1 * _t14;
                 } else {
-                    dd[3] = 0.5f * _t6 * _t19;
-                    dd[4] = 0.5f * _t5 * _t19;
+                    dd[3] = _sp1 * _t19;
+                    dd[4] = _sp0 * _t19;
                     dd[5] = 0.5f * (float) Math.sqrt(_t17);
                     dd[6] = 0.0f;
                 }
@@ -5603,35 +5698,35 @@ public class Float3x3Impl implements Float3x3 {
         float _t54 = Math.fma(-sd[3], _t12, _t45);
         float _t59 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t44));
         float _t60 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(sd[4], _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(sd[8], _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dd[3] = 0.5f * _t32 * _t61;
-            dd[4] = 0.5f * _t53 * _t61;
-            dd[5] = 0.5f * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t64);
-                dd[4] = 0.5f * _t51 * _t67;
-                dd[5] = 0.5f * _t52 * _t67;
-                dd[6] = 0.5f * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5f * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5f * (float) Math.sqrt(_t62);
-                    dd[5] = 0.5f * _t28 * _t65;
-                    dd[6] = 0.5f * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5f * _t52 * _t66;
-                    dd[4] = 0.5f * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5f * (float) Math.sqrt(_t63);
-                    dd[6] = 0.5f * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -5706,35 +5801,35 @@ public class Float3x3Impl implements Float3x3 {
         float _t54 = Math.fma(-sd[3], _t12, _t45);
         float _t59 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t44));
         float _t60 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(sd[4], _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(sd[8], _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dd[3] = 0.5f * _t32 * _t61;
-            dd[4] = 0.5f * _t53 * _t61;
-            dd[5] = 0.5f * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t64);
-                dd[4] = 0.5f * _t51 * _t67;
-                dd[5] = 0.5f * _t52 * _t67;
-                dd[6] = 0.5f * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5f * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5f * (float) Math.sqrt(_t62);
-                    dd[5] = 0.5f * _t28 * _t65;
-                    dd[6] = 0.5f * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5f * _t52 * _t66;
-                    dd[4] = 0.5f * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5f * (float) Math.sqrt(_t63);
-                    dd[6] = 0.5f * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -5766,9 +5861,10 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((FloatTransformImpl) dest).data;
         float _t1 = Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0f));
         float _t2 = (1.0f / (float) Math.sqrt(_t1));
+        float _sp2 = 0.5f * _t2;
         float _t3 = Math.max(1.0f, _t2);
-        float _t5 = sd[7] * _t2;
-        float _t6 = sd[6] * _t2;
+        float _sp0 = _sp2 * sd[7];
+        float _sp1 = _sp2 * sd[6];
         float _t7 = _t2 < 0.0f ? -1.0f : 1.0f;
         float _t8 = 1.0f + _t7;
         float _t11 = _t8 + _t2;
@@ -5781,25 +5877,25 @@ public class Float3x3Impl implements Float3x3 {
         float _t19 = (1.0f / (float) Math.sqrt(_t17));
         float _t20 = (1.0f / (float) Math.sqrt(_t16));
         if (_t11 > 0.0f) {
-            dd[3] = -(0.5f * _t5 * _t18);
-            dd[4] = 0.5f * _t6 * _t18;
+            dd[3] = -(_sp0 * _t18);
+            dd[4] = _sp1 * _t18;
             dd[5] = 0.0f;
             dd[6] = 0.5f * (float) Math.sqrt(_t15);
         } else {
             if (_t7 > _t3) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t16);
                 dd[4] = 0.0f;
-                dd[5] = 0.5f * _t6 * _t20;
-                dd[6] = -(0.5f * _t5 * _t20);
+                dd[5] = _sp1 * _t20;
+                dd[6] = -(_sp0 * _t20);
             } else {
                 if (1.0f > _t2) {
                     dd[3] = 0.0f;
                     dd[4] = 0.5f * (float) Math.sqrt(_t13);
-                    dd[5] = 0.5f * _t5 * _t14;
-                    dd[6] = 0.5f * _t6 * _t14;
+                    dd[5] = _sp0 * _t14;
+                    dd[6] = _sp1 * _t14;
                 } else {
-                    dd[3] = 0.5f * _t6 * _t19;
-                    dd[4] = 0.5f * _t5 * _t19;
+                    dd[3] = _sp1 * _t19;
+                    dd[4] = _sp0 * _t19;
                     dd[5] = 0.5f * (float) Math.sqrt(_t17);
                     dd[6] = 0.0f;
                 }
@@ -5819,6 +5915,119 @@ public class Float3x3Impl implements Float3x3 {
      * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
      * through the public {@code toTransform} dispatcher.
      */
+    private FloatTransform toTransform_orthogonal(@Mutated FloatTransform dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatTransformImpl) dest).data;
+        float _t0 = -sd[4];
+        float _t6 = Math.fma(sd[0], sd[0], sd[1] * sd[1]);
+        float _t7 = (1.0f / (float) Math.sqrt(Math.fma(sd[3], sd[3], sd[4] * sd[4])));
+        float _t9 = Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0f));
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t9));
+        float _sp4 = 0.5f * _t11;
+        float _t12 = sd[0] * _t8;
+        float _t13 = sd[4] * _t7;
+        float _t15 = sd[1] * _t8;
+        float _sp0 = _sp4 * sd[7];
+        float _sp1 = _sp4 * sd[6];
+        float _t23 = Math.max(_t13, _t11);
+        float _t26 = Math.fma(_t12, _t13 * _t11, -(sd[3] * _t7 * _t15 * _t11));
+        float _t27, _t28;
+        if (_t26 < 0.0f) {
+            _t27 = -_t12;
+            _t28 = -_t15;
+        } else {
+            _t27 = _t12;
+            _t28 = _t15;
+        }
+        float _t29 = 1.0f + _t27;
+        float _sp2 = 0.5f * Math.fma(sd[3], _t7, _t28);
+        float _sp3 = 0.5f * Math.fma(-sd[3], _t7, _t28);
+        float _t38 = Math.fma(sd[4], _t7, _t27 + _t11);
+        float _t39 = Math.fma(sd[4], _t7, _t29 + _t11);
+        float _t40 = Math.fma(sd[4], _t7, 1.0f - _t27 - _t11);
+        float _t41 = (1.0f / (float) Math.sqrt(_t39));
+        float _t42 = Math.fma(_t0, _t7, _t29 - _t11);
+        float _t43 = (1.0f / (float) Math.sqrt(_t40));
+        float _t44 = Math.fma(_t0, _t7, 1.0f + _t11 - _t27);
+        float _t45 = (1.0f / (float) Math.sqrt(_t44));
+        float _t46 = (1.0f / (float) Math.sqrt(_t42));
+        dd[0] = 0.0f;
+        dd[1] = 0.0f;
+        dd[2] = 0.0f;
+        dd[3] = _t38 > 0.0f ? -(_sp0 * _t41) : _t27 > _t23 ? 0.5f * (float) Math.sqrt(_t42) : _t13 > _t11 ? _sp2 * _t43 : _sp1 * _t45;
+        dd[4] = _t38 > 0.0f ? _sp1 * _t41 : _t27 > _t23 ? _sp2 * _t46 : _t13 > _t11 ? 0.5f * (float) Math.sqrt(_t40) : _sp0 * _t45;
+        dd[5] = _t38 > 0.0f ? _sp3 * _t41 : _t27 > _t23 ? _sp1 * _t46 : _t13 > _t11 ? _sp0 * _t43 : 0.5f * (float) Math.sqrt(_t44);
+        dd[6] = _t38 > 0.0f ? 0.5f * (float) Math.sqrt(_t39) : _t27 > _t23 ? -(_sp0 * _t46) : _t13 > _t11 ? _sp1 * _t43 : _sp3 * _t45;
+        dd[7] = _t26 < 0.0f ? -_t10 : _t10;
+        dd[8] = 1.0f;
+        dd[9] = (float) Math.sqrt(_t9);
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private FloatTransform toTransform_affine(@Mutated FloatTransform dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatTransformImpl) dest).data;
+        float _t0 = -sd[4];
+        float _t5 = Math.fma(sd[3], sd[3], sd[4] * sd[4]);
+        float _t6 = Math.fma(sd[0], sd[0], sd[1] * sd[1]);
+        float _t7 = (1.0f / (float) Math.sqrt(_t5));
+        float _t9 = Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0f));
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t9));
+        float _sp4 = 0.5f * _t11;
+        float _t12 = sd[0] * _t8;
+        float _t13 = sd[4] * _t7;
+        float _t15 = sd[1] * _t8;
+        float _sp0 = _sp4 * sd[7];
+        float _sp1 = _sp4 * sd[6];
+        float _t23 = Math.max(_t13, _t11);
+        float _t26 = Math.fma(_t12, _t13 * _t11, -(sd[3] * _t7 * _t15 * _t11));
+        float _t27, _t28;
+        if (_t26 < 0.0f) {
+            _t27 = -_t12;
+            _t28 = -_t15;
+        } else {
+            _t27 = _t12;
+            _t28 = _t15;
+        }
+        float _t29 = 1.0f + _t27;
+        float _sp2 = 0.5f * Math.fma(sd[3], _t7, _t28);
+        float _sp3 = 0.5f * Math.fma(-sd[3], _t7, _t28);
+        float _t38 = Math.fma(sd[4], _t7, _t27 + _t11);
+        float _t39 = Math.fma(sd[4], _t7, _t29 + _t11);
+        float _t40 = Math.fma(sd[4], _t7, 1.0f - _t27 - _t11);
+        float _t41 = (1.0f / (float) Math.sqrt(_t39));
+        float _t42 = Math.fma(_t0, _t7, _t29 - _t11);
+        float _t43 = (1.0f / (float) Math.sqrt(_t40));
+        float _t44 = Math.fma(_t0, _t7, 1.0f + _t11 - _t27);
+        float _t45 = (1.0f / (float) Math.sqrt(_t44));
+        float _t46 = (1.0f / (float) Math.sqrt(_t42));
+        dd[0] = 0.0f;
+        dd[1] = 0.0f;
+        dd[2] = 0.0f;
+        dd[3] = _t38 > 0.0f ? -(_sp0 * _t41) : _t27 > _t23 ? 0.5f * (float) Math.sqrt(_t42) : _t13 > _t11 ? _sp2 * _t43 : _sp1 * _t45;
+        dd[4] = _t38 > 0.0f ? _sp1 * _t41 : _t27 > _t23 ? _sp2 * _t46 : _t13 > _t11 ? 0.5f * (float) Math.sqrt(_t40) : _sp0 * _t45;
+        dd[5] = _t38 > 0.0f ? _sp3 * _t41 : _t27 > _t23 ? _sp1 * _t46 : _t13 > _t11 ? _sp0 * _t43 : 0.5f * (float) Math.sqrt(_t44);
+        dd[6] = _t38 > 0.0f ? 0.5f * (float) Math.sqrt(_t39) : _t27 > _t23 ? -(_sp0 * _t46) : _t13 > _t11 ? _sp1 * _t43 : _sp3 * _t45;
+        dd[7] = _t26 < 0.0f ? -_t10 : _t10;
+        dd[8] = (float) Math.sqrt(_t5);
+        dd[9] = (float) Math.sqrt(_t9);
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
     private FloatTransform toTransform_general(@Mutated FloatTransform dest) {
         float[] sd = this.data;
         float[] dd = ((FloatTransformImpl) dest).data;
@@ -5829,8 +6038,8 @@ public class Float3x3Impl implements Float3x3 {
         float _t11 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = sd[1] * _t14;
         float _t17 = sd[8] * _t13;
         float _t18 = sd[7] * _t13;
@@ -5860,20 +6069,20 @@ public class Float3x3Impl implements Float3x3 {
         float _t55 = Math.fma(-sd[3], _t12, _t46);
         float _t60 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t45));
         float _t61 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(sd[4], _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(sd[8], _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         dd[0] = 0.0f;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        dd[4] = _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67;
-        dd[5] = _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64);
-        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67;
+        dd[3] = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dd[4] = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        dd[5] = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dd[7] = _t44 < 0.0f ? -_t15 : _t15;
         dd[8] = (float) Math.sqrt(_t9);
         dd[9] = (float) Math.sqrt(_t10);
@@ -5893,6 +6102,8 @@ public class Float3x3Impl implements Float3x3 {
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return toTransform_identity(dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return toTransform_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return toTransform_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return toTransform_affine(dest);
         return toTransform_general(dest);
     }
 
@@ -5918,8 +6129,8 @@ public class Float3x3Impl implements Float3x3 {
         float _t11 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = sd[1] * _t14;
         float _t17 = sd[8] * _t13;
         float _t18 = sd[7] * _t13;
@@ -5949,20 +6160,20 @@ public class Float3x3Impl implements Float3x3 {
         float _t55 = Math.fma(-sd[3], _t12, _t46);
         float _t60 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t45));
         float _t61 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(sd[4], _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(sd[8], _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         dd[0] = 0.0f;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        dd[4] = _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67;
-        dd[5] = _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64);
-        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67;
+        dd[3] = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dd[4] = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        dd[5] = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dd[7] = _t44 < 0.0f ? -_t15 : _t15;
         dd[8] = (float) Math.sqrt(_t9);
         dd[9] = (float) Math.sqrt(_t10);
@@ -5983,10 +6194,67 @@ public class Float3x3Impl implements Float3x3 {
      * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
      * only through the public {@code decomposeRotation} dispatcher.
      */
+    private FloatQuat decomposeRotation_general(@Mutated FloatQuat dest) {
+        if (SimdMath.USE_FMA) return decomposeRotation_general_fma(dest);
+        return decomposeRotation_general_mulAdd(dest);
+    }
+
+    private FloatQuat decomposeRotation_general_fma(@Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        float _r0 = sd[2];
+        float _r1 = sd[0];
+        float _r2 = sd[1];
+        float _r3 = sd[5];
+        float _r4 = sd[3];
+        float _r5 = sd[4];
+        float _r6 = sd[8];
+        float _r7 = sd[6];
+        float _r8 = sd[7];
+        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7 = _t2 != 0.0f ? _r0 * _t3 : 0.0f;
+        float _t8 = _t2 != 0.0f ? _r1 * _t3 : 0.0f;
+        float _t9 = _t2 != 0.0f ? _r2 * _t3 : 0.0f;
+        float _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        float _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        float _t21 = Math.fma(_t19, _t7, _r3);
+        float _t22 = Math.fma(_t19, _t8, _r4);
+        float _t23 = Math.fma(_t19, _t9, _r5);
+        decomposeRotation_general_sfb8b4c8_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
+        return dest;
+    }
+
+    private FloatQuat decomposeRotation_general_mulAdd(@Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        float _r0 = sd[2];
+        float _r1 = sd[0];
+        float _r2 = sd[1];
+        float _r3 = sd[5];
+        float _r4 = sd[3];
+        float _r5 = sd[4];
+        float _r6 = sd[8];
+        float _r7 = sd[6];
+        float _r8 = sd[7];
+        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7 = _t2 != 0.0f ? _r0 * _t3 : 0.0f;
+        float _t8 = _t2 != 0.0f ? _r1 * _t3 : 0.0f;
+        float _t9 = _t2 != 0.0f ? _r2 * _t3 : 0.0f;
+        float _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        float _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        float _t21 = Math.fma(_t19, _t7, _r3);
+        float _t22 = Math.fma(_t19, _t8, _r4);
+        float _t23 = Math.fma(_t19, _t9, _r5);
+        decomposeRotation_general_s13de5f2f_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
+        return dest;
+    }
+
     /** Private vector tail of {@code decomposeRotation_general_sfb8b4c8}: loads, computes and stores every column; reached only through it. */
     private static void decomposeRotation_general_sfb8b4c8_tail4(float[] dd, float _t36, float _t56, float _t60, float _t63, float _t73, float _t77, float _t78, float _t80, float _t81, float _t82, float _t86, float _t87, float _t88, float _t89, float _t93) {
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t86)).fma(VEC_0, FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
+        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).fma(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86))), FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t86)))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
         _col0.intoArray(dd, 0);
     }
 
@@ -5994,23 +6262,23 @@ public class Float3x3Impl implements Float3x3 {
     private static void decomposeRotation_general_sfb8b4c8_tail(float[] dd, float _r6, float _r7, float _r8, float _t7, float _t8, float _t9, float _t20, float _t21, float _t22, float _t23) {
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
-        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
-        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
+        float _t34 = _t29 != 0.0f ? _t22 * _t30 : 0.0f;
+        float _t35 = _t29 != 0.0f ? _t21 * _t30 : 0.0f;
+        float _t36 = _t29 != 0.0f ? _t23 * _t30 : 0.0f;
         float _t40 = -Math.fma(Math.fma(_t20, _t7, _r6), _t35, Math.fma(Math.fma(_t20, _t8, _r7), _t34, Math.fma(_t20, _t9, _r8) * _t36));
         float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _r6));
         float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _r7));
         float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _r8));
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
+        float _t54 = _t49 != 0.0f ? _t46 * _t50 : 0.0f;
         decomposeRotation_general_sfb8b4c8_tail2(dd, _t7, _t8, _t9, _t34, _t35, _t36, _t44, _t45, _t49, _t50, _t54);
     }
 
     /** Private tail of {@code decomposeRotation_general_sfb8b4c8}; reached only through it. */
     private static void decomposeRotation_general_sfb8b4c8_tail2(float[] dd, float _t7, float _t8, float _t9, float _t34, float _t35, float _t36, float _t44, float _t45, float _t49, float _t50, float _t54) {
-        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
-        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
+        float _t55 = _t49 != 0.0f ? _t45 * _t50 : 0.0f;
+        float _t56 = _t49 != 0.0f ? _t44 * _t50 : 0.0f;
         float _t60 = _t35 - _t54;
         float _t63 = _t35 + _t54;
         float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
@@ -6039,7 +6307,7 @@ public class Float3x3Impl implements Float3x3 {
     /** Private vector tail of {@code decomposeRotation_general_s13de5f2f}: loads, computes and stores every column; reached only through it. */
     private static void decomposeRotation_general_s13de5f2f_tail4(float[] dd, float _t36, float _t56, float _t60, float _t63, float _t73, float _t77, float _t78, float _t80, float _t81, float _t82, float _t86, float _t87, float _t88, float _t89, float _t93) {
         var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.5f);
-        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(_t86)).mul(VEC_0).add(FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
+        var _col0 = (_t82 > 0.0f ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t86)))).add(FloatVector.broadcast(COL_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t86)))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(COL_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
         _col0.intoArray(dd, 0);
     }
 
@@ -6047,23 +6315,23 @@ public class Float3x3Impl implements Float3x3 {
     private static void decomposeRotation_general_s13de5f2f_tail(float[] dd, float _r6, float _r7, float _r8, float _t7, float _t8, float _t9, float _t20, float _t21, float _t22, float _t23) {
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
-        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
-        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
+        float _t34 = _t29 != 0.0f ? _t22 * _t30 : 0.0f;
+        float _t35 = _t29 != 0.0f ? _t21 * _t30 : 0.0f;
+        float _t36 = _t29 != 0.0f ? _t23 * _t30 : 0.0f;
         float _t40 = -Math.fma(Math.fma(_t20, _t7, _r6), _t35, Math.fma(Math.fma(_t20, _t8, _r7), _t34, Math.fma(_t20, _t9, _r8) * _t36));
         float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _r6));
         float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _r7));
         float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _r8));
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
+        float _t54 = _t49 != 0.0f ? _t46 * _t50 : 0.0f;
         decomposeRotation_general_s13de5f2f_tail2(dd, _t7, _t8, _t9, _t34, _t35, _t36, _t44, _t45, _t49, _t50, _t54);
     }
 
     /** Private tail of {@code decomposeRotation_general_s13de5f2f}; reached only through it. */
     private static void decomposeRotation_general_s13de5f2f_tail2(float[] dd, float _t7, float _t8, float _t9, float _t34, float _t35, float _t36, float _t44, float _t45, float _t49, float _t50, float _t54) {
-        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
-        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
+        float _t55 = _t49 != 0.0f ? _t45 * _t50 : 0.0f;
+        float _t56 = _t49 != 0.0f ? _t44 * _t50 : 0.0f;
         float _t60 = _t35 - _t54;
         float _t63 = _t35 + _t54;
         float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
@@ -6087,63 +6355,6 @@ public class Float3x3Impl implements Float3x3 {
         float _t89 = 1.0f + (_t56 - _t76);
         float _t93 = (1.0f / (float) Math.sqrt(_t87));
         decomposeRotation_general_s13de5f2f_tail4(dd, _t36, _t56, _t60, _t63, _t73, _t77, _t78, _t80, _t81, _t82, _t86, _t87, _t88, _t89, _t93);
-    }
-
-    private FloatQuat decomposeRotation_general(@Mutated FloatQuat dest) {
-        if (SimdMath.USE_FMA) return decomposeRotation_general_fma(dest);
-        return decomposeRotation_general_mulAdd(dest);
-    }
-
-    private FloatQuat decomposeRotation_general_fma(@Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _r0 = sd[2];
-        float _r1 = sd[0];
-        float _r2 = sd[1];
-        float _r3 = sd[5];
-        float _r4 = sd[3];
-        float _r5 = sd[4];
-        float _r6 = sd[8];
-        float _r7 = sd[6];
-        float _r8 = sd[7];
-        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _r0 * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _r1 * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _r2 * _t3 : 0.0f;
-        float _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
-        float _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
-        float _t21 = Math.fma(_t19, _t7, _r3);
-        float _t22 = Math.fma(_t19, _t8, _r4);
-        float _t23 = Math.fma(_t19, _t9, _r5);
-        decomposeRotation_general_sfb8b4c8_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
-        return dest;
-    }
-
-    private FloatQuat decomposeRotation_general_mulAdd(@Mutated FloatQuat dest) {
-        float[] sd = this.data;
-        float[] dd = ((FloatQuatImpl) dest).data;
-        float _r0 = sd[2];
-        float _r1 = sd[0];
-        float _r2 = sd[1];
-        float _r3 = sd[5];
-        float _r4 = sd[3];
-        float _r5 = sd[4];
-        float _r6 = sd[8];
-        float _r7 = sd[6];
-        float _r8 = sd[7];
-        float _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _r0 * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _r1 * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _r2 * _t3 : 0.0f;
-        float _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
-        float _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
-        float _t21 = Math.fma(_t19, _t7, _r3);
-        float _t22 = Math.fma(_t19, _t8, _r4);
-        float _t23 = Math.fma(_t19, _t9, _r5);
-        decomposeRotation_general_s13de5f2f_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
-        return dest;
     }
 
 
@@ -6183,7 +6394,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = sd[2] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[1] * _t3;
@@ -6200,7 +6411,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t34, _t35, _t36;
-        if (_t29 > 0.0f) {
+        if (_t29 != 0.0f) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -6216,7 +6427,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
         float _t54, _t55, _t56;
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -6299,10 +6510,10 @@ public class Float3x3Impl implements Float3x3 {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = sd[2] * _t3;
             _t9 = sd[0] * _t3;
             _t10 = sd[1] * _t3;
@@ -6319,7 +6530,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -6335,7 +6546,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -6389,10 +6600,10 @@ public class Float3x3Impl implements Float3x3 {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = sd[2] * _t3;
             _t9 = sd[0] * _t3;
             _t10 = sd[1] * _t3;
@@ -6409,7 +6620,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -6425,7 +6636,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -6474,7 +6685,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = sd[2] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[1] * _t3;
@@ -6494,7 +6705,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -6512,7 +6723,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -6575,7 +6786,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = sd[2] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[1] * _t3;
@@ -6595,7 +6806,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -6613,7 +6824,7 @@ public class Float3x3Impl implements Float3x3 {
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -9312,6 +9523,11 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -9331,6 +9547,11 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -9352,6 +9573,11 @@ public class Float3x3Impl implements Float3x3 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -9364,64 +9590,206 @@ public class Float3x3Impl implements Float3x3 {
 
 
     /**
-     * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
-     * {@code dirY}, {@code dirZ}) to this matrix and store the result in {@code dest}.
-     * <p>
-     * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
-     * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
-     * using {@code M * L * v}, the "look along" will be applied first.
-     *
-     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
-     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
-     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @param dest will hold the result
-     * @return dest
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
      */
-    public Float3x3 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
+    private Float3x3 lookAlong_identity(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(sd[6], _t26, Math.fma(sd[0], _t27, sd[3] * _t28));
-        float _buf1 = Math.fma(sd[7], _t26, Math.fma(sd[1], _t27, sd[4] * _t28));
-        float _buf2 = Math.fma(sd[8], _t26, Math.fma(sd[2], _t27, sd[5] * _t28));
-        float _buf3 = Math.fma(sd[6], _t35, Math.fma(sd[0], _t36, sd[3] * _t37));
-        float _buf4 = Math.fma(sd[7], _t35, Math.fma(sd[1], _t36, sd[4] * _t37));
-        float _buf5 = Math.fma(sd[8], _t35, Math.fma(sd[2], _t36, sd[5] * _t37));
-        dd[6] = Math.fma(sd[6], _t9, Math.fma(sd[0], _t8, sd[3] * _t7));
-        dd[7] = Math.fma(sd[7], _t9, Math.fma(sd[1], _t8, sd[4] * _t7));
-        dd[8] = Math.fma(sd[8], _t9, Math.fma(sd[2], _t8, sd[5] * _t7));
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = _t23;
+        dd[2] = _t22;
+        dd[3] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[4] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[5] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[6] = _t6;
+        dd[7] = _t5;
+        dd[8] = _t4;
+        ((Float3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_translation(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x3Impl) dest).data;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t26 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        dd[0] = Math.fma(sd[6], _t21, _t22);
+        dd[1] = Math.fma(sd[7], _t21, _t23);
+        dd[2] = _t21;
+        dd[3] = Math.fma(sd[6], _t26, Math.fma(_t4, _t21, -(_t6 * _t23)));
+        dd[4] = Math.fma(sd[7], _t26, Math.fma(_t6, _t22, -(_t5 * _t21)));
+        dd[5] = _t26;
+        dd[6] = Math.fma(dirX, _t3, sd[6] * _t6);
+        dd[7] = Math.fma(dirY, _t3, sd[7] * _t6);
+        dd[8] = _t6;
+        ((Float3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_orthogonal(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x3Impl) dest).data;
+        float _sp14 = dirX * upY;
+        float _t0 = -upY;
+        float _t1 = -upZ;
+        float _t2 = dirZ * sd[4];
+        float _t3 = dirY * sd[4];
+        float _t4 = dirZ * sd[1];
+        float _t5 = dirX * sd[1];
+        float _sp13 = _t5 * upZ;
+        float _t6 = dirY * dirY;
+        float _t7 = dirY * sd[1];
+        float _t8 = dirX * sd[4];
+        float _sp12 = upX * dirX * dirZ;
+        float _t10 = dirX * dirX;
+        float _t11 = dirY * dirZ;
+        float _sp15 = upY * _t11;
+        float _t12 = dirY * _t5;
+        float _t13 = dirZ * _t4;
+        float _t14 = dirY * _t8;
+        float _t15 = dirZ * _t2;
+        float _t18 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, _t6))));
+        float _sp0 = _t18 * _t18;
+        float _sp11 = _sp0 * upZ * sd[7];
+        float _sp8 = upY * _sp0;
+        float _t19 = dirY * _t18;
+        float _t20 = dirX * _t18;
+        float _sp4 = upY * _t20;
+        float _t21 = dirZ * _t18;
+        float _t28 = Math.fma(upX, _t19, -_sp4);
+        float _t29 = Math.fma(upY, _t21, -(upZ * _t19));
+        float _t30 = Math.fma(upZ, _t20, -(upX * _t21));
+        float _ct0 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t35 = (1.0f / (float) Math.sqrt(_ct0));
+        float _sp2 = _t18 * _t35;
+        float _sp1 = _t35 * _sp0;
+        float _sp9 = sd[7] * _sp1;
+        dd[0] = Math.fma(upX, dirY * sd[6], Math.fma(_t0, dirX * sd[6], Math.fma(upY, _t2, Math.fma(_t1, _t3, Math.fma(upX, _t4, -_sp13))))) * _sp2;
+        float _buf0 = Math.fma(upX, dirY * sd[7], Math.fma(_t0, dirX * sd[7], Math.fma(-upX, _t2, Math.fma(upZ, _t8, Math.fma(upY, _t4, -(upZ * _t7)))))) * _sp2;
+        dd[2] = Math.fma(dirY, upX, -_sp14) * _sp2;
+        dd[3] = (Math.fma(upX, _t12, Math.fma(upZ, dirZ * _t7, -(_sp14 * _t5))) + Math.fma(_t0, _t13, Math.fma(_t1, dirZ * _t8, -(upY * _t14))) + (Math.fma(upX, dirY * _t3, Math.fma(upX, _t15, -(_sp12 * sd[6]))) + Math.fma(upZ, sd[6] * _t10, Math.fma(upZ, sd[6] * _t6, -(_sp15 * sd[6]))))) * _sp1;
+        float _buf1 = Math.fma(-(_sp8 * _t12), _t35, Math.fma(upX * _t19 * _t7 * _t18, _t35, -(_sp13 * _t21 * _sp2))) + Math.fma(upX * _t13 * _sp0, _t35, Math.fma(_sp4 * _t8 * _t18, _t35, -(upX * _t14 * _sp1))) + (Math.fma(-(upZ * _t21 * _t3 * _t18), _t35, Math.fma(_sp8 * _t15, _t35, -(_sp12 * _sp9))) + Math.fma(_sp11 * _t10, _t35, Math.fma(_sp11 * _t6, _t35, -(_sp15 * _sp9))));
+        dd[5] = Math.fma(upZ, _t6, Math.fma(_t0, _t11, Math.fma(upZ, _t10, -_sp12))) * _sp1;
+        dd[6] = Math.fma(dirZ, sd[6], Math.fma(dirX, sd[4], -_t7)) * _t18;
+        dd[7] = Math.fma(dirZ, sd[7], Math.fma(dirX, sd[1], _t3)) * _t18;
+        dd[8] = _t21;
+        dd[1] = _buf0;
+        dd[4] = _buf1;
+        ((Float3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_affine(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x3Impl) dest).data;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        float _buf0 = Math.fma(sd[6], _t21, Math.fma(sd[0], _t22, sd[3] * _t23));
+        float _buf1 = Math.fma(sd[7], _t21, Math.fma(sd[1], _t22, sd[4] * _t23));
+        dd[2] = _t21;
+        float _buf2 = Math.fma(sd[6], _t30, Math.fma(sd[0], _t31, sd[3] * _t32));
+        float _buf3 = Math.fma(sd[7], _t30, Math.fma(sd[1], _t31, sd[4] * _t32));
+        dd[5] = _t30;
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[0], _t5, sd[3] * _t4));
+        dd[7] = Math.fma(sd[7], _t6, Math.fma(sd[1], _t5, sd[4] * _t4));
+        dd[8] = _t6;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[3] = _buf2;
+        dd[4] = _buf3;
+        ((Float3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Float3x3 lookAlong_general(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x3Impl) dest).data;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        float _buf0 = Math.fma(sd[6], _t21, Math.fma(sd[0], _t22, sd[3] * _t23));
+        float _buf1 = Math.fma(sd[7], _t21, Math.fma(sd[1], _t22, sd[4] * _t23));
+        float _buf2 = Math.fma(sd[8], _t21, Math.fma(sd[2], _t22, sd[5] * _t23));
+        float _buf3 = Math.fma(sd[6], _t30, Math.fma(sd[0], _t31, sd[3] * _t32));
+        float _buf4 = Math.fma(sd[7], _t30, Math.fma(sd[1], _t31, sd[4] * _t32));
+        float _buf5 = Math.fma(sd[8], _t30, Math.fma(sd[2], _t31, sd[5] * _t32));
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[0], _t5, sd[3] * _t4));
+        dd[7] = Math.fma(sd[7], _t6, Math.fma(sd[1], _t5, sd[4] * _t4));
+        dd[8] = Math.fma(sd[8], _t6, Math.fma(sd[2], _t5, sd[5] * _t4));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -9441,6 +9809,75 @@ public class Float3x3Impl implements Float3x3 {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     *
+     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
+     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
+     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3x3 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_identity(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAlong_affine(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        return lookAlong_general(dirX, dirY, dirZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
+     * {@code dirY}, {@code dirZ}) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
+     * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     *
+     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
+     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
+     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Float3x3 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        if (Joml.RETURN_NEW) return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.float3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_identity(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAlong_affine(dirX, dirY, dirZ, upX, upY, upZ, this);
+        return lookAlong_general(dirX, dirY, dirZ, upX, upY, upZ, this);
+    }
+
+
+    /**
+     * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
+     * {@code dirY}, {@code dirZ}) to this matrix and store the result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
+     * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -9456,45 +9893,225 @@ public class Float3x3Impl implements Float3x3 {
     public Double3x3 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        float _buf0 = Math.fma(sd[6], _t21, Math.fma(sd[0], _t22, sd[3] * _t23));
+        float _buf1 = Math.fma(sd[7], _t21, Math.fma(sd[1], _t22, sd[4] * _t23));
+        float _buf2 = Math.fma(sd[8], _t21, Math.fma(sd[2], _t22, sd[5] * _t23));
+        float _buf3 = Math.fma(sd[6], _t30, Math.fma(sd[0], _t31, sd[3] * _t32));
+        float _buf4 = Math.fma(sd[7], _t30, Math.fma(sd[1], _t31, sd[4] * _t32));
+        float _buf5 = Math.fma(sd[8], _t30, Math.fma(sd[2], _t31, sd[5] * _t32));
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[0], _t5, sd[3] * _t4));
+        dd[7] = Math.fma(sd[7], _t6, Math.fma(sd[1], _t5, sd[4] * _t4));
+        dd[8] = Math.fma(sd[8], _t6, Math.fma(sd[2], _t5, sd[5] * _t4));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[3] = _buf3;
+        dd[4] = _buf4;
+        dd[5] = _buf5;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x3 lookAlong_degenerate(Float3R dir, Float3R up, @Mutated Float3x3 dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x3 lookAlong_degenerate(Float3R dir, Float3R up, @Mutated Double3x3 dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Float3x3 lookAlong_degenerate(Float3R dir, Float3R up) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x3 lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x3Impl) dest).data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
             _t7 = 0.0f;
-            _t8 = 0.0f;
+            _t8 = 1.0f;
             _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
         } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(sd[6], _t26, Math.fma(sd[0], _t27, sd[3] * _t28));
-        float _buf1 = Math.fma(sd[7], _t26, Math.fma(sd[1], _t27, sd[4] * _t28));
-        float _buf2 = Math.fma(sd[8], _t26, Math.fma(sd[2], _t27, sd[5] * _t28));
-        float _buf3 = Math.fma(sd[6], _t35, Math.fma(sd[0], _t36, sd[3] * _t37));
-        float _buf4 = Math.fma(sd[7], _t35, Math.fma(sd[1], _t36, sd[4] * _t37));
-        float _buf5 = Math.fma(sd[8], _t35, Math.fma(sd[2], _t36, sd[5] * _t37));
-        dd[6] = Math.fma(sd[6], _t9, Math.fma(sd[0], _t8, sd[3] * _t7));
-        dd[7] = Math.fma(sd[7], _t9, Math.fma(sd[1], _t8, sd[4] * _t7));
-        dd[8] = Math.fma(sd[8], _t9, Math.fma(sd[2], _t8, sd[5] * _t7));
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        float _t49 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        float _t50 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        float _t51 = Math.fma(_t42, _t11, -(_t41 * _t10));
+        float _buf0 = Math.fma(sd[6], _t40, Math.fma(sd[0], _t41, sd[3] * _t42));
+        float _buf1 = Math.fma(sd[7], _t40, Math.fma(sd[1], _t41, sd[4] * _t42));
+        float _buf2 = Math.fma(sd[8], _t40, Math.fma(sd[2], _t41, sd[5] * _t42));
+        float _buf3 = Math.fma(sd[6], _t51, Math.fma(sd[0], _t50, sd[3] * _t49));
+        float _buf4 = Math.fma(sd[7], _t51, Math.fma(sd[1], _t50, sd[4] * _t49));
+        float _buf5 = Math.fma(sd[8], _t51, Math.fma(sd[2], _t50, sd[5] * _t49));
+        dd[6] = Math.fma(sd[6], _t12, Math.fma(sd[0], _t11, sd[3] * _t10));
+        dd[7] = Math.fma(sd[7], _t12, Math.fma(sd[1], _t11, sd[4] * _t10));
+        dd[8] = Math.fma(sd[8], _t12, Math.fma(sd[2], _t11, sd[5] * _t10));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[3] = _buf3;
+        dd[4] = _buf4;
+        dd[5] = _buf5;
+        ((Float3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float3x3 lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.float3x3() : this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x3 lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Double3x3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        float _t49 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        float _t50 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        float _t51 = Math.fma(_t42, _t11, -(_t41 * _t10));
+        float _buf0 = Math.fma(sd[6], _t40, Math.fma(sd[0], _t41, sd[3] * _t42));
+        float _buf1 = Math.fma(sd[7], _t40, Math.fma(sd[1], _t41, sd[4] * _t42));
+        float _buf2 = Math.fma(sd[8], _t40, Math.fma(sd[2], _t41, sd[5] * _t42));
+        float _buf3 = Math.fma(sd[6], _t51, Math.fma(sd[0], _t50, sd[3] * _t49));
+        float _buf4 = Math.fma(sd[7], _t51, Math.fma(sd[1], _t50, sd[4] * _t49));
+        float _buf5 = Math.fma(sd[8], _t51, Math.fma(sd[2], _t50, sd[5] * _t49));
+        dd[6] = Math.fma(sd[6], _t12, Math.fma(sd[0], _t11, sd[3] * _t10));
+        dd[7] = Math.fma(sd[7], _t12, Math.fma(sd[1], _t11, sd[4] * _t10));
+        dd[8] = Math.fma(sd[8], _t12, Math.fma(sd[2], _t11, sd[5] * _t10));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -9547,6 +10164,7 @@ public class Float3x3Impl implements Float3x3 {
      */
     @Mutated public Float3x3 makeFromDualQuat(float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
         float[] dd = this.data;
+        float _sp0 = dqRX + dqRX;
         float _t0 = dqRY * dqRY;
         float _t2 = dqRZ * dqRW;
         float _t3 = dqRY * dqRW;
@@ -9555,8 +10173,8 @@ public class Float3x3Impl implements Float3x3 {
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dd[0] = Math.fma(-2.0f, _t0, _t6);
         dd[1] = 2.0f * Math.fma(dqRX, dqRY, _t2);
-        dd[2] = Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ);
-        dd[3] = Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY);
+        dd[2] = Math.fma(-2.0f, _t3, _sp0 * dqRZ);
+        dd[3] = Math.fma(-2.0f, _t2, _sp0 * dqRY);
         dd[4] = Math.fma(-2.0f, _t4, _t6);
         dd[5] = 2.0f * Math.fma(dqRX, dqRW, _t5);
         dd[6] = 2.0f * Math.fma(dqRX, dqRZ, _t3);
@@ -9640,6 +10258,11 @@ public class Float3x3Impl implements Float3x3 {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -9654,6 +10277,11 @@ public class Float3x3Impl implements Float3x3 {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -9665,42 +10293,105 @@ public class Float3x3Impl implements Float3x3 {
      */
     @Mutated public Float3x3 makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float[] dd = this.data;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = _t23;
+        dd[2] = _t22;
+        dd[3] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[4] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[5] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[6] = _t6;
+        dd[7] = _t5;
+        dd[8] = _t4;
+        ((Float3x3Impl) this).properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Float3x3 makeRotationLookAlong_degenerate(Float3R dir, Float3R up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Float3x3 makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
             _t7 = 0.0f;
-            _t8 = 0.0f;
+            _t8 = 1.0f;
             _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t17 * _t22;
-            _t27 = _t16 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
         } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        dd[0] = _t26;
-        dd[1] = _t28;
-        dd[2] = _t27;
-        dd[3] = Math.fma(_t7, _t27, -(_t9 * _t28));
-        dd[4] = Math.fma(_t9, _t26, -(_t8 * _t27));
-        dd[5] = Math.fma(_t8, _t28, -(_t7 * _t26));
-        dd[6] = _t8;
-        dd[7] = _t7;
-        dd[8] = _t9;
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        dd[0] = _t41;
+        dd[1] = _t42;
+        dd[2] = _t40;
+        dd[3] = Math.fma(_t40, _t10, -(_t42 * _t12));
+        dd[4] = Math.fma(_t41, _t12, -(_t40 * _t11));
+        dd[5] = Math.fma(_t42, _t11, -(_t41 * _t10));
+        dd[6] = _t11;
+        dd[7] = _t10;
+        dd[8] = _t12;
         ((Float3x3Impl) this).properties = 0;
         return this;
     }
@@ -11756,14 +12447,15 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_identity(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
         dd[3] = 0.0f;
         dd[4] = s;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-s, pivotX, pivotX);
-        dd[7] = Math.fma(-s, pivotY, pivotY);
+        dd[6] = pivotX * _t0;
+        dd[7] = pivotY * _t0;
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -11777,10 +12469,11 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_identity_self(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[4] = s;
-        dd[6] = Math.fma(-s, pivotX, pivotX);
-        dd[7] = Math.fma(-s, pivotY, pivotY);
+        dd[6] = pivotX * _t0;
+        dd[7] = pivotY * _t0;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -11793,14 +12486,15 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_translation(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
         dd[3] = 0.0f;
         dd[4] = s;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -11814,10 +12508,11 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_translation_self(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[4] = s;
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -11830,14 +12525,15 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_orthogonal(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s * sd[0];
         dd[1] = s * sd[1];
         dd[2] = 0.0f;
         dd[3] = s * sd[3];
         dd[4] = s * sd[4];
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -11851,12 +12547,13 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_orthogonal_self(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s * sd[0];
         dd[1] = s * sd[1];
         dd[3] = s * sd[3];
         dd[4] = s * sd[4];
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -11869,16 +12566,17 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_general(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        dd[0] = Math.fma(s, sd[0], sd[2] * _t0);
-        dd[1] = Math.fma(s, sd[1], sd[2] * _t1);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        dd[0] = Math.fma(s, sd[0], sd[2] * _t1);
+        dd[1] = Math.fma(s, sd[1], sd[2] * _t2);
         dd[2] = sd[2];
-        dd[3] = Math.fma(s, sd[3], sd[5] * _t0);
-        dd[4] = Math.fma(s, sd[4], sd[5] * _t1);
+        dd[3] = Math.fma(s, sd[3], sd[5] * _t1);
+        dd[4] = Math.fma(s, sd[4], sd[5] * _t2);
         dd[5] = sd[5];
-        dd[6] = Math.fma(s, sd[6], sd[8] * _t0);
-        dd[7] = Math.fma(s, sd[7], sd[8] * _t1);
+        dd[6] = Math.fma(s, sd[6], sd[8] * _t1);
+        dd[7] = Math.fma(s, sd[7], sd[8] * _t2);
         dd[8] = sd[8];
         ((Float3x3Impl) dest).properties = 0;
         return dest;
@@ -11954,16 +12652,17 @@ public class Float3x3Impl implements Float3x3 {
     public Double3x3 preScaleAround(float s, float pivotX, float pivotY, @Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        dd[0] = Math.fma(s, sd[0], sd[2] * _t0);
-        dd[1] = Math.fma(s, sd[1], sd[2] * _t1);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        dd[0] = Math.fma(s, sd[0], sd[2] * _t1);
+        dd[1] = Math.fma(s, sd[1], sd[2] * _t2);
         dd[2] = sd[2];
-        dd[3] = Math.fma(s, sd[3], sd[5] * _t0);
-        dd[4] = Math.fma(s, sd[4], sd[5] * _t1);
+        dd[3] = Math.fma(s, sd[3], sd[5] * _t1);
+        dd[4] = Math.fma(s, sd[4], sd[5] * _t2);
         dd[5] = sd[5];
-        dd[6] = Math.fma(s, sd[6], sd[8] * _t0);
-        dd[7] = Math.fma(s, sd[7], sd[8] * _t1);
+        dd[6] = Math.fma(s, sd[6], sd[8] * _t1);
+        dd[7] = Math.fma(s, sd[7], sd[8] * _t2);
         dd[8] = sd[8];
         ((Double3x3Impl) dest).properties = 0;
         return dest;
@@ -12038,8 +12737,8 @@ public class Float3x3Impl implements Float3x3 {
         dd[3] = 0.0f;
         dd[4] = sY;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-pivotX, sX, pivotX);
-        dd[7] = Math.fma(-pivotY, sY, pivotY);
+        dd[6] = pivotX * (1.0f - sX);
+        dd[7] = pivotY * (1.0f - sY);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -12055,8 +12754,8 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         dd[0] = sX;
         dd[4] = sY;
-        dd[6] = Math.fma(-pivotX, sX, pivotX);
-        dd[7] = Math.fma(-pivotY, sY, pivotY);
+        dd[6] = pivotX * (1.0f - sX);
+        dd[7] = pivotY * (1.0f - sY);
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -12075,8 +12774,8 @@ public class Float3x3Impl implements Float3x3 {
         dd[3] = 0.0f;
         dd[4] = sY;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0f - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -12092,8 +12791,8 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         dd[0] = sX;
         dd[4] = sY;
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0f - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -12112,8 +12811,8 @@ public class Float3x3Impl implements Float3x3 {
         dd[3] = sX * sd[3];
         dd[4] = sY * sd[4];
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0f - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -12131,8 +12830,8 @@ public class Float3x3Impl implements Float3x3 {
         dd[1] = sY * sd[1];
         dd[3] = sX * sd[3];
         dd[4] = sY * sd[4];
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0f - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -12145,8 +12844,8 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 preScaleAround_general(float sX, float sY, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         dd[0] = Math.fma(sX, sd[0], sd[2] * _t2);
         dd[1] = Math.fma(sY, sd[1], sd[2] * _t3);
         dd[2] = sd[2];
@@ -12230,8 +12929,8 @@ public class Float3x3Impl implements Float3x3 {
     public Double3x3 preScaleAround(float sX, float sY, float pivotX, float pivotY, @Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         dd[0] = Math.fma(sX, sd[0], sd[2] * _t2);
         dd[1] = Math.fma(sY, sd[1], sd[2] * _t3);
         dd[2] = sd[2];
@@ -17912,14 +18611,15 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_translation(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
         dd[3] = 0.0f;
         dd[4] = s;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-s, pivotX, sd[6] + pivotX);
-        dd[7] = Math.fma(-s, pivotY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, _t0, sd[6]);
+        dd[7] = Math.fma(pivotY, _t0, sd[7]);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -17933,10 +18633,11 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_translation_self(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[4] = s;
-        dd[6] = Math.fma(-s, pivotX, sd[6] + pivotX);
-        dd[7] = Math.fma(-s, pivotY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, _t0, sd[6]);
+        dd[7] = Math.fma(pivotY, _t0, sd[7]);
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -17949,16 +18650,17 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_orthogonal(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         float _buf0 = s * sd[0];
         float _buf1 = s * sd[1];
         dd[2] = 0.0f;
         float _buf2 = s * sd[3];
         float _buf3 = s * sd[4];
         dd[5] = 0.0f;
-        dd[6] = Math.fma(sd[0], _t0, Math.fma(sd[3], _t1, sd[6]));
-        dd[7] = Math.fma(sd[1], _t0, Math.fma(sd[4], _t1, sd[7]));
+        dd[6] = Math.fma(sd[0], _t1, Math.fma(sd[3], _t2, sd[6]));
+        dd[7] = Math.fma(sd[1], _t1, Math.fma(sd[4], _t2, sd[7]));
         dd[8] = 1.0f;
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -17976,14 +18678,15 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_orthogonal_self(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         float _buf0 = s * sd[0];
         float _buf1 = s * sd[1];
         float _buf2 = s * sd[3];
         float _buf3 = s * sd[4];
-        dd[6] = Math.fma(sd[0], _t0, Math.fma(sd[3], _t1, sd[6]));
-        dd[7] = Math.fma(sd[1], _t0, Math.fma(sd[4], _t1, sd[7]));
+        dd[6] = Math.fma(sd[0], _t1, Math.fma(sd[3], _t2, sd[6]));
+        dd[7] = Math.fma(sd[1], _t1, Math.fma(sd[4], _t2, sd[7]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[3] = _buf2;
@@ -18000,17 +18703,18 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_general(float s, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         float _buf0 = s * sd[0];
         float _buf1 = s * sd[1];
         float _buf2 = s * sd[2];
         float _buf3 = s * sd[3];
         float _buf4 = s * sd[4];
         float _buf5 = s * sd[5];
-        dd[6] = Math.fma(sd[0], _t0, Math.fma(sd[3], _t1, sd[6]));
-        dd[7] = Math.fma(sd[1], _t0, Math.fma(sd[4], _t1, sd[7]));
-        dd[8] = Math.fma(sd[2], _t0, Math.fma(sd[5], _t1, sd[8]));
+        dd[6] = Math.fma(sd[0], _t1, Math.fma(sd[3], _t2, sd[6]));
+        dd[7] = Math.fma(sd[1], _t1, Math.fma(sd[4], _t2, sd[7]));
+        dd[8] = Math.fma(sd[2], _t1, Math.fma(sd[5], _t2, sd[8]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -18091,17 +18795,18 @@ public class Float3x3Impl implements Float3x3 {
     public Double3x3 scaleAround(float s, float pivotX, float pivotY, @Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         float _buf0 = s * sd[0];
         float _buf1 = s * sd[1];
         float _buf2 = s * sd[2];
         float _buf3 = s * sd[3];
         float _buf4 = s * sd[4];
         float _buf5 = s * sd[5];
-        dd[6] = Math.fma(sd[0], _t0, Math.fma(sd[3], _t1, sd[6]));
-        dd[7] = Math.fma(sd[1], _t0, Math.fma(sd[4], _t1, sd[7]));
-        dd[8] = Math.fma(sd[2], _t0, Math.fma(sd[5], _t1, sd[8]));
+        dd[6] = Math.fma(sd[0], _t1, Math.fma(sd[3], _t2, sd[6]));
+        dd[7] = Math.fma(sd[1], _t1, Math.fma(sd[4], _t2, sd[7]));
+        dd[8] = Math.fma(sd[2], _t1, Math.fma(sd[5], _t2, sd[8]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -18199,8 +18904,8 @@ public class Float3x3Impl implements Float3x3 {
         dd[3] = 0.0f;
         dd[4] = sY;
         dd[5] = 0.0f;
-        dd[6] = Math.fma(-pivotX, sX, sd[6] + pivotX);
-        dd[7] = Math.fma(-pivotY, sY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, 1.0f - sX, sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sd[7]);
         dd[8] = 1.0f;
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -18216,8 +18921,8 @@ public class Float3x3Impl implements Float3x3 {
         float[] dd = ((Float3x3Impl) dest).data;
         dd[0] = sX;
         dd[4] = sY;
-        dd[6] = Math.fma(-pivotX, sX, sd[6] + pivotX);
-        dd[7] = Math.fma(-pivotY, sY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, 1.0f - sX, sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sd[7]);
         ((Float3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -18230,8 +18935,8 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_orthogonal(float sX, float sY, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         float _buf0 = sX * sd[0];
         float _buf1 = sX * sd[1];
         dd[2] = 0.0f;
@@ -18257,8 +18962,8 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_orthogonal_self(float sX, float sY, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         float _buf0 = sX * sd[0];
         float _buf1 = sX * sd[1];
         float _buf2 = sY * sd[3];
@@ -18281,8 +18986,8 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 scaleAround_general(float sX, float sY, float pivotX, float pivotY, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         float _buf0 = sX * sd[0];
         float _buf1 = sX * sd[1];
         float _buf2 = sX * sd[2];
@@ -18372,8 +19077,8 @@ public class Float3x3Impl implements Float3x3 {
     public Double3x3 scaleAround(float sX, float sY, float pivotX, float pivotY, @Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         float _buf0 = sX * sd[0];
         float _buf1 = sX * sd[1];
         float _buf2 = sX * sd[2];
@@ -18727,20 +19432,20 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 view_orthogonal(float left, float right, float bottom, float top, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        float _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * sd[0];
+        float _buf1 = _sp0 * sd[1];
         dd[2] = 0.0f;
-        float _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        float _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        float _buf2 = _sp1 * sd[3];
+        float _buf3 = _sp1 * sd[4];
         dd[5] = 0.0f;
-        dd[6] = sd[6] - sd[0] * _t2 * _t0_inv - sd[3] * _t3 * _t1_inv;
-        dd[7] = sd[7] - sd[1] * _t2 * _t0_inv - sd[4] * _t3 * _t1_inv;
+        dd[6] = sd[6] - sd[0] * _sp2 - sd[3] * _sp3;
+        dd[7] = sd[7] - sd[1] * _sp2 - sd[4] * _sp3;
         dd[8] = 1.0f;
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -18758,18 +19463,18 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 view_orthogonal_self(float left, float right, float bottom, float top, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        float _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        float _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        float _buf3 = (sd[4] + sd[4]) * _t1_inv;
-        dd[6] = sd[6] - sd[0] * _t2 * _t0_inv - sd[3] * _t3 * _t1_inv;
-        dd[7] = sd[7] - sd[1] * _t2 * _t0_inv - sd[4] * _t3 * _t1_inv;
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * sd[0];
+        float _buf1 = _sp0 * sd[1];
+        float _buf2 = _sp1 * sd[3];
+        float _buf3 = _sp1 * sd[4];
+        dd[6] = sd[6] - sd[0] * _sp2 - sd[3] * _sp3;
+        dd[7] = sd[7] - sd[1] * _sp2 - sd[4] * _sp3;
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[3] = _buf2;
@@ -18786,20 +19491,20 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 view_affine(float left, float right, float bottom, float top, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        float _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * sd[0];
+        float _buf1 = _sp0 * sd[1];
         dd[2] = 0.0f;
-        float _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        float _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        float _buf2 = _sp1 * sd[3];
+        float _buf3 = _sp1 * sd[4];
         dd[5] = 0.0f;
-        dd[6] = sd[6] + (-(sd[0] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
-        dd[7] = sd[7] + (-(sd[1] * _t2 * _t0_inv) - sd[4] * _t3 * _t1_inv);
+        dd[6] = sd[6] + (-(sd[0] * _sp2) - sd[3] * _sp3);
+        dd[7] = sd[7] + (-(sd[1] * _sp2) - sd[4] * _sp3);
         dd[8] = 1.0f;
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -18817,18 +19522,18 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 view_affine_self(float left, float right, float bottom, float top, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        float _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        float _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        float _buf3 = (sd[4] + sd[4]) * _t1_inv;
-        dd[6] = sd[6] + (-(sd[0] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
-        dd[7] = sd[7] + (-(sd[1] * _t2 * _t0_inv) - sd[4] * _t3 * _t1_inv);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * sd[0];
+        float _buf1 = _sp0 * sd[1];
+        float _buf2 = _sp1 * sd[3];
+        float _buf3 = _sp1 * sd[4];
+        dd[6] = sd[6] + (-(sd[0] * _sp2) - sd[3] * _sp3);
+        dd[7] = sd[7] + (-(sd[1] * _sp2) - sd[4] * _sp3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[3] = _buf2;
@@ -18845,21 +19550,21 @@ public class Float3x3Impl implements Float3x3 {
     private Float3x3 view_general(float left, float right, float bottom, float top, @Mutated Float3x3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x3Impl) dest).data;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        float _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        float _buf2 = (sd[2] + sd[2]) * _t0_inv;
-        float _buf3 = (sd[3] + sd[3]) * _t1_inv;
-        float _buf4 = (sd[4] + sd[4]) * _t1_inv;
-        float _buf5 = (sd[5] + sd[5]) * _t1_inv;
-        dd[6] = sd[6] + (-(sd[0] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
-        dd[7] = sd[7] + (-(sd[1] * _t2 * _t0_inv) - sd[4] * _t3 * _t1_inv);
-        dd[8] = sd[8] + (-(sd[2] * _t2 * _t0_inv) - sd[5] * _t3 * _t1_inv);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * sd[0];
+        float _buf1 = _sp0 * sd[1];
+        float _buf2 = _sp0 * sd[2];
+        float _buf3 = _sp1 * sd[3];
+        float _buf4 = _sp1 * sd[4];
+        float _buf5 = _sp1 * sd[5];
+        dd[6] = sd[6] + (-(sd[0] * _sp2) - sd[3] * _sp3);
+        dd[7] = sd[7] + (-(sd[1] * _sp2) - sd[4] * _sp3);
+        dd[8] = sd[8] + (-(sd[2] * _sp2) - sd[5] * _sp3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -18942,21 +19647,21 @@ public class Float3x3Impl implements Float3x3 {
     public Double3x3 view(float left, float right, float bottom, float top, @Mutated Double3x3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        float _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        float _buf2 = (sd[2] + sd[2]) * _t0_inv;
-        float _buf3 = (sd[3] + sd[3]) * _t1_inv;
-        float _buf4 = (sd[4] + sd[4]) * _t1_inv;
-        float _buf5 = (sd[5] + sd[5]) * _t1_inv;
-        dd[6] = sd[6] + (-(sd[0] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
-        dd[7] = sd[7] + (-(sd[1] * _t2 * _t0_inv) - sd[4] * _t3 * _t1_inv);
-        dd[8] = sd[8] + (-(sd[2] * _t2 * _t0_inv) - sd[5] * _t3 * _t1_inv);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * sd[0];
+        float _buf1 = _sp0 * sd[1];
+        float _buf2 = _sp0 * sd[2];
+        float _buf3 = _sp1 * sd[3];
+        float _buf4 = _sp1 * sd[4];
+        float _buf5 = _sp1 * sd[5];
+        dd[6] = sd[6] + (-(sd[0] * _sp2) - sd[3] * _sp3);
+        dd[7] = sd[7] + (-(sd[1] * _sp2) - sd[4] * _sp3);
+        dd[8] = sd[8] + (-(sd[2] * _sp2) - sd[5] * _sp3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;

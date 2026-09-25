@@ -51,10 +51,10 @@ import org.joml2.internal.simd.*;
  * the flags its overload reads. Every non-bulk buffer, segment and raw-address overload - and the
  * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
  * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
- * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
- * element-wise operations loop over the buffer API directly and freeze nothing. Every overload with
- * a Vector-API or fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization
- * snapshots {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma},
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads dispatch through
+ * {@code SimdSupport} like every other SIMD path (below). Every overload with a Vector-API or
+ * fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization snapshots
+ * {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma}, {@code cosFromSin},
  * {@code fastmath}, {@code sinLookup}, {@code strictMath}) - and {@code Joml.VECTOR_API}, freezing
  * the {@link JomlConfig} flags as well; the scalar kernels call {@link Math} for their
  * multiply-adds and transcendentals, which freezes the {@code Math} flags likewise. Only the array
@@ -145,15 +145,21 @@ public final class Float4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -211,15 +217,21 @@ public final class Float4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -277,15 +289,21 @@ public final class Float4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -343,15 +361,21 @@ public final class Float4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -409,15 +433,21 @@ public final class Float4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -475,15 +505,21 @@ public final class Float4x4Ops {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -797,9 +833,10 @@ public final class Float4x4Ops {
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -814,20 +851,15 @@ public final class Float4x4Ops {
         float _self21 = src[srcOffset + 6];
         float _self12 = src[srcOffset + 9];
         float _self22 = src[srcOffset + 10];
-        float _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t6 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t7 = Math.fma(_self10, _self21, -(_self11 * _self20));
         float _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest[destOffset + 0] = -(_t7 * _t12);
-            dest[destOffset + 1] = -(_t8 * _t12);
-            dest[destOffset + 2] = -(_t6 * _t12);
-        } else {
-            dest[destOffset + 0] = -0.0f;
-            dest[destOffset + 1] = -0.0f;
-            dest[destOffset + 2] = -0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4x4OpsKernelsArray.invNegativeX_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest[destOffset + 0] = -(_t6 * _t13);
+        dest[destOffset + 1] = -(_t8 * _t13);
+        dest[destOffset + 2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -860,9 +892,10 @@ public final class Float4x4Ops {
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -877,20 +910,15 @@ public final class Float4x4Ops {
         float _self21 = src[srcOffset + 6];
         float _self02 = src[srcOffset + 8];
         float _self22 = src[srcOffset + 10];
-        float _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
-        float _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
-        float _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest[destOffset + 0] = -(_t8 * _t12);
-            dest[destOffset + 1] = -(_t7 * _t12);
-            dest[destOffset + 2] = -(_t6 * _t12);
-        } else {
-            dest[destOffset + 0] = -0.0f;
-            dest[destOffset + 1] = -0.0f;
-            dest[destOffset + 2] = -0.0f;
-        }
+        float _t6 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        float _t7 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        float _t8 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4x4OpsKernelsArray.invNegativeY_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest[destOffset + 0] = -(_t6 * _t13);
+        dest[destOffset + 1] = -(_t8 * _t13);
+        dest[destOffset + 2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -923,9 +951,10 @@ public final class Float4x4Ops {
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -940,20 +969,15 @@ public final class Float4x4Ops {
         float _self11 = src[srcOffset + 5];
         float _self02 = src[srcOffset + 8];
         float _self12 = src[srcOffset + 9];
-        float _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
-        float _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t6 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t7 = Math.fma(_self00, _self11, -(_self01 * _self10));
         float _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest[destOffset + 0] = -(_t7 * _t12);
-            dest[destOffset + 1] = -(_t8 * _t12);
-            dest[destOffset + 2] = -(_t6 * _t12);
-        } else {
-            dest[destOffset + 0] = -0.0f;
-            dest[destOffset + 1] = -0.0f;
-            dest[destOffset + 2] = -0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4x4OpsKernelsArray.invNegativeZ_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest[destOffset + 0] = -(_t6 * _t13);
+        dest[destOffset + 1] = -(_t8 * _t13);
+        dest[destOffset + 2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -1274,9 +1298,10 @@ public final class Float4x4Ops {
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1291,20 +1316,15 @@ public final class Float4x4Ops {
         float _self21 = src[srcOffset + 6];
         float _self12 = src[srcOffset + 9];
         float _self22 = src[srcOffset + 10];
-        float _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t6 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t7 = Math.fma(_self10, _self21, -(_self11 * _self20));
         float _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest[destOffset + 0] = _t7 * _t12;
-            dest[destOffset + 1] = _t8 * _t12;
-            dest[destOffset + 2] = _t6 * _t12;
-        } else {
-            dest[destOffset + 0] = 0.0f;
-            dest[destOffset + 1] = 0.0f;
-            dest[destOffset + 2] = 0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4x4OpsKernelsArray.invPositiveX_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest[destOffset + 0] = _t6 * _t13;
+        dest[destOffset + 1] = _t8 * _t13;
+        dest[destOffset + 2] = _t7 * _t13;
         return dest;
     }
 
@@ -1337,9 +1357,10 @@ public final class Float4x4Ops {
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1354,20 +1375,15 @@ public final class Float4x4Ops {
         float _self21 = src[srcOffset + 6];
         float _self02 = src[srcOffset + 8];
         float _self22 = src[srcOffset + 10];
-        float _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
-        float _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
-        float _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest[destOffset + 0] = _t8 * _t12;
-            dest[destOffset + 1] = _t7 * _t12;
-            dest[destOffset + 2] = _t6 * _t12;
-        } else {
-            dest[destOffset + 0] = 0.0f;
-            dest[destOffset + 1] = 0.0f;
-            dest[destOffset + 2] = 0.0f;
-        }
+        float _t6 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        float _t7 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        float _t8 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4x4OpsKernelsArray.invPositiveY_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest[destOffset + 0] = _t6 * _t13;
+        dest[destOffset + 1] = _t8 * _t13;
+        dest[destOffset + 2] = _t7 * _t13;
         return dest;
     }
 
@@ -1400,9 +1416,10 @@ public final class Float4x4Ops {
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -1417,20 +1434,15 @@ public final class Float4x4Ops {
         float _self11 = src[srcOffset + 5];
         float _self02 = src[srcOffset + 8];
         float _self12 = src[srcOffset + 9];
-        float _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
-        float _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t6 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t7 = Math.fma(_self00, _self11, -(_self01 * _self10));
         float _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest[destOffset + 0] = _t7 * _t12;
-            dest[destOffset + 1] = _t8 * _t12;
-            dest[destOffset + 2] = _t6 * _t12;
-        } else {
-            dest[destOffset + 0] = 0.0f;
-            dest[destOffset + 1] = 0.0f;
-            dest[destOffset + 2] = 0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4x4OpsKernelsArray.invPositiveZ_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest[destOffset + 0] = _t6 * _t13;
+        dest[destOffset + 1] = _t8 * _t13;
+        dest[destOffset + 2] = _t7 * _t13;
         return dest;
     }
 
@@ -1480,7 +1492,7 @@ public final class Float4x4Ops {
         float _self20 = src[srcOffset + 2];
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest[destOffset + 0] = -(_self00 * _t3);
             dest[destOffset + 1] = -(_self10 * _t3);
             dest[destOffset + 2] = -(_self20 * _t3);
@@ -1538,7 +1550,7 @@ public final class Float4x4Ops {
         float _self21 = src[srcOffset + 6];
         float _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest[destOffset + 0] = -(_self01 * _t3);
             dest[destOffset + 1] = -(_self11 * _t3);
             dest[destOffset + 2] = -(_self21 * _t3);
@@ -1596,7 +1608,7 @@ public final class Float4x4Ops {
         float _self22 = src[srcOffset + 10];
         float _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest[destOffset + 0] = -(_self02 * _t3);
             dest[destOffset + 1] = -(_self12 * _t3);
             dest[destOffset + 2] = -(_self22 * _t3);
@@ -2064,7 +2076,7 @@ public final class Float4x4Ops {
         float _self20 = src[srcOffset + 2];
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest[destOffset + 0] = _self00 * _t3;
             dest[destOffset + 1] = _self10 * _t3;
             dest[destOffset + 2] = _self20 * _t3;
@@ -2122,7 +2134,7 @@ public final class Float4x4Ops {
         float _self21 = src[srcOffset + 6];
         float _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest[destOffset + 0] = _self01 * _t3;
             dest[destOffset + 1] = _self11 * _t3;
             dest[destOffset + 2] = _self21 * _t3;
@@ -2180,7 +2192,7 @@ public final class Float4x4Ops {
         float _self22 = src[srcOffset + 10];
         float _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest[destOffset + 0] = _self02 * _t3;
             dest[destOffset + 1] = _self12 * _t3;
             dest[destOffset + 2] = _self22 * _t3;
@@ -3323,13 +3335,17 @@ public final class Float4x4Ops {
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -3538,33 +3554,33 @@ public final class Float4x4Ops {
         float _t16 = _self00 + (1.0f - _self11 - _self22);
         float _t17 = _self11 + (_t2 - _self22);
         float _t18 = _self22 + (_t2 - _self11);
-        float _t19 = (1.0f / (float) Math.sqrt(_t15));
-        float _t21 = (1.0f / (float) Math.sqrt(_t17));
-        float _t22 = (1.0f / (float) Math.sqrt(_t18));
-        float _t23 = (1.0f / (float) Math.sqrt(_t16));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t18));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _t63, _t64, _t65, _t66;
         if (_t14 > 0.0f) {
-            _t63 = 0.5f * _t4 * _t19;
-            _t64 = 0.5f * _t8 * _t19;
-            _t65 = 0.5f * _t10 * _t19;
+            _t63 = _sp0 * _t4;
+            _t64 = _sp0 * _t8;
+            _t65 = _sp0 * _t10;
             _t66 = 0.5f * (float) Math.sqrt(_t15);
         } else {
             if (_self00 > _t5) {
                 _t63 = 0.5f * (float) Math.sqrt(_t16);
-                _t64 = 0.5f * _t6 * _t23;
-                _t65 = 0.5f * _t7 * _t23;
-                _t66 = 0.5f * _t4 * _t23;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t7;
+                _t66 = _sp3 * _t4;
             } else {
                 if (_self11 > _self22) {
-                    _t63 = 0.5f * _t6 * _t21;
+                    _t63 = _sp1 * _t6;
                     _t64 = 0.5f * (float) Math.sqrt(_t17);
-                    _t65 = 0.5f * _t9 * _t21;
-                    _t66 = 0.5f * _t8 * _t21;
+                    _t65 = _sp1 * _t9;
+                    _t66 = _sp1 * _t8;
                 } else {
-                    _t63 = 0.5f * _t7 * _t22;
-                    _t64 = 0.5f * _t9 * _t22;
+                    _t63 = _sp2 * _t7;
+                    _t64 = _sp2 * _t9;
                     _t65 = 0.5f * (float) Math.sqrt(_t18);
-                    _t66 = 0.5f * _t10 * _t22;
+                    _t66 = _sp2 * _t10;
                 }
             }
         }
@@ -3663,35 +3679,35 @@ public final class Float4x4Ops {
         float _t54 = Math.fma(-_self01, _t12, _t45);
         float _t59 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t44));
         float _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dest[destOffset + 3] = 0.5f * _t32 * _t61;
-            dest[destOffset + 4] = 0.5f * _t53 * _t61;
-            dest[destOffset + 5] = 0.5f * _t54 * _t61;
+            dest[destOffset + 3] = _sp0 * _t32;
+            dest[destOffset + 4] = _sp0 * _t53;
+            dest[destOffset + 5] = _sp0 * _t54;
             dest[destOffset + 6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dest[destOffset + 3] = 0.5f * (float) Math.sqrt(_t64);
-                dest[destOffset + 4] = 0.5f * _t51 * _t67;
-                dest[destOffset + 5] = 0.5f * _t52 * _t67;
-                dest[destOffset + 6] = 0.5f * _t32 * _t67;
+                dest[destOffset + 4] = _sp3 * _t51;
+                dest[destOffset + 5] = _sp3 * _t52;
+                dest[destOffset + 6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dest[destOffset + 3] = 0.5f * _t51 * _t65;
+                    dest[destOffset + 3] = _sp1 * _t51;
                     dest[destOffset + 4] = 0.5f * (float) Math.sqrt(_t62);
-                    dest[destOffset + 5] = 0.5f * _t28 * _t65;
-                    dest[destOffset + 6] = 0.5f * _t53 * _t65;
+                    dest[destOffset + 5] = _sp1 * _t28;
+                    dest[destOffset + 6] = _sp1 * _t53;
                 } else {
-                    dest[destOffset + 3] = 0.5f * _t52 * _t66;
-                    dest[destOffset + 4] = 0.5f * _t28 * _t66;
+                    dest[destOffset + 3] = _sp2 * _t52;
+                    dest[destOffset + 4] = _sp2 * _t28;
                     dest[destOffset + 5] = 0.5f * (float) Math.sqrt(_t63);
-                    dest[destOffset + 6] = 0.5f * _t54 * _t66;
+                    dest[destOffset + 6] = _sp2 * _t54;
                 }
             }
         }
@@ -3758,8 +3774,8 @@ public final class Float4x4Ops {
         float _t11 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = _self10 * _t14;
         float _t17 = _self22 * _t13;
         float _t18 = _self12 * _t13;
@@ -3789,20 +3805,20 @@ public final class Float4x4Ops {
         float _t55 = Math.fma(-_self01, _t12, _t46);
         float _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t45));
         float _t61 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         dest[destOffset + 0] = _self03;
         dest[destOffset + 1] = _self13;
         dest[destOffset + 2] = _self23;
-        dest[destOffset + 3] = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        dest[destOffset + 4] = _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67;
-        dest[destOffset + 5] = _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64);
-        dest[destOffset + 6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67;
+        dest[destOffset + 3] = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dest[destOffset + 4] = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        dest[destOffset + 5] = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        dest[destOffset + 6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dest[destOffset + 7] = _t44 < 0.0f ? -_t15 : _t15;
         dest[destOffset + 8] = (float) Math.sqrt(_t9);
         dest[destOffset + 9] = (float) Math.sqrt(_t10);
@@ -3904,10 +3920,10 @@ public final class Float4x4Ops {
         float _self12 = src[srcOffset + 9];
         float _self22 = src[srcOffset + 10];
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -3924,7 +3940,7 @@ public final class Float4x4Ops {
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -3940,7 +3956,7 @@ public final class Float4x4Ops {
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -4008,7 +4024,7 @@ public final class Float4x4Ops {
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -4028,7 +4044,7 @@ public final class Float4x4Ops {
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -4046,7 +4062,7 @@ public final class Float4x4Ops {
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -4124,10 +4140,10 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -4144,7 +4160,7 @@ public final class Float4x4Ops {
         float _t30 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t23 * _t31;
             _t36 = _t22 * _t31;
             _t37 = _t24 * _t31;
@@ -4160,7 +4176,7 @@ public final class Float4x4Ops {
         float _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
         float _t51 = (1.0f / (float) Math.sqrt(_t50));
         float _t55, _t56, _t57;
-        if (_t50 > 0.0f) {
+        if (_t50 != 0.0f) {
             _t55 = _t47 * _t51;
             _t56 = _t46 * _t51;
             _t57 = _t45 * _t51;
@@ -4193,35 +4209,35 @@ public final class Float4x4Ops {
         float _t88 = 1.0f + (_t74 - (_t37 + _t57));
         float _t89 = 1.0f + (_t37 - (_t74 + _t57));
         float _t90 = 1.0f + (_t57 - _t77);
-        float _t91 = (1.0f / (float) Math.sqrt(_t87));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t90));
-        float _t94 = (1.0f / (float) Math.sqrt(_t88));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t90));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
         translation[translationOffset + 0] = _self03;
         translation[translationOffset + 1] = _self13;
         translation[translationOffset + 2] = _self23;
         if (_t83 > 0.0f) {
-            rotation[rotationOffset + 0] = 0.5f * _t61 * _t91;
-            rotation[rotationOffset + 1] = 0.5f * _t82 * _t91;
-            rotation[rotationOffset + 2] = 0.5f * _t79 * _t91;
+            rotation[rotationOffset + 0] = _sp0 * _t61;
+            rotation[rotationOffset + 1] = _sp0 * _t82;
+            rotation[rotationOffset + 2] = _sp0 * _t79;
             rotation[rotationOffset + 3] = 0.5f * (float) Math.sqrt(_t87);
         } else {
             if (_t74 > _t62) {
                 rotation[rotationOffset + 0] = 0.5f * (float) Math.sqrt(_t88);
-                rotation[rotationOffset + 1] = 0.5f * _t78 * _t94;
-                rotation[rotationOffset + 2] = 0.5f * _t81 * _t94;
-                rotation[rotationOffset + 3] = 0.5f * _t61 * _t94;
+                rotation[rotationOffset + 1] = _sp3 * _t78;
+                rotation[rotationOffset + 2] = _sp3 * _t81;
+                rotation[rotationOffset + 3] = _sp3 * _t61;
             } else {
                 if (_t37 > _t57) {
-                    rotation[rotationOffset + 0] = 0.5f * _t78 * _t92;
+                    rotation[rotationOffset + 0] = _sp1 * _t78;
                     rotation[rotationOffset + 1] = 0.5f * (float) Math.sqrt(_t89);
-                    rotation[rotationOffset + 2] = 0.5f * _t64 * _t92;
-                    rotation[rotationOffset + 3] = 0.5f * _t82 * _t92;
+                    rotation[rotationOffset + 2] = _sp1 * _t64;
+                    rotation[rotationOffset + 3] = _sp1 * _t82;
                 } else {
-                    rotation[rotationOffset + 0] = 0.5f * _t81 * _t93;
-                    rotation[rotationOffset + 1] = 0.5f * _t64 * _t93;
+                    rotation[rotationOffset + 0] = _sp2 * _t81;
+                    rotation[rotationOffset + 1] = _sp2 * _t64;
                     rotation[rotationOffset + 2] = 0.5f * (float) Math.sqrt(_t90);
-                    rotation[rotationOffset + 3] = 0.5f * _t79 * _t93;
+                    rotation[rotationOffset + 3] = _sp2 * _t79;
                 }
             }
         }
@@ -4348,7 +4364,8 @@ public final class Float4x4Ops {
      * <p>
      * Each constant names a corner of the clip-space cube by the sign its three coordinates take
      * there, so {@code NXNYNZ} is the bottom-left corner of the near plane and {@code PXPYPZ} the
-     * top-right corner of the far plane.
+     * top-right corner of the far plane. A corner on a depth plane at infinity is infinite, with
+     * each component's sign giving the side the frustum recedes to.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -4371,7 +4388,8 @@ public final class Float4x4Ops {
      * <p>
      * Each constant names a corner of the clip-space cube by the sign its three coordinates take
      * there, so {@code NXNYNZ} is the bottom-left corner of the near plane and {@code PXPYPZ} the
-     * top-right corner of the far plane.
+     * top-right corner of the far plane. A corner on a depth plane at infinity is infinite, with
+     * each component's sign giving the side the frustum recedes to.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -4949,6 +4967,11 @@ public final class Float4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.8e19}; beyond that the squares overflow and the sphere is
+     * reported visible.
      *
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
@@ -4971,6 +4994,11 @@ public final class Float4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.8e19}; beyond that the squares overflow and the sphere is
+     * reported visible.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -5033,6 +5061,11 @@ public final class Float4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.8e19}; beyond that the squares overflow and the sphere is
+     * reported visible.
      *
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
@@ -5054,6 +5087,11 @@ public final class Float4x4Ops {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.8e19}; beyond that the squares overflow and the sphere is
+     * reported visible.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -5313,8 +5351,8 @@ public final class Float4x4Ops {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -5569,8 +5607,8 @@ public final class Float4x4Ops {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -5593,8 +5631,8 @@ public final class Float4x4Ops {
             float _eself1 = src[srcOffset + _lo + 1];
             float _eself2 = src[srcOffset + _lo + 2];
             float _eself3 = src[srcOffset + _lo + 3];
-            dest[destOffset + _lo] = Math.fma(_other02, _eself2, Math.fma(_other00, _eself0, _other01 * _eself1));
-            dest[destOffset + _lo + 1] = Math.fma(_other12, _eself2, Math.fma(_other10, _eself0, _other11 * _eself1));
+            dest[destOffset + _lo] = Math.fma(_other02, _eself3, Math.fma(_other00, _eself0, _other01 * _eself1));
+            dest[destOffset + _lo + 1] = Math.fma(_other12, _eself3, Math.fma(_other10, _eself0, _other11 * _eself1));
             dest[destOffset + _lo + 2] = _eself2;
             dest[destOffset + _lo + 3] = _eself3;
         }
@@ -6677,6 +6715,11 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6728,6 +6771,11 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6778,6 +6826,11 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6809,6 +6862,11 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -6880,6 +6938,11 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -6908,6 +6971,11 @@ public final class Float4x4Ops {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -7119,12 +7187,11 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] makeAxonometricDimetric(float[] dest, int destOffset, float alpha) {
-        float _t0 = (float) Math.sqrt(2.0f);
         float _t1 = (float) Math.sin(alpha);
-        float _t2 = 0.5f * _t0;
+        float _t2 = 0.5f * (float) Math.sqrt(2.0f);
         float _t3 = (float) Math.cosFromSin(_t1, alpha);
-        float _t5 = 0.5f * _t1 * _t0;
-        float _t7 = 0.5f * _t3 * _t0;
+        float _t5 = _t2 * _t1;
+        float _t7 = _t2 * _t3;
         dest[destOffset + 0] = _t2;
         dest[destOffset + 1] = _t5;
         dest[destOffset + 2] = -_t7;
@@ -7288,6 +7355,11 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7318,7 +7390,7 @@ public final class Float4x4Ops {
         float _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
         float _t15 = (1.0f / (float) Math.sqrt(_t14));
         float _t19, _t20, _t21;
-        if (_t14 > 0.0f) {
+        if (_t14 != 0.0f) {
             _t19 = _t10 * _t15;
             _t20 = _t11 * _t15;
             _t21 = _t9 * _t15;
@@ -7332,7 +7404,7 @@ public final class Float4x4Ops {
         float _t30 = Math.fma(upZ, _t20, -(upY * _t21));
         float _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
         float _t34 = (1.0f / (float) Math.sqrt(_t33));
-        if (_t33 > 0.0f) {
+        if (_t33 != 0.0f) {
             dest[destOffset + 8] = _t30 * _t34;
             dest[destOffset + 9] = _t29 * _t34;
             dest[destOffset + 10] = _t28 * _t34;
@@ -7385,6 +7457,11 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7415,7 +7492,7 @@ public final class Float4x4Ops {
         float _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
         float _t15 = (1.0f / (float) Math.sqrt(_t14));
         float _t19, _t20, _t21;
-        if (_t14 > 0.0f) {
+        if (_t14 != 0.0f) {
             _t19 = _t10 * _t15;
             _t20 = _t11 * _t15;
             _t21 = _t9 * _t15;
@@ -7429,7 +7506,7 @@ public final class Float4x4Ops {
         float _t30 = Math.fma(_upz, _t20, -(_upy * _t21));
         float _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
         float _t34 = (1.0f / (float) Math.sqrt(_t33));
-        if (_t33 > 0.0f) {
+        if (_t33 != 0.0f) {
             dest[destOffset + 8] = _t30 * _t34;
             dest[destOffset + 9] = _t29 * _t34;
             dest[destOffset + 10] = _t28 * _t34;
@@ -7481,6 +7558,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7505,7 +7587,7 @@ public final class Float4x4Ops {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -7520,7 +7602,7 @@ public final class Float4x4Ops {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t19 * _t25;
             _t31 = _t21 * _t25;
@@ -7575,6 +7657,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -7602,7 +7689,7 @@ public final class Float4x4Ops {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -7617,7 +7704,7 @@ public final class Float4x4Ops {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t19 * _t25;
             _t31 = _t21 * _t25;
@@ -7688,33 +7775,36 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] makeBillboardSphericalShortest(float[] dest, int destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ) {
-        float _t0 = targetPosX - objPosX;
-        float _t1 = targetPosZ - objPosZ;
+        float _t0 = targetPosZ - objPosZ;
+        float _t1 = targetPosX - objPosX;
         float _t2 = targetPosY - objPosY;
-        float _t3 = objPosY - targetPosY;
-        float _t10 = _t1 + (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
-        float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
-        float _t13 = _t0 * _t12;
-        float _t14 = _t3 * _t12;
-        float _t15 = _t13 + _t13;
-        float _t16 = _t14 + _t14;
-        float _t17 = -_t15;
-        float _t19 = _t10 * _t12;
-        float _t20 = _t16 * _t13;
-        float _t21 = Math.fma(-_t16, _t14, 1.0f);
-        float _t22 = _t15 * _t19;
-        float _t23 = _t16 * _t19;
-        dest[destOffset + 0] = Math.fma(_t17, _t13, 1.0f);
-        dest[destOffset + 1] = _t20;
-        dest[destOffset + 2] = -_t22;
+        float _t3 = _t2 + _t2;
+        float _t6 = Math.fma(_t1, _t1, _t2 * _t2);
+        float _t8 = Math.max(Math.fma(_t0, _t0, _t6), 4.7019774E-38f);
+        float _t9 = (float) Math.sqrt(_t8);
+        float _t11 = _t0 + _t9;
+        float _t12 = Math.fma(_t11, _t11, _t6);
+        float _t14 = _t12 / _t9;
+        float _t15 = _t12 > 1.1754944E-38f ? _t1 : _t9;
+        float _t25_inv = 1.0f / Math.fma(0.25f, _t14 * _t14, Math.fma(_t2, _t2, _t15 * _t15));
+        float _sp1 = _t2 * _t25_inv;
+        float _sp0 = _t15 * _t25_inv;
+        float _t26 = _sp1 * _t3;
+        float _t27 = _sp1 * _t14;
+        float _t29 = -(_t3 * _sp0);
+        float _t30 = _sp0 * _t14;
+        float _t32 = 1.0f - (_sp0 + _sp0) * _t15;
+        dest[destOffset + 0] = _t32;
+        dest[destOffset + 1] = _t29;
+        dest[destOffset + 2] = -_t30;
         dest[destOffset + 3] = 0.0f;
-        dest[destOffset + 4] = _t20;
-        dest[destOffset + 5] = _t21;
-        dest[destOffset + 6] = _t23;
+        dest[destOffset + 4] = _t29;
+        dest[destOffset + 5] = 1.0f - _t26;
+        dest[destOffset + 6] = -_t27;
         dest[destOffset + 7] = 0.0f;
-        dest[destOffset + 8] = _t22;
-        dest[destOffset + 9] = -_t23;
-        dest[destOffset + 10] = Math.fma(_t17, _t13, _t21);
+        dest[destOffset + 8] = _t30;
+        dest[destOffset + 9] = _t27;
+        dest[destOffset + 10] = _t32 - _t26;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = objPosX;
         dest[destOffset + 13] = objPosY;
@@ -7767,33 +7857,36 @@ public final class Float4x4Ops {
         float _targetPosx = targetPos[targetPosOffset + 0];
         float _targetPosy = targetPos[targetPosOffset + 1];
         float _targetPosz = targetPos[targetPosOffset + 2];
-        float _t0 = _targetPosx - _objPosx;
-        float _t1 = _targetPosz - _objPosz;
+        float _t0 = _targetPosz - _objPosz;
+        float _t1 = _targetPosx - _objPosx;
         float _t2 = _targetPosy - _objPosy;
-        float _t3 = _objPosy - _targetPosy;
-        float _t10 = _t1 + (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
-        float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
-        float _t13 = _t0 * _t12;
-        float _t14 = _t3 * _t12;
-        float _t15 = _t13 + _t13;
-        float _t16 = _t14 + _t14;
-        float _t17 = -_t15;
-        float _t19 = _t10 * _t12;
-        float _t20 = _t16 * _t13;
-        float _t21 = Math.fma(-_t16, _t14, 1.0f);
-        float _t22 = _t15 * _t19;
-        float _t23 = _t16 * _t19;
-        dest[destOffset + 0] = Math.fma(_t17, _t13, 1.0f);
-        dest[destOffset + 1] = _t20;
-        dest[destOffset + 2] = -_t22;
+        float _t3 = _t2 + _t2;
+        float _t6 = Math.fma(_t1, _t1, _t2 * _t2);
+        float _t8 = Math.max(Math.fma(_t0, _t0, _t6), 4.7019774E-38f);
+        float _t9 = (float) Math.sqrt(_t8);
+        float _t11 = _t0 + _t9;
+        float _t12 = Math.fma(_t11, _t11, _t6);
+        float _t14 = _t12 / _t9;
+        float _t15 = _t12 > 1.1754944E-38f ? _t1 : _t9;
+        float _t25_inv = 1.0f / Math.fma(0.25f, _t14 * _t14, Math.fma(_t2, _t2, _t15 * _t15));
+        float _sp1 = _t2 * _t25_inv;
+        float _sp0 = _t15 * _t25_inv;
+        float _t26 = _sp1 * _t3;
+        float _t27 = _sp1 * _t14;
+        float _t29 = -(_t3 * _sp0);
+        float _t30 = _sp0 * _t14;
+        float _t32 = 1.0f - (_sp0 + _sp0) * _t15;
+        dest[destOffset + 0] = _t32;
+        dest[destOffset + 1] = _t29;
+        dest[destOffset + 2] = -_t30;
         dest[destOffset + 3] = 0.0f;
-        dest[destOffset + 4] = _t20;
-        dest[destOffset + 5] = _t21;
-        dest[destOffset + 6] = _t23;
+        dest[destOffset + 4] = _t29;
+        dest[destOffset + 5] = 1.0f - _t26;
+        dest[destOffset + 6] = -_t27;
         dest[destOffset + 7] = 0.0f;
-        dest[destOffset + 8] = _t22;
-        dest[destOffset + 9] = -_t23;
-        dest[destOffset + 10] = Math.fma(_t17, _t13, _t21);
+        dest[destOffset + 8] = _t30;
+        dest[destOffset + 9] = _t27;
+        dest[destOffset + 10] = _t32 - _t26;
         dest[destOffset + 11] = 0.0f;
         dest[destOffset + 12] = _objPosx;
         dest[destOffset + 13] = _objPosy;
@@ -7856,6 +7949,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] makeFromDualQuat(float[] dest, int destOffset, float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
+        float _sp0 = dqRX + dqRX;
         float _t0 = dqRY * dqRY;
         float _t2 = dqRZ * dqRW;
         float _t3 = dqRY * dqRW;
@@ -7864,9 +7958,9 @@ public final class Float4x4Ops {
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dest[destOffset + 0] = Math.fma(-2.0f, _t0, _t6);
         dest[destOffset + 1] = 2.0f * Math.fma(dqRX, dqRY, _t2);
-        dest[destOffset + 2] = Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ);
+        dest[destOffset + 2] = Math.fma(-2.0f, _t3, _sp0 * dqRZ);
         dest[destOffset + 3] = 0.0f;
-        dest[destOffset + 4] = Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY);
+        dest[destOffset + 4] = Math.fma(-2.0f, _t2, _sp0 * dqRY);
         dest[destOffset + 5] = Math.fma(-2.0f, _t4, _t6);
         dest[destOffset + 6] = 2.0f * Math.fma(dqRX, dqRW, _t5);
         dest[destOffset + 7] = 0.0f;
@@ -8081,6 +8175,11 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -8106,6 +8205,11 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -8171,6 +8275,11 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -8193,6 +8302,11 @@ public final class Float4x4Ops {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -10886,12 +11000,15 @@ public final class Float4x4Ops {
     }
 
     /**
-     * Set this matrix to an oblique military projection shear (compose with an orthographic
+     * Set this matrix to an oblique projection shear drawing the XZ plane true shape and the Y axis
+     * at {@code angle}, depth {@code -y} (the military projection of a Y-up scene seen from below
+     * by a right-handed orthographic projection, or the cavalier projection of a Z-up scene;
+     * {@code obliquePlanometric} shows a Y-up scene from above; compose with an orthographic
      * projection for the full transform).
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
-     * @param angle the angle in radians
+     * @param angle the angle, in radians, at which the Y axis is drawn from the screen's +x axis
      * @return {@code dest}
      */
     public static float[] makeObliqueMilitary(float[] dest, int destOffset, float angle) {
@@ -10937,6 +11054,64 @@ public final class Float4x4Ops {
     public static long makeObliqueMilitary(long dest, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.makeObliqueMilitary_unsafe(dest, angle);
         makeObliqueMilitary(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, angle);
+        return dest;
+    }
+
+    /**
+     * Set this matrix to a military (planometric) projection of a Y-up scene seen from above: the
+     * XZ plan true shape turned by {@code angle}, verticals drawn straight up at full length, depth
+     * {@code y} (compose with an orthographic projection for the full transform).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param angle the angle, in radians, by which the XZ plan is turned counter-clockwise on
+     *        screen
+     * @return {@code dest}
+     */
+    public static float[] makeObliquePlanometric(float[] dest, int destOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        dest[destOffset + 0] = _t1;
+        dest[destOffset + 1] = _t0;
+        dest[destOffset + 2] = 0.0f;
+        dest[destOffset + 3] = 0.0f;
+        dest[destOffset + 4] = 0.0f;
+        dest[destOffset + 5] = 1.0f;
+        dest[destOffset + 6] = 1.0f;
+        dest[destOffset + 7] = 0.0f;
+        dest[destOffset + 8] = _t0;
+        dest[destOffset + 9] = -_t1;
+        dest[destOffset + 10] = 0.0f;
+        dest[destOffset + 11] = 0.0f;
+        dest[destOffset + 12] = 0.0f;
+        dest[destOffset + 13] = 0.0f;
+        dest[destOffset + 14] = 0.0f;
+        dest[destOffset + 15] = 1.0f;
+        return dest;
+    }
+
+    /** {@link #makeObliquePlanometric(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer makeObliquePlanometric(java.nio.FloatBuffer dest, int destOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.makeObliquePlanometric_unsafe(dest, destOffset, angle);
+        return Float4x4OpsKernelsTypedBuffer.makeObliquePlanometric_api(dest, destOffset, angle);
+    }
+
+    /** {@link #makeObliquePlanometric(float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer makeObliquePlanometric(java.nio.ByteBuffer dest, int destOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.makeObliquePlanometric_unsafe(dest, destOffset, angle);
+        return Float4x4OpsKernelsByteBuffer.makeObliquePlanometric_api(dest, destOffset, angle);
+    }
+
+    /** {@link #makeObliquePlanometric(float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment makeObliquePlanometric(java.lang.foreign.MemorySegment dest, long destOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float4x4OpsKernelsSegment.makeObliquePlanometric_unsafe(dest, destOffset, angle);
+        return Float4x4OpsKernelsSegment.makeObliquePlanometric_api(dest, destOffset, angle);
+    }
+
+    /** {@link #makeObliquePlanometric(float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long makeObliquePlanometric(long dest, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.makeObliquePlanometric_unsafe(dest, angle);
+        makeObliquePlanometric(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, angle);
         return dest;
     }
 
@@ -12150,6 +12325,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12186,6 +12366,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -12262,6 +12447,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12285,6 +12475,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -12423,8 +12618,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] makeReflection(float[] dest, int destOffset, float normalX, float normalY, float normalZ) {
-        float _t6 = -((normalX + normalX) * normalY);
-        float _t7 = -((normalX + normalX) * normalZ);
+        float _sp0 = normalX + normalX;
+        float _t6 = -(_sp0 * normalY);
+        float _t7 = -(_sp0 * normalZ);
         float _t8 = -((normalY + normalY) * normalZ);
         dest[destOffset + 0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dest[destOffset + 1] = _t6;
@@ -12484,8 +12680,9 @@ public final class Float4x4Ops {
         float _normalx = normal[normalOffset + 0];
         float _normaly = normal[normalOffset + 1];
         float _normalz = normal[normalOffset + 2];
-        float _t6 = -((_normalx + _normalx) * _normaly);
-        float _t7 = -((_normalx + _normalx) * _normalz);
+        float _sp0 = _normalx + _normalx;
+        float _t6 = -(_sp0 * _normaly);
+        float _t7 = -(_sp0 * _normalz);
         float _t8 = -((_normaly + _normaly) * _normalz);
         dest[destOffset + 0] = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         dest[destOffset + 1] = _t6;
@@ -12662,6 +12859,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12677,7 +12879,7 @@ public final class Float4x4Ops {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -12692,7 +12894,7 @@ public final class Float4x4Ops {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -12747,6 +12949,11 @@ public final class Float4x4Ops {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the matrix starts
@@ -12767,7 +12974,7 @@ public final class Float4x4Ops {
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -12782,7 +12989,7 @@ public final class Float4x4Ops {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -14061,13 +14268,11 @@ public final class Float4x4Ops {
         float _t15 = Math.fma(p0X, _t5, p0Y * _t3);
         float _t16 = Math.fma(p0Y, _t5, -(p0X * _t3));
         float _t18 = Math.fma(p3X, _t5, p3Y * _t3) - _t15;
-        float _t18_inv = 1.0f / _t18;
-        float _t19 = Math.fma(p3X, _t3, p3Y * _t4) + _t16;
-        float _t25 = _t3 - _t19 * _t5 * _t18_inv;
-        float _t26 = _t4 - _t19 * _t3 * _t18_inv;
-        float _t30 = _t19 * _t15 * _t18_inv;
-        float _t41 = Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t30))));
-        float _t41_inv = 1.0f / _t41;
+        float _sp0 = (Math.fma(p3X, _t3, p3Y * _t4) + _t16) / _t18;
+        float _t25 = _t3 - _sp0 * _t5;
+        float _t26 = _t4 - _sp0 * _t3;
+        float _t30 = _sp0 * _t15;
+        float _sp1 = 2.0f / Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t30))));
         float _t45 = Math.fma(p0Y, _t5, Math.fma(_t0, _t3, Math.fma(p1X, _t25, Math.fma(p1Y, _t26, _t30)))) * _t18;
         float _t47 = _t16 + (_t30 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t3, -(p0Y * _t5)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t30));
         float _t50 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t45 / _t47));
@@ -14079,20 +14284,20 @@ public final class Float4x4Ops {
         float _t58 = _t50 * _t52_inv;
         float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
         float _t61 = 1.0f + _t60;
-        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
-        dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
+        dest[destOffset + 0] = _sp1 * _t25 - _t53;
+        dest[destOffset + 1] = _t61 * _t53;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
-        dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
+        dest[destOffset + 4] = _sp1 * _t26 - _t54;
+        dest[destOffset + 5] = _t61 * _t54;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = _t54;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
         dest[destOffset + 10] = 1.0f;
         dest[destOffset + 11] = 0.0f;
-        dest[destOffset + 12] = 2.0f * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58;
-        dest[destOffset + 13] = _t61 * _t50 * _t52_inv - _t60;
+        dest[destOffset + 12] = _sp1 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) - _t58;
+        dest[destOffset + 13] = _t61 * _t58 - _t60;
         dest[destOffset + 14] = 0.0f;
         dest[destOffset + 15] = _t58;
         return dest;
@@ -14155,13 +14360,11 @@ public final class Float4x4Ops {
         float _t15 = Math.fma(_p0x, _t5, _p0y * _t3);
         float _t16 = Math.fma(_p0y, _t5, -(_p0x * _t3));
         float _t18 = Math.fma(_p3x, _t5, _p3y * _t3) - _t15;
-        float _t18_inv = 1.0f / _t18;
-        float _t19 = Math.fma(_p3x, _t3, _p3y * _t4) + _t16;
-        float _t25 = _t3 - _t19 * _t5 * _t18_inv;
-        float _t26 = _t4 - _t19 * _t3 * _t18_inv;
-        float _t30 = _t19 * _t15 * _t18_inv;
-        float _t41 = Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t30))));
-        float _t41_inv = 1.0f / _t41;
+        float _sp0 = (Math.fma(_p3x, _t3, _p3y * _t4) + _t16) / _t18;
+        float _t25 = _t3 - _sp0 * _t5;
+        float _t26 = _t4 - _sp0 * _t3;
+        float _t30 = _sp0 * _t15;
+        float _sp1 = 2.0f / Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t30))));
         float _t45 = Math.fma(_p0y, _t5, Math.fma(_t0, _t3, Math.fma(_p1x, _t25, Math.fma(_p1y, _t26, _t30)))) * _t18;
         float _t47 = _t16 + (_t30 + Math.fma(_p2x, _t25, _p2y * _t26)) + (Math.fma(_p0x, _t3, -(_p0y * _t5)) + (Math.fma(-_p1y, _t26, -(_p1x * _t25)) - _t30));
         float _t50 = Math.fma(_t0, _t5, Math.fma(-_p0y, _t3, _t45 / _t47));
@@ -14173,20 +14376,20 @@ public final class Float4x4Ops {
         float _t58 = _t50 * _t52_inv;
         float _t60 = (_t45 + _t45) / ((1.0f - _t45 / _t55) * _t55);
         float _t61 = 1.0f + _t60;
-        dest[destOffset + 0] = (_t25 + _t25) * _t41_inv - _t53;
-        dest[destOffset + 1] = _t61 * _t5 * _t52_inv;
+        dest[destOffset + 0] = _sp1 * _t25 - _t53;
+        dest[destOffset + 1] = _t61 * _t53;
         dest[destOffset + 2] = 0.0f;
         dest[destOffset + 3] = _t53;
-        dest[destOffset + 4] = (_t26 + _t26) * _t41_inv - _t54;
-        dest[destOffset + 5] = _t61 * _t3 * _t52_inv;
+        dest[destOffset + 4] = _sp1 * _t26 - _t54;
+        dest[destOffset + 5] = _t61 * _t54;
         dest[destOffset + 6] = 0.0f;
         dest[destOffset + 7] = _t54;
         dest[destOffset + 8] = 0.0f;
         dest[destOffset + 9] = 0.0f;
         dest[destOffset + 10] = 1.0f;
         dest[destOffset + 11] = 0.0f;
-        dest[destOffset + 12] = 2.0f * Math.fma(_p0y, _t5, Math.fma(_t0, _t3, _t30)) * _t41_inv - _t58;
-        dest[destOffset + 13] = _t61 * _t50 * _t52_inv - _t60;
+        dest[destOffset + 12] = _sp1 * Math.fma(_p0y, _t5, Math.fma(_t0, _t3, _t30)) - _t58;
+        dest[destOffset + 13] = _t61 * _t58 - _t60;
         dest[destOffset + 14] = 0.0f;
         dest[destOffset + 15] = _t58;
         return dest;
@@ -16470,8 +16673,11 @@ public final class Float4x4Ops {
     }
 
     /**
-     * Apply an oblique military projection shear (compose with an orthographic projection for the
-     * full transform) to this matrix and store the result in {@code dest}.
+     * Apply an oblique projection shear drawing the XZ plane true shape and the Y axis at
+     * {@code angle}, depth {@code -y} (the military projection of a Y-up scene seen from below by a
+     * right-handed orthographic projection, or the cavalier projection of a Z-up scene;
+     * {@code obliquePlanometric} shows a Y-up scene from above; compose with an orthographic
+     * projection for the full transform) to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
      * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
@@ -16481,7 +16687,7 @@ public final class Float4x4Ops {
      * @param destOffset the element index in {@code dest} at which the matrix starts
      * @param src the storage holding the matrix
      * @param srcOffset the element index in {@code src} at which the matrix starts
-     * @param angle the angle in radians
+     * @param angle the angle, in radians, at which the Y axis is drawn from the screen's +x axis
      * @return {@code dest}
      */
     public static float[] obliqueMilitary(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
@@ -16512,6 +16718,55 @@ public final class Float4x4Ops {
     public static long obliqueMilitary(long dest, long src, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.obliqueMilitary_unsafe(dest, src, angle);
         obliqueMilitary(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, angle);
+        return dest;
+    }
+
+    /**
+     * Apply a military (planometric) projection of a Y-up scene seen from above: the XZ plan true
+     * shape turned by {@code angle}, verticals drawn straight up at full length, depth {@code y}
+     * (compose with an orthographic projection for the full transform) to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
+     * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * O * v}, the oblique shear will be applied first.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param angle the angle, in radians, by which the XZ plan is turned counter-clockwise on
+     *        screen
+     * @return {@code dest}
+     */
+    public static float[] obliquePlanometric(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.obliquePlanometric(dest, destOffset, src, srcOffset, angle);
+        return Float4x4OpsKernelsArray.obliquePlanometric_scalar(dest, destOffset, src, srcOffset, angle);
+    }
+
+    /** {@link #obliquePlanometric(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer obliquePlanometric(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsTypedBuffer.obliquePlanometric_unsafe(dest, destOffset, src, srcOffset, angle);
+        return Float4x4OpsKernelsTypedBuffer.obliquePlanometric_api(dest, destOffset, src, srcOffset, angle);
+    }
+
+    /** {@link #obliquePlanometric(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer obliquePlanometric(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4x4OpsKernelsByteBuffer.obliquePlanometric_unsafe(dest, destOffset, src, srcOffset, angle);
+        return Float4x4OpsKernelsByteBuffer.obliquePlanometric_api(dest, destOffset, src, srcOffset, angle);
+    }
+
+    /** {@link #obliquePlanometric(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment obliquePlanometric(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        if (SimdSupport.VECTOR_API) return Float4x4OpsSimd.obliquePlanometric(dest, destOffset, src, srcOffset, angle);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float4x4OpsKernelsSegment.obliquePlanometric_unsafe(dest, destOffset, src, srcOffset, angle);
+        return Float4x4OpsKernelsSegment.obliquePlanometric_api(dest, destOffset, src, srcOffset, angle);
+    }
+
+    /** {@link #obliquePlanometric(float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long obliquePlanometric(long dest, long src, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4x4OpsKernelsAddress.obliquePlanometric_unsafe(dest, src, angle);
+        obliquePlanometric(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 64L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 64L), 0L, angle);
         return dest;
     }
 
@@ -19581,9 +19836,9 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t3 = Math.fma(-pivotX, sX, pivotX);
-        float _t4 = Math.fma(-pivotY, sY, pivotY);
-        float _t5 = Math.fma(-pivotZ, sZ, pivotZ);
+        float _t3 = pivotX * (1.0f - sX);
+        float _t4 = pivotY * (1.0f - sY);
+        float _t5 = pivotZ * (1.0f - sZ);
         dest[destOffset + 0] = Math.fma(sX, _self00, _self30 * _t3);
         dest[destOffset + 1] = Math.fma(sY, _self10, _self30 * _t4);
         dest[destOffset + 2] = Math.fma(sZ, _self20, _self30 * _t5);
@@ -19669,9 +19924,9 @@ public final class Float4x4Ops {
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
         float _pivotz = pivot[pivotOffset + 2];
-        float _t3 = Math.fma(-_pivotx, _sx, _pivotx);
-        float _t4 = Math.fma(-_pivoty, _sy, _pivoty);
-        float _t5 = Math.fma(-_pivotz, _sz, _pivotz);
+        float _t3 = _pivotx * (1.0f - _sx);
+        float _t4 = _pivoty * (1.0f - _sy);
+        float _t5 = _pivotz * (1.0f - _sz);
         dest[destOffset + 0] = Math.fma(_sx, _self00, _self30 * _t3);
         dest[destOffset + 1] = Math.fma(_sy, _self10, _self30 * _t4);
         dest[destOffset + 2] = Math.fma(_sz, _self20, _self30 * _t5);
@@ -22206,27 +22461,26 @@ public final class Float4x4Ops {
         float _t14 = Math.fma(p0X, _t3, p0Y * _t4);
         float _t16 = Math.fma(p0Y, _t3, -(p0X * _t4));
         float _t18 = Math.fma(p3X, _t3, p3Y * _t4) - _t14;
-        float _t18_inv = 1.0f / _t18;
-        float _t19 = Math.fma(p3X, _t4, p3Y * _t5) + _t16;
-        float _t25 = _t4 - _t19 * _t3 * _t18_inv;
-        float _t26 = _t5 - _t19 * _t4 * _t18_inv;
-        float _t32 = _t19 * _t14 * _t18_inv;
-        float _t46 = Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t32))));
-        float _t46_inv = 1.0f / _t46;
+        float _sp0 = (Math.fma(p3X, _t4, p3Y * _t5) + _t16) / _t18;
+        float _t25 = _t4 - _sp0 * _t3;
+        float _t26 = _t5 - _sp0 * _t4;
+        float _t32 = _sp0 * _t14;
+        float _sp1 = 2.0f / Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p2X, _t25, Math.fma(p2Y, _t26, _t32))));
         float _t50 = Math.fma(p0Y, _t3, Math.fma(_t0, _t4, Math.fma(p1X, _t25, Math.fma(p1Y, _t26, _t32)))) * _t18;
         float _t55 = _t16 + (_t32 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t4, -(p0Y * _t3)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t32));
         float _t58 = Math.fma(_t0, _t3, Math.fma(-p0Y, _t4, _t50 / _t55));
         float _t60 = Math.fma(p3X, _t3, Math.fma(p3Y, _t4, _t58));
         float _t60_inv = 1.0f / _t60;
-        float _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
-        float _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
+        float _sp2 = _t60_inv * _t58;
+        float _t63 = _sp1 * _t25 - _t3 * _t60_inv;
+        float _t64 = _sp1 * _t26 - _t4 * _t60_inv;
         float _t65 = _t60 * _t55;
-        float _t69 = 2.0f * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
+        float _t69 = _sp1 * Math.fma(p0Y, _t3, Math.fma(_t0, _t4, _t32)) - _sp2;
         float _t71 = (_t50 + _t50) / ((1.0f - _t50 / _t65) * _t65);
         float _t72 = 1.0f + _t71;
         float _t73 = _t72 * _t3;
         float _t74 = _t72 * _t4;
-        float _t77 = _t72 * _t58 * _t60_inv - _t71;
+        float _t77 = _t72 * _sp2 - _t71;
         dest[destOffset + 0] = Math.fma(_self30, _t69, Math.fma(_self00, _t63, _self10 * _t64));
         dest[destOffset + 1] = Math.fma(_self30, _t77, Math.fma(_self00, _t73, _self10 * _t74) * _t60_inv);
         dest[destOffset + 2] = _self20;
@@ -22325,27 +22579,26 @@ public final class Float4x4Ops {
         float _t14 = Math.fma(_p0x, _t3, _p0y * _t4);
         float _t16 = Math.fma(_p0y, _t3, -(_p0x * _t4));
         float _t18 = Math.fma(_p3x, _t3, _p3y * _t4) - _t14;
-        float _t18_inv = 1.0f / _t18;
-        float _t19 = Math.fma(_p3x, _t4, _p3y * _t5) + _t16;
-        float _t25 = _t4 - _t19 * _t3 * _t18_inv;
-        float _t26 = _t5 - _t19 * _t4 * _t18_inv;
-        float _t32 = _t19 * _t14 * _t18_inv;
-        float _t46 = Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t32))));
-        float _t46_inv = 1.0f / _t46;
+        float _sp0 = (Math.fma(_p3x, _t4, _p3y * _t5) + _t16) / _t18;
+        float _t25 = _t4 - _sp0 * _t3;
+        float _t26 = _t5 - _sp0 * _t4;
+        float _t32 = _sp0 * _t14;
+        float _sp1 = 2.0f / Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p2x, _t25, Math.fma(_p2y, _t26, _t32))));
         float _t50 = Math.fma(_p0y, _t3, Math.fma(_t0, _t4, Math.fma(_p1x, _t25, Math.fma(_p1y, _t26, _t32)))) * _t18;
         float _t55 = _t16 + (_t32 + Math.fma(_p2x, _t25, _p2y * _t26)) + (Math.fma(_p0x, _t4, -(_p0y * _t3)) + (Math.fma(-_p1y, _t26, -(_p1x * _t25)) - _t32));
         float _t58 = Math.fma(_t0, _t3, Math.fma(-_p0y, _t4, _t50 / _t55));
         float _t60 = Math.fma(_p3x, _t3, Math.fma(_p3y, _t4, _t58));
         float _t60_inv = 1.0f / _t60;
-        float _t63 = (_t25 + _t25) * _t46_inv - _t3 * _t60_inv;
-        float _t64 = (_t26 + _t26) * _t46_inv - _t4 * _t60_inv;
+        float _sp2 = _t60_inv * _t58;
+        float _t63 = _sp1 * _t25 - _t3 * _t60_inv;
+        float _t64 = _sp1 * _t26 - _t4 * _t60_inv;
         float _t65 = _t60 * _t55;
-        float _t69 = 2.0f * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) * _t46_inv - _t58 * _t60_inv;
+        float _t69 = _sp1 * Math.fma(_p0y, _t3, Math.fma(_t0, _t4, _t32)) - _sp2;
         float _t71 = (_t50 + _t50) / ((1.0f - _t50 / _t65) * _t65);
         float _t72 = 1.0f + _t71;
         float _t73 = _t72 * _t3;
         float _t74 = _t72 * _t4;
-        float _t77 = _t72 * _t58 * _t60_inv - _t71;
+        float _t77 = _t72 * _sp2 - _t71;
         dest[destOffset + 0] = Math.fma(_self30, _t69, Math.fma(_self00, _t63, _self10 * _t64));
         dest[destOffset + 1] = Math.fma(_self30, _t77, Math.fma(_self00, _t73, _self10 * _t74) * _t60_inv);
         dest[destOffset + 2] = _self20;
@@ -23333,30 +23586,40 @@ public final class Float4x4Ops {
         float _self03 = src[srcOffset + 12];
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
-        float _t0 = minX * _self00;
-        float _t1 = maxX * _self00;
-        float _t2 = minY * _self01;
-        float _t3 = maxY * _self01;
-        float _t4 = minZ * _self02;
-        float _t5 = maxZ * _self02;
-        float _t6 = minX * _self10;
-        float _t7 = maxX * _self10;
-        float _t8 = minY * _self11;
-        float _t9 = maxY * _self11;
-        float _t10 = minZ * _self12;
-        float _t11 = maxZ * _self12;
-        float _t12 = minX * _self20;
-        float _t13 = maxX * _self20;
-        float _t14 = minY * _self21;
-        float _t15 = maxY * _self21;
-        float _t16 = minZ * _self22;
-        float _t17 = maxZ * _self22;
-        dest[destOffset + 0] = _self03 + Math.min(_t0, _t1) + Math.min(_t2, _t3) + Math.min(_t4, _t5);
-        dest[destOffset + 1] = _self13 + Math.min(_t6, _t7) + Math.min(_t8, _t9) + Math.min(_t10, _t11);
-        dest[destOffset + 2] = _self23 + Math.min(_t12, _t13) + Math.min(_t14, _t15) + Math.min(_t16, _t17);
-        dest[destOffset + 3] = _self03 + Math.max(_t0, _t1) + Math.max(_t2, _t3) + Math.max(_t4, _t5);
-        dest[destOffset + 4] = _self13 + Math.max(_t6, _t7) + Math.max(_t8, _t9) + Math.max(_t10, _t11);
-        dest[destOffset + 5] = _self23 + Math.max(_t12, _t13) + Math.max(_t14, _t15) + Math.max(_t16, _t17);
+        float _t3 = minX * _self00;
+        float _t4 = maxX * _self00;
+        float _t5 = minY * _self01;
+        float _t6 = maxY * _self01;
+        float _t7 = minZ * _self02;
+        float _t8 = maxZ * _self02;
+        float _t9 = minX * _self10;
+        float _t10 = maxX * _self10;
+        float _t11 = minY * _self11;
+        float _t12 = maxY * _self11;
+        float _t13 = minZ * _self12;
+        float _t14 = maxZ * _self12;
+        float _t15 = minX * _self20;
+        float _t16 = maxX * _self20;
+        float _t17 = minY * _self21;
+        float _t18 = maxY * _self21;
+        float _t19 = minZ * _self22;
+        float _t20 = maxZ * _self22;
+        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t22 < 0.0f) {
+            dest[destOffset + 0] = Float.POSITIVE_INFINITY;
+            dest[destOffset + 1] = Float.POSITIVE_INFINITY;
+            dest[destOffset + 2] = Float.POSITIVE_INFINITY;
+            dest[destOffset + 3] = Float.NEGATIVE_INFINITY;
+            dest[destOffset + 4] = Float.NEGATIVE_INFINITY;
+            dest[destOffset + 5] = Float.NEGATIVE_INFINITY;
+        } else {
+            dest[destOffset + 0] = _self03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+            dest[destOffset + 1] = _self13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+            dest[destOffset + 2] = _self23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+            dest[destOffset + 3] = _self03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+            dest[destOffset + 4] = _self13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+            dest[destOffset + 5] = _self23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+        }
         return dest;
     }
 

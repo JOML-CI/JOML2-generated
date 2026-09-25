@@ -2251,7 +2251,8 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float2x3 preScaleAround_identity(float s, float pivotX, float pivotY) {
-        return new Float2x3(s, 0.0f, Math.fma(-s, pivotX, pivotX), 0.0f, s, Math.fma(-s, pivotY, pivotY), Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float2x3(s, 0.0f, pivotX * _t0, 0.0f, s, pivotY * _t0, Joml.BIT_AFFINE);
     }
 
 
@@ -2260,7 +2261,8 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float2x3 preScaleAround_translation(float s, float pivotX, float pivotY) {
-        return new Float2x3(s, 0.0f, Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX)), 0.0f, s, Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY)), Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float2x3(s, 0.0f, Math.fma(s, this.m02, pivotX * _t0), 0.0f, s, Math.fma(s, this.m12, pivotY * _t0), Joml.BIT_AFFINE);
     }
 
 
@@ -2269,7 +2271,8 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float2x3 preScaleAround_general(float s, float pivotX, float pivotY) {
-        return new Float2x3(s * this.m00, s * this.m01, Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX)), s * this.m10, s * this.m11, Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY)), Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float2x3(s * this.m00, s * this.m01, Math.fma(s, this.m02, pivotX * _t0), s * this.m10, s * this.m11, Math.fma(s, this.m12, pivotY * _t0), Joml.BIT_AFFINE);
     }
 
 
@@ -2316,7 +2319,7 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float2x3 preScaleAround_identity(float sX, float sY, float pivotX, float pivotY) {
-        return new Float2x3(sX, 0.0f, Math.fma(-pivotX, sX, pivotX), 0.0f, sY, Math.fma(-pivotY, sY, pivotY), Joml.BIT_AFFINE);
+        return new Float2x3(sX, 0.0f, pivotX * (1.0f - sX), 0.0f, sY, pivotY * (1.0f - sY), Joml.BIT_AFFINE);
     }
 
 
@@ -2325,7 +2328,7 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Float2x3 preScaleAround_general(float sX, float sY, float pivotX, float pivotY) {
-        return new Float2x3(sX * this.m00, sX * this.m01, Math.fma(-pivotX, sX, Math.fma(sX, this.m02, pivotX)), sY * this.m10, sY * this.m11, Math.fma(-pivotY, sY, Math.fma(sY, this.m12, pivotY)), Joml.BIT_AFFINE);
+        return new Float2x3(sX * this.m00, sX * this.m01, Math.fma(pivotX, 1.0f - sX, sX * this.m02), sY * this.m10, sY * this.m11, Math.fma(pivotY, 1.0f - sY, sY * this.m12), Joml.BIT_AFFINE);
     }
 
 
@@ -2719,7 +2722,8 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code scaleAround} dispatcher.
      */
     private Float2x3 scaleAround_translation(float s, float pivotX, float pivotY) {
-        return new Float2x3(s, 0.0f, Math.fma(-s, pivotX, this.m02 + pivotX), 0.0f, s, Math.fma(-s, pivotY, this.m12 + pivotY), Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        return new Float2x3(s, 0.0f, Math.fma(pivotX, _t0, this.m02), 0.0f, s, Math.fma(pivotY, _t0, this.m12), Joml.BIT_AFFINE);
     }
 
 
@@ -2728,9 +2732,10 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code scaleAround} dispatcher.
      */
     private Float2x3 scaleAround_orthogonal(float s, float pivotX, float pivotY) {
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        return new Float2x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t0, Math.fma(this.m01, _t1, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t0, Math.fma(this.m11, _t1, this.m12)), Joml.BIT_AFFINE);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        return new Float2x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t1, Math.fma(this.m01, _t2, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t1, Math.fma(this.m11, _t2, this.m12)), Joml.BIT_AFFINE);
     }
 
 
@@ -2796,7 +2801,7 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code scaleAround} dispatcher.
      */
     private Float2x3 scaleAround_translation(float sX, float sY, float pivotX, float pivotY) {
-        return new Float2x3(sX, 0.0f, Math.fma(-pivotX, sX, this.m02 + pivotX), 0.0f, sY, Math.fma(-pivotY, sY, this.m12 + pivotY), Joml.BIT_AFFINE);
+        return new Float2x3(sX, 0.0f, Math.fma(pivotX, 1.0f - sX, this.m02), 0.0f, sY, Math.fma(pivotY, 1.0f - sY, this.m12), Joml.BIT_AFFINE);
     }
 
 
@@ -2805,8 +2810,8 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * through the public {@code scaleAround} dispatcher.
      */
     private Float2x3 scaleAround_orthogonal(float sX, float sY, float pivotX, float pivotY) {
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         return new Float2x3(sX * this.m00, sY * this.m01, Math.fma(this.m00, _t2, Math.fma(this.m01, _t3, this.m02)), sX * this.m10, sY * this.m11, Math.fma(this.m10, _t2, Math.fma(this.m11, _t3, this.m12)), Joml.BIT_AFFINE);
     }
 
@@ -2946,13 +2951,13 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * the public {@code view} dispatcher.
      */
     private Float2x3 view_orthogonal(float left, float right, float bottom, float top) {
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        return new Float2x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, Joml.BIT_AFFINE);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        return new Float2x3(_sp0 * this.m00, _sp1 * this.m01, this.m02 - this.m00 * _sp2 - this.m01 * _sp3, _sp0 * this.m10, _sp1 * this.m11, this.m12 - this.m10 * _sp2 - this.m11 * _sp3, Joml.BIT_AFFINE);
     }
 
 
@@ -2961,13 +2966,13 @@ public record Float2x3(float m00, float m01, float m02, float m10, float m11, fl
      * the public {@code view} dispatcher.
      */
     private Float2x3 view_general(float left, float right, float bottom, float top) {
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        return new Float2x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), Joml.BIT_AFFINE);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        return new Float2x3(_sp0 * this.m00, _sp1 * this.m01, this.m02 + (-(this.m00 * _sp2) - this.m01 * _sp3), _sp0 * this.m10, _sp1 * this.m11, this.m12 + (-(this.m10 * _sp2) - this.m11 * _sp3), Joml.BIT_AFFINE);
     }
 
 

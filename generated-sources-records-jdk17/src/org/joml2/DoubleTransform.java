@@ -14,6 +14,11 @@ import java.nio.FloatBuffer;
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
  * <p>
+ * Its rotation is a unit quaternion. Every operation that applies, composes, inverts or converts
+ * this transform assumes its rotation has unit length and does not divide it out. A value that has
+ * drifted from unit length (after many multiplications, say) gives wrong results rather than an
+ * error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
@@ -432,41 +437,41 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static DoubleTransform makeFromMatrix_s91e5aa_tail2(Double3x3 m, double _t12, double _t13, double _t49, double _t1, double _t50, double _t0, double _t60, double _t33, double _t45, double _t34, double _t22, double _t17, double _t52, double _t53, double _t54, double _t29, double _t55, double _t44, double _t15, double _t9, double _t10) {
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sfx0 = 0.0;
         double _sfx1 = 0.0;
         double _sfx2 = 0.0;
-        double _sfx3 = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        return makeFromMatrix_s91e5aa_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+        double _sfx3 = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        return makeFromMatrix_s91e5aa_tail3(_t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleTransform makeFromMatrix_s91e5aa_tail3(double _t60, double _t54, double _t62, double _t45, double _t34, double _t52, double _t68, double _t22, double _t17, double _t63, double _t29, double _t67, double _t55, double _t53, double _t66, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+    private static DoubleTransform makeFromMatrix_s91e5aa_tail3(double _t60, double _sp0, double _t54, double _t45, double _t34, double _sp3, double _t52, double _t22, double _t17, double _t63, double _sp2, double _t29, double _t55, double _t53, double _sp1, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
         double _sfx4, _sfx5, _sfx6;
         if (_t60 > 0.0) {
-            _sfx4 = 0.5 * _t54 * _t62;
-            _sfx5 = 0.5 * _t55 * _t62;
+            _sfx4 = _sp0 * _t54;
+            _sfx5 = _sp0 * _t55;
             _sfx6 = 0.5 * Math.sqrt(_t61);
         } else {
             if (_t45 > _t34) {
-                _sfx4 = 0.5 * _t52 * _t68;
-                _sfx5 = 0.5 * _t53 * _t68;
-                _sfx6 = 0.5 * _t33 * _t68;
+                _sfx4 = _sp3 * _t52;
+                _sfx5 = _sp3 * _t53;
+                _sfx6 = _sp3 * _t33;
             } else {
                 if (_t22 > _t17) {
                     _sfx4 = 0.5 * Math.sqrt(_t63);
-                    _sfx5 = 0.5 * _t29 * _t66;
-                    _sfx6 = 0.5 * _t54 * _t66;
+                    _sfx5 = _sp1 * _t29;
+                    _sfx6 = _sp1 * _t54;
                 } else {
-                    _sfx4 = 0.5 * _t29 * _t67;
+                    _sfx4 = _sp2 * _t29;
                     _sfx5 = 0.5 * Math.sqrt(_t64);
-                    _sfx6 = 0.5 * _t55 * _t67;
+                    _sfx6 = _sp2 * _t55;
                 }
             }
         }
@@ -493,8 +498,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = m.m10() * _t14;
         double _t17 = m.m22() * _t13;
         double _t18 = m.m12() * _t13;
@@ -534,41 +539,41 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static DoubleTransform makeFromMatrix_s91e96b_tail2(Double3x4 m, double _t12, double _t13, double _t49, double _t1, double _t50, double _t0, double _t60, double _t33, double _t45, double _t34, double _t22, double _t17, double _t52, double _t53, double _t54, double _t29, double _t55, double _t44, double _t15, double _t9, double _t10) {
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sfx0 = m.m03();
         double _sfx1 = m.m13();
         double _sfx2 = m.m23();
-        double _sfx3 = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        return makeFromMatrix_s91e96b_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+        double _sfx3 = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        return makeFromMatrix_s91e96b_tail3(_t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleTransform makeFromMatrix_s91e96b_tail3(double _t60, double _t54, double _t62, double _t45, double _t34, double _t52, double _t68, double _t22, double _t17, double _t63, double _t29, double _t67, double _t55, double _t53, double _t66, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+    private static DoubleTransform makeFromMatrix_s91e96b_tail3(double _t60, double _sp0, double _t54, double _t45, double _t34, double _sp3, double _t52, double _t22, double _t17, double _t63, double _sp2, double _t29, double _t55, double _t53, double _sp1, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
         double _sfx4, _sfx5, _sfx6;
         if (_t60 > 0.0) {
-            _sfx4 = 0.5 * _t54 * _t62;
-            _sfx5 = 0.5 * _t55 * _t62;
+            _sfx4 = _sp0 * _t54;
+            _sfx5 = _sp0 * _t55;
             _sfx6 = 0.5 * Math.sqrt(_t61);
         } else {
             if (_t45 > _t34) {
-                _sfx4 = 0.5 * _t52 * _t68;
-                _sfx5 = 0.5 * _t53 * _t68;
-                _sfx6 = 0.5 * _t33 * _t68;
+                _sfx4 = _sp3 * _t52;
+                _sfx5 = _sp3 * _t53;
+                _sfx6 = _sp3 * _t33;
             } else {
                 if (_t22 > _t17) {
                     _sfx4 = 0.5 * Math.sqrt(_t63);
-                    _sfx5 = 0.5 * _t29 * _t66;
-                    _sfx6 = 0.5 * _t54 * _t66;
+                    _sfx5 = _sp1 * _t29;
+                    _sfx6 = _sp1 * _t54;
                 } else {
-                    _sfx4 = 0.5 * _t29 * _t67;
+                    _sfx4 = _sp2 * _t29;
                     _sfx5 = 0.5 * Math.sqrt(_t64);
-                    _sfx6 = 0.5 * _t55 * _t67;
+                    _sfx6 = _sp2 * _t55;
                 }
             }
         }
@@ -596,8 +601,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = m.m10() * _t14;
         double _t17 = m.m22() * _t13;
         double _t18 = m.m12() * _t13;
@@ -637,41 +642,41 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static DoubleTransform makeFromMatrix_sa000ec_tail2(Double4x4 m, double _t12, double _t13, double _t49, double _t1, double _t50, double _t0, double _t60, double _t33, double _t45, double _t34, double _t22, double _t17, double _t52, double _t53, double _t54, double _t29, double _t55, double _t44, double _t15, double _t9, double _t10) {
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         double _sfx0 = m.m03();
         double _sfx1 = m.m13();
         double _sfx2 = m.m23();
-        double _sfx3 = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        return makeFromMatrix_sa000ec_tail3(_t60, _t54, _t62, _t45, _t34, _t52, _t68, _t22, _t17, _t63, _t29, _t67, _t55, _t53, _t66, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
+        double _sfx3 = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        return makeFromMatrix_sa000ec_tail3(_t60, _sp0, _t54, _t45, _t34, _sp3, _t52, _t22, _t17, _t63, _sp2, _t29, _t55, _t53, _sp1, _t64, _t61, _t33, _t44, _t15, _t9, _t10, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleTransform makeFromMatrix_sa000ec_tail3(double _t60, double _t54, double _t62, double _t45, double _t34, double _t52, double _t68, double _t22, double _t17, double _t63, double _t29, double _t67, double _t55, double _t53, double _t66, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+    private static DoubleTransform makeFromMatrix_sa000ec_tail3(double _t60, double _sp0, double _t54, double _t45, double _t34, double _sp3, double _t52, double _t22, double _t17, double _t63, double _sp2, double _t29, double _t55, double _t53, double _sp1, double _t64, double _t61, double _t33, double _t44, double _t15, double _t9, double _t10, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
         double _sfx4, _sfx5, _sfx6;
         if (_t60 > 0.0) {
-            _sfx4 = 0.5 * _t54 * _t62;
-            _sfx5 = 0.5 * _t55 * _t62;
+            _sfx4 = _sp0 * _t54;
+            _sfx5 = _sp0 * _t55;
             _sfx6 = 0.5 * Math.sqrt(_t61);
         } else {
             if (_t45 > _t34) {
-                _sfx4 = 0.5 * _t52 * _t68;
-                _sfx5 = 0.5 * _t53 * _t68;
-                _sfx6 = 0.5 * _t33 * _t68;
+                _sfx4 = _sp3 * _t52;
+                _sfx5 = _sp3 * _t53;
+                _sfx6 = _sp3 * _t33;
             } else {
                 if (_t22 > _t17) {
                     _sfx4 = 0.5 * Math.sqrt(_t63);
-                    _sfx5 = 0.5 * _t29 * _t66;
-                    _sfx6 = 0.5 * _t54 * _t66;
+                    _sfx5 = _sp1 * _t29;
+                    _sfx6 = _sp1 * _t54;
                 } else {
-                    _sfx4 = 0.5 * _t29 * _t67;
+                    _sfx4 = _sp2 * _t29;
                     _sfx5 = 0.5 * Math.sqrt(_t64);
-                    _sfx6 = 0.5 * _t55 * _t67;
+                    _sfx6 = _sp2 * _t55;
                 }
             }
         }
@@ -699,8 +704,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = m.m10() * _t14;
         double _t17 = m.m22() * _t13;
         double _t18 = m.m12() * _t13;
@@ -783,7 +788,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Compute the matrix representation of this transform, returning the result as a value.
+     * Compute the matrix representation of this transform (whose rotation must be a unit
+     * quaternion), returning the result as a value.
      *
      * @return the resulting matrix
      */
@@ -816,8 +822,9 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
 
     /**
-     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}), returning the result as a value.
+     * Compute the 3x4 matrix representation of this transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}), returning the result as a
+     * value.
      *
      * @return the resulting matrix
      */
@@ -1034,7 +1041,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
         double _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
         double _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
         double _sfx3, _sfx4, _sfx5, _sfx6;
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             _sfx3 = _t50 * _t44;
             _sfx4 = _t50 * _t45;
             _sfx5 = _t50 * _t43;
@@ -1289,16 +1296,15 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private DoubleTransform difference_s25974579_tail(double _rcp0, double _rcp2, double _t30, double _t31, double _t32, double otherTX, double _rcp1, double _t33, double _t34, double otherTY, double otherTZ, double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double otherSY, double otherSZ) {
-        double _t35 = 2.0 * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
-        double _sfx0 = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, otherTX * _rcp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -(this.tX * _rcp1)));
-        double _sfx1 = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, otherTY * _rcp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -(this.tY * _rcp2)));
-        return difference_s25974579_tail2(_t32, _t30, _t31, otherTZ, _rcp0, _t35, _t33, _t34, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _sfx0, _sfx1);
+    private DoubleTransform difference_s25974579_tail(double _t30, double _t31, double _t32, double _sp1, double _t33, double _t34, double _t35, double _sp3, double _sp2, double _sp5, double _sp0, double _sp4, double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double _rcp1, double otherSY, double _rcp2, double otherSZ, double _rcp0) {
+        double _sfx0 = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, _sp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -_sp3));
+        double _sfx1 = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, _sp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -_sp5));
+        double _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, _sp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -_sp4));
+        return difference_s25974579_tail2(otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code difference}; reached only through it. */
-    private DoubleTransform difference_s25974579_tail2(double _t32, double _t30, double _t31, double otherTZ, double _rcp0, double _t35, double _t33, double _t34, double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double _rcp1, double otherSY, double _rcp2, double otherSZ, double _sfx0, double _sfx1) {
-        double _sfx2 = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, otherTZ * _rcp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -(this.tZ * _rcp0)));
+    private DoubleTransform difference_s25974579_tail2(double otherRX, double otherRW, double otherRY, double otherRZ, double otherSX, double _rcp1, double otherSY, double _rcp2, double otherSZ, double _rcp0, double _sfx0, double _sfx1, double _sfx2) {
         double _sfx3 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         double _sfx4 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         double _sfx5 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
@@ -1350,34 +1356,54 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      */
     public DoubleTransform difference(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW, double otherSX, double otherSY, double otherSZ) {
         double _rcp0 = 1.0 / this.sZ;
+        double _sp4 = _rcp0 * this.tZ;
+        double _sp0 = otherTZ * _rcp0;
         double _rcp1 = 1.0 / this.sX;
+        double _sp3 = _rcp1 * this.tX;
+        double _sp1 = otherTX * _rcp1;
         double _rcp2 = 1.0 / this.sY;
-        double _t30 = 2.0 * (otherTZ * this.rX * _rcp0 - otherTX * this.rZ * _rcp1);
-        double _t31 = 2.0 * (otherTX * this.rY * _rcp1 - otherTY * this.rX * _rcp2);
-        double _t32 = 2.0 * (otherTY * this.rZ * _rcp2 - otherTZ * this.rY * _rcp0);
-        double _t33 = 2.0 * (this.tX * this.rZ * _rcp1 - this.tZ * this.rX * _rcp0);
-        double _t34 = 2.0 * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp1);
-        return difference_s25974579_tail(_rcp0, _rcp2, _t30, _t31, _t32, otherTX, _rcp1, _t33, _t34, otherTY, otherTZ, otherRX, otherRW, otherRY, otherRZ, otherSX, otherSY, otherSZ);
+        double _sp5 = _rcp2 * this.tY;
+        double _sp2 = otherTY * _rcp2;
+        double _t30 = 2.0 * (_sp0 * this.rX - _sp1 * this.rZ);
+        double _t31 = 2.0 * (_sp1 * this.rY - _sp2 * this.rX);
+        double _t32 = 2.0 * (_sp2 * this.rZ - _sp0 * this.rY);
+        double _t33 = 2.0 * (_sp3 * this.rZ - _sp4 * this.rX);
+        double _t34 = 2.0 * (_sp5 * this.rX - _sp3 * this.rY);
+        double _t35 = 2.0 * (_sp4 * this.rY - _sp5 * this.rZ);
+        return difference_s25974579_tail(_t30, _t31, _t32, _sp1, _t33, _t34, _t35, _sp3, _sp2, _sp5, _sp0, _sp4, otherRX, otherRW, otherRY, otherRZ, otherSX, _rcp1, otherSY, _rcp2, otherSZ, _rcp0);
     }
 
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale, returning the result as a value.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity), returning the result as a value.
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @return the resulting transform
      */
     public DoubleTransform invert() {
         double _rcp0 = 1.0 / this.sX;
+        double _sp0 = this.tX * _rcp0;
         double _rcp1 = 1.0 / this.sZ;
+        double _sp1 = this.tZ * _rcp1;
         double _rcp2 = 1.0 / this.sY;
+        double _sp2 = this.tY * _rcp2;
         double _t0 = -this.rY;
         double _t1 = -this.rZ;
         double _t2 = -this.rX;
-        double _t18 = 2.0 * (this.tX * this.rZ * _rcp0 - this.tZ * this.rX * _rcp1);
-        double _t19 = 2.0 * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp0);
-        double _t20 = 2.0 * (this.tZ * this.rY * _rcp1 - this.tY * this.rZ * _rcp2);
-        return new DoubleTransform(Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -(this.tX * _rcp0)))), Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -(this.tY * _rcp2)))), Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -(this.tZ * _rcp1)))), _t2, _t0, _t1, this.rW, _rcp0, _rcp2, _rcp1);
+        double _t18 = 2.0 * (_sp0 * this.rZ - _sp1 * this.rX);
+        double _t19 = 2.0 * (_sp2 * this.rX - _sp0 * this.rY);
+        double _t20 = 2.0 * (_sp1 * this.rY - _sp2 * this.rZ);
+        return new DoubleTransform(Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -_sp0))), Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -_sp2))), Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -_sp1))), _t2, _t0, _t1, this.rW, _rcp0, _rcp2, _rcp1);
     }
 
 
@@ -1395,7 +1421,7 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     public DoubleTransform normalize() {
         double _t3 = Math.fma(this.rW, this.rW, Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY)));
         double _t4 = (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             return new DoubleTransform(this.tX, this.tY, this.tZ, this.rX * _t4, this.rY * _t4, this.rZ * _t4, this.rW * _t4, this.sX, this.sY, this.sZ);
         } else {
             return new DoubleTransform(this.tX, this.tY, this.tZ, 0.0, 0.0, 0.0, 0.0, this.sX, this.sY, this.sZ);
@@ -1407,13 +1433,21 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesXYZ() {
         double _t1 = this.rY * this.rZ;
@@ -1435,13 +1469,21 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesXZY() {
         double _t0 = this.rZ * this.rZ;
@@ -1463,13 +1505,21 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesYXZ() {
         double _t3 = this.rZ * this.rZ;
@@ -1490,13 +1540,21 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesYZX() {
         double _t0 = this.rZ * this.rZ;
@@ -1517,13 +1575,21 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesZXY() {
         double _t1 = this.rZ * this.rZ;
@@ -1544,13 +1610,21 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
      * in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesZYX() {
         double _t0 = this.rZ * this.rZ;
@@ -2440,6 +2514,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Transform {@code v} by this transform, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -2452,6 +2528,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this transform, returning the result as a
      * value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2472,6 +2550,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @return the resulting vector
@@ -2484,6 +2564,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2502,6 +2584,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()}, returning the result
      * as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @return the resulting vector
@@ -2515,6 +2599,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()}, returning the result
      * as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2531,6 +2617,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
 
     /**
      * Transform {@code p} by the inverse of this transform, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -2543,6 +2631,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this transform, returning
      * the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -2563,6 +2653,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform
      * @return the resulting vector
@@ -2575,6 +2667,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2589,6 +2683,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -2601,6 +2697,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -2615,6 +2713,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -2627,6 +2727,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2648,6 +2750,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -2661,6 +2765,8 @@ public record DoubleTransform(double tX, double tY, double tZ, double rX, double
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}

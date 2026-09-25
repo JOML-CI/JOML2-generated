@@ -984,7 +984,41 @@ public final class Double3OpsKernelsByteBuffer {
         double _t6 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
         double _t7 = Math.fma(otherY, _selfx, -(otherX * _selfy));
         double _t8 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
-        return Math.atan2(Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
+        double _ct0 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double3OpsKernelsByteBuffer.angleBetween_degenerate(src, srcOffset, otherX, otherY, otherZ);
+        return Math.atan2(Math.sqrt(_ct0), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
+    }
+
+    public static double angleBetween_degenerate(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.angleBetween_degenerate_unsafe(src, srcOffset, otherX, otherY, otherZ);
+        return Double3OpsKernelsByteBuffer.angleBetween_degenerate_api(src, srcOffset, otherX, otherY, otherZ);
+    }
+
+    public static double angleBetween_degenerate_unsafe(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        return Double3OpsKernelsAddress.angleBetween_degenerate_unsafe(_srcBase, otherX, otherY, otherZ);
+    }
+
+    public static double angleBetween_degenerate_api(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ) {
+        double _selfx = src.getDouble(srcOffset + 0);
+        double _selfy = src.getDouble(srcOffset + 8);
+        double _selfz = src.getDouble(srcOffset + 16);
+        double _t0 = unitScale(otherX, otherY, otherZ);
+        double _t1 = unitScale(_selfx, _selfy, _selfz);
+        double _t8 = otherZ * _t0;
+        double _t9 = _selfy * _t1;
+        double _t10 = otherY * _t0;
+        double _t11 = _selfz * _t1;
+        double _t12 = _selfx * _t1;
+        double _t13 = otherX * _t0;
+        double _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        double _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        double _t22 = Math.fma(_t8, _t12, -(_t13 * _t11));
+        double _t23 = unitScale(_t21, _t22, _t20);
+        double _t27 = _t20 * _t23;
+        double _t28 = _t21 * _t23;
+        double _t29 = _t22 * _t23;
+        return Math.atan2(Math.sqrt(Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29))), Math.fma(_t8, _t11, Math.fma(_t13, _t12, _t10 * _t9)) * _t23);
     }
 
     public static double angleBetween_unsafe(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
@@ -1003,7 +1037,45 @@ public final class Double3OpsKernelsByteBuffer {
         double _t6 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
         double _t7 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
         double _t8 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
-        return Math.atan2(Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
+        double _ct0 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double3OpsKernelsByteBuffer.angleBetween_degenerate(src, srcOffset, other, otherOffset);
+        return Math.atan2(Math.sqrt(_ct0), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
+    }
+
+    public static double angleBetween_degenerate(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.angleBetween_degenerate_unsafe(src, srcOffset, other, otherOffset);
+        return Double3OpsKernelsByteBuffer.angleBetween_degenerate_api(src, srcOffset, other, otherOffset);
+    }
+
+    public static double angleBetween_degenerate_unsafe(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + otherOffset;
+        return Double3OpsKernelsAddress.angleBetween_degenerate_unsafe(_srcBase, _otherBase);
+    }
+
+    public static double angleBetween_degenerate_api(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
+        double _selfx = src.getDouble(srcOffset + 0);
+        double _selfy = src.getDouble(srcOffset + 8);
+        double _selfz = src.getDouble(srcOffset + 16);
+        double _otherx = other.getDouble(otherOffset + 0);
+        double _othery = other.getDouble(otherOffset + 8);
+        double _otherz = other.getDouble(otherOffset + 16);
+        double _t0 = unitScale(_otherx, _othery, _otherz);
+        double _t1 = unitScale(_selfx, _selfy, _selfz);
+        double _t8 = _otherz * _t0;
+        double _t9 = _selfy * _t1;
+        double _t10 = _othery * _t0;
+        double _t11 = _selfz * _t1;
+        double _t12 = _selfx * _t1;
+        double _t13 = _otherx * _t0;
+        double _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        double _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        double _t22 = Math.fma(_t8, _t12, -(_t13 * _t11));
+        double _t23 = unitScale(_t21, _t22, _t20);
+        double _t27 = _t20 * _t23;
+        double _t28 = _t21 * _t23;
+        double _t29 = _t22 * _t23;
+        return Math.atan2(Math.sqrt(Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29))), Math.fma(_t8, _t11, Math.fma(_t13, _t12, _t10 * _t9)) * _t23);
     }
 
     public static java.nio.ByteBuffer asin_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
@@ -2025,10 +2097,9 @@ public final class Double3OpsKernelsByteBuffer {
         double _selfx = src.getDouble(srcOffset + 0);
         double _selfy = src.getDouble(srcOffset + 8);
         double _selfz = src.getDouble(srcOffset + 16);
-        double _rcp0 = 1.0 / y;
-        dest.putDouble(destOffset + 0, Math.fma(-y, Math.floor(_selfx * _rcp0), _selfx));
-        dest.putDouble(destOffset + 8, Math.fma(-y, Math.floor(_selfy * _rcp0), _selfy));
-        dest.putDouble(destOffset + 16, Math.fma(-y, Math.floor(_selfz * _rcp0), _selfz));
+        dest.putDouble(destOffset + 0, flooredMod(_selfx, y));
+        dest.putDouble(destOffset + 8, flooredMod(_selfy, y));
+        dest.putDouble(destOffset + 16, flooredMod(_selfz, y));
         return dest;
     }
 
@@ -2043,9 +2114,9 @@ public final class Double3OpsKernelsByteBuffer {
         double _selfx = src.getDouble(srcOffset + 0);
         double _selfy = src.getDouble(srcOffset + 8);
         double _selfz = src.getDouble(srcOffset + 16);
-        dest.putDouble(destOffset + 0, Math.fma(-yX, Math.floor(_selfx / yX), _selfx));
-        dest.putDouble(destOffset + 8, Math.fma(-yY, Math.floor(_selfy / yY), _selfy));
-        dest.putDouble(destOffset + 16, Math.fma(-yZ, Math.floor(_selfz / yZ), _selfz));
+        dest.putDouble(destOffset + 0, flooredMod(_selfx, yX));
+        dest.putDouble(destOffset + 8, flooredMod(_selfy, yY));
+        dest.putDouble(destOffset + 16, flooredMod(_selfz, yZ));
         return dest;
     }
 
@@ -2064,9 +2135,9 @@ public final class Double3OpsKernelsByteBuffer {
         double _yx = y.getDouble(yOffset + 0);
         double _yy = y.getDouble(yOffset + 8);
         double _yz = y.getDouble(yOffset + 16);
-        dest.putDouble(destOffset + 0, Math.fma(-_yx, Math.floor(_selfx / _yx), _selfx));
-        dest.putDouble(destOffset + 8, Math.fma(-_yy, Math.floor(_selfy / _yy), _selfy));
-        dest.putDouble(destOffset + 16, Math.fma(-_yz, Math.floor(_selfz / _yz), _selfz));
+        dest.putDouble(destOffset + 0, flooredMod(_selfx, _yx));
+        dest.putDouble(destOffset + 8, flooredMod(_selfy, _yy));
+        dest.putDouble(destOffset + 16, flooredMod(_selfz, _yz));
         return dest;
     }
 
@@ -2117,7 +2188,7 @@ public final class Double3OpsKernelsByteBuffer {
         double _selfz = src.getDouble(srcOffset + 16);
         double _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest.putDouble(destOffset + 0, _selfx * _t3);
             dest.putDouble(destOffset + 8, _selfy * _t3);
             dest.putDouble(destOffset + 16, _selfz * _t3);
@@ -2142,7 +2213,7 @@ public final class Double3OpsKernelsByteBuffer {
         double _selfz = src.getDouble(srcOffset + 16);
         double _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         double _t4 = length * (1.0 / Math.sqrt(_t2));
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             dest.putDouble(destOffset + 0, _selfx * _t4);
             dest.putDouble(destOffset + 8, _selfy * _t4);
             dest.putDouble(destOffset + 16, _selfz * _t4);
@@ -2166,8 +2237,44 @@ public final class Double3OpsKernelsByteBuffer {
         double _t8 = Math.fma(otherY, _selfx, -(otherX * _selfy));
         double _t9 = Math.fma(otherZ, _selfy, -(otherY * _selfz));
         double _t10 = Math.fma(otherX, _selfz, -(otherZ * _selfx));
-        double _t16 = Math.atan2(Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
-        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0 ? -_t16 : _t16;
+        double _ct0 = Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double3OpsKernelsByteBuffer.orientedAngle_degenerate(src, srcOffset, otherX, otherY, otherZ, normalX, normalY, normalZ);
+        double _t17 = Math.atan2(Math.sqrt(_ct0), Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy)));
+        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0 ? -_t17 : _t17;
+    }
+
+    public static double orientedAngle_degenerate(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double normalX, double normalY, double normalZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.orientedAngle_degenerate_unsafe(src, srcOffset, otherX, otherY, otherZ, normalX, normalY, normalZ);
+        return Double3OpsKernelsByteBuffer.orientedAngle_degenerate_api(src, srcOffset, otherX, otherY, otherZ, normalX, normalY, normalZ);
+    }
+
+    public static double orientedAngle_degenerate_unsafe(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double normalX, double normalY, double normalZ) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        return Double3OpsKernelsAddress.orientedAngle_degenerate_unsafe(_srcBase, otherX, otherY, otherZ, normalX, normalY, normalZ);
+    }
+
+    public static double orientedAngle_degenerate_api(java.nio.ByteBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double normalX, double normalY, double normalZ) {
+        double _selfx = src.getDouble(srcOffset + 0);
+        double _selfy = src.getDouble(srcOffset + 8);
+        double _selfz = src.getDouble(srcOffset + 16);
+        double _t0 = unitScale(normalX, normalY, normalZ);
+        double _t1 = unitScale(otherX, otherY, otherZ);
+        double _t2 = unitScale(_selfx, _selfy, _selfz);
+        double _t9 = otherY * _t1;
+        double _t10 = _selfx * _t2;
+        double _t11 = otherX * _t1;
+        double _t12 = _selfy * _t2;
+        double _t13 = otherZ * _t1;
+        double _t14 = _selfz * _t2;
+        double _t23 = Math.fma(_t9, _t10, -(_t11 * _t12));
+        double _t24 = Math.fma(_t13, _t12, -(_t9 * _t14));
+        double _t25 = Math.fma(_t11, _t14, -(_t13 * _t10));
+        double _t27 = unitScale(_t24, _t25, _t23);
+        double _t31 = _t23 * _t27;
+        double _t32 = _t24 * _t27;
+        double _t33 = _t25 * _t27;
+        double _t40 = Math.atan2(Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t33, _t33, _t32 * _t32))), Math.fma(_t13, _t14, Math.fma(_t11, _t10, _t9 * _t12)) * _t27);
+        return Math.fma(normalZ * _t0, _t31, Math.fma(normalX * _t0, _t32, normalY * _t0 * _t33)) < 0.0 ? -_t40 : _t40;
     }
 
     public static double orientedAngle_unsafe(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, java.nio.ByteBuffer normal, int normalOffset) {
@@ -2190,8 +2297,52 @@ public final class Double3OpsKernelsByteBuffer {
         double _t8 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
         double _t9 = Math.fma(_otherz, _selfy, -(_othery * _selfz));
         double _t10 = Math.fma(_otherx, _selfz, -(_otherz * _selfx));
-        double _t16 = Math.atan2(Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
-        return Math.fma(_normalz, _t8, Math.fma(_normalx, _t9, _normaly * _t10)) < 0.0 ? -_t16 : _t16;
+        double _ct0 = Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double3OpsKernelsByteBuffer.orientedAngle_degenerate(src, srcOffset, other, otherOffset, normal, normalOffset);
+        double _t17 = Math.atan2(Math.sqrt(_ct0), Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy)));
+        return Math.fma(_normalz, _t8, Math.fma(_normalx, _t9, _normaly * _t10)) < 0.0 ? -_t17 : _t17;
+    }
+
+    public static double orientedAngle_degenerate(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, java.nio.ByteBuffer normal, int normalOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder() && normal.isDirect() && normal.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.orientedAngle_degenerate_unsafe(src, srcOffset, other, otherOffset, normal, normalOffset);
+        return Double3OpsKernelsByteBuffer.orientedAngle_degenerate_api(src, srcOffset, other, otherOffset, normal, normalOffset);
+    }
+
+    public static double orientedAngle_degenerate_unsafe(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, java.nio.ByteBuffer normal, int normalOffset) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + otherOffset;
+        long _normalBase = UnsafeOpsHolder.U.getLong(normal, UnsafeCopy.BB_ADDRESS_OFFSET) + normalOffset;
+        return Double3OpsKernelsAddress.orientedAngle_degenerate_unsafe(_srcBase, _otherBase, _normalBase);
+    }
+
+    public static double orientedAngle_degenerate_api(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, java.nio.ByteBuffer normal, int normalOffset) {
+        double _selfx = src.getDouble(srcOffset + 0);
+        double _selfy = src.getDouble(srcOffset + 8);
+        double _selfz = src.getDouble(srcOffset + 16);
+        double _otherx = other.getDouble(otherOffset + 0);
+        double _othery = other.getDouble(otherOffset + 8);
+        double _otherz = other.getDouble(otherOffset + 16);
+        double _normalx = normal.getDouble(normalOffset + 0);
+        double _normaly = normal.getDouble(normalOffset + 8);
+        double _normalz = normal.getDouble(normalOffset + 16);
+        double _t0 = unitScale(_normalx, _normaly, _normalz);
+        double _t1 = unitScale(_otherx, _othery, _otherz);
+        double _t2 = unitScale(_selfx, _selfy, _selfz);
+        double _t9 = _othery * _t1;
+        double _t10 = _selfx * _t2;
+        double _t11 = _otherx * _t1;
+        double _t12 = _selfy * _t2;
+        double _t13 = _otherz * _t1;
+        double _t14 = _selfz * _t2;
+        double _t23 = Math.fma(_t9, _t10, -(_t11 * _t12));
+        double _t24 = Math.fma(_t13, _t12, -(_t9 * _t14));
+        double _t25 = Math.fma(_t11, _t14, -(_t13 * _t10));
+        double _t27 = unitScale(_t24, _t25, _t23);
+        double _t31 = _t23 * _t27;
+        double _t32 = _t24 * _t27;
+        double _t33 = _t25 * _t27;
+        double _t40 = Math.atan2(Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t33, _t33, _t32 * _t32))), Math.fma(_t13, _t14, Math.fma(_t11, _t10, _t9 * _t12)) * _t27);
+        return Math.fma(_normalz * _t0, _t31, Math.fma(_normalx * _t0, _t32, _normaly * _t0 * _t33)) < 0.0 ? -_t40 : _t40;
     }
 
     public static java.nio.ByteBuffer outerProduct_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double rowX, double rowY, double rowZ) {
@@ -2334,12 +2485,10 @@ public final class Double3OpsKernelsByteBuffer {
         double _selfx = src.getDouble(srcOffset + 0);
         double _selfy = src.getDouble(srcOffset + 8);
         double _selfz = src.getDouble(srcOffset + 16);
-        double _t4 = Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy));
-        double _t5 = Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY));
-        double _t5_inv = 1.0 / _t5;
-        dest.putDouble(destOffset + 0, ontoX * _t4 * _t5_inv);
-        dest.putDouble(destOffset + 8, ontoY * _t4 * _t5_inv);
-        dest.putDouble(destOffset + 16, ontoZ * _t4 * _t5_inv);
+        double _sp0 = Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy)) / Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY));
+        dest.putDouble(destOffset + 0, ontoX * _sp0);
+        dest.putDouble(destOffset + 8, ontoY * _sp0);
+        dest.putDouble(destOffset + 16, ontoZ * _sp0);
         return dest;
     }
 
@@ -2358,12 +2507,10 @@ public final class Double3OpsKernelsByteBuffer {
         double _ontox = onto.getDouble(ontoOffset + 0);
         double _ontoy = onto.getDouble(ontoOffset + 8);
         double _ontoz = onto.getDouble(ontoOffset + 16);
-        double _t4 = Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy));
-        double _t5 = Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy));
-        double _t5_inv = 1.0 / _t5;
-        dest.putDouble(destOffset + 0, _ontox * _t4 * _t5_inv);
-        dest.putDouble(destOffset + 8, _ontoy * _t4 * _t5_inv);
-        dest.putDouble(destOffset + 16, _ontoz * _t4 * _t5_inv);
+        double _sp0 = Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy)) / Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy));
+        dest.putDouble(destOffset + 0, _ontox * _sp0);
+        dest.putDouble(destOffset + 8, _ontoy * _sp0);
+        dest.putDouble(destOffset + 16, _ontoz * _sp0);
         return dest;
     }
 
@@ -2775,21 +2922,67 @@ public final class Double3OpsKernelsByteBuffer {
         double _selfx = src.getDouble(srcOffset + 0);
         double _selfy = src.getDouble(srcOffset + 8);
         double _selfz = src.getDouble(srcOffset + 16);
-        double _t0 = p1X - _selfx;
-        double _t1 = p2Y - _selfy;
-        double _t2 = p1Y - _selfy;
-        double _t3 = p2X - _selfx;
-        double _t4 = p2Z - _selfz;
-        double _t5 = p1Z - _selfz;
+        double _t0 = p1Y - _selfy;
+        double _t1 = p2Z - _selfz;
+        double _t2 = p1Z - _selfz;
+        double _t3 = p2Y - _selfy;
+        double _t4 = p1X - _selfx;
+        double _t5 = p2X - _selfx;
         double _t12 = Math.fma(_t0, _t1, -(_t2 * _t3));
-        double _t13 = Math.fma(_t2, _t4, -(_t5 * _t1));
-        double _t14 = Math.fma(_t5, _t3, -(_t0 * _t4));
-        double _t17 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, _t14 * _t14));
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            dest.putDouble(destOffset + 0, _t13 * _t18);
-            dest.putDouble(destOffset + 8, _t14 * _t18);
-            dest.putDouble(destOffset + 16, _t12 * _t18);
+        double _t13 = Math.fma(_t4, _t3, -(_t0 * _t5));
+        double _t14 = Math.fma(_t2, _t5, -(_t4 * _t1));
+        double _ct0 = Math.fma(_t13, _t13, Math.fma(_t12, _t12, _t14 * _t14));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double3OpsKernelsByteBuffer.triangleNormal_degenerate(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
+        double _t19 = (1.0 / Math.sqrt(_ct0));
+        dest.putDouble(destOffset + 0, _t12 * _t19);
+        dest.putDouble(destOffset + 8, _t14 * _t19);
+        dest.putDouble(destOffset + 16, _t13 * _t19);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer triangleNormal_degenerate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.triangleNormal_degenerate_unsafe(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
+        return Double3OpsKernelsByteBuffer.triangleNormal_degenerate_api(dest, destOffset, src, srcOffset, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
+    }
+
+    public static java.nio.ByteBuffer triangleNormal_degenerate_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double3OpsKernelsAddress.triangleNormal_degenerate_unsafe(_destBase, _srcBase, p1X, p1Y, p1Z, p2X, p2Y, p2Z);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer triangleNormal_degenerate_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p2X, double p2Y, double p2Z) {
+        double _selfx = src.getDouble(srcOffset + 0);
+        double _selfy = src.getDouble(srcOffset + 8);
+        double _selfz = src.getDouble(srcOffset + 16);
+        double _t0 = p1X - _selfx;
+        double _t1 = p1Y - _selfy;
+        double _t2 = p1Z - _selfz;
+        double _t3 = p2Y - _selfy;
+        double _t4 = p2X - _selfx;
+        double _t5 = p2Z - _selfz;
+        double _t6 = unitScale(_t0, _t1, _t2);
+        double _t7 = unitScale(_t4, _t3, _t5);
+        double _t14 = _t0 * _t6;
+        double _t15 = _t3 * _t7;
+        double _t16 = _t1 * _t6;
+        double _t17 = _t4 * _t7;
+        double _t18 = _t5 * _t7;
+        double _t19 = _t2 * _t6;
+        double _t26 = Math.fma(_t14, _t15, -(_t16 * _t17));
+        double _t27 = Math.fma(_t16, _t18, -(_t19 * _t15));
+        double _t28 = Math.fma(_t19, _t17, -(_t14 * _t18));
+        double _t29 = unitScale(_t27, _t28, _t26);
+        double _t33 = _t26 * _t29;
+        double _t34 = _t27 * _t29;
+        double _t35 = _t28 * _t29;
+        double _t38 = Math.fma(_t33, _t33, Math.fma(_t34, _t34, _t35 * _t35));
+        double _t39 = (1.0 / Math.sqrt(_t38));
+        if (_t38 != 0.0) {
+            dest.putDouble(destOffset + 0, _t39 * _t34);
+            dest.putDouble(destOffset + 8, _t39 * _t35);
+            dest.putDouble(destOffset + 16, _t39 * _t33);
         } else {
             dest.putDouble(destOffset + 0, 0.0);
             dest.putDouble(destOffset + 8, 0.0);
@@ -2817,21 +3010,75 @@ public final class Double3OpsKernelsByteBuffer {
         double _p2x = p2.getDouble(p2Offset + 0);
         double _p2y = p2.getDouble(p2Offset + 8);
         double _p2z = p2.getDouble(p2Offset + 16);
-        double _t0 = _p1x - _selfx;
-        double _t1 = _p2y - _selfy;
-        double _t2 = _p1y - _selfy;
-        double _t3 = _p2x - _selfx;
-        double _t4 = _p2z - _selfz;
-        double _t5 = _p1z - _selfz;
+        double _t0 = _p1y - _selfy;
+        double _t1 = _p2z - _selfz;
+        double _t2 = _p1z - _selfz;
+        double _t3 = _p2y - _selfy;
+        double _t4 = _p1x - _selfx;
+        double _t5 = _p2x - _selfx;
         double _t12 = Math.fma(_t0, _t1, -(_t2 * _t3));
-        double _t13 = Math.fma(_t2, _t4, -(_t5 * _t1));
-        double _t14 = Math.fma(_t5, _t3, -(_t0 * _t4));
-        double _t17 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, _t14 * _t14));
-        double _t18 = (1.0 / Math.sqrt(_t17));
-        if (_t17 > 0.0) {
-            dest.putDouble(destOffset + 0, _t13 * _t18);
-            dest.putDouble(destOffset + 8, _t14 * _t18);
-            dest.putDouble(destOffset + 16, _t12 * _t18);
+        double _t13 = Math.fma(_t4, _t3, -(_t0 * _t5));
+        double _t14 = Math.fma(_t2, _t5, -(_t4 * _t1));
+        double _ct0 = Math.fma(_t13, _t13, Math.fma(_t12, _t12, _t14 * _t14));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double3OpsKernelsByteBuffer.triangleNormal_degenerate(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset);
+        double _t19 = (1.0 / Math.sqrt(_ct0));
+        dest.putDouble(destOffset + 0, _t12 * _t19);
+        dest.putDouble(destOffset + 8, _t14 * _t19);
+        dest.putDouble(destOffset + 16, _t13 * _t19);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer triangleNormal_degenerate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && p1.isDirect() && p1.order() == java.nio.ByteOrder.nativeOrder() && p2.isDirect() && p2.order() == java.nio.ByteOrder.nativeOrder()) return Double3OpsKernelsByteBuffer.triangleNormal_degenerate_unsafe(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset);
+        return Double3OpsKernelsByteBuffer.triangleNormal_degenerate_api(dest, destOffset, src, srcOffset, p1, p1Offset, p2, p2Offset);
+    }
+
+    public static java.nio.ByteBuffer triangleNormal_degenerate_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _p1Base = UnsafeOpsHolder.U.getLong(p1, UnsafeCopy.BB_ADDRESS_OFFSET) + p1Offset;
+        long _p2Base = UnsafeOpsHolder.U.getLong(p2, UnsafeCopy.BB_ADDRESS_OFFSET) + p2Offset;
+        Double3OpsKernelsAddress.triangleNormal_degenerate_unsafe(_destBase, _srcBase, _p1Base, _p2Base);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer triangleNormal_degenerate_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer p1, int p1Offset, java.nio.ByteBuffer p2, int p2Offset) {
+        double _selfx = src.getDouble(srcOffset + 0);
+        double _selfy = src.getDouble(srcOffset + 8);
+        double _selfz = src.getDouble(srcOffset + 16);
+        double _p1x = p1.getDouble(p1Offset + 0);
+        double _p1y = p1.getDouble(p1Offset + 8);
+        double _p1z = p1.getDouble(p1Offset + 16);
+        double _p2x = p2.getDouble(p2Offset + 0);
+        double _p2y = p2.getDouble(p2Offset + 8);
+        double _p2z = p2.getDouble(p2Offset + 16);
+        double _t0 = _p1x - _selfx;
+        double _t1 = _p1y - _selfy;
+        double _t2 = _p1z - _selfz;
+        double _t3 = _p2y - _selfy;
+        double _t4 = _p2x - _selfx;
+        double _t5 = _p2z - _selfz;
+        double _t6 = unitScale(_t0, _t1, _t2);
+        double _t7 = unitScale(_t4, _t3, _t5);
+        double _t14 = _t0 * _t6;
+        double _t15 = _t3 * _t7;
+        double _t16 = _t1 * _t6;
+        double _t17 = _t4 * _t7;
+        double _t18 = _t5 * _t7;
+        double _t19 = _t2 * _t6;
+        double _t26 = Math.fma(_t14, _t15, -(_t16 * _t17));
+        double _t27 = Math.fma(_t16, _t18, -(_t19 * _t15));
+        double _t28 = Math.fma(_t19, _t17, -(_t14 * _t18));
+        double _t29 = unitScale(_t27, _t28, _t26);
+        double _t33 = _t26 * _t29;
+        double _t34 = _t27 * _t29;
+        double _t35 = _t28 * _t29;
+        double _t38 = Math.fma(_t33, _t33, Math.fma(_t34, _t34, _t35 * _t35));
+        double _t39 = (1.0 / Math.sqrt(_t38));
+        if (_t38 != 0.0) {
+            dest.putDouble(destOffset + 0, _t39 * _t34);
+            dest.putDouble(destOffset + 8, _t39 * _t35);
+            dest.putDouble(destOffset + 16, _t39 * _t33);
         } else {
             dest.putDouble(destOffset + 0, 0.0);
             dest.putDouble(destOffset + 8, 0.0);
@@ -3280,4 +3527,48 @@ public final class Double3OpsKernelsByteBuffer {
         return dest;
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

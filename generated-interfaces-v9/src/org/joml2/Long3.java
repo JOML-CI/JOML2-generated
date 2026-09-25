@@ -425,9 +425,9 @@ public interface Long3 extends Long3R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default Long3 set(long s) { return set(s, Joml.RETURN_NEW ? Joml.long3() : this); }
+    @Mutated default Long3 set(long s) { return set(s, this); }
 
     /**
      * Convert this vector to {@code float} precision, returning the result as a new instance.

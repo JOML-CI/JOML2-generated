@@ -326,9 +326,11 @@ public final class Short3Impl implements Short3 {
     public Short3 ceilDiv(short otherX, short otherY, short otherZ, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.ceilDiv(sd[0], otherX));
-        dd[1] = (short) (Math.ceilDiv(sd[1], otherY));
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = (short) (Math.ceilDiv(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -349,9 +351,11 @@ public final class Short3Impl implements Short3 {
     public Int3 ceilDiv(short otherX, short otherY, short otherZ, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -372,9 +376,11 @@ public final class Short3Impl implements Short3 {
     public Long3 ceilDiv(short otherX, short otherY, short otherZ, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -395,9 +401,11 @@ public final class Short3Impl implements Short3 {
     public Double3 ceilDiv(short otherX, short otherY, short otherZ, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -537,9 +545,11 @@ public final class Short3Impl implements Short3 {
     public Short3 ceilMod(short otherX, short otherY, short otherZ, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.ceilMod(sd[0], otherX));
-        dd[1] = (short) (Math.ceilMod(sd[1], otherY));
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = (short) (Math.ceilMod(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -560,9 +570,11 @@ public final class Short3Impl implements Short3 {
     public Int3 ceilMod(short otherX, short otherY, short otherZ, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -583,9 +595,11 @@ public final class Short3Impl implements Short3 {
     public Long3 ceilMod(short otherX, short otherY, short otherZ, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -606,9 +620,11 @@ public final class Short3Impl implements Short3 {
     public Double3 ceilMod(short otherX, short otherY, short otherZ, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -748,9 +764,11 @@ public final class Short3Impl implements Short3 {
     public Short3 div(short otherX, short otherY, short otherZ, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (sd[0] / otherX);
-        dd[1] = (short) (sd[1] / otherY);
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = (short) (sd[2] / otherZ);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -771,9 +789,11 @@ public final class Short3Impl implements Short3 {
     public Int3 div(short otherX, short otherY, short otherZ, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -794,9 +814,11 @@ public final class Short3Impl implements Short3 {
     public Long3 div(short otherX, short otherY, short otherZ, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -817,9 +839,11 @@ public final class Short3Impl implements Short3 {
     public Double3 div(short otherX, short otherY, short otherZ, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -959,9 +983,11 @@ public final class Short3Impl implements Short3 {
     public Short3 floorDiv(short otherX, short otherY, short otherZ, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.floorDiv(sd[0], otherX));
-        dd[1] = (short) (Math.floorDiv(sd[1], otherY));
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = (short) (Math.floorDiv(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -982,9 +1008,11 @@ public final class Short3Impl implements Short3 {
     public Int3 floorDiv(short otherX, short otherY, short otherZ, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1005,9 +1033,11 @@ public final class Short3Impl implements Short3 {
     public Long3 floorDiv(short otherX, short otherY, short otherZ, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1028,9 +1058,11 @@ public final class Short3Impl implements Short3 {
     public Double3 floorDiv(short otherX, short otherY, short otherZ, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1170,9 +1202,11 @@ public final class Short3Impl implements Short3 {
     public Short3 floorMod(short otherX, short otherY, short otherZ, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.floorMod(sd[0], otherX));
-        dd[1] = (short) (Math.floorMod(sd[1], otherY));
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = (short) (Math.floorMod(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -1193,9 +1227,11 @@ public final class Short3Impl implements Short3 {
     public Int3 floorMod(short otherX, short otherY, short otherZ, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1216,9 +1252,11 @@ public final class Short3Impl implements Short3 {
     public Long3 floorMod(short otherX, short otherY, short otherZ, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1239,9 +1277,11 @@ public final class Short3Impl implements Short3 {
     public Double3 floorMod(short otherX, short otherY, short otherZ, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1670,9 +1710,11 @@ public final class Short3Impl implements Short3 {
     public Short3 rem(short otherX, short otherY, short otherZ, @Mutated Short3 dest) {
         short[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (sd[0] % otherX);
-        dd[1] = (short) (sd[1] % otherY);
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = (short) (sd[2] % otherZ);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -1694,9 +1736,11 @@ public final class Short3Impl implements Short3 {
     public Int3 rem(short otherX, short otherY, short otherZ, @Mutated Int3 dest) {
         short[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1718,9 +1762,11 @@ public final class Short3Impl implements Short3 {
     public Long3 rem(short otherX, short otherY, short otherZ, @Mutated Long3 dest) {
         short[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1742,9 +1788,11 @@ public final class Short3Impl implements Short3 {
     public Double3 rem(short otherX, short otherY, short otherZ, @Mutated Double3 dest) {
         short[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -3017,9 +3065,11 @@ public final class Short3Impl implements Short3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3036,13 +3086,16 @@ public final class Short3Impl implements Short3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}. The shift count
-     * is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code int}. The shift count is
+     * still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3059,13 +3112,16 @@ public final class Short3Impl implements Short3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}. The shift count
-     * is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code long}. The shift count is
+     * still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3082,13 +3138,16 @@ public final class Short3Impl implements Short3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}. The shift
-     * count is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code double}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3786,14 +3845,14 @@ public final class Short3Impl implements Short3 {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public short compAdd() {
+    public int compAdd() {
         short[] sd = this.data;
-        return (short) (sd[2] + (sd[0] + sd[1]));
+        return sd[2] + (sd[0] + sd[1]);
     }
 
 
@@ -3822,14 +3881,14 @@ public final class Short3Impl implements Short3 {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    public short compMul() {
+    public long compMul() {
         short[] sd = this.data;
-        return (short) (sd[2] * sd[0] * sd[1]);
+        return (long) sd[2] * (long) sd[0] * (long) sd[1];
     }
 
 
@@ -3998,13 +4057,13 @@ public final class Short3Impl implements Short3 {
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public short distanceSquared(Short3R other) {
+    public long distanceSquared(Short3R other) {
         return distanceSquared(other.x(), other.y(), other.z());
     }
 
@@ -4013,8 +4072,8 @@ public final class Short3Impl implements Short3 {
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4022,25 +4081,25 @@ public final class Short3Impl implements Short3 {
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public short distanceSquared(short otherX, short otherY, short otherZ) {
+    public long distanceSquared(short otherX, short otherY, short otherZ) {
         short[] sd = this.data;
-        short _t0 = (short) (sd[0] - otherX);
-        short _t1 = (short) (sd[1] - otherY);
-        short _t2 = (short) (sd[2] - otherZ);
-        return (short) (_t0 * _t0 + _t1 * _t1 + _t2 * _t2);
+        long _t0 = (long) sd[0] - (long) otherX;
+        long _t1 = (long) sd[1] - (long) otherY;
+        long _t2 = (long) sd[2] - (long) otherZ;
+        return _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public short dot(Short3R other) {
+    public long dot(Short3R other) {
         return dot(other.x(), other.y(), other.z());
     }
 
@@ -4048,44 +4107,44 @@ public final class Short3Impl implements Short3 {
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      */
-    public short dot(short otherX, short otherY, short otherZ) {
+    public long dot(short otherX, short otherY, short otherZ) {
         short[] sd = this.data;
-        return (short) (otherX * sd[0] + otherY * sd[1] + otherZ * sd[2]);
+        return (long) otherX * (long) sd[0] + (long) otherY * (long) sd[1] + (long) otherZ * (long) sd[2];
     }
 
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    public short lengthSquared() {
+    public long lengthSquared() {
         short[] sd = this.data;
-        return (short) (sd[0] * sd[0] + sd[1] * sd[1] + sd[2] * sd[2]);
+        return (long) sd[0] * (long) sd[0] + (long) sd[1] * (long) sd[1] + (long) sd[2] * (long) sd[2];
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public short manhattanDistance(Short3R other) {
+    public int manhattanDistance(Short3R other) {
         return manhattanDistance(other.x(), other.y(), other.z());
     }
 
@@ -4094,8 +4153,8 @@ public final class Short3Impl implements Short3 {
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4103,23 +4162,23 @@ public final class Short3Impl implements Short3 {
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public short manhattanDistance(short otherX, short otherY, short otherZ) {
+    public int manhattanDistance(short otherX, short otherY, short otherZ) {
         short[] sd = this.data;
-        return (short) (Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY) + Math.abs(sd[2] - otherZ));
+        return Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY) + Math.abs(sd[2] - otherZ);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public short manhattanLength() {
+    public int manhattanLength() {
         short[] sd = this.data;
-        return (short) (Math.abs(sd[0]) + Math.abs(sd[1]) + Math.abs(sd[2]));
+        return Math.abs(sd[0]) + Math.abs(sd[1]) + Math.abs(sd[2]);
     }
 
 

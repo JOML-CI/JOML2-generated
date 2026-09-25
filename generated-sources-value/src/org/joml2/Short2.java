@@ -550,9 +550,11 @@ public value record Short2(short x, short y) {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32), returning the result as a value.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32), returning the result as a
+     * value.
      *
      * @param shift the number of bit positions to shift by
      * @return the resulting vector
@@ -737,13 +739,13 @@ public value record Short2(short x, short y) {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public short compAdd() {
-        return (short) (this.x + this.y);
+    public int compAdd() {
+        return this.x + this.y;
     }
 
 
@@ -770,26 +772,26 @@ public value record Short2(short x, short y) {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    public short compMul() {
-        return (short) (this.x * this.y);
+    public long compMul() {
+        return (long) this.x * (long) this.y;
     }
 
 
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public short distanceSquared(Short2 other) {
+    public long distanceSquared(Short2 other) {
         return distanceSquared(other.x(), other.y());
     }
 
@@ -797,30 +799,30 @@ public value record Short2(short x, short y) {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public short distanceSquared(short otherX, short otherY) {
-        short _t0 = (short) (this.x - otherX);
-        short _t1 = (short) (this.y - otherY);
-        return (short) (_t0 * _t0 + _t1 * _t1);
+    public long distanceSquared(short otherX, short otherY) {
+        long _t0 = (long) this.x - (long) otherX;
+        long _t1 = (long) this.y - (long) otherY;
+        return _t0 * _t0 + _t1 * _t1;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public short dot(Short2 other) {
+    public long dot(Short2 other) {
         return dot(other.x(), other.y());
     }
 
@@ -828,41 +830,41 @@ public value record Short2(short x, short y) {
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY})
      */
-    public short dot(short otherX, short otherY) {
-        return (short) (otherX * this.x + otherY * this.y);
+    public long dot(short otherX, short otherY) {
+        return (long) otherX * (long) this.x + (long) otherY * (long) this.y;
     }
 
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    public short lengthSquared() {
-        return (short) (this.x * this.x + this.y * this.y);
+    public long lengthSquared() {
+        return (long) this.x * (long) this.x + (long) this.y * (long) this.y;
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public short manhattanDistance(Short2 other) {
+    public int manhattanDistance(Short2 other) {
         return manhattanDistance(other.x(), other.y());
     }
 
@@ -870,28 +872,28 @@ public value record Short2(short x, short y) {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public short manhattanDistance(short otherX, short otherY) {
-        return (short) (Math.abs(this.x - otherX) + Math.abs(this.y - otherY));
+    public int manhattanDistance(short otherX, short otherY) {
+        return Math.abs(this.x - otherX) + Math.abs(this.y - otherY);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public short manhattanLength() {
-        return (short) (Math.abs(this.x) + Math.abs(this.y));
+    public int manhattanLength() {
+        return Math.abs(this.x) + Math.abs(this.y);
     }
 
 

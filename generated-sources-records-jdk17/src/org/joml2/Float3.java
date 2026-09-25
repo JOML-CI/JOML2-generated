@@ -339,15 +339,6 @@ public record Float3(float x, float y, float z) {
         return new Byte3((byte) (this.x), (byte) (this.y), (byte) (this.z));
     }
 
-
-    /**
-     * Convert this vector to {@code byte} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Byte3} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toByte(RoundingMode)}; reached only through it. */
     private Byte3 toByte_floor() {
         return new Byte3((byte) Math.floor(this.x), (byte) Math.floor(this.y), (byte) Math.floor(this.z));
@@ -373,6 +364,15 @@ public record Float3(float x, float y, float z) {
         return new Byte3((byte) Math.rint(this.x), (byte) Math.rint(this.y), (byte) Math.rint(this.z));
     }
 
+
+    /**
+     * Convert this vector to {@code byte} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Byte3} holding the result
+     */
     public Byte3 toByte(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toByte();
@@ -396,15 +396,6 @@ public record Float3(float x, float y, float z) {
         return new Short3((short) (this.x), (short) (this.y), (short) (this.z));
     }
 
-
-    /**
-     * Convert this vector to {@code short} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Short3} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toShort(RoundingMode)}; reached only through it. */
     private Short3 toShort_floor() {
         return new Short3((short) Math.floor(this.x), (short) Math.floor(this.y), (short) Math.floor(this.z));
@@ -430,6 +421,15 @@ public record Float3(float x, float y, float z) {
         return new Short3((short) Math.rint(this.x), (short) Math.rint(this.y), (short) Math.rint(this.z));
     }
 
+
+    /**
+     * Convert this vector to {@code short} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Short3} holding the result
+     */
     public Short3 toShort(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toShort();
@@ -453,15 +453,6 @@ public record Float3(float x, float y, float z) {
         return new Int3((int) (this.x), (int) (this.y), (int) (this.z));
     }
 
-
-    /**
-     * Convert this vector to {@code int} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Int3} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toInt(RoundingMode)}; reached only through it. */
     private Int3 toInt_floor() {
         return new Int3((int) Math.floor(this.x), (int) Math.floor(this.y), (int) Math.floor(this.z));
@@ -487,6 +478,15 @@ public record Float3(float x, float y, float z) {
         return new Int3((int) Math.rint(this.x), (int) Math.rint(this.y), (int) Math.rint(this.z));
     }
 
+
+    /**
+     * Convert this vector to {@code int} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Int3} holding the result
+     */
     public Int3 toInt(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toInt();
@@ -510,15 +510,6 @@ public record Float3(float x, float y, float z) {
         return new Long3((long) (this.x), (long) (this.y), (long) (this.z));
     }
 
-
-    /**
-     * Convert this vector to {@code long} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Long3} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toLong(RoundingMode)}; reached only through it. */
     private Long3 toLong_floor() {
         return new Long3((long) Math.floor(this.x), (long) Math.floor(this.y), (long) Math.floor(this.z));
@@ -544,6 +535,15 @@ public record Float3(float x, float y, float z) {
         return new Long3((long) Math.rint(this.x), (long) Math.rint(this.y), (long) Math.rint(this.z));
     }
 
+
+    /**
+     * Convert this vector to {@code long} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Long3} holding the result
+     */
     public Long3 toLong(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toLong();
@@ -1131,7 +1131,9 @@ public record Float3(float x, float y, float z) {
      * Compute the angle in radians between this vector and {@code other}.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
@@ -1146,7 +1148,9 @@ public record Float3(float x, float y, float z) {
      * {@code otherZ}).
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1158,7 +1162,44 @@ public record Float3(float x, float y, float z) {
         float _t6 = Math.fma(otherZ, this.y, -(otherY * this.z));
         float _t7 = Math.fma(otherY, this.x, -(otherX * this.y));
         float _t8 = Math.fma(otherZ, this.x, -(otherX * this.z));
-        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8))), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
+        float _ct0 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return angleBetween_degenerate(otherX, otherY, otherZ);
+        return (float) Math.atan2((float) Math.sqrt(_ct0), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float angleBetween_degenerate(Float3 other) {
+        return angleBetween_degenerate(other.x(), other.y(), other.z());
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float angleBetween_degenerate(float otherX, float otherY, float otherZ) {
+        float _t0 = unitScale(otherX, otherY, otherZ);
+        float _t1 = unitScale(this.x, this.y, this.z);
+        float _t8 = otherZ * _t0;
+        float _t9 = this.y * _t1;
+        float _t10 = otherY * _t0;
+        float _t11 = this.z * _t1;
+        float _t12 = this.x * _t1;
+        float _t13 = otherX * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t8, _t12, -(_t13 * _t11));
+        float _t23 = unitScale(_t21, _t22, _t20);
+        float _t27 = _t20 * _t23;
+        float _t28 = _t21 * _t23;
+        float _t29 = _t22 * _t23;
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29))), Math.fma(_t8, _t11, Math.fma(_t13, _t12, _t10 * _t9)) * _t23);
     }
 
 
@@ -1892,8 +1933,9 @@ public record Float3(float x, float y, float z) {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y}, returning the result as a value.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}), returning the result as a value.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1907,8 +1949,9 @@ public record Float3(float x, float y, float z) {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y}, returning the result as a value.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}), returning the result as a value.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1922,8 +1965,9 @@ public record Float3(float x, float y, float z) {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}, {@code yZ}), returning the result as a value.
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY},
+     * {@code yZ}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign
+     * differs from {@code y}'s - exactly Kotlin's {@code mod}), returning the result as a value.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1934,7 +1978,7 @@ public record Float3(float x, float y, float z) {
      * @return the resulting vector
      */
     public Float3 mod(float yX, float yY, float yZ) {
-        return new Float3(Math.fma(-yX, (float) Math.floor(this.x / yX), this.x), Math.fma(-yY, (float) Math.floor(this.y / yY), this.y), Math.fma(-yZ, (float) Math.floor(this.z / yZ), this.z));
+        return new Float3(flooredMod(this.x, yX), flooredMod(this.y, yY), flooredMod(this.z, yZ));
     }
 
 
@@ -1974,7 +2018,7 @@ public record Float3(float x, float y, float z) {
     public Float3 normalize() {
         float _t2 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             return new Float3(this.x * _t3, this.y * _t3, this.z * _t3);
         } else {
             return Float3.ZERO;
@@ -1992,7 +2036,7 @@ public record Float3(float x, float y, float z) {
     public Float3 normalizeMul(float length) {
         float _t2 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
         float _t4 = length * (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             return new Float3(this.x * _t4, this.y * _t4, this.z * _t4);
         } else {
             return Float3.ZERO;
@@ -2006,7 +2050,9 @@ public record Float3(float x, float y, float z) {
      * the given normal.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the signed angle to
      * @param normal the reference axis that defines the sign of the angle
@@ -2026,7 +2072,9 @@ public record Float3(float x, float y, float z) {
      * normal.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -2043,8 +2091,52 @@ public record Float3(float x, float y, float z) {
         float _t8 = Math.fma(otherY, this.x, -(otherX * this.y));
         float _t9 = Math.fma(otherZ, this.y, -(otherY * this.z));
         float _t10 = Math.fma(otherX, this.z, -(otherZ * this.x));
-        float _t16 = (float) Math.atan2((float) Math.sqrt(Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9))), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
-        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0f ? -_t16 : _t16;
+        float _ct0 = Math.fma(_t8, _t8, Math.fma(_t10, _t10, _t9 * _t9));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return orientedAngle_degenerate(otherX, otherY, otherZ, normalX, normalY, normalZ);
+        float _t17 = (float) Math.atan2((float) Math.sqrt(_ct0), Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y)));
+        return Math.fma(normalZ, _t8, Math.fma(normalX, _t9, normalY * _t10)) < 0.0f ? -_t17 : _t17;
+    }
+
+
+    /**
+     * Out-of-range path of {@code orientedAngle}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float orientedAngle_degenerate(Float3 other, Float3 normal) {
+        return orientedAngle_degenerate(other.x(), other.y(), other.z(), normal.x(), normal.y(), normal.z());
+    }
+
+    /** Private tail of {@code orientedAngle_degenerate}; reached only through it. */
+    private float orientedAngle_degenerate_s2503f92b_tail(float _t11, float _t14, float _t13, float _t10, float _t24, float _t23, float _t9, float _t12, float normalZ, float _t0, float normalX, float normalY) {
+        float _t25 = Math.fma(_t11, _t14, -(_t13 * _t10));
+        float _t27 = unitScale(_t24, _t25, _t23);
+        float _t31 = _t23 * _t27;
+        float _t32 = _t24 * _t27;
+        float _t33 = _t25 * _t27;
+        float _t40 = (float) Math.atan2((float) Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t33, _t33, _t32 * _t32))), Math.fma(_t13, _t14, Math.fma(_t11, _t10, _t9 * _t12)) * _t27);
+        return Math.fma(normalZ * _t0, _t31, Math.fma(normalX * _t0, _t32, normalY * _t0 * _t33)) < 0.0f ? -_t40 : _t40;
+    }
+
+
+    /**
+     * Out-of-range path of {@code orientedAngle}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float orientedAngle_degenerate(float otherX, float otherY, float otherZ, float normalX, float normalY, float normalZ) {
+        float _t0 = unitScale(normalX, normalY, normalZ);
+        float _t1 = unitScale(otherX, otherY, otherZ);
+        float _t2 = unitScale(this.x, this.y, this.z);
+        float _t9 = otherY * _t1;
+        float _t10 = this.x * _t2;
+        float _t11 = otherX * _t1;
+        float _t12 = this.y * _t2;
+        float _t13 = otherZ * _t1;
+        float _t14 = this.z * _t2;
+        float _t23 = Math.fma(_t9, _t10, -(_t11 * _t12));
+        float _t24 = Math.fma(_t13, _t12, -(_t9 * _t14));
+        return orientedAngle_degenerate_s2503f92b_tail(_t11, _t14, _t13, _t10, _t24, _t23, _t9, _t12, normalZ, _t0, normalX, normalY);
     }
 
 
@@ -2150,10 +2242,8 @@ public record Float3(float x, float y, float z) {
      * @return the resulting vector
      */
     public Float3 project(float ontoX, float ontoY, float ontoZ) {
-        float _t4 = Math.fma(ontoZ, this.z, Math.fma(ontoX, this.x, ontoY * this.y));
-        float _t5 = Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY));
-        float _t5_inv = 1.0f / _t5;
-        return new Float3(ontoX * _t4 * _t5_inv, ontoY * _t4 * _t5_inv, ontoZ * _t4 * _t5_inv);
+        float _sp0 = Math.fma(ontoZ, this.z, Math.fma(ontoX, this.x, ontoY * this.y)) / Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY));
+        return new Float3(ontoX * _sp0, ontoY * _sp0, ontoZ * _sp0);
     }
 
 
@@ -2228,6 +2318,10 @@ public record Float3(float x, float y, float z) {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), returning the result as a value.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -2243,6 +2337,10 @@ public record Float3(float x, float y, float z) {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), returning the result as a value.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normalX the {@code x} component of the vector {@code (normalX, normalY, normalZ)} (the
      *        vector must have unit length)
@@ -2437,6 +2535,10 @@ public record Float3(float x, float y, float z) {
      * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
      * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
      * the zero vector), returning the result as a value.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      *
      * @param p1 the second vertex of the triangle (this vector is the first)
      * @param p2 the third vertex of the triangle
@@ -2453,6 +2555,10 @@ public record Float3(float x, float y, float z) {
      * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
      * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
      * yields the zero vector), returning the result as a value.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -2463,22 +2569,71 @@ public record Float3(float x, float y, float z) {
      * @return the resulting vector
      */
     public Float3 triangleNormal(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z) {
-        float _t0 = p1X - this.x;
-        float _t1 = p2Y - this.y;
-        float _t2 = p1Y - this.y;
-        float _t3 = p2X - this.x;
-        float _t4 = p2Z - this.z;
-        float _t5 = p1Z - this.z;
+        float _t0 = p1Y - this.y;
+        float _t1 = p2Z - this.z;
+        float _t2 = p1Z - this.z;
+        float _t3 = p2Y - this.y;
+        float _t4 = p1X - this.x;
+        float _t5 = p2X - this.x;
         float _t12 = Math.fma(_t0, _t1, -(_t2 * _t3));
-        float _t13 = Math.fma(_t2, _t4, -(_t5 * _t1));
-        float _t14 = Math.fma(_t5, _t3, -(_t0 * _t4));
-        float _t17 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, _t14 * _t14));
-        float _t18 = (1.0f / (float) Math.sqrt(_t17));
-        if (_t17 > 0.0f) {
-            return new Float3(_t13 * _t18, _t14 * _t18, _t12 * _t18);
+        float _t13 = Math.fma(_t4, _t3, -(_t0 * _t5));
+        float _t14 = Math.fma(_t2, _t5, -(_t4 * _t1));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t12, _t12, _t14 * _t14));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return triangleNormal_degenerate(p1X, p1Y, p1Z, p2X, p2Y, p2Z);
+        float _t19 = (1.0f / (float) Math.sqrt(_ct0));
+        return new Float3(_t12 * _t19, _t14 * _t19, _t13 * _t19);
+    }
+
+
+    /**
+     * Out-of-range path of {@code triangleNormal}: its methods leave here when the squared length
+     * of the cross product they form is zero, NaN or outside the normal floating-point range;
+     * reached only through them.
+     */
+    private Float3 triangleNormal_degenerate(Float3 p1, Float3 p2) {
+        return triangleNormal_degenerate(p1.x(), p1.y(), p1.z(), p2.x(), p2.y(), p2.z());
+    }
+
+    /** Private tail of {@code triangleNormal_degenerate}; reached only through it. */
+    private Float3 triangleNormal_degenerate_s7577080b_tail(float _t16, float _t18, float _t19, float _t15, float _t17, float _t14, float _t26) {
+        float _t27 = Math.fma(_t16, _t18, -(_t19 * _t15));
+        float _t28 = Math.fma(_t19, _t17, -(_t14 * _t18));
+        float _t29 = unitScale(_t27, _t28, _t26);
+        float _t33 = _t26 * _t29;
+        float _t34 = _t27 * _t29;
+        float _t35 = _t28 * _t29;
+        float _t38 = Math.fma(_t33, _t33, Math.fma(_t34, _t34, _t35 * _t35));
+        float _t39 = (1.0f / (float) Math.sqrt(_t38));
+        if (_t38 != 0.0f) {
+            return new Float3(_t39 * _t34, _t39 * _t35, _t39 * _t33);
         } else {
             return Float3.ZERO;
         }
+    }
+
+
+    /**
+     * Out-of-range path of {@code triangleNormal}: its methods leave here when the squared length
+     * of the cross product they form is zero, NaN or outside the normal floating-point range;
+     * reached only through them.
+     */
+    private Float3 triangleNormal_degenerate(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z) {
+        float _t0 = p1X - this.x;
+        float _t1 = p1Y - this.y;
+        float _t2 = p1Z - this.z;
+        float _t3 = p2Y - this.y;
+        float _t4 = p2X - this.x;
+        float _t5 = p2Z - this.z;
+        float _t6 = unitScale(_t0, _t1, _t2);
+        float _t7 = unitScale(_t4, _t3, _t5);
+        float _t14 = _t0 * _t6;
+        float _t15 = _t3 * _t7;
+        float _t16 = _t1 * _t6;
+        float _t17 = _t4 * _t7;
+        float _t18 = _t5 * _t7;
+        float _t19 = _t2 * _t6;
+        float _t26 = Math.fma(_t14, _t15, -(_t16 * _t17));
+        return triangleNormal_degenerate_s7577080b_tail(_t16, _t18, _t19, _t15, _t17, _t14, _t26);
     }
 
 
@@ -4066,4 +4221,48 @@ public record Float3(float x, float y, float z) {
         return RAW_OPS.loadDoubleUnsafe(address);
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

@@ -400,15 +400,6 @@ public record Double4(double x, double y, double z, double w) {
         return new Byte4((byte) (this.x), (byte) (this.y), (byte) (this.z), (byte) (this.w));
     }
 
-
-    /**
-     * Convert this vector to {@code byte} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Byte4} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toByte(RoundingMode)}; reached only through it. */
     private Byte4 toByte_floor() {
         return new Byte4((byte) Math.floor(this.x), (byte) Math.floor(this.y), (byte) Math.floor(this.z), (byte) Math.floor(this.w));
@@ -434,6 +425,15 @@ public record Double4(double x, double y, double z, double w) {
         return new Byte4((byte) Math.rint(this.x), (byte) Math.rint(this.y), (byte) Math.rint(this.z), (byte) Math.rint(this.w));
     }
 
+
+    /**
+     * Convert this vector to {@code byte} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Byte4} holding the result
+     */
     public Byte4 toByte(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toByte();
@@ -457,15 +457,6 @@ public record Double4(double x, double y, double z, double w) {
         return new Short4((short) (this.x), (short) (this.y), (short) (this.z), (short) (this.w));
     }
 
-
-    /**
-     * Convert this vector to {@code short} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Short4} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toShort(RoundingMode)}; reached only through it. */
     private Short4 toShort_floor() {
         return new Short4((short) Math.floor(this.x), (short) Math.floor(this.y), (short) Math.floor(this.z), (short) Math.floor(this.w));
@@ -491,6 +482,15 @@ public record Double4(double x, double y, double z, double w) {
         return new Short4((short) Math.rint(this.x), (short) Math.rint(this.y), (short) Math.rint(this.z), (short) Math.rint(this.w));
     }
 
+
+    /**
+     * Convert this vector to {@code short} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Short4} holding the result
+     */
     public Short4 toShort(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toShort();
@@ -514,15 +514,6 @@ public record Double4(double x, double y, double z, double w) {
         return new Int4((int) (this.x), (int) (this.y), (int) (this.z), (int) (this.w));
     }
 
-
-    /**
-     * Convert this vector to {@code int} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Int4} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toInt(RoundingMode)}; reached only through it. */
     private Int4 toInt_floor() {
         return new Int4((int) Math.floor(this.x), (int) Math.floor(this.y), (int) Math.floor(this.z), (int) Math.floor(this.w));
@@ -548,6 +539,15 @@ public record Double4(double x, double y, double z, double w) {
         return new Int4((int) Math.rint(this.x), (int) Math.rint(this.y), (int) Math.rint(this.z), (int) Math.rint(this.w));
     }
 
+
+    /**
+     * Convert this vector to {@code int} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Int4} holding the result
+     */
     public Int4 toInt(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toInt();
@@ -571,15 +571,6 @@ public record Double4(double x, double y, double z, double w) {
         return new Long4((long) (this.x), (long) (this.y), (long) (this.z), (long) (this.w));
     }
 
-
-    /**
-     * Convert this vector to {@code long} precision, returning the result as a new instance.
-     * <p>
-     * Each component is rounded according to the given rounding mode.
-     *
-     * @param roundingMode the rounding mode to use
-     * @return a new {@code Long4} holding the result
-     */
     /** Private {@code RoundingMode.FLOOR} body of {@code toLong(RoundingMode)}; reached only through it. */
     private Long4 toLong_floor() {
         return new Long4((long) Math.floor(this.x), (long) Math.floor(this.y), (long) Math.floor(this.z), (long) Math.floor(this.w));
@@ -605,6 +596,15 @@ public record Double4(double x, double y, double z, double w) {
         return new Long4((long) Math.rint(this.x), (long) Math.rint(this.y), (long) Math.rint(this.z), (long) Math.rint(this.w));
     }
 
+
+    /**
+     * Convert this vector to {@code long} precision, returning the result as a new instance.
+     * <p>
+     * Each component is rounded according to the given rounding mode.
+     *
+     * @param roundingMode the rounding mode to use
+     * @return a new {@code Long4} holding the result
+     */
     public Long4 toLong(RoundingMode roundingMode) {
         return switch (roundingMode) {
             case TRUNCATE -> toLong();
@@ -1247,7 +1247,9 @@ public record Double4(double x, double y, double z, double w) {
      * Compute the angle in radians between this vector and {@code other}.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code double} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
@@ -1262,7 +1264,9 @@ public record Double4(double x, double y, double z, double w) {
      * {@code otherZ}, {@code otherW}).
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code double} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -1278,7 +1282,57 @@ public record Double4(double x, double y, double z, double w) {
         double _t15 = Math.fma(otherW, this.x, -(otherX * this.w));
         double _t16 = Math.fma(otherY, this.x, -(otherX * this.y));
         double _t17 = Math.fma(otherZ, this.x, -(otherX * this.z));
-        return Math.atan2(Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, this.w, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y))));
+        double _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return angleBetween_degenerate(otherX, otherY, otherZ, otherW);
+        return Math.atan2(Math.sqrt(_ct0), Math.fma(otherW, this.w, Math.fma(otherZ, this.z, Math.fma(otherX, this.x, otherY * this.y))));
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private double angleBetween_degenerate(Double4 other) {
+        return angleBetween_degenerate(other.x(), other.y(), other.z(), other.w());
+    }
+
+    /** Private tail of {@code angleBetween_degenerate}; reached only through it. */
+    private double angleBetween_degenerate_s7cee32ca_tail(double _t16, double _t21, double _t22, double _t19, double _t18, double _t23, double _t20, double _t17, double _t37, double _t38, double _t36) {
+        double _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        double _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        double _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        double _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        double _t58 = _t36 * _t51;
+        double _t59 = _t41 * _t51;
+        double _t60 = _t40 * _t51;
+        double _t61 = _t39 * _t51;
+        double _t62 = _t37 * _t51;
+        double _t63 = _t38 * _t51;
+        return Math.atan2(Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private double angleBetween_degenerate(double otherX, double otherY, double otherZ, double otherW) {
+        double _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        double _t7 = unitScale(this.z, this.w, Math.max(Math.abs(this.x), Math.abs(this.y)));
+        double _t16 = otherW * _t6;
+        double _t17 = this.z * _t7;
+        double _t18 = otherZ * _t6;
+        double _t19 = this.w * _t7;
+        double _t20 = otherY * _t6;
+        double _t21 = this.x * _t7;
+        double _t22 = otherX * _t6;
+        double _t23 = this.y * _t7;
+        double _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        double _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        double _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        return angleBetween_degenerate_s7cee32ca_tail(_t16, _t21, _t22, _t19, _t18, _t23, _t20, _t17, _t37, _t38, _t36);
     }
 
 
@@ -1964,8 +2018,9 @@ public record Double4(double x, double y, double z, double w) {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y}, returning the result as a value.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}), returning the result as a value.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1979,8 +2034,9 @@ public record Double4(double x, double y, double z, double w) {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y}, returning the result as a value.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}), returning the result as a value.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1994,9 +2050,10 @@ public record Double4(double x, double y, double z, double w) {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}, {@code yZ}, {@code yW}), returning the result
-     * as a value.
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY},
+     * {@code yZ}, {@code yW}) ({@code x % y}, plus {@code y} when that remainder is non-zero and
+     * its sign differs from {@code y}'s - exactly Kotlin's {@code mod}), returning the result as a
+     * value.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2008,7 +2065,7 @@ public record Double4(double x, double y, double z, double w) {
      * @return the resulting vector
      */
     public Double4 mod(double yX, double yY, double yZ, double yW) {
-        return new Double4(Math.fma(-yX, Math.floor(this.x / yX), this.x), Math.fma(-yY, Math.floor(this.y / yY), this.y), Math.fma(-yZ, Math.floor(this.z / yZ), this.z), Math.fma(-yW, Math.floor(this.w / yW), this.w));
+        return new Double4(flooredMod(this.x, yX), flooredMod(this.y, yY), flooredMod(this.z, yZ), flooredMod(this.w, yW));
     }
 
 
@@ -2048,7 +2105,7 @@ public record Double4(double x, double y, double z, double w) {
     public Double4 normalize() {
         double _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
         double _t4 = (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             return new Double4(this.x * _t4, this.y * _t4, this.z * _t4, this.w * _t4);
         } else {
             return Double4.ZERO;
@@ -2066,7 +2123,7 @@ public record Double4(double x, double y, double z, double w) {
     public Double4 normalizeMul(double length) {
         double _t3 = Math.fma(this.w, this.w, Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y)));
         double _t5 = length * (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             return new Double4(this.x * _t5, this.y * _t5, this.z * _t5, this.w * _t5);
         } else {
             return Double4.ZERO;
@@ -2165,10 +2222,8 @@ public record Double4(double x, double y, double z, double w) {
      * @return the resulting vector
      */
     public Double4 project(double ontoX, double ontoY, double ontoZ, double ontoW) {
-        double _t6 = Math.fma(ontoW, this.w, Math.fma(ontoZ, this.z, Math.fma(ontoX, this.x, ontoY * this.y)));
-        double _t7 = Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
-        double _t7_inv = 1.0 / _t7;
-        return new Double4(ontoX * _t6 * _t7_inv, ontoY * _t6 * _t7_inv, ontoZ * _t6 * _t7_inv, ontoW * _t6 * _t7_inv);
+        double _sp0 = Math.fma(ontoW, this.w, Math.fma(ontoZ, this.z, Math.fma(ontoX, this.x, ontoY * this.y))) / Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
+        return new Double4(ontoX * _sp0, ontoY * _sp0, ontoZ * _sp0, ontoW * _sp0);
     }
 
 
@@ -2247,6 +2302,10 @@ public record Double4(double x, double y, double z, double w) {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), returning the result as a value.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -2262,6 +2321,10 @@ public record Double4(double x, double y, double z, double w) {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), returning the result as a value.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normalX the {@code x} component of the vector
      *        {@code (normalX, normalY, normalZ, normalW)} (the vector must have unit length)
@@ -5251,4 +5314,48 @@ public record Double4(double x, double y, double z, double w) {
         return SEG_OPS.loadFloat(offset, src);
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

@@ -119,9 +119,11 @@ public final class Long3Impl implements Long3 {
      */
     public Long3 ceilDiv(long otherX, long otherY, long otherZ, @Mutated Long3 dest) {
         Long3Impl d = (Long3Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
+        long _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        long _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
         d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        d.x = _buf0;
+        d.y = _buf1;
         return d;
     }
 
@@ -164,9 +166,11 @@ public final class Long3Impl implements Long3 {
      */
     public Long3 ceilMod(long otherX, long otherY, long otherZ, @Mutated Long3 dest) {
         Long3Impl d = (Long3Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
+        long _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        long _buf1 = java.lang.Math.ceilMod(this.y, otherY);
         d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        d.x = _buf0;
+        d.y = _buf1;
         return d;
     }
 
@@ -209,9 +213,11 @@ public final class Long3Impl implements Long3 {
      */
     public Long3 div(long otherX, long otherY, long otherZ, @Mutated Long3 dest) {
         Long3Impl d = (Long3Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
+        long _buf0 = this.x / otherX;
+        long _buf1 = this.y / otherY;
         d.z = this.z / otherZ;
+        d.x = _buf0;
+        d.y = _buf1;
         return d;
     }
 
@@ -254,9 +260,11 @@ public final class Long3Impl implements Long3 {
      */
     public Long3 floorDiv(long otherX, long otherY, long otherZ, @Mutated Long3 dest) {
         Long3Impl d = (Long3Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
+        long _buf0 = Math.floorDiv(this.x, otherX);
+        long _buf1 = Math.floorDiv(this.y, otherY);
         d.z = Math.floorDiv(this.z, otherZ);
+        d.x = _buf0;
+        d.y = _buf1;
         return d;
     }
 
@@ -299,9 +307,11 @@ public final class Long3Impl implements Long3 {
      */
     public Long3 floorMod(long otherX, long otherY, long otherZ, @Mutated Long3 dest) {
         Long3Impl d = (Long3Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
+        long _buf0 = Math.floorMod(this.x, otherX);
+        long _buf1 = Math.floorMod(this.y, otherY);
         d.z = Math.floorMod(this.z, otherZ);
+        d.x = _buf0;
+        d.y = _buf1;
         return d;
     }
 
@@ -406,9 +416,11 @@ public final class Long3Impl implements Long3 {
      */
     public Long3 rem(long otherX, long otherY, long otherZ, @Mutated Long3 dest) {
         Long3Impl d = (Long3Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
+        long _buf0 = this.x % otherX;
+        long _buf1 = this.y % otherY;
         d.z = this.z % otherZ;
+        d.x = _buf0;
+        d.y = _buf1;
         return d;
     }
 
@@ -934,6 +946,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the sum of all components of this vector
      */
@@ -964,6 +979,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the product of all components of this vector
      */
@@ -1009,6 +1027,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
@@ -1021,6 +1042,9 @@ public final class Long3Impl implements Long3 {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1038,6 +1062,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
@@ -1049,6 +1076,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1062,6 +1092,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the squared length of this vector
      */
@@ -1072,6 +1105,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
@@ -1084,6 +1120,9 @@ public final class Long3Impl implements Long3 {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -1098,6 +1137,9 @@ public final class Long3Impl implements Long3 {
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */

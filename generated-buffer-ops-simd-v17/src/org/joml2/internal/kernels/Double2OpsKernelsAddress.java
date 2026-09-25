@@ -963,17 +963,16 @@ public final class Double2OpsKernelsAddress {
     public static long mod_unsafe(long dest, long src, double y) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
-        double _rcp0 = 1.0 / y;
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(-y, Math.floor(_selfx * _rcp0), _selfx));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(-y, Math.floor(_selfy * _rcp0), _selfy));
+        UnsafeOpsHolder.U.putDouble(dest + 0L, flooredMod(_selfx, y));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, flooredMod(_selfy, y));
         return dest;
     }
 
     public static long mod_unsafe(long dest, long src, double yX, double yY) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(-yX, Math.floor(_selfx / yX), _selfx));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(-yY, Math.floor(_selfy / yY), _selfy));
+        UnsafeOpsHolder.U.putDouble(dest + 0L, flooredMod(_selfx, yX));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, flooredMod(_selfy, yY));
         return dest;
     }
 
@@ -982,8 +981,8 @@ public final class Double2OpsKernelsAddress {
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _yx = UnsafeOpsHolder.U.getDouble(y + 0L);
         double _yy = UnsafeOpsHolder.U.getDouble(y + 8L);
-        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(-_yx, Math.floor(_selfx / _yx), _selfx));
-        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(-_yy, Math.floor(_selfy / _yy), _selfy));
+        UnsafeOpsHolder.U.putDouble(dest + 0L, flooredMod(_selfx, _yx));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, flooredMod(_selfy, _yy));
         return dest;
     }
 
@@ -1008,7 +1007,7 @@ public final class Double2OpsKernelsAddress {
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _t1 = Math.fma(_selfx, _selfx, _selfy * _selfy);
         double _t2 = (1.0 / Math.sqrt(_t1));
-        if (_t1 > 0.0) {
+        if (_t1 != 0.0) {
             UnsafeOpsHolder.U.putDouble(dest + 0L, _selfx * _t2);
             UnsafeOpsHolder.U.putDouble(dest + 8L, _selfy * _t2);
         } else {
@@ -1023,7 +1022,7 @@ public final class Double2OpsKernelsAddress {
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _t1 = Math.fma(_selfx, _selfx, _selfy * _selfy);
         double _t3 = length * (1.0 / Math.sqrt(_t1));
-        if (_t1 > 0.0) {
+        if (_t1 != 0.0) {
             UnsafeOpsHolder.U.putDouble(dest + 0L, _selfx * _t3);
             UnsafeOpsHolder.U.putDouble(dest + 8L, _selfy * _t3);
         } else {
@@ -1098,11 +1097,9 @@ public final class Double2OpsKernelsAddress {
     public static long project_unsafe(long dest, long src, double ontoX, double ontoY) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
-        double _t2 = Math.fma(ontoX, _selfx, ontoY * _selfy);
-        double _t3 = Math.fma(ontoX, ontoX, ontoY * ontoY);
-        double _t3_inv = 1.0 / _t3;
-        UnsafeOpsHolder.U.putDouble(dest + 0L, ontoX * _t2 * _t3_inv);
-        UnsafeOpsHolder.U.putDouble(dest + 8L, ontoY * _t2 * _t3_inv);
+        double _sp0 = Math.fma(ontoX, _selfx, ontoY * _selfy) / Math.fma(ontoX, ontoX, ontoY * ontoY);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, ontoX * _sp0);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, ontoY * _sp0);
         return dest;
     }
 
@@ -1111,11 +1108,9 @@ public final class Double2OpsKernelsAddress {
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _ontox = UnsafeOpsHolder.U.getDouble(onto + 0L);
         double _ontoy = UnsafeOpsHolder.U.getDouble(onto + 8L);
-        double _t2 = Math.fma(_ontox, _selfx, _ontoy * _selfy);
-        double _t3 = Math.fma(_ontox, _ontox, _ontoy * _ontoy);
-        double _t3_inv = 1.0 / _t3;
-        UnsafeOpsHolder.U.putDouble(dest + 0L, _ontox * _t2 * _t3_inv);
-        UnsafeOpsHolder.U.putDouble(dest + 8L, _ontoy * _t2 * _t3_inv);
+        double _sp0 = Math.fma(_ontox, _selfx, _ontoy * _selfy) / Math.fma(_ontox, _ontox, _ontoy * _ontoy);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _ontox * _sp0);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, _ontoy * _sp0);
         return dest;
     }
 
@@ -1383,4 +1378,29 @@ public final class Double2OpsKernelsAddress {
         return dest;
     }
 
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

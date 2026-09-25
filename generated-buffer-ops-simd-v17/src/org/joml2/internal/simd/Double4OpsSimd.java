@@ -453,7 +453,7 @@ public final class Double4OpsSimd {
     public static double[] normalize(double[] dest, int destOffset, double[] src, int srcOffset) {
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         double _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t3  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t3  !=  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -464,7 +464,7 @@ public final class Double4OpsSimd {
         double _selfx = src[srcOffset + 0];
         double _selfy = src[srcOffset + 1];
         double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        var _c0 = (_t3  >  0.0 ? DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, length * (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t3  !=  0.0 ? DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, length * (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -882,7 +882,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -894,7 +894,7 @@ public final class Double4OpsSimd {
     }
 
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr(dest, destOffset, _srcArr, _srcOff, count * 4);
@@ -906,7 +906,7 @@ public final class Double4OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr_one(_destArr, _destOff, src, srcOffset);
@@ -918,7 +918,7 @@ public final class Double4OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr(_destArr, _destOff, src, srcOffset, count * 4);
@@ -930,10 +930,10 @@ public final class Double4OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr_one(_destArr, _destOff, _srcArr, _srcOff);
@@ -942,7 +942,7 @@ public final class Double4OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < 4; _i++)
@@ -956,10 +956,10 @@ public final class Double4OpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr(_destArr, _destOff, _srcArr, _srcOff, count * 4);
@@ -968,7 +968,7 @@ public final class Double4OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < count * 4; _i++)

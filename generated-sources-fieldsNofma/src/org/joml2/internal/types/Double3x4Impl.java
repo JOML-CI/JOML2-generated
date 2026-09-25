@@ -242,15 +242,21 @@ public class Double3x4Impl implements Double3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -299,15 +305,21 @@ public class Double3x4Impl implements Double3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -352,15 +364,21 @@ public class Double3x4Impl implements Double3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -407,15 +425,21 @@ public class Double3x4Impl implements Double3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -462,15 +486,21 @@ public class Double3x4Impl implements Double3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -517,15 +547,21 @@ public class Double3x4Impl implements Double3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -564,7 +600,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t16 = (1.0 / Math.sqrt(_t13));
         double _t17 = (1.0 / Math.sqrt(_t14));
         double _t27, _t29, _t33;
-        if (_t12 > 0.0) {
+        if (_t12 != 0.0) {
             _t27 = this.m11 * _t15;
             _t29 = this.m21 * _t15;
             _t33 = this.m01 * _t15;
@@ -574,7 +610,7 @@ public class Double3x4Impl implements Double3x4 {
             _t33 = 0.0;
         }
         double _t28, _t30, _t32;
-        if (_t13 > 0.0) {
+        if (_t13 != 0.0) {
             _t28 = this.m22 * _t16;
             _t30 = this.m12 * _t16;
             _t32 = this.m02 * _t16;
@@ -584,7 +620,7 @@ public class Double3x4Impl implements Double3x4 {
             _t32 = 0.0;
         }
         double _t31, _t34, _t35;
-        if (_t14 > 0.0) {
+        if (_t14 != 0.0) {
             _t31 = this.m00 * _t17;
             _t34 = this.m10 * _t17;
             _t35 = this.m20 * _t17;
@@ -617,32 +653,32 @@ public class Double3x4Impl implements Double3x4 {
         double _t71 = 1.0 + (_t57 - (_t27 + _t28));
         double _t72 = 1.0 + (_t27 - (_t57 + _t28));
         double _t73 = 1.0 + (_t28 - _t60);
-        double _t74 = (1.0 / Math.sqrt(_t70));
-        double _t75 = (1.0 / Math.sqrt(_t72));
-        double _t76 = (1.0 / Math.sqrt(_t73));
-        double _t77 = (1.0 / Math.sqrt(_t71));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t70));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t72));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t73));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t71));
         if (_t66 > 0.0) {
-            d.x = 0.5 * _t45 * _t74;
-            d.y = 0.5 * _t64 * _t74;
-            d.z = 0.5 * _t65 * _t74;
+            d.x = _sp0 * _t45;
+            d.y = _sp0 * _t64;
+            d.z = _sp0 * _t65;
             d.w = 0.5 * Math.sqrt(_t70);
         } else {
             if (_t57 > _t46) {
                 d.x = 0.5 * Math.sqrt(_t71);
-                d.y = 0.5 * _t61 * _t77;
-                d.z = 0.5 * _t63 * _t77;
-                d.w = 0.5 * _t45 * _t77;
+                d.y = _sp3 * _t61;
+                d.z = _sp3 * _t63;
+                d.w = _sp3 * _t45;
             } else {
                 if (_t27 > _t28) {
-                    d.x = 0.5 * _t61 * _t75;
+                    d.x = _sp1 * _t61;
                     d.y = 0.5 * Math.sqrt(_t72);
-                    d.z = 0.5 * _t48 * _t75;
-                    d.w = 0.5 * _t64 * _t75;
+                    d.z = _sp1 * _t48;
+                    d.w = _sp1 * _t64;
                 } else {
-                    d.x = 0.5 * _t63 * _t76;
-                    d.y = 0.5 * _t48 * _t76;
+                    d.x = _sp2 * _t63;
+                    d.y = _sp2 * _t48;
                     d.z = 0.5 * Math.sqrt(_t73);
-                    d.w = 0.5 * _t65 * _t76;
+                    d.w = _sp2 * _t65;
                 }
             }
         }
@@ -795,7 +831,7 @@ public class Double3x4Impl implements Double3x4 {
      */
     public Double3 getScale(@Mutated Double3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getScale_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getScale_identity(dest);
         return getScale_general(dest);
     }
 
@@ -863,35 +899,35 @@ public class Double3x4Impl implements Double3x4 {
         double _t15 = 1.0 + (this.m00 - (this.m11 + this.m22));
         double _t16 = 1.0 + (this.m11 - (this.m00 + this.m22));
         double _t17 = 1.0 + (this.m22 - _t0);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t10 > 0.0) {
-            double _buf0 = 0.5 * _t1 * _t18;
-            d.y = 0.5 * _t7 * _t18;
-            d.z = 0.5 * _t9 * _t18;
+            double _buf0 = _sp0 * _t1;
+            d.y = _sp0 * _t7;
+            d.z = _sp0 * _t9;
             d.w = 0.5 * Math.sqrt(_t14);
             d.x = _buf0;
         } else {
             if (this.m00 > _t2) {
                 double _buf0 = 0.5 * Math.sqrt(_t15);
-                d.y = 0.5 * _t4 * _t21;
-                d.z = 0.5 * _t6 * _t21;
-                d.w = 0.5 * _t1 * _t21;
+                d.y = _sp3 * _t4;
+                d.z = _sp3 * _t6;
+                d.w = _sp3 * _t1;
                 d.x = _buf0;
             } else {
                 if (this.m11 > this.m22) {
-                    double _buf0 = 0.5 * _t4 * _t19;
+                    double _buf0 = _sp1 * _t4;
                     d.y = 0.5 * Math.sqrt(_t16);
-                    d.z = 0.5 * _t8 * _t19;
-                    d.w = 0.5 * _t7 * _t19;
+                    d.z = _sp1 * _t8;
+                    d.w = _sp1 * _t7;
                     d.x = _buf0;
                 } else {
-                    double _buf0 = 0.5 * _t6 * _t20;
-                    d.y = 0.5 * _t8 * _t20;
+                    double _buf0 = _sp2 * _t6;
+                    d.y = _sp2 * _t8;
                     d.z = 0.5 * Math.sqrt(_t17);
-                    d.w = 0.5 * _t9 * _t20;
+                    d.w = _sp2 * _t9;
                     d.x = _buf0;
                 }
             }
@@ -941,17 +977,86 @@ public class Double3x4Impl implements Double3x4 {
      * Private body of {@code invNegativeX}, specialized by runtime matrix properties; reached only
      * through the public {@code invNegativeX} dispatcher.
      */
+    private Double3 invNegativeX_orthogonal(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = -this.m00;
+        d.y = -this.m01;
+        d.z = -this.m02;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invNegativeX}, specialized by runtime matrix properties; reached only
+     * through the public {@code invNegativeX} dispatcher.
+     */
     private Double3 invNegativeX_general(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
         double _t6 = this.m11 * this.m22 - this.m12 * this.m21;
         double _t7 = this.m12 * this.m20 - this.m10 * this.m22;
         double _t8 = this.m10 * this.m21 - this.m11 * this.m20;
-        double _t13 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        double _t14 = (1.0 / Math.sqrt(_t13));
-        if (_t13 > 0.0) {
-            d.x = -(_t6 * _t14);
-            d.y = -(_t7 * _t14);
-            d.z = -(_t8 * _t14);
+        double _ct0 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return invNegativeX_degenerate(dest);
+        double _t15 = (1.0 / Math.sqrt(_ct0));
+        d.x = -(_t6 * _t15);
+        d.y = -(_t7 * _t15);
+        d.z = -(_t8 * _t15);
+        return d;
+    }
+
+
+    /**
+     * Obtain the direction of {@code -X} before the transformation represented by this matrix is
+     * applied and store the result in {@code dest}.
+     * <p>
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 invNegativeX(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeX_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invNegativeX_orthogonal(dest);
+        return invNegativeX_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeX_degenerate_identity(@Mutated Double3 dest) {
+        return invNegativeX_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeX_degenerate_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = unitScale(this.m10, this.m11, this.m12);
+        double _t1 = unitScale(this.m20, this.m21, this.m22);
+        double _t8 = this.m11 * _t0;
+        double _t9 = this.m22 * _t1;
+        double _t10 = this.m12 * _t0;
+        double _t11 = this.m21 * _t1;
+        double _t12 = this.m20 * _t1;
+        double _t13 = this.m10 * _t0;
+        double _t20 = _t8 * _t9 - _t10 * _t11;
+        double _t21 = _t10 * _t12 - _t13 * _t9;
+        double _t22 = _t13 * _t11 - _t8 * _t12;
+        double _t27 = _t20 * _t20 + _t21 * _t21 + _t22 * _t22;
+        double _t28 = (1.0 / Math.sqrt(_t27));
+        if (_t27 != 0.0) {
+            d.x = -(_t20 * _t28);
+            d.y = -(_t21 * _t28);
+            d.z = -(_t22 * _t28);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -962,21 +1067,13 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
-     * Obtain the direction of {@code -X} before the transformation represented by this matrix is
-     * applied and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
-     *
-     * @param dest will hold the result
-     * @return dest
+     * Out-of-range path of {@code invNegativeX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
      */
-    public Double3 invNegativeX(@Mutated Double3 dest) {
+    private Double3 invNegativeX_degenerate(@Mutated Double3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeX_identity(dest);
-        return invNegativeX_general(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeX_degenerate_identity(dest);
+        return invNegativeX_degenerate_general(dest);
     }
 
 
@@ -997,17 +1094,86 @@ public class Double3x4Impl implements Double3x4 {
      * Private body of {@code invNegativeY}, specialized by runtime matrix properties; reached only
      * through the public {@code invNegativeY} dispatcher.
      */
+    private Double3 invNegativeY_orthogonal(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = -this.m10;
+        d.y = -this.m11;
+        d.z = -this.m12;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invNegativeY}, specialized by runtime matrix properties; reached only
+     * through the public {@code invNegativeY} dispatcher.
+     */
     private Double3 invNegativeY_general(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t6 = this.m00 * this.m22 - this.m02 * this.m20;
-        double _t7 = this.m02 * this.m21 - this.m01 * this.m22;
+        double _t6 = this.m02 * this.m21 - this.m01 * this.m22;
+        double _t7 = this.m00 * this.m22 - this.m02 * this.m20;
         double _t8 = this.m01 * this.m20 - this.m00 * this.m21;
-        double _t13 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        double _t14 = (1.0 / Math.sqrt(_t13));
-        if (_t13 > 0.0) {
-            d.x = -(_t7 * _t14);
-            d.y = -(_t6 * _t14);
-            d.z = -(_t8 * _t14);
+        double _ct0 = _t7 * _t7 + _t6 * _t6 + _t8 * _t8;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return invNegativeY_degenerate(dest);
+        double _t15 = (1.0 / Math.sqrt(_ct0));
+        d.x = -(_t6 * _t15);
+        d.y = -(_t7 * _t15);
+        d.z = -(_t8 * _t15);
+        return d;
+    }
+
+
+    /**
+     * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
+     * applied and store the result in {@code dest}.
+     * <p>
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 invNegativeY(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeY_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invNegativeY_orthogonal(dest);
+        return invNegativeY_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeY_degenerate_identity(@Mutated Double3 dest) {
+        return invNegativeY_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeY_degenerate_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = unitScale(this.m00, this.m01, this.m02);
+        double _t1 = unitScale(this.m20, this.m21, this.m22);
+        double _t8 = this.m00 * _t0;
+        double _t9 = this.m22 * _t1;
+        double _t10 = this.m02 * _t0;
+        double _t11 = this.m20 * _t1;
+        double _t12 = this.m21 * _t1;
+        double _t13 = this.m01 * _t0;
+        double _t20 = _t8 * _t9 - _t10 * _t11;
+        double _t21 = _t10 * _t12 - _t13 * _t9;
+        double _t22 = _t13 * _t11 - _t8 * _t12;
+        double _t27 = _t20 * _t20 + _t21 * _t21 + _t22 * _t22;
+        double _t28 = (1.0 / Math.sqrt(_t27));
+        if (_t27 != 0.0) {
+            d.x = -(_t21 * _t28);
+            d.y = -(_t20 * _t28);
+            d.z = -(_t22 * _t28);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -1018,21 +1184,13 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
-     * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
-     * applied and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
-     *
-     * @param dest will hold the result
-     * @return dest
+     * Out-of-range path of {@code invNegativeY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
      */
-    public Double3 invNegativeY(@Mutated Double3 dest) {
+    private Double3 invNegativeY_degenerate(@Mutated Double3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeY_identity(dest);
-        return invNegativeY_general(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeY_degenerate_identity(dest);
+        return invNegativeY_degenerate_general(dest);
     }
 
 
@@ -1053,17 +1211,86 @@ public class Double3x4Impl implements Double3x4 {
      * Private body of {@code invNegativeZ}, specialized by runtime matrix properties; reached only
      * through the public {@code invNegativeZ} dispatcher.
      */
+    private Double3 invNegativeZ_orthogonal(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        d.x = -this.m20;
+        d.y = -this.m21;
+        d.z = -this.m22;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code invNegativeZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code invNegativeZ} dispatcher.
+     */
     private Double3 invNegativeZ_general(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
         double _t6 = this.m01 * this.m12 - this.m02 * this.m11;
         double _t7 = this.m02 * this.m10 - this.m00 * this.m12;
         double _t8 = this.m00 * this.m11 - this.m01 * this.m10;
-        double _t13 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        double _t14 = (1.0 / Math.sqrt(_t13));
-        if (_t13 > 0.0) {
-            d.x = -(_t6 * _t14);
-            d.y = -(_t7 * _t14);
-            d.z = -(_t8 * _t14);
+        double _ct0 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return invNegativeZ_degenerate(dest);
+        double _t15 = (1.0 / Math.sqrt(_ct0));
+        d.x = -(_t6 * _t15);
+        d.y = -(_t7 * _t15);
+        d.z = -(_t8 * _t15);
+        return d;
+    }
+
+
+    /**
+     * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
+     * applied and store the result in {@code dest}.
+     * <p>
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 invNegativeZ(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeZ_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invNegativeZ_orthogonal(dest);
+        return invNegativeZ_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeZ_degenerate_identity(@Mutated Double3 dest) {
+        return invNegativeZ_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeZ_degenerate_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = unitScale(this.m00, this.m01, this.m02);
+        double _t1 = unitScale(this.m10, this.m11, this.m12);
+        double _t8 = this.m01 * _t0;
+        double _t9 = this.m12 * _t1;
+        double _t10 = this.m02 * _t0;
+        double _t11 = this.m11 * _t1;
+        double _t12 = this.m10 * _t1;
+        double _t13 = this.m00 * _t0;
+        double _t20 = _t8 * _t9 - _t10 * _t11;
+        double _t21 = _t10 * _t12 - _t13 * _t9;
+        double _t22 = _t13 * _t11 - _t8 * _t12;
+        double _t27 = _t20 * _t20 + _t21 * _t21 + _t22 * _t22;
+        double _t28 = (1.0 / Math.sqrt(_t27));
+        if (_t27 != 0.0) {
+            d.x = -(_t20 * _t28);
+            d.y = -(_t21 * _t28);
+            d.z = -(_t22 * _t28);
         } else {
             d.x = -0.0;
             d.y = -0.0;
@@ -1074,21 +1301,13 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
-     * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
-     * applied and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
-     *
-     * @param dest will hold the result
-     * @return dest
+     * Out-of-range path of {@code invNegativeZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
      */
-    public Double3 invNegativeZ(@Mutated Double3 dest) {
+    private Double3 invNegativeZ_degenerate(@Mutated Double3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeZ_identity(dest);
-        return invNegativeZ_general(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeZ_degenerate_identity(dest);
+        return invNegativeZ_degenerate_general(dest);
     }
 
 
@@ -1106,11 +1325,7 @@ public class Double3x4Impl implements Double3x4 {
      * reached only through the public {@code invNormalizedNegativeX} dispatcher.
      */
     private Double3 invNormalizedNegativeX_general(@Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        d.x = -this.m00;
-        d.y = -this.m01;
-        d.z = -this.m02;
-        return d;
+        return invNegativeX_orthogonal(dest);
     }
 
 
@@ -1145,11 +1360,7 @@ public class Double3x4Impl implements Double3x4 {
      * reached only through the public {@code invNormalizedNegativeY} dispatcher.
      */
     private Double3 invNormalizedNegativeY_general(@Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        d.x = -this.m10;
-        d.y = -this.m11;
-        d.z = -this.m12;
-        return d;
+        return invNegativeY_orthogonal(dest);
     }
 
 
@@ -1184,11 +1395,7 @@ public class Double3x4Impl implements Double3x4 {
      * reached only through the public {@code invNormalizedNegativeZ} dispatcher.
      */
     private Double3 invNormalizedNegativeZ_general(@Mutated Double3 dest) {
-        Double3Impl d = (Double3Impl) dest;
-        d.x = -this.m20;
-        d.y = -this.m21;
-        d.z = -this.m22;
-        return d;
+        return invNegativeZ_orthogonal(dest);
     }
 
 
@@ -1351,17 +1558,82 @@ public class Double3x4Impl implements Double3x4 {
      * Private body of {@code invPositiveX}, specialized by runtime matrix properties; reached only
      * through the public {@code invPositiveX} dispatcher.
      */
+    private Double3 invPositiveX_orthogonal(@Mutated Double3 dest) {
+        return invNormalizedPositiveX_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code invPositiveX}, specialized by runtime matrix properties; reached only
+     * through the public {@code invPositiveX} dispatcher.
+     */
     private Double3 invPositiveX_general(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
         double _t6 = this.m11 * this.m22 - this.m12 * this.m21;
         double _t7 = this.m12 * this.m20 - this.m10 * this.m22;
         double _t8 = this.m10 * this.m21 - this.m11 * this.m20;
-        double _t13 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        double _t14 = (1.0 / Math.sqrt(_t13));
-        if (_t13 > 0.0) {
-            d.x = _t6 * _t14;
-            d.y = _t7 * _t14;
-            d.z = _t8 * _t14;
+        double _ct0 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return invPositiveX_degenerate(dest);
+        double _t15 = (1.0 / Math.sqrt(_ct0));
+        d.x = _t6 * _t15;
+        d.y = _t7 * _t15;
+        d.z = _t8 * _t15;
+        return d;
+    }
+
+
+    /**
+     * Obtain the direction of {@code +X} before the transformation represented by this matrix is
+     * applied and store the result in {@code dest}.
+     * <p>
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 invPositiveX(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveX_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invPositiveX_orthogonal(dest);
+        return invPositiveX_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveX_degenerate_identity(@Mutated Double3 dest) {
+        return invNormalizedPositiveX_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveX_degenerate_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = unitScale(this.m10, this.m11, this.m12);
+        double _t1 = unitScale(this.m20, this.m21, this.m22);
+        double _t8 = this.m11 * _t0;
+        double _t9 = this.m22 * _t1;
+        double _t10 = this.m12 * _t0;
+        double _t11 = this.m21 * _t1;
+        double _t12 = this.m20 * _t1;
+        double _t13 = this.m10 * _t0;
+        double _t20 = _t8 * _t9 - _t10 * _t11;
+        double _t21 = _t10 * _t12 - _t13 * _t9;
+        double _t22 = _t13 * _t11 - _t8 * _t12;
+        double _t27 = _t20 * _t20 + _t21 * _t21 + _t22 * _t22;
+        double _t28 = (1.0 / Math.sqrt(_t27));
+        if (_t27 != 0.0) {
+            d.x = _t20 * _t28;
+            d.y = _t21 * _t28;
+            d.z = _t22 * _t28;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -1372,21 +1644,13 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
-     * Obtain the direction of {@code +X} before the transformation represented by this matrix is
-     * applied and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
-     *
-     * @param dest will hold the result
-     * @return dest
+     * Out-of-range path of {@code invPositiveX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
      */
-    public Double3 invPositiveX(@Mutated Double3 dest) {
+    private Double3 invPositiveX_degenerate(@Mutated Double3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveX_identity(dest);
-        return invPositiveX_general(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveX_degenerate_identity(dest);
+        return invPositiveX_degenerate_general(dest);
     }
 
 
@@ -1403,17 +1667,82 @@ public class Double3x4Impl implements Double3x4 {
      * Private body of {@code invPositiveY}, specialized by runtime matrix properties; reached only
      * through the public {@code invPositiveY} dispatcher.
      */
+    private Double3 invPositiveY_orthogonal(@Mutated Double3 dest) {
+        return invNormalizedPositiveY_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code invPositiveY}, specialized by runtime matrix properties; reached only
+     * through the public {@code invPositiveY} dispatcher.
+     */
     private Double3 invPositiveY_general(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        double _t6 = this.m00 * this.m22 - this.m02 * this.m20;
-        double _t7 = this.m02 * this.m21 - this.m01 * this.m22;
+        double _t6 = this.m02 * this.m21 - this.m01 * this.m22;
+        double _t7 = this.m00 * this.m22 - this.m02 * this.m20;
         double _t8 = this.m01 * this.m20 - this.m00 * this.m21;
-        double _t13 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        double _t14 = (1.0 / Math.sqrt(_t13));
-        if (_t13 > 0.0) {
-            d.x = _t7 * _t14;
-            d.y = _t6 * _t14;
-            d.z = _t8 * _t14;
+        double _ct0 = _t7 * _t7 + _t6 * _t6 + _t8 * _t8;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return invPositiveY_degenerate(dest);
+        double _t15 = (1.0 / Math.sqrt(_ct0));
+        d.x = _t6 * _t15;
+        d.y = _t7 * _t15;
+        d.z = _t8 * _t15;
+        return d;
+    }
+
+
+    /**
+     * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
+     * applied and store the result in {@code dest}.
+     * <p>
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 invPositiveY(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveY_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invPositiveY_orthogonal(dest);
+        return invPositiveY_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveY_degenerate_identity(@Mutated Double3 dest) {
+        return invNormalizedPositiveY_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveY_degenerate_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = unitScale(this.m00, this.m01, this.m02);
+        double _t1 = unitScale(this.m20, this.m21, this.m22);
+        double _t8 = this.m00 * _t0;
+        double _t9 = this.m22 * _t1;
+        double _t10 = this.m02 * _t0;
+        double _t11 = this.m20 * _t1;
+        double _t12 = this.m21 * _t1;
+        double _t13 = this.m01 * _t0;
+        double _t20 = _t8 * _t9 - _t10 * _t11;
+        double _t21 = _t10 * _t12 - _t13 * _t9;
+        double _t22 = _t13 * _t11 - _t8 * _t12;
+        double _t27 = _t20 * _t20 + _t21 * _t21 + _t22 * _t22;
+        double _t28 = (1.0 / Math.sqrt(_t27));
+        if (_t27 != 0.0) {
+            d.x = _t21 * _t28;
+            d.y = _t20 * _t28;
+            d.z = _t22 * _t28;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -1424,21 +1753,13 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
-     * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
-     * applied and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
-     *
-     * @param dest will hold the result
-     * @return dest
+     * Out-of-range path of {@code invPositiveY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
      */
-    public Double3 invPositiveY(@Mutated Double3 dest) {
+    private Double3 invPositiveY_degenerate(@Mutated Double3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveY_identity(dest);
-        return invPositiveY_general(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveY_degenerate_identity(dest);
+        return invPositiveY_degenerate_general(dest);
     }
 
 
@@ -1455,17 +1776,82 @@ public class Double3x4Impl implements Double3x4 {
      * Private body of {@code invPositiveZ}, specialized by runtime matrix properties; reached only
      * through the public {@code invPositiveZ} dispatcher.
      */
+    private Double3 invPositiveZ_orthogonal(@Mutated Double3 dest) {
+        return invNormalizedPositiveZ_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code invPositiveZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code invPositiveZ} dispatcher.
+     */
     private Double3 invPositiveZ_general(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
         double _t6 = this.m01 * this.m12 - this.m02 * this.m11;
         double _t7 = this.m02 * this.m10 - this.m00 * this.m12;
         double _t8 = this.m00 * this.m11 - this.m01 * this.m10;
-        double _t13 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
-        double _t14 = (1.0 / Math.sqrt(_t13));
-        if (_t13 > 0.0) {
-            d.x = _t6 * _t14;
-            d.y = _t7 * _t14;
-            d.z = _t8 * _t14;
+        double _ct0 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return invPositiveZ_degenerate(dest);
+        double _t15 = (1.0 / Math.sqrt(_ct0));
+        d.x = _t6 * _t15;
+        d.y = _t7 * _t15;
+        d.z = _t8 * _t15;
+        return d;
+    }
+
+
+    /**
+     * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
+     * applied and store the result in {@code dest}.
+     * <p>
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
+     *
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 invPositiveZ(@Mutated Double3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveZ_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invPositiveZ_orthogonal(dest);
+        return invPositiveZ_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveZ_degenerate_identity(@Mutated Double3 dest) {
+        return invNormalizedPositiveZ_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveZ_degenerate_general(@Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = unitScale(this.m00, this.m01, this.m02);
+        double _t1 = unitScale(this.m10, this.m11, this.m12);
+        double _t8 = this.m01 * _t0;
+        double _t9 = this.m12 * _t1;
+        double _t10 = this.m02 * _t0;
+        double _t11 = this.m11 * _t1;
+        double _t12 = this.m10 * _t1;
+        double _t13 = this.m00 * _t0;
+        double _t20 = _t8 * _t9 - _t10 * _t11;
+        double _t21 = _t10 * _t12 - _t13 * _t9;
+        double _t22 = _t13 * _t11 - _t8 * _t12;
+        double _t27 = _t20 * _t20 + _t21 * _t21 + _t22 * _t22;
+        double _t28 = (1.0 / Math.sqrt(_t27));
+        if (_t27 != 0.0) {
+            d.x = _t20 * _t28;
+            d.y = _t21 * _t28;
+            d.z = _t22 * _t28;
         } else {
             d.x = 0.0;
             d.y = 0.0;
@@ -1476,21 +1862,13 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
-     * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
-     * applied and store the result in {@code dest}.
-     * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
-     *
-     * @param dest will hold the result
-     * @return dest
+     * Out-of-range path of {@code invPositiveZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
      */
-    public Double3 invPositiveZ(@Mutated Double3 dest) {
+    private Double3 invPositiveZ_degenerate(@Mutated Double3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveZ_identity(dest);
-        return invPositiveZ_general(dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveZ_degenerate_identity(dest);
+        return invPositiveZ_degenerate_general(dest);
     }
 
 
@@ -1511,7 +1889,7 @@ public class Double3x4Impl implements Double3x4 {
         Double3Impl d = (Double3Impl) dest;
         double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             d.x = -(this.m00 * _t5);
             d.y = -(this.m10 * _t5);
             d.z = -(this.m20 * _t5);
@@ -1560,7 +1938,7 @@ public class Double3x4Impl implements Double3x4 {
         Double3Impl d = (Double3Impl) dest;
         double _t4 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             d.x = -(this.m01 * _t5);
             d.y = -(this.m11 * _t5);
             d.z = -(this.m21 * _t5);
@@ -1609,7 +1987,7 @@ public class Double3x4Impl implements Double3x4 {
         Double3Impl d = (Double3Impl) dest;
         double _t4 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             d.x = -(this.m02 * _t5);
             d.y = -(this.m12 * _t5);
             d.z = -(this.m22 * _t5);
@@ -1943,7 +2321,7 @@ public class Double3x4Impl implements Double3x4 {
         Double3Impl d = (Double3Impl) dest;
         double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             d.x = this.m00 * _t5;
             d.y = this.m10 * _t5;
             d.z = this.m20 * _t5;
@@ -1992,7 +2370,7 @@ public class Double3x4Impl implements Double3x4 {
         Double3Impl d = (Double3Impl) dest;
         double _t4 = this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             d.x = this.m01 * _t5;
             d.y = this.m11 * _t5;
             d.z = this.m21 * _t5;
@@ -2041,7 +2419,7 @@ public class Double3x4Impl implements Double3x4 {
         Double3Impl d = (Double3Impl) dest;
         double _t4 = this.m02 * this.m02 + this.m12 * this.m12 + this.m22 * this.m22;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             d.x = this.m02 * _t5;
             d.y = this.m12 * _t5;
             d.z = this.m22 * _t5;
@@ -4265,7 +4643,7 @@ public class Double3x4Impl implements Double3x4 {
     /**
      * Set this matrix to the given transform's {@code T * R * S} composition.
      *
-     * @param t the transform to convert
+     * @param t the transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     public @Mutated Double3x4 makeFromTransform(DoubleTransformR t) {
@@ -4283,13 +4661,17 @@ public class Double3x4Impl implements Double3x4 {
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -4535,33 +4917,33 @@ public class Double3x4Impl implements Double3x4 {
         double _t15 = this.m00 + (1.0 - this.m11 - this.m22);
         double _t16 = this.m11 + (_t1 - this.m22);
         double _t17 = this.m22 + (_t1 - this.m11);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t20 = (1.0 / Math.sqrt(_t16));
-        double _t21 = (1.0 / Math.sqrt(_t17));
-        double _t22 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         double _t62, _t63, _t64, _t65;
         if (_t13 > 0.0) {
-            _t62 = 0.5 * _t3 * _t18;
-            _t63 = 0.5 * _t7 * _t18;
-            _t64 = 0.5 * _t9 * _t18;
+            _t62 = _sp0 * _t3;
+            _t63 = _sp0 * _t7;
+            _t64 = _sp0 * _t9;
             _t65 = 0.5 * Math.sqrt(_t14);
         } else {
             if (this.m00 > _t4) {
                 _t62 = 0.5 * Math.sqrt(_t15);
-                _t63 = 0.5 * _t5 * _t22;
-                _t64 = 0.5 * _t6 * _t22;
-                _t65 = 0.5 * _t3 * _t22;
+                _t63 = _sp3 * _t5;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t3;
             } else {
                 if (this.m11 > this.m22) {
-                    _t62 = 0.5 * _t5 * _t20;
+                    _t62 = _sp1 * _t5;
                     _t63 = 0.5 * Math.sqrt(_t16);
-                    _t64 = 0.5 * _t8 * _t20;
-                    _t65 = 0.5 * _t7 * _t20;
+                    _t64 = _sp1 * _t8;
+                    _t65 = _sp1 * _t7;
                 } else {
-                    _t62 = 0.5 * _t6 * _t21;
-                    _t63 = 0.5 * _t8 * _t21;
+                    _t62 = _sp2 * _t6;
+                    _t63 = _sp2 * _t8;
                     _t64 = 0.5 * Math.sqrt(_t17);
-                    _t65 = 0.5 * _t9 * _t21;
+                    _t65 = _sp2 * _t9;
                 }
             }
         }
@@ -4680,32 +5062,32 @@ public class Double3x4Impl implements Double3x4 {
         double _t63 = _t50 - _t19 - _t18;
         double _t64 = _t18 + (_t51 - _t19);
         double _t65 = _t19 + (_t51 - _t18);
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
-        double _t69 = (1.0 / Math.sqrt(_t63));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t65));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
         if (_t61 > 0.0) {
-            d.rX = 0.5 * _t36 * _t66;
-            d.rY = 0.5 * _t55 * _t66;
-            d.rZ = 0.5 * _t56 * _t66;
+            d.rX = _sp0 * _t36;
+            d.rY = _sp0 * _t55;
+            d.rZ = _sp0 * _t56;
             d.rW = 0.5 * Math.sqrt(_t62);
         } else {
             if (_t47 > _t37) {
                 d.rX = 0.5 * Math.sqrt(_t63);
-                d.rY = 0.5 * _t53 * _t69;
-                d.rZ = 0.5 * _t54 * _t69;
-                d.rW = 0.5 * _t36 * _t69;
+                d.rY = _sp3 * _t53;
+                d.rZ = _sp3 * _t54;
+                d.rW = _sp3 * _t36;
             } else {
                 if (_t18 > _t19) {
-                    d.rX = 0.5 * _t53 * _t67;
+                    d.rX = _sp1 * _t53;
                     d.rY = 0.5 * Math.sqrt(_t64);
-                    d.rZ = 0.5 * _t38 * _t67;
-                    d.rW = 0.5 * _t55 * _t67;
+                    d.rZ = _sp1 * _t38;
+                    d.rW = _sp1 * _t55;
                 } else {
-                    d.rX = 0.5 * _t54 * _t68;
-                    d.rY = 0.5 * _t38 * _t68;
+                    d.rX = _sp2 * _t54;
+                    d.rY = _sp2 * _t38;
                     d.rZ = 0.5 * Math.sqrt(_t65);
-                    d.rW = 0.5 * _t56 * _t68;
+                    d.rW = _sp2 * _t56;
                 }
             }
         }
@@ -4784,8 +5166,8 @@ public class Double3x4Impl implements Double3x4 {
         double _t14 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
         double _t15 = (1.0 / Math.sqrt(_t12));
         double _t16 = (1.0 / Math.sqrt(_t13));
-        double _t17 = (1.0 / Math.sqrt(_t14));
         double _t18 = Math.sqrt(_t14);
+        double _t17 = 1.0 / _t18;
         double _t19 = this.m11 * _t15;
         double _t20 = this.m22 * _t16;
         double _t21 = this.m10 * _t17;
@@ -4820,17 +5202,17 @@ public class Double3x4Impl implements Double3x4 {
         double _t64 = _t51 - _t20 - _t19;
         double _t65 = _t19 + (_t52 - _t20);
         double _t66 = _t20 + (_t52 - _t19);
-        double _t67 = (1.0 / Math.sqrt(_t63));
-        double _t68 = (1.0 / Math.sqrt(_t65));
-        double _t69 = (1.0 / Math.sqrt(_t66));
-        double _t70 = (1.0 / Math.sqrt(_t64));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t65));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t66));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         d.tX = this.m03;
         d.tY = this.m13;
         d.tZ = this.m23;
-        d.rX = _t62 > 0.0 ? 0.5 * _t37 * _t67 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? 0.5 * _t54 * _t68 : 0.5 * _t55 * _t69;
-        d.rY = _t62 > 0.0 ? 0.5 * _t56 * _t67 : _t48 > _t38 ? 0.5 * _t54 * _t70 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : 0.5 * _t39 * _t69;
-        d.rZ = _t62 > 0.0 ? 0.5 * _t57 * _t67 : _t48 > _t38 ? 0.5 * _t55 * _t70 : _t19 > _t20 ? 0.5 * _t39 * _t68 : 0.5 * Math.sqrt(_t66);
-        d.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? 0.5 * _t37 * _t70 : _t19 > _t20 ? 0.5 * _t56 * _t68 : 0.5 * _t57 * _t69;
+        d.rX = _t62 > 0.0 ? _sp0 * _t37 : _t48 > _t38 ? 0.5 * Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+        d.rY = _t62 > 0.0 ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5 * Math.sqrt(_t65) : _sp2 * _t39;
+        d.rZ = _t62 > 0.0 ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5 * Math.sqrt(_t66);
+        d.rW = _t62 > 0.0 ? 0.5 * Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
         d.sX = _t47 < 0.0 ? -_t18 : _t18;
         d.sY = Math.sqrt(_t12);
         d.sZ = Math.sqrt(_t13);
@@ -4873,7 +5255,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
         double _t5 = (1.0 / Math.sqrt(_t4));
         double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             _t9 = this.m00 * _t5;
             _t10 = this.m10 * _t5;
             _t11 = this.m20 * _t5;
@@ -4893,7 +5275,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t41 = _t31 * _t31 + _t32 * _t32 + _t33 * _t33;
         double _t42 = (1.0 / Math.sqrt(_t41));
         double _t46, _t47, _t48;
-        if (_t41 > 0.0) {
+        if (_t41 != 0.0) {
             _t46 = _t32 * _t42;
             _t47 = _t31 * _t42;
             _t48 = _t33 * _t42;
@@ -4909,7 +5291,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t67 = _t60 * _t60 + _t61 * _t61 + _t62 * _t62;
         double _t68 = (1.0 / Math.sqrt(_t67));
         double _t72, _t73, _t74;
-        if (_t67 > 0.0) {
+        if (_t67 != 0.0) {
             _t72 = _t62 * _t68;
             _t73 = _t61 * _t68;
             _t74 = _t60 * _t68;
@@ -4942,32 +5324,32 @@ public class Double3x4Impl implements Double3x4 {
         double _t107 = 1.0 + (_t93 - (_t46 + _t72));
         double _t108 = 1.0 + (_t46 - (_t93 + _t72));
         double _t109 = 1.0 + (_t72 - _t96);
-        double _t110 = (1.0 / Math.sqrt(_t106));
-        double _t111 = (1.0 / Math.sqrt(_t108));
-        double _t112 = (1.0 / Math.sqrt(_t109));
-        double _t113 = (1.0 / Math.sqrt(_t107));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t106));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t108));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t109));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t107));
         if (_t102 > 0.0) {
-            d.x = 0.5 * _t81 * _t110;
-            d.y = 0.5 * _t101 * _t110;
-            d.z = 0.5 * _t98 * _t110;
+            d.x = _sp0 * _t81;
+            d.y = _sp0 * _t101;
+            d.z = _sp0 * _t98;
             d.w = 0.5 * Math.sqrt(_t106);
         } else {
             if (_t93 > _t82) {
                 d.x = 0.5 * Math.sqrt(_t107);
-                d.y = 0.5 * _t97 * _t113;
-                d.z = 0.5 * _t100 * _t113;
-                d.w = 0.5 * _t81 * _t113;
+                d.y = _sp3 * _t97;
+                d.z = _sp3 * _t100;
+                d.w = _sp3 * _t81;
             } else {
                 if (_t46 > _t72) {
-                    d.x = 0.5 * _t97 * _t111;
+                    d.x = _sp1 * _t97;
                     d.y = 0.5 * Math.sqrt(_t108);
-                    d.z = 0.5 * _t84 * _t111;
-                    d.w = 0.5 * _t101 * _t111;
+                    d.z = _sp1 * _t84;
+                    d.w = _sp1 * _t101;
                 } else {
-                    d.x = 0.5 * _t100 * _t112;
-                    d.y = 0.5 * _t84 * _t112;
+                    d.x = _sp2 * _t100;
+                    d.y = _sp2 * _t84;
                     d.z = 0.5 * Math.sqrt(_t109);
-                    d.w = 0.5 * _t98 * _t112;
+                    d.w = _sp2 * _t98;
                 }
             }
         }
@@ -5008,10 +5390,10 @@ public class Double3x4Impl implements Double3x4 {
     private Double3 decomposeScale_general(@Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
         double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        double _t5 = (1.0 / Math.sqrt(_t4));
         double _t6 = Math.sqrt(_t4);
+        double _t5 = 1.0 / _t6;
         double _t10, _t11, _t12;
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             _t10 = this.m00 * _t5;
             _t11 = this.m10 * _t5;
             _t12 = this.m20 * _t5;
@@ -5031,7 +5413,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t39 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
         double _t40 = (1.0 / Math.sqrt(_t39));
         double _t44, _t45, _t46;
-        if (_t39 > 0.0) {
+        if (_t39 != 0.0) {
             _t44 = _t30 * _t40;
             _t45 = _t29 * _t40;
             _t46 = _t31 * _t40;
@@ -5047,7 +5429,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t65 = _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
         double _t66 = (1.0 / Math.sqrt(_t65));
         double _t70, _t71, _t72;
-        if (_t65 > 0.0) {
+        if (_t65 != 0.0) {
             _t70 = _t60 * _t66;
             _t71 = _t59 * _t66;
             _t72 = _t58 * _t66;
@@ -5100,7 +5482,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
         double _t5 = (1.0 / Math.sqrt(_t4));
         double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             _t9 = this.m00 * _t5;
             _t10 = this.m10 * _t5;
             _t11 = this.m20 * _t5;
@@ -5121,7 +5503,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t39 = (1.0 / Math.sqrt(_t38));
         double _t40 = _t21 * _t39;
         double _t44, _t45, _t46;
-        if (_t38 > 0.0) {
+        if (_t38 != 0.0) {
             _t44 = _t29 * _t39;
             _t45 = _t30 * _t39;
             _t46 = _t31 * _t39;
@@ -5138,7 +5520,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t66 = (1.0 / Math.sqrt(_t65));
         double _t67 = _t20 * _t66;
         double _t71, _t72, _t73;
-        if (_t65 > 0.0) {
+        if (_t65 != 0.0) {
             _t71 = _t60 * _t66;
             _t72 = _t59 * _t66;
             _t73 = _t58 * _t66;
@@ -5197,10 +5579,10 @@ public class Double3x4Impl implements Double3x4 {
         DoubleQuatImpl d1 = (DoubleQuatImpl) rotation;
         Double3Impl d2 = (Double3Impl) scale;
         double _t4 = this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20;
-        double _t5 = (1.0 / Math.sqrt(_t4));
         double _t6 = Math.sqrt(_t4);
+        double _t5 = 1.0 / _t6;
         double _t10, _t11, _t12;
-        if (_t4 > 0.0) {
+        if (_t4 != 0.0) {
             _t10 = this.m00 * _t5;
             _t11 = this.m10 * _t5;
             _t12 = this.m20 * _t5;
@@ -5220,7 +5602,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t42 = _t32 * _t32 + _t33 * _t33 + _t34 * _t34;
         double _t43 = (1.0 / Math.sqrt(_t42));
         double _t47, _t48, _t49;
-        if (_t42 > 0.0) {
+        if (_t42 != 0.0) {
             _t47 = _t33 * _t43;
             _t48 = _t32 * _t43;
             _t49 = _t34 * _t43;
@@ -5236,7 +5618,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t68 = _t61 * _t61 + _t62 * _t62 + _t63 * _t63;
         double _t69 = (1.0 / Math.sqrt(_t68));
         double _t73, _t74, _t75;
-        if (_t68 > 0.0) {
+        if (_t68 != 0.0) {
             _t73 = _t63 * _t69;
             _t74 = _t62 * _t69;
             _t75 = _t61 * _t69;
@@ -5269,17 +5651,17 @@ public class Double3x4Impl implements Double3x4 {
         double _t108 = 1.0 + (_t94 - (_t47 + _t73));
         double _t109 = 1.0 + (_t47 - (_t94 + _t73));
         double _t110 = 1.0 + (_t73 - _t97);
-        double _t111 = (1.0 / Math.sqrt(_t107));
-        double _t112 = (1.0 / Math.sqrt(_t109));
-        double _t113 = (1.0 / Math.sqrt(_t110));
-        double _t114 = (1.0 / Math.sqrt(_t108));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t107));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t109));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t110));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t108));
         d0.x = this.m03;
         d0.y = this.m13;
         d0.z = this.m23;
-        d1.x = _t103 > 0.0 ? 0.5 * _t82 * _t111 : _t94 > _t83 ? 0.5 * Math.sqrt(_t108) : _t47 > _t73 ? 0.5 * _t98 * _t112 : 0.5 * _t101 * _t113;
-        d1.y = _t103 > 0.0 ? 0.5 * _t102 * _t111 : _t94 > _t83 ? 0.5 * _t98 * _t114 : _t47 > _t73 ? 0.5 * Math.sqrt(_t109) : 0.5 * _t85 * _t113;
-        d1.z = _t103 > 0.0 ? 0.5 * _t99 * _t111 : _t94 > _t83 ? 0.5 * _t101 * _t114 : _t47 > _t73 ? 0.5 * _t85 * _t112 : 0.5 * Math.sqrt(_t110);
-        d1.w = _t103 > 0.0 ? 0.5 * Math.sqrt(_t107) : _t94 > _t83 ? 0.5 * _t82 * _t114 : _t47 > _t73 ? 0.5 * _t102 * _t112 : 0.5 * _t99 * _t113;
+        d1.x = _t103 > 0.0 ? _sp0 * _t82 : _t94 > _t83 ? 0.5 * Math.sqrt(_t108) : _t47 > _t73 ? _sp1 * _t98 : _sp2 * _t101;
+        d1.y = _t103 > 0.0 ? _sp0 * _t102 : _t94 > _t83 ? _sp3 * _t98 : _t47 > _t73 ? 0.5 * Math.sqrt(_t109) : _sp2 * _t85;
+        d1.z = _t103 > 0.0 ? _sp0 * _t99 : _t94 > _t83 ? _sp3 * _t101 : _t47 > _t73 ? _sp1 * _t85 : 0.5 * Math.sqrt(_t110);
+        d1.w = _t103 > 0.0 ? 0.5 * Math.sqrt(_t107) : _t94 > _t83 ? _sp3 * _t82 : _t47 > _t73 ? _sp1 * _t102 : _sp2 * _t99;
         d2.x = _t93 < 0.0 ? -_t6 : _t6;
         d2.y = Math.sqrt(_t42);
         d2.z = Math.sqrt(_t68);
@@ -6110,12 +6492,12 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = right.m00();
         d.m01 = right.m01();
-        d.m02 = right.m02();
-        d.m03 = 0.0;
+        d.m02 = 0.0;
+        d.m03 = right.m02();
         d.m10 = right.m10();
         d.m11 = right.m11();
-        d.m12 = right.m12();
-        d.m13 = 0.0;
+        d.m12 = 0.0;
+        d.m13 = right.m12();
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = 1.0;
@@ -6133,10 +6515,10 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = right.m00();
         d.m01 = right.m01();
-        d.m02 = right.m02();
+        d.m03 = right.m02();
         d.m10 = right.m10();
         d.m11 = right.m11();
-        d.m12 = right.m12();
+        d.m13 = right.m12();
         d.properties = (((Double2x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return d;
     }
@@ -6150,12 +6532,12 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = right.m00();
         d.m01 = right.m01();
-        d.m02 = right.m02();
-        d.m03 = this.m03;
+        d.m02 = 0.0;
+        d.m03 = right.m02() + this.m03;
         d.m10 = right.m10();
         d.m11 = right.m11();
-        d.m12 = right.m12();
-        d.m13 = this.m13;
+        d.m12 = 0.0;
+        d.m13 = right.m12() + this.m13;
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = 1.0;
@@ -6173,15 +6555,50 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = right.m00();
         d.m01 = right.m01();
-        d.m02 = right.m02();
-        d.m03 = this.m03;
+        d.m03 = right.m02() + this.m03;
         d.m10 = right.m10();
         d.m11 = right.m11();
-        d.m12 = right.m12();
-        d.m13 = this.m13;
+        d.m13 = right.m12() + this.m13;
         d.m23 = this.m23;
         d.properties = (((Double2x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s269caba0_c0(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r10, double _r11, double _r14, double _r15) {
+        _dst.m00 = _r0 * _r1 + _r2 * _r3;
+        _dst.m10 = _r0 * _r10 + _r2 * _r11;
+        _dst.m20 = _r0 * _r14 + _r2 * _r15;
+    }
+
+    /** Private column 1 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s269caba0_c1(Double3x4Impl _dst, double _r4, double _r1, double _r5, double _r3, double _r10, double _r11, double _r14, double _r15) {
+        _dst.m01 = _r4 * _r1 + _r5 * _r3;
+        _dst.m11 = _r4 * _r10 + _r5 * _r11;
+        _dst.m21 = _r4 * _r14 + _r5 * _r15;
+    }
+
+    /** Private column 2 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s269caba0_c2(Double3x4Impl _dst, double _r6, double _r12, double _r16) {
+        _dst.m02 = _r6;
+        _dst.m12 = _r12;
+        _dst.m22 = _r16;
+    }
+
+    /** Private column 3 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s269caba0_c3(Double3x4Impl _dst, double _r7, double _r1, double _r8, double _r3, double _r9, double _r10, double _r11, double _r13, double _r14, double _r15, double _r17) {
+        _dst.m03 = _r7 * _r1 + (_r8 * _r3 + _r9);
+        _dst.m13 = _r7 * _r10 + (_r8 * _r11 + _r13);
+        _dst.m23 = _r7 * _r14 + (_r8 * _r15 + _r17);
+    }
+
+    /** Private tail of {@code mul_orthogonal}; reached only through it. */
+    private void mul_orthogonal_s269caba0_tail(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16) {
+        double _r17 = this.m23;
+        mul_orthogonal_s269caba0_c0(_dst, _r0, _r1, _r2, _r3, _r10, _r11, _r14, _r15);
+        mul_orthogonal_s269caba0_c1(_dst, _r4, _r1, _r5, _r3, _r10, _r11, _r14, _r15);
+        mul_orthogonal_s269caba0_c2(_dst, _r6, _r12, _r16);
+        mul_orthogonal_s269caba0_c3(_dst, _r7, _r1, _r8, _r3, _r9, _r10, _r11, _r13, _r14, _r15, _r17);
     }
 
 
@@ -6191,26 +6608,63 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 mul_orthogonal(Double2x3R right, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
-        double _buf1 = right.m01() * this.m00 + right.m11() * this.m01;
-        d.m02 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
-        d.m03 = this.m03;
-        double _buf2 = right.m00() * this.m10 + right.m10() * this.m11;
-        double _buf3 = right.m01() * this.m10 + right.m11() * this.m11;
-        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
-        d.m13 = this.m13;
-        double _buf4 = right.m00() * this.m20 + right.m10() * this.m21;
-        double _buf5 = right.m01() * this.m20 + right.m11() * this.m21;
-        d.m22 = right.m02() * this.m20 + (right.m12() * this.m21 + this.m22);
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        double _r0 = right.m00();
+        double _r1 = this.m00;
+        double _r2 = right.m10();
+        double _r3 = this.m01;
+        double _r4 = right.m01();
+        double _r5 = right.m11();
+        double _r6 = this.m02;
+        double _r7 = right.m02();
+        double _r8 = right.m12();
+        double _r9 = this.m03;
+        double _r10 = this.m10;
+        double _r11 = this.m11;
+        double _r12 = this.m12;
+        double _r13 = this.m13;
+        double _r14 = this.m20;
+        double _r15 = this.m21;
+        double _r16 = this.m22;
+        mul_orthogonal_s269caba0_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16);
         d.properties = (((Double2x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
         return d;
+    }
+
+    /** Private column 0 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s269caba0_c0(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r10, double _r11, double _r14, double _r15) {
+        _dst.m00 = _r0 * _r1 + _r2 * _r3;
+        _dst.m10 = _r0 * _r10 + _r2 * _r11;
+        _dst.m20 = _r0 * _r14 + _r2 * _r15;
+    }
+
+    /** Private column 1 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s269caba0_c1(Double3x4Impl _dst, double _r4, double _r1, double _r5, double _r3, double _r10, double _r11, double _r14, double _r15) {
+        _dst.m01 = _r4 * _r1 + _r5 * _r3;
+        _dst.m11 = _r4 * _r10 + _r5 * _r11;
+        _dst.m21 = _r4 * _r14 + _r5 * _r15;
+    }
+
+    /** Private column 2 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s269caba0_c2(Double3x4Impl _dst, double _r6, double _r12, double _r16) {
+        _dst.m02 = _r6;
+        _dst.m12 = _r12;
+        _dst.m22 = _r16;
+    }
+
+    /** Private column 3 of {@code mul_general}: computes and stores it; reached only through it. */
+    private void mul_general_s269caba0_c3(Double3x4Impl _dst, double _r7, double _r1, double _r8, double _r3, double _r9, double _r10, double _r11, double _r13, double _r14, double _r15, double _r17) {
+        _dst.m03 = _r7 * _r1 + (_r8 * _r3 + _r9);
+        _dst.m13 = _r7 * _r10 + (_r8 * _r11 + _r13);
+        _dst.m23 = _r7 * _r14 + (_r8 * _r15 + _r17);
+    }
+
+    /** Private tail of {@code mul_general}; reached only through it. */
+    private void mul_general_s269caba0_tail(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16) {
+        double _r17 = this.m23;
+        mul_general_s269caba0_c0(_dst, _r0, _r1, _r2, _r3, _r10, _r11, _r14, _r15);
+        mul_general_s269caba0_c1(_dst, _r4, _r1, _r5, _r3, _r10, _r11, _r14, _r15);
+        mul_general_s269caba0_c2(_dst, _r6, _r12, _r16);
+        mul_general_s269caba0_c3(_dst, _r7, _r1, _r8, _r3, _r9, _r10, _r11, _r13, _r14, _r15, _r17);
     }
 
 
@@ -6220,24 +6674,24 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 mul_general(Double2x3R right, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _buf0 = right.m00() * this.m00 + right.m10() * this.m01;
-        double _buf1 = right.m01() * this.m00 + right.m11() * this.m01;
-        d.m02 = right.m02() * this.m00 + (right.m12() * this.m01 + this.m02);
-        d.m03 = this.m03;
-        double _buf2 = right.m00() * this.m10 + right.m10() * this.m11;
-        double _buf3 = right.m01() * this.m10 + right.m11() * this.m11;
-        d.m12 = right.m02() * this.m10 + (right.m12() * this.m11 + this.m12);
-        d.m13 = this.m13;
-        double _buf4 = right.m00() * this.m20 + right.m10() * this.m21;
-        double _buf5 = right.m01() * this.m20 + right.m11() * this.m21;
-        d.m22 = right.m02() * this.m20 + (right.m12() * this.m21 + this.m22);
-        d.m23 = this.m23;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m10 = _buf2;
-        d.m11 = _buf3;
-        d.m20 = _buf4;
-        d.m21 = _buf5;
+        double _r0 = right.m00();
+        double _r1 = this.m00;
+        double _r2 = right.m10();
+        double _r3 = this.m01;
+        double _r4 = right.m01();
+        double _r5 = right.m11();
+        double _r6 = this.m02;
+        double _r7 = right.m02();
+        double _r8 = right.m12();
+        double _r9 = this.m03;
+        double _r10 = this.m10;
+        double _r11 = this.m11;
+        double _r12 = this.m12;
+        double _r13 = this.m13;
+        double _r14 = this.m20;
+        double _r15 = this.m21;
+        double _r16 = this.m22;
+        mul_general_s269caba0_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -6250,8 +6704,8 @@ public class Double3x4Impl implements Double3x4 {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param right the right operand
      * @param dest will hold the result
@@ -6273,8 +6727,8 @@ public class Double3x4Impl implements Double3x4 {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param right the right operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -6618,6 +7072,47 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code mul_translation}: computes and stores it; reached only through it. */
+    private void mul_translation_s5a071402_c0(Double4x4Impl _dst, double _r0, double _r1, double _r2, double _r9, double _r10, double _r14, double _r15) {
+        _dst.m00 = _r0 * _r1 + _r2;
+        _dst.m10 = _r0 * _r9 + _r10;
+        _dst.m20 = _r0 * _r14 + _r15;
+        _dst.m30 = _r0;
+    }
+
+    /** Private column 1 of {@code mul_translation}: computes and stores it; reached only through it. */
+    private void mul_translation_s5a071402_c1(Double4x4Impl _dst, double _r3, double _r1, double _r4, double _r9, double _r11, double _r14, double _r16) {
+        _dst.m01 = _r3 * _r1 + _r4;
+        _dst.m11 = _r3 * _r9 + _r11;
+        _dst.m21 = _r3 * _r14 + _r16;
+        _dst.m31 = _r3;
+    }
+
+    /** Private column 2 of {@code mul_translation}: computes and stores it; reached only through it. */
+    private void mul_translation_s5a071402_c2(Double4x4Impl _dst, double _r5, double _r1, double _r6, double _r9, double _r12, double _r14, double _r17) {
+        _dst.m02 = _r5 * _r1 + _r6;
+        _dst.m12 = _r5 * _r9 + _r12;
+        _dst.m22 = _r5 * _r14 + _r17;
+        _dst.m32 = _r5;
+    }
+
+    /** Private column 3 of {@code mul_translation}: computes and stores it; reached only through it. */
+    private void mul_translation_s5a071402_c3(Double4x4Impl _dst, double _r7, double _r1, double _r8, double _r9, double _r13, double _r14, double _r18) {
+        _dst.m03 = _r7 * _r1 + _r8;
+        _dst.m13 = _r7 * _r9 + _r13;
+        _dst.m23 = _r7 * _r14 + _r18;
+        _dst.m33 = _r7;
+    }
+
+    /** Private tail of {@code mul_translation}; reached only through it. */
+    private void mul_translation_s5a071402_tail(Double4x4Impl _dst, Double4x4R right, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17) {
+        double _r18 = right.m23();
+        mul_translation_s5a071402_c0(_dst, _r0, _r1, _r2, _r9, _r10, _r14, _r15);
+        mul_translation_s5a071402_c1(_dst, _r3, _r1, _r4, _r9, _r11, _r14, _r16);
+        mul_translation_s5a071402_c2(_dst, _r5, _r1, _r6, _r9, _r12, _r14, _r17);
+        mul_translation_s5a071402_c3(_dst, _r7, _r1, _r8, _r9, _r13, _r14, _r18);
+    }
+
 
     /**
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
@@ -6625,22 +7120,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double4x4 mul_translation(Double4x4R right, @Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        d.m00 = right.m30() * this.m03 + right.m00();
-        d.m10 = right.m30() * this.m13 + right.m10();
-        d.m20 = right.m30() * this.m23 + right.m20();
-        d.m30 = right.m30();
-        d.m01 = right.m31() * this.m03 + right.m01();
-        d.m11 = right.m31() * this.m13 + right.m11();
-        d.m21 = right.m31() * this.m23 + right.m21();
-        d.m31 = right.m31();
-        d.m02 = right.m32() * this.m03 + right.m02();
-        d.m12 = right.m32() * this.m13 + right.m12();
-        d.m22 = right.m32() * this.m23 + right.m22();
-        d.m32 = right.m32();
-        d.m03 = right.m33() * this.m03 + right.m03();
-        d.m13 = right.m33() * this.m13 + right.m13();
-        d.m23 = right.m33() * this.m23 + right.m23();
-        d.m33 = right.m33();
+        double _r0 = right.m30();
+        double _r1 = this.m03;
+        double _r2 = right.m00();
+        double _r3 = right.m31();
+        double _r4 = right.m01();
+        double _r5 = right.m32();
+        double _r6 = right.m02();
+        double _r7 = right.m33();
+        double _r8 = right.m03();
+        double _r9 = this.m13;
+        double _r10 = right.m10();
+        double _r11 = right.m11();
+        double _r12 = right.m12();
+        double _r13 = right.m13();
+        double _r14 = this.m23;
+        double _r15 = right.m20();
+        double _r16 = right.m21();
+        double _r17 = right.m22();
+        mul_translation_s5a071402_tail(d, right, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17);
         d.properties = Joml.BIT_TRANSLATION & ((Double4x4Impl) right).properties;
         return d;
     }
@@ -7267,12 +7765,12 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = other.m00();
         d.m01 = other.m01();
-        d.m02 = other.m02();
-        d.m03 = 0.0;
+        d.m02 = 0.0;
+        d.m03 = other.m02();
         d.m10 = other.m10();
         d.m11 = other.m11();
-        d.m12 = other.m12();
-        d.m13 = 0.0;
+        d.m12 = 0.0;
+        d.m13 = other.m12();
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = 1.0;
@@ -7290,10 +7788,10 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = other.m00();
         d.m01 = other.m01();
-        d.m02 = other.m02();
+        d.m03 = other.m02();
         d.m10 = other.m10();
         d.m11 = other.m11();
-        d.m12 = other.m12();
+        d.m13 = other.m12();
         d.properties = (((Double2x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return d;
     }
@@ -7307,12 +7805,12 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = other.m00();
         d.m01 = other.m01();
-        d.m02 = other.m02();
-        double _buf0 = other.m00() * this.m03 + other.m01() * this.m13 + other.m02() * this.m23;
+        d.m02 = 0.0;
+        double _buf0 = other.m00() * this.m03 + (other.m01() * this.m13 + other.m02());
         d.m10 = other.m10();
         d.m11 = other.m11();
-        d.m12 = other.m12();
-        d.m13 = other.m10() * this.m03 + other.m11() * this.m13 + other.m12() * this.m23;
+        d.m12 = 0.0;
+        d.m13 = other.m10() * this.m03 + (other.m11() * this.m13 + other.m12());
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = 1.0;
@@ -7331,12 +7829,10 @@ public class Double3x4Impl implements Double3x4 {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = other.m00();
         d.m01 = other.m01();
-        d.m02 = other.m02();
-        double _buf0 = other.m00() * this.m03 + other.m01() * this.m13 + other.m02() * this.m23;
+        double _buf0 = other.m00() * this.m03 + (other.m01() * this.m13 + other.m02());
         d.m10 = other.m10();
         d.m11 = other.m11();
-        d.m12 = other.m12();
-        d.m13 = other.m10() * this.m03 + other.m11() * this.m13 + other.m12() * this.m23;
+        d.m13 = other.m10() * this.m03 + (other.m11() * this.m13 + other.m12());
         d.m23 = this.m23;
         d.m03 = _buf0;
         d.properties = (((Double2x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
@@ -7344,31 +7840,40 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 0 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
-    private void preMul_orthogonal_s2c30a92c_c0(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r15, double _r16, double _r17) {
-        _dst.m00 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5;
-        _dst.m10 = _r15 * _r1 + _r16 * _r3 + _r17 * _r5;
-        _dst.m20 = _r5;
+    private void preMul_orthogonal_s2c30a92c_c0(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r11, double _r12, double _r14) {
+        _dst.m00 = _r0 * _r1 + _r2 * _r3;
+        _dst.m10 = _r11 * _r1 + _r12 * _r3;
+        _dst.m20 = _r14;
     }
 
     /** Private column 1 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
-    private void preMul_orthogonal_s2c30a92c_c1(Double3x4Impl _dst, double _r0, double _r6, double _r2, double _r7, double _r4, double _r8, double _r15, double _r16, double _r17) {
-        _dst.m01 = _r0 * _r6 + _r2 * _r7 + _r4 * _r8;
-        _dst.m11 = _r15 * _r6 + _r16 * _r7 + _r17 * _r8;
-        _dst.m21 = _r8;
+    private void preMul_orthogonal_s2c30a92c_c1(Double3x4Impl _dst, double _r0, double _r4, double _r2, double _r5, double _r11, double _r12, double _r15) {
+        _dst.m01 = _r0 * _r4 + _r2 * _r5;
+        _dst.m11 = _r11 * _r4 + _r12 * _r5;
+        _dst.m21 = _r15;
     }
 
     /** Private column 2 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
-    private void preMul_orthogonal_s2c30a92c_c2(Double3x4Impl _dst, double _r0, double _r9, double _r2, double _r10, double _r4, double _r11, double _r15, double _r16, double _r17) {
-        _dst.m02 = _r0 * _r9 + _r2 * _r10 + _r4 * _r11;
-        _dst.m12 = _r15 * _r9 + _r16 * _r10 + _r17 * _r11;
-        _dst.m22 = _r11;
+    private void preMul_orthogonal_s2c30a92c_c2(Double3x4Impl _dst, double _r0, double _r6, double _r2, double _r7, double _r11, double _r12, double _r16) {
+        _dst.m02 = _r0 * _r6 + _r2 * _r7;
+        _dst.m12 = _r11 * _r6 + _r12 * _r7;
+        _dst.m22 = _r16;
     }
 
     /** Private column 3 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
-    private void preMul_orthogonal_s2c30a92c_c3(Double3x4Impl _dst, double _r0, double _r12, double _r2, double _r13, double _r4, double _r14, double _r15, double _r16, double _r17) {
-        _dst.m03 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14;
-        _dst.m13 = _r15 * _r12 + _r16 * _r13 + _r17 * _r14;
-        _dst.m23 = _r14;
+    private void preMul_orthogonal_s2c30a92c_c3(Double3x4Impl _dst, double _r0, double _r8, double _r2, double _r9, double _r10, double _r11, double _r12, double _r13, double _r17) {
+        _dst.m03 = _r0 * _r8 + (_r2 * _r9 + _r10);
+        _dst.m13 = _r11 * _r8 + (_r12 * _r9 + _r13);
+        _dst.m23 = _r17;
+    }
+
+    /** Private tail of {@code preMul_orthogonal}; reached only through it. */
+    private void preMul_orthogonal_s2c30a92c_tail(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16) {
+        double _r17 = this.m23;
+        preMul_orthogonal_s2c30a92c_c0(_dst, _r0, _r1, _r2, _r3, _r11, _r12, _r14);
+        preMul_orthogonal_s2c30a92c_c1(_dst, _r0, _r4, _r2, _r5, _r11, _r12, _r15);
+        preMul_orthogonal_s2c30a92c_c2(_dst, _r0, _r6, _r2, _r7, _r11, _r12, _r16);
+        preMul_orthogonal_s2c30a92c_c3(_dst, _r0, _r8, _r2, _r9, _r10, _r11, _r12, _r13, _r17);
     }
 
 
@@ -7382,54 +7887,22 @@ public class Double3x4Impl implements Double3x4 {
         double _r1 = this.m00;
         double _r2 = other.m01();
         double _r3 = this.m10;
-        double _r4 = other.m02();
-        double _r5 = this.m20;
-        double _r6 = this.m01;
-        double _r7 = this.m11;
-        double _r8 = this.m21;
-        double _r9 = this.m02;
-        double _r10 = this.m12;
-        double _r11 = this.m22;
-        double _r12 = this.m03;
-        double _r13 = this.m13;
-        double _r14 = this.m23;
-        double _r15 = other.m10();
-        double _r16 = other.m11();
-        double _r17 = other.m12();
-        preMul_orthogonal_s2c30a92c_c0(d, _r0, _r1, _r2, _r3, _r4, _r5, _r15, _r16, _r17);
-        preMul_orthogonal_s2c30a92c_c1(d, _r0, _r6, _r2, _r7, _r4, _r8, _r15, _r16, _r17);
-        preMul_orthogonal_s2c30a92c_c2(d, _r0, _r9, _r2, _r10, _r4, _r11, _r15, _r16, _r17);
-        preMul_orthogonal_s2c30a92c_c3(d, _r0, _r12, _r2, _r13, _r4, _r14, _r15, _r16, _r17);
+        double _r4 = this.m01;
+        double _r5 = this.m11;
+        double _r6 = this.m02;
+        double _r7 = this.m12;
+        double _r8 = this.m03;
+        double _r9 = this.m13;
+        double _r10 = other.m02();
+        double _r11 = other.m10();
+        double _r12 = other.m11();
+        double _r13 = other.m12();
+        double _r14 = this.m20;
+        double _r15 = this.m21;
+        double _r16 = this.m22;
+        preMul_orthogonal_s2c30a92c_tail(d, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16);
         d.properties = (((Double2x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_ORTHOGONAL : Joml.BIT_AFFINE;
         return d;
-    }
-
-    /** Private column 0 of {@code preMul_general}: computes and stores it; reached only through it. */
-    private void preMul_general_s2c30a92c_c0(Double3x4Impl _dst, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r15, double _r16, double _r17) {
-        _dst.m00 = _r0 * _r1 + _r2 * _r3 + _r4 * _r5;
-        _dst.m10 = _r15 * _r1 + _r16 * _r3 + _r17 * _r5;
-        _dst.m20 = _r5;
-    }
-
-    /** Private column 1 of {@code preMul_general}: computes and stores it; reached only through it. */
-    private void preMul_general_s2c30a92c_c1(Double3x4Impl _dst, double _r0, double _r6, double _r2, double _r7, double _r4, double _r8, double _r15, double _r16, double _r17) {
-        _dst.m01 = _r0 * _r6 + _r2 * _r7 + _r4 * _r8;
-        _dst.m11 = _r15 * _r6 + _r16 * _r7 + _r17 * _r8;
-        _dst.m21 = _r8;
-    }
-
-    /** Private column 2 of {@code preMul_general}: computes and stores it; reached only through it. */
-    private void preMul_general_s2c30a92c_c2(Double3x4Impl _dst, double _r0, double _r9, double _r2, double _r10, double _r4, double _r11, double _r15, double _r16, double _r17) {
-        _dst.m02 = _r0 * _r9 + _r2 * _r10 + _r4 * _r11;
-        _dst.m12 = _r15 * _r9 + _r16 * _r10 + _r17 * _r11;
-        _dst.m22 = _r11;
-    }
-
-    /** Private column 3 of {@code preMul_general}: computes and stores it; reached only through it. */
-    private void preMul_general_s2c30a92c_c3(Double3x4Impl _dst, double _r0, double _r12, double _r2, double _r13, double _r4, double _r14, double _r15, double _r16, double _r17) {
-        _dst.m03 = _r0 * _r12 + _r2 * _r13 + _r4 * _r14;
-        _dst.m13 = _r15 * _r12 + _r16 * _r13 + _r17 * _r14;
-        _dst.m23 = _r14;
     }
 
 
@@ -7439,28 +7912,22 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preMul_general(Double2x3R other, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _r0 = other.m00();
-        double _r1 = this.m00;
-        double _r2 = other.m01();
-        double _r3 = this.m10;
-        double _r4 = other.m02();
-        double _r5 = this.m20;
-        double _r6 = this.m01;
-        double _r7 = this.m11;
-        double _r8 = this.m21;
-        double _r9 = this.m02;
-        double _r10 = this.m12;
-        double _r11 = this.m22;
-        double _r12 = this.m03;
-        double _r13 = this.m13;
-        double _r14 = this.m23;
-        double _r15 = other.m10();
-        double _r16 = other.m11();
-        double _r17 = other.m12();
-        preMul_general_s2c30a92c_c0(d, _r0, _r1, _r2, _r3, _r4, _r5, _r15, _r16, _r17);
-        preMul_general_s2c30a92c_c1(d, _r0, _r6, _r2, _r7, _r4, _r8, _r15, _r16, _r17);
-        preMul_general_s2c30a92c_c2(d, _r0, _r9, _r2, _r10, _r4, _r11, _r15, _r16, _r17);
-        preMul_general_s2c30a92c_c3(d, _r0, _r12, _r2, _r13, _r4, _r14, _r15, _r16, _r17);
+        double _buf0 = other.m00() * this.m00 + other.m01() * this.m10;
+        double _buf1 = other.m00() * this.m01 + other.m01() * this.m11;
+        double _buf2 = other.m00() * this.m02 + other.m01() * this.m12;
+        double _buf3 = other.m00() * this.m03 + (other.m01() * this.m13 + other.m02());
+        d.m10 = other.m10() * this.m00 + other.m11() * this.m10;
+        d.m11 = other.m10() * this.m01 + other.m11() * this.m11;
+        d.m12 = other.m10() * this.m02 + other.m11() * this.m12;
+        d.m13 = other.m10() * this.m03 + (other.m11() * this.m13 + other.m12());
+        d.m20 = this.m20;
+        d.m21 = this.m21;
+        d.m22 = this.m22;
+        d.m23 = this.m23;
+        d.m00 = _buf0;
+        d.m01 = _buf1;
+        d.m02 = _buf2;
+        d.m03 = _buf3;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -7473,8 +7940,8 @@ public class Double3x4Impl implements Double3x4 {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param other the left operand
      * @param dest will hold the result
@@ -7496,8 +7963,8 @@ public class Double3x4Impl implements Double3x4 {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -7843,6 +8310,47 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code preMul_translation}: computes and stores it; reached only through it. */
+    private void preMul_translation_s5f9b118e_c0(Double4x4Impl _dst, double _r0, double _r7, double _r11, double _r15) {
+        _dst.m00 = _r0;
+        _dst.m10 = _r7;
+        _dst.m20 = _r11;
+        _dst.m30 = _r15;
+    }
+
+    /** Private column 1 of {@code preMul_translation}: computes and stores it; reached only through it. */
+    private void preMul_translation_s5f9b118e_c1(Double4x4Impl _dst, double _r1, double _r8, double _r12, double _r16) {
+        _dst.m01 = _r1;
+        _dst.m11 = _r8;
+        _dst.m21 = _r12;
+        _dst.m31 = _r16;
+    }
+
+    /** Private column 2 of {@code preMul_translation}: computes and stores it; reached only through it. */
+    private void preMul_translation_s5f9b118e_c2(Double4x4Impl _dst, double _r2, double _r9, double _r13, double _r17) {
+        _dst.m02 = _r2;
+        _dst.m12 = _r9;
+        _dst.m22 = _r13;
+        _dst.m32 = _r17;
+    }
+
+    /** Private column 3 of {@code preMul_translation}: computes and stores it; reached only through it. */
+    private void preMul_translation_s5f9b118e_c3(Double4x4Impl _dst, double _r0, double _r3, double _r1, double _r4, double _r2, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18) {
+        _dst.m03 = _r0 * _r3 + (_r1 * _r4 + (_r2 * _r5 + _r6));
+        _dst.m13 = _r7 * _r3 + (_r8 * _r4 + (_r9 * _r5 + _r10));
+        _dst.m23 = _r11 * _r3 + (_r12 * _r4 + (_r13 * _r5 + _r14));
+        _dst.m33 = _r15 * _r3 + (_r16 * _r4 + (_r17 * _r5 + _r18));
+    }
+
+    /** Private tail of {@code preMul_translation}; reached only through it. */
+    private void preMul_translation_s5f9b118e_tail(Double4x4Impl _dst, Double4x4R other, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17) {
+        double _r18 = other.m33();
+        preMul_translation_s5f9b118e_c0(_dst, _r0, _r7, _r11, _r15);
+        preMul_translation_s5f9b118e_c1(_dst, _r1, _r8, _r12, _r16);
+        preMul_translation_s5f9b118e_c2(_dst, _r2, _r9, _r13, _r17);
+        preMul_translation_s5f9b118e_c3(_dst, _r0, _r3, _r1, _r4, _r2, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18);
+    }
+
 
     /**
      * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
@@ -7850,37 +8358,25 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double4x4 preMul_translation(Double4x4R other, @Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        double _buf0 = other.m00();
-        double _buf1 = other.m10();
-        double _buf2 = other.m20();
-        double _buf3 = other.m30();
-        double _buf4 = other.m01();
-        double _buf5 = other.m11();
-        double _buf6 = other.m21();
-        double _buf7 = other.m31();
-        double _buf8 = other.m02();
-        double _buf9 = other.m12();
-        double _buf10 = other.m22();
-        double _buf11 = other.m32();
-        double _buf12 = other.m00() * this.m03 + (other.m01() * this.m13 + (other.m02() * this.m23 + other.m03()));
-        double _buf13 = other.m10() * this.m03 + (other.m11() * this.m13 + (other.m12() * this.m23 + other.m13()));
-        double _buf14 = other.m20() * this.m03 + (other.m21() * this.m13 + (other.m22() * this.m23 + other.m23()));
-        d.m33 = other.m30() * this.m03 + (other.m31() * this.m13 + (other.m32() * this.m23 + other.m33()));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m30 = _buf3;
-        d.m01 = _buf4;
-        d.m11 = _buf5;
-        d.m21 = _buf6;
-        d.m31 = _buf7;
-        d.m02 = _buf8;
-        d.m12 = _buf9;
-        d.m22 = _buf10;
-        d.m32 = _buf11;
-        d.m03 = _buf12;
-        d.m13 = _buf13;
-        d.m23 = _buf14;
+        double _r0 = other.m00();
+        double _r1 = other.m01();
+        double _r2 = other.m02();
+        double _r3 = this.m03;
+        double _r4 = this.m13;
+        double _r5 = this.m23;
+        double _r6 = other.m03();
+        double _r7 = other.m10();
+        double _r8 = other.m11();
+        double _r9 = other.m12();
+        double _r10 = other.m13();
+        double _r11 = other.m20();
+        double _r12 = other.m21();
+        double _r13 = other.m22();
+        double _r14 = other.m23();
+        double _r15 = other.m30();
+        double _r16 = other.m31();
+        double _r17 = other.m32();
+        preMul_translation_s5f9b118e_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17);
         d.properties = Joml.BIT_TRANSLATION & ((Double4x4Impl) other).properties;
         return d;
     }
@@ -8190,6 +8686,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -8208,6 +8709,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -8225,44 +8731,30 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAlong_identity(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
-        } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t18 = upY * _t9 - upZ * _t10;
-        double _t19 = upZ * _t11 - upX * _t9;
-        double _t20 = upX * _t10 - upY * _t11;
-        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
-        double _t26 = (1.0 / Math.sqrt(_t25));
-        double _t30, _t31, _t32;
-        if (_t25 > 0.0) {
-            _t30 = _t18 * _t26;
-            _t31 = _t20 * _t26;
-            _t32 = _t19 * _t26;
-        } else {
-            _t30 = 0.0;
-            _t31 = 0.0;
-            _t32 = 0.0;
-        }
-        d.m00 = _t30;
-        d.m01 = _t10 * _t31 - _t9 * _t32;
-        d.m02 = _t11;
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t15 = upY * _t6 - upZ * _t7;
+        double _t16 = upZ * _t8 - upX * _t6;
+        double _t17 = upX * _t7 - upY * _t8;
+        double _ct0 = _t15 * _t15 + _t16 * _t16 + _t17 * _t17;
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t24 = (1.0 / Math.sqrt(_ct0));
+        double _t25 = _t15 * _t24;
+        double _t26 = _t17 * _t24;
+        double _t27 = _t16 * _t24;
+        d.m00 = _t25;
+        d.m01 = _t7 * _t26 - _t6 * _t27;
+        d.m02 = _t8;
         d.m03 = 0.0;
-        d.m10 = _t32;
-        d.m11 = _t9 * _t30 - _t11 * _t31;
-        d.m12 = _t10;
+        d.m10 = _t27;
+        d.m11 = _t6 * _t25 - _t8 * _t26;
+        d.m12 = _t7;
         d.m13 = 0.0;
-        d.m20 = _t31;
-        d.m21 = _t11 * _t32 - _t10 * _t30;
-        d.m22 = _t9;
+        d.m20 = _t26;
+        d.m21 = _t8 * _t27 - _t7 * _t25;
+        d.m22 = _t6;
         d.m23 = 0.0;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
@@ -8275,42 +8767,28 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAlong_identity_self(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
-        } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t18 = upY * _t9 - upZ * _t10;
-        double _t19 = upZ * _t11 - upX * _t9;
-        double _t20 = upX * _t10 - upY * _t11;
-        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
-        double _t26 = (1.0 / Math.sqrt(_t25));
-        double _t30, _t31, _t32;
-        if (_t25 > 0.0) {
-            _t30 = _t18 * _t26;
-            _t31 = _t20 * _t26;
-            _t32 = _t19 * _t26;
-        } else {
-            _t30 = 0.0;
-            _t31 = 0.0;
-            _t32 = 0.0;
-        }
-        d.m00 = _t30;
-        d.m01 = _t10 * _t31 - _t9 * _t32;
-        d.m02 = _t11;
-        d.m10 = _t32;
-        d.m11 = _t9 * _t30 - _t11 * _t31;
-        d.m12 = _t10;
-        d.m20 = _t31;
-        d.m21 = _t11 * _t32 - _t10 * _t30;
-        d.m22 = _t9;
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t15 = upY * _t6 - upZ * _t7;
+        double _t16 = upZ * _t8 - upX * _t6;
+        double _t17 = upX * _t7 - upY * _t8;
+        double _ct0 = _t15 * _t15 + _t16 * _t16 + _t17 * _t17;
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t24 = (1.0 / Math.sqrt(_ct0));
+        double _t25 = _t15 * _t24;
+        double _t26 = _t17 * _t24;
+        double _t27 = _t16 * _t24;
+        d.m00 = _t25;
+        d.m01 = _t7 * _t26 - _t6 * _t27;
+        d.m02 = _t8;
+        d.m10 = _t27;
+        d.m11 = _t6 * _t25 - _t8 * _t26;
+        d.m12 = _t7;
+        d.m20 = _t26;
+        d.m21 = _t8 * _t27 - _t7 * _t25;
+        d.m22 = _t6;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -8322,68 +8800,54 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAlong_translation(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
-        } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t18 = upY * _t9 - upZ * _t10;
-        double _t19 = upZ * _t11 - upX * _t9;
-        double _t20 = upX * _t10 - upY * _t11;
-        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
-        double _t26 = (1.0 / Math.sqrt(_t25));
-        double _t30, _t31, _t32;
-        if (_t25 > 0.0) {
-            _t30 = _t18 * _t26;
-            _t31 = _t20 * _t26;
-            _t32 = _t19 * _t26;
-        } else {
-            _t30 = 0.0;
-            _t31 = 0.0;
-            _t32 = 0.0;
-        }
-        d.m00 = _t30;
-        d.m01 = _t10 * _t31 - _t9 * _t32;
-        d.m02 = _t11;
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t15 = upY * _t6 - upZ * _t7;
+        double _t16 = upZ * _t8 - upX * _t6;
+        double _t17 = upX * _t7 - upY * _t8;
+        double _ct0 = _t15 * _t15 + _t16 * _t16 + _t17 * _t17;
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t24 = (1.0 / Math.sqrt(_ct0));
+        double _t25 = _t15 * _t24;
+        double _t26 = _t17 * _t24;
+        double _t27 = _t16 * _t24;
+        d.m00 = _t25;
+        d.m01 = _t7 * _t26 - _t6 * _t27;
+        d.m02 = _t8;
         d.m03 = this.m03;
-        d.m10 = _t32;
-        d.m11 = _t9 * _t30 - _t11 * _t31;
-        d.m12 = _t10;
+        d.m10 = _t27;
+        d.m11 = _t6 * _t25 - _t8 * _t26;
+        d.m12 = _t7;
         d.m13 = this.m13;
-        d.m20 = _t31;
-        d.m21 = _t11 * _t32 - _t10 * _t30;
-        d.m22 = _t9;
+        d.m20 = _t26;
+        d.m21 = _t8 * _t27 - _t7 * _t25;
+        d.m22 = _t6;
         d.m23 = this.m23;
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAlong_orthogonal_s2f38a6ce_c0(Double3x4Impl _dst, double _r0, double _t30, double _r1, double _t31, double _r2, double _t32, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t30 + _r1 * _t31 + _r2 * _t32;
-        _dst.m10 = _r4 * _t30 + _r5 * _t31 + _r6 * _t32;
-        _dst.m20 = _r8 * _t30 + _r9 * _t31 + _r10 * _t32;
+    private void lookAlong_orthogonal_s2f38a6ce_c0(Double3x4Impl _dst, double _r0, double _t25, double _r1, double _t26, double _r2, double _t27, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t25 + _r1 * _t26 + _r2 * _t27;
+        _dst.m10 = _r4 * _t25 + _r5 * _t26 + _r6 * _t27;
+        _dst.m20 = _r8 * _t25 + _r9 * _t26 + _r10 * _t27;
     }
 
     /** Private column 1 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAlong_orthogonal_s2f38a6ce_c1(Double3x4Impl _dst, double _r0, double _t39, double _r1, double _t40, double _r2, double _t41, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t39 + _r1 * _t40 + _r2 * _t41;
-        _dst.m11 = _r4 * _t39 + _r5 * _t40 + _r6 * _t41;
-        _dst.m21 = _r8 * _t39 + _r9 * _t40 + _r10 * _t41;
+    private void lookAlong_orthogonal_s2f38a6ce_c1(Double3x4Impl _dst, double _r0, double _t34, double _r1, double _t35, double _r2, double _t36, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t34 + _r1 * _t35 + _r2 * _t36;
+        _dst.m11 = _r4 * _t34 + _r5 * _t35 + _r6 * _t36;
+        _dst.m21 = _r8 * _t34 + _r9 * _t35 + _r10 * _t36;
     }
 
     /** Private column 2 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAlong_orthogonal_s2f38a6ce_c2(Double3x4Impl _dst, double _r0, double _t11, double _r1, double _t10, double _r2, double _t9, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t11 + _r1 * _t10 + _r2 * _t9;
-        _dst.m12 = _r4 * _t11 + _r5 * _t10 + _r6 * _t9;
-        _dst.m22 = _r8 * _t11 + _r9 * _t10 + _r10 * _t9;
+    private void lookAlong_orthogonal_s2f38a6ce_c2(Double3x4Impl _dst, double _r0, double _t8, double _r1, double _t7, double _r2, double _t6, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t8 + _r1 * _t7 + _r2 * _t6;
+        _dst.m12 = _r4 * _t8 + _r5 * _t7 + _r6 * _t6;
+        _dst.m22 = _r8 * _t8 + _r9 * _t7 + _r10 * _t6;
     }
 
     /** Private column 3 of {@code lookAlong_orthogonal}: computes and stores it; reached only through it. */
@@ -8394,28 +8858,18 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code lookAlong_orthogonal}; reached only through it. */
-    private void lookAlong_orthogonal_s2f38a6ce_tail(Double3x4Impl _dst, double upY, double _t9, double upZ, double _t10, double _t11, double upX, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t18 = upY * _t9 - upZ * _t10;
-        double _t19 = upZ * _t11 - upX * _t9;
-        double _t20 = upX * _t10 - upY * _t11;
-        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
-        double _t26 = (1.0 / Math.sqrt(_t25));
-        double _t30, _t31, _t32;
-        if (_t25 > 0.0) {
-            _t30 = _t18 * _t26;
-            _t31 = _t19 * _t26;
-            _t32 = _t20 * _t26;
-        } else {
-            _t30 = 0.0;
-            _t31 = 0.0;
-            _t32 = 0.0;
-        }
-        double _t39 = _t10 * _t32 - _t9 * _t31;
-        double _t40 = _t9 * _t30 - _t11 * _t32;
-        double _t41 = _t11 * _t31 - _t10 * _t30;
-        lookAlong_orthogonal_s2f38a6ce_c0(_dst, _r0, _t30, _r1, _t31, _r2, _t32, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAlong_orthogonal_s2f38a6ce_c1(_dst, _r0, _t39, _r1, _t40, _r2, _t41, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAlong_orthogonal_s2f38a6ce_c2(_dst, _r0, _t11, _r1, _t10, _r2, _t9, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void lookAlong_orthogonal_s2f38a6ce_tail(Double3x4Impl _dst, double _t15, double _t24, double _t16, double _t17, double _t7, double _t6, double _t8, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9) {
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t25 = _t15 * _t24;
+        double _t26 = _t16 * _t24;
+        double _t27 = _t17 * _t24;
+        double _t34 = _t7 * _t27 - _t6 * _t26;
+        double _t35 = _t6 * _t25 - _t8 * _t27;
+        double _t36 = _t8 * _t26 - _t7 * _t25;
+        lookAlong_orthogonal_s2f38a6ce_c0(_dst, _r0, _t25, _r1, _t26, _r2, _t27, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_orthogonal_s2f38a6ce_c1(_dst, _r0, _t34, _r1, _t35, _r2, _t36, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_orthogonal_s2f38a6ce_c2(_dst, _r0, _t8, _r1, _t7, _r2, _t6, _r4, _r5, _r6, _r8, _r9, _r10);
         lookAlong_orthogonal_s2f38a6ce_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -8426,6 +8880,16 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAlong_orthogonal(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t15 = upY * _t6 - upZ * _t7;
+        double _t16 = upZ * _t8 - upX * _t6;
+        double _t17 = upX * _t7 - upY * _t8;
+        double _ct0 = _t15 * _t15 + _t16 * _t16 + _t17 * _t17;
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t24 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m00;
         double _r1 = this.m01;
         double _r2 = this.m02;
@@ -8436,44 +8900,30 @@ public class Double3x4Impl implements Double3x4 {
         double _r7 = this.m13;
         double _r8 = this.m20;
         double _r9 = this.m21;
-        double _r10 = this.m22;
-        double _r11 = this.m23;
-        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
-        } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        lookAlong_orthogonal_s2f38a6ce_tail(d, upY, _t9, upZ, _t10, _t11, upX, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        lookAlong_orthogonal_s2f38a6ce_tail(d, _t15, _t24, _t16, _t17, _t7, _t6, _t8, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAlong_general}: computes and stores it; reached only through it. */
-    private void lookAlong_general_s2f38a6ce_c0(Double3x4Impl _dst, double _r0, double _t30, double _r1, double _t31, double _r2, double _t32, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t30 + _r1 * _t31 + _r2 * _t32;
-        _dst.m10 = _r4 * _t30 + _r5 * _t31 + _r6 * _t32;
-        _dst.m20 = _r8 * _t30 + _r9 * _t31 + _r10 * _t32;
+    private void lookAlong_general_s2f38a6ce_c0(Double3x4Impl _dst, double _r0, double _t25, double _r1, double _t26, double _r2, double _t27, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t25 + _r1 * _t26 + _r2 * _t27;
+        _dst.m10 = _r4 * _t25 + _r5 * _t26 + _r6 * _t27;
+        _dst.m20 = _r8 * _t25 + _r9 * _t26 + _r10 * _t27;
     }
 
     /** Private column 1 of {@code lookAlong_general}: computes and stores it; reached only through it. */
-    private void lookAlong_general_s2f38a6ce_c1(Double3x4Impl _dst, double _r0, double _t39, double _r1, double _t40, double _r2, double _t41, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t39 + _r1 * _t40 + _r2 * _t41;
-        _dst.m11 = _r4 * _t39 + _r5 * _t40 + _r6 * _t41;
-        _dst.m21 = _r8 * _t39 + _r9 * _t40 + _r10 * _t41;
+    private void lookAlong_general_s2f38a6ce_c1(Double3x4Impl _dst, double _r0, double _t34, double _r1, double _t35, double _r2, double _t36, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t34 + _r1 * _t35 + _r2 * _t36;
+        _dst.m11 = _r4 * _t34 + _r5 * _t35 + _r6 * _t36;
+        _dst.m21 = _r8 * _t34 + _r9 * _t35 + _r10 * _t36;
     }
 
     /** Private column 2 of {@code lookAlong_general}: computes and stores it; reached only through it. */
-    private void lookAlong_general_s2f38a6ce_c2(Double3x4Impl _dst, double _r0, double _t11, double _r1, double _t10, double _r2, double _t9, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t11 + _r1 * _t10 + _r2 * _t9;
-        _dst.m12 = _r4 * _t11 + _r5 * _t10 + _r6 * _t9;
-        _dst.m22 = _r8 * _t11 + _r9 * _t10 + _r10 * _t9;
+    private void lookAlong_general_s2f38a6ce_c2(Double3x4Impl _dst, double _r0, double _t8, double _r1, double _t7, double _r2, double _t6, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t8 + _r1 * _t7 + _r2 * _t6;
+        _dst.m12 = _r4 * _t8 + _r5 * _t7 + _r6 * _t6;
+        _dst.m22 = _r8 * _t8 + _r9 * _t7 + _r10 * _t6;
     }
 
     /** Private column 3 of {@code lookAlong_general}: computes and stores it; reached only through it. */
@@ -8484,28 +8934,18 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code lookAlong_general}; reached only through it. */
-    private void lookAlong_general_s2f38a6ce_tail(Double3x4Impl _dst, double upY, double _t9, double upZ, double _t10, double _t11, double upX, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t18 = upY * _t9 - upZ * _t10;
-        double _t19 = upZ * _t11 - upX * _t9;
-        double _t20 = upX * _t10 - upY * _t11;
-        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
-        double _t26 = (1.0 / Math.sqrt(_t25));
-        double _t30, _t31, _t32;
-        if (_t25 > 0.0) {
-            _t30 = _t18 * _t26;
-            _t31 = _t19 * _t26;
-            _t32 = _t20 * _t26;
-        } else {
-            _t30 = 0.0;
-            _t31 = 0.0;
-            _t32 = 0.0;
-        }
-        double _t39 = _t10 * _t32 - _t9 * _t31;
-        double _t40 = _t9 * _t30 - _t11 * _t32;
-        double _t41 = _t11 * _t31 - _t10 * _t30;
-        lookAlong_general_s2f38a6ce_c0(_dst, _r0, _t30, _r1, _t31, _r2, _t32, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAlong_general_s2f38a6ce_c1(_dst, _r0, _t39, _r1, _t40, _r2, _t41, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAlong_general_s2f38a6ce_c2(_dst, _r0, _t11, _r1, _t10, _r2, _t9, _r4, _r5, _r6, _r8, _r9, _r10);
+    private void lookAlong_general_s2f38a6ce_tail(Double3x4Impl _dst, double _t15, double _t24, double _t16, double _t17, double _t7, double _t6, double _t8, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9) {
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t25 = _t15 * _t24;
+        double _t26 = _t16 * _t24;
+        double _t27 = _t17 * _t24;
+        double _t34 = _t7 * _t27 - _t6 * _t26;
+        double _t35 = _t6 * _t25 - _t8 * _t27;
+        double _t36 = _t8 * _t26 - _t7 * _t25;
+        lookAlong_general_s2f38a6ce_c0(_dst, _r0, _t25, _r1, _t26, _r2, _t27, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_general_s2f38a6ce_c1(_dst, _r0, _t34, _r1, _t35, _r2, _t36, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_general_s2f38a6ce_c2(_dst, _r0, _t8, _r1, _t7, _r2, _t6, _r4, _r5, _r6, _r8, _r9, _r10);
         lookAlong_general_s2f38a6ce_c3(_dst, _r3, _r7, _r11);
     }
 
@@ -8516,6 +8956,16 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAlong_general(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t15 = upY * _t6 - upZ * _t7;
+        double _t16 = upZ * _t8 - upX * _t6;
+        double _t17 = upX * _t7 - upY * _t8;
+        double _ct0 = _t15 * _t15 + _t16 * _t16 + _t17 * _t17;
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t24 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m00;
         double _r1 = this.m01;
         double _r2 = this.m02;
@@ -8526,21 +8976,7 @@ public class Double3x4Impl implements Double3x4 {
         double _r7 = this.m13;
         double _r8 = this.m20;
         double _r9 = this.m21;
-        double _r10 = this.m22;
-        double _r11 = this.m23;
-        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
-        } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        lookAlong_general_s2f38a6ce_tail(d, upY, _t9, upZ, _t10, _t11, upX, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        lookAlong_general_s2f38a6ce_tail(d, _t15, _t24, _t16, _t17, _t7, _t6, _t8, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -8553,6 +8989,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -8579,6 +9020,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -8595,6 +9041,495 @@ public class Double3x4Impl implements Double3x4 {
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation(dirX, dirY, dirZ, upX, upY, upZ, this);
         if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, this);
         return lookAlong_general(dirX, dirY, dirZ, upX, upY, upZ, this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate(Double3R dir, Double3R up, @Mutated Double3x4 dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Double3x4 lookAlong_degenerate(Double3R dir, Double3R up) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private column 0 of {@code lookAlong_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_identity_s2f38a6ce_c0(Double3x4Impl _dst, double _t47, double _t48, double _t46) {
+        _dst.m00 = _t47;
+        _dst.m10 = _t48;
+        _dst.m20 = _t46;
+    }
+
+    /** Private column 1 of {@code lookAlong_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_identity_s2f38a6ce_c1(Double3x4Impl _dst, double _t46, double _t14, double _t48, double _t13, double _t47, double _t12) {
+        _dst.m01 = _t46 * _t14 - _t48 * _t13;
+        _dst.m11 = _t47 * _t13 - _t46 * _t12;
+        _dst.m21 = _t48 * _t12 - _t47 * _t14;
+    }
+
+    /** Private column 2 of {@code lookAlong_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_identity_s2f38a6ce_c2(Double3x4Impl _dst, double _t12, double _t14, double _t13) {
+        _dst.m02 = _t12;
+        _dst.m12 = _t14;
+        _dst.m22 = _t13;
+    }
+
+    /** Private column 3 of {@code lookAlong_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_identity_s2f38a6ce_c3(Double3x4Impl _dst) {
+        _dst.m03 = 0.0;
+        _dst.m13 = 0.0;
+        _dst.m23 = 0.0;
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_identity}; reached only through it. */
+    private void lookAlong_degenerate_identity_s2f38a6ce_tail(Double3x4Impl _dst, double _t15, double _t16, double _t12, double _t13, double _t27, double _t28, double _t29, double _t26, double _t25, double _t14) {
+        double _t30 = _t15 > _t16 ? _t12 : -_t13;
+        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        double _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0) {
+            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0 / Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        lookAlong_degenerate_identity_s2f38a6ce_c0(_dst, _t47, _t48, _t46);
+        lookAlong_degenerate_identity_s2f38a6ce_c1(_dst, _t46, _t14, _t48, _t13, _t47, _t12);
+        lookAlong_degenerate_identity_s2f38a6ce_c2(_dst, _t12, _t14, _t13);
+        lookAlong_degenerate_identity_s2f38a6ce_c3(_dst);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate_identity(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
+        }
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t25, _t26;
+        if (_t15 > _t16) {
+            _t25 = 0.0;
+            _t26 = -_t14;
+        } else {
+            _t25 = _t14;
+            _t26 = 0.0;
+        }
+        double _t27 = _t9 * _t12 - _t10 * _t13;
+        double _t28 = _t11 * _t13 - _t9 * _t14;
+        double _t29 = _t10 * _t14 - _t12 * _t11;
+        lookAlong_degenerate_identity_s2f38a6ce_tail(d, _t15, _t16, _t12, _t13, _t27, _t28, _t29, _t26, _t25, _t14);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate_identity_self(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        return lookAlong_degenerate_identity(dirX, dirY, dirZ, upX, upY, upZ, dest);
+    }
+
+    /** Private column 0 of {@code lookAlong_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_translation_s2f38a6ce_c0(Double3x4Impl _dst, double _t47, double _t48, double _t46) {
+        _dst.m00 = _t47;
+        _dst.m10 = _t48;
+        _dst.m20 = _t46;
+    }
+
+    /** Private column 1 of {@code lookAlong_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_translation_s2f38a6ce_c1(Double3x4Impl _dst, double _t46, double _t14, double _t48, double _t13, double _t47, double _t12) {
+        _dst.m01 = _t46 * _t14 - _t48 * _t13;
+        _dst.m11 = _t47 * _t13 - _t46 * _t12;
+        _dst.m21 = _t48 * _t12 - _t47 * _t14;
+    }
+
+    /** Private column 2 of {@code lookAlong_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_translation_s2f38a6ce_c2(Double3x4Impl _dst, double _t12, double _t14, double _t13) {
+        _dst.m02 = _t12;
+        _dst.m12 = _t14;
+        _dst.m22 = _t13;
+    }
+
+    /** Private column 3 of {@code lookAlong_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_translation_s2f38a6ce_c3(Double3x4Impl _dst, double _r0, double _r1, double _r2) {
+        _dst.m03 = _r0;
+        _dst.m13 = _r1;
+        _dst.m23 = _r2;
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_translation}; reached only through it. */
+    private void lookAlong_degenerate_translation_s2f38a6ce_tail(Double3x4Impl _dst, double _t11, double _t13, double _t9, double _t14, double _t10, double _t12, double _t15, double _t16, double _t27, double _t26, double _t25, double _r0, double _r1, double _r2) {
+        double _t28 = _t11 * _t13 - _t9 * _t14;
+        double _t29 = _t10 * _t14 - _t12 * _t11;
+        double _t30 = _t15 > _t16 ? _t12 : -_t13;
+        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        double _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0) {
+            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0 / Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        lookAlong_degenerate_translation_s2f38a6ce_c0(_dst, _t47, _t48, _t46);
+        lookAlong_degenerate_translation_s2f38a6ce_c1(_dst, _t46, _t14, _t48, _t13, _t47, _t12);
+        lookAlong_degenerate_translation_s2f38a6ce_c2(_dst, _t12, _t14, _t13);
+        lookAlong_degenerate_translation_s2f38a6ce_c3(_dst, _r0, _r1, _r2);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate_translation(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m03;
+        double _r1 = this.m13;
+        double _r2 = this.m23;
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
+        }
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t25, _t26;
+        if (_t15 > _t16) {
+            _t25 = 0.0;
+            _t26 = -_t14;
+        } else {
+            _t25 = _t14;
+            _t26 = 0.0;
+        }
+        double _t27 = _t9 * _t12 - _t10 * _t13;
+        lookAlong_degenerate_translation_s2f38a6ce_tail(d, _t11, _t13, _t9, _t14, _t10, _t12, _t15, _t16, _t27, _t26, _t25, _r0, _r1, _r2);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAlong_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_orthogonal_s2f38a6ce_c0(Double3x4Impl _dst, double _r0, double _t47, double _r1, double _t48, double _r2, double _t46, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t47 + _r1 * _t48 + _r2 * _t46;
+        _dst.m10 = _r4 * _t47 + _r5 * _t48 + _r6 * _t46;
+        _dst.m20 = _r8 * _t47 + _r9 * _t48 + _r10 * _t46;
+    }
+
+    /** Private column 1 of {@code lookAlong_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_orthogonal_s2f38a6ce_c1(Double3x4Impl _dst, double _r0, double _t56, double _r1, double _t55, double _r2, double _t57, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t56 + _r1 * _t55 + _r2 * _t57;
+        _dst.m11 = _r4 * _t56 + _r5 * _t55 + _r6 * _t57;
+        _dst.m21 = _r8 * _t56 + _r9 * _t55 + _r10 * _t57;
+    }
+
+    /** Private column 2 of {@code lookAlong_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_orthogonal_s2f38a6ce_c2(Double3x4Impl _dst, double _r0, double _t12, double _r1, double _t14, double _r2, double _t13, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t12 + _r1 * _t14 + _r2 * _t13;
+        _dst.m12 = _r4 * _t12 + _r5 * _t14 + _r6 * _t13;
+        _dst.m22 = _r8 * _t12 + _r9 * _t14 + _r10 * _t13;
+    }
+
+    /** Private column 3 of {@code lookAlong_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_orthogonal_s2f38a6ce_c3(Double3x4Impl _dst, double _r3, double _r7, double _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_orthogonal}; reached only through it. */
+    private void lookAlong_degenerate_orthogonal_s2f38a6ce_tail(Double3x4Impl _dst, double _t4, double upZ, double upX, double upY, double dirX, double _t5, double dirZ, double dirY, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
+        }
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t25, _t26;
+        if (_t15 > _t16) {
+            _t25 = 0.0;
+            _t26 = -_t14;
+        } else {
+            _t25 = _t14;
+            _t26 = 0.0;
+        }
+        double _t27 = _t9 * _t12 - _t10 * _t13;
+        double _t28 = _t11 * _t13 - _t9 * _t14;
+        double _t29 = _t10 * _t14 - _t12 * _t11;
+        lookAlong_degenerate_orthogonal_s2f38a6ce_tail2(_dst, _t15, _t16, _t12, _t13, _t27, _t28, _t29, _t26, _t25, _t14, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_orthogonal}; reached only through it. */
+    private void lookAlong_degenerate_orthogonal_s2f38a6ce_tail2(Double3x4Impl _dst, double _t15, double _t16, double _t12, double _t13, double _t27, double _t28, double _t29, double _t26, double _t25, double _t14, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t30 = _t15 > _t16 ? _t12 : -_t13;
+        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        double _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0) {
+            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0 / Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        double _t55 = _t47 * _t13 - _t46 * _t12;
+        double _t56 = _t46 * _t14 - _t48 * _t13;
+        lookAlong_degenerate_orthogonal_s2f38a6ce_tail3(_dst, _t48, _t12, _t47, _t14, _r0, _r1, _r2, _t46, _t56, _t55, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_orthogonal}; reached only through it. */
+    private void lookAlong_degenerate_orthogonal_s2f38a6ce_tail3(Double3x4Impl _dst, double _t48, double _t12, double _t47, double _t14, double _r0, double _r1, double _r2, double _t46, double _t56, double _t55, double _t13, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t57 = _t48 * _t12 - _t47 * _t14;
+        lookAlong_degenerate_orthogonal_s2f38a6ce_c0(_dst, _r0, _t47, _r1, _t48, _r2, _t46, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_degenerate_orthogonal_s2f38a6ce_c1(_dst, _r0, _t56, _r1, _t55, _r2, _t57, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_degenerate_orthogonal_s2f38a6ce_c2(_dst, _r0, _t12, _r1, _t14, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_degenerate_orthogonal_s2f38a6ce_c3(_dst, _r3, _r7, _r11);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate_orthogonal(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m03;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m12;
+        double _r7 = this.m13;
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        lookAlong_degenerate_orthogonal_s2f38a6ce_tail(d, _t4, upZ, upX, upY, dirX, _t5, dirZ, dirY, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAlong_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_general_s2f38a6ce_c0(Double3x4Impl _dst, double _r0, double _t47, double _r1, double _t48, double _r2, double _t46, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t47 + _r1 * _t48 + _r2 * _t46;
+        _dst.m10 = _r4 * _t47 + _r5 * _t48 + _r6 * _t46;
+        _dst.m20 = _r8 * _t47 + _r9 * _t48 + _r10 * _t46;
+    }
+
+    /** Private column 1 of {@code lookAlong_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_general_s2f38a6ce_c1(Double3x4Impl _dst, double _r0, double _t56, double _r1, double _t55, double _r2, double _t57, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t56 + _r1 * _t55 + _r2 * _t57;
+        _dst.m11 = _r4 * _t56 + _r5 * _t55 + _r6 * _t57;
+        _dst.m21 = _r8 * _t56 + _r9 * _t55 + _r10 * _t57;
+    }
+
+    /** Private column 2 of {@code lookAlong_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_general_s2f38a6ce_c2(Double3x4Impl _dst, double _r0, double _t12, double _r1, double _t14, double _r2, double _t13, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t12 + _r1 * _t14 + _r2 * _t13;
+        _dst.m12 = _r4 * _t12 + _r5 * _t14 + _r6 * _t13;
+        _dst.m22 = _r8 * _t12 + _r9 * _t14 + _r10 * _t13;
+    }
+
+    /** Private column 3 of {@code lookAlong_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAlong_degenerate_general_s2f38a6ce_c3(Double3x4Impl _dst, double _r3, double _r7, double _r11) {
+        _dst.m03 = _r3;
+        _dst.m13 = _r7;
+        _dst.m23 = _r11;
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_general}; reached only through it. */
+    private void lookAlong_degenerate_general_s2f38a6ce_tail(Double3x4Impl _dst, double _t4, double upZ, double upX, double upY, double dirX, double _t5, double dirZ, double dirY, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
+        }
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t25, _t26;
+        if (_t15 > _t16) {
+            _t25 = 0.0;
+            _t26 = -_t14;
+        } else {
+            _t25 = _t14;
+            _t26 = 0.0;
+        }
+        double _t27 = _t9 * _t12 - _t10 * _t13;
+        double _t28 = _t11 * _t13 - _t9 * _t14;
+        double _t29 = _t10 * _t14 - _t12 * _t11;
+        lookAlong_degenerate_general_s2f38a6ce_tail2(_dst, _t15, _t16, _t12, _t13, _t27, _t28, _t29, _t26, _t25, _t14, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_general}; reached only through it. */
+    private void lookAlong_degenerate_general_s2f38a6ce_tail2(Double3x4Impl _dst, double _t15, double _t16, double _t12, double _t13, double _t27, double _t28, double _t29, double _t26, double _t25, double _t14, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t30 = _t15 > _t16 ? _t12 : -_t13;
+        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        double _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0) {
+            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0 / Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        double _t55 = _t47 * _t13 - _t46 * _t12;
+        double _t56 = _t46 * _t14 - _t48 * _t13;
+        lookAlong_degenerate_general_s2f38a6ce_tail3(_dst, _t48, _t12, _t47, _t14, _r0, _r1, _r2, _t46, _t56, _t55, _t13, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate_general}; reached only through it. */
+    private void lookAlong_degenerate_general_s2f38a6ce_tail3(Double3x4Impl _dst, double _t48, double _t12, double _t47, double _t14, double _r0, double _r1, double _r2, double _t46, double _t56, double _t55, double _t13, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t57 = _t48 * _t12 - _t47 * _t14;
+        lookAlong_degenerate_general_s2f38a6ce_c0(_dst, _r0, _t47, _r1, _t48, _r2, _t46, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_degenerate_general_s2f38a6ce_c1(_dst, _r0, _t56, _r1, _t55, _r2, _t57, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_degenerate_general_s2f38a6ce_c2(_dst, _r0, _t12, _r1, _t14, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAlong_degenerate_general_s2f38a6ce_c3(_dst, _r3, _r7, _r11);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate_general(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m03;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m12;
+        double _r7 = this.m13;
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        lookAlong_degenerate_general_s2f38a6ce_tail(d, _t4, upZ, upX, upY, dirX, _t5, dirZ, dirY, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_degenerate_identity(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_degenerate_translation(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_degenerate_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        return lookAlong_degenerate_general(dirX, dirY, dirZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double3x4 lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        if (Joml.RETURN_NEW) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.double3x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_degenerate_identity_self(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_degenerate_translation(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_degenerate_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, this);
+        return lookAlong_degenerate_general(dirX, dirY, dirZ, upX, upY, upZ, this);
     }
 
 
@@ -8616,42 +9551,31 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 0 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_lh_identity_s1643b577_c0(Double3x4Impl _dst, double _t33, double _t42, double _t14) {
-        _dst.m00 = _t33;
-        _dst.m10 = _t42;
-        _dst.m20 = _t14;
+    private void lookAt_lh_identity_s1643b577_c0(Double3x4Impl _dst, double _t28, double _t37, double _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = _t11;
     }
 
     /** Private column 1 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_lh_identity_s1643b577_c1(Double3x4Impl _dst, double _t34, double _t43, double _t13) {
-        _dst.m01 = _t34;
-        _dst.m11 = _t43;
-        _dst.m21 = _t13;
+    private void lookAt_lh_identity_s1643b577_c1(Double3x4Impl _dst, double _t29, double _t38, double _t10) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = _t10;
     }
 
     /** Private column 2 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_lh_identity_s1643b577_c2(Double3x4Impl _dst, double _t35, double _t44, double _t12) {
-        _dst.m02 = _t35;
-        _dst.m12 = _t44;
-        _dst.m22 = _t12;
+    private void lookAt_lh_identity_s1643b577_c2(Double3x4Impl _dst, double _t30, double _t39, double _t9) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = _t9;
     }
 
     /** Private column 3 of {@code lookAt_lh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_lh_identity_s1643b577_c3(Double3x4Impl _dst, double eyeX, double _t33, double eyeY, double _t34, double eyeZ, double _t35, double _t42, double _t43, double _t44, double _t14, double _t13, double _t12) {
-        _dst.m03 = -(eyeX * _t33 + eyeY * _t34 + eyeZ * _t35);
-        _dst.m13 = -(eyeX * _t42 + eyeY * _t43 + eyeZ * _t44);
-        _dst.m23 = -(eyeX * _t14 + eyeY * _t13 + eyeZ * _t12);
-    }
-
-    /** Private tail of {@code lookAt_lh_identity}; reached only through it. */
-    private void lookAt_lh_identity_s1643b577_tail(Double3x4Impl _dst, double _t13, double _t35, double _t12, double _t34, double _t33, double _t14, double eyeX, double eyeY, double eyeZ) {
-        double _t42 = _t13 * _t35 - _t12 * _t34;
-        double _t43 = _t12 * _t33 - _t14 * _t35;
-        double _t44 = _t14 * _t34 - _t13 * _t33;
-        lookAt_lh_identity_s1643b577_c0(_dst, _t33, _t42, _t14);
-        lookAt_lh_identity_s1643b577_c1(_dst, _t34, _t43, _t13);
-        lookAt_lh_identity_s1643b577_c2(_dst, _t35, _t44, _t12);
-        lookAt_lh_identity_s1643b577_c3(_dst, eyeX, _t33, eyeY, _t34, eyeZ, _t35, _t42, _t43, _t44, _t14, _t13, _t12);
+    private void lookAt_lh_identity_s1643b577_c3(Double3x4Impl _dst, double eyeX, double _t28, double eyeY, double _t29, double eyeZ, double _t30, double _t37, double _t38, double _t39, double _t11, double _t10, double _t9) {
+        _dst.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        _dst.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        _dst.m23 = -(eyeX * _t11 + eyeY * _t10 + eyeZ * _t9);
     }
 
 
@@ -8661,88 +9585,68 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_lh_identity(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
-        double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t1 * _t8;
-            _t14 = _t0 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t21 = upY * _t12 - upZ * _t13;
-        double _t22 = upZ * _t14 - upX * _t12;
-        double _t23 = upX * _t13 - upY * _t14;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t21 * _t29;
-            _t34 = _t22 * _t29;
-            _t35 = _t23 * _t29;
-        } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
-        }
-        lookAt_lh_identity_s1643b577_tail(d, _t13, _t35, _t12, _t34, _t33, _t14, eyeX, eyeY, eyeZ);
+        double _t0 = centerZ - eyeZ;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerY - eyeY;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t2 * _t2 + _t0 * _t0));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t18 = upY * _t9 - upZ * _t10;
+        double _t19 = upZ * _t11 - upX * _t9;
+        double _t20 = upX * _t10 - upY * _t11;
+        double _ct0 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
+        if (!(_ct0 > 0.0)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t28 = _t18 * _t27;
+        double _t29 = _t19 * _t27;
+        double _t30 = _t20 * _t27;
+        double _t37 = _t10 * _t30 - _t9 * _t29;
+        double _t38 = _t9 * _t28 - _t11 * _t30;
+        double _t39 = _t11 * _t29 - _t10 * _t28;
+        lookAt_lh_identity_s1643b577_c0(d, _t28, _t37, _t11);
+        lookAt_lh_identity_s1643b577_c1(d, _t29, _t38, _t10);
+        lookAt_lh_identity_s1643b577_c2(d, _t30, _t39, _t9);
+        lookAt_lh_identity_s1643b577_c3(d, eyeX, _t28, eyeY, _t29, eyeZ, _t30, _t37, _t38, _t39, _t11, _t10, _t9);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_lh_translation_s1643b577_c0(Double3x4Impl _dst, double _t33, double _t42, double _t14) {
-        _dst.m00 = _t33;
-        _dst.m10 = _t42;
-        _dst.m20 = _t14;
+    private void lookAt_lh_translation_s1643b577_c0(Double3x4Impl _dst, double _t28, double _t37, double _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = _t11;
     }
 
     /** Private column 1 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_lh_translation_s1643b577_c1(Double3x4Impl _dst, double _t34, double _t43, double _t13) {
-        _dst.m01 = _t34;
-        _dst.m11 = _t43;
-        _dst.m21 = _t13;
+    private void lookAt_lh_translation_s1643b577_c1(Double3x4Impl _dst, double _t29, double _t38, double _t10) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = _t10;
     }
 
     /** Private column 2 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_lh_translation_s1643b577_c2(Double3x4Impl _dst, double _t35, double _t44, double _t12) {
-        _dst.m02 = _t35;
-        _dst.m12 = _t44;
-        _dst.m22 = _t12;
+    private void lookAt_lh_translation_s1643b577_c2(Double3x4Impl _dst, double _t30, double _t39, double _t9) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = _t9;
     }
 
     /** Private column 3 of {@code lookAt_lh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_lh_translation_s1643b577_c3(Double3x4Impl _dst, double _r0, double eyeZ, double _t35, double eyeY, double _t34, double eyeX, double _t33, double _r1, double _t44, double _t43, double _t42, double _r2, double _t12, double _t13, double _t14) {
-        _dst.m03 = _r0 - eyeZ * _t35 - eyeY * _t34 - eyeX * _t33;
-        _dst.m13 = _r1 - eyeZ * _t44 - eyeY * _t43 - eyeX * _t42;
-        _dst.m23 = _r2 - eyeZ * _t12 - eyeY * _t13 - eyeX * _t14;
+    private void lookAt_lh_translation_s1643b577_c3(Double3x4Impl _dst, double _r0, double eyeZ, double _t30, double eyeY, double _t29, double eyeX, double _t28, double _r1, double _t39, double _t38, double _t37, double _r2, double _t9, double _t10, double _t11) {
+        _dst.m03 = _r0 - eyeZ * _t30 - eyeY * _t29 - eyeX * _t28;
+        _dst.m13 = _r1 - eyeZ * _t39 - eyeY * _t38 - eyeX * _t37;
+        _dst.m23 = _r2 - eyeZ * _t9 - eyeY * _t10 - eyeX * _t11;
     }
 
     /** Private tail of {@code lookAt_lh_translation}; reached only through it. */
-    private void lookAt_lh_translation_s1643b577_tail(Double3x4Impl _dst, double _t28, double _t21, double _t29, double _t22, double _t23, double _t13, double _t12, double _t14, double _r0, double eyeZ, double eyeY, double eyeX, double _r1, double _r2) {
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t21 * _t29;
-            _t34 = _t22 * _t29;
-            _t35 = _t23 * _t29;
-        } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
-        }
-        double _t42 = _t13 * _t35 - _t12 * _t34;
-        double _t43 = _t12 * _t33 - _t14 * _t35;
-        double _t44 = _t14 * _t34 - _t13 * _t33;
-        lookAt_lh_translation_s1643b577_c0(_dst, _t33, _t42, _t14);
-        lookAt_lh_translation_s1643b577_c1(_dst, _t34, _t43, _t13);
-        lookAt_lh_translation_s1643b577_c2(_dst, _t35, _t44, _t12);
-        lookAt_lh_translation_s1643b577_c3(_dst, _r0, eyeZ, _t35, eyeY, _t34, eyeX, _t33, _r1, _t44, _t43, _t42, _r2, _t12, _t13, _t14);
+    private void lookAt_lh_translation_s1643b577_tail(Double3x4Impl _dst, double _t11, double _t29, double _t10, double _t28, double _t30, double _r0, double eyeZ, double eyeY, double eyeX, double _t37, double _t38, double _r1, double _t9, double _r2) {
+        double _t39 = _t11 * _t29 - _t10 * _t28;
+        lookAt_lh_translation_s1643b577_c0(_dst, _t28, _t37, _t11);
+        lookAt_lh_translation_s1643b577_c1(_dst, _t29, _t38, _t10);
+        lookAt_lh_translation_s1643b577_c2(_dst, _t30, _t39, _t9);
+        lookAt_lh_translation_s1643b577_c3(_dst, _r0, eyeZ, _t30, eyeY, _t29, eyeX, _t28, _r1, _t39, _t38, _t37, _r2, _t9, _t10, _t11);
     }
 
 
@@ -8752,104 +9656,84 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_lh_translation(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerZ - eyeZ;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerY - eyeY;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t2 * _t2 + _t0 * _t0));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t18 = upY * _t9 - upZ * _t10;
+        double _t19 = upZ * _t11 - upX * _t9;
+        double _t20 = upX * _t10 - upY * _t11;
+        double _ct0 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
+        if (!(_ct0 > 0.0)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m03;
         double _r1 = this.m13;
         double _r2 = this.m23;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
-        double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t1 * _t8;
-            _t14 = _t0 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t21 = upY * _t12 - upZ * _t13;
-        double _t22 = upZ * _t14 - upX * _t12;
-        double _t23 = upX * _t13 - upY * _t14;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        lookAt_lh_translation_s1643b577_tail(d, _t28, _t21, _t29, _t22, _t23, _t13, _t12, _t14, _r0, eyeZ, eyeY, eyeX, _r1, _r2);
+        double _t28 = _t18 * _t27;
+        double _t29 = _t19 * _t27;
+        double _t30 = _t20 * _t27;
+        double _t37 = _t10 * _t30 - _t9 * _t29;
+        double _t38 = _t9 * _t28 - _t11 * _t30;
+        lookAt_lh_translation_s1643b577_tail(d, _t11, _t29, _t10, _t28, _t30, _r0, eyeZ, eyeY, eyeX, _t37, _t38, _r1, _t9, _r2);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_lh_orthogonal_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t38, double _r1, double _t51, double _r2, double _t14, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t38 + _r1 * _t51 + _r2 * _t14;
-        _dst.m10 = _r4 * _t38 + _r5 * _t51 + _r6 * _t14;
-        _dst.m20 = _r8 * _t38 + _r9 * _t51 + _r10 * _t14;
+    private void lookAt_lh_orthogonal_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t33, double _r1, double _t46, double _r2, double _t11, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t33 + _r1 * _t46 + _r2 * _t11;
+        _dst.m10 = _r4 * _t33 + _r5 * _t46 + _r6 * _t11;
+        _dst.m20 = _r8 * _t33 + _r9 * _t46 + _r10 * _t11;
     }
 
     /** Private column 1 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_lh_orthogonal_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t40, double _r1, double _t52, double _r2, double _t13, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t40 + _r1 * _t52 + _r2 * _t13;
-        _dst.m11 = _r4 * _t40 + _r5 * _t52 + _r6 * _t13;
-        _dst.m21 = _r8 * _t40 + _r9 * _t52 + _r10 * _t13;
+    private void lookAt_lh_orthogonal_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t35, double _r1, double _t47, double _r2, double _t10, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t35 + _r1 * _t47 + _r2 * _t10;
+        _dst.m11 = _r4 * _t35 + _r5 * _t47 + _r6 * _t10;
+        _dst.m21 = _r8 * _t35 + _r9 * _t47 + _r10 * _t10;
     }
 
     /** Private column 2 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_lh_orthogonal_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t39, double _r1, double _t53, double _r2, double _t12, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t39 + _r1 * _t53 + _r2 * _t12;
-        _dst.m12 = _r4 * _t39 + _r5 * _t53 + _r6 * _t12;
-        _dst.m22 = _r8 * _t39 + _r9 * _t53 + _r10 * _t12;
+    private void lookAt_lh_orthogonal_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t34, double _r1, double _t48, double _r2, double _t9, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t34 + _r1 * _t48 + _r2 * _t9;
+        _dst.m12 = _r4 * _t34 + _r5 * _t48 + _r6 * _t9;
+        _dst.m22 = _r8 * _t34 + _r9 * _t48 + _r10 * _t9;
     }
 
     /** Private column 3 of {@code lookAt_lh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_lh_orthogonal_s1643b577_c3(Double3x4Impl _dst, double _r3, double _r2, double _t28, double _r1, double _t59, double _r0, double _t57, double _r7, double _r6, double _r5, double _r4, double _r11, double _r10, double _r9, double _r8) {
-        _dst.m03 = _r3 - _r2 * _t28 - _r1 * _t59 - _r0 * _t57;
-        _dst.m13 = _r7 - _r6 * _t28 - _r5 * _t59 - _r4 * _t57;
-        _dst.m23 = _r11 - _r10 * _t28 - _r9 * _t59 - _r8 * _t57;
+    private void lookAt_lh_orthogonal_s1643b577_c3(Double3x4Impl _dst, double _r3, double _r2, double _t25, double _r1, double _t54, double _r0, double _t52, double _r7, double _r6, double _r5, double _r4, double _r11, double _r10, double _r9, double _r8) {
+        _dst.m03 = _r3 - _r2 * _t25 - _r1 * _t54 - _r0 * _t52;
+        _dst.m13 = _r7 - _r6 * _t25 - _r5 * _t54 - _r4 * _t52;
+        _dst.m23 = _r11 - _r10 * _t25 - _r9 * _t54 - _r8 * _t52;
     }
 
     /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
-    private void lookAt_lh_orthogonal_s1643b577_tail(Double3x4Impl _dst, double _t7, double _t2, double _t8, double _t1, double _t0, double upY, double upZ, double upX, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t1 * _t8;
-            _t14 = _t0 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t24 = upY * _t12 - upZ * _t13;
-        double _t25 = upZ * _t14 - upX * _t12;
-        double _t26 = upX * _t13 - upY * _t14;
-        double _t28 = eyeX * _t14 + eyeY * _t13 + eyeZ * _t12;
-        double _t33 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        double _t34 = (1.0 / Math.sqrt(_t33));
-        lookAt_lh_orthogonal_s1643b577_tail2(_dst, _t33, _t24, _t34, _t26, _t25, _t13, _t12, _t14, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _t28, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    private void lookAt_lh_orthogonal_s1643b577_tail(Double3x4Impl _dst, double eyeX, double _t11, double eyeY, double _t10, double eyeZ, double _t9, double _t21, double _t32, double _t23, double _t22, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7) {
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t25 = eyeX * _t11 + eyeY * _t10 + eyeZ * _t9;
+        double _t33 = _t21 * _t32;
+        double _t34 = _t23 * _t32;
+        double _t35 = _t22 * _t32;
+        double _t46 = _t10 * _t34 - _t9 * _t35;
+        double _t47 = _t9 * _t33 - _t11 * _t34;
+        double _t48 = _t11 * _t35 - _t10 * _t33;
+        double _t52 = eyeX * _t33 + eyeY * _t35 + eyeZ * _t34;
+        lookAt_lh_orthogonal_s1643b577_tail2(_dst, eyeX, _t46, eyeY, _t47, eyeZ, _t48, _r0, _t33, _r1, _r2, _t11, _t35, _t10, _t34, _t9, _r3, _t25, _t52, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
     }
 
     /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
-    private void lookAt_lh_orthogonal_s1643b577_tail2(Double3x4Impl _dst, double _t33, double _t24, double _t34, double _t26, double _t25, double _t13, double _t12, double _t14, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _t28, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t38, _t39, _t40;
-        if (_t33 > 0.0) {
-            _t38 = _t24 * _t34;
-            _t39 = _t26 * _t34;
-            _t40 = _t25 * _t34;
-        } else {
-            _t38 = 0.0;
-            _t39 = 0.0;
-            _t40 = 0.0;
-        }
-        double _t51 = _t13 * _t39 - _t12 * _t40;
-        double _t52 = _t12 * _t38 - _t14 * _t39;
-        double _t53 = _t14 * _t40 - _t13 * _t38;
-        double _t57 = eyeX * _t38 + eyeY * _t40 + eyeZ * _t39;
-        double _t59 = eyeX * _t51 + eyeY * _t52 + eyeZ * _t53;
-        lookAt_lh_orthogonal_s1643b577_c0(_dst, _r0, _t38, _r1, _t51, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_lh_orthogonal_s1643b577_c1(_dst, _r0, _t40, _r1, _t52, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_lh_orthogonal_s1643b577_c2(_dst, _r0, _t39, _r1, _t53, _r2, _t12, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_lh_orthogonal_s1643b577_c3(_dst, _r3, _r2, _t28, _r1, _t59, _r0, _t57, _r7, _r6, _r5, _r4, _r11, _r10, _r9, _r8);
+    private void lookAt_lh_orthogonal_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t46, double eyeY, double _t47, double eyeZ, double _t48, double _r0, double _t33, double _r1, double _r2, double _t11, double _t35, double _t10, double _t34, double _t9, double _r3, double _t25, double _t52, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t54 = eyeX * _t46 + eyeY * _t47 + eyeZ * _t48;
+        lookAt_lh_orthogonal_s1643b577_c0(_dst, _r0, _t33, _r1, _t46, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_orthogonal_s1643b577_c1(_dst, _r0, _t35, _r1, _t47, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_orthogonal_s1643b577_c2(_dst, _r0, _t34, _r1, _t48, _r2, _t9, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_orthogonal_s1643b577_c3(_dst, _r3, _r2, _t25, _r1, _t54, _r0, _t52, _r7, _r6, _r5, _r4, _r11, _r10, _r9, _r8);
     }
 
 
@@ -8859,6 +9743,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_lh_orthogonal(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerZ - eyeZ;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerY - eyeY;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t2 * _t2 + _t0 * _t0));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t21 = upY * _t9 - upZ * _t10;
+        double _t22 = upZ * _t11 - upX * _t9;
+        double _t23 = upX * _t10 - upY * _t11;
+        double _ct0 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
+        if (!(_ct0 > 0.0)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t32 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m00;
         double _r1 = this.m01;
         double _r2 = this.m02;
@@ -8867,90 +9764,63 @@ public class Double3x4Impl implements Double3x4 {
         double _r5 = this.m11;
         double _r6 = this.m12;
         double _r7 = this.m13;
-        double _r8 = this.m20;
-        double _r9 = this.m21;
-        double _r10 = this.m22;
-        double _r11 = this.m23;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
-        double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        lookAt_lh_orthogonal_s1643b577_tail(d, _t7, _t2, _t8, _t1, _t0, upY, upZ, upX, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        lookAt_lh_orthogonal_s1643b577_tail(d, eyeX, _t11, eyeY, _t10, eyeZ, _t9, _t21, _t32, _t23, _t22, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
-    private void lookAt_lh_general_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t38, double _r1, double _t51, double _r2, double _t14, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t38 + _r1 * _t51 + _r2 * _t14;
-        _dst.m10 = _r4 * _t38 + _r5 * _t51 + _r6 * _t14;
-        _dst.m20 = _r8 * _t38 + _r9 * _t51 + _r10 * _t14;
+    private void lookAt_lh_general_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t33, double _r1, double _t46, double _r2, double _t11, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t33 + _r1 * _t46 + _r2 * _t11;
+        _dst.m10 = _r4 * _t33 + _r5 * _t46 + _r6 * _t11;
+        _dst.m20 = _r8 * _t33 + _r9 * _t46 + _r10 * _t11;
     }
 
     /** Private column 1 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
-    private void lookAt_lh_general_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t40, double _r1, double _t52, double _r2, double _t13, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t40 + _r1 * _t52 + _r2 * _t13;
-        _dst.m11 = _r4 * _t40 + _r5 * _t52 + _r6 * _t13;
-        _dst.m21 = _r8 * _t40 + _r9 * _t52 + _r10 * _t13;
+    private void lookAt_lh_general_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t35, double _r1, double _t47, double _r2, double _t10, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t35 + _r1 * _t47 + _r2 * _t10;
+        _dst.m11 = _r4 * _t35 + _r5 * _t47 + _r6 * _t10;
+        _dst.m21 = _r8 * _t35 + _r9 * _t47 + _r10 * _t10;
     }
 
     /** Private column 2 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
-    private void lookAt_lh_general_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t39, double _r1, double _t53, double _r2, double _t12, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t39 + _r1 * _t53 + _r2 * _t12;
-        _dst.m12 = _r4 * _t39 + _r5 * _t53 + _r6 * _t12;
-        _dst.m22 = _r8 * _t39 + _r9 * _t53 + _r10 * _t12;
+    private void lookAt_lh_general_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t34, double _r1, double _t48, double _r2, double _t9, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t34 + _r1 * _t48 + _r2 * _t9;
+        _dst.m12 = _r4 * _t34 + _r5 * _t48 + _r6 * _t9;
+        _dst.m22 = _r8 * _t34 + _r9 * _t48 + _r10 * _t9;
     }
 
     /** Private column 3 of {@code lookAt_lh_general}: computes and stores it; reached only through it. */
-    private void lookAt_lh_general_s1643b577_c3(Double3x4Impl _dst, double _r3, double _r2, double _t28, double _r1, double _t59, double _r0, double _t57, double _r7, double _r6, double _r5, double _r4, double _r11, double _r10, double _r9, double _r8) {
-        _dst.m03 = _r3 - _r2 * _t28 - _r1 * _t59 - _r0 * _t57;
-        _dst.m13 = _r7 - _r6 * _t28 - _r5 * _t59 - _r4 * _t57;
-        _dst.m23 = _r11 - _r10 * _t28 - _r9 * _t59 - _r8 * _t57;
+    private void lookAt_lh_general_s1643b577_c3(Double3x4Impl _dst, double _r3, double _r2, double _t25, double _r1, double _t54, double _r0, double _t52, double _r7, double _r6, double _r5, double _r4, double _r11, double _r10, double _r9, double _r8) {
+        _dst.m03 = _r3 - _r2 * _t25 - _r1 * _t54 - _r0 * _t52;
+        _dst.m13 = _r7 - _r6 * _t25 - _r5 * _t54 - _r4 * _t52;
+        _dst.m23 = _r11 - _r10 * _t25 - _r9 * _t54 - _r8 * _t52;
     }
 
     /** Private tail of {@code lookAt_lh_general}; reached only through it. */
-    private void lookAt_lh_general_s1643b577_tail(Double3x4Impl _dst, double _t7, double _t2, double _t8, double _t1, double _t0, double upY, double upZ, double upX, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t1 * _t8;
-            _t14 = _t0 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t24 = upY * _t12 - upZ * _t13;
-        double _t25 = upZ * _t14 - upX * _t12;
-        double _t26 = upX * _t13 - upY * _t14;
-        double _t28 = eyeX * _t14 + eyeY * _t13 + eyeZ * _t12;
-        double _t33 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        double _t34 = (1.0 / Math.sqrt(_t33));
-        lookAt_lh_general_s1643b577_tail2(_dst, _t33, _t24, _t34, _t26, _t25, _t13, _t12, _t14, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _t28, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    private void lookAt_lh_general_s1643b577_tail(Double3x4Impl _dst, double eyeX, double _t11, double eyeY, double _t10, double eyeZ, double _t9, double _t21, double _t32, double _t23, double _t22, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7) {
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t25 = eyeX * _t11 + eyeY * _t10 + eyeZ * _t9;
+        double _t33 = _t21 * _t32;
+        double _t34 = _t23 * _t32;
+        double _t35 = _t22 * _t32;
+        double _t46 = _t10 * _t34 - _t9 * _t35;
+        double _t47 = _t9 * _t33 - _t11 * _t34;
+        double _t48 = _t11 * _t35 - _t10 * _t33;
+        double _t52 = eyeX * _t33 + eyeY * _t35 + eyeZ * _t34;
+        lookAt_lh_general_s1643b577_tail2(_dst, eyeX, _t46, eyeY, _t47, eyeZ, _t48, _r0, _t33, _r1, _r2, _t11, _t35, _t10, _t34, _t9, _r3, _t25, _t52, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
     }
 
     /** Private tail of {@code lookAt_lh_general}; reached only through it. */
-    private void lookAt_lh_general_s1643b577_tail2(Double3x4Impl _dst, double _t33, double _t24, double _t34, double _t26, double _t25, double _t13, double _t12, double _t14, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _t28, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t38, _t39, _t40;
-        if (_t33 > 0.0) {
-            _t38 = _t24 * _t34;
-            _t39 = _t26 * _t34;
-            _t40 = _t25 * _t34;
-        } else {
-            _t38 = 0.0;
-            _t39 = 0.0;
-            _t40 = 0.0;
-        }
-        double _t51 = _t13 * _t39 - _t12 * _t40;
-        double _t52 = _t12 * _t38 - _t14 * _t39;
-        double _t53 = _t14 * _t40 - _t13 * _t38;
-        double _t57 = eyeX * _t38 + eyeY * _t40 + eyeZ * _t39;
-        double _t59 = eyeX * _t51 + eyeY * _t52 + eyeZ * _t53;
-        lookAt_lh_general_s1643b577_c0(_dst, _r0, _t38, _r1, _t51, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_lh_general_s1643b577_c1(_dst, _r0, _t40, _r1, _t52, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_lh_general_s1643b577_c2(_dst, _r0, _t39, _r1, _t53, _r2, _t12, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_lh_general_s1643b577_c3(_dst, _r3, _r2, _t28, _r1, _t59, _r0, _t57, _r7, _r6, _r5, _r4, _r11, _r10, _r9, _r8);
+    private void lookAt_lh_general_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t46, double eyeY, double _t47, double eyeZ, double _t48, double _r0, double _t33, double _r1, double _r2, double _t11, double _t35, double _t10, double _t34, double _t9, double _r3, double _t25, double _t52, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t54 = eyeX * _t46 + eyeY * _t47 + eyeZ * _t48;
+        lookAt_lh_general_s1643b577_c0(_dst, _r0, _t33, _r1, _t46, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_general_s1643b577_c1(_dst, _r0, _t35, _r1, _t47, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_general_s1643b577_c2(_dst, _r0, _t34, _r1, _t48, _r2, _t9, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_general_s1643b577_c3(_dst, _r3, _r2, _t25, _r1, _t54, _r0, _t52, _r7, _r6, _r5, _r4, _r11, _r10, _r9, _r8);
     }
 
 
@@ -8960,6 +9830,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_lh_general(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerZ - eyeZ;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerY - eyeY;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t2 * _t2 + _t0 * _t0));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t21 = upY * _t9 - upZ * _t10;
+        double _t22 = upZ * _t11 - upX * _t9;
+        double _t23 = upX * _t10 - upY * _t11;
+        double _ct0 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
+        if (!(_ct0 > 0.0)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t32 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m00;
         double _r1 = this.m01;
         double _r2 = this.m02;
@@ -8968,16 +9851,7 @@ public class Double3x4Impl implements Double3x4 {
         double _r5 = this.m11;
         double _r6 = this.m12;
         double _r7 = this.m13;
-        double _r8 = this.m20;
-        double _r9 = this.m21;
-        double _r10 = this.m22;
-        double _r11 = this.m23;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
-        double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        lookAt_lh_general_s1643b577_tail(d, _t7, _t2, _t8, _t1, _t0, upY, upZ, upX, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        lookAt_lh_general_s1643b577_tail(d, eyeX, _t11, eyeY, _t10, eyeZ, _t9, _t21, _t32, _t23, _t22, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -9011,6 +9885,520 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate(Double3R eye, Double3R center, Double3R up, @Mutated Double3x4 dest) {
+        return lookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Double3x4 lookAt_lh_degenerate(Double3R eye, Double3R center, Double3R up) {
+        return lookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private column 0 of {@code lookAt_lh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_identity_s1643b577_c0(Double3x4Impl _dst, double _t50, double _t59, double _t15) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = _t15;
+    }
+
+    /** Private column 1 of {@code lookAt_lh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_identity_s1643b577_c1(Double3x4Impl _dst, double _t51, double _t58, double _t17) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t17;
+    }
+
+    /** Private column 2 of {@code lookAt_lh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_identity_s1643b577_c2(Double3x4Impl _dst, double _t49, double _t60, double _t16) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t16;
+    }
+
+    /** Private column 3 of {@code lookAt_lh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_identity_s1643b577_c3(Double3x4Impl _dst, double eyeX, double _t50, double eyeY, double _t51, double eyeZ, double _t49, double _t59, double _t58, double _t60, double _t15, double _t17, double _t16) {
+        _dst.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        _dst.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        _dst.m23 = -(eyeX * _t15 + eyeY * _t17 + eyeZ * _t16);
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_identity}; reached only through it. */
+    private void lookAt_lh_degenerate_identity_s1643b577_tail(Double3x4Impl _dst, double _t18, double _t19, double _t17, double _t15, double _t16, double _t28, double _t29, double _t30, double eyeX, double eyeY, double eyeZ) {
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = -_t17;
+            _t33 = _t15;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = -_t16;
+        }
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t50 * _t16 - _t49 * _t15;
+        double _t59 = _t49 * _t17 - _t51 * _t16;
+        lookAt_lh_degenerate_identity_s1643b577_tail2(_dst, _t51, _t15, _t50, _t17, _t49, eyeX, eyeY, eyeZ, _t59, _t58, _t16);
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_identity}; reached only through it. */
+    private void lookAt_lh_degenerate_identity_s1643b577_tail2(Double3x4Impl _dst, double _t51, double _t15, double _t50, double _t17, double _t49, double eyeX, double eyeY, double eyeZ, double _t59, double _t58, double _t16) {
+        double _t60 = _t51 * _t15 - _t50 * _t17;
+        lookAt_lh_degenerate_identity_s1643b577_c0(_dst, _t50, _t59, _t15);
+        lookAt_lh_degenerate_identity_s1643b577_c1(_dst, _t51, _t58, _t17);
+        lookAt_lh_degenerate_identity_s1643b577_c2(_dst, _t49, _t60, _t16);
+        lookAt_lh_degenerate_identity_s1643b577_c3(_dst, eyeX, _t50, eyeY, _t51, eyeZ, _t49, _t59, _t58, _t60, _t15, _t17, _t16);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate_identity(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = 0.0;
+            _t16 = 1.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t15 = _t0 * _t8;
+            _t16 = _t2 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t15);
+        double _t19 = Math.abs(_t16);
+        double _t28 = _t9 * _t15 - _t10 * _t16;
+        double _t29 = _t11 * _t16 - _t9 * _t17;
+        double _t30 = _t10 * _t17 - _t15 * _t11;
+        lookAt_lh_degenerate_identity_s1643b577_tail(d, _t18, _t19, _t17, _t15, _t16, _t28, _t29, _t30, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_lh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_translation_s1643b577_c0(Double3x4Impl _dst, double _t50, double _t59, double _t15) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = _t15;
+    }
+
+    /** Private column 1 of {@code lookAt_lh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_translation_s1643b577_c1(Double3x4Impl _dst, double _t51, double _t58, double _t17) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t17;
+    }
+
+    /** Private column 2 of {@code lookAt_lh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_translation_s1643b577_c2(Double3x4Impl _dst, double _t49, double _t60, double _t16) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t16;
+    }
+
+    /** Private column 3 of {@code lookAt_lh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_translation_s1643b577_c3(Double3x4Impl _dst, double _r0, double eyeZ, double _t49, double eyeY, double _t51, double eyeX, double _t50, double _r1, double _t60, double _t58, double _t59, double _r2, double _t16, double _t17, double _t15) {
+        _dst.m03 = _r0 - eyeZ * _t49 - eyeY * _t51 - eyeX * _t50;
+        _dst.m13 = _r1 - eyeZ * _t60 - eyeY * _t58 - eyeX * _t59;
+        _dst.m23 = _r2 - eyeZ * _t16 - eyeY * _t17 - eyeX * _t15;
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_translation}; reached only through it. */
+    private void lookAt_lh_degenerate_translation_s1643b577_tail(Double3x4Impl _dst, double _t10, double _t17, double _t15, double _t11, double _t18, double _t19, double _t16, double _t28, double _t29, double _r0, double eyeZ, double eyeY, double eyeX, double _r1, double _r2) {
+        double _t30 = _t10 * _t17 - _t15 * _t11;
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = -_t17;
+            _t33 = _t15;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = -_t16;
+        }
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t50 * _t16 - _t49 * _t15;
+        double _t59 = _t49 * _t17 - _t51 * _t16;
+        lookAt_lh_degenerate_translation_s1643b577_tail2(_dst, _t51, _t15, _t50, _t17, _t49, _r0, eyeZ, eyeY, eyeX, _t59, _t58, _r1, _t16, _r2);
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_translation}; reached only through it. */
+    private void lookAt_lh_degenerate_translation_s1643b577_tail2(Double3x4Impl _dst, double _t51, double _t15, double _t50, double _t17, double _t49, double _r0, double eyeZ, double eyeY, double eyeX, double _t59, double _t58, double _r1, double _t16, double _r2) {
+        double _t60 = _t51 * _t15 - _t50 * _t17;
+        lookAt_lh_degenerate_translation_s1643b577_c0(_dst, _t50, _t59, _t15);
+        lookAt_lh_degenerate_translation_s1643b577_c1(_dst, _t51, _t58, _t17);
+        lookAt_lh_degenerate_translation_s1643b577_c2(_dst, _t49, _t60, _t16);
+        lookAt_lh_degenerate_translation_s1643b577_c3(_dst, _r0, eyeZ, _t49, eyeY, _t51, eyeX, _t50, _r1, _t60, _t58, _t59, _r2, _t16, _t17, _t15);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate_translation(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m03;
+        double _r1 = this.m13;
+        double _r2 = this.m23;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = 0.0;
+            _t16 = 1.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t15 = _t0 * _t8;
+            _t16 = _t2 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t15);
+        double _t19 = Math.abs(_t16);
+        double _t28 = _t9 * _t15 - _t10 * _t16;
+        double _t29 = _t11 * _t16 - _t9 * _t17;
+        lookAt_lh_degenerate_translation_s1643b577_tail(d, _t10, _t17, _t15, _t11, _t18, _t19, _t16, _t28, _t29, _r0, eyeZ, eyeY, eyeX, _r1, _r2);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_lh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_orthogonal_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t55, double _r1, double _t69, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t55 + _r1 * _t69 + _r2 * _t15;
+        _dst.m10 = _r4 * _t55 + _r5 * _t69 + _r6 * _t15;
+        _dst.m20 = _r8 * _t55 + _r9 * _t69 + _r10 * _t15;
+    }
+
+    /** Private column 1 of {@code lookAt_lh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_orthogonal_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t58, double _r1, double _t67, double _r2, double _t17, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t58 + _r1 * _t67 + _r2 * _t17;
+        _dst.m11 = _r4 * _t58 + _r5 * _t67 + _r6 * _t17;
+        _dst.m21 = _r8 * _t58 + _r9 * _t67 + _r10 * _t17;
+    }
+
+    /** Private column 2 of {@code lookAt_lh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_orthogonal_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t54, double _r1, double _t70, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t54 + _r1 * _t70 + _r2 * _t16;
+        _dst.m12 = _r4 * _t54 + _r5 * _t70 + _r6 * _t16;
+        _dst.m22 = _r8 * _t54 + _r9 * _t70 + _r10 * _t16;
+    }
+
+    /** Private column 3 of {@code lookAt_lh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_orthogonal_s1643b577_c3(Double3x4Impl _dst, double _r3, double _r2, double _t37, double _r1, double _t75, double _r0, double _t73, double _r7, double _r6, double _r5, double _r4, double _r11, double _r10, double _r9, double _r8) {
+        _dst.m03 = _r3 - _r2 * _t37 - _r1 * _t75 - _r0 * _t73;
+        _dst.m13 = _r7 - _r6 * _t37 - _r5 * _t75 - _r4 * _t73;
+        _dst.m23 = _r11 - _r10 * _t37 - _r9 * _t75 - _r8 * _t73;
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_orthogonal}; reached only through it. */
+    private void lookAt_lh_degenerate_orthogonal_s1643b577_tail(Double3x4Impl _dst, double _t7, double upZ, double upX, double upY, double _t0, double _t8, double _t2, double _t1, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = 0.0;
+            _t16 = 1.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t15 = _t0 * _t8;
+            _t16 = _t2 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t15);
+        double _t19 = Math.abs(_t16);
+        double _t32 = _t9 * _t15 - _t10 * _t16;
+        double _t33 = _t11 * _t16 - _t9 * _t17;
+        double _t34 = _t10 * _t17 - _t15 * _t11;
+        double _t35, _t36;
+        if (_t18 > _t19) {
+            _t35 = 0.0;
+            _t36 = -_t17;
+        } else {
+            _t35 = _t17;
+            _t36 = 0.0;
+        }
+        lookAt_lh_degenerate_orthogonal_s1643b577_tail2(_dst, eyeX, _t15, eyeY, _t17, eyeZ, _t16, _t18, _t19, _t32, _t33, _t34, _t36, _t35, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_orthogonal}; reached only through it. */
+    private void lookAt_lh_degenerate_orthogonal_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t15, double eyeY, double _t17, double eyeZ, double _t16, double _t18, double _t19, double _t32, double _t33, double _t34, double _t36, double _t35, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t37 = eyeX * _t15 + eyeY * _t17 + eyeZ * _t16;
+        double _t38 = _t18 > _t19 ? _t15 : -_t16;
+        double _t47 = _t32 * _t32 + _t33 * _t33 + _t34 * _t34;
+        double _t53, _t54, _t55, _t58;
+        if (_t47 == 0.0) {
+            _t53 = (1.0 / Math.sqrt(_t36 * _t36 + _t38 * _t38 + _t35 * _t35));
+            _t54 = _t53 * _t35;
+            _t55 = _t53 * _t36;
+            _t58 = _t53 * _t38;
+        } else {
+            _t53 = (1.0 / Math.sqrt(_t47));
+            _t54 = _t53 * _t34;
+            _t55 = _t53 * _t33;
+            _t58 = _t53 * _t32;
+        }
+        double _t67 = _t55 * _t16 - _t54 * _t15;
+        double _t69 = _t54 * _t17 - _t58 * _t16;
+        lookAt_lh_degenerate_orthogonal_s1643b577_tail3(_dst, _t58, _t15, _t55, _t17, eyeX, eyeY, eyeZ, _t54, _t69, _t67, _r0, _r1, _r2, _t16, _r3, _t37, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_orthogonal}; reached only through it. */
+    private void lookAt_lh_degenerate_orthogonal_s1643b577_tail3(Double3x4Impl _dst, double _t58, double _t15, double _t55, double _t17, double eyeX, double eyeY, double eyeZ, double _t54, double _t69, double _t67, double _r0, double _r1, double _r2, double _t16, double _r3, double _t37, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t70 = _t58 * _t15 - _t55 * _t17;
+        double _t73 = eyeX * _t55 + eyeY * _t58 + eyeZ * _t54;
+        double _t75 = eyeX * _t69 + eyeY * _t67 + eyeZ * _t70;
+        lookAt_lh_degenerate_orthogonal_s1643b577_c0(_dst, _r0, _t55, _r1, _t69, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_degenerate_orthogonal_s1643b577_c1(_dst, _r0, _t58, _r1, _t67, _r2, _t17, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_degenerate_orthogonal_s1643b577_c2(_dst, _r0, _t54, _r1, _t70, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_degenerate_orthogonal_s1643b577_c3(_dst, _r3, _r2, _t37, _r1, _t75, _r0, _t73, _r7, _r6, _r5, _r4, _r11, _r10, _r9, _r8);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate_orthogonal(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m03;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m12;
+        double _r7 = this.m13;
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        lookAt_lh_degenerate_orthogonal_s1643b577_tail(d, _t7, upZ, upX, upY, _t0, _t8, _t2, _t1, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_lh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_general_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t55, double _r1, double _t69, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t55 + _r1 * _t69 + _r2 * _t15;
+        _dst.m10 = _r4 * _t55 + _r5 * _t69 + _r6 * _t15;
+        _dst.m20 = _r8 * _t55 + _r9 * _t69 + _r10 * _t15;
+    }
+
+    /** Private column 1 of {@code lookAt_lh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_general_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t58, double _r1, double _t67, double _r2, double _t17, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t58 + _r1 * _t67 + _r2 * _t17;
+        _dst.m11 = _r4 * _t58 + _r5 * _t67 + _r6 * _t17;
+        _dst.m21 = _r8 * _t58 + _r9 * _t67 + _r10 * _t17;
+    }
+
+    /** Private column 2 of {@code lookAt_lh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_general_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t54, double _r1, double _t70, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t54 + _r1 * _t70 + _r2 * _t16;
+        _dst.m12 = _r4 * _t54 + _r5 * _t70 + _r6 * _t16;
+        _dst.m22 = _r8 * _t54 + _r9 * _t70 + _r10 * _t16;
+    }
+
+    /** Private column 3 of {@code lookAt_lh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_lh_degenerate_general_s1643b577_c3(Double3x4Impl _dst, double _r3, double _r2, double _t37, double _r1, double _t75, double _r0, double _t73, double _r7, double _r6, double _r5, double _r4, double _r11, double _r10, double _r9, double _r8) {
+        _dst.m03 = _r3 - _r2 * _t37 - _r1 * _t75 - _r0 * _t73;
+        _dst.m13 = _r7 - _r6 * _t37 - _r5 * _t75 - _r4 * _t73;
+        _dst.m23 = _r11 - _r10 * _t37 - _r9 * _t75 - _r8 * _t73;
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_general}; reached only through it. */
+    private void lookAt_lh_degenerate_general_s1643b577_tail(Double3x4Impl _dst, double _t7, double upZ, double upX, double upY, double _t0, double _t8, double _t2, double _t1, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = 0.0;
+            _t16 = 1.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t15 = _t0 * _t8;
+            _t16 = _t2 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t15);
+        double _t19 = Math.abs(_t16);
+        double _t32 = _t9 * _t15 - _t10 * _t16;
+        double _t33 = _t11 * _t16 - _t9 * _t17;
+        double _t34 = _t10 * _t17 - _t15 * _t11;
+        double _t35, _t36;
+        if (_t18 > _t19) {
+            _t35 = 0.0;
+            _t36 = -_t17;
+        } else {
+            _t35 = _t17;
+            _t36 = 0.0;
+        }
+        lookAt_lh_degenerate_general_s1643b577_tail2(_dst, eyeX, _t15, eyeY, _t17, eyeZ, _t16, _t18, _t19, _t32, _t33, _t34, _t36, _t35, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_general}; reached only through it. */
+    private void lookAt_lh_degenerate_general_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t15, double eyeY, double _t17, double eyeZ, double _t16, double _t18, double _t19, double _t32, double _t33, double _t34, double _t36, double _t35, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t37 = eyeX * _t15 + eyeY * _t17 + eyeZ * _t16;
+        double _t38 = _t18 > _t19 ? _t15 : -_t16;
+        double _t47 = _t32 * _t32 + _t33 * _t33 + _t34 * _t34;
+        double _t53, _t54, _t55, _t58;
+        if (_t47 == 0.0) {
+            _t53 = (1.0 / Math.sqrt(_t36 * _t36 + _t38 * _t38 + _t35 * _t35));
+            _t54 = _t53 * _t35;
+            _t55 = _t53 * _t36;
+            _t58 = _t53 * _t38;
+        } else {
+            _t53 = (1.0 / Math.sqrt(_t47));
+            _t54 = _t53 * _t34;
+            _t55 = _t53 * _t33;
+            _t58 = _t53 * _t32;
+        }
+        double _t67 = _t55 * _t16 - _t54 * _t15;
+        double _t69 = _t54 * _t17 - _t58 * _t16;
+        lookAt_lh_degenerate_general_s1643b577_tail3(_dst, _t58, _t15, _t55, _t17, eyeX, eyeY, eyeZ, _t54, _t69, _t67, _r0, _r1, _r2, _t16, _r3, _t37, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_lh_degenerate_general}; reached only through it. */
+    private void lookAt_lh_degenerate_general_s1643b577_tail3(Double3x4Impl _dst, double _t58, double _t15, double _t55, double _t17, double eyeX, double eyeY, double eyeZ, double _t54, double _t69, double _t67, double _r0, double _r1, double _r2, double _t16, double _r3, double _t37, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t70 = _t58 * _t15 - _t55 * _t17;
+        double _t73 = eyeX * _t55 + eyeY * _t58 + eyeZ * _t54;
+        double _t75 = eyeX * _t69 + eyeY * _t67 + eyeZ * _t70;
+        lookAt_lh_degenerate_general_s1643b577_c0(_dst, _r0, _t55, _r1, _t69, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_degenerate_general_s1643b577_c1(_dst, _r0, _t58, _r1, _t67, _r2, _t17, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_degenerate_general_s1643b577_c2(_dst, _r0, _t54, _r1, _t70, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_lh_degenerate_general_s1643b577_c3(_dst, _r3, _r2, _t37, _r1, _t75, _r0, _t73, _r7, _r6, _r5, _r4, _r11, _r10, _r9, _r8);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate_general(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m03;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m12;
+        double _r7 = this.m13;
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        lookAt_lh_degenerate_general_s1643b577_tail(d, _t7, upZ, upX, upY, _t0, _t8, _t2, _t1, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_lh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_lh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_lh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        return lookAt_lh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double3x4 lookAt_lh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        if (Joml.RETURN_NEW) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Joml.double3x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_lh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_lh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_lh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        return lookAt_lh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+    }
+
+
+    /**
      * Private body of {@code lookAt} for {@code Handedness.RIGHT_HANDED}; reached only through the
      * public {@code lookAt} dispatcher.
      */
@@ -9028,42 +10416,31 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private column 0 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_rh_identity_s1643b577_c0(Double3x4Impl _dst, double _t33, double _t42, double _t13) {
-        _dst.m00 = _t33;
-        _dst.m10 = _t42;
-        _dst.m20 = -_t13;
+    private void lookAt_rh_identity_s1643b577_c0(Double3x4Impl _dst, double _t28, double _t37, double _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = -_t11;
     }
 
     /** Private column 1 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_rh_identity_s1643b577_c1(Double3x4Impl _dst, double _t34, double _t43, double _t14) {
-        _dst.m01 = _t34;
-        _dst.m11 = _t43;
-        _dst.m21 = -_t14;
+    private void lookAt_rh_identity_s1643b577_c1(Double3x4Impl _dst, double _t29, double _t38, double _t9) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = -_t9;
     }
 
     /** Private column 2 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_rh_identity_s1643b577_c2(Double3x4Impl _dst, double _t35, double _t44, double _t12) {
-        _dst.m02 = _t35;
-        _dst.m12 = _t44;
-        _dst.m22 = -_t12;
+    private void lookAt_rh_identity_s1643b577_c2(Double3x4Impl _dst, double _t30, double _t39, double _t10) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = -_t10;
     }
 
     /** Private column 3 of {@code lookAt_rh_identity}: computes and stores it; reached only through it. */
-    private void lookAt_rh_identity_s1643b577_c3(Double3x4Impl _dst, double eyeX, double _t33, double eyeY, double _t34, double eyeZ, double _t35, double _t42, double _t43, double _t44, double _t13, double _t14, double _t12) {
-        _dst.m03 = -(eyeX * _t33 + eyeY * _t34 + eyeZ * _t35);
-        _dst.m13 = -(eyeX * _t42 + eyeY * _t43 + eyeZ * _t44);
-        _dst.m23 = eyeX * _t13 + eyeY * _t14 + eyeZ * _t12;
-    }
-
-    /** Private tail of {@code lookAt_rh_identity}; reached only through it. */
-    private void lookAt_rh_identity_s1643b577_tail(Double3x4Impl _dst, double _t12, double _t34, double _t14, double _t35, double _t13, double _t33, double eyeX, double eyeY, double eyeZ) {
-        double _t42 = _t12 * _t34 - _t14 * _t35;
-        double _t43 = _t13 * _t35 - _t12 * _t33;
-        double _t44 = _t14 * _t33 - _t13 * _t34;
-        lookAt_rh_identity_s1643b577_c0(_dst, _t33, _t42, _t13);
-        lookAt_rh_identity_s1643b577_c1(_dst, _t34, _t43, _t14);
-        lookAt_rh_identity_s1643b577_c2(_dst, _t35, _t44, _t12);
-        lookAt_rh_identity_s1643b577_c3(_dst, eyeX, _t33, eyeY, _t34, eyeZ, _t35, _t42, _t43, _t44, _t13, _t14, _t12);
+    private void lookAt_rh_identity_s1643b577_c3(Double3x4Impl _dst, double eyeX, double _t28, double eyeY, double _t29, double eyeZ, double _t30, double _t37, double _t38, double _t39, double _t11, double _t9, double _t10) {
+        _dst.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        _dst.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        _dst.m23 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
     }
 
 
@@ -9073,88 +10450,68 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_rh_identity(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
+        double _t0 = centerY - eyeY;
+        double _t1 = centerX - eyeX;
         double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t0 * _t8;
-            _t14 = _t1 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t21 = upX * _t12 - upZ * _t13;
-        double _t22 = upZ * _t14 - upY * _t12;
-        double _t23 = upY * _t13 - upX * _t14;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t22 * _t29;
-            _t34 = _t21 * _t29;
-            _t35 = _t23 * _t29;
-        } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
-        }
-        lookAt_rh_identity_s1643b577_tail(d, _t12, _t34, _t14, _t35, _t13, _t33, eyeX, eyeY, eyeZ);
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t0 * _t0 + _t2 * _t2));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t18 = upZ * _t9 - upY * _t10;
+        double _t19 = upX * _t10 - upZ * _t11;
+        double _t20 = upY * _t11 - upX * _t9;
+        double _ct0 = _t19 * _t19 + _t18 * _t18 + _t20 * _t20;
+        if (!(_ct0 > 0.0)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t28 = _t18 * _t27;
+        double _t29 = _t19 * _t27;
+        double _t30 = _t20 * _t27;
+        double _t37 = _t10 * _t29 - _t9 * _t30;
+        double _t38 = _t11 * _t30 - _t10 * _t28;
+        double _t39 = _t9 * _t28 - _t11 * _t29;
+        lookAt_rh_identity_s1643b577_c0(d, _t28, _t37, _t11);
+        lookAt_rh_identity_s1643b577_c1(d, _t29, _t38, _t9);
+        lookAt_rh_identity_s1643b577_c2(d, _t30, _t39, _t10);
+        lookAt_rh_identity_s1643b577_c3(d, eyeX, _t28, eyeY, _t29, eyeZ, _t30, _t37, _t38, _t39, _t11, _t9, _t10);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_rh_translation_s1643b577_c0(Double3x4Impl _dst, double _t33, double _t42, double _t13) {
-        _dst.m00 = _t33;
-        _dst.m10 = _t42;
-        _dst.m20 = -_t13;
+    private void lookAt_rh_translation_s1643b577_c0(Double3x4Impl _dst, double _t28, double _t37, double _t11) {
+        _dst.m00 = _t28;
+        _dst.m10 = _t37;
+        _dst.m20 = -_t11;
     }
 
     /** Private column 1 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_rh_translation_s1643b577_c1(Double3x4Impl _dst, double _t34, double _t43, double _t14) {
-        _dst.m01 = _t34;
-        _dst.m11 = _t43;
-        _dst.m21 = -_t14;
+    private void lookAt_rh_translation_s1643b577_c1(Double3x4Impl _dst, double _t29, double _t38, double _t9) {
+        _dst.m01 = _t29;
+        _dst.m11 = _t38;
+        _dst.m21 = -_t9;
     }
 
     /** Private column 2 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_rh_translation_s1643b577_c2(Double3x4Impl _dst, double _t35, double _t44, double _t12) {
-        _dst.m02 = _t35;
-        _dst.m12 = _t44;
-        _dst.m22 = -_t12;
+    private void lookAt_rh_translation_s1643b577_c2(Double3x4Impl _dst, double _t30, double _t39, double _t10) {
+        _dst.m02 = _t30;
+        _dst.m12 = _t39;
+        _dst.m22 = -_t10;
     }
 
     /** Private column 3 of {@code lookAt_rh_translation}: computes and stores it; reached only through it. */
-    private void lookAt_rh_translation_s1643b577_c3(Double3x4Impl _dst, double _r0, double eyeZ, double _t35, double eyeY, double _t34, double eyeX, double _t33, double _r1, double _t44, double _t43, double _t42, double _t13, double _t14, double _t12, double _r2) {
-        _dst.m03 = _r0 - eyeZ * _t35 - eyeY * _t34 - eyeX * _t33;
-        _dst.m13 = _r1 - eyeZ * _t44 - eyeY * _t43 - eyeX * _t42;
-        _dst.m23 = eyeX * _t13 + (eyeY * _t14 + (eyeZ * _t12 + _r2));
+    private void lookAt_rh_translation_s1643b577_c3(Double3x4Impl _dst, double _r0, double eyeZ, double _t30, double eyeY, double _t29, double eyeX, double _t28, double _r1, double _t39, double _t38, double _t37, double _t11, double _t9, double _t10, double _r2) {
+        _dst.m03 = _r0 - eyeZ * _t30 - eyeY * _t29 - eyeX * _t28;
+        _dst.m13 = _r1 - eyeZ * _t39 - eyeY * _t38 - eyeX * _t37;
+        _dst.m23 = eyeX * _t11 + (eyeY * _t9 + (eyeZ * _t10 + _r2));
     }
 
     /** Private tail of {@code lookAt_rh_translation}; reached only through it. */
-    private void lookAt_rh_translation_s1643b577_tail(Double3x4Impl _dst, double _t28, double _t22, double _t29, double _t21, double _t23, double _t12, double _t14, double _t13, double _r0, double eyeZ, double eyeY, double eyeX, double _r1, double _r2) {
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t22 * _t29;
-            _t34 = _t21 * _t29;
-            _t35 = _t23 * _t29;
-        } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
-        }
-        double _t42 = _t12 * _t34 - _t14 * _t35;
-        double _t43 = _t13 * _t35 - _t12 * _t33;
-        double _t44 = _t14 * _t33 - _t13 * _t34;
-        lookAt_rh_translation_s1643b577_c0(_dst, _t33, _t42, _t13);
-        lookAt_rh_translation_s1643b577_c1(_dst, _t34, _t43, _t14);
-        lookAt_rh_translation_s1643b577_c2(_dst, _t35, _t44, _t12);
-        lookAt_rh_translation_s1643b577_c3(_dst, _r0, eyeZ, _t35, eyeY, _t34, eyeX, _t33, _r1, _t44, _t43, _t42, _t13, _t14, _t12, _r2);
+    private void lookAt_rh_translation_s1643b577_tail(Double3x4Impl _dst, double _t9, double _t28, double _t11, double _t29, double _t30, double _r0, double eyeZ, double eyeY, double eyeX, double _t37, double _t38, double _r1, double _t10, double _r2) {
+        double _t39 = _t9 * _t28 - _t11 * _t29;
+        lookAt_rh_translation_s1643b577_c0(_dst, _t28, _t37, _t11);
+        lookAt_rh_translation_s1643b577_c1(_dst, _t29, _t38, _t9);
+        lookAt_rh_translation_s1643b577_c2(_dst, _t30, _t39, _t10);
+        lookAt_rh_translation_s1643b577_c3(_dst, _r0, eyeZ, _t30, eyeY, _t29, eyeX, _t28, _r1, _t39, _t38, _t37, _t11, _t9, _t10, _r2);
     }
 
 
@@ -9164,104 +10521,84 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_rh_translation(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerY - eyeY;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerZ - eyeZ;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t0 * _t0 + _t2 * _t2));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t18 = upZ * _t9 - upY * _t10;
+        double _t19 = upX * _t10 - upZ * _t11;
+        double _t20 = upY * _t11 - upX * _t9;
+        double _ct0 = _t19 * _t19 + _t18 * _t18 + _t20 * _t20;
+        if (!(_ct0 > 0.0)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m03;
         double _r1 = this.m13;
         double _r2 = this.m23;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
-        double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t0 * _t8;
-            _t14 = _t1 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t21 = upX * _t12 - upZ * _t13;
-        double _t22 = upZ * _t14 - upY * _t12;
-        double _t23 = upY * _t13 - upX * _t14;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        lookAt_rh_translation_s1643b577_tail(d, _t28, _t22, _t29, _t21, _t23, _t12, _t14, _t13, _r0, eyeZ, eyeY, eyeX, _r1, _r2);
+        double _t28 = _t18 * _t27;
+        double _t29 = _t19 * _t27;
+        double _t30 = _t20 * _t27;
+        double _t37 = _t10 * _t29 - _t9 * _t30;
+        double _t38 = _t11 * _t30 - _t10 * _t28;
+        lookAt_rh_translation_s1643b577_tail(d, _t9, _t28, _t11, _t29, _t30, _r0, eyeZ, eyeY, eyeX, _t37, _t38, _r1, _t10, _r2);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_rh_orthogonal_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t38, double _r1, double _t51, double _r2, double _t13, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t38 + _r1 * _t51 - _r2 * _t13;
-        _dst.m10 = _r4 * _t38 + _r5 * _t51 - _r6 * _t13;
-        _dst.m20 = _r8 * _t38 + _r9 * _t51 - _r10 * _t13;
+    private void lookAt_rh_orthogonal_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t33, double _r1, double _t46, double _r2, double _t11, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t33 + _r1 * _t46 - _r2 * _t11;
+        _dst.m10 = _r4 * _t33 + _r5 * _t46 - _r6 * _t11;
+        _dst.m20 = _r8 * _t33 + _r9 * _t46 - _r10 * _t11;
     }
 
     /** Private column 1 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_rh_orthogonal_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t39, double _r1, double _t52, double _r2, double _t14, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t39 + _r1 * _t52 - _r2 * _t14;
-        _dst.m11 = _r4 * _t39 + _r5 * _t52 - _r6 * _t14;
-        _dst.m21 = _r8 * _t39 + _r9 * _t52 - _r10 * _t14;
+    private void lookAt_rh_orthogonal_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t34, double _r1, double _t47, double _r2, double _t9, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t34 + _r1 * _t47 - _r2 * _t9;
+        _dst.m11 = _r4 * _t34 + _r5 * _t47 - _r6 * _t9;
+        _dst.m21 = _r8 * _t34 + _r9 * _t47 - _r10 * _t9;
     }
 
     /** Private column 2 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_rh_orthogonal_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t40, double _r1, double _t53, double _r2, double _t12, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t40 + _r1 * _t53 - _r2 * _t12;
-        _dst.m12 = _r4 * _t40 + _r5 * _t53 - _r6 * _t12;
-        _dst.m22 = _r8 * _t40 + _r9 * _t53 - _r10 * _t12;
+    private void lookAt_rh_orthogonal_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t35, double _r1, double _t48, double _r2, double _t10, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t35 + _r1 * _t48 - _r2 * _t10;
+        _dst.m12 = _r4 * _t35 + _r5 * _t48 - _r6 * _t10;
+        _dst.m22 = _r8 * _t35 + _r9 * _t48 - _r10 * _t10;
     }
 
     /** Private column 3 of {@code lookAt_rh_orthogonal}: computes and stores it; reached only through it. */
-    private void lookAt_rh_orthogonal_s1643b577_c3(Double3x4Impl _dst, double _r2, double _t28, double _r3, double _r1, double _t59, double _r0, double _t57, double _r6, double _r7, double _r5, double _r4, double _r10, double _r11, double _r9, double _r8) {
-        _dst.m03 = _r2 * _t28 + _r3 - _r1 * _t59 - _r0 * _t57;
-        _dst.m13 = _r6 * _t28 + _r7 - _r5 * _t59 - _r4 * _t57;
-        _dst.m23 = _r10 * _t28 + _r11 - _r9 * _t59 - _r8 * _t57;
+    private void lookAt_rh_orthogonal_s1643b577_c3(Double3x4Impl _dst, double _r2, double _t25, double _r3, double _r1, double _t54, double _r0, double _t52, double _r6, double _r7, double _r5, double _r4, double _r10, double _r11, double _r9, double _r8) {
+        _dst.m03 = _r2 * _t25 + _r3 - _r1 * _t54 - _r0 * _t52;
+        _dst.m13 = _r6 * _t25 + _r7 - _r5 * _t54 - _r4 * _t52;
+        _dst.m23 = _r10 * _t25 + _r11 - _r9 * _t54 - _r8 * _t52;
     }
 
     /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
-    private void lookAt_rh_orthogonal_s1643b577_tail(Double3x4Impl _dst, double _t7, double _t2, double _t8, double _t0, double _t1, double upX, double upZ, double upY, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t0 * _t8;
-            _t14 = _t1 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t24 = upX * _t12 - upZ * _t13;
-        double _t25 = upZ * _t14 - upY * _t12;
-        double _t26 = upY * _t13 - upX * _t14;
-        double _t28 = eyeX * _t13 + eyeY * _t14 + eyeZ * _t12;
-        double _t33 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        double _t34 = (1.0 / Math.sqrt(_t33));
-        lookAt_rh_orthogonal_s1643b577_tail2(_dst, _t33, _t25, _t34, _t24, _t26, _t12, _t14, _t13, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _t28, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    private void lookAt_rh_orthogonal_s1643b577_tail(Double3x4Impl _dst, double eyeX, double _t11, double eyeY, double _t9, double eyeZ, double _t10, double _t21, double _t32, double _t22, double _t23, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7) {
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t25 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
+        double _t33 = _t21 * _t32;
+        double _t34 = _t22 * _t32;
+        double _t35 = _t23 * _t32;
+        double _t46 = _t10 * _t34 - _t9 * _t35;
+        double _t47 = _t11 * _t35 - _t10 * _t33;
+        double _t48 = _t9 * _t33 - _t11 * _t34;
+        double _t52 = eyeX * _t33 + eyeY * _t34 + eyeZ * _t35;
+        lookAt_rh_orthogonal_s1643b577_tail2(_dst, eyeX, _t46, eyeY, _t47, eyeZ, _t48, _r0, _t33, _r1, _r2, _t11, _t34, _t9, _t35, _t10, _t25, _r3, _t52, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
     }
 
     /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
-    private void lookAt_rh_orthogonal_s1643b577_tail2(Double3x4Impl _dst, double _t33, double _t25, double _t34, double _t24, double _t26, double _t12, double _t14, double _t13, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _t28, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t38, _t39, _t40;
-        if (_t33 > 0.0) {
-            _t38 = _t25 * _t34;
-            _t39 = _t24 * _t34;
-            _t40 = _t26 * _t34;
-        } else {
-            _t38 = 0.0;
-            _t39 = 0.0;
-            _t40 = 0.0;
-        }
-        double _t51 = _t12 * _t39 - _t14 * _t40;
-        double _t52 = _t13 * _t40 - _t12 * _t38;
-        double _t53 = _t14 * _t38 - _t13 * _t39;
-        double _t57 = eyeX * _t38 + eyeY * _t39 + eyeZ * _t40;
-        double _t59 = eyeX * _t51 + eyeY * _t52 + eyeZ * _t53;
-        lookAt_rh_orthogonal_s1643b577_c0(_dst, _r0, _t38, _r1, _t51, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_rh_orthogonal_s1643b577_c1(_dst, _r0, _t39, _r1, _t52, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_rh_orthogonal_s1643b577_c2(_dst, _r0, _t40, _r1, _t53, _r2, _t12, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_rh_orthogonal_s1643b577_c3(_dst, _r2, _t28, _r3, _r1, _t59, _r0, _t57, _r6, _r7, _r5, _r4, _r10, _r11, _r9, _r8);
+    private void lookAt_rh_orthogonal_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t46, double eyeY, double _t47, double eyeZ, double _t48, double _r0, double _t33, double _r1, double _r2, double _t11, double _t34, double _t9, double _t35, double _t10, double _t25, double _r3, double _t52, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t54 = eyeX * _t46 + eyeY * _t47 + eyeZ * _t48;
+        lookAt_rh_orthogonal_s1643b577_c0(_dst, _r0, _t33, _r1, _t46, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_orthogonal_s1643b577_c1(_dst, _r0, _t34, _r1, _t47, _r2, _t9, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_orthogonal_s1643b577_c2(_dst, _r0, _t35, _r1, _t48, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_orthogonal_s1643b577_c3(_dst, _r2, _t25, _r3, _r1, _t54, _r0, _t52, _r6, _r7, _r5, _r4, _r10, _r11, _r9, _r8);
     }
 
 
@@ -9271,6 +10608,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_rh_orthogonal(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerY - eyeY;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerZ - eyeZ;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t0 * _t0 + _t2 * _t2));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t21 = upZ * _t9 - upY * _t10;
+        double _t22 = upX * _t10 - upZ * _t11;
+        double _t23 = upY * _t11 - upX * _t9;
+        double _ct0 = _t22 * _t22 + _t21 * _t21 + _t23 * _t23;
+        if (!(_ct0 > 0.0)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t32 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m00;
         double _r1 = this.m01;
         double _r2 = this.m02;
@@ -9279,90 +10629,63 @@ public class Double3x4Impl implements Double3x4 {
         double _r5 = this.m11;
         double _r6 = this.m12;
         double _r7 = this.m13;
-        double _r8 = this.m20;
-        double _r9 = this.m21;
-        double _r10 = this.m22;
-        double _r11 = this.m23;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
-        double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        lookAt_rh_orthogonal_s1643b577_tail(d, _t7, _t2, _t8, _t0, _t1, upX, upZ, upY, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        lookAt_rh_orthogonal_s1643b577_tail(d, eyeX, _t11, eyeY, _t9, eyeZ, _t10, _t21, _t32, _t22, _t23, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
 
     /** Private column 0 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
-    private void lookAt_rh_general_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t38, double _r1, double _t51, double _r2, double _t13, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m00 = _r0 * _t38 + _r1 * _t51 - _r2 * _t13;
-        _dst.m10 = _r4 * _t38 + _r5 * _t51 - _r6 * _t13;
-        _dst.m20 = _r8 * _t38 + _r9 * _t51 - _r10 * _t13;
+    private void lookAt_rh_general_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t33, double _r1, double _t46, double _r2, double _t11, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t33 + _r1 * _t46 - _r2 * _t11;
+        _dst.m10 = _r4 * _t33 + _r5 * _t46 - _r6 * _t11;
+        _dst.m20 = _r8 * _t33 + _r9 * _t46 - _r10 * _t11;
     }
 
     /** Private column 1 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
-    private void lookAt_rh_general_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t39, double _r1, double _t52, double _r2, double _t14, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m01 = _r0 * _t39 + _r1 * _t52 - _r2 * _t14;
-        _dst.m11 = _r4 * _t39 + _r5 * _t52 - _r6 * _t14;
-        _dst.m21 = _r8 * _t39 + _r9 * _t52 - _r10 * _t14;
+    private void lookAt_rh_general_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t34, double _r1, double _t47, double _r2, double _t9, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t34 + _r1 * _t47 - _r2 * _t9;
+        _dst.m11 = _r4 * _t34 + _r5 * _t47 - _r6 * _t9;
+        _dst.m21 = _r8 * _t34 + _r9 * _t47 - _r10 * _t9;
     }
 
     /** Private column 2 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
-    private void lookAt_rh_general_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t40, double _r1, double _t53, double _r2, double _t12, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
-        _dst.m02 = _r0 * _t40 + _r1 * _t53 - _r2 * _t12;
-        _dst.m12 = _r4 * _t40 + _r5 * _t53 - _r6 * _t12;
-        _dst.m22 = _r8 * _t40 + _r9 * _t53 - _r10 * _t12;
+    private void lookAt_rh_general_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t35, double _r1, double _t48, double _r2, double _t10, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t35 + _r1 * _t48 - _r2 * _t10;
+        _dst.m12 = _r4 * _t35 + _r5 * _t48 - _r6 * _t10;
+        _dst.m22 = _r8 * _t35 + _r9 * _t48 - _r10 * _t10;
     }
 
     /** Private column 3 of {@code lookAt_rh_general}: computes and stores it; reached only through it. */
-    private void lookAt_rh_general_s1643b577_c3(Double3x4Impl _dst, double _r2, double _t28, double _r3, double _r1, double _t59, double _r0, double _t57, double _r6, double _r7, double _r5, double _r4, double _r10, double _r11, double _r9, double _r8) {
-        _dst.m03 = _r2 * _t28 + _r3 - _r1 * _t59 - _r0 * _t57;
-        _dst.m13 = _r6 * _t28 + _r7 - _r5 * _t59 - _r4 * _t57;
-        _dst.m23 = _r10 * _t28 + _r11 - _r9 * _t59 - _r8 * _t57;
+    private void lookAt_rh_general_s1643b577_c3(Double3x4Impl _dst, double _r2, double _t25, double _r3, double _r1, double _t54, double _r0, double _t52, double _r6, double _r7, double _r5, double _r4, double _r10, double _r11, double _r9, double _r8) {
+        _dst.m03 = _r2 * _t25 + _r3 - _r1 * _t54 - _r0 * _t52;
+        _dst.m13 = _r6 * _t25 + _r7 - _r5 * _t54 - _r4 * _t52;
+        _dst.m23 = _r10 * _t25 + _r11 - _r9 * _t54 - _r8 * _t52;
     }
 
     /** Private tail of {@code lookAt_rh_general}; reached only through it. */
-    private void lookAt_rh_general_s1643b577_tail(Double3x4Impl _dst, double _t7, double _t2, double _t8, double _t0, double _t1, double upX, double upZ, double upY, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t0 * _t8;
-            _t14 = _t1 * _t8;
-        } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
-        }
-        double _t24 = upX * _t12 - upZ * _t13;
-        double _t25 = upZ * _t14 - upY * _t12;
-        double _t26 = upY * _t13 - upX * _t14;
-        double _t28 = eyeX * _t13 + eyeY * _t14 + eyeZ * _t12;
-        double _t33 = _t24 * _t24 + _t25 * _t25 + _t26 * _t26;
-        double _t34 = (1.0 / Math.sqrt(_t33));
-        lookAt_rh_general_s1643b577_tail2(_dst, _t33, _t25, _t34, _t24, _t26, _t12, _t14, _t13, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _t28, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    private void lookAt_rh_general_s1643b577_tail(Double3x4Impl _dst, double eyeX, double _t11, double eyeY, double _t9, double eyeZ, double _t10, double _t21, double _t32, double _t22, double _t23, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7) {
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t25 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
+        double _t33 = _t21 * _t32;
+        double _t34 = _t22 * _t32;
+        double _t35 = _t23 * _t32;
+        double _t46 = _t10 * _t34 - _t9 * _t35;
+        double _t47 = _t11 * _t35 - _t10 * _t33;
+        double _t48 = _t9 * _t33 - _t11 * _t34;
+        double _t52 = eyeX * _t33 + eyeY * _t34 + eyeZ * _t35;
+        lookAt_rh_general_s1643b577_tail2(_dst, eyeX, _t46, eyeY, _t47, eyeZ, _t48, _r0, _t33, _r1, _r2, _t11, _t34, _t9, _t35, _t10, _t25, _r3, _t52, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
     }
 
     /** Private tail of {@code lookAt_rh_general}; reached only through it. */
-    private void lookAt_rh_general_s1643b577_tail2(Double3x4Impl _dst, double _t33, double _t25, double _t34, double _t24, double _t26, double _t12, double _t14, double _t13, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _t28, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t38, _t39, _t40;
-        if (_t33 > 0.0) {
-            _t38 = _t25 * _t34;
-            _t39 = _t24 * _t34;
-            _t40 = _t26 * _t34;
-        } else {
-            _t38 = 0.0;
-            _t39 = 0.0;
-            _t40 = 0.0;
-        }
-        double _t51 = _t12 * _t39 - _t14 * _t40;
-        double _t52 = _t13 * _t40 - _t12 * _t38;
-        double _t53 = _t14 * _t38 - _t13 * _t39;
-        double _t57 = eyeX * _t38 + eyeY * _t39 + eyeZ * _t40;
-        double _t59 = eyeX * _t51 + eyeY * _t52 + eyeZ * _t53;
-        lookAt_rh_general_s1643b577_c0(_dst, _r0, _t38, _r1, _t51, _r2, _t13, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_rh_general_s1643b577_c1(_dst, _r0, _t39, _r1, _t52, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_rh_general_s1643b577_c2(_dst, _r0, _t40, _r1, _t53, _r2, _t12, _r4, _r5, _r6, _r8, _r9, _r10);
-        lookAt_rh_general_s1643b577_c3(_dst, _r2, _t28, _r3, _r1, _t59, _r0, _t57, _r6, _r7, _r5, _r4, _r10, _r11, _r9, _r8);
+    private void lookAt_rh_general_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t46, double eyeY, double _t47, double eyeZ, double _t48, double _r0, double _t33, double _r1, double _r2, double _t11, double _t34, double _t9, double _t35, double _t10, double _t25, double _r3, double _t52, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t54 = eyeX * _t46 + eyeY * _t47 + eyeZ * _t48;
+        lookAt_rh_general_s1643b577_c0(_dst, _r0, _t33, _r1, _t46, _r2, _t11, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_general_s1643b577_c1(_dst, _r0, _t34, _r1, _t47, _r2, _t9, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_general_s1643b577_c2(_dst, _r0, _t35, _r1, _t48, _r2, _t10, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_general_s1643b577_c3(_dst, _r2, _t25, _r3, _r1, _t54, _r0, _t52, _r6, _r7, _r5, _r4, _r10, _r11, _r9, _r8);
     }
 
 
@@ -9372,6 +10695,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 lookAt_rh_general(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerY - eyeY;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerZ - eyeZ;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t0 * _t0 + _t2 * _t2));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t21 = upZ * _t9 - upY * _t10;
+        double _t22 = upX * _t10 - upZ * _t11;
+        double _t23 = upY * _t11 - upX * _t9;
+        double _ct0 = _t22 * _t22 + _t21 * _t21 + _t23 * _t23;
+        if (!(_ct0 > 0.0)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        double _t32 = (1.0 / Math.sqrt(_ct0));
         double _r0 = this.m00;
         double _r1 = this.m01;
         double _r2 = this.m02;
@@ -9380,16 +10716,7 @@ public class Double3x4Impl implements Double3x4 {
         double _r5 = this.m11;
         double _r6 = this.m12;
         double _r7 = this.m13;
-        double _r8 = this.m20;
-        double _r9 = this.m21;
-        double _r10 = this.m22;
-        double _r11 = this.m23;
-        double _t0 = centerX - eyeX;
-        double _t1 = centerY - eyeY;
-        double _t2 = centerZ - eyeZ;
-        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
-        double _t8 = (1.0 / Math.sqrt(_t7));
-        lookAt_rh_general_s1643b577_tail(d, _t7, _t2, _t8, _t0, _t1, upX, upZ, upY, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        lookAt_rh_general_s1643b577_tail(d, eyeX, _t11, eyeY, _t9, eyeZ, _t10, _t21, _t32, _t22, _t23, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -9423,12 +10750,535 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate(Double3R eye, Double3R center, Double3R up, @Mutated Double3x4 dest) {
+        return lookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Double3x4 lookAt_rh_degenerate(Double3R eye, Double3R center, Double3R up) {
+        return lookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private column 0 of {@code lookAt_rh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_identity_s1643b577_c0(Double3x4Impl _dst, double _t50, double _t59, double _t16) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = -_t16;
+    }
+
+    /** Private column 1 of {@code lookAt_rh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_identity_s1643b577_c1(Double3x4Impl _dst, double _t51, double _t58, double _t20) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t20;
+    }
+
+    /** Private column 2 of {@code lookAt_rh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_identity_s1643b577_c2(Double3x4Impl _dst, double _t49, double _t60, double _t21) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t21;
+    }
+
+    /** Private column 3 of {@code lookAt_rh_degenerate_identity}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_identity_s1643b577_c3(Double3x4Impl _dst, double eyeX, double _t50, double eyeY, double _t51, double eyeZ, double _t49, double _t59, double _t58, double _t60, double _t16, double _t17, double _t15) {
+        _dst.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        _dst.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        _dst.m23 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_identity}; reached only through it. */
+    private void lookAt_rh_degenerate_identity_s1643b577_tail(Double3x4Impl _dst, double _t18, double _t19, double _t17, double _t20, double _t16, double _t21, double _t28, double _t29, double _t30, double _t15, double eyeX, double eyeY, double eyeZ) {
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = _t20;
+            _t33 = _t16;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = _t21;
+        }
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t49 * _t16 - _t50 * _t15;
+        double _t59 = _t51 * _t15 - _t49 * _t17;
+        lookAt_rh_degenerate_identity_s1643b577_tail2(_dst, _t50, _t17, _t51, _t16, _t49, eyeX, eyeY, eyeZ, _t59, _t58, _t20, _t21, _t15);
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_identity}; reached only through it. */
+    private void lookAt_rh_degenerate_identity_s1643b577_tail2(Double3x4Impl _dst, double _t50, double _t17, double _t51, double _t16, double _t49, double eyeX, double eyeY, double eyeZ, double _t59, double _t58, double _t20, double _t21, double _t15) {
+        double _t60 = _t50 * _t17 - _t51 * _t16;
+        lookAt_rh_degenerate_identity_s1643b577_c0(_dst, _t50, _t59, _t16);
+        lookAt_rh_degenerate_identity_s1643b577_c1(_dst, _t51, _t58, _t20);
+        lookAt_rh_degenerate_identity_s1643b577_c2(_dst, _t49, _t60, _t21);
+        lookAt_rh_degenerate_identity_s1643b577_c3(_dst, eyeX, _t50, eyeY, _t51, eyeZ, _t49, _t59, _t58, _t60, _t16, _t17, _t15);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate_identity(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = -1.0;
+            _t16 = 0.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upX;
+            _t10 = upZ;
+            _t11 = upY;
+            _t15 = _t2 * _t8;
+            _t16 = _t0 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t16);
+        double _t19 = Math.abs(_t15);
+        double _t20 = -_t17;
+        double _t21 = -_t15;
+        double _t28 = _t15 * _t9 - _t10 * _t16;
+        double _t29 = _t10 * _t17 - _t15 * _t11;
+        double _t30 = _t16 * _t11 - _t9 * _t17;
+        lookAt_rh_degenerate_identity_s1643b577_tail(d, _t18, _t19, _t17, _t20, _t16, _t21, _t28, _t29, _t30, _t15, eyeX, eyeY, eyeZ);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_rh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_translation_s1643b577_c0(Double3x4Impl _dst, double _t50, double _t59, double _t16) {
+        _dst.m00 = _t50;
+        _dst.m10 = _t59;
+        _dst.m20 = -_t16;
+    }
+
+    /** Private column 1 of {@code lookAt_rh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_translation_s1643b577_c1(Double3x4Impl _dst, double _t51, double _t58, double _t20) {
+        _dst.m01 = _t51;
+        _dst.m11 = _t58;
+        _dst.m21 = _t20;
+    }
+
+    /** Private column 2 of {@code lookAt_rh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_translation_s1643b577_c2(Double3x4Impl _dst, double _t49, double _t60, double _t21) {
+        _dst.m02 = _t49;
+        _dst.m12 = _t60;
+        _dst.m22 = _t21;
+    }
+
+    /** Private column 3 of {@code lookAt_rh_degenerate_translation}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_translation_s1643b577_c3(Double3x4Impl _dst, double _r0, double eyeZ, double _t49, double eyeY, double _t51, double eyeX, double _t50, double _r1, double _t60, double _t58, double _t59, double _t16, double _t17, double _t15, double _r2) {
+        _dst.m03 = _r0 - eyeZ * _t49 - eyeY * _t51 - eyeX * _t50;
+        _dst.m13 = _r1 - eyeZ * _t60 - eyeY * _t58 - eyeX * _t59;
+        _dst.m23 = eyeX * _t16 + (eyeY * _t17 + (eyeZ * _t15 + _r2));
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_translation}; reached only through it. */
+    private void lookAt_rh_degenerate_translation_s1643b577_tail(Double3x4Impl _dst, double _t10, double _t17, double _t15, double _t11, double _t16, double _t9, double _t18, double _t19, double _t20, double _t21, double _t28, double _r0, double eyeZ, double eyeY, double eyeX, double _r1, double _r2) {
+        double _t29 = _t10 * _t17 - _t15 * _t11;
+        double _t30 = _t16 * _t11 - _t9 * _t17;
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = _t20;
+            _t33 = _t16;
+        } else {
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = _t21;
+        }
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t49 * _t16 - _t50 * _t15;
+        lookAt_rh_degenerate_translation_s1643b577_tail2(_dst, _t51, _t15, _t49, _t17, _t50, _t16, _r0, eyeZ, eyeY, eyeX, _t58, _r1, _t20, _t21, _r2);
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_translation}; reached only through it. */
+    private void lookAt_rh_degenerate_translation_s1643b577_tail2(Double3x4Impl _dst, double _t51, double _t15, double _t49, double _t17, double _t50, double _t16, double _r0, double eyeZ, double eyeY, double eyeX, double _t58, double _r1, double _t20, double _t21, double _r2) {
+        double _t59 = _t51 * _t15 - _t49 * _t17;
+        double _t60 = _t50 * _t17 - _t51 * _t16;
+        lookAt_rh_degenerate_translation_s1643b577_c0(_dst, _t50, _t59, _t16);
+        lookAt_rh_degenerate_translation_s1643b577_c1(_dst, _t51, _t58, _t20);
+        lookAt_rh_degenerate_translation_s1643b577_c2(_dst, _t49, _t60, _t21);
+        lookAt_rh_degenerate_translation_s1643b577_c3(_dst, _r0, eyeZ, _t49, eyeY, _t51, eyeX, _t50, _r1, _t60, _t58, _t59, _t16, _t17, _t15, _r2);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate_translation(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m03;
+        double _r1 = this.m13;
+        double _r2 = this.m23;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = -1.0;
+            _t16 = 0.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upX;
+            _t10 = upZ;
+            _t11 = upY;
+            _t15 = _t2 * _t8;
+            _t16 = _t0 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t16);
+        double _t19 = Math.abs(_t15);
+        double _t20 = -_t17;
+        double _t21 = -_t15;
+        double _t28 = _t15 * _t9 - _t10 * _t16;
+        lookAt_rh_degenerate_translation_s1643b577_tail(d, _t10, _t17, _t15, _t11, _t16, _t9, _t18, _t19, _t20, _t21, _t28, _r0, eyeZ, eyeY, eyeX, _r1, _r2);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_rh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_orthogonal_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t55, double _r1, double _t69, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t55 + _r1 * _t69 - _r2 * _t16;
+        _dst.m10 = _r4 * _t55 + _r5 * _t69 - _r6 * _t16;
+        _dst.m20 = _r8 * _t55 + _r9 * _t69 - _r10 * _t16;
+    }
+
+    /** Private column 1 of {@code lookAt_rh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_orthogonal_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t58, double _r1, double _t67, double _r2, double _t17, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t58 + _r1 * _t67 - _r2 * _t17;
+        _dst.m11 = _r4 * _t58 + _r5 * _t67 - _r6 * _t17;
+        _dst.m21 = _r8 * _t58 + _r9 * _t67 - _r10 * _t17;
+    }
+
+    /** Private column 2 of {@code lookAt_rh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_orthogonal_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t54, double _r1, double _t70, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t54 + _r1 * _t70 - _r2 * _t15;
+        _dst.m12 = _r4 * _t54 + _r5 * _t70 - _r6 * _t15;
+        _dst.m22 = _r8 * _t54 + _r9 * _t70 - _r10 * _t15;
+    }
+
+    /** Private column 3 of {@code lookAt_rh_degenerate_orthogonal}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_orthogonal_s1643b577_c3(Double3x4Impl _dst, double _r2, double _t37, double _r3, double _r1, double _t75, double _r0, double _t73, double _r6, double _r7, double _r5, double _r4, double _r10, double _r11, double _r9, double _r8) {
+        _dst.m03 = _r2 * _t37 + _r3 - _r1 * _t75 - _r0 * _t73;
+        _dst.m13 = _r6 * _t37 + _r7 - _r5 * _t75 - _r4 * _t73;
+        _dst.m23 = _r10 * _t37 + _r11 - _r9 * _t75 - _r8 * _t73;
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_orthogonal}; reached only through it. */
+    private void lookAt_rh_degenerate_orthogonal_s1643b577_tail(Double3x4Impl _dst, double _t7, double upX, double upZ, double upY, double _t2, double _t8, double _t0, double _t1, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = -1.0;
+            _t16 = 0.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upX;
+            _t10 = upZ;
+            _t11 = upY;
+            _t15 = _t2 * _t8;
+            _t16 = _t0 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t16);
+        double _t19 = Math.abs(_t15);
+        double _t32 = _t15 * _t9 - _t10 * _t16;
+        double _t33 = _t10 * _t17 - _t15 * _t11;
+        double _t34 = _t16 * _t11 - _t9 * _t17;
+        double _t35, _t36;
+        if (_t18 > _t19) {
+            _t35 = 0.0;
+            _t36 = -_t17;
+        } else {
+            _t35 = _t17;
+            _t36 = 0.0;
+        }
+        lookAt_rh_degenerate_orthogonal_s1643b577_tail2(_dst, eyeX, _t16, eyeY, _t17, eyeZ, _t15, _t18, _t19, _t32, _t33, _t34, _t36, _t35, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_orthogonal}; reached only through it. */
+    private void lookAt_rh_degenerate_orthogonal_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t16, double eyeY, double _t17, double eyeZ, double _t15, double _t18, double _t19, double _t32, double _t33, double _t34, double _t36, double _t35, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t37 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
+        double _t38 = _t18 > _t19 ? _t16 : -_t15;
+        double _t47 = _t32 * _t32 + _t33 * _t33 + _t34 * _t34;
+        double _t53, _t54, _t55, _t58;
+        if (_t47 == 0.0) {
+            _t53 = (1.0 / Math.sqrt(_t36 * _t36 + _t38 * _t38 + _t35 * _t35));
+            _t54 = _t53 * _t35;
+            _t55 = _t53 * _t36;
+            _t58 = _t53 * _t38;
+        } else {
+            _t53 = (1.0 / Math.sqrt(_t47));
+            _t54 = _t53 * _t34;
+            _t55 = _t53 * _t33;
+            _t58 = _t53 * _t32;
+        }
+        double _t67 = _t54 * _t16 - _t55 * _t15;
+        double _t69 = _t58 * _t15 - _t54 * _t17;
+        lookAt_rh_degenerate_orthogonal_s1643b577_tail3(_dst, _t55, _t17, _t58, _t16, eyeX, eyeY, eyeZ, _t54, _t69, _t67, _r0, _r1, _r2, _t15, _t37, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_orthogonal}; reached only through it. */
+    private void lookAt_rh_degenerate_orthogonal_s1643b577_tail3(Double3x4Impl _dst, double _t55, double _t17, double _t58, double _t16, double eyeX, double eyeY, double eyeZ, double _t54, double _t69, double _t67, double _r0, double _r1, double _r2, double _t15, double _t37, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t70 = _t55 * _t17 - _t58 * _t16;
+        double _t73 = eyeX * _t55 + eyeY * _t58 + eyeZ * _t54;
+        double _t75 = eyeX * _t69 + eyeY * _t67 + eyeZ * _t70;
+        lookAt_rh_degenerate_orthogonal_s1643b577_c0(_dst, _r0, _t55, _r1, _t69, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_degenerate_orthogonal_s1643b577_c1(_dst, _r0, _t58, _r1, _t67, _r2, _t17, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_degenerate_orthogonal_s1643b577_c2(_dst, _r0, _t54, _r1, _t70, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_degenerate_orthogonal_s1643b577_c3(_dst, _r2, _t37, _r3, _r1, _t75, _r0, _t73, _r6, _r7, _r5, _r4, _r10, _r11, _r9, _r8);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate_orthogonal(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m03;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m12;
+        double _r7 = this.m13;
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        lookAt_rh_degenerate_orthogonal_s1643b577_tail(d, _t7, upX, upZ, upY, _t2, _t8, _t0, _t1, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_ORTHOGONAL;
+        return d;
+    }
+
+    /** Private column 0 of {@code lookAt_rh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_general_s1643b577_c0(Double3x4Impl _dst, double _r0, double _t55, double _r1, double _t69, double _r2, double _t16, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m00 = _r0 * _t55 + _r1 * _t69 - _r2 * _t16;
+        _dst.m10 = _r4 * _t55 + _r5 * _t69 - _r6 * _t16;
+        _dst.m20 = _r8 * _t55 + _r9 * _t69 - _r10 * _t16;
+    }
+
+    /** Private column 1 of {@code lookAt_rh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_general_s1643b577_c1(Double3x4Impl _dst, double _r0, double _t58, double _r1, double _t67, double _r2, double _t17, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m01 = _r0 * _t58 + _r1 * _t67 - _r2 * _t17;
+        _dst.m11 = _r4 * _t58 + _r5 * _t67 - _r6 * _t17;
+        _dst.m21 = _r8 * _t58 + _r9 * _t67 - _r10 * _t17;
+    }
+
+    /** Private column 2 of {@code lookAt_rh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_general_s1643b577_c2(Double3x4Impl _dst, double _r0, double _t54, double _r1, double _t70, double _r2, double _t15, double _r4, double _r5, double _r6, double _r8, double _r9, double _r10) {
+        _dst.m02 = _r0 * _t54 + _r1 * _t70 - _r2 * _t15;
+        _dst.m12 = _r4 * _t54 + _r5 * _t70 - _r6 * _t15;
+        _dst.m22 = _r8 * _t54 + _r9 * _t70 - _r10 * _t15;
+    }
+
+    /** Private column 3 of {@code lookAt_rh_degenerate_general}: computes and stores it; reached only through it. */
+    private void lookAt_rh_degenerate_general_s1643b577_c3(Double3x4Impl _dst, double _r2, double _t37, double _r3, double _r1, double _t75, double _r0, double _t73, double _r6, double _r7, double _r5, double _r4, double _r10, double _r11, double _r9, double _r8) {
+        _dst.m03 = _r2 * _t37 + _r3 - _r1 * _t75 - _r0 * _t73;
+        _dst.m13 = _r6 * _t37 + _r7 - _r5 * _t75 - _r4 * _t73;
+        _dst.m23 = _r10 * _t37 + _r11 - _r9 * _t75 - _r8 * _t73;
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_general}; reached only through it. */
+    private void lookAt_rh_degenerate_general_s1643b577_tail(Double3x4Impl _dst, double _t7, double upX, double upZ, double upY, double _t2, double _t8, double _t0, double _t1, double eyeX, double eyeY, double eyeZ, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = -1.0;
+            _t16 = 0.0;
+            _t17 = 0.0;
+        } else {
+            _t9 = upX;
+            _t10 = upZ;
+            _t11 = upY;
+            _t15 = _t2 * _t8;
+            _t16 = _t0 * _t8;
+            _t17 = _t1 * _t8;
+        }
+        double _t18 = Math.abs(_t16);
+        double _t19 = Math.abs(_t15);
+        double _t32 = _t15 * _t9 - _t10 * _t16;
+        double _t33 = _t10 * _t17 - _t15 * _t11;
+        double _t34 = _t16 * _t11 - _t9 * _t17;
+        double _t35, _t36;
+        if (_t18 > _t19) {
+            _t35 = 0.0;
+            _t36 = -_t17;
+        } else {
+            _t35 = _t17;
+            _t36 = 0.0;
+        }
+        lookAt_rh_degenerate_general_s1643b577_tail2(_dst, eyeX, _t16, eyeY, _t17, eyeZ, _t15, _t18, _t19, _t32, _t33, _t34, _t36, _t35, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_general}; reached only through it. */
+    private void lookAt_rh_degenerate_general_s1643b577_tail2(Double3x4Impl _dst, double eyeX, double _t16, double eyeY, double _t17, double eyeZ, double _t15, double _t18, double _t19, double _t32, double _t33, double _t34, double _t36, double _t35, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t37 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
+        double _t38 = _t18 > _t19 ? _t16 : -_t15;
+        double _t47 = _t32 * _t32 + _t33 * _t33 + _t34 * _t34;
+        double _t53, _t54, _t55, _t58;
+        if (_t47 == 0.0) {
+            _t53 = (1.0 / Math.sqrt(_t36 * _t36 + _t38 * _t38 + _t35 * _t35));
+            _t54 = _t53 * _t35;
+            _t55 = _t53 * _t36;
+            _t58 = _t53 * _t38;
+        } else {
+            _t53 = (1.0 / Math.sqrt(_t47));
+            _t54 = _t53 * _t34;
+            _t55 = _t53 * _t33;
+            _t58 = _t53 * _t32;
+        }
+        double _t67 = _t54 * _t16 - _t55 * _t15;
+        double _t69 = _t58 * _t15 - _t54 * _t17;
+        lookAt_rh_degenerate_general_s1643b577_tail3(_dst, _t55, _t17, _t58, _t16, eyeX, eyeY, eyeZ, _t54, _t69, _t67, _r0, _r1, _r2, _t15, _t37, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+    }
+
+    /** Private tail of {@code lookAt_rh_degenerate_general}; reached only through it. */
+    private void lookAt_rh_degenerate_general_s1643b577_tail3(Double3x4Impl _dst, double _t55, double _t17, double _t58, double _t16, double eyeX, double eyeY, double eyeZ, double _t54, double _t69, double _t67, double _r0, double _r1, double _r2, double _t15, double _t37, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t70 = _t55 * _t17 - _t58 * _t16;
+        double _t73 = eyeX * _t55 + eyeY * _t58 + eyeZ * _t54;
+        double _t75 = eyeX * _t69 + eyeY * _t67 + eyeZ * _t70;
+        lookAt_rh_degenerate_general_s1643b577_c0(_dst, _r0, _t55, _r1, _t69, _r2, _t16, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_degenerate_general_s1643b577_c1(_dst, _r0, _t58, _r1, _t67, _r2, _t17, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_degenerate_general_s1643b577_c2(_dst, _r0, _t54, _r1, _t70, _r2, _t15, _r4, _r5, _r6, _r8, _r9, _r10);
+        lookAt_rh_degenerate_general_s1643b577_c3(_dst, _r2, _t37, _r3, _r1, _t75, _r0, _t73, _r6, _r7, _r5, _r4, _r10, _r11, _r9, _r8);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate_general(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m00;
+        double _r1 = this.m01;
+        double _r2 = this.m02;
+        double _r3 = this.m03;
+        double _r4 = this.m10;
+        double _r5 = this.m11;
+        double _r6 = this.m12;
+        double _r7 = this.m13;
+        double _r8 = this.m20;
+        double _r9 = this.m21;
+        double _r10 = this.m22;
+        double _r11 = this.m23;
+        double _t0 = centerX - eyeX;
+        double _t1 = centerY - eyeY;
+        double _t2 = centerZ - eyeZ;
+        double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
+        double _t8 = (1.0 / Math.sqrt(_t7));
+        lookAt_rh_degenerate_general_s1643b577_tail(d, _t7, upX, upZ, upY, _t2, _t8, _t0, _t1, eyeX, eyeY, eyeZ, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ, @Mutated Double3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_rh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_rh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_rh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        return lookAt_rh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double3x4 lookAt_rh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        if (Joml.RETURN_NEW) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Joml.double3x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_rh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_rh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_rh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        return lookAt_rh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+    }
+
+
+    /**
      * Apply a "look at" view transformation with the eye at {@code eye} looking at {@code center}
      * to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -9452,6 +11302,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -9475,6 +11330,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -9504,6 +11364,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -9533,6 +11398,11 @@ public class Double3x4Impl implements Double3x4 {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -9552,6 +11422,11 @@ public class Double3x4Impl implements Double3x4 {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -9570,6 +11445,11 @@ public class Double3x4Impl implements Double3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -9596,6 +11476,11 @@ public class Double3x4Impl implements Double3x4 {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -9615,6 +11500,11 @@ public class Double3x4Impl implements Double3x4 {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPos the position of the object to orient
      * @param targetPos the position to face (e.g. the camera position)
@@ -9629,6 +11519,11 @@ public class Double3x4Impl implements Double3x4 {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPosX the {@code x} component of the vector {@code (objPosX, objPosY, objPosZ)}
      * @param objPosY the {@code y} component of the vector {@code (objPosX, objPosY, objPosZ)}
@@ -9654,34 +11549,95 @@ public class Double3x4Impl implements Double3x4 {
         double _t9 = upY * _t0 - upZ * _t1;
         double _t10 = upZ * _t2 - upX * _t0;
         double _t11 = upX * _t1 - upY * _t2;
-        double _t16 = _t9 * _t9 + _t10 * _t10 + _t11 * _t11;
-        double _t17 = (1.0 / Math.sqrt(_t16));
-        double _t21, _t22, _t23;
-        if (_t16 > 0.0) {
-            _t21 = _t9 * _t17;
-            _t22 = _t11 * _t17;
-            _t23 = _t10 * _t17;
-        } else {
-            _t21 = 0.0;
-            _t22 = 0.0;
-            _t23 = 0.0;
-        }
-        double _t30 = upX * _t22 - upZ * _t21;
-        double _t31 = upZ * _t23 - upY * _t22;
-        double _t32 = upY * _t21 - upX * _t23;
-        double _t37 = _t30 * _t30 + _t31 * _t31 + _t32 * _t32;
-        double _t38 = (1.0 / Math.sqrt(_t37));
-        this.m00 = _t21;
+        double _ct0 = _t9 * _t9 + _t10 * _t10 + _t11 * _t11;
+        if (!(_ct0 > 0.0)) return makeBillboardCylindrical_degenerate(objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        double _t18 = (1.0 / Math.sqrt(_ct0));
+        double _t19 = _t9 * _t18;
+        double _t20 = _t10 * _t18;
+        double _t21 = _t11 * _t18;
+        double _t28 = upZ * _t20 - upY * _t21;
+        double _t29 = upX * _t21 - upZ * _t19;
+        double _t30 = upY * _t19 - upX * _t20;
+        double _t36 = (1.0 / Math.sqrt(_t29 * _t29 + _t28 * _t28 + _t30 * _t30));
+        this.m00 = _t19;
         this.m01 = upX;
-        this.m02 = _t37 > 0.0 ? _t31 * _t38 : 0.0;
+        this.m02 = _t28 * _t36;
         this.m03 = objPosX;
-        this.m10 = _t23;
+        this.m10 = _t20;
         this.m11 = upY;
-        this.m12 = _t37 > 0.0 ? _t30 * _t38 : 0.0;
+        this.m12 = _t29 * _t36;
         this.m13 = objPosY;
-        this.m20 = _t22;
+        this.m20 = _t21;
         this.m21 = upZ;
-        this.m22 = _t37 > 0.0 ? _t32 * _t38 : 0.0;
+        this.m22 = _t30 * _t36;
+        this.m23 = objPosZ;
+        this.properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardCylindrical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Double3x4 makeBillboardCylindrical_degenerate(Double3R objPos, Double3R targetPos, Double3R up) {
+        return makeBillboardCylindrical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardCylindrical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Double3x4 makeBillboardCylindrical_degenerate(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
+        double _t0 = Math.abs(upX);
+        double _t1 = Math.abs(upZ);
+        double _t4 = targetPosZ - objPosZ;
+        double _t5 = targetPosY - objPosY;
+        double _t6 = targetPosX - objPosX;
+        double _t13, _t14, _t15;
+        if (_t0 > _t1) {
+            _t13 = 0.0;
+            _t14 = -upY;
+            _t15 = upX;
+        } else {
+            _t13 = upY;
+            _t14 = 0.0;
+            _t15 = -upZ;
+        }
+        double _t16 = upY * _t4 - upZ * _t5;
+        double _t17 = upZ * _t6 - upX * _t4;
+        double _t18 = upX * _t5 - upY * _t6;
+        double _t28 = _t16 * _t16 + _t17 * _t17 + _t18 * _t18;
+        double _t33, _t34, _t35, _t36;
+        if (_t28 == 0.0) {
+            _t33 = (1.0 / Math.sqrt(_t15 * _t15 + _t14 * _t14 + _t13 * _t13));
+            _t34 = _t33 * _t13;
+            _t35 = _t33 * _t14;
+            _t36 = _t33 * _t15;
+        } else {
+            _t33 = (1.0 / Math.sqrt(_t28));
+            _t34 = _t33 * _t18;
+            _t35 = _t33 * _t16;
+            _t36 = _t33 * _t17;
+        }
+        double _t43 = upX * _t34 - upZ * _t35;
+        double _t44 = upZ * _t36 - upY * _t34;
+        double _t45 = upY * _t35 - upX * _t36;
+        double _t51 = (1.0 / Math.sqrt(_t43 * _t43 + _t44 * _t44 + _t45 * _t45));
+        this.m00 = _t35;
+        this.m01 = upX;
+        this.m02 = _t44 * _t51;
+        this.m03 = objPosX;
+        this.m10 = _t36;
+        this.m11 = upY;
+        this.m12 = _t43 * _t51;
+        this.m13 = objPosY;
+        this.m20 = _t34;
+        this.m21 = upZ;
+        this.m22 = _t45 * _t51;
         this.m23 = objPosZ;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -9690,6 +11646,11 @@ public class Double3x4Impl implements Double3x4 {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPos the position of the object to orient
      * @param targetPos the position to face (e.g. the camera position)
@@ -9703,6 +11664,11 @@ public class Double3x4Impl implements Double3x4 {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPosX the {@code x} component of the vector {@code (objPosX, objPosY, objPosZ)}
      * @param objPosY the {@code y} component of the vector {@code (objPosX, objPosY, objPosZ)}
@@ -9719,47 +11685,115 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeBillboardSpherical(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
+        double _t0 = targetPosZ - objPosZ;
+        double _t1 = targetPosX - objPosX;
+        double _t2 = targetPosY - objPosY;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t2 * _t2 + _t0 * _t0));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t18 = upY * _t9 - upZ * _t10;
+        double _t19 = upZ * _t11 - upX * _t9;
+        double _t20 = upX * _t10 - upY * _t11;
+        double _ct0 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
+        if (!(_ct0 > 0.0)) return makeBillboardSpherical_degenerate(objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t28 = _t18 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t19 * _t27;
+        this.m00 = _t28;
+        this.m01 = _t10 * _t29 - _t9 * _t30;
+        this.m02 = _t11;
+        this.m03 = objPosX;
+        this.m10 = _t30;
+        this.m11 = _t9 * _t28 - _t11 * _t29;
+        this.m12 = _t10;
+        this.m13 = objPosY;
+        this.m20 = _t29;
+        this.m21 = _t11 * _t30 - _t10 * _t28;
+        this.m22 = _t9;
+        this.m23 = objPosZ;
+        this.properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardSpherical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Double3x4 makeBillboardSpherical_degenerate(Double3R objPos, Double3R targetPos, Double3R up) {
+        return makeBillboardSpherical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardSpherical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Double3x4 makeBillboardSpherical_degenerate(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ, double upX, double upY, double upZ) {
         double _t0 = targetPosX - objPosX;
         double _t1 = targetPosY - objPosY;
         double _t2 = targetPosZ - objPosZ;
         double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
         double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t1 * _t8;
-            _t14 = _t0 * _t8;
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = 0.0;
+            _t16 = 1.0;
+            _t17 = 0.0;
         } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t15 = _t0 * _t8;
+            _t16 = _t2 * _t8;
+            _t17 = _t1 * _t8;
         }
-        double _t21 = upY * _t12 - upZ * _t13;
-        double _t22 = upZ * _t14 - upX * _t12;
-        double _t23 = upX * _t13 - upY * _t14;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t21 * _t29;
-            _t34 = _t23 * _t29;
-            _t35 = _t22 * _t29;
+        double _t18 = Math.abs(_t15);
+        double _t19 = Math.abs(_t16);
+        double _t28 = _t9 * _t15 - _t10 * _t16;
+        double _t29 = _t11 * _t16 - _t9 * _t17;
+        double _t30 = _t10 * _t17 - _t15 * _t11;
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = -_t17;
+            _t33 = _t15;
         } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = -_t16;
         }
-        this.m00 = _t33;
-        this.m01 = _t13 * _t34 - _t12 * _t35;
-        this.m02 = _t14;
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        this.m00 = _t50;
+        this.m01 = _t49 * _t17 - _t51 * _t16;
+        this.m02 = _t15;
         this.m03 = objPosX;
-        this.m10 = _t35;
-        this.m11 = _t12 * _t33 - _t14 * _t34;
-        this.m12 = _t13;
+        this.m10 = _t51;
+        this.m11 = _t50 * _t16 - _t49 * _t15;
+        this.m12 = _t17;
         this.m13 = objPosY;
-        this.m20 = _t34;
-        this.m21 = _t14 * _t35 - _t13 * _t33;
-        this.m22 = _t12;
+        this.m20 = _t49;
+        this.m21 = _t51 * _t15 - _t50 * _t17;
+        this.m22 = _t16;
         this.m23 = objPosZ;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -9796,33 +11830,36 @@ public class Double3x4Impl implements Double3x4 {
      */
     @Mutated public Double3x4 makeBillboardSphericalShortest(double objPosX, double objPosY, double objPosZ, double targetPosX, double targetPosY, double targetPosZ) {
         double _t0 = targetPosX - objPosX;
-        double _t1 = objPosY - targetPosY;
+        double _t1 = targetPosY - objPosY;
         double _t2 = targetPosZ - objPosZ;
-        double _t3 = targetPosY - objPosY;
-        double _t5 = _t0 * _t0;
-        double _t12 = _t2 + Math.sqrt(_t5 + _t3 * _t3 + _t2 * _t2);
-        double _t15 = (1.0 / Math.sqrt(_t1 * _t1 + _t5 + _t12 * _t12));
-        double _t16 = _t0 * _t15;
-        double _t17 = _t1 * _t15;
-        double _t18 = _t16 + _t16;
-        double _t19 = _t17 + _t17;
-        double _t20 = _t12 * _t15;
-        double _t21 = _t18 * _t16;
-        double _t22 = _t19 * _t16;
-        double _t24 = 1.0 - _t19 * _t17;
-        double _t25 = _t18 * _t20;
-        double _t26 = _t19 * _t20;
-        this.m00 = 1.0 - _t21;
-        this.m01 = _t22;
-        this.m02 = _t25;
+        double _t3 = _t1 + _t1;
+        double _t5 = _t1 * _t1;
+        double _t8 = _t0 * _t0 + _t5;
+        double _t10 = Math.max(_t8 + _t2 * _t2, 8.900295434028806E-308);
+        double _t11 = Math.sqrt(_t10);
+        double _t13 = _t2 + _t11;
+        double _t15 = _t8 + _t13 * _t13;
+        double _t17 = _t15 / _t11;
+        double _t18 = _t15 > 2.2250738585072014E-308 ? _t0 : _t11;
+        double _t29_inv = 1.0 / (_t5 + _t18 * _t18 + 0.25 * _t17 * _t17);
+        double _sp1 = _t1 * _t29_inv;
+        double _sp0 = _t18 * _t29_inv;
+        double _t30 = _sp1 * _t3;
+        double _t31 = _sp1 * _t17;
+        double _t33 = -(_t3 * _sp0);
+        double _t34 = _sp0 * _t17;
+        double _t36 = 1.0 - (_sp0 + _sp0) * _t18;
+        this.m00 = _t36;
+        this.m01 = _t33;
+        this.m02 = _t34;
         this.m03 = objPosX;
-        this.m10 = _t22;
-        this.m11 = _t24;
-        this.m12 = -_t26;
+        this.m10 = _t33;
+        this.m11 = 1.0 - _t30;
+        this.m12 = _t31;
         this.m13 = objPosY;
-        this.m20 = -_t25;
-        this.m21 = _t26;
-        this.m22 = _t24 - _t21;
+        this.m20 = -_t34;
+        this.m21 = -_t31;
+        this.m22 = _t36 - _t30;
         this.m23 = objPosZ;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -9909,51 +11946,122 @@ public class Double3x4Impl implements Double3x4 {
      * the public {@code makeLookAt} dispatcher.
      */
     @Mutated private Double3x4 makeLookAt_lh(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        double _t0 = centerZ - eyeZ;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerY - eyeY;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t2 * _t2 + _t0 * _t0));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t18 = upY * _t9 - upZ * _t10;
+        double _t19 = upZ * _t11 - upX * _t9;
+        double _t20 = upX * _t10 - upY * _t11;
+        double _ct0 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
+        if (!(_ct0 > 0.0)) return makeLookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t28 = _t18 * _t27;
+        double _t29 = _t19 * _t27;
+        double _t30 = _t20 * _t27;
+        double _t37 = _t10 * _t30 - _t9 * _t29;
+        double _t38 = _t9 * _t28 - _t11 * _t30;
+        double _t39 = _t11 * _t29 - _t10 * _t28;
+        this.m00 = _t28;
+        this.m01 = _t29;
+        this.m02 = _t30;
+        this.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        this.m10 = _t37;
+        this.m11 = _t38;
+        this.m12 = _t39;
+        this.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        this.m20 = _t11;
+        this.m21 = _t10;
+        this.m22 = _t9;
+        this.m23 = -(eyeX * _t11 + eyeY * _t10 + eyeZ * _t9);
+        this.properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Double3x4 makeLookAt_lh_degenerate(Double3R eye, Double3R center, Double3R up) {
+        return makeLookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double3x4 makeLookAt_lh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
         double _t0 = centerX - eyeX;
         double _t1 = centerY - eyeY;
         double _t2 = centerZ - eyeZ;
         double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
         double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t1 * _t8;
-            _t14 = _t0 * _t8;
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = 0.0;
+            _t16 = 1.0;
+            _t17 = 0.0;
         } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t15 = _t0 * _t8;
+            _t16 = _t2 * _t8;
+            _t17 = _t1 * _t8;
         }
-        double _t21 = upY * _t12 - upZ * _t13;
-        double _t22 = upZ * _t14 - upX * _t12;
-        double _t23 = upX * _t13 - upY * _t14;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t21 * _t29;
-            _t34 = _t22 * _t29;
-            _t35 = _t23 * _t29;
+        double _t18 = Math.abs(_t15);
+        double _t19 = Math.abs(_t16);
+        double _t28 = _t9 * _t15 - _t10 * _t16;
+        double _t29 = _t11 * _t16 - _t9 * _t17;
+        double _t30 = _t10 * _t17 - _t15 * _t11;
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = -_t17;
+            _t33 = _t15;
         } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = -_t16;
         }
-        double _t42 = _t13 * _t35 - _t12 * _t34;
-        double _t43 = _t12 * _t33 - _t14 * _t35;
-        double _t44 = _t14 * _t34 - _t13 * _t33;
-        this.m00 = _t33;
-        this.m01 = _t34;
-        this.m02 = _t35;
-        this.m03 = -(eyeX * _t33 + eyeY * _t34 + eyeZ * _t35);
-        this.m10 = _t42;
-        this.m11 = _t43;
-        this.m12 = _t44;
-        this.m13 = -(eyeX * _t42 + eyeY * _t43 + eyeZ * _t44);
-        this.m20 = _t14;
-        this.m21 = _t13;
-        this.m22 = _t12;
-        this.m23 = -(eyeX * _t14 + eyeY * _t13 + eyeZ * _t12);
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t50 * _t16 - _t49 * _t15;
+        double _t59 = _t49 * _t17 - _t51 * _t16;
+        double _t60 = _t51 * _t15 - _t50 * _t17;
+        this.m00 = _t50;
+        this.m01 = _t51;
+        this.m02 = _t49;
+        this.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        this.m10 = _t59;
+        this.m11 = _t58;
+        this.m12 = _t60;
+        this.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        this.m20 = _t15;
+        this.m21 = _t17;
+        this.m22 = _t16;
+        this.m23 = -(eyeX * _t15 + eyeY * _t17 + eyeZ * _t16);
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
@@ -9973,51 +12081,124 @@ public class Double3x4Impl implements Double3x4 {
      * the public {@code makeLookAt} dispatcher.
      */
     @Mutated private Double3x4 makeLookAt_rh(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
+        double _t0 = centerY - eyeY;
+        double _t1 = centerX - eyeX;
+        double _t2 = centerZ - eyeZ;
+        double _t8 = (1.0 / Math.sqrt(_t1 * _t1 + _t0 * _t0 + _t2 * _t2));
+        double _t9 = _t0 * _t8;
+        double _t10 = _t2 * _t8;
+        double _t11 = _t1 * _t8;
+        double _t18 = upZ * _t9 - upY * _t10;
+        double _t19 = upX * _t10 - upZ * _t11;
+        double _t20 = upY * _t11 - upX * _t9;
+        double _ct0 = _t19 * _t19 + _t18 * _t18 + _t20 * _t20;
+        if (!(_ct0 > 0.0)) return makeLookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t28 = _t18 * _t27;
+        double _t29 = _t19 * _t27;
+        double _t30 = _t20 * _t27;
+        double _t37 = _t10 * _t29 - _t9 * _t30;
+        double _t38 = _t11 * _t30 - _t10 * _t28;
+        double _t39 = _t9 * _t28 - _t11 * _t29;
+        this.m00 = _t28;
+        this.m01 = _t29;
+        this.m02 = _t30;
+        this.m03 = -(eyeX * _t28 + eyeY * _t29 + eyeZ * _t30);
+        this.m10 = _t37;
+        this.m11 = _t38;
+        this.m12 = _t39;
+        this.m13 = -(eyeX * _t37 + eyeY * _t38 + eyeZ * _t39);
+        this.m20 = -_t11;
+        this.m21 = -_t9;
+        this.m22 = -_t10;
+        this.m23 = eyeX * _t11 + eyeY * _t9 + eyeZ * _t10;
+        this.properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Double3x4 makeLookAt_rh_degenerate(Double3R eye, Double3R center, Double3R up) {
+        return makeLookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double3x4 makeLookAt_rh_degenerate(double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ) {
         double _t0 = centerX - eyeX;
         double _t1 = centerY - eyeY;
         double _t2 = centerZ - eyeZ;
         double _t7 = _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
         double _t8 = (1.0 / Math.sqrt(_t7));
-        double _t12, _t13, _t14;
-        if (_t7 > 0.0) {
-            _t12 = _t2 * _t8;
-            _t13 = _t0 * _t8;
-            _t14 = _t1 * _t8;
+        double _t9, _t10, _t11, _t15, _t16, _t17;
+        if (_t7 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t15 = -1.0;
+            _t16 = 0.0;
+            _t17 = 0.0;
         } else {
-            _t12 = 0.0;
-            _t13 = 0.0;
-            _t14 = 0.0;
+            _t9 = upX;
+            _t10 = upZ;
+            _t11 = upY;
+            _t15 = _t2 * _t8;
+            _t16 = _t0 * _t8;
+            _t17 = _t1 * _t8;
         }
-        double _t21 = upX * _t12 - upZ * _t13;
-        double _t22 = upZ * _t14 - upY * _t12;
-        double _t23 = upY * _t13 - upX * _t14;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t22 * _t29;
-            _t34 = _t21 * _t29;
-            _t35 = _t23 * _t29;
+        double _t18 = Math.abs(_t16);
+        double _t19 = Math.abs(_t15);
+        double _t20 = -_t17;
+        double _t21 = -_t15;
+        double _t28 = _t15 * _t9 - _t10 * _t16;
+        double _t29 = _t10 * _t17 - _t15 * _t11;
+        double _t30 = _t16 * _t11 - _t9 * _t17;
+        double _t31, _t32, _t33;
+        if (_t18 > _t19) {
+            _t31 = 0.0;
+            _t32 = _t20;
+            _t33 = _t16;
         } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
+            _t31 = _t17;
+            _t32 = 0.0;
+            _t33 = _t21;
         }
-        double _t42 = _t12 * _t34 - _t14 * _t35;
-        double _t43 = _t13 * _t35 - _t12 * _t33;
-        double _t44 = _t14 * _t33 - _t13 * _t34;
-        this.m00 = _t33;
-        this.m01 = _t34;
-        this.m02 = _t35;
-        this.m03 = -(eyeX * _t33 + eyeY * _t34 + eyeZ * _t35);
-        this.m10 = _t42;
-        this.m11 = _t43;
-        this.m12 = _t44;
-        this.m13 = -(eyeX * _t42 + eyeY * _t43 + eyeZ * _t44);
-        this.m20 = -_t13;
-        this.m21 = -_t14;
-        this.m22 = -_t12;
-        this.m23 = eyeX * _t13 + eyeY * _t14 + eyeZ * _t12;
+        double _t42 = _t28 * _t28 + _t29 * _t29 + _t30 * _t30;
+        double _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0) {
+            _t48 = (1.0 / Math.sqrt(_t32 * _t32 + _t33 * _t33 + _t31 * _t31));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t32;
+            _t51 = _t48 * _t33;
+        } else {
+            _t48 = (1.0 / Math.sqrt(_t42));
+            _t49 = _t48 * _t30;
+            _t50 = _t48 * _t29;
+            _t51 = _t48 * _t28;
+        }
+        double _t58 = _t49 * _t16 - _t50 * _t15;
+        double _t59 = _t51 * _t15 - _t49 * _t17;
+        double _t60 = _t50 * _t17 - _t51 * _t16;
+        this.m00 = _t50;
+        this.m01 = _t51;
+        this.m02 = _t49;
+        this.m03 = -(eyeX * _t50 + eyeY * _t51 + eyeZ * _t49);
+        this.m10 = _t59;
+        this.m11 = _t58;
+        this.m12 = _t60;
+        this.m13 = -(eyeX * _t59 + eyeY * _t58 + eyeZ * _t60);
+        this.m20 = -_t16;
+        this.m21 = _t20;
+        this.m22 = _t21;
+        this.m23 = eyeX * _t16 + eyeY * _t17 + eyeZ * _t15;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
@@ -10026,6 +12207,11 @@ public class Double3x4Impl implements Double3x4 {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -10044,6 +12230,11 @@ public class Double3x4Impl implements Double3x4 {
     /**
      * Set this matrix to a "look at" view transformation with the eye at ({@code eyeX},
      * {@code eyeY}, {@code eyeZ}) looking at ({@code centerX}, {@code centerY}, {@code centerZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -10069,6 +12260,11 @@ public class Double3x4Impl implements Double3x4 {
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -10082,6 +12278,11 @@ public class Double3x4Impl implements Double3x4 {
     /**
      * Set this matrix to a "look at" view transformation with the eye at ({@code eyeX},
      * {@code eyeY}, {@code eyeZ}) looking at ({@code centerX}, {@code centerY}, {@code centerZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -11276,15 +13477,17 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeReflection(double normalX, double normalY, double normalZ) {
-        double _t6 = -((normalX + normalX) * normalY);
-        double _t7 = -((normalX + normalX) * normalZ);
-        double _t8 = -((normalY + normalY) * normalZ);
-        this.m00 = 1.0 - (normalX + normalX) * normalX;
+        double _sp1 = normalY + normalY;
+        double _sp0 = normalX + normalX;
+        double _t6 = -(_sp0 * normalY);
+        double _t7 = -(_sp0 * normalZ);
+        double _t8 = -(_sp1 * normalZ);
+        this.m00 = 1.0 - _sp0 * normalX;
         this.m01 = _t6;
         this.m02 = _t7;
         this.m03 = 0.0;
         this.m10 = _t6;
-        this.m11 = 1.0 - (normalY + normalY) * normalY;
+        this.m11 = 1.0 - _sp1 * normalY;
         this.m12 = _t8;
         this.m13 = 0.0;
         this.m20 = _t7;
@@ -11331,15 +13534,17 @@ public class Double3x4Impl implements Double3x4 {
         double _t4 = axisY * _t0;
         double _t7 = axisX * _t0;
         double _t8 = 1.0 - _t1;
-        double _t9 = _t8 * axisX * axisY;
-        double _t10 = _t8 * axisX * axisZ;
-        double _t11 = _t8 * axisY * axisZ;
-        this.m00 = _t8 * axisX * axisX + _t1;
+        double _sp1 = axisY * _t8;
+        double _sp0 = axisX * _t8;
+        double _t9 = _sp0 * axisY;
+        double _t10 = _sp0 * axisZ;
+        double _t11 = _sp1 * axisZ;
+        this.m00 = _sp0 * axisX + _t1;
         this.m01 = _t9 - _t3;
         this.m02 = _t4 + _t10;
         this.m03 = 0.0;
         this.m10 = _t3 + _t9;
-        this.m11 = _t8 * axisY * axisY + _t1;
+        this.m11 = _sp1 * axisY + _t1;
         this.m12 = _t11 - _t7;
         this.m13 = 0.0;
         this.m20 = _t10 - _t4;
@@ -11353,6 +13558,11 @@ public class Double3x4Impl implements Double3x4 {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -11367,6 +13577,11 @@ public class Double3x4Impl implements Double3x4 {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -11377,44 +13592,109 @@ public class Double3x4Impl implements Double3x4 {
      * @return this
      */
     @Mutated public Double3x4 makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t15 = upY * _t6 - upZ * _t7;
+        double _t16 = upZ * _t8 - upX * _t6;
+        double _t17 = upX * _t7 - upY * _t8;
+        double _ct0 = _t15 * _t15 + _t16 * _t16 + _t17 * _t17;
+        if (!(_ct0 > 0.0)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        double _t24 = (1.0 / Math.sqrt(_ct0));
+        double _t25 = _t15 * _t24;
+        double _t26 = _t17 * _t24;
+        double _t27 = _t16 * _t24;
+        this.m00 = _t25;
+        this.m01 = _t7 * _t26 - _t6 * _t27;
+        this.m02 = _t8;
+        this.m03 = 0.0;
+        this.m10 = _t27;
+        this.m11 = _t6 * _t25 - _t8 * _t26;
+        this.m12 = _t7;
+        this.m13 = 0.0;
+        this.m20 = _t26;
+        this.m21 = _t8 * _t27 - _t7 * _t25;
+        this.m22 = _t6;
+        this.m23 = 0.0;
+        this.properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Double3x4 makeRotationLookAlong_degenerate(Double3R dir, Double3R up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Double3x4 makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
-        } else {
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
             _t9 = 0.0;
             _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t18 = upY * _t9 - upZ * _t10;
-        double _t19 = upZ * _t11 - upX * _t9;
-        double _t20 = upX * _t10 - upY * _t11;
-        double _t25 = _t18 * _t18 + _t19 * _t19 + _t20 * _t20;
-        double _t26 = (1.0 / Math.sqrt(_t25));
-        double _t30, _t31, _t32;
-        if (_t25 > 0.0) {
-            _t30 = _t18 * _t26;
-            _t31 = _t20 * _t26;
-            _t32 = _t19 * _t26;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
         } else {
-            _t30 = 0.0;
-            _t31 = 0.0;
-            _t32 = 0.0;
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
         }
-        this.m00 = _t30;
-        this.m01 = _t10 * _t31 - _t9 * _t32;
-        this.m02 = _t11;
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t25, _t26, _t30;
+        if (_t15 > _t16) {
+            _t25 = 0.0;
+            _t26 = -_t14;
+            _t30 = _t12;
+        } else {
+            _t25 = _t14;
+            _t26 = 0.0;
+            _t30 = -_t13;
+        }
+        double _t27 = _t9 * _t12 - _t10 * _t13;
+        double _t28 = _t11 * _t13 - _t9 * _t14;
+        double _t29 = _t10 * _t14 - _t12 * _t11;
+        double _t39 = _t27 * _t27 + _t28 * _t28 + _t29 * _t29;
+        double _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0) {
+            _t45 = (1.0 / Math.sqrt(_t26 * _t26 + _t30 * _t30 + _t25 * _t25));
+            _t46 = _t45 * _t25;
+            _t47 = _t45 * _t26;
+            _t48 = _t45 * _t30;
+        } else {
+            _t45 = (1.0 / Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t28;
+            _t48 = _t45 * _t27;
+        }
+        this.m00 = _t47;
+        this.m01 = _t46 * _t14 - _t48 * _t13;
+        this.m02 = _t12;
         this.m03 = 0.0;
-        this.m10 = _t32;
-        this.m11 = _t9 * _t30 - _t11 * _t31;
-        this.m12 = _t10;
+        this.m10 = _t48;
+        this.m11 = _t47 * _t13 - _t46 * _t12;
+        this.m12 = _t14;
         this.m13 = 0.0;
-        this.m20 = _t31;
-        this.m21 = _t11 * _t32 - _t10 * _t30;
-        this.m22 = _t9;
+        this.m20 = _t46;
+        this.m21 = _t48 * _t12 - _t47 * _t14;
+        this.m22 = _t13;
         this.m23 = 0.0;
         this.properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -18855,6 +21135,15 @@ public class Double3x4Impl implements Double3x4 {
         _dst.m23 = _r0 * _t18 + _r1 * _t19 + _r2 * _t22 + (pivotZ * (_t9 + _t4) - pivotX * _t18 - pivotY * _t19);
     }
 
+    /** Private tail of {@code preRotateAround_translation}; reached only through it. */
+    private void preRotateAround_translation_s7a39568a_tail(Double3x4Impl _dst, double _t4, double _t9, double _t20, double _t14, double _t15, double _r0, double _r1, double _r2, double pivotX, double _t3, double pivotY, double pivotZ, double _t16, double _t21, double _t17, double _t18, double _t19) {
+        double _t22 = 1.0 - _t4 - _t9;
+        preRotateAround_translation_s7a39568a_c0(_dst, _t20, _t16, _t18);
+        preRotateAround_translation_s7a39568a_c1(_dst, _t14, _t21, _t19);
+        preRotateAround_translation_s7a39568a_c2(_dst, _t15, _t17, _t22);
+        preRotateAround_translation_s7a39568a_c3(_dst, _r0, _t20, _r1, _t14, _r2, _t15, pivotX, _t4, _t3, pivotY, pivotZ, _t16, _t21, _t17, _t9, _t18, _t19, _t22);
+    }
+
 
     /**
      * Private body of {@code preRotateAround}, specialized by runtime matrix properties; reached
@@ -18886,11 +21175,7 @@ public class Double3x4Impl implements Double3x4 {
         double _t19 = _t10 + _t11;
         double _t20 = _t12 - _t4;
         double _t21 = _t12 - _t9;
-        double _t22 = 1.0 - _t4 - _t9;
-        preRotateAround_translation_s7a39568a_c0(d, _t20, _t16, _t18);
-        preRotateAround_translation_s7a39568a_c1(d, _t14, _t21, _t19);
-        preRotateAround_translation_s7a39568a_c2(d, _t15, _t17, _t22);
-        preRotateAround_translation_s7a39568a_c3(d, _r0, _t20, _r1, _t14, _r2, _t15, pivotX, _t4, _t3, pivotY, pivotZ, _t16, _t21, _t17, _t9, _t18, _t19, _t22);
+        preRotateAround_translation_s7a39568a_tail(d, _t4, _t9, _t20, _t14, _t15, _r0, _r1, _r2, pivotX, _t3, pivotY, pivotZ, _t16, _t21, _t17, _t18, _t19);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -19178,15 +21463,17 @@ public class Double3x4Impl implements Double3x4 {
         double _t4 = axisY * _t0;
         double _t7 = axisX * _t0;
         double _t8 = 1.0 - _t1;
-        double _t9 = _t8 * axisX * axisY;
-        double _t10 = _t8 * axisX * axisZ;
-        double _t11 = _t8 * axisY * axisZ;
-        d.m00 = _t8 * axisX * axisX + _t1;
+        double _sp1 = axisY * _t8;
+        double _sp0 = axisX * _t8;
+        double _t9 = _sp0 * axisY;
+        double _t10 = _sp0 * axisZ;
+        double _t11 = _sp1 * axisZ;
+        d.m00 = _sp0 * axisX + _t1;
         d.m01 = _t9 - _t3;
         d.m02 = _t4 + _t10;
         d.m03 = 0.0;
         d.m10 = _t3 + _t9;
-        d.m11 = _t8 * axisY * axisY + _t1;
+        d.m11 = _sp1 * axisY + _t1;
         d.m12 = _t11 - _t7;
         d.m13 = 0.0;
         d.m20 = _t10 - _t4;
@@ -19210,14 +21497,16 @@ public class Double3x4Impl implements Double3x4 {
         double _t4 = axisY * _t0;
         double _t7 = axisX * _t0;
         double _t8 = 1.0 - _t1;
-        double _t9 = _t8 * axisX * axisY;
-        double _t10 = _t8 * axisX * axisZ;
-        double _t11 = _t8 * axisY * axisZ;
-        d.m00 = _t8 * axisX * axisX + _t1;
+        double _sp1 = axisY * _t8;
+        double _sp0 = axisX * _t8;
+        double _t9 = _sp0 * axisY;
+        double _t10 = _sp0 * axisZ;
+        double _t11 = _sp1 * axisZ;
+        d.m00 = _sp0 * axisX + _t1;
         d.m01 = _t9 - _t3;
         d.m02 = _t4 + _t10;
         d.m10 = _t3 + _t9;
-        d.m11 = _t8 * axisY * axisY + _t1;
+        d.m11 = _sp1 * axisY + _t1;
         d.m12 = _t11 - _t7;
         d.m20 = _t10 - _t4;
         d.m21 = _t7 + _t11;
@@ -19270,11 +21559,13 @@ public class Double3x4Impl implements Double3x4 {
         double _t5 = axisY * _t0;
         double _t9 = axisX * _t0;
         double _t11 = 1.0 - _t1;
-        double _t13 = _t11 * axisX * axisY;
-        double _t14 = _t11 * axisX * axisZ;
-        double _t16 = _t11 * axisY * axisZ;
-        double _t18 = _t11 * axisX * axisX + _t1;
-        double _t19 = _t11 * axisY * axisY + _t1;
+        double _sp1 = axisY * _t11;
+        double _sp0 = axisX * _t11;
+        double _t13 = _sp0 * axisY;
+        double _t14 = _sp0 * axisZ;
+        double _t16 = _sp1 * axisZ;
+        double _t18 = _sp0 * axisX + _t1;
+        double _t19 = _sp1 * axisY + _t1;
         double _t20 = _t11 * axisZ * axisZ + _t1;
         double _t21 = _t13 - _t4;
         double _t22 = _t5 + _t14;
@@ -19319,8 +21610,7 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code preRotateAxis_orthogonal}; reached only through it. */
-    private void preRotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t13, double _t4, double _t5, double _t14, double _t16, double _t9, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t11 * axisY * axisY + _t1;
+    private void preRotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisZ, double _t1, double _t13, double _t4, double _t5, double _t14, double _t16, double _t9, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _t19) {
         double _t20 = _t11 * axisZ * axisZ + _t1;
         double _t21 = _t13 - _t4;
         double _t22 = _t5 + _t14;
@@ -19359,11 +21649,14 @@ public class Double3x4Impl implements Double3x4 {
         double _t5 = axisY * _t0;
         double _t9 = axisX * _t0;
         double _t11 = 1.0 - _t1;
-        double _t13 = _t11 * axisX * axisY;
-        double _t14 = _t11 * axisX * axisZ;
-        double _t16 = _t11 * axisY * axisZ;
-        double _t18 = _t11 * axisX * axisX + _t1;
-        preRotateAxis_orthogonal_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t13, _t4, _t5, _t14, _t16, _t9, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _sp1 = axisY * _t11;
+        double _sp0 = axisX * _t11;
+        double _t13 = _sp0 * axisY;
+        double _t14 = _sp0 * axisZ;
+        double _t16 = _sp1 * axisZ;
+        double _t18 = _sp0 * axisX + _t1;
+        double _t19 = _sp1 * axisY + _t1;
+        preRotateAxis_orthogonal_s15c4a477_tail(d, _t11, axisZ, _t1, _t13, _t4, _t5, _t14, _t16, _t9, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -19397,8 +21690,7 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code preRotateAxis_general}; reached only through it. */
-    private void preRotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t13, double _t4, double _t5, double _t14, double _t16, double _t9, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t11 * axisY * axisY + _t1;
+    private void preRotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisZ, double _t1, double _t13, double _t4, double _t5, double _t14, double _t16, double _t9, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _t19) {
         double _t20 = _t11 * axisZ * axisZ + _t1;
         double _t21 = _t13 - _t4;
         double _t22 = _t5 + _t14;
@@ -19437,11 +21729,14 @@ public class Double3x4Impl implements Double3x4 {
         double _t5 = axisY * _t0;
         double _t9 = axisX * _t0;
         double _t11 = 1.0 - _t1;
-        double _t13 = _t11 * axisX * axisY;
-        double _t14 = _t11 * axisX * axisZ;
-        double _t16 = _t11 * axisY * axisZ;
-        double _t18 = _t11 * axisX * axisX + _t1;
-        preRotateAxis_general_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t13, _t4, _t5, _t14, _t16, _t9, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _sp1 = axisY * _t11;
+        double _sp0 = axisX * _t11;
+        double _t13 = _sp0 * axisY;
+        double _t14 = _sp0 * axisZ;
+        double _t16 = _sp1 * axisZ;
+        double _t18 = _sp0 * axisX + _t1;
+        double _t19 = _sp1 * axisY + _t1;
+        preRotateAxis_general_s15c4a477_tail(d, _t11, axisZ, _t1, _t13, _t4, _t5, _t14, _t16, _t9, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _t19);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -19605,6 +21900,34 @@ public class Double3x4Impl implements Double3x4 {
         return d;
     }
 
+    /** Private column 0 of {@code preRotateQuat_translation}: computes and stores it; reached only through it. */
+    private void preRotateQuat_translation_s4f089208_c0(Double3x4Impl _dst, double _t20, double _t16, double _t18) {
+        _dst.m00 = _t20;
+        _dst.m10 = _t16;
+        _dst.m20 = _t18;
+    }
+
+    /** Private column 1 of {@code preRotateQuat_translation}: computes and stores it; reached only through it. */
+    private void preRotateQuat_translation_s4f089208_c1(Double3x4Impl _dst, double _t14, double _t21, double _t19) {
+        _dst.m01 = _t14;
+        _dst.m11 = _t21;
+        _dst.m21 = _t19;
+    }
+
+    /** Private column 2 of {@code preRotateQuat_translation}: computes and stores it; reached only through it. */
+    private void preRotateQuat_translation_s4f089208_c2(Double3x4Impl _dst, double _t15, double _t17, double _t22) {
+        _dst.m02 = _t15;
+        _dst.m12 = _t17;
+        _dst.m22 = _t22;
+    }
+
+    /** Private column 3 of {@code preRotateQuat_translation}: computes and stores it; reached only through it. */
+    private void preRotateQuat_translation_s4f089208_c3(Double3x4Impl _dst, double _r0, double _t20, double _r1, double _t14, double _r2, double _t15, double _t16, double _t21, double _t17, double _t18, double _t19, double _t22) {
+        _dst.m03 = _r0 * _t20 + _r1 * _t14 + _r2 * _t15;
+        _dst.m13 = _r0 * _t16 + _r1 * _t21 + _r2 * _t17;
+        _dst.m23 = _r0 * _t18 + _r1 * _t19 + _r2 * _t22;
+    }
+
 
     /**
      * Private body of {@code preRotateQuat}, specialized by runtime matrix properties; reached only
@@ -19612,6 +21935,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preRotateQuat_translation(double qX, double qY, double qZ, double qW, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _r0 = this.m03;
+        double _r1 = this.m13;
+        double _r2 = this.m23;
         double _t0 = qZ + qZ;
         double _t1 = qY + qY;
         double _t2 = qX + qX;
@@ -19633,20 +21959,10 @@ public class Double3x4Impl implements Double3x4 {
         double _t20 = _t12 - _t4;
         double _t21 = _t12 - _t9;
         double _t22 = 1.0 - _t4 - _t9;
-        d.m00 = _t20;
-        d.m01 = _t14;
-        d.m02 = _t15;
-        double _buf0 = this.m03 * _t20 + this.m13 * _t14 + this.m23 * _t15;
-        d.m10 = _t16;
-        d.m11 = _t21;
-        d.m12 = _t17;
-        double _buf1 = this.m03 * _t16 + this.m13 * _t21 + this.m23 * _t17;
-        d.m20 = _t18;
-        d.m21 = _t19;
-        d.m22 = _t22;
-        d.m23 = this.m03 * _t18 + this.m13 * _t19 + this.m23 * _t22;
-        d.m03 = _buf0;
-        d.m13 = _buf1;
+        preRotateQuat_translation_s4f089208_c0(d, _t20, _t16, _t18);
+        preRotateQuat_translation_s4f089208_c1(d, _t14, _t21, _t19);
+        preRotateQuat_translation_s4f089208_c2(d, _t15, _t17, _t22);
+        preRotateQuat_translation_s4f089208_c3(d, _r0, _t20, _r1, _t14, _r2, _t15, _t16, _t21, _t17, _t18, _t19, _t22);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -20693,18 +23009,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preScaleAround_identity(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = 1.0 - s;
         d.m00 = s;
         d.m01 = 0.0;
         d.m02 = 0.0;
-        d.m03 = pivotX - s * pivotX;
+        d.m03 = pivotX * _t0;
         d.m10 = 0.0;
         d.m11 = s;
         d.m12 = 0.0;
-        d.m13 = pivotY - s * pivotY;
+        d.m13 = pivotY * _t0;
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = s;
-        d.m23 = pivotZ - s * pivotZ;
+        d.m23 = pivotZ * _t0;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20716,12 +23033,13 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preScaleAround_identity_self(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = 1.0 - s;
         d.m00 = s;
-        d.m03 = pivotX - s * pivotX;
+        d.m03 = pivotX * _t0;
         d.m11 = s;
-        d.m13 = pivotY - s * pivotY;
+        d.m13 = pivotY * _t0;
         d.m22 = s;
-        d.m23 = pivotZ - s * pivotZ;
+        d.m23 = pivotZ * _t0;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20733,18 +23051,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preScaleAround_translation(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = 1.0 - s;
         d.m00 = s;
         d.m01 = 0.0;
         d.m02 = 0.0;
-        d.m03 = s * this.m03 + pivotX - s * pivotX;
+        d.m03 = s * this.m03 + pivotX * _t0;
         d.m10 = 0.0;
         d.m11 = s;
         d.m12 = 0.0;
-        d.m13 = s * this.m13 + pivotY - s * pivotY;
+        d.m13 = s * this.m13 + pivotY * _t0;
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = s;
-        d.m23 = s * this.m23 + pivotZ - s * pivotZ;
+        d.m23 = s * this.m23 + pivotZ * _t0;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20756,12 +23075,13 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preScaleAround_translation_self(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = 1.0 - s;
         d.m00 = s;
-        d.m03 = s * this.m03 + pivotX - s * pivotX;
+        d.m03 = s * this.m03 + pivotX * _t0;
         d.m11 = s;
-        d.m13 = s * this.m13 + pivotY - s * pivotY;
+        d.m13 = s * this.m13 + pivotY * _t0;
         d.m22 = s;
-        d.m23 = s * this.m23 + pivotZ - s * pivotZ;
+        d.m23 = s * this.m23 + pivotZ * _t0;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20773,18 +23093,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 preScaleAround_general(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = 1.0 - s;
         d.m00 = s * this.m00;
         d.m01 = s * this.m01;
         d.m02 = s * this.m02;
-        d.m03 = s * this.m03 + pivotX - s * pivotX;
+        d.m03 = s * this.m03 + pivotX * _t0;
         d.m10 = s * this.m10;
         d.m11 = s * this.m11;
         d.m12 = s * this.m12;
-        d.m13 = s * this.m13 + pivotY - s * pivotY;
+        d.m13 = s * this.m13 + pivotY * _t0;
         d.m20 = s * this.m20;
         d.m21 = s * this.m21;
         d.m22 = s * this.m22;
-        d.m23 = s * this.m23 + pivotZ - s * pivotZ;
+        d.m23 = s * this.m23 + pivotZ * _t0;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20879,15 +23200,15 @@ public class Double3x4Impl implements Double3x4 {
         d.m00 = sX;
         d.m01 = 0.0;
         d.m02 = 0.0;
-        d.m03 = pivotX - pivotX * sX;
+        d.m03 = pivotX * (1.0 - sX);
         d.m10 = 0.0;
         d.m11 = sY;
         d.m12 = 0.0;
-        d.m13 = pivotY - pivotY * sY;
+        d.m13 = pivotY * (1.0 - sY);
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = sZ;
-        d.m23 = pivotZ - pivotZ * sZ;
+        d.m23 = pivotZ * (1.0 - sZ);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20900,11 +23221,11 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 preScaleAround_identity_self(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = sX;
-        d.m03 = pivotX - pivotX * sX;
+        d.m03 = pivotX * (1.0 - sX);
         d.m11 = sY;
-        d.m13 = pivotY - pivotY * sY;
+        d.m13 = pivotY * (1.0 - sY);
         d.m22 = sZ;
-        d.m23 = pivotZ - pivotZ * sZ;
+        d.m23 = pivotZ * (1.0 - sZ);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20919,15 +23240,15 @@ public class Double3x4Impl implements Double3x4 {
         d.m00 = sX;
         d.m01 = 0.0;
         d.m02 = 0.0;
-        d.m03 = sX * this.m03 + pivotX - pivotX * sX;
+        d.m03 = pivotX * (1.0 - sX) + sX * this.m03;
         d.m10 = 0.0;
         d.m11 = sY;
         d.m12 = 0.0;
-        d.m13 = sY * this.m13 + pivotY - pivotY * sY;
+        d.m13 = pivotY * (1.0 - sY) + sY * this.m13;
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = sZ;
-        d.m23 = sZ * this.m23 + pivotZ - pivotZ * sZ;
+        d.m23 = pivotZ * (1.0 - sZ) + sZ * this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20940,11 +23261,11 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 preScaleAround_translation_self(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = sX;
-        d.m03 = sX * this.m03 + pivotX - pivotX * sX;
+        d.m03 = pivotX * (1.0 - sX) + sX * this.m03;
         d.m11 = sY;
-        d.m13 = sY * this.m13 + pivotY - pivotY * sY;
+        d.m13 = pivotY * (1.0 - sY) + sY * this.m13;
         d.m22 = sZ;
-        d.m23 = sZ * this.m23 + pivotZ - pivotZ * sZ;
+        d.m23 = pivotZ * (1.0 - sZ) + sZ * this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -20959,15 +23280,15 @@ public class Double3x4Impl implements Double3x4 {
         d.m00 = sX * this.m00;
         d.m01 = sX * this.m01;
         d.m02 = sX * this.m02;
-        d.m03 = sX * this.m03 + pivotX - pivotX * sX;
+        d.m03 = pivotX * (1.0 - sX) + sX * this.m03;
         d.m10 = sY * this.m10;
         d.m11 = sY * this.m11;
         d.m12 = sY * this.m12;
-        d.m13 = sY * this.m13 + pivotY - pivotY * sY;
+        d.m13 = pivotY * (1.0 - sY) + sY * this.m13;
         d.m20 = sZ * this.m20;
         d.m21 = sZ * this.m21;
         d.m22 = sZ * this.m22;
-        d.m23 = sZ * this.m23 + pivotZ - pivotZ * sZ;
+        d.m23 = pivotZ * (1.0 - sZ) + sZ * this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -21260,15 +23581,17 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 reflect_identity(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t6 = -((normalX + normalX) * normalY);
-        double _t7 = -((normalX + normalX) * normalZ);
-        double _t8 = -((normalY + normalY) * normalZ);
-        d.m00 = 1.0 - (normalX + normalX) * normalX;
+        double _sp1 = normalY + normalY;
+        double _sp0 = normalX + normalX;
+        double _t6 = -(_sp0 * normalY);
+        double _t7 = -(_sp0 * normalZ);
+        double _t8 = -(_sp1 * normalZ);
+        d.m00 = 1.0 - _sp0 * normalX;
         d.m01 = _t6;
         d.m02 = _t7;
         d.m03 = 0.0;
         d.m10 = _t6;
-        d.m11 = 1.0 - (normalY + normalY) * normalY;
+        d.m11 = 1.0 - _sp1 * normalY;
         d.m12 = _t8;
         d.m13 = 0.0;
         d.m20 = _t7;
@@ -21286,14 +23609,16 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 reflect_identity_self(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t6 = -((normalX + normalX) * normalY);
-        double _t7 = -((normalX + normalX) * normalZ);
-        double _t8 = -((normalY + normalY) * normalZ);
-        d.m00 = 1.0 - (normalX + normalX) * normalX;
+        double _sp1 = normalY + normalY;
+        double _sp0 = normalX + normalX;
+        double _t6 = -(_sp0 * normalY);
+        double _t7 = -(_sp0 * normalZ);
+        double _t8 = -(_sp1 * normalZ);
+        d.m00 = 1.0 - _sp0 * normalX;
         d.m01 = _t6;
         d.m02 = _t7;
         d.m10 = _t6;
-        d.m11 = 1.0 - (normalY + normalY) * normalY;
+        d.m11 = 1.0 - _sp1 * normalY;
         d.m12 = _t8;
         d.m20 = _t7;
         d.m21 = _t8;
@@ -21309,15 +23634,17 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 reflect_translation(double normalX, double normalY, double normalZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t6 = -((normalX + normalX) * normalY);
-        double _t7 = -((normalX + normalX) * normalZ);
-        double _t8 = -((normalY + normalY) * normalZ);
-        d.m00 = 1.0 - (normalX + normalX) * normalX;
+        double _sp1 = normalY + normalY;
+        double _sp0 = normalX + normalX;
+        double _t6 = -(_sp0 * normalY);
+        double _t7 = -(_sp0 * normalZ);
+        double _t8 = -(_sp1 * normalZ);
+        d.m00 = 1.0 - _sp0 * normalX;
         d.m01 = _t6;
         d.m02 = _t7;
         d.m03 = this.m03;
         d.m10 = _t6;
-        d.m11 = 1.0 - (normalY + normalY) * normalY;
+        d.m11 = 1.0 - _sp1 * normalY;
         d.m12 = _t8;
         d.m13 = this.m13;
         d.m20 = _t7;
@@ -21356,6 +23683,15 @@ public class Double3x4Impl implements Double3x4 {
         _dst.m23 = _r11;
     }
 
+    /** Private tail of {@code reflect_orthogonal}; reached only through it. */
+    private void reflect_orthogonal_s4446d501_tail(Double3x4Impl _dst, double normalZ, double _r0, double _t12, double _r1, double _t7, double _r2, double _t8, double _t13, double _t10, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
+        double _t14 = 1.0 - (normalZ + normalZ) * normalZ;
+        reflect_orthogonal_s4446d501_c0(_dst, _r0, _t12, _r1, _t7, _r2, _t8, _r4, _r5, _r6, _r8, _r9, _r10);
+        reflect_orthogonal_s4446d501_c1(_dst, _r1, _t13, _r0, _t7, _r2, _t10, _r5, _r4, _r6, _r9, _r8, _r10);
+        reflect_orthogonal_s4446d501_c2(_dst, _r0, _t8, _r1, _t10, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
+        reflect_orthogonal_s4446d501_c3(_dst, _r3, _r7, _r11);
+    }
+
 
     /**
      * Private body of {@code reflect}, specialized by runtime matrix properties; reached only
@@ -21375,16 +23711,14 @@ public class Double3x4Impl implements Double3x4 {
         double _r9 = this.m21;
         double _r10 = this.m22;
         double _r11 = this.m23;
-        double _t7 = (normalX + normalX) * normalY;
-        double _t8 = (normalX + normalX) * normalZ;
-        double _t10 = (normalY + normalY) * normalZ;
-        double _t12 = 1.0 - (normalX + normalX) * normalX;
-        double _t13 = 1.0 - (normalY + normalY) * normalY;
-        double _t14 = 1.0 - (normalZ + normalZ) * normalZ;
-        reflect_orthogonal_s4446d501_c0(d, _r0, _t12, _r1, _t7, _r2, _t8, _r4, _r5, _r6, _r8, _r9, _r10);
-        reflect_orthogonal_s4446d501_c1(d, _r1, _t13, _r0, _t7, _r2, _t10, _r5, _r4, _r6, _r9, _r8, _r10);
-        reflect_orthogonal_s4446d501_c2(d, _r0, _t8, _r1, _t10, _r2, _t14, _r4, _r5, _r6, _r8, _r9, _r10);
-        reflect_orthogonal_s4446d501_c3(d, _r3, _r7, _r11);
+        double _sp1 = normalY + normalY;
+        double _sp0 = normalX + normalX;
+        double _t7 = _sp0 * normalY;
+        double _t8 = _sp0 * normalZ;
+        double _t10 = _sp1 * normalZ;
+        double _t12 = 1.0 - _sp0 * normalX;
+        double _t13 = 1.0 - _sp1 * normalY;
+        reflect_orthogonal_s4446d501_tail(d, normalZ, _r0, _t12, _r1, _t7, _r2, _t8, _t13, _t10, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -21502,34 +23836,6 @@ public class Double3x4Impl implements Double3x4 {
         return preRotateAround_identity(rotX, rotY, rotZ, rotW, pivotX, pivotY, pivotZ, dest);
     }
 
-    /** Private column 0 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
-    private void rotateAround_translation_s7a39568a_c0(Double3x4Impl _dst, double _t12, double _t4, double _t15, double _t17) {
-        _dst.m00 = _t12 - _t4;
-        _dst.m10 = _t15;
-        _dst.m20 = _t17;
-    }
-
-    /** Private column 1 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
-    private void rotateAround_translation_s7a39568a_c1(Double3x4Impl _dst, double _t13, double _t12, double _t9, double _t18) {
-        _dst.m01 = _t13;
-        _dst.m11 = _t12 - _t9;
-        _dst.m21 = _t18;
-    }
-
-    /** Private column 2 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
-    private void rotateAround_translation_s7a39568a_c2(Double3x4Impl _dst, double _t14, double _t16, double _t4, double _t9) {
-        _dst.m02 = _t14;
-        _dst.m12 = _t16;
-        _dst.m22 = 1.0 - _t4 - _t9;
-    }
-
-    /** Private column 3 of {@code rotateAround_translation}: computes and stores it; reached only through it. */
-    private void rotateAround_translation_s7a39568a_c3(Double3x4Impl _dst, double pivotX, double _t4, double _t3, double _r0, double pivotZ, double _t14, double pivotY, double _t13, double _t9, double _r1, double _t16, double _t15, double _r2, double _t18, double _t17) {
-        _dst.m03 = pivotX * (_t4 + _t3) + (_r0 - pivotZ * _t14 - pivotY * _t13);
-        _dst.m13 = pivotY * (_t9 + _t3) + (_r1 - pivotZ * _t16 - pivotX * _t15);
-        _dst.m23 = pivotZ * (_t9 + _t4) + (_r2 - pivotY * _t18 - pivotX * _t17);
-    }
-
 
     /**
      * Private body of {@code rotateAround}, specialized by runtime matrix properties; reached only
@@ -21537,9 +23843,6 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 rotateAround_translation(double rotX, double rotY, double rotZ, double rotW, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _r0 = this.m03;
-        double _r1 = this.m13;
-        double _r2 = this.m23;
         double _t0 = rotZ + rotZ;
         double _t1 = rotY + rotY;
         double _t2 = rotX + rotX;
@@ -21559,10 +23862,18 @@ public class Double3x4Impl implements Double3x4 {
         double _t16 = _t10 - _t11;
         double _t17 = _t7 - _t8;
         double _t18 = _t10 + _t11;
-        rotateAround_translation_s7a39568a_c0(d, _t12, _t4, _t15, _t17);
-        rotateAround_translation_s7a39568a_c1(d, _t13, _t12, _t9, _t18);
-        rotateAround_translation_s7a39568a_c2(d, _t14, _t16, _t4, _t9);
-        rotateAround_translation_s7a39568a_c3(d, pivotX, _t4, _t3, _r0, pivotZ, _t14, pivotY, _t13, _t9, _r1, _t16, _t15, _r2, _t18, _t17);
+        d.m00 = _t12 - _t4;
+        d.m01 = _t13;
+        d.m02 = _t14;
+        d.m03 = pivotX * (_t4 + _t3) + (this.m03 - pivotZ * _t14 - pivotY * _t13);
+        d.m10 = _t15;
+        d.m11 = _t12 - _t9;
+        d.m12 = _t16;
+        d.m13 = pivotY * (_t9 + _t3) + (this.m13 - pivotZ * _t16 - pivotX * _t15);
+        d.m20 = _t17;
+        d.m21 = _t18;
+        d.m22 = 1.0 - _t4 - _t9;
+        d.m23 = pivotZ * (_t9 + _t4) + (this.m23 - pivotY * _t18 - pivotX * _t17);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -21873,15 +24184,17 @@ public class Double3x4Impl implements Double3x4 {
         double _t4 = axisY * _t0;
         double _t7 = axisX * _t0;
         double _t8 = 1.0 - _t1;
-        double _t9 = _t8 * axisX * axisY;
-        double _t10 = _t8 * axisX * axisZ;
-        double _t11 = _t8 * axisY * axisZ;
-        d.m00 = _t8 * axisX * axisX + _t1;
+        double _sp1 = axisY * _t8;
+        double _sp0 = axisX * _t8;
+        double _t9 = _sp0 * axisY;
+        double _t10 = _sp0 * axisZ;
+        double _t11 = _sp1 * axisZ;
+        d.m00 = _sp0 * axisX + _t1;
         d.m01 = _t9 - _t3;
         d.m02 = _t4 + _t10;
         d.m03 = this.m03;
         d.m10 = _t3 + _t9;
-        d.m11 = _t8 * axisY * axisY + _t1;
+        d.m11 = _sp1 * axisY + _t1;
         d.m12 = _t11 - _t7;
         d.m13 = this.m13;
         d.m20 = _t10 - _t4;
@@ -21921,8 +24234,7 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateAxis_orthogonal}; reached only through it. */
-    private void rotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t3, double _t13, double _t14, double _t6, double _t8, double _t16, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t11 * axisY * axisY + _t1;
+    private void rotateAxis_orthogonal_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisZ, double _t1, double _t3, double _t13, double _t14, double _t6, double _t8, double _t16, double _r0, double _t18, double _r1, double _r2, double _t19, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
         double _t20 = _t11 * axisZ * axisZ + _t1;
         double _t21 = _t3 + _t13;
         double _t22 = _t14 - _t6;
@@ -21961,11 +24273,14 @@ public class Double3x4Impl implements Double3x4 {
         double _t6 = axisY * _t0;
         double _t8 = axisX * _t0;
         double _t11 = 1.0 - _t1;
-        double _t13 = _t11 * axisX * axisY;
-        double _t14 = _t11 * axisX * axisZ;
-        double _t16 = _t11 * axisY * axisZ;
-        double _t18 = _t11 * axisX * axisX + _t1;
-        rotateAxis_orthogonal_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t3, _t13, _t14, _t6, _t8, _t16, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _sp1 = axisY * _t11;
+        double _sp0 = axisX * _t11;
+        double _t13 = _sp0 * axisY;
+        double _t14 = _sp0 * axisZ;
+        double _t16 = _sp1 * axisZ;
+        double _t18 = _sp0 * axisX + _t1;
+        double _t19 = _sp1 * axisY + _t1;
+        rotateAxis_orthogonal_s15c4a477_tail(d, _t11, axisZ, _t1, _t3, _t13, _t14, _t6, _t8, _t16, _r0, _t18, _r1, _r2, _t19, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_ORTHOGONAL;
         return d;
     }
@@ -21999,8 +24314,7 @@ public class Double3x4Impl implements Double3x4 {
     }
 
     /** Private tail of {@code rotateAxis_general}; reached only through it. */
-    private void rotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisY, double _t1, double axisZ, double _t3, double _t13, double _t14, double _t6, double _t8, double _t16, double _r0, double _t18, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
-        double _t19 = _t11 * axisY * axisY + _t1;
+    private void rotateAxis_general_s15c4a477_tail(Double3x4Impl _dst, double _t11, double axisZ, double _t1, double _t3, double _t13, double _t14, double _t6, double _t8, double _t16, double _r0, double _t18, double _r1, double _r2, double _t19, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11) {
         double _t20 = _t11 * axisZ * axisZ + _t1;
         double _t21 = _t3 + _t13;
         double _t22 = _t14 - _t6;
@@ -22039,11 +24353,14 @@ public class Double3x4Impl implements Double3x4 {
         double _t6 = axisY * _t0;
         double _t8 = axisX * _t0;
         double _t11 = 1.0 - _t1;
-        double _t13 = _t11 * axisX * axisY;
-        double _t14 = _t11 * axisX * axisZ;
-        double _t16 = _t11 * axisY * axisZ;
-        double _t18 = _t11 * axisX * axisX + _t1;
-        rotateAxis_general_s15c4a477_tail(d, _t11, axisY, _t1, axisZ, _t3, _t13, _t14, _t6, _t8, _t16, _r0, _t18, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
+        double _sp1 = axisY * _t11;
+        double _sp0 = axisX * _t11;
+        double _t13 = _sp0 * axisY;
+        double _t14 = _sp0 * axisZ;
+        double _t16 = _sp1 * axisZ;
+        double _t18 = _sp0 * axisX + _t1;
+        double _t19 = _sp1 * axisY + _t1;
+        rotateAxis_general_s15c4a477_tail(d, _t11, axisZ, _t1, _t3, _t13, _t14, _t6, _t8, _t16, _r0, _t18, _r1, _r2, _t19, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -24946,18 +27263,19 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 scaleAround_translation(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = 1.0 - s;
         d.m00 = s;
         d.m01 = 0.0;
         d.m02 = 0.0;
-        d.m03 = this.m03 + pivotX - s * pivotX;
+        d.m03 = pivotX * _t0 + this.m03;
         d.m10 = 0.0;
         d.m11 = s;
         d.m12 = 0.0;
-        d.m13 = this.m13 + pivotY - s * pivotY;
+        d.m13 = pivotY * _t0 + this.m13;
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = s;
-        d.m23 = this.m23 + pivotZ - s * pivotZ;
+        d.m23 = pivotZ * _t0 + this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -24969,12 +27287,13 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 scaleAround_translation_self(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
+        double _t0 = 1.0 - s;
         d.m00 = s;
-        d.m03 = this.m03 + pivotX - s * pivotX;
+        d.m03 = pivotX * _t0 + this.m03;
         d.m11 = s;
-        d.m13 = this.m13 + pivotY - s * pivotY;
+        d.m13 = pivotY * _t0 + this.m13;
         d.m22 = s;
-        d.m23 = this.m23 + pivotZ - s * pivotZ;
+        d.m23 = pivotZ * _t0 + this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -24986,21 +27305,22 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 scaleAround_orthogonal(double s, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t3 = pivotX - s * pivotX;
-        double _t4 = pivotY - s * pivotY;
-        double _t5 = pivotZ - s * pivotZ;
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
+        double _t3 = pivotZ * _t0;
         double _buf0 = s * this.m00;
         double _buf1 = s * this.m01;
         double _buf2 = s * this.m02;
-        d.m03 = this.m00 * _t3 + (this.m01 * _t4 + (this.m02 * _t5 + this.m03));
+        d.m03 = this.m00 * _t1 + (this.m01 * _t2 + (this.m02 * _t3 + this.m03));
         double _buf3 = s * this.m10;
         double _buf4 = s * this.m11;
         double _buf5 = s * this.m12;
-        d.m13 = this.m10 * _t3 + (this.m11 * _t4 + (this.m12 * _t5 + this.m13));
+        d.m13 = this.m10 * _t1 + (this.m11 * _t2 + (this.m12 * _t3 + this.m13));
         double _buf6 = s * this.m20;
         double _buf7 = s * this.m21;
         double _buf8 = s * this.m22;
-        d.m23 = this.m20 * _t3 + (this.m21 * _t4 + (this.m22 * _t5 + this.m23));
+        d.m23 = this.m20 * _t1 + (this.m21 * _t2 + (this.m22 * _t3 + this.m23));
         d.m00 = _buf0;
         d.m01 = _buf1;
         d.m02 = _buf2;
@@ -25133,15 +27453,15 @@ public class Double3x4Impl implements Double3x4 {
         d.m00 = sX;
         d.m01 = 0.0;
         d.m02 = 0.0;
-        d.m03 = this.m03 + pivotX - pivotX * sX;
+        d.m03 = pivotX * (1.0 - sX) + this.m03;
         d.m10 = 0.0;
         d.m11 = sY;
         d.m12 = 0.0;
-        d.m13 = this.m13 + pivotY - pivotY * sY;
+        d.m13 = pivotY * (1.0 - sY) + this.m13;
         d.m20 = 0.0;
         d.m21 = 0.0;
         d.m22 = sZ;
-        d.m23 = this.m23 + pivotZ - pivotZ * sZ;
+        d.m23 = pivotZ * (1.0 - sZ) + this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -25154,11 +27474,11 @@ public class Double3x4Impl implements Double3x4 {
     private Double3x4 scaleAround_translation_self(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
         d.m00 = sX;
-        d.m03 = this.m03 + pivotX - pivotX * sX;
+        d.m03 = pivotX * (1.0 - sX) + this.m03;
         d.m11 = sY;
-        d.m13 = this.m13 + pivotY - pivotY * sY;
+        d.m13 = pivotY * (1.0 - sY) + this.m13;
         d.m22 = sZ;
-        d.m23 = this.m23 + pivotZ - pivotZ * sZ;
+        d.m23 = pivotZ * (1.0 - sZ) + this.m23;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -25170,9 +27490,9 @@ public class Double3x4Impl implements Double3x4 {
      */
     private Double3x4 scaleAround_orthogonal(double sX, double sY, double sZ, double pivotX, double pivotY, double pivotZ, @Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t3 = pivotX - pivotX * sX;
-        double _t4 = pivotY - pivotY * sY;
-        double _t5 = pivotZ - pivotZ * sZ;
+        double _t3 = pivotX * (1.0 - sX);
+        double _t4 = pivotY * (1.0 - sY);
+        double _t5 = pivotZ * (1.0 - sZ);
         double _buf0 = sX * this.m00;
         double _buf1 = sY * this.m01;
         double _buf2 = sZ * this.m02;
@@ -25527,12 +27847,22 @@ public class Double3x4Impl implements Double3x4 {
      */
     private DoubleAABB transformAabb_identity(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        d.minX = Math.min(minX, maxX);
-        d.minY = Math.min(minY, maxY);
-        d.minZ = Math.min(minZ, maxZ);
-        d.maxX = Math.max(minX, maxX);
-        d.maxY = Math.max(minY, maxY);
-        d.maxZ = Math.max(minZ, maxZ);
+        double _t4 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t4 < 0.0) {
+            d.minX = Double.POSITIVE_INFINITY;
+            d.minY = Double.POSITIVE_INFINITY;
+            d.minZ = Double.POSITIVE_INFINITY;
+            d.maxX = Double.NEGATIVE_INFINITY;
+            d.maxY = Double.NEGATIVE_INFINITY;
+            d.maxZ = Double.NEGATIVE_INFINITY;
+        } else {
+            d.minX = Math.min(minX, maxX);
+            d.minY = Math.min(minY, maxY);
+            d.minZ = Math.min(minZ, maxZ);
+            d.maxX = Math.max(minX, maxX);
+            d.maxY = Math.max(minY, maxY);
+            d.maxZ = Math.max(minZ, maxZ);
+        }
         return d;
     }
 
@@ -25543,12 +27873,22 @@ public class Double3x4Impl implements Double3x4 {
      */
     private DoubleAABB transformAabb_translation(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        d.minX = this.m03 + Math.min(minX, maxX);
-        d.minY = this.m13 + Math.min(minY, maxY);
-        d.minZ = this.m23 + Math.min(minZ, maxZ);
-        d.maxX = this.m03 + Math.max(minX, maxX);
-        d.maxY = this.m13 + Math.max(minY, maxY);
-        d.maxZ = this.m23 + Math.max(minZ, maxZ);
+        double _t4 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t4 < 0.0) {
+            d.minX = Double.POSITIVE_INFINITY;
+            d.minY = Double.POSITIVE_INFINITY;
+            d.minZ = Double.POSITIVE_INFINITY;
+            d.maxX = Double.NEGATIVE_INFINITY;
+            d.maxY = Double.NEGATIVE_INFINITY;
+            d.maxZ = Double.NEGATIVE_INFINITY;
+        } else {
+            d.minX = this.m03 + Math.min(minX, maxX);
+            d.minY = this.m13 + Math.min(minY, maxY);
+            d.minZ = this.m23 + Math.min(minZ, maxZ);
+            d.maxX = this.m03 + Math.max(minX, maxX);
+            d.maxY = this.m13 + Math.max(minY, maxY);
+            d.maxZ = this.m23 + Math.max(minZ, maxZ);
+        }
         return d;
     }
 
@@ -25559,30 +27899,40 @@ public class Double3x4Impl implements Double3x4 {
      */
     private DoubleAABB transformAabb_orthogonal(double minX, double minY, double minZ, double maxX, double maxY, double maxZ, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        double _t0 = minX * this.m00;
-        double _t1 = maxX * this.m00;
-        double _t2 = minY * this.m01;
-        double _t3 = maxY * this.m01;
-        double _t4 = minZ * this.m02;
-        double _t5 = maxZ * this.m02;
-        double _t6 = minX * this.m10;
-        double _t7 = maxX * this.m10;
-        double _t8 = minY * this.m11;
-        double _t9 = maxY * this.m11;
-        double _t10 = minZ * this.m12;
-        double _t11 = maxZ * this.m12;
-        double _t12 = minX * this.m20;
-        double _t13 = maxX * this.m20;
-        double _t14 = minY * this.m21;
-        double _t15 = maxY * this.m21;
-        double _t16 = minZ * this.m22;
-        double _t17 = maxZ * this.m22;
-        d.minX = this.m03 + Math.min(_t0, _t1) + Math.min(_t2, _t3) + Math.min(_t4, _t5);
-        d.minY = this.m13 + Math.min(_t6, _t7) + Math.min(_t8, _t9) + Math.min(_t10, _t11);
-        d.minZ = this.m23 + Math.min(_t12, _t13) + Math.min(_t14, _t15) + Math.min(_t16, _t17);
-        d.maxX = this.m03 + Math.max(_t0, _t1) + Math.max(_t2, _t3) + Math.max(_t4, _t5);
-        d.maxY = this.m13 + Math.max(_t6, _t7) + Math.max(_t8, _t9) + Math.max(_t10, _t11);
-        d.maxZ = this.m23 + Math.max(_t12, _t13) + Math.max(_t14, _t15) + Math.max(_t16, _t17);
+        double _t3 = minX * this.m00;
+        double _t4 = maxX * this.m00;
+        double _t5 = minY * this.m01;
+        double _t6 = maxY * this.m01;
+        double _t7 = minZ * this.m02;
+        double _t8 = maxZ * this.m02;
+        double _t9 = minX * this.m10;
+        double _t10 = maxX * this.m10;
+        double _t11 = minY * this.m11;
+        double _t12 = maxY * this.m11;
+        double _t13 = minZ * this.m12;
+        double _t14 = maxZ * this.m12;
+        double _t15 = minX * this.m20;
+        double _t16 = maxX * this.m20;
+        double _t17 = minY * this.m21;
+        double _t18 = maxY * this.m21;
+        double _t19 = minZ * this.m22;
+        double _t20 = maxZ * this.m22;
+        double _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t22 < 0.0) {
+            d.minX = Double.POSITIVE_INFINITY;
+            d.minY = Double.POSITIVE_INFINITY;
+            d.minZ = Double.POSITIVE_INFINITY;
+            d.maxX = Double.NEGATIVE_INFINITY;
+            d.maxY = Double.NEGATIVE_INFINITY;
+            d.maxZ = Double.NEGATIVE_INFINITY;
+        } else {
+            d.minX = this.m03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+            d.minY = this.m13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+            d.minZ = this.m23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+            d.maxX = this.m03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+            d.maxY = this.m13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+            d.maxZ = this.m23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+        }
         return d;
     }
 
@@ -26437,4 +28787,22 @@ public class Double3x4Impl implements Double3x4 {
         return SEG_OPS.storeRM4x4Float(this, offset, dest);
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
 }

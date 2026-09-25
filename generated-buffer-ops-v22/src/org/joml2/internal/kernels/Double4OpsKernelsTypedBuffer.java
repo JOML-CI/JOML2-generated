@@ -24,7 +24,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer add_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.add(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -52,7 +52,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer add_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double4Ops.add(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -83,7 +83,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer div_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.div(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, scalar);
             return dest;
         }
@@ -111,7 +111,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer div_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.div(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -139,7 +139,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer div_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double4Ops.div(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -170,7 +170,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer fma_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double b, double cX, double cY, double cZ, double cW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.fma(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, b, cX, cY, cZ, cW);
             return dest;
         }
@@ -198,7 +198,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer fma_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer c, int cOffset, double b) {
-        if (dest.hasArray() && src.hasArray() && c.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && c.hasArray() && cOffset >= 0 && cOffset <= c.limit() - 4) {
             Double4Ops.fma(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, c.array(), c.arrayOffset() + cOffset, b);
             return dest;
         }
@@ -229,7 +229,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer fma_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double bX, double bY, double bZ, double bW, double cX, double cY, double cZ, double cW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.fma(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
             return dest;
         }
@@ -258,7 +258,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer fma_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer b, int bOffset, java.nio.DoubleBuffer c, int cOffset) {
-        if (dest.hasArray() && src.hasArray() && b.hasArray() && c.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && b.hasArray() && bOffset >= 0 && bOffset <= b.limit() - 4 && c.hasArray() && cOffset >= 0 && cOffset <= c.limit() - 4) {
             Double4Ops.fma(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, b.array(), b.arrayOffset() + bOffset, c.array(), c.arrayOffset() + cOffset);
             return dest;
         }
@@ -293,7 +293,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, scalar);
             return dest;
         }
@@ -320,7 +320,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -348,7 +348,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double4Ops.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -379,7 +379,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer negate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.negate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -406,7 +406,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer sub_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.sub(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -434,7 +434,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer sub_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double4Ops.sub(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -464,7 +464,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer set_api(java.nio.DoubleBuffer dest, int destOffset, double vX, double vY, double vZ, double vW) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             Double4Ops.set(dest.array(), dest.arrayOffset() + destOffset, vX, vY, vZ, vW);
             return dest;
         }
@@ -487,7 +487,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer set_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 4) {
             Double4Ops.set(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -513,7 +513,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer set_api(java.nio.DoubleBuffer dest, int destOffset, double s) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             Double4Ops.set(dest.array(), dest.arrayOffset() + destOffset, s);
             return dest;
         }
@@ -535,7 +535,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeZero_api(java.nio.DoubleBuffer dest, int destOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             Double4Ops.makeZero(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
@@ -558,7 +558,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezier_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.bezier(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
             return dest;
         }
@@ -595,7 +595,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezier_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer p1, int p1Offset, java.nio.DoubleBuffer p2, int p2Offset, java.nio.DoubleBuffer p3, int p3Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && p1.hasArray() && p2.hasArray() && p3.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && p1.hasArray() && p1Offset >= 0 && p1Offset <= p1.limit() - 4 && p2.hasArray() && p2Offset >= 0 && p2Offset <= p2.limit() - 4 && p3.hasArray() && p3Offset >= 0 && p3Offset <= p3.limit() - 4) {
             Double4Ops.bezier(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, p3.array(), p3.arrayOffset() + p3Offset, t);
             return dest;
         }
@@ -641,7 +641,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezier2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.bezier2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
             return dest;
         }
@@ -674,7 +674,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezier2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer p1, int p1Offset, java.nio.DoubleBuffer p2, int p2Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && p1.hasArray() && p2.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && p1.hasArray() && p1Offset >= 0 && p1Offset <= p1.limit() - 4 && p2.hasArray() && p2Offset >= 0 && p2Offset <= p2.limit() - 4) {
             Double4Ops.bezier2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, t);
             return dest;
         }
@@ -713,7 +713,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezier2Tangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.bezier2Tangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, t);
             return dest;
         }
@@ -744,7 +744,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezier2Tangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer p1, int p1Offset, java.nio.DoubleBuffer p2, int p2Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && p1.hasArray() && p2.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && p1.hasArray() && p1Offset >= 0 && p1Offset <= p1.limit() - 4 && p2.hasArray() && p2Offset >= 0 && p2Offset <= p2.limit() - 4) {
             Double4Ops.bezier2Tangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, t);
             return dest;
         }
@@ -781,7 +781,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezierTangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.bezierTangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
             return dest;
         }
@@ -815,7 +815,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer bezierTangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer p1, int p1Offset, java.nio.DoubleBuffer p2, int p2Offset, java.nio.DoubleBuffer p3, int p3Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && p1.hasArray() && p2.hasArray() && p3.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && p1.hasArray() && p1Offset >= 0 && p1Offset <= p1.limit() - 4 && p2.hasArray() && p2Offset >= 0 && p2Offset <= p2.limit() - 4 && p3.hasArray() && p3Offset >= 0 && p3Offset <= p3.limit() - 4) {
             Double4Ops.bezierTangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, p3.array(), p3.arrayOffset() + p3Offset, t);
             return dest;
         }
@@ -858,7 +858,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer catmullRom_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.catmullRom(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
             return dest;
         }
@@ -890,7 +890,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer catmullRom_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer p1, int p1Offset, java.nio.DoubleBuffer p2, int p2Offset, java.nio.DoubleBuffer p3, int p3Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && p1.hasArray() && p2.hasArray() && p3.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && p1.hasArray() && p1Offset >= 0 && p1Offset <= p1.limit() - 4 && p2.hasArray() && p2Offset >= 0 && p2Offset <= p2.limit() - 4 && p3.hasArray() && p3Offset >= 0 && p3Offset <= p3.limit() - 4) {
             Double4Ops.catmullRom(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, p3.array(), p3.arrayOffset() + p3Offset, t);
             return dest;
         }
@@ -931,7 +931,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer catmullRomTangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double p1X, double p1Y, double p1Z, double p1W, double p2X, double p2Y, double p2Z, double p2W, double p3X, double p3Y, double p3Z, double p3W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.catmullRomTangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1X, p1Y, p1Z, p1W, p2X, p2Y, p2Z, p2W, p3X, p3Y, p3Z, p3W, t);
             return dest;
         }
@@ -962,7 +962,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer catmullRomTangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer p1, int p1Offset, java.nio.DoubleBuffer p2, int p2Offset, java.nio.DoubleBuffer p3, int p3Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && p1.hasArray() && p2.hasArray() && p3.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && p1.hasArray() && p1Offset >= 0 && p1Offset <= p1.limit() - 4 && p2.hasArray() && p2Offset >= 0 && p2Offset <= p2.limit() - 4 && p3.hasArray() && p3Offset >= 0 && p3Offset <= p3.limit() - 4) {
             Double4Ops.catmullRomTangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, p1.array(), p1.arrayOffset() + p1Offset, p2.array(), p2.arrayOffset() + p2Offset, p3.array(), p3.arrayOffset() + p3Offset, t);
             return dest;
         }
@@ -1002,7 +1002,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer hermite_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double t0X, double t0Y, double t0Z, double t0W, double v1X, double v1Y, double v1Z, double v1W, double t1X, double t1Y, double t1Z, double t1W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.hermite(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
             return dest;
         }
@@ -1038,7 +1038,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer hermite_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer t0, int t0Offset, java.nio.DoubleBuffer v1, int v1Offset, java.nio.DoubleBuffer t1, int t1Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && t0.hasArray() && v1.hasArray() && t1.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && t0.hasArray() && t0Offset >= 0 && t0Offset <= t0.limit() - 4 && v1.hasArray() && v1Offset >= 0 && v1Offset <= v1.limit() - 4 && t1.hasArray() && t1Offset >= 0 && t1Offset <= t1.limit() - 4) {
             Double4Ops.hermite(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, t0.array(), t0.arrayOffset() + t0Offset, v1.array(), v1.arrayOffset() + v1Offset, t1.array(), t1.arrayOffset() + t1Offset, t);
             return dest;
         }
@@ -1083,7 +1083,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer hermiteTangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double t0X, double t0Y, double t0Z, double t0W, double v1X, double v1Y, double v1Z, double v1W, double t1X, double t1Y, double t1Z, double t1W, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.hermiteTangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, t0X, t0Y, t0Z, t0W, v1X, v1Y, v1Z, v1W, t1X, t1Y, t1Z, t1W, t);
             return dest;
         }
@@ -1118,7 +1118,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer hermiteTangent_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer t0, int t0Offset, java.nio.DoubleBuffer v1, int v1Offset, java.nio.DoubleBuffer t1, int t1Offset, double t) {
-        if (dest.hasArray() && src.hasArray() && t0.hasArray() && v1.hasArray() && t1.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && t0.hasArray() && t0Offset >= 0 && t0Offset <= t0.limit() - 4 && v1.hasArray() && v1Offset >= 0 && v1Offset <= v1.limit() - 4 && t1.hasArray() && t1Offset >= 0 && t1Offset <= t1.limit() - 4) {
             Double4Ops.hermiteTangent(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, t0.array(), t0.arrayOffset() + t0Offset, v1.array(), v1.arrayOffset() + v1Offset, t1.array(), t1.arrayOffset() + t1Offset, t);
             return dest;
         }
@@ -1162,7 +1162,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lerp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW, double t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.lerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW, t);
             return dest;
         }
@@ -1190,7 +1190,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lerp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double t) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double4Ops.lerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, t);
             return dest;
         }
@@ -1221,7 +1221,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lerp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW, double tX, double tY, double tZ, double tW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.lerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW, tX, tY, tZ, tW);
             return dest;
         }
@@ -1250,7 +1250,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lerp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, java.nio.DoubleBuffer t, int tOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray() && t.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4 && t.hasArray() && tOffset >= 0 && tOffset <= t.limit() - 4) {
             Double4Ops.lerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, t.array(), t.arrayOffset() + tOffset);
             return dest;
         }
@@ -1285,7 +1285,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer absolute_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.absolute(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1312,7 +1312,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer acos_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.acos(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1339,7 +1339,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double bX, double bY, double bZ, double bW, double scalar) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, bX, bY, bZ, bW, scalar);
             return dest;
         }
@@ -1367,7 +1367,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer b, int bOffset, double scalar) {
-        if (dest.hasArray() && src.hasArray() && b.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && b.hasArray() && bOffset >= 0 && bOffset <= b.limit() - 4) {
             Double4Ops.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, b.array(), b.arrayOffset() + bOffset, scalar);
             return dest;
         }
@@ -1398,7 +1398,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double bX, double bY, double bZ, double bW, double cX, double cY, double cZ, double cW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, bX, bY, bZ, bW, cX, cY, cZ, cW);
             return dest;
         }
@@ -1427,7 +1427,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer b, int bOffset, java.nio.DoubleBuffer c, int cOffset) {
-        if (dest.hasArray() && src.hasArray() && b.hasArray() && c.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && b.hasArray() && bOffset >= 0 && bOffset <= b.limit() - 4 && c.hasArray() && cOffset >= 0 && cOffset <= c.limit() - 4) {
             Double4Ops.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, b.array(), b.arrayOffset() + bOffset, c.array(), c.arrayOffset() + cOffset);
             return dest;
         }
@@ -1460,7 +1460,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double angleBetween_api(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.angleBetween(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1476,7 +1476,56 @@ public final class Double4OpsKernelsTypedBuffer {
         double _t15 = Math.fma(otherW, _selfx, -(otherX * _selfw));
         double _t16 = Math.fma(otherY, _selfx, -(otherX * _selfy));
         double _t17 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
-        return Math.atan2(Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
+        double _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsTypedBuffer.angleBetween_degenerate(src, srcOffset, otherX, otherY, otherZ, otherW);
+        return Math.atan2(Math.sqrt(_ct0), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
+    }
+
+    public static double angleBetween_degenerate(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double4OpsKernelsTypedBuffer.angleBetween_degenerate_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
+        return Double4OpsKernelsTypedBuffer.angleBetween_degenerate_api(src, srcOffset, otherX, otherY, otherZ, otherW);
+    }
+
+    public static double angleBetween_degenerate_unsafe(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        return Double4OpsKernelsAddress.angleBetween_degenerate_unsafe(_srcBase, otherX, otherY, otherZ, otherW);
+    }
+
+    public static double angleBetween_degenerate_api(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
+            return Double4OpsKernelsArray.angleBetween_degenerate(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
+        }
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4OpsKernelsSegment.angleBetween_degenerate_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, otherX, otherY, otherZ, otherW);
+        }
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
+        double _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        double _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        double _t16 = otherW * _t6;
+        double _t17 = _selfz * _t7;
+        double _t18 = otherZ * _t6;
+        double _t19 = _selfw * _t7;
+        double _t20 = otherY * _t6;
+        double _t21 = _selfx * _t7;
+        double _t22 = otherX * _t6;
+        double _t23 = _selfy * _t7;
+        double _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        double _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        double _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        double _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        double _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        double _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        double _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        double _t58 = _t36 * _t51;
+        double _t59 = _t41 * _t51;
+        double _t60 = _t40 * _t51;
+        double _t61 = _t39 * _t51;
+        double _t62 = _t37 * _t51;
+        double _t63 = _t38 * _t51;
+        return Math.atan2(Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
     }
 
     public static double angleBetween_unsafe(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
@@ -1486,7 +1535,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double angleBetween_api(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (src.hasArray() && other.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             return Double4Ops.angleBetween(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1506,7 +1555,61 @@ public final class Double4OpsKernelsTypedBuffer {
         double _t15 = Math.fma(_otherw, _selfx, -(_otherx * _selfw));
         double _t16 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
         double _t17 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
-        return Math.atan2(Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
+        double _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsTypedBuffer.angleBetween_degenerate(src, srcOffset, other, otherOffset);
+        return Math.atan2(Math.sqrt(_ct0), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
+    }
+
+    public static double angleBetween_degenerate(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double4OpsKernelsTypedBuffer.angleBetween_degenerate_unsafe(src, srcOffset, other, otherOffset);
+        return Double4OpsKernelsTypedBuffer.angleBetween_degenerate_api(src, srcOffset, other, otherOffset);
+    }
+
+    public static double angleBetween_degenerate_unsafe(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 8L;
+        return Double4OpsKernelsAddress.angleBetween_degenerate_unsafe(_srcBase, _otherBase);
+    }
+
+    public static double angleBetween_degenerate_api(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
+            return Double4OpsKernelsArray.angleBetween_degenerate(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
+        }
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Double4OpsKernelsSegment.angleBetween_degenerate_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L);
+        }
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
+        double _otherx = other.get(otherOffset + 0);
+        double _othery = other.get(otherOffset + 1);
+        double _otherz = other.get(otherOffset + 2);
+        double _otherw = other.get(otherOffset + 3);
+        double _t6 = unitScale(_otherz, _otherw, Math.max(Math.abs(_otherx), Math.abs(_othery)));
+        double _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        double _t16 = _otherw * _t6;
+        double _t17 = _selfz * _t7;
+        double _t18 = _otherz * _t6;
+        double _t19 = _selfw * _t7;
+        double _t20 = _othery * _t6;
+        double _t21 = _selfx * _t7;
+        double _t22 = _otherx * _t6;
+        double _t23 = _selfy * _t7;
+        double _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        double _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        double _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        double _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        double _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        double _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        double _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        double _t58 = _t36 * _t51;
+        double _t59 = _t41 * _t51;
+        double _t60 = _t40 * _t51;
+        double _t61 = _t39 * _t51;
+        double _t62 = _t37 * _t51;
+        double _t63 = _t38 * _t51;
+        return Math.atan2(Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
     }
 
     public static java.nio.DoubleBuffer asin_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
@@ -1517,7 +1620,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer asin_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.asin(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1544,7 +1647,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer atan_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.atan(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1571,7 +1674,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer atan2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double x) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.atan2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, x);
             return dest;
         }
@@ -1598,7 +1701,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer atan2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double xX, double xY, double xZ, double xW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.atan2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, xX, xY, xZ, xW);
             return dest;
         }
@@ -1626,7 +1729,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer atan2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer x, int xOffset) {
-        if (dest.hasArray() && src.hasArray() && x.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && x.hasArray() && xOffset >= 0 && xOffset <= x.limit() - 4) {
             Double4Ops.atan2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, x.array(), x.arrayOffset() + xOffset);
             return dest;
         }
@@ -1657,7 +1760,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer cbrt_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.cbrt(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1684,7 +1787,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ceil_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.ceil(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1711,7 +1814,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer clamp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double min, double max) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.clamp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, min, max);
             return dest;
         }
@@ -1738,7 +1841,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer clamp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double minX, double minY, double minZ, double minW, double maxX, double maxY, double maxZ, double maxW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.clamp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, minX, minY, minZ, minW, maxX, maxY, maxZ, maxW);
             return dest;
         }
@@ -1767,7 +1870,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer clamp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer min, int minOffset, java.nio.DoubleBuffer max, int maxOffset) {
-        if (dest.hasArray() && src.hasArray() && min.hasArray() && max.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && min.hasArray() && minOffset >= 0 && minOffset <= min.limit() - 4 && max.hasArray() && maxOffset >= 0 && maxOffset <= max.limit() - 4) {
             Double4Ops.clamp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, min.array(), min.arrayOffset() + minOffset, max.array(), max.arrayOffset() + maxOffset);
             return dest;
         }
@@ -1800,7 +1903,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double compAdd_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.compAdd(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1819,7 +1922,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double compMax_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.compMax(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1838,7 +1941,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double compMin_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.compMin(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1857,7 +1960,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double compMul_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.compMul(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1878,7 +1981,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer copySign_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double sign) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.copySign(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, sign);
             return dest;
         }
@@ -1905,7 +2008,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer copySign_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double signX, double signY, double signZ, double signW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.copySign(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, signX, signY, signZ, signW);
             return dest;
         }
@@ -1933,7 +2036,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer copySign_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer sign, int signOffset) {
-        if (dest.hasArray() && src.hasArray() && sign.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && sign.hasArray() && signOffset >= 0 && signOffset <= sign.limit() - 4) {
             Double4Ops.copySign(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, sign.array(), sign.arrayOffset() + signOffset);
             return dest;
         }
@@ -1964,7 +2067,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer cos_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.cos(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1991,7 +2094,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer cosh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.cosh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2018,7 +2121,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer degrees_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.degrees(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2043,7 +2146,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double distance_api(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.distance(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2067,7 +2170,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double distance_api(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (src.hasArray() && other.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             return Double4Ops.distance(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2094,7 +2197,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double distanceSquared_api(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.distanceSquared(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2118,7 +2221,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double distanceSquared_api(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (src.hasArray() && other.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             return Double4Ops.distanceSquared(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2145,7 +2248,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double dot_api(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.dot(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2165,7 +2268,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double dot_api(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (src.hasArray() && other.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             return Double4Ops.dot(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2190,7 +2293,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer exp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.exp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2217,7 +2320,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer exp2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.exp2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2244,7 +2347,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer expm1_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.expm1(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2271,7 +2374,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer faceforward_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double IX, double IY, double IZ, double IW, double NrefX, double NrefY, double NrefZ, double NrefW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.faceforward(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, IX, IY, IZ, IW, NrefX, NrefY, NrefZ, NrefW);
             return dest;
         }
@@ -2308,7 +2411,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer faceforward_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer I, int IOffset, java.nio.DoubleBuffer Nref, int NrefOffset) {
-        if (dest.hasArray() && src.hasArray() && I.hasArray() && Nref.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && I.hasArray() && IOffset >= 0 && IOffset <= I.limit() - 4 && Nref.hasArray() && NrefOffset >= 0 && NrefOffset <= Nref.limit() - 4) {
             Double4Ops.faceforward(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, I.array(), I.arrayOffset() + IOffset, Nref.array(), Nref.arrayOffset() + NrefOffset);
             return dest;
         }
@@ -2351,7 +2454,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer floor_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.floor(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2378,7 +2481,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer fract_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.fract(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2405,7 +2508,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer hypot_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double y) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.hypot(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, y);
             return dest;
         }
@@ -2432,7 +2535,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer hypot_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double yX, double yY, double yZ, double yW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.hypot(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, yX, yY, yZ, yW);
             return dest;
         }
@@ -2460,7 +2563,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer hypot_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer y, int yOffset) {
-        if (dest.hasArray() && src.hasArray() && y.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && y.hasArray() && yOffset >= 0 && yOffset <= y.limit() - 4) {
             Double4Ops.hypot(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, y.array(), y.arrayOffset() + yOffset);
             return dest;
         }
@@ -2491,7 +2594,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer inverse_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.inverse(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2518,7 +2621,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer inverseSqrt_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.inverseSqrt(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2543,7 +2646,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double length_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.length(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2562,7 +2665,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double lengthSquared_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.lengthSquared(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2583,7 +2686,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer log_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.log(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2610,7 +2713,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer log10_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.log10(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2637,7 +2740,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer log1p_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.log1p(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2664,7 +2767,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer log2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.log2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2691,7 +2794,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double manhattanDistance_api(java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.manhattanDistance(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2711,7 +2814,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double manhattanDistance_api(java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (src.hasArray() && other.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             return Double4Ops.manhattanDistance(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2734,7 +2837,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static double manhattanLength_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return Double4Ops.manhattanLength(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2755,7 +2858,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer max_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.max(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, scalar);
             return dest;
         }
@@ -2782,7 +2885,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer max_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.max(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -2810,7 +2913,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer max_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double4Ops.max(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -2841,7 +2944,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer min_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.min(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, scalar);
             return dest;
         }
@@ -2868,7 +2971,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer min_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.min(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -2896,7 +2999,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer min_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double4Ops.min(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -2927,7 +3030,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mod_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double y) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.mod(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, y);
             return dest;
         }
@@ -2939,11 +3042,10 @@ public final class Double4OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _selfz = src.get(srcOffset + 2);
         double _selfw = src.get(srcOffset + 3);
-        double _rcp0 = 1.0 / y;
-        dest.put(destOffset + 0, Math.fma(-y, Math.floor(_selfx * _rcp0), _selfx));
-        dest.put(destOffset + 1, Math.fma(-y, Math.floor(_selfy * _rcp0), _selfy));
-        dest.put(destOffset + 2, Math.fma(-y, Math.floor(_selfz * _rcp0), _selfz));
-        dest.put(destOffset + 3, Math.fma(-y, Math.floor(_selfw * _rcp0), _selfw));
+        dest.put(destOffset + 0, flooredMod(_selfx, y));
+        dest.put(destOffset + 1, flooredMod(_selfy, y));
+        dest.put(destOffset + 2, flooredMod(_selfz, y));
+        dest.put(destOffset + 3, flooredMod(_selfw, y));
         return dest;
     }
 
@@ -2955,7 +3057,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mod_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double yX, double yY, double yZ, double yW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.mod(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, yX, yY, yZ, yW);
             return dest;
         }
@@ -2967,10 +3069,10 @@ public final class Double4OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _selfz = src.get(srcOffset + 2);
         double _selfw = src.get(srcOffset + 3);
-        dest.put(destOffset + 0, Math.fma(-yX, Math.floor(_selfx / yX), _selfx));
-        dest.put(destOffset + 1, Math.fma(-yY, Math.floor(_selfy / yY), _selfy));
-        dest.put(destOffset + 2, Math.fma(-yZ, Math.floor(_selfz / yZ), _selfz));
-        dest.put(destOffset + 3, Math.fma(-yW, Math.floor(_selfw / yW), _selfw));
+        dest.put(destOffset + 0, flooredMod(_selfx, yX));
+        dest.put(destOffset + 1, flooredMod(_selfy, yY));
+        dest.put(destOffset + 2, flooredMod(_selfz, yZ));
+        dest.put(destOffset + 3, flooredMod(_selfw, yW));
         return dest;
     }
 
@@ -2983,7 +3085,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mod_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer y, int yOffset) {
-        if (dest.hasArray() && src.hasArray() && y.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && y.hasArray() && yOffset >= 0 && yOffset <= y.limit() - 4) {
             Double4Ops.mod(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, y.array(), y.arrayOffset() + yOffset);
             return dest;
         }
@@ -2999,10 +3101,10 @@ public final class Double4OpsKernelsTypedBuffer {
         double _yy = y.get(yOffset + 1);
         double _yz = y.get(yOffset + 2);
         double _yw = y.get(yOffset + 3);
-        dest.put(destOffset + 0, Math.fma(-_yx, Math.floor(_selfx / _yx), _selfx));
-        dest.put(destOffset + 1, Math.fma(-_yy, Math.floor(_selfy / _yy), _selfy));
-        dest.put(destOffset + 2, Math.fma(-_yz, Math.floor(_selfz / _yz), _selfz));
-        dest.put(destOffset + 3, Math.fma(-_yw, Math.floor(_selfw / _yw), _selfw));
+        dest.put(destOffset + 0, flooredMod(_selfx, _yx));
+        dest.put(destOffset + 1, flooredMod(_selfy, _yy));
+        dest.put(destOffset + 2, flooredMod(_selfz, _yz));
+        dest.put(destOffset + 3, flooredMod(_selfw, _yw));
         return dest;
     }
 
@@ -3014,7 +3116,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer nextDown_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.nextDown(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3041,7 +3143,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer nextUp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.nextUp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3068,7 +3170,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer normalize_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.normalize(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3082,7 +3184,7 @@ public final class Double4OpsKernelsTypedBuffer {
         double _selfw = src.get(srcOffset + 3);
         double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         double _t4 = (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             dest.put(destOffset + 0, _selfx * _t4);
             dest.put(destOffset + 1, _selfy * _t4);
             dest.put(destOffset + 2, _selfz * _t4);
@@ -3104,7 +3206,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer normalizeMul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double length) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.normalizeMul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, length);
             return dest;
         }
@@ -3118,7 +3220,7 @@ public final class Double4OpsKernelsTypedBuffer {
         double _selfw = src.get(srcOffset + 3);
         double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         double _t5 = length * (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             dest.put(destOffset + 0, _selfx * _t5);
             dest.put(destOffset + 1, _selfy * _t5);
             dest.put(destOffset + 2, _selfz * _t5);
@@ -3140,7 +3242,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer outerProduct_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double rowX, double rowY, double rowZ, double rowW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.outerProduct(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, rowX, rowY, rowZ, rowW);
             return dest;
         }
@@ -3180,7 +3282,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer outerProduct_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer row, int rowOffset) {
-        if (dest.hasArray() && src.hasArray() && row.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && row.hasArray() && rowOffset >= 0 && rowOffset <= row.limit() - 4) {
             Double4Ops.outerProduct(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, row.array(), row.arrayOffset() + rowOffset);
             return dest;
         }
@@ -3223,7 +3325,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer pow_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double exponent) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.pow(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, exponent);
             return dest;
         }
@@ -3250,7 +3352,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer pow_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double exponentX, double exponentY, double exponentZ, double exponentW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.pow(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, exponentX, exponentY, exponentZ, exponentW);
             return dest;
         }
@@ -3278,7 +3380,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer pow_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer exponent, int exponentOffset) {
-        if (dest.hasArray() && src.hasArray() && exponent.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && exponent.hasArray() && exponentOffset >= 0 && exponentOffset <= exponent.limit() - 4) {
             Double4Ops.pow(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, exponent.array(), exponent.arrayOffset() + exponentOffset);
             return dest;
         }
@@ -3309,7 +3411,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer project_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double ontoX, double ontoY, double ontoZ, double ontoW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.project(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, ontoX, ontoY, ontoZ, ontoW);
             return dest;
         }
@@ -3321,13 +3423,11 @@ public final class Double4OpsKernelsTypedBuffer {
         double _selfy = src.get(srcOffset + 1);
         double _selfz = src.get(srcOffset + 2);
         double _selfw = src.get(srcOffset + 3);
-        double _t6 = Math.fma(ontoW, _selfw, Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy)));
-        double _t7 = Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
-        double _t7_inv = 1.0 / _t7;
-        dest.put(destOffset + 0, ontoX * _t6 * _t7_inv);
-        dest.put(destOffset + 1, ontoY * _t6 * _t7_inv);
-        dest.put(destOffset + 2, ontoZ * _t6 * _t7_inv);
-        dest.put(destOffset + 3, ontoW * _t6 * _t7_inv);
+        double _sp0 = Math.fma(ontoW, _selfw, Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy))) / Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
+        dest.put(destOffset + 0, ontoX * _sp0);
+        dest.put(destOffset + 1, ontoY * _sp0);
+        dest.put(destOffset + 2, ontoZ * _sp0);
+        dest.put(destOffset + 3, ontoW * _sp0);
         return dest;
     }
 
@@ -3340,7 +3440,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer project_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer onto, int ontoOffset) {
-        if (dest.hasArray() && src.hasArray() && onto.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && onto.hasArray() && ontoOffset >= 0 && ontoOffset <= onto.limit() - 4) {
             Double4Ops.project(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, onto.array(), onto.arrayOffset() + ontoOffset);
             return dest;
         }
@@ -3356,13 +3456,11 @@ public final class Double4OpsKernelsTypedBuffer {
         double _ontoy = onto.get(ontoOffset + 1);
         double _ontoz = onto.get(ontoOffset + 2);
         double _ontow = onto.get(ontoOffset + 3);
-        double _t6 = Math.fma(_ontow, _selfw, Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy)));
-        double _t7 = Math.fma(_ontow, _ontow, Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy)));
-        double _t7_inv = 1.0 / _t7;
-        dest.put(destOffset + 0, _ontox * _t6 * _t7_inv);
-        dest.put(destOffset + 1, _ontoy * _t6 * _t7_inv);
-        dest.put(destOffset + 2, _ontoz * _t6 * _t7_inv);
-        dest.put(destOffset + 3, _ontow * _t6 * _t7_inv);
+        double _sp0 = Math.fma(_ontow, _selfw, Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy))) / Math.fma(_ontow, _ontow, Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy)));
+        dest.put(destOffset + 0, _ontox * _sp0);
+        dest.put(destOffset + 1, _ontoy * _sp0);
+        dest.put(destOffset + 2, _ontoz * _sp0);
+        dest.put(destOffset + 3, _ontow * _sp0);
         return dest;
     }
 
@@ -3374,7 +3472,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer projectOnPlane_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double normalX, double normalY, double normalZ, double normalW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.projectOnPlane(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, normalX, normalY, normalZ, normalW);
             return dest;
         }
@@ -3403,7 +3501,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer projectOnPlane_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer normal, int normalOffset) {
-        if (dest.hasArray() && src.hasArray() && normal.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && normal.hasArray() && normalOffset >= 0 && normalOffset <= normal.limit() - 4) {
             Double4Ops.projectOnPlane(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, normal.array(), normal.arrayOffset() + normalOffset);
             return dest;
         }
@@ -3435,7 +3533,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer radians_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.radians(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3462,7 +3560,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer reflect_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double normalX, double normalY, double normalZ, double normalW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.reflect(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, normalX, normalY, normalZ, normalW);
             return dest;
         }
@@ -3491,7 +3589,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer reflect_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer normal, int normalOffset) {
-        if (dest.hasArray() && src.hasArray() && normal.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && normal.hasArray() && normalOffset >= 0 && normalOffset <= normal.limit() - 4) {
             Double4Ops.reflect(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, normal.array(), normal.arrayOffset() + normalOffset);
             return dest;
         }
@@ -3523,7 +3621,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer refract_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double normalX, double normalY, double normalZ, double normalW, double eta) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.refract(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, normalX, normalY, normalZ, normalW, eta);
             return dest;
         }
@@ -3561,7 +3659,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer refract_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer normal, int normalOffset, double eta) {
-        if (dest.hasArray() && src.hasArray() && normal.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && normal.hasArray() && normalOffset >= 0 && normalOffset <= normal.limit() - 4) {
             Double4Ops.refract(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, normal.array(), normal.arrayOffset() + normalOffset, eta);
             return dest;
         }
@@ -3602,7 +3700,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer round_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.round(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3629,7 +3727,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer sign_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.sign(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3656,7 +3754,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer sin_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.sin(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3683,7 +3781,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer sinh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.sinh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3710,7 +3808,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer smoothstep_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double edge0, double edge1) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.smoothstep(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, edge0, edge1);
             return dest;
         }
@@ -3743,7 +3841,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer smoothstep_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double edge0X, double edge0Y, double edge0Z, double edge0W, double edge1X, double edge1Y, double edge1Z, double edge1W) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.smoothstep(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, edge0X, edge0Y, edge0Z, edge0W, edge1X, edge1Y, edge1Z, edge1W);
             return dest;
         }
@@ -3776,7 +3874,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer smoothstep_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer edge0, int edge0Offset, java.nio.DoubleBuffer edge1, int edge1Offset) {
-        if (dest.hasArray() && src.hasArray() && edge0.hasArray() && edge1.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && edge0.hasArray() && edge0Offset >= 0 && edge0Offset <= edge0.limit() - 4 && edge1.hasArray() && edge1Offset >= 0 && edge1Offset <= edge1.limit() - 4) {
             Double4Ops.smoothstep(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, edge0.array(), edge0.arrayOffset() + edge0Offset, edge1.array(), edge1.arrayOffset() + edge1Offset);
             return dest;
         }
@@ -3815,7 +3913,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer sqrt_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.sqrt(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3842,7 +3940,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer step_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double edge) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.step(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, edge);
             return dest;
         }
@@ -3869,7 +3967,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer step_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double edgeX, double edgeY, double edgeZ, double edgeW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.step(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, edgeX, edgeY, edgeZ, edgeW);
             return dest;
         }
@@ -3897,7 +3995,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer step_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer edge, int edgeOffset) {
-        if (dest.hasArray() && src.hasArray() && edge.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && edge.hasArray() && edgeOffset >= 0 && edgeOffset <= edge.limit() - 4) {
             Double4Ops.step(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, edge.array(), edge.arrayOffset() + edgeOffset);
             return dest;
         }
@@ -3928,7 +4026,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer tan_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.tan(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3955,7 +4053,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer tanh_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.tanh(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3982,7 +4080,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer trunc_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.trunc(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4009,7 +4107,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer ulp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.ulp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4037,7 +4135,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preMul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer mat, int matOffset) {
-        if (dest.hasArray() && src.hasArray() && mat.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && mat.hasArray() && matOffset >= 0 && matOffset <= mat.limit() - 16) {
             Double4Ops.preMul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
             return dest;
         }
@@ -4080,7 +4178,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double quatX, double quatY, double quatZ, double quatW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.rotate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, quatX, quatY, quatZ, quatW);
             return dest;
         }
@@ -4111,7 +4209,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer quat, int quatOffset) {
-        if (dest.hasArray() && src.hasArray() && quat.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && quat.hasArray() && quatOffset >= 0 && quatOffset <= quat.limit() - 4) {
             Double4Ops.rotate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, quat.array(), quat.arrayOffset() + quatOffset);
             return dest;
         }
@@ -4145,7 +4243,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.rotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, axisX, axisY, axisZ);
             return dest;
         }
@@ -4177,7 +4275,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer axis, int axisOffset, double angle) {
-        if (dest.hasArray() && src.hasArray() && axis.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             Double4Ops.rotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset, angle);
             return dest;
         }
@@ -4211,7 +4309,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateInverse_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double quatX, double quatY, double quatZ, double quatW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.rotateInverse(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, quatX, quatY, quatZ, quatW);
             return dest;
         }
@@ -4242,7 +4340,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateInverse_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer quat, int quatOffset) {
-        if (dest.hasArray() && src.hasArray() && quat.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && quat.hasArray() && quatOffset >= 0 && quatOffset <= quat.limit() - 4) {
             Double4Ops.rotateInverse(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, quat.array(), quat.arrayOffset() + quatOffset);
             return dest;
         }
@@ -4276,7 +4374,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.rotateX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4305,7 +4403,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.rotateY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4334,7 +4432,7 @@ public final class Double4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             Double4Ops.rotateZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4355,4 +4453,48 @@ public final class Double4OpsKernelsTypedBuffer {
         return dest;
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

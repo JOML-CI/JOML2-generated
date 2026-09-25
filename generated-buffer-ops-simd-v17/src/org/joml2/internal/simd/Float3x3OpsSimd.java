@@ -140,7 +140,7 @@ public final class Float3x3OpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -152,7 +152,7 @@ public final class Float3x3OpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 238609294 ? -1 : count * 9) >= 0 && srcOffset <= src.limit() - (count > 238609294 ? -1 : count * 9)) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr(dest, destOffset, _srcArr, _srcOff, count * 9);
@@ -164,7 +164,7 @@ public final class Float3x3OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr_one(_destArr, _destOff, src, srcOffset);
@@ -176,7 +176,7 @@ public final class Float3x3OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 238609294 ? -1 : count * 9) >= 0 && destOffset <= dest.limit() - (count > 238609294 ? -1 : count * 9)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr(_destArr, _destOff, src, srcOffset, count * 9);
@@ -188,10 +188,10 @@ public final class Float3x3OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr_one(_destArr, _destOff, _srcArr, _srcOff);
@@ -200,7 +200,7 @@ public final class Float3x3OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < 9; _i++)
@@ -214,10 +214,10 @@ public final class Float3x3OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 238609294 ? -1 : count * 9) >= 0 && destOffset <= dest.limit() - (count > 238609294 ? -1 : count * 9)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 238609294 ? -1 : count * 9) >= 0 && srcOffset <= src.limit() - (count > 238609294 ? -1 : count * 9)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr(_destArr, _destOff, _srcArr, _srcOff, count * 9);
@@ -226,7 +226,7 @@ public final class Float3x3OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 238609294 ? -1 : count * 9) >= 0 && srcOffset <= src.limit() - (count > 238609294 ? -1 : count * 9)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < count * 9; _i++)

@@ -167,8 +167,14 @@ public final class DoubleSphereImpl implements DoubleSphere {
 
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      *
      * @param m the transformation matrix to apply
      * @param dest will hold the result
@@ -192,8 +198,14 @@ public final class DoubleSphereImpl implements DoubleSphere {
 
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -202,26 +214,6 @@ public final class DoubleSphereImpl implements DoubleSphere {
      * @param dest will hold the result
      * @return dest
      */
-    /** Private vector tail of {@code transform_s10286e8d}: loads, computes and stores every column; reached only through it. */
-    private static void transform_s10286e8d_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _t9, double _t10, double _t11, double[] mData) {
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, mData, 8);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, mData, 0);
-        var _sv2 = DoubleVector.fromArray(COL_SPECIES, mData, 4);
-        var _sv3 = DoubleVector.fromArray(COL_SPECIES, mData, 12);
-        var _col0 = _sv0.fma(DoubleVector.broadcast(COL_SPECIES, _r9), _sv1.fma(DoubleVector.broadcast(COL_SPECIES, _r10), _sv2.fma(DoubleVector.broadcast(COL_SPECIES, _r11), _sv3))).withLane(3, _r12 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code transform_s5d81934a}: loads, computes and stores every column; reached only through it. */
-    private static void transform_s5d81934a_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _t9, double _t10, double _t11, double[] mData) {
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, mData, 8);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, mData, 0);
-        var _sv2 = DoubleVector.fromArray(COL_SPECIES, mData, 4);
-        var _sv3 = DoubleVector.fromArray(COL_SPECIES, mData, 12);
-        var _col0 = _sv0.mul(DoubleVector.broadcast(COL_SPECIES, _r9)).add(_sv1.mul(DoubleVector.broadcast(COL_SPECIES, _r10)).add(_sv2.mul(DoubleVector.broadcast(COL_SPECIES, _r11)).add(_sv3))).withLane(3, _r12 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
-    }
-
     public DoubleSphere transform(Double4x4R m, @Mutated DoubleSphere dest) {
         if (SimdMath.USE_FMA) return transform_fma(m, dest);
         return transform_mulAdd(m, dest);
@@ -273,6 +265,26 @@ public final class DoubleSphereImpl implements DoubleSphere {
         double _t11 = Math.abs(Math.fma(_r1, _r6, Math.fma(_r3, _r7, _r5 * _r8)));
         transform_s5d81934a_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _t9, _t10, _t11, mData);
         return dest;
+    }
+
+    /** Private vector tail of {@code transform_s10286e8d}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s10286e8d_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _t9, double _t10, double _t11, double[] mData) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = DoubleVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = DoubleVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = DoubleVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.fma(DoubleVector.broadcast(COL_SPECIES, _r9), _sv1.fma(DoubleVector.broadcast(COL_SPECIES, _r10), _sv2.fma(DoubleVector.broadcast(COL_SPECIES, _r11), _sv3))).withLane(3, _r12 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code transform_s5d81934a}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s5d81934a_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _t9, double _t10, double _t11, double[] mData) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = DoubleVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = DoubleVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = DoubleVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.mul(DoubleVector.broadcast(COL_SPECIES, _r9)).add(_sv1.mul(DoubleVector.broadcast(COL_SPECIES, _r10)).add(_sv2.mul(DoubleVector.broadcast(COL_SPECIES, _r11)).add(_sv3))).withLane(3, _r12 * Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
     }
 
 

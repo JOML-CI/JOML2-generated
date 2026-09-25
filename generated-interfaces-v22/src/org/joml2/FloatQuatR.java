@@ -20,6 +20,11 @@ import java.lang.foreign.MemorySegment;
  * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
  * arguments.
  * <p>
+ * A rotation is a unit quaternion. The operations that apply this quaternion as a rotation - the
+ * transforms, the matrix conversions, the Euler angles, {@code angleTo} and {@code rotateTowards} -
+ * assume unit length and do not divide it out. A value that has drifted from unit length (after
+ * many multiplications, say) gives wrong results rather than an error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
@@ -1213,6 +1218,8 @@ public interface FloatQuatR {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param other the quaternion to measure the angle to
      * @return the angle in radians between this quaternion and {@code other}
@@ -1225,6 +1232,8 @@ public interface FloatQuatR {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -1452,11 +1461,18 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1467,6 +1483,11 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1475,6 +1496,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1485,11 +1508,18 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1500,6 +1530,11 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1508,6 +1543,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1518,11 +1555,18 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1533,6 +1577,11 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1541,6 +1590,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1551,11 +1602,18 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1566,6 +1624,11 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1574,6 +1637,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1584,11 +1649,18 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1599,6 +1671,11 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1607,6 +1684,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1617,11 +1696,18 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1632,6 +1718,11 @@ public interface FloatQuatR {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1640,6 +1731,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2579,6 +2672,8 @@ public interface FloatQuatR {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
      * down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -2596,6 +2691,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -2610,6 +2707,8 @@ public interface FloatQuatR {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code float} resolution
      * down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -2630,6 +2729,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
@@ -2648,6 +2749,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -2664,6 +2770,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2683,6 +2794,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -2702,6 +2818,11 @@ public interface FloatQuatR {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2895,10 +3016,10 @@ public interface FloatQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDir the direction to rotate from (must be a unit vector)
      * @param toDir the direction to rotate onto (must be a unit vector)
@@ -2916,10 +3037,10 @@ public interface FloatQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2941,10 +3062,10 @@ public interface FloatQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -2967,10 +3088,10 @@ public interface FloatQuatR {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 6e-8}
+     * (about 3.5e-4 radians, 0.02 degrees, from opposite); only there is the perpendicular axis
+     * chosen arbitrarily, and the result is then off by at most that angle.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3291,6 +3412,8 @@ public interface FloatQuatR {
 
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -3303,6 +3426,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -3313,6 +3438,8 @@ public interface FloatQuatR {
     /**
      * Transform ({@code x}, {@code y}, {@code z}) by this quaternion and store the result in
      * {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -3328,6 +3455,8 @@ public interface FloatQuatR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -3339,6 +3468,8 @@ public interface FloatQuatR {
 
     /**
      * Transform {@code v} by this quaternion and store the result back into {@code v}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform (also receives the result)
      * @return {@code v}

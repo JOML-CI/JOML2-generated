@@ -915,6 +915,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t142 = _t138 * _t120;
         double _t143 = t * Math.atan2(Math.sqrt(_t136), _t119);
         double _t144 = Math.sin(_t143);
+        double _sp0 = _t138 * _t144;
         double _t145 = _t138 * _t124;
         double _t146 = t * _t145;
         double _t147 = _t145 * _t119;
@@ -940,9 +941,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             _t178 = t * _t126;
             _t179 = t * _t130;
         } else {
-            _t177 = (_t147 * _t139 + _t125) * _t138 * _t144 - _t163 * _t139;
-            _t178 = (_t147 * _t140 + _t126) * _t138 * _t144 - _t163 * _t140;
-            _t179 = (_t147 * _t142 + _t130) * _t138 * _t144 - _t163 * _t142;
+            _t177 = (_t147 * _t139 + _t125) * _sp0 - _t163 * _t139;
+            _t178 = (_t147 * _t140 + _t126) * _sp0 - _t163 * _t140;
+            _t179 = (_t147 * _t142 + _t130) * _sp0 - _t163 * _t142;
         }
         double _buf0 = this.rX * _t159 + this.rW * _t160 + (this.rY * _t161 - this.rZ * _t162);
         double _buf1 = this.rY * _t159 + this.rZ * _t160 + (this.rW * _t162 - this.rX * _t161);
@@ -1302,6 +1303,10 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
     /**
      * Compute the exponential of this dual quaternion and store the result in {@code dest}.
+     * <p>
+     * This dual quaternion is read as a screw-motion generator, a pure dual quaternion as
+     * {@code log} returns it: its scalar parts {@code rW} and {@code dW} are taken as zero and
+     * ignored. The result is a unit dual quaternion.
      *
      * @param dest will hold the result
      * @return dest
@@ -1310,9 +1315,10 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
         double _t8 = this.rX * this.rX + this.rY * this.rY + this.rZ * this.rZ;
         double _t9 = this.rX * this.dX + this.rY * this.dY + this.rZ * this.dZ;
-        double _t10 = (1.0 / Math.sqrt(_t8));
         double _t11 = Math.sqrt(_t8);
+        double _t10 = 1.0 / _t11;
         double _t12 = Math.sin(_t11);
+        double _sp0 = _t10 * _t12;
         double _t13 = this.rX * _t10;
         double _t14 = this.rY * _t10;
         double _t15 = this.rZ * _t10;
@@ -1333,9 +1339,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             d.rY = _t14 * _t12;
             d.rZ = _t15 * _t12;
             d.rW = _t17;
-            d.dX = _t13 * _t18 + (this.dX - _t13 * _t16) * _t10 * _t12;
-            d.dY = _t14 * _t18 + (this.dY - _t14 * _t16) * _t10 * _t12;
-            d.dZ = _t15 * _t18 + (this.dZ - _t15 * _t16) * _t10 * _t12;
+            d.dX = _t13 * _t18 + (this.dX - _t13 * _t16) * _sp0;
+            d.dY = _t14 * _t18 + (this.dY - _t14 * _t16) * _sp0;
+            d.dZ = _t15 * _t18 + (this.dZ - _t15 * _t16) * _sp0;
             d.dW = -(_t16 * _t12);
         }
         return d;
@@ -1362,11 +1368,18 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Get the Euler angles in radians of this dual quaternion, to be applied about the X, Y and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param dest will hold the result
      * @return dest
@@ -1401,11 +1414,18 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Get the Euler angles in radians of this dual quaternion, to be applied about the X, Z and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param dest will hold the result
      * @return dest
@@ -1440,11 +1460,18 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Y, X and Z
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param dest will hold the result
      * @return dest
@@ -1479,11 +1506,18 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Y, Z and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param dest will hold the result
      * @return dest
@@ -1516,11 +1550,18 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Z, X and Y
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param dest will hold the result
      * @return dest
@@ -1553,11 +1594,18 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Z, Y and X
      * axes, in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param dest will hold the result
      * @return dest
@@ -1644,17 +1692,15 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
         double _t12 = this.rX * this.rX + this.rY * this.rY + (this.rZ * this.rZ + this.rW * this.rW);
         double _t12_inv = 1.0 / _t12;
-        double _t14 = 2.0 * (this.rX * this.dX + this.rY * this.dY + (this.rZ * this.dZ + this.rW * this.dW));
-        double _t15 = _t12 * _t12;
-        double _t15_inv = 1.0 / _t15;
+        double _sp0 = 2.0 * (this.rX * this.dX + this.rY * this.dY + (this.rZ * this.dZ + this.rW * this.dW)) / (_t12 * _t12);
         double _buf0 = -(this.rX * _t12_inv);
         double _buf1 = -(this.rY * _t12_inv);
         double _buf2 = -(this.rZ * _t12_inv);
         double _buf3 = this.rW * _t12_inv;
-        d.dX = this.rX * _t14 * _t15_inv - this.dX * _t12_inv;
-        d.dY = this.rY * _t14 * _t15_inv - this.dY * _t12_inv;
-        d.dZ = this.rZ * _t14 * _t15_inv - this.dZ * _t12_inv;
-        d.dW = this.dW * _t12_inv - this.rW * _t14 * _t15_inv;
+        d.dX = this.rX * _sp0 - this.dX * _t12_inv;
+        d.dY = this.rY * _sp0 - this.dY * _t12_inv;
+        d.dZ = this.rZ * _sp0 - this.dZ * _t12_inv;
+        d.dW = this.dW * _t12_inv - this.rW * _sp0;
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -1689,6 +1735,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
     /**
      * Compute the natural logarithm of this dual quaternion and store the result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion; the result is pure (both scalar parts
+     * zero), the input {@code exp} expects.
      *
      * @param dest will hold the result
      * @return dest
@@ -1717,6 +1766,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t21 = (1.0 / Math.sqrt(_t20));
         double _t23 = _t21 * _t8;
         double _t24 = Math.atan2(Math.sqrt(_t20), _t11);
+        double _sp0 = _t21 * _t24;
         double _t25 = _t21 * _t9;
         double _t26 = _t21 * _t10;
         double _t27 = _t21 * (this.rW < 0.0 ? -this.dW : this.dW);
@@ -1732,9 +1782,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             d.rX = _t23 * _t24;
             d.rY = _t25 * _t24;
             d.rZ = _t26 * _t24;
-            d.dX = (_t28 * _t23 + _t12) * _t21 * _t24 - _t23 * _t27;
-            d.dY = (_t28 * _t25 + _t14) * _t21 * _t24 - _t25 * _t27;
-            d.dZ = (_t28 * _t26 + _t15) * _t21 * _t24 - _t26 * _t27;
+            d.dX = (_t28 * _t23 + _t12) * _sp0 - _t23 * _t27;
+            d.dY = (_t28 * _t25 + _t14) * _sp0 - _t25 * _t27;
+            d.dZ = (_t28 * _t26 + _t15) * _sp0 - _t26 * _t27;
         }
         d.rW = 0.0;
         d.dW = 0.0;
@@ -1764,33 +1814,33 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t15 = m.m00() + (1.0 - m.m11() - m.m22());
         double _t16 = m.m11() + (_t1 - m.m22());
         double _t17 = m.m22() + (_t1 - m.m11());
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t20 = (1.0 / Math.sqrt(_t16));
-        double _t21 = (1.0 / Math.sqrt(_t17));
-        double _t22 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         double _t62, _t63, _t64, _t65;
         if (_t13 > 0.0) {
-            _t62 = 0.5 * _t3 * _t18;
-            _t63 = 0.5 * _t7 * _t18;
-            _t64 = 0.5 * _t9 * _t18;
+            _t62 = _sp0 * _t3;
+            _t63 = _sp0 * _t7;
+            _t64 = _sp0 * _t9;
             _t65 = 0.5 * Math.sqrt(_t14);
         } else {
             if (m.m00() > _t4) {
                 _t62 = 0.5 * Math.sqrt(_t15);
-                _t63 = 0.5 * _t5 * _t22;
-                _t64 = 0.5 * _t6 * _t22;
-                _t65 = 0.5 * _t3 * _t22;
+                _t63 = _sp3 * _t5;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t3;
             } else {
                 if (m.m11() > m.m22()) {
-                    _t62 = 0.5 * _t5 * _t20;
+                    _t62 = _sp1 * _t5;
                     _t63 = 0.5 * Math.sqrt(_t16);
-                    _t64 = 0.5 * _t8 * _t20;
-                    _t65 = 0.5 * _t7 * _t20;
+                    _t64 = _sp1 * _t8;
+                    _t65 = _sp1 * _t7;
                 } else {
-                    _t62 = 0.5 * _t6 * _t21;
-                    _t63 = 0.5 * _t8 * _t21;
+                    _t62 = _sp2 * _t6;
+                    _t63 = _sp2 * _t8;
                     _t64 = 0.5 * Math.sqrt(_t17);
-                    _t65 = 0.5 * _t9 * _t21;
+                    _t65 = _sp2 * _t9;
                 }
             }
         }
@@ -1828,33 +1878,33 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t15 = m.m00() + (1.0 - m.m11() - m.m22());
         double _t16 = m.m11() + (_t1 - m.m22());
         double _t17 = m.m22() + (_t1 - m.m11());
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t20 = (1.0 / Math.sqrt(_t16));
-        double _t21 = (1.0 / Math.sqrt(_t17));
-        double _t22 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         double _t62, _t63, _t64, _t65;
         if (_t13 > 0.0) {
-            _t62 = 0.5 * _t3 * _t18;
-            _t63 = 0.5 * _t7 * _t18;
-            _t64 = 0.5 * _t9 * _t18;
+            _t62 = _sp0 * _t3;
+            _t63 = _sp0 * _t7;
+            _t64 = _sp0 * _t9;
             _t65 = 0.5 * Math.sqrt(_t14);
         } else {
             if (m.m00() > _t4) {
                 _t62 = 0.5 * Math.sqrt(_t15);
-                _t63 = 0.5 * _t5 * _t22;
-                _t64 = 0.5 * _t6 * _t22;
-                _t65 = 0.5 * _t3 * _t22;
+                _t63 = _sp3 * _t5;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t3;
             } else {
                 if (m.m11() > m.m22()) {
-                    _t62 = 0.5 * _t5 * _t20;
+                    _t62 = _sp1 * _t5;
                     _t63 = 0.5 * Math.sqrt(_t16);
-                    _t64 = 0.5 * _t8 * _t20;
-                    _t65 = 0.5 * _t7 * _t20;
+                    _t64 = _sp1 * _t8;
+                    _t65 = _sp1 * _t7;
                 } else {
-                    _t62 = 0.5 * _t6 * _t21;
-                    _t63 = 0.5 * _t8 * _t21;
+                    _t62 = _sp2 * _t6;
+                    _t63 = _sp2 * _t8;
                     _t64 = 0.5 * Math.sqrt(_t17);
-                    _t65 = 0.5 * _t9 * _t21;
+                    _t65 = _sp2 * _t9;
                 }
             }
         }
@@ -1871,7 +1921,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
 
     /**
-     * Set this dual quaternion to the rotation represented by the given matrix, with zero
+     * Set this dual quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first), with zero
      * translation.
      *
      * @param m the matrix to convert
@@ -1891,32 +1943,32 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t15 = m.m00() + (1.0 - m.m11() - m.m22());
         double _t16 = m.m11() + (_t1 - m.m22());
         double _t17 = m.m22() + (_t1 - m.m11());
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t13 > 0.0) {
-            this.rX = 0.5 * _t3 * _t18;
-            this.rY = 0.5 * _t7 * _t18;
-            this.rZ = 0.5 * _t9 * _t18;
+            this.rX = _sp0 * _t3;
+            this.rY = _sp0 * _t7;
+            this.rZ = _sp0 * _t9;
             this.rW = 0.5 * Math.sqrt(_t14);
         } else {
             if (m.m00() > _t4) {
                 this.rX = 0.5 * Math.sqrt(_t15);
-                this.rY = 0.5 * _t5 * _t21;
-                this.rZ = 0.5 * _t6 * _t21;
-                this.rW = 0.5 * _t3 * _t21;
+                this.rY = _sp3 * _t5;
+                this.rZ = _sp3 * _t6;
+                this.rW = _sp3 * _t3;
             } else {
                 if (m.m11() > m.m22()) {
-                    this.rX = 0.5 * _t5 * _t19;
+                    this.rX = _sp1 * _t5;
                     this.rY = 0.5 * Math.sqrt(_t16);
-                    this.rZ = 0.5 * _t8 * _t19;
-                    this.rW = 0.5 * _t7 * _t19;
+                    this.rZ = _sp1 * _t8;
+                    this.rW = _sp1 * _t7;
                 } else {
-                    this.rX = 0.5 * _t6 * _t20;
-                    this.rY = 0.5 * _t8 * _t20;
+                    this.rX = _sp2 * _t6;
+                    this.rY = _sp2 * _t8;
                     this.rZ = 0.5 * Math.sqrt(_t17);
-                    this.rW = 0.5 * _t9 * _t20;
+                    this.rW = _sp2 * _t9;
                 }
             }
         }
@@ -1929,8 +1981,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
 
     /**
-     * Normalize this dual quaternion so that its real (rotation) part has unit length and store the
-     * result in {@code dest}.
+     * Normalize this dual quaternion so that its real (rotation) part has unit length (a zero real
+     * part yields the zero dual quaternion) and store the result in {@code dest}.
      * <p>
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of the real part must lie roughly
@@ -1941,15 +1993,27 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public DoubleDualQuat normalize(@Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        double _t7 = (1.0 / Math.sqrt(this.rX * this.rX + this.rY * this.rY + (this.rZ * this.rZ + this.rW * this.rW)));
-        d.rX = this.rX * _t7;
-        d.rY = this.rY * _t7;
-        d.rZ = this.rZ * _t7;
-        d.rW = this.rW * _t7;
-        d.dX = this.dX * _t7;
-        d.dY = this.dY * _t7;
-        d.dZ = this.dZ * _t7;
-        d.dW = this.dW * _t7;
+        double _t6 = this.rX * this.rX + this.rY * this.rY + (this.rZ * this.rZ + this.rW * this.rW);
+        double _t7 = (1.0 / Math.sqrt(_t6));
+        if (_t6 != 0.0) {
+            d.rX = this.rX * _t7;
+            d.rY = this.rY * _t7;
+            d.rZ = this.rZ * _t7;
+            d.rW = this.rW * _t7;
+            d.dX = this.dX * _t7;
+            d.dY = this.dY * _t7;
+            d.dZ = this.dZ * _t7;
+            d.dW = this.dW * _t7;
+        } else {
+            d.rX = 0.0;
+            d.rY = 0.0;
+            d.rZ = 0.0;
+            d.rW = 0.0;
+            d.dX = 0.0;
+            d.dY = 0.0;
+            d.dZ = 0.0;
+            d.dW = 0.0;
+        }
         return d;
     }
 
@@ -1993,6 +2057,7 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         double _t28 = t * Math.atan2(Math.sqrt(_t20), _t11);
         double _t29 = t * _t27;
         double _t30 = Math.sin(_t28);
+        double _sp0 = _t21 * _t30;
         double _t31 = _t27 * _t11;
         double _t32 = Math.cosFromSin(_t30, _t28);
         double _t33 = _t29 * _t32;
@@ -2010,9 +2075,9 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
             d.rY = _t25 * _t30;
             d.rZ = _t26 * _t30;
             d.rW = _t32;
-            d.dX = (_t31 * _t23 + _t12) * _t21 * _t30 - _t33 * _t23;
-            d.dY = (_t31 * _t25 + _t14) * _t21 * _t30 - _t33 * _t25;
-            d.dZ = (_t31 * _t26 + _t15) * _t21 * _t30 - _t33 * _t26;
+            d.dX = (_t31 * _t23 + _t12) * _sp0 - _t33 * _t23;
+            d.dY = (_t31 * _t25 + _t14) * _sp0 - _t33 * _t25;
+            d.dZ = (_t31 * _t26 + _t15) * _sp0 - _t33 * _t26;
             d.dW = _t29 * _t30;
         }
         return d;
@@ -2280,6 +2345,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * then the new dual quaternion will be {@code Q * L}. So when transforming a vector {@code v}
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -2300,6 +2370,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * then the new dual quaternion will be {@code Q * L}. So when transforming a vector {@code v}
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -2312,91 +2387,75 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      */
     public DoubleDualQuat lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated DoubleDualQuat dest) {
         DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
-        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
-        double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t17 = upY * _t6 - upZ * _t7;
+        double _t18 = upZ * _t8 - upX * _t6;
+        double _t19 = upX * _t7 - upY * _t8;
+        double _ct0 = _t17 * _t17 + _t18 * _t18 + _t19 * _t19;
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t26 = (1.0 / Math.sqrt(_ct0));
+        double _t27 = _t17 * _t26;
+        double _t28 = _t19 * _t26;
+        double _t29 = _t18 * _t26;
+        double _t30 = 1.0 - _t27;
+        double _t31 = _t6 * _t27;
+        double _t32 = _t8 * _t28;
+        double _t35 = _t8 - _t28;
+        double _t38 = _t8 + _t28;
+        double _t43 = _t31 - _t32;
+        double _t44 = _t8 * _t29 - _t7 * _t27;
+        double _t45 = _t7 * _t28 - _t6 * _t29;
+        double _t48 = Math.max(_t43, _t6);
+        double _t49 = _t44 - _t7;
+        double _t50 = _t44 + _t7;
+        double _t53 = _t29 - _t45;
+        double _t54 = _t45 + _t29;
+        double _t56 = _t43 + _t27 + _t6;
+        double _t57 = _t31 + (_t27 + (_t6 + 1.0) - _t32);
+        double _t58 = _t27 + (_t32 + (1.0 - _t6) - _t31);
+        double _t59 = _t31 + (_t30 - _t6 - _t32);
+        double _t60 = _t6 + (_t32 + _t30 - _t31);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t58));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t59));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t57));
+        double _t105, _t106, _t107, _t108;
+        if (_t56 > 0.0) {
+            _t105 = 0.5 * Math.sqrt(_t57);
+            _t106 = _sp3 * _t49;
+            _t107 = _sp3 * _t53;
+            _t108 = _sp3 * _t35;
         } else {
-            _t9 = 0.0;
-            _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t21 = upY * _t9 - upZ * _t10;
-        double _t22 = upZ * _t11 - upX * _t9;
-        double _t23 = upX * _t10 - upY * _t11;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t21 * _t29;
-            _t34 = _t23 * _t29;
-            _t35 = _t22 * _t29;
-        } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
-        }
-        double _t36 = 1.0 + _t33;
-        double _t37 = _t9 * _t33;
-        double _t39 = _t11 * _t34;
-        double _t40 = _t11 * _t35;
-        double _t41 = _t10 * _t33;
-        double _t42 = _t11 - _t34;
-        double _t43 = _t9 * _t35;
-        double _t44 = _t10 * _t34;
-        double _t45 = _t11 + _t34;
-        double _t55 = _t37 - _t39;
-        double _t60 = Math.max(_t55, _t9);
-        double _t61 = _t40 + (_t10 - _t41);
-        double _t62 = _t40 + (-_t10 - _t41);
-        double _t63 = _t43 + _t35 - _t44;
-        double _t64 = _t44 + (_t35 - _t43);
-        double _t65 = _t37 + (_t33 + _t9 - _t39);
-        double _t66 = _t37 + (_t36 + _t9 - _t39);
-        double _t67 = _t39 + (_t36 - _t9) - _t37;
-        double _t68 = _t37 + (1.0 - _t9 - _t33 - _t39);
-        double _t69 = _t39 + (1.0 + _t9 - _t33) - _t37;
-        double _t71 = (1.0 / Math.sqrt(_t67));
-        double _t72 = (1.0 / Math.sqrt(_t68));
-        double _t73 = (1.0 / Math.sqrt(_t69));
-        double _t74 = (1.0 / Math.sqrt(_t66));
-        double _t114, _t115, _t116, _t117;
-        if (_t65 > 0.0) {
-            _t114 = 0.5 * _t63 * _t74;
-            _t115 = 0.5 * _t42 * _t74;
-            _t116 = 0.5 * Math.sqrt(_t66);
-            _t117 = 0.5 * _t62 * _t74;
-        } else {
-            if (_t33 > _t60) {
-                _t114 = 0.5 * _t45 * _t71;
-                _t115 = 0.5 * _t64 * _t71;
-                _t116 = 0.5 * _t62 * _t71;
-                _t117 = 0.5 * Math.sqrt(_t67);
+            if (_t27 > _t48) {
+                _t105 = _sp0 * _t49;
+                _t106 = 0.5 * Math.sqrt(_t58);
+                _t107 = _sp0 * _t38;
+                _t108 = _sp0 * _t54;
             } else {
-                if (_t55 > _t9) {
-                    _t114 = 0.5 * _t61 * _t72;
-                    _t115 = 0.5 * Math.sqrt(_t68);
-                    _t116 = 0.5 * _t42 * _t72;
-                    _t117 = 0.5 * _t64 * _t72;
+                if (_t43 > _t6) {
+                    _t105 = _sp1 * _t35;
+                    _t106 = _sp1 * _t54;
+                    _t107 = _sp1 * _t50;
+                    _t108 = 0.5 * Math.sqrt(_t59);
                 } else {
-                    _t114 = 0.5 * Math.sqrt(_t69);
-                    _t115 = 0.5 * _t61 * _t73;
-                    _t116 = 0.5 * _t63 * _t73;
-                    _t117 = 0.5 * _t45 * _t73;
+                    _t105 = _sp2 * _t53;
+                    _t106 = _sp2 * _t38;
+                    _t107 = 0.5 * Math.sqrt(_t60);
+                    _t108 = _sp2 * _t50;
                 }
             }
         }
-        double _buf0 = this.rX * _t116 + this.rW * _t117 + (this.rY * _t114 - this.rZ * _t115);
-        double _buf1 = this.rY * _t116 + this.rZ * _t117 + (this.rW * _t115 - this.rX * _t114);
-        double _buf2 = this.rX * _t115 + this.rW * _t114 + (this.rZ * _t116 - this.rY * _t117);
-        d.rW = this.rW * _t116 - this.rX * _t117 - (this.rY * _t115 + this.rZ * _t114);
-        double _buf3 = this.dX * _t116 + this.dW * _t117 + (this.dY * _t114 - this.dZ * _t115);
-        double _buf4 = this.dY * _t116 + this.dZ * _t117 + (this.dW * _t115 - this.dX * _t114);
-        double _buf5 = this.dX * _t115 + this.dW * _t114 + (this.dZ * _t116 - this.dY * _t117);
-        d.dW = this.dW * _t116 - this.dX * _t117 - (this.dY * _t115 + this.dZ * _t114);
+        double _buf0 = this.rX * _t105 + this.rW * _t106 + (this.rY * _t107 - this.rZ * _t108);
+        double _buf1 = this.rY * _t105 + this.rZ * _t106 + (this.rW * _t108 - this.rX * _t107);
+        double _buf2 = this.rX * _t108 + this.rW * _t107 + (this.rZ * _t105 - this.rY * _t106);
+        d.rW = this.rW * _t105 - this.rX * _t106 - (this.rY * _t108 + this.rZ * _t107);
+        double _buf3 = this.dX * _t105 + this.dW * _t106 + (this.dY * _t107 - this.dZ * _t108);
+        double _buf4 = this.dY * _t105 + this.dZ * _t106 + (this.dW * _t108 - this.dX * _t107);
+        double _buf5 = this.dX * _t108 + this.dW * _t107 + (this.dZ * _t105 - this.dY * _t106);
+        d.dW = this.dW * _t105 - this.dX * _t106 - (this.dY * _t108 + this.dZ * _t107);
         d.rX = _buf0;
         d.rY = _buf1;
         d.rZ = _buf2;
@@ -2404,6 +2463,148 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         d.dY = _buf4;
         d.dZ = _buf5;
         return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleDualQuat lookAlong_degenerate(Double3R dir, Double3R up, @Mutated DoubleDualQuat dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleDualQuat lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
+        } else {
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
+        }
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t17 = -_t14;
+        double _t19 = 1.0 + _t13;
+        double _t20 = 1.0 - _t13;
+        double _t27, _t28, _t32;
+        if (_t15 > _t16) {
+            _t27 = 0.0;
+            _t28 = _t17;
+            _t32 = _t12;
+        } else {
+            _t27 = _t14;
+            _t28 = 0.0;
+            _t32 = -_t13;
+        }
+        double _t29 = _t9 * _t12 - _t10 * _t13;
+        double _t30 = _t11 * _t13 - _t9 * _t14;
+        double _t31 = _t10 * _t14 - _t12 * _t11;
+        double _t41 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        double _t47, _t48, _t49, _t50;
+        if (_t41 == 0.0) {
+            _t47 = (1.0 / Math.sqrt(_t28 * _t28 + _t32 * _t32 + _t27 * _t27));
+            _t48 = _t47 * _t27;
+            _t49 = _t47 * _t28;
+            _t50 = _t47 * _t32;
+        } else {
+            _t47 = (1.0 / Math.sqrt(_t41));
+            _t48 = _t47 * _t31;
+            _t49 = _t47 * _t30;
+            _t50 = _t47 * _t29;
+        }
+        double _t51 = _t48 * _t12;
+        double _t52 = _t12 - _t48;
+        double _t54 = _t48 + _t12;
+        double _t55 = _t49 * _t13;
+        double _t57 = _t49 * _t14;
+        double _t61 = _t50 * _t12;
+        double _t67 = _t55 - _t51;
+        double _t71 = _t48 * _t14 - _t50 * _t13;
+        double _t72 = Math.max(_t67, _t13);
+        double _t74 = _t61 + (_t14 - _t57);
+        double _t75 = _t61 + (_t17 - _t57);
+        double _t76 = _t55 + (_t49 + _t13 - _t51);
+        double _t77 = _t55 + (_t49 + _t19 - _t51);
+        double _t78 = _t49 + (_t51 + _t20 - _t55);
+        double _t79 = _t55 + (_t20 - _t49 - _t51);
+        double _t80 = _t51 + (_t19 - _t49) - _t55;
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t78));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t79));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t80));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t77));
+        double _t93 = _t50 - _t71;
+        double _t94 = _t71 + _t50;
+        double _t127, _t128, _t129, _t130;
+        if (_t76 > 0.0) {
+            _t127 = _sp0 * _t93;
+            _t128 = _sp0 * _t52;
+            _t129 = 0.5 * Math.sqrt(_t77);
+            _t130 = _sp0 * _t75;
+        } else {
+            if (_t49 > _t72) {
+                _t127 = _sp1 * _t54;
+                _t128 = _sp1 * _t94;
+                _t129 = _sp1 * _t75;
+                _t130 = 0.5 * Math.sqrt(_t78);
+            } else {
+                if (_t67 > _t13) {
+                    _t127 = _sp2 * _t74;
+                    _t128 = 0.5 * Math.sqrt(_t79);
+                    _t129 = _sp2 * _t52;
+                    _t130 = _sp2 * _t94;
+                } else {
+                    _t127 = 0.5 * Math.sqrt(_t80);
+                    _t128 = _sp3 * _t74;
+                    _t129 = _sp3 * _t93;
+                    _t130 = _sp3 * _t54;
+                }
+            }
+        }
+        double _buf0 = this.rX * _t129 + this.rW * _t130 + (this.rY * _t127 - this.rZ * _t128);
+        double _buf1 = this.rY * _t129 + this.rZ * _t130 + (this.rW * _t128 - this.rX * _t127);
+        double _buf2 = this.rX * _t128 + this.rW * _t127 + (this.rZ * _t129 - this.rY * _t130);
+        d.rW = this.rW * _t129 - this.rX * _t130 - (this.rY * _t128 + this.rZ * _t127);
+        double _buf3 = this.dX * _t129 + this.dW * _t130 + (this.dY * _t127 - this.dZ * _t128);
+        double _buf4 = this.dY * _t129 + this.dZ * _t130 + (this.dW * _t128 - this.dX * _t127);
+        double _buf5 = this.dX * _t128 + this.dW * _t127 + (this.dZ * _t129 - this.dY * _t130);
+        d.dW = this.dW * _t129 - this.dX * _t130 - (this.dY * _t128 + this.dZ * _t127);
+        d.rX = _buf0;
+        d.rY = _buf1;
+        d.rZ = _buf2;
+        d.dX = _buf3;
+        d.dY = _buf4;
+        d.dZ = _buf5;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private DoubleDualQuat lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.doubleDualQuat() : this);
     }
 
 
@@ -2452,6 +2653,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
     /**
      * Set this dual quaternion to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -2466,6 +2672,11 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Set this dual quaternion to a rotation that makes {@code +z} point along ({@code dirX},
      * {@code dirY}, {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -2476,79 +2687,183 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
      * @return this
      */
     @Mutated public DoubleDualQuat makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double _t5 = (1.0 / Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t17 = upY * _t6 - upZ * _t7;
+        double _t18 = upZ * _t8 - upX * _t6;
+        double _t19 = upX * _t7 - upY * _t8;
+        double _ct0 = _t17 * _t17 + _t18 * _t18 + _t19 * _t19;
+        if (!(_ct0 > 0.0)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        double _t26 = (1.0 / Math.sqrt(_ct0));
+        double _t27 = _t17 * _t26;
+        double _t28 = _t19 * _t26;
+        double _t29 = _t18 * _t26;
+        double _t30 = 1.0 - _t27;
+        double _t31 = _t6 * _t27;
+        double _t32 = _t8 * _t28;
+        double _t37 = _t8 + _t28;
+        double _t38 = _t8 - _t28;
+        double _t43 = _t31 - _t32;
+        double _t44 = _t8 * _t29 - _t7 * _t27;
+        double _t45 = _t7 * _t28 - _t6 * _t29;
+        double _t48 = _t44 - _t7;
+        double _t49 = Math.max(_t43, _t6);
+        double _t50 = _t44 + _t7;
+        double _t53 = _t45 + _t29;
+        double _t54 = _t29 - _t45;
+        double _t56 = _t43 + _t27 + _t6;
+        double _t57 = _t31 + (_t27 + (_t6 + 1.0) - _t32);
+        double _t58 = _t27 + (_t32 + (1.0 - _t6) - _t31);
+        double _t59 = _t31 + (_t30 - _t6 - _t32);
+        double _t60 = _t6 + (_t32 + _t30 - _t31);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t57));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t59));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t58));
+        if (_t56 > 0.0) {
+            this.rX = _sp0 * _t48;
+            this.rY = _sp0 * _t38;
+            this.rZ = _sp0 * _t54;
+            this.rW = 0.5 * Math.sqrt(_t57);
+        } else {
+            if (_t27 > _t49) {
+                this.rX = 0.5 * Math.sqrt(_t58);
+                this.rY = _sp3 * _t53;
+                this.rZ = _sp3 * _t37;
+                this.rW = _sp3 * _t48;
+            } else {
+                if (_t43 > _t6) {
+                    this.rX = _sp1 * _t53;
+                    this.rY = 0.5 * Math.sqrt(_t59);
+                    this.rZ = _sp1 * _t50;
+                    this.rW = _sp1 * _t38;
+                } else {
+                    this.rX = _sp2 * _t37;
+                    this.rY = _sp2 * _t50;
+                    this.rZ = 0.5 * Math.sqrt(_t60);
+                    this.rW = _sp2 * _t54;
+                }
+            }
+        }
+        this.dX = 0.0;
+        this.dY = 0.0;
+        this.dZ = 0.0;
+        this.dW = 0.0;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated DoubleDualQuat makeRotationLookAlong_degenerate(Double3R dir, Double3R up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private DoubleDualQuat makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t4 = dirX * dirX + dirY * dirY + dirZ * dirZ;
         double _t5 = (1.0 / Math.sqrt(_t4));
-        double _t9, _t10, _t11;
-        if (_t4 > 0.0) {
-            _t9 = dirZ * _t5;
-            _t10 = dirY * _t5;
-            _t11 = dirX * _t5;
-        } else {
+        double _t9, _t10, _t11, _t12, _t13, _t14;
+        if (_t4 == 0.0) {
             _t9 = 0.0;
             _t10 = 0.0;
-            _t11 = 0.0;
-        }
-        double _t21 = upY * _t9 - upZ * _t10;
-        double _t22 = upZ * _t11 - upX * _t9;
-        double _t23 = upX * _t10 - upY * _t11;
-        double _t28 = _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
-        double _t29 = (1.0 / Math.sqrt(_t28));
-        double _t33, _t34, _t35;
-        if (_t28 > 0.0) {
-            _t33 = _t21 * _t29;
-            _t34 = _t23 * _t29;
-            _t35 = _t22 * _t29;
+            _t11 = 1.0;
+            _t12 = 0.0;
+            _t13 = 1.0;
+            _t14 = 0.0;
         } else {
-            _t33 = 0.0;
-            _t34 = 0.0;
-            _t35 = 0.0;
+            _t9 = upZ;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = dirX * _t5;
+            _t13 = dirZ * _t5;
+            _t14 = dirY * _t5;
         }
-        double _t36 = 1.0 + _t33;
-        double _t37 = _t9 * _t33;
-        double _t39 = _t11 * _t34;
-        double _t40 = _t11 * _t35;
-        double _t41 = _t10 * _t33;
-        double _t42 = _t10 * _t34;
-        double _t43 = _t9 * _t35;
-        double _t44 = _t11 + _t34;
-        double _t45 = _t11 - _t34;
-        double _t55 = _t37 - _t39;
-        double _t60 = Math.max(_t55, _t9);
-        double _t61 = _t40 + (_t10 - _t41);
-        double _t62 = _t40 + (-_t10 - _t41);
-        double _t63 = _t42 + (_t35 - _t43);
-        double _t64 = _t43 + _t35 - _t42;
-        double _t65 = _t37 + (_t33 + _t9 - _t39);
-        double _t66 = _t37 + (_t36 + _t9 - _t39);
-        double _t67 = _t39 + (_t36 - _t9) - _t37;
-        double _t68 = _t37 + (1.0 - _t9 - _t33 - _t39);
-        double _t69 = _t39 + (1.0 + _t9 - _t33) - _t37;
-        double _t70 = (1.0 / Math.sqrt(_t66));
-        double _t71 = (1.0 / Math.sqrt(_t68));
-        double _t72 = (1.0 / Math.sqrt(_t69));
-        double _t73 = (1.0 / Math.sqrt(_t67));
-        if (_t65 > 0.0) {
-            this.rX = 0.5 * _t62 * _t70;
-            this.rY = 0.5 * _t45 * _t70;
-            this.rZ = 0.5 * _t64 * _t70;
-            this.rW = 0.5 * Math.sqrt(_t66);
+        double _t15 = Math.abs(_t12);
+        double _t16 = Math.abs(_t13);
+        double _t17 = -_t14;
+        double _t19 = 1.0 + _t13;
+        double _t20 = 1.0 - _t13;
+        double _t27, _t28, _t32;
+        if (_t15 > _t16) {
+            _t27 = 0.0;
+            _t28 = _t17;
+            _t32 = _t12;
         } else {
-            if (_t33 > _t60) {
-                this.rX = 0.5 * Math.sqrt(_t67);
-                this.rY = 0.5 * _t63 * _t73;
-                this.rZ = 0.5 * _t44 * _t73;
-                this.rW = 0.5 * _t62 * _t73;
+            _t27 = _t14;
+            _t28 = 0.0;
+            _t32 = -_t13;
+        }
+        double _t29 = _t9 * _t12 - _t10 * _t13;
+        double _t30 = _t11 * _t13 - _t9 * _t14;
+        double _t31 = _t10 * _t14 - _t12 * _t11;
+        double _t41 = _t29 * _t29 + _t30 * _t30 + _t31 * _t31;
+        double _t47, _t48, _t49, _t50;
+        if (_t41 == 0.0) {
+            _t47 = (1.0 / Math.sqrt(_t28 * _t28 + _t32 * _t32 + _t27 * _t27));
+            _t48 = _t47 * _t27;
+            _t49 = _t47 * _t28;
+            _t50 = _t47 * _t32;
+        } else {
+            _t47 = (1.0 / Math.sqrt(_t41));
+            _t48 = _t47 * _t31;
+            _t49 = _t47 * _t30;
+            _t50 = _t47 * _t29;
+        }
+        double _t51 = _t48 * _t12;
+        double _t53 = _t48 + _t12;
+        double _t54 = _t12 - _t48;
+        double _t55 = _t49 * _t13;
+        double _t57 = _t49 * _t14;
+        double _t61 = _t50 * _t12;
+        double _t67 = _t55 - _t51;
+        double _t71 = _t48 * _t14 - _t50 * _t13;
+        double _t72 = Math.max(_t67, _t13);
+        double _t74 = _t61 + (_t14 - _t57);
+        double _t75 = _t61 + (_t17 - _t57);
+        double _t76 = _t55 + (_t49 + _t13 - _t51);
+        double _t77 = _t55 + (_t49 + _t19 - _t51);
+        double _t78 = _t49 + (_t51 + _t20 - _t55);
+        double _t79 = _t55 + (_t20 - _t49 - _t51);
+        double _t80 = _t51 + (_t19 - _t49) - _t55;
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t77));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t79));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t80));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t78));
+        double _t85 = _t71 + _t50;
+        double _t86 = _t50 - _t71;
+        if (_t76 > 0.0) {
+            this.rX = _sp0 * _t75;
+            this.rY = _sp0 * _t54;
+            this.rZ = _sp0 * _t86;
+            this.rW = 0.5 * Math.sqrt(_t77);
+        } else {
+            if (_t49 > _t72) {
+                this.rX = 0.5 * Math.sqrt(_t78);
+                this.rY = _sp3 * _t85;
+                this.rZ = _sp3 * _t53;
+                this.rW = _sp3 * _t75;
             } else {
-                if (_t55 > _t9) {
-                    this.rX = 0.5 * _t63 * _t71;
-                    this.rY = 0.5 * Math.sqrt(_t68);
-                    this.rZ = 0.5 * _t61 * _t71;
-                    this.rW = 0.5 * _t45 * _t71;
+                if (_t67 > _t13) {
+                    this.rX = _sp1 * _t85;
+                    this.rY = 0.5 * Math.sqrt(_t79);
+                    this.rZ = _sp1 * _t74;
+                    this.rW = _sp1 * _t54;
                 } else {
-                    this.rX = 0.5 * _t44 * _t72;
-                    this.rY = 0.5 * _t61 * _t72;
-                    this.rZ = 0.5 * Math.sqrt(_t69);
-                    this.rW = 0.5 * _t64 * _t72;
+                    this.rX = _sp2 * _t53;
+                    this.rY = _sp2 * _t74;
+                    this.rZ = 0.5 * Math.sqrt(_t80);
+                    this.rW = _sp2 * _t86;
                 }
             }
         }
@@ -3441,6 +3756,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
     /**
      * Transform {@code p} by this dual quaternion and store the result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -3454,6 +3771,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by this dual quaternion and store the result
      * in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -3478,6 +3797,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform the given direction by this dual quaternion, ignoring any translation and store the
      * result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -3491,6 +3812,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform the given direction by this dual quaternion, ignoring any translation and store the
      * result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -3594,6 +3917,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -3607,6 +3932,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -3652,6 +3979,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -3665,6 +3994,8 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
     /**
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation and store the result in {@code dest}.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}

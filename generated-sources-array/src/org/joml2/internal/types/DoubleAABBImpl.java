@@ -232,27 +232,37 @@ public final class DoubleAABBImpl implements DoubleAABB {
         double[] sd = this.data;
         double[] mData = ((Double3x4Impl) m).data;
         double[] dd = ((DoubleAABBImpl) dest).data;
-        double _t9 = sd[2] + sd[5];
-        double _t10 = sd[0] + sd[3];
-        double _t11 = sd[1] + sd[4];
-        double _t12 = sd[5] - sd[2];
-        double _t13 = sd[3] - sd[0];
-        double _t14 = sd[4] - sd[1];
-        double _t15 = mData[2] * _t9;
-        double _t17 = mData[6] * _t9;
-        double _t19 = mData[10] * _t9;
-        double _t24 = Math.fma(mData[0], _t10, mData[1] * _t11);
-        double _t25 = Math.fma(mData[4], _t10, mData[5] * _t11);
-        double _t26 = Math.fma(mData[8], _t10, mData[9] * _t11);
-        double _t30 = Math.fma(_t12, Math.abs(mData[2]), Math.fma(_t13, Math.abs(mData[0]), _t14 * Math.abs(mData[1])));
-        double _t31 = Math.fma(_t12, Math.abs(mData[6]), Math.fma(_t13, Math.abs(mData[4]), _t14 * Math.abs(mData[5])));
-        double _t32 = Math.fma(_t12, Math.abs(mData[10]), Math.fma(_t13, Math.abs(mData[8]), _t14 * Math.abs(mData[9])));
-        dd[0] = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(-0.5, _t30, mData[3])));
-        dd[1] = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(-0.5, _t31, mData[7])));
-        dd[2] = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(-0.5, _t32, mData[11])));
-        dd[3] = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(0.5, _t30, mData[3])));
-        dd[4] = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(0.5, _t31, mData[7])));
-        dd[5] = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(0.5, _t32, mData[11])));
+        double _t9 = sd[3] - sd[0];
+        double _t10 = sd[4] - sd[1];
+        double _t11 = sd[5] - sd[2];
+        double _t12 = sd[2] + sd[5];
+        double _t13 = sd[0] + sd[3];
+        double _t14 = sd[1] + sd[4];
+        double _t18 = mData[2] * _t12;
+        double _t20 = mData[6] * _t12;
+        double _t22 = mData[10] * _t12;
+        double _t28 = Math.fma(mData[0], _t13, mData[1] * _t14);
+        double _t29 = Math.fma(mData[4], _t13, mData[5] * _t14);
+        double _t30 = Math.fma(mData[8], _t13, mData[9] * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(mData[2]), Math.fma(_t9, Math.abs(mData[0]), _t10 * Math.abs(mData[1])));
+        double _t36 = Math.fma(_t11, Math.abs(mData[6]), Math.fma(_t9, Math.abs(mData[4]), _t10 * Math.abs(mData[5])));
+        double _t37 = Math.fma(_t11, Math.abs(mData[10]), Math.fma(_t9, Math.abs(mData[8]), _t10 * Math.abs(mData[9])));
+        if (_t34 < 0.0) {
+            dd[0] = Double.POSITIVE_INFINITY;
+            dd[1] = Double.POSITIVE_INFINITY;
+            dd[2] = Double.POSITIVE_INFINITY;
+            dd[3] = Double.NEGATIVE_INFINITY;
+            dd[4] = Double.NEGATIVE_INFINITY;
+            dd[5] = Double.NEGATIVE_INFINITY;
+        } else {
+            dd[0] = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, mData[3])));
+            dd[1] = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, mData[7])));
+            dd[2] = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, mData[11])));
+            dd[3] = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, mData[3])));
+            dd[4] = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, mData[7])));
+            dd[5] = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, mData[11])));
+        }
         return dest;
     }
 
@@ -272,27 +282,37 @@ public final class DoubleAABBImpl implements DoubleAABB {
         double[] sd = this.data;
         double[] mData = ((Double4x4Impl) m).data;
         double[] dd = ((DoubleAABBImpl) dest).data;
-        double _t9 = sd[2] + sd[5];
-        double _t10 = sd[0] + sd[3];
-        double _t11 = sd[1] + sd[4];
-        double _t12 = sd[5] - sd[2];
-        double _t13 = sd[3] - sd[0];
-        double _t14 = sd[4] - sd[1];
-        double _t15 = mData[8] * _t9;
-        double _t17 = mData[9] * _t9;
-        double _t19 = mData[10] * _t9;
-        double _t24 = Math.fma(mData[0], _t10, mData[4] * _t11);
-        double _t25 = Math.fma(mData[1], _t10, mData[5] * _t11);
-        double _t26 = Math.fma(mData[2], _t10, mData[6] * _t11);
-        double _t30 = Math.fma(_t12, Math.abs(mData[8]), Math.fma(_t13, Math.abs(mData[0]), _t14 * Math.abs(mData[4])));
-        double _t31 = Math.fma(_t12, Math.abs(mData[9]), Math.fma(_t13, Math.abs(mData[1]), _t14 * Math.abs(mData[5])));
-        double _t32 = Math.fma(_t12, Math.abs(mData[10]), Math.fma(_t13, Math.abs(mData[2]), _t14 * Math.abs(mData[6])));
-        dd[0] = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(-0.5, _t30, mData[12])));
-        dd[1] = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(-0.5, _t31, mData[13])));
-        dd[2] = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(-0.5, _t32, mData[14])));
-        dd[3] = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(0.5, _t30, mData[12])));
-        dd[4] = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(0.5, _t31, mData[13])));
-        dd[5] = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(0.5, _t32, mData[14])));
+        double _t9 = sd[3] - sd[0];
+        double _t10 = sd[4] - sd[1];
+        double _t11 = sd[5] - sd[2];
+        double _t12 = sd[2] + sd[5];
+        double _t13 = sd[0] + sd[3];
+        double _t14 = sd[1] + sd[4];
+        double _t18 = mData[8] * _t12;
+        double _t20 = mData[9] * _t12;
+        double _t22 = mData[10] * _t12;
+        double _t28 = Math.fma(mData[0], _t13, mData[4] * _t14);
+        double _t29 = Math.fma(mData[1], _t13, mData[5] * _t14);
+        double _t30 = Math.fma(mData[2], _t13, mData[6] * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(mData[8]), Math.fma(_t9, Math.abs(mData[0]), _t10 * Math.abs(mData[4])));
+        double _t36 = Math.fma(_t11, Math.abs(mData[9]), Math.fma(_t9, Math.abs(mData[1]), _t10 * Math.abs(mData[5])));
+        double _t37 = Math.fma(_t11, Math.abs(mData[10]), Math.fma(_t9, Math.abs(mData[2]), _t10 * Math.abs(mData[6])));
+        if (_t34 < 0.0) {
+            dd[0] = Double.POSITIVE_INFINITY;
+            dd[1] = Double.POSITIVE_INFINITY;
+            dd[2] = Double.POSITIVE_INFINITY;
+            dd[3] = Double.NEGATIVE_INFINITY;
+            dd[4] = Double.NEGATIVE_INFINITY;
+            dd[5] = Double.NEGATIVE_INFINITY;
+        } else {
+            dd[0] = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, mData[12])));
+            dd[1] = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, mData[13])));
+            dd[2] = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, mData[14])));
+            dd[3] = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, mData[12])));
+            dd[4] = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, mData[13])));
+            dd[5] = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, mData[14])));
+        }
         return dest;
     }
 

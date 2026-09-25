@@ -52,7 +52,12 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to add
      * @param dest will hold the result
@@ -64,7 +69,12 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -79,8 +89,13 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Add ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) to this
-     * rectangle and store the result in {@code dest}.
+     * Add each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) to the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -104,8 +119,13 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Add ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) to this
-     * rectangle and store the result in {@code dest}.
+     * Add each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) to the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -132,23 +152,27 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
      */
     public IntRect negate(@Mutated IntRect dest) {
         IntRectImpl d = (IntRectImpl) dest;
-        d.minX = -this.minX;
-        d.minY = -this.minY;
-        d.maxX = -this.maxX;
-        d.maxY = -this.maxY;
+        int _buf0 = -this.maxX;
+        int _buf1 = -this.maxY;
+        d.maxX = -this.minX;
+        d.maxY = -this.minY;
+        d.minX = _buf0;
+        d.minY = _buf1;
         return d;
     }
 
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -158,16 +182,23 @@ public final class IntRectImpl implements IntRect {
      */
     public DoubleRect negate(@Mutated DoubleRect dest) {
         DoubleRectImpl d = (DoubleRectImpl) dest;
-        d.minX = -this.minX;
-        d.minY = -this.minY;
-        d.maxX = -this.maxX;
-        d.maxY = -this.maxY;
+        int _buf0 = -this.maxX;
+        int _buf1 = -this.maxY;
+        d.maxX = -this.minX;
+        d.maxY = -this.minY;
+        d.minX = _buf0;
+        d.minY = _buf1;
         return d;
     }
 
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to subtract
      * @param dest will hold the result
@@ -179,7 +210,12 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -194,8 +230,13 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Subtract ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) from
-     * this rectangle and store the result in {@code dest}.
+     * Subtract each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) from the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)}
@@ -219,8 +260,13 @@ public final class IntRectImpl implements IntRect {
 
 
     /**
-     * Subtract ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX}, {@code otherMAXY}) from
-     * this rectangle and store the result in {@code dest}.
+     * Subtract each bound of ({@code otherMINX}, {@code otherMINY}, {@code otherMAXX},
+     * {@code otherMAXY}) from the corresponding bound of this rectangle and store the result in
+     * {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -829,11 +875,14 @@ public final class IntRectImpl implements IntRect {
 
     /**
      * Compute the area of this rectangle.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the area of this rectangle
      */
-    public int area() {
-        return (this.maxX - this.minX) * (this.maxY - this.minY);
+    public long area() {
+        return ((long) this.maxX - (long) this.minX) * ((long) this.maxY - (long) this.minY);
     }
 
 
@@ -1047,13 +1096,16 @@ public final class IntRectImpl implements IntRect {
      * Compute the squared distance between this rectangle and the given point, i.e. the squared
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param p the point to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
      */
-    public int distanceSquaredToPoint(Int2R p) {
+    public long distanceSquaredToPoint(Int2R p) {
         return distanceSquaredToPoint(p.x(), p.y());
     }
 
@@ -1062,6 +1114,9 @@ public final class IntRectImpl implements IntRect {
      * Compute the squared distance between this rectangle and the given point, i.e. the squared
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param pX the {@code x} component of the point {@code (pX, pY)} to measure the distance to
      * @param pY the {@code y} component of the point {@code (pX, pY)} to measure the distance to
@@ -1069,9 +1124,9 @@ public final class IntRectImpl implements IntRect {
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
      */
-    public int distanceSquaredToPoint(int pX, int pY) {
-        int _t4 = pX - Math.max(this.minX, Math.min(pX, this.maxX));
-        int _t5 = pY - Math.max(this.minY, Math.min(pY, this.maxY));
+    public long distanceSquaredToPoint(int pX, int pY) {
+        long _t4 = (long) pX - Math.max((long) this.minX, Math.min((long) pX, (long) this.maxX));
+        long _t5 = (long) pY - Math.max((long) this.minY, Math.min((long) pY, (long) this.maxY));
         return _t4 * _t4 + _t5 * _t5;
     }
 
@@ -1080,13 +1135,16 @@ public final class IntRectImpl implements IntRect {
      * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the rectangle to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
      */
-    public int distanceSquaredToRect(IntRectR other) {
+    public long distanceSquaredToRect(IntRectR other) {
         return distanceSquaredToRect(other.minX(), other.minY(), other.maxX(), other.maxY());
     }
 
@@ -1095,6 +1153,9 @@ public final class IntRectImpl implements IntRect {
      * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherMINX the {@code minX} component of the rectangle
      *        {@code (otherMINX, otherMINY, otherMAXX, otherMAXY)} to measure the distance to
@@ -1108,9 +1169,9 @@ public final class IntRectImpl implements IntRect {
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
      */
-    public int distanceSquaredToRect(int otherMINX, int otherMINY, int otherMAXX, int otherMAXY) {
-        int _t6 = Math.max(0, Math.max(this.minX - otherMAXX, otherMINX - this.maxX));
-        int _t7 = Math.max(0, Math.max(this.minY - otherMAXY, otherMINY - this.maxY));
+    public long distanceSquaredToRect(int otherMINX, int otherMINY, int otherMAXX, int otherMAXY) {
+        long _t6 = Math.max(0L, Math.max((long) this.minX - (long) otherMAXX, (long) otherMINX - (long) this.maxX));
+        long _t7 = Math.max(0L, Math.max((long) this.minY - (long) otherMAXY, (long) otherMINY - (long) this.maxY));
         return _t6 * _t6 + _t7 * _t7;
     }
 

@@ -17,6 +17,11 @@ import java.nio.FloatBuffer;
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance; as a value class, instances have no identity and may be flattened by the JVM.
  * <p>
+ * Its rotation is a unit quaternion. Every operation that applies, composes, inverts or converts
+ * this rigid transform assumes its rotation has unit length and does not divide it out. A value
+ * that has drifted from unit length (after many multiplications, say) gives wrong results rather
+ * than an error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
@@ -335,41 +340,44 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static DoubleRigid makeFromMatrix_s91e5aa_tail2(Double3x3 m, double _t12, double _t13, double _t48, double _t1, double _t49, double _t0, double _t59, double _t32, double _t44, double _t33, double _t21, double _t16, double _t51, double _t52, double _t53, double _t28, double _t54) {
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         double _sfx0 = 0.0;
         double _sfx1 = 0.0;
         double _sfx2 = 0.0;
-        double _sfx3 = _t59 > 0.0 ? 0.5 * _t32 * _t61 : _t44 > _t33 ? 0.5 * Math.sqrt(_t64) : _t21 > _t16 ? 0.5 * _t51 * _t65 : 0.5 * _t52 * _t66;
-        return makeFromMatrix_s91e5aa_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+        return makeFromMatrix_s91e5aa_tail3(_t59, _sp0, _t32, _t44, _t33, _t64, _t21, _t16, _sp1, _t51, _sp2, _t52, _t53, _sp3, _t62, _t28, _t54, _t63, _t60, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleRigid makeFromMatrix_s91e5aa_tail3(double _t59, double _t53, double _t61, double _t44, double _t33, double _t51, double _t67, double _t21, double _t16, double _t62, double _t28, double _t66, double _t54, double _t52, double _t65, double _t63, double _t60, double _t32, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
-        double _sfx4, _sfx5, _sfx6;
+    private static DoubleRigid makeFromMatrix_s91e5aa_tail3(double _t59, double _sp0, double _t32, double _t44, double _t33, double _t64, double _t21, double _t16, double _sp1, double _t51, double _sp2, double _t52, double _t53, double _sp3, double _t62, double _t28, double _t54, double _t63, double _t60, double _sfx0, double _sfx1, double _sfx2) {
+        double _sfx3, _sfx4, _sfx5, _sfx6;
         if (_t59 > 0.0) {
-            _sfx4 = 0.5 * _t53 * _t61;
-            _sfx5 = 0.5 * _t54 * _t61;
+            _sfx3 = _sp0 * _t32;
+            _sfx4 = _sp0 * _t53;
+            _sfx5 = _sp0 * _t54;
             _sfx6 = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
-                _sfx4 = 0.5 * _t51 * _t67;
-                _sfx5 = 0.5 * _t52 * _t67;
-                _sfx6 = 0.5 * _t32 * _t67;
+                _sfx3 = 0.5 * Math.sqrt(_t64);
+                _sfx4 = _sp3 * _t51;
+                _sfx5 = _sp3 * _t52;
+                _sfx6 = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
+                    _sfx3 = _sp1 * _t51;
                     _sfx4 = 0.5 * Math.sqrt(_t62);
-                    _sfx5 = 0.5 * _t28 * _t65;
-                    _sfx6 = 0.5 * _t53 * _t65;
+                    _sfx5 = _sp1 * _t28;
+                    _sfx6 = _sp1 * _t53;
                 } else {
-                    _sfx4 = 0.5 * _t28 * _t66;
+                    _sfx3 = _sp2 * _t52;
+                    _sfx4 = _sp2 * _t28;
                     _sfx5 = 0.5 * Math.sqrt(_t63);
-                    _sfx6 = 0.5 * _t54 * _t66;
+                    _sfx6 = _sp2 * _t54;
                 }
             }
         }
@@ -430,41 +438,44 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static DoubleRigid makeFromMatrix_s91e96b_tail2(Double3x4 m, double _t12, double _t13, double _t48, double _t1, double _t49, double _t0, double _t59, double _t32, double _t44, double _t33, double _t21, double _t16, double _t51, double _t52, double _t53, double _t28, double _t54) {
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         double _sfx0 = m.m03();
         double _sfx1 = m.m13();
         double _sfx2 = m.m23();
-        double _sfx3 = _t59 > 0.0 ? 0.5 * _t32 * _t61 : _t44 > _t33 ? 0.5 * Math.sqrt(_t64) : _t21 > _t16 ? 0.5 * _t51 * _t65 : 0.5 * _t52 * _t66;
-        return makeFromMatrix_s91e96b_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+        return makeFromMatrix_s91e96b_tail3(_t59, _sp0, _t32, _t44, _t33, _t64, _t21, _t16, _sp1, _t51, _sp2, _t52, _t53, _sp3, _t62, _t28, _t54, _t63, _t60, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleRigid makeFromMatrix_s91e96b_tail3(double _t59, double _t53, double _t61, double _t44, double _t33, double _t51, double _t67, double _t21, double _t16, double _t62, double _t28, double _t66, double _t54, double _t52, double _t65, double _t63, double _t60, double _t32, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
-        double _sfx4, _sfx5, _sfx6;
+    private static DoubleRigid makeFromMatrix_s91e96b_tail3(double _t59, double _sp0, double _t32, double _t44, double _t33, double _t64, double _t21, double _t16, double _sp1, double _t51, double _sp2, double _t52, double _t53, double _sp3, double _t62, double _t28, double _t54, double _t63, double _t60, double _sfx0, double _sfx1, double _sfx2) {
+        double _sfx3, _sfx4, _sfx5, _sfx6;
         if (_t59 > 0.0) {
-            _sfx4 = 0.5 * _t53 * _t61;
-            _sfx5 = 0.5 * _t54 * _t61;
+            _sfx3 = _sp0 * _t32;
+            _sfx4 = _sp0 * _t53;
+            _sfx5 = _sp0 * _t54;
             _sfx6 = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
-                _sfx4 = 0.5 * _t51 * _t67;
-                _sfx5 = 0.5 * _t52 * _t67;
-                _sfx6 = 0.5 * _t32 * _t67;
+                _sfx3 = 0.5 * Math.sqrt(_t64);
+                _sfx4 = _sp3 * _t51;
+                _sfx5 = _sp3 * _t52;
+                _sfx6 = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
+                    _sfx3 = _sp1 * _t51;
                     _sfx4 = 0.5 * Math.sqrt(_t62);
-                    _sfx5 = 0.5 * _t28 * _t65;
-                    _sfx6 = 0.5 * _t53 * _t65;
+                    _sfx5 = _sp1 * _t28;
+                    _sfx6 = _sp1 * _t53;
                 } else {
-                    _sfx4 = 0.5 * _t28 * _t66;
+                    _sfx3 = _sp2 * _t52;
+                    _sfx4 = _sp2 * _t28;
                     _sfx5 = 0.5 * Math.sqrt(_t63);
-                    _sfx6 = 0.5 * _t54 * _t66;
+                    _sfx6 = _sp2 * _t54;
                 }
             }
         }
@@ -526,41 +537,44 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
     private static DoubleRigid makeFromMatrix_sa000ec_tail2(Double4x4 m, double _t12, double _t13, double _t48, double _t1, double _t49, double _t0, double _t59, double _t32, double _t44, double _t33, double _t21, double _t16, double _t51, double _t52, double _t53, double _t28, double _t54) {
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         double _sfx0 = m.m03();
         double _sfx1 = m.m13();
         double _sfx2 = m.m23();
-        double _sfx3 = _t59 > 0.0 ? 0.5 * _t32 * _t61 : _t44 > _t33 ? 0.5 * Math.sqrt(_t64) : _t21 > _t16 ? 0.5 * _t51 * _t65 : 0.5 * _t52 * _t66;
-        return makeFromMatrix_sa000ec_tail3(_t59, _t53, _t61, _t44, _t33, _t51, _t67, _t21, _t16, _t62, _t28, _t66, _t54, _t52, _t65, _t63, _t60, _t32, _sfx0, _sfx1, _sfx2, _sfx3);
+        return makeFromMatrix_sa000ec_tail3(_t59, _sp0, _t32, _t44, _t33, _t64, _t21, _t16, _sp1, _t51, _sp2, _t52, _t53, _sp3, _t62, _t28, _t54, _t63, _t60, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleRigid makeFromMatrix_sa000ec_tail3(double _t59, double _t53, double _t61, double _t44, double _t33, double _t51, double _t67, double _t21, double _t16, double _t62, double _t28, double _t66, double _t54, double _t52, double _t65, double _t63, double _t60, double _t32, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
-        double _sfx4, _sfx5, _sfx6;
+    private static DoubleRigid makeFromMatrix_sa000ec_tail3(double _t59, double _sp0, double _t32, double _t44, double _t33, double _t64, double _t21, double _t16, double _sp1, double _t51, double _sp2, double _t52, double _t53, double _sp3, double _t62, double _t28, double _t54, double _t63, double _t60, double _sfx0, double _sfx1, double _sfx2) {
+        double _sfx3, _sfx4, _sfx5, _sfx6;
         if (_t59 > 0.0) {
-            _sfx4 = 0.5 * _t53 * _t61;
-            _sfx5 = 0.5 * _t54 * _t61;
+            _sfx3 = _sp0 * _t32;
+            _sfx4 = _sp0 * _t53;
+            _sfx5 = _sp0 * _t54;
             _sfx6 = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
-                _sfx4 = 0.5 * _t51 * _t67;
-                _sfx5 = 0.5 * _t52 * _t67;
-                _sfx6 = 0.5 * _t32 * _t67;
+                _sfx3 = 0.5 * Math.sqrt(_t64);
+                _sfx4 = _sp3 * _t51;
+                _sfx5 = _sp3 * _t52;
+                _sfx6 = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
+                    _sfx3 = _sp1 * _t51;
                     _sfx4 = 0.5 * Math.sqrt(_t62);
-                    _sfx5 = 0.5 * _t28 * _t65;
-                    _sfx6 = 0.5 * _t53 * _t65;
+                    _sfx5 = _sp1 * _t28;
+                    _sfx6 = _sp1 * _t53;
                 } else {
-                    _sfx4 = 0.5 * _t28 * _t66;
+                    _sfx3 = _sp2 * _t52;
+                    _sfx4 = _sp2 * _t28;
                     _sfx5 = 0.5 * Math.sqrt(_t63);
-                    _sfx6 = 0.5 * _t54 * _t66;
+                    _sfx6 = _sp2 * _t54;
                 }
             }
         }
@@ -898,7 +912,7 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
         double _sfx1 = Math.fma(t, otherTY - this.tY, this.tY);
         double _sfx2 = Math.fma(t, otherTZ - this.tZ, this.tZ);
         double _sfx3, _sfx4, _sfx5, _sfx6;
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             _sfx3 = _t50 * _t44;
             _sfx4 = _t50 * _t45;
             _sfx5 = _t50 * _t43;
@@ -1142,6 +1156,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Invert this rigid transform; exact for any rigid motion (no scale divisions), returning the
      * result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @return the resulting rigid transform
      */
@@ -1170,7 +1186,7 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     public DoubleRigid normalize() {
         double _t3 = Math.fma(this.rW, this.rW, Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY)));
         double _t4 = (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             return new DoubleRigid(this.tX, this.tY, this.tZ, this.rX * _t4, this.rY * _t4, this.rZ * _t4, this.rW * _t4);
         } else {
             return new DoubleRigid(this.tX, this.tY, this.tZ, 0.0, 0.0, 0.0, 0.0);
@@ -1182,13 +1198,21 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Y and Z
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesXYZ() {
         double _t1 = this.rY * this.rZ;
@@ -1210,13 +1234,21 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Get the Euler angles in radians of this rigid transform, to be applied about the X, Z and Y
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesXZY() {
         double _t0 = this.rZ * this.rZ;
@@ -1238,13 +1270,21 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, X and Z
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesYXZ() {
         double _t3 = this.rZ * this.rZ;
@@ -1265,13 +1305,21 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Get the Euler angles in radians of this rigid transform, to be applied about the Y, Z and X
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesYZX() {
         double _t0 = this.rZ * this.rZ;
@@ -1292,13 +1340,21 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, X and Y
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesZXY() {
         double _t1 = this.rZ * this.rZ;
@@ -1319,13 +1375,21 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Get the Euler angles in radians of this rigid transform, to be applied about the Z, Y and X
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesZYX() {
         double _t0 = this.rZ * this.rZ;
@@ -2049,6 +2113,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
 
     /**
      * Transform {@code v} by this rigid transform, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -2061,6 +2127,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this rigid transform, returning the result
      * as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2078,6 +2146,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @return the resulting vector
@@ -2090,6 +2160,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform the given direction by the rotation part of this rigid transform, ignoring the
      * translation, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2108,6 +2180,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()}, returning the
      * result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the direction to transform
      * @return the resulting vector
@@ -2121,6 +2195,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
      * Transform the given direction by the inverse of this rigid transform's rotation (world to
      * local), ignoring the translation, without materializing {@code invert()}, returning the
      * result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2137,6 +2213,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
 
     /**
      * Transform {@code p} by the inverse of this rigid transform, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -2149,6 +2227,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this rigid transform,
      * returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -2169,6 +2249,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param v the position to transform
      * @return the resulting vector
@@ -2181,6 +2263,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform the given position by this rigid transform, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2195,6 +2279,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -2207,6 +2293,8 @@ public value record DoubleRigid(double tX, double tY, double tZ, double rX, doub
     /**
      * Transform the given position by the inverse of this rigid transform (world to local), without
      * materializing {@code invert()}, returning the result as a value.
+     * <p>
+     * The rotation quaternion of this rigid transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}

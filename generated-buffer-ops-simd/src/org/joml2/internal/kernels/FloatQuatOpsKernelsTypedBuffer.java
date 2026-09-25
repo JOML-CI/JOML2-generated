@@ -25,7 +25,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invert_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invert(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -54,7 +54,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invertProduct_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invertProduct(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -88,7 +88,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invertProduct_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             FloatQuatOps.invertProduct(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -125,7 +125,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer add_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.add(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -195,7 +195,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer sub_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.sub(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -245,7 +245,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer set_api(java.nio.FloatBuffer dest, int destOffset, float vX, float vY, float vZ, float vW) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.set(dest.array(), dest.arrayOffset() + destOffset, vX, vY, vZ, vW);
             return dest;
         }
@@ -286,7 +286,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeFromDualQuat_api(java.nio.FloatBuffer dest, int destOffset, float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeFromDualQuat(dest.array(), dest.arrayOffset() + destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
             return dest;
         }
@@ -331,32 +331,32 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t15 = 1.0f + (_m00 - (_m11 + _m22));
         float _t16 = 1.0f + (_m11 - (_m00 + _m22));
         float _t17 = 1.0f + (_m22 - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            dest.put(destOffset + 0, 0.5f * _t1 * _t18);
-            dest.put(destOffset + 1, 0.5f * _t7 * _t18);
-            dest.put(destOffset + 2, 0.5f * _t9 * _t18);
+            dest.put(destOffset + 0, _sp0 * _t1);
+            dest.put(destOffset + 1, _sp0 * _t7);
+            dest.put(destOffset + 2, _sp0 * _t9);
             dest.put(destOffset + 3, 0.5f * (float) Math.sqrt(_t14));
         } else {
             if (_m00 > _t2) {
                 dest.put(destOffset + 0, 0.5f * (float) Math.sqrt(_t15));
-                dest.put(destOffset + 1, 0.5f * _t4 * _t21);
-                dest.put(destOffset + 2, 0.5f * _t6 * _t21);
-                dest.put(destOffset + 3, 0.5f * _t1 * _t21);
+                dest.put(destOffset + 1, _sp3 * _t4);
+                dest.put(destOffset + 2, _sp3 * _t6);
+                dest.put(destOffset + 3, _sp3 * _t1);
             } else {
                 if (_m11 > _m22) {
-                    dest.put(destOffset + 0, 0.5f * _t4 * _t19);
+                    dest.put(destOffset + 0, _sp1 * _t4);
                     dest.put(destOffset + 1, 0.5f * (float) Math.sqrt(_t16));
-                    dest.put(destOffset + 2, 0.5f * _t8 * _t19);
-                    dest.put(destOffset + 3, 0.5f * _t7 * _t19);
+                    dest.put(destOffset + 2, _sp1 * _t8);
+                    dest.put(destOffset + 3, _sp1 * _t7);
                 } else {
-                    dest.put(destOffset + 0, 0.5f * _t6 * _t20);
-                    dest.put(destOffset + 1, 0.5f * _t8 * _t20);
+                    dest.put(destOffset + 0, _sp2 * _t6);
+                    dest.put(destOffset + 1, _sp2 * _t8);
                     dest.put(destOffset + 2, 0.5f * (float) Math.sqrt(_t17));
-                    dest.put(destOffset + 3, 0.5f * _t9 * _t20);
+                    dest.put(destOffset + 3, _sp2 * _t9);
                 }
             }
         }
@@ -393,32 +393,32 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t15 = 1.0f + (_m00 - (_m11 + _m22));
         float _t16 = 1.0f + (_m11 - (_m00 + _m22));
         float _t17 = 1.0f + (_m22 - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            dest.put(destOffset + 0, 0.5f * _t1 * _t18);
-            dest.put(destOffset + 1, 0.5f * _t7 * _t18);
-            dest.put(destOffset + 2, 0.5f * _t9 * _t18);
+            dest.put(destOffset + 0, _sp0 * _t1);
+            dest.put(destOffset + 1, _sp0 * _t7);
+            dest.put(destOffset + 2, _sp0 * _t9);
             dest.put(destOffset + 3, 0.5f * (float) Math.sqrt(_t14));
         } else {
             if (_m00 > _t2) {
                 dest.put(destOffset + 0, 0.5f * (float) Math.sqrt(_t15));
-                dest.put(destOffset + 1, 0.5f * _t4 * _t21);
-                dest.put(destOffset + 2, 0.5f * _t6 * _t21);
-                dest.put(destOffset + 3, 0.5f * _t1 * _t21);
+                dest.put(destOffset + 1, _sp3 * _t4);
+                dest.put(destOffset + 2, _sp3 * _t6);
+                dest.put(destOffset + 3, _sp3 * _t1);
             } else {
                 if (_m11 > _m22) {
-                    dest.put(destOffset + 0, 0.5f * _t4 * _t19);
+                    dest.put(destOffset + 0, _sp1 * _t4);
                     dest.put(destOffset + 1, 0.5f * (float) Math.sqrt(_t16));
-                    dest.put(destOffset + 2, 0.5f * _t8 * _t19);
-                    dest.put(destOffset + 3, 0.5f * _t7 * _t19);
+                    dest.put(destOffset + 2, _sp1 * _t8);
+                    dest.put(destOffset + 3, _sp1 * _t7);
                 } else {
-                    dest.put(destOffset + 0, 0.5f * _t6 * _t20);
-                    dest.put(destOffset + 1, 0.5f * _t8 * _t20);
+                    dest.put(destOffset + 0, _sp2 * _t6);
+                    dest.put(destOffset + 1, _sp2 * _t8);
                     dest.put(destOffset + 2, 0.5f * (float) Math.sqrt(_t17));
-                    dest.put(destOffset + 3, 0.5f * _t9 * _t20);
+                    dest.put(destOffset + 3, _sp2 * _t9);
                 }
             }
         }
@@ -455,32 +455,32 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t15 = 1.0f + (_m00 - (_m11 + _m22));
         float _t16 = 1.0f + (_m11 - (_m00 + _m22));
         float _t17 = 1.0f + (_m22 - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            dest.put(destOffset + 0, 0.5f * _t1 * _t18);
-            dest.put(destOffset + 1, 0.5f * _t7 * _t18);
-            dest.put(destOffset + 2, 0.5f * _t9 * _t18);
+            dest.put(destOffset + 0, _sp0 * _t1);
+            dest.put(destOffset + 1, _sp0 * _t7);
+            dest.put(destOffset + 2, _sp0 * _t9);
             dest.put(destOffset + 3, 0.5f * (float) Math.sqrt(_t14));
         } else {
             if (_m00 > _t2) {
                 dest.put(destOffset + 0, 0.5f * (float) Math.sqrt(_t15));
-                dest.put(destOffset + 1, 0.5f * _t4 * _t21);
-                dest.put(destOffset + 2, 0.5f * _t6 * _t21);
-                dest.put(destOffset + 3, 0.5f * _t1 * _t21);
+                dest.put(destOffset + 1, _sp3 * _t4);
+                dest.put(destOffset + 2, _sp3 * _t6);
+                dest.put(destOffset + 3, _sp3 * _t1);
             } else {
                 if (_m11 > _m22) {
-                    dest.put(destOffset + 0, 0.5f * _t4 * _t19);
+                    dest.put(destOffset + 0, _sp1 * _t4);
                     dest.put(destOffset + 1, 0.5f * (float) Math.sqrt(_t16));
-                    dest.put(destOffset + 2, 0.5f * _t8 * _t19);
-                    dest.put(destOffset + 3, 0.5f * _t7 * _t19);
+                    dest.put(destOffset + 2, _sp1 * _t8);
+                    dest.put(destOffset + 3, _sp1 * _t7);
                 } else {
-                    dest.put(destOffset + 0, 0.5f * _t6 * _t20);
-                    dest.put(destOffset + 1, 0.5f * _t8 * _t20);
+                    dest.put(destOffset + 0, _sp2 * _t6);
+                    dest.put(destOffset + 1, _sp2 * _t8);
                     dest.put(destOffset + 2, 0.5f * (float) Math.sqrt(_t17));
-                    dest.put(destOffset + 3, 0.5f * _t9 * _t20);
+                    dest.put(destOffset + 3, _sp2 * _t9);
                 }
             }
         }
@@ -495,7 +495,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer toDualQuat_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 8 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.toDualQuat(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -526,7 +526,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer toMatrix_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.toMatrix(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -568,7 +568,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer toMatrix3x3_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.toMatrix3x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -603,7 +603,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer toMatrix3x4_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 12 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.toMatrix3x4(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -642,7 +642,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer decomposeSwingTwist_api(java.nio.FloatBuffer swing, int swingOffset, java.nio.FloatBuffer twist, int twistOffset, java.nio.FloatBuffer src, int srcOffset, float axisX, float axisY, float axisZ) {
-        if (swing.hasArray() && twist.hasArray() && src.hasArray()) {
+        if (swing.hasArray() && swingOffset >= 0 && swingOffset <= swing.limit() - 4 && twist.hasArray() && twistOffset >= 0 && twistOffset <= twist.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.decomposeSwingTwist(swing.array(), swing.arrayOffset() + swingOffset, twist.array(), twist.arrayOffset() + twistOffset, src.array(), src.arrayOffset() + srcOffset, axisX, axisY, axisZ);
             return swing;
         }
@@ -691,7 +691,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer decomposeSwingTwist_api(java.nio.FloatBuffer swing, int swingOffset, java.nio.FloatBuffer twist, int twistOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset) {
-        if (swing.hasArray() && twist.hasArray() && src.hasArray() && axis.hasArray()) {
+        if (swing.hasArray() && swingOffset >= 0 && swingOffset <= swing.limit() - 4 && twist.hasArray() && twistOffset >= 0 && twistOffset <= twist.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             FloatQuatOps.decomposeSwingTwist(swing.array(), swing.arrayOffset() + swingOffset, twist.array(), twist.arrayOffset() + twistOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset);
             return swing;
         }
@@ -741,7 +741,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getSwing_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float axisX, float axisY, float axisZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getSwing(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axisX, axisY, axisZ);
             return dest;
         }
@@ -785,7 +785,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getSwing_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset) {
-        if (dest.hasArray() && src.hasArray() && axis.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             FloatQuatOps.getSwing(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset);
             return dest;
         }
@@ -831,7 +831,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getTwist_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float axisX, float axisY, float axisZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getTwist(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axisX, axisY, axisZ);
             return dest;
         }
@@ -870,7 +870,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getTwist_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset) {
-        if (dest.hasArray() && src.hasArray() && axis.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             FloatQuatOps.getTwist(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset);
             return dest;
         }
@@ -910,7 +910,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeIdentity_api(java.nio.FloatBuffer dest, int destOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeIdentity(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
@@ -990,7 +990,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer nlerp_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float targetX, float targetY, float targetZ, float targetW, float alpha) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.nlerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, targetX, targetY, targetZ, targetW, alpha);
             return dest;
         }
@@ -1008,7 +1008,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t7 = Math.fma(alpha, targetY - _selfy, _selfy);
         float _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
+        if (_t11 != 0.0f) {
             dest.put(destOffset + 0, _t6 * _t12);
             dest.put(destOffset + 1, _t7 * _t12);
             dest.put(destOffset + 2, _t5 * _t12);
@@ -1045,7 +1045,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t7 = Math.fma(alpha, _targety - _selfy, _selfy);
         float _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
+        if (_t11 != 0.0f) {
             dest.put(destOffset + 0, _t6 * _t12);
             dest.put(destOffset + 1, _t7 * _t12);
             dest.put(destOffset + 2, _t5 * _t12);
@@ -1067,7 +1067,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer nlerpShortest_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float targetX, float targetY, float targetZ, float targetW, float alpha) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.nlerpShortest(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, targetX, targetY, targetZ, targetW, alpha);
             return dest;
         }
@@ -1094,7 +1094,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         }
         float _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             dest.put(destOffset + 0, _t19 * _t25);
             dest.put(destOffset + 1, _t20 * _t25);
             dest.put(destOffset + 2, _t18 * _t25);
@@ -1140,7 +1140,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         }
         float _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             dest.put(destOffset + 0, _t19 * _t25);
             dest.put(destOffset + 1, _t20 * _t25);
             dest.put(destOffset + 2, _t18 * _t25);
@@ -1167,23 +1167,34 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfz = src.get(srcOffset + 2);
         float _selfw = src.get(srcOffset + 3);
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_selfw, targetW, Math.fma(_selfz, targetZ, Math.fma(_selfx, targetX, _selfy * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        float _t8_inv = 1.0f / _t8;
-        float _t9 = Math.abs(_t8);
-        float _t11 = (float) Math.sin(alpha * _t7);
-        float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 1.0E-6f) {
-            dest.put(destOffset + 0, Math.fma(_selfx, _t13, targetX * _t11) * _t8_inv);
-            dest.put(destOffset + 1, Math.fma(_selfy, _t13, targetY * _t11) * _t8_inv);
-            dest.put(destOffset + 2, Math.fma(_selfz, _t13, targetZ * _t11) * _t8_inv);
-            dest.put(destOffset + 3, Math.fma(_selfw, _t13, targetW * _t11) * _t8_inv);
+        float _t1 = _selfw + targetW;
+        float _t2 = _selfz + targetZ;
+        float _t3 = _selfx + targetX;
+        float _t4 = _selfy + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _t26, _t27;
+        if (_t19 > 2.0E-6f) {
+            _t26 = _t21 * (float) Math.sin(alpha * _t12);
+            _t27 = _t21 * (float) Math.sin(_t0 * _t12);
         } else {
-            dest.put(destOffset + 0, Math.fma(alpha, targetX, _selfx * _t0));
-            dest.put(destOffset + 1, Math.fma(alpha, targetY, _selfy * _t0));
-            dest.put(destOffset + 2, Math.fma(alpha, targetZ, _selfz * _t0));
-            dest.put(destOffset + 3, Math.fma(alpha, targetW, _selfw * _t0));
+            if (_t11 > _t13) {
+                _t26 = alpha;
+                _t27 = _t0;
+            } else {
+                _t26 = 1.0f - _t5;
+                _t27 = _t5;
+            }
         }
+        dest.put(destOffset + 0, Math.fma(_selfx, _t27, targetX * _t26));
+        dest.put(destOffset + 1, Math.fma(_selfy, _t27, targetY * _t26));
+        dest.put(destOffset + 2, Math.fma(_selfz, _t27, targetZ * _t26));
+        dest.put(destOffset + 3, Math.fma(_selfw, _t27, targetW * _t26));
         return dest;
     }
 
@@ -1205,23 +1216,34 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _targetz = target.get(targetOffset + 2);
         float _targetw = target.get(targetOffset + 3);
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))));
-        float _t8 = (float) Math.sin(_t7);
-        float _t8_inv = 1.0f / _t8;
-        float _t9 = Math.abs(_t8);
-        float _t11 = (float) Math.sin(alpha * _t7);
-        float _t13 = (float) Math.sin(_t0 * _t7);
-        if (_t9 > 1.0E-6f) {
-            dest.put(destOffset + 0, Math.fma(_selfx, _t13, _targetx * _t11) * _t8_inv);
-            dest.put(destOffset + 1, Math.fma(_selfy, _t13, _targety * _t11) * _t8_inv);
-            dest.put(destOffset + 2, Math.fma(_selfz, _t13, _targetz * _t11) * _t8_inv);
-            dest.put(destOffset + 3, Math.fma(_selfw, _t13, _targetw * _t11) * _t8_inv);
+        float _t1 = _selfw + _targetw;
+        float _t2 = _selfz + _targetz;
+        float _t3 = _selfx + _targetx;
+        float _t4 = _selfy + _targety;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _t26, _t27;
+        if (_t19 > 2.0E-6f) {
+            _t26 = _t21 * (float) Math.sin(alpha * _t12);
+            _t27 = _t21 * (float) Math.sin(_t0 * _t12);
         } else {
-            dest.put(destOffset + 0, Math.fma(alpha, _targetx, _selfx * _t0));
-            dest.put(destOffset + 1, Math.fma(alpha, _targety, _selfy * _t0));
-            dest.put(destOffset + 2, Math.fma(alpha, _targetz, _selfz * _t0));
-            dest.put(destOffset + 3, Math.fma(alpha, _targetw, _selfw * _t0));
+            if (_t11 > _t13) {
+                _t26 = alpha;
+                _t27 = _t0;
+            } else {
+                _t26 = 1.0f - _t5;
+                _t27 = _t5;
+            }
         }
+        dest.put(destOffset + 0, Math.fma(_selfx, _t27, _targetx * _t26));
+        dest.put(destOffset + 1, Math.fma(_selfy, _t27, _targety * _t26));
+        dest.put(destOffset + 2, Math.fma(_selfz, _t27, _targetz * _t26));
+        dest.put(destOffset + 3, Math.fma(_selfw, _t27, _targetw * _t26));
         return dest;
     }
 
@@ -1233,7 +1255,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer slerpShortest_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float targetX, float targetY, float targetZ, float targetW, float alpha) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.slerpShortest(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, targetX, targetY, targetZ, targetW, alpha);
             return dest;
         }
@@ -1279,7 +1301,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             dest.put(destOffset + 0, _t50 * _t44);
             dest.put(destOffset + 1, _t50 * _t45);
             dest.put(destOffset + 2, _t50 * _t43);
@@ -1344,7 +1366,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         }
         float _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             dest.put(destOffset + 0, _t50 * _t44);
             dest.put(destOffset + 1, _t50 * _t45);
             dest.put(destOffset + 2, _t50 * _t43);
@@ -1366,7 +1388,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer squad_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float control0X, float control0Y, float control0Z, float control0W, float control1X, float control1Y, float control1Z, float control1W, float targetX, float targetY, float targetZ, float targetW, float t) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.squad(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, control0X, control0Y, control0Z, control0W, control1X, control1Y, control1Z, control1W, targetX, targetY, targetZ, targetW, t);
             return dest;
         }
@@ -1380,61 +1402,92 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfw = src.get(srcOffset + 3);
         float _t0 = 1.0f - t;
         float _t1 = t + t;
+        float _t3 = control0W + control1W;
+        float _t4 = control0Z + control1Z;
+        float _t5 = control0X + control1X;
+        float _t6 = control0Y + control1Y;
+        float _t7 = t < 0.5f ? 1.0f : 0.0f;
+        float _t8 = _selfw + targetW;
+        float _t9 = _selfz + targetZ;
+        float _t10 = _selfx + targetX;
+        float _t11 = _selfy + targetY;
+        float _t12 = 1.0f - _t7;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
-        float _t34 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_selfw, targetW, Math.fma(_selfz, targetZ, Math.fma(_selfx, targetX, _selfy * targetY))))));
-        float _t35 = (float) Math.sin(_t33);
-        float _t35_inv = 1.0f / _t35;
-        float _t36 = (float) Math.sin(_t34);
-        float _t36_inv = 1.0f / _t36;
-        float _t37 = Math.abs(_t35);
-        float _t39 = Math.abs(_t36);
-        float _t41 = (float) Math.sin(t * _t33);
-        float _t42 = (float) Math.sin(t * _t34);
-        float _t45 = (float) Math.sin(_t0 * _t33);
-        float _t46 = (float) Math.sin(_t0 * _t34);
-        float _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6f) {
-            _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
-            _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t27 = quatArcAngle(_t25);
+        float _t28 = quatArcAngle(_t26);
+        float _t29 = 4.0f - _t25;
+        float _t30 = 4.0f - _t26;
+        float _t39 = _t29 * _t25;
+        float _t40 = _t30 * _t26;
+        float _t41 = (float) Math.sqrt(_t39);
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t45 = 2.0f / _t41;
+        float _t46 = 2.0f / _t43;
+        float _t55, _t57;
+        if (_t41 > 2.0E-6f) {
+            _t55 = _t45 * (float) Math.sin(t * _t27);
+            _t57 = _t45 * (float) Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1W, control0W * _t0);
-            _t73 = Math.fma(t, control1Z, control0Z * _t0);
-            _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        float _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6f) {
-            _t72 = Math.fma(_selfw, _t46, targetW * _t42) * _t36_inv;
-            _t74 = Math.fma(_selfz, _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(_selfx, _t46, targetX * _t42) * _t36_inv;
-            _t78 = Math.fma(_selfy, _t46, targetY * _t42) * _t36_inv;
+        float _t56, _t58;
+        if (_t43 > 2.0E-6f) {
+            _t56 = _t46 * (float) Math.sin(t * _t28);
+            _t58 = _t46 * (float) Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetW, _selfw * _t0);
-            _t74 = Math.fma(t, targetZ, _selfz * _t0);
-            _t76 = Math.fma(t, targetX, _selfx * _t0);
-            _t78 = Math.fma(t, targetY, _selfy * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        float _t85 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        float _t86 = (float) Math.sin(_t85);
-        float _t86_inv = 1.0f / _t86;
-        float _t87 = Math.abs(_t86);
-        float _t89 = (float) Math.sin(_t13 * _t85);
-        float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6f) {
-            dest.put(destOffset + 0, Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv);
-            dest.put(destOffset + 1, Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv);
-            dest.put(destOffset + 2, Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv);
-            dest.put(destOffset + 3, Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv);
+        float _t67 = Math.fma(control0X, _t57, control1X * _t55);
+        float _t68 = Math.fma(control0W, _t57, control1W * _t55);
+        float _t69 = Math.fma(_selfw, _t58, targetW * _t56);
+        float _t70 = Math.fma(control0Z, _t57, control1Z * _t55);
+        float _t71 = Math.fma(_selfz, _t58, targetZ * _t56);
+        float _t72 = Math.fma(_selfx, _t58, targetX * _t56);
+        float _t73 = Math.fma(control0Y, _t57, control1Y * _t55);
+        float _t74 = Math.fma(_selfy, _t58, targetY * _t56);
+        float _t75 = _t68 + _t69;
+        float _t76 = _t70 + _t71;
+        float _t77 = _t67 + _t72;
+        float _t78 = _t73 + _t74;
+        float _t83 = Math.min(4.0f, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        float _t84 = quatArcAngle(_t83);
+        float _t85 = 4.0f - _t83;
+        float _t90 = _t85 * _t83;
+        float _t91 = (float) Math.sqrt(_t90);
+        float _t93 = 2.0f / _t91;
+        float _t98, _t99;
+        if (_t91 > 2.0E-6f) {
+            _t98 = _t93 * (float) Math.sin(_t13 * _t84);
+            _t99 = _t93 * (float) Math.sin(_t14 * _t84);
         } else {
-            dest.put(destOffset + 0, Math.fma(_t14, _t76, _t13 * _t75));
-            dest.put(destOffset + 1, Math.fma(_t14, _t78, _t13 * _t77));
-            dest.put(destOffset + 2, Math.fma(_t14, _t74, _t13 * _t73));
-            dest.put(destOffset + 3, Math.fma(_t14, _t72, _t13 * _t71));
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0f - _t17;
+                _t99 = _t17;
+            }
         }
+        dest.put(destOffset + 0, Math.fma(_t67, _t98, _t72 * _t99));
+        dest.put(destOffset + 1, Math.fma(_t73, _t98, _t74 * _t99));
+        dest.put(destOffset + 2, Math.fma(_t70, _t98, _t71 * _t99));
+        dest.put(destOffset + 3, Math.fma(_t68, _t98, _t69 * _t99));
         return dest;
     }
 
@@ -1449,7 +1502,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer squad_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer control0, int control0Offset, java.nio.FloatBuffer control1, int control1Offset, java.nio.FloatBuffer target, int targetOffset, float t) {
-        if (dest.hasArray() && src.hasArray() && control0.hasArray() && control1.hasArray() && target.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && control0.hasArray() && control0Offset >= 0 && control0Offset <= control0.limit() - 4 && control1.hasArray() && control1Offset >= 0 && control1Offset <= control1.limit() - 4 && target.hasArray() && targetOffset >= 0 && targetOffset <= target.limit() - 4) {
             FloatQuatOps.squad(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, control0.array(), control0.arrayOffset() + control0Offset, control1.array(), control1.arrayOffset() + control1Offset, target.array(), target.arrayOffset() + targetOffset, t);
             return dest;
         }
@@ -1475,61 +1528,92 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _targetw = target.get(targetOffset + 3);
         float _t0 = 1.0f - t;
         float _t1 = t + t;
+        float _t3 = _control0w + _control1w;
+        float _t4 = _control0z + _control1z;
+        float _t5 = _control0x + _control1x;
+        float _t6 = _control0y + _control1y;
+        float _t7 = t < 0.5f ? 1.0f : 0.0f;
+        float _t8 = _selfw + _targetw;
+        float _t9 = _selfz + _targetz;
+        float _t10 = _selfx + _targetx;
+        float _t11 = _selfy + _targety;
+        float _t12 = 1.0f - _t7;
         float _t13 = _t0 * _t1;
         float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t33 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_control0w, _control1w, Math.fma(_control0z, _control1z, Math.fma(_control0x, _control1x, _control0y * _control1y))))));
-        float _t34 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))));
-        float _t35 = (float) Math.sin(_t33);
-        float _t35_inv = 1.0f / _t35;
-        float _t36 = (float) Math.sin(_t34);
-        float _t36_inv = 1.0f / _t36;
-        float _t37 = Math.abs(_t35);
-        float _t39 = Math.abs(_t36);
-        float _t41 = (float) Math.sin(t * _t33);
-        float _t42 = (float) Math.sin(t * _t34);
-        float _t45 = (float) Math.sin(_t0 * _t33);
-        float _t46 = (float) Math.sin(_t0 * _t34);
-        float _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6f) {
-            _t71 = Math.fma(_control0w, _t45, _control1w * _t41) * _t35_inv;
-            _t73 = Math.fma(_control0z, _t45, _control1z * _t41) * _t35_inv;
-            _t75 = Math.fma(_control0x, _t45, _control1x * _t41) * _t35_inv;
-            _t77 = Math.fma(_control0y, _t45, _control1y * _t41) * _t35_inv;
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t27 = quatArcAngle(_t25);
+        float _t28 = quatArcAngle(_t26);
+        float _t29 = 4.0f - _t25;
+        float _t30 = 4.0f - _t26;
+        float _t39 = _t29 * _t25;
+        float _t40 = _t30 * _t26;
+        float _t41 = (float) Math.sqrt(_t39);
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t45 = 2.0f / _t41;
+        float _t46 = 2.0f / _t43;
+        float _t55, _t57;
+        if (_t41 > 2.0E-6f) {
+            _t55 = _t45 * (float) Math.sin(t * _t27);
+            _t57 = _t45 * (float) Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, _control1w, _control0w * _t0);
-            _t73 = Math.fma(t, _control1z, _control0z * _t0);
-            _t75 = Math.fma(t, _control1x, _control0x * _t0);
-            _t77 = Math.fma(t, _control1y, _control0y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        float _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6f) {
-            _t72 = Math.fma(_selfw, _t46, _targetw * _t42) * _t36_inv;
-            _t74 = Math.fma(_selfz, _t46, _targetz * _t42) * _t36_inv;
-            _t76 = Math.fma(_selfx, _t46, _targetx * _t42) * _t36_inv;
-            _t78 = Math.fma(_selfy, _t46, _targety * _t42) * _t36_inv;
+        float _t56, _t58;
+        if (_t43 > 2.0E-6f) {
+            _t56 = _t46 * (float) Math.sin(t * _t28);
+            _t58 = _t46 * (float) Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, _targetw, _selfw * _t0);
-            _t74 = Math.fma(t, _targetz, _selfz * _t0);
-            _t76 = Math.fma(t, _targetx, _selfx * _t0);
-            _t78 = Math.fma(t, _targety, _selfy * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        float _t85 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        float _t86 = (float) Math.sin(_t85);
-        float _t86_inv = 1.0f / _t86;
-        float _t87 = Math.abs(_t86);
-        float _t89 = (float) Math.sin(_t13 * _t85);
-        float _t91 = (float) Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6f) {
-            dest.put(destOffset + 0, Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv);
-            dest.put(destOffset + 1, Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv);
-            dest.put(destOffset + 2, Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv);
-            dest.put(destOffset + 3, Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv);
+        float _t67 = Math.fma(_control0x, _t57, _control1x * _t55);
+        float _t68 = Math.fma(_control0w, _t57, _control1w * _t55);
+        float _t69 = Math.fma(_selfw, _t58, _targetw * _t56);
+        float _t70 = Math.fma(_control0z, _t57, _control1z * _t55);
+        float _t71 = Math.fma(_selfz, _t58, _targetz * _t56);
+        float _t72 = Math.fma(_selfx, _t58, _targetx * _t56);
+        float _t73 = Math.fma(_control0y, _t57, _control1y * _t55);
+        float _t74 = Math.fma(_selfy, _t58, _targety * _t56);
+        float _t75 = _t68 + _t69;
+        float _t76 = _t70 + _t71;
+        float _t77 = _t67 + _t72;
+        float _t78 = _t73 + _t74;
+        float _t83 = Math.min(4.0f, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        float _t84 = quatArcAngle(_t83);
+        float _t85 = 4.0f - _t83;
+        float _t90 = _t85 * _t83;
+        float _t91 = (float) Math.sqrt(_t90);
+        float _t93 = 2.0f / _t91;
+        float _t98, _t99;
+        if (_t91 > 2.0E-6f) {
+            _t98 = _t93 * (float) Math.sin(_t13 * _t84);
+            _t99 = _t93 * (float) Math.sin(_t14 * _t84);
         } else {
-            dest.put(destOffset + 0, Math.fma(_t14, _t76, _t13 * _t75));
-            dest.put(destOffset + 1, Math.fma(_t14, _t78, _t13 * _t77));
-            dest.put(destOffset + 2, Math.fma(_t14, _t74, _t13 * _t73));
-            dest.put(destOffset + 3, Math.fma(_t14, _t72, _t13 * _t71));
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0f - _t17;
+                _t99 = _t17;
+            }
         }
+        dest.put(destOffset + 0, Math.fma(_t67, _t98, _t72 * _t99));
+        dest.put(destOffset + 1, Math.fma(_t73, _t98, _t74 * _t99));
+        dest.put(destOffset + 2, Math.fma(_t70, _t98, _t71 * _t99));
+        dest.put(destOffset + 3, Math.fma(_t68, _t98, _t69 * _t99));
         return dest;
     }
 
@@ -1541,7 +1625,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer mul_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -1569,7 +1653,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer mul_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             FloatQuatOps.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -1600,7 +1684,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preMul_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.preMul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -1628,7 +1712,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preMul_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             FloatQuatOps.preMul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -1657,7 +1741,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float angle_api(java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return FloatQuatOps.angle(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1676,7 +1760,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float angleTo_api(java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return FloatQuatOps.angleTo(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1717,7 +1801,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float angleTo_api(java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (src.hasArray() && other.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             return FloatQuatOps.angleTo(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1763,7 +1847,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer axis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.axis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1814,7 +1898,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer conjugate_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.conjugate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1841,7 +1925,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer conjugateBy_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float qX, float qY, float qZ, float qW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.conjugateBy(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, qX, qY, qZ, qW);
             return dest;
         }
@@ -1873,7 +1957,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer conjugateBy_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer q, int qOffset) {
-        if (dest.hasArray() && src.hasArray() && q.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && q.hasArray() && qOffset >= 0 && qOffset <= q.limit() - 4) {
             FloatQuatOps.conjugateBy(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, q.array(), q.arrayOffset() + qOffset);
             return dest;
         }
@@ -1908,7 +1992,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer difference_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.difference(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
             return dest;
         }
@@ -1920,12 +2004,13 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfy = src.get(srcOffset + 1);
         float _selfz = src.get(srcOffset + 2);
         float _selfw = src.get(srcOffset + 3);
-        float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        float _t3_inv = 1.0f / _t3;
+        float _t3_inv = 1.0f / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        float _sp1 = _t3_inv * _selfz;
+        float _sp0 = _selfy * _t3_inv;
         dest.put(destOffset + 0, (Math.fma(otherX, _selfw, -(otherW * _selfx)) + Math.fma(otherY, _selfz, -(otherZ * _selfy))) * _t3_inv);
-        dest.put(destOffset + 1, -(otherW * _selfy * _t3_inv) - otherX * _selfz * _t3_inv + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv);
+        dest.put(destOffset + 1, -(otherW * _sp0) - otherX * _sp1 + Math.fma(otherY, _selfw, otherZ * _selfx) * _t3_inv);
         dest.put(destOffset + 2, (Math.fma(otherX, _selfy, -(otherW * _selfz)) + Math.fma(otherZ, _selfw, -(otherY * _selfx))) * _t3_inv);
-        dest.put(destOffset + 3, Math.fma(otherX, _selfx, otherW * _selfw) * _t3_inv - (-(otherY * _selfy * _t3_inv) - otherZ * _selfz * _t3_inv));
+        dest.put(destOffset + 3, Math.fma(otherX, _selfx, otherW * _selfw) * _t3_inv - (-(otherY * _sp0) - otherZ * _sp1));
         return dest;
     }
 
@@ -1938,7 +2023,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer difference_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             FloatQuatOps.difference(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -1954,12 +2039,13 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _othery = other.get(otherOffset + 1);
         float _otherz = other.get(otherOffset + 2);
         float _otherw = other.get(otherOffset + 3);
-        float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
-        float _t3_inv = 1.0f / _t3;
+        float _t3_inv = 1.0f / Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        float _sp1 = _t3_inv * _selfz;
+        float _sp0 = _selfy * _t3_inv;
         dest.put(destOffset + 0, (Math.fma(_otherx, _selfw, -(_otherw * _selfx)) + Math.fma(_othery, _selfz, -(_otherz * _selfy))) * _t3_inv);
-        dest.put(destOffset + 1, -(_otherw * _selfy * _t3_inv) - _otherx * _selfz * _t3_inv + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv);
+        dest.put(destOffset + 1, -(_otherw * _sp0) - _otherx * _sp1 + Math.fma(_othery, _selfw, _otherz * _selfx) * _t3_inv);
         dest.put(destOffset + 2, (Math.fma(_otherx, _selfy, -(_otherw * _selfz)) + Math.fma(_otherz, _selfw, -(_othery * _selfx))) * _t3_inv);
-        dest.put(destOffset + 3, Math.fma(_otherx, _selfx, _otherw * _selfw) * _t3_inv - (-(_othery * _selfy * _t3_inv) - _otherz * _selfz * _t3_inv));
+        dest.put(destOffset + 3, Math.fma(_otherx, _selfx, _otherw * _selfw) * _t3_inv - (-(_othery * _sp0) - _otherz * _sp1));
         return dest;
     }
 
@@ -1969,7 +2055,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float dot_api(java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return FloatQuatOps.dot(src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -1989,7 +2075,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float dot_api(java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
-        if (src.hasArray() && other.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             return FloatQuatOps.dot(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2022,7 +2108,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t3 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         float _t4 = (float) Math.sqrt(_t3);
         float _t6 = (float) Math.sin(_t4);
-        float _t8 = _t6 * _t0 * (1.0f / (float) Math.sqrt(_t3));
+        float _t8 = _t6 * _t0 / _t4;
         if (_t3 > 0.0f) {
             dest.put(destOffset + 0, _selfx * _t8);
             dest.put(destOffset + 1, _selfy * _t8);
@@ -2044,7 +2130,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getEulerAnglesXYZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getEulerAnglesXYZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2082,7 +2168,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getEulerAnglesXZY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getEulerAnglesXZY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2120,7 +2206,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getEulerAnglesYXZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getEulerAnglesYXZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2157,7 +2243,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getEulerAnglesYZX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getEulerAnglesYZX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2194,7 +2280,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getEulerAnglesZXY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getEulerAnglesZXY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2231,7 +2317,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer getEulerAnglesZYX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.getEulerAnglesZYX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2268,7 +2354,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer integrate_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angularVelX, float angularVelY, float angularVelZ, float dt) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.integrate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angularVelX, angularVelY, angularVelZ, dt);
             return dest;
         }
@@ -2288,7 +2374,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t7 = (float) Math.sqrt(_t6);
         float _t9 = (float) Math.sin(_t7);
         float _t10 = (float) Math.cosFromSin(_t9, _t7);
-        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
+        float _t11 = _t9 / _t7;
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -2315,7 +2401,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer integrate_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer angularVel, int angularVelOffset, float dt) {
-        if (dest.hasArray() && src.hasArray() && angularVel.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && angularVel.hasArray() && angularVelOffset >= 0 && angularVelOffset <= angularVel.limit() - 3) {
             FloatQuatOps.integrate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angularVel.array(), angularVel.arrayOffset() + angularVelOffset, dt);
             return dest;
         }
@@ -2338,7 +2424,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t7 = (float) Math.sqrt(_t6);
         float _t9 = (float) Math.sin(_t7);
         float _t10 = (float) Math.cosFromSin(_t9, _t7);
-        float _t11 = _t9 * (1.0f / (float) Math.sqrt(_t6));
+        float _t11 = _t9 / _t7;
         float _t15, _t16, _t17;
         if (_t6 > 0.0f) {
             _t15 = _t2 * _t11;
@@ -2364,7 +2450,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNegativeX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNegativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2381,7 +2467,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, -(_t12 * _t16));
             dest.put(destOffset + 1, -(_t10 * _t16));
             dest.put(destOffset + 2, -(_t9 * _t16));
@@ -2401,7 +2487,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNegativeY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNegativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2418,7 +2504,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, -(_t9 * _t16));
             dest.put(destOffset + 1, -(_t12 * _t16));
             dest.put(destOffset + 2, -(_t10 * _t16));
@@ -2438,7 +2524,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNegativeZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNegativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2455,7 +2541,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, -(_t10 * _t16));
             dest.put(destOffset + 1, -(_t9 * _t16));
             dest.put(destOffset + 2, -(_t12 * _t16));
@@ -2475,7 +2561,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNormalizedNegativeX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNormalizedNegativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2501,7 +2587,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNormalizedNegativeY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNormalizedNegativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2527,7 +2613,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNormalizedNegativeZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNormalizedNegativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2553,7 +2639,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNormalizedPositiveX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNormalizedPositiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2579,7 +2665,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNormalizedPositiveY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNormalizedPositiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2605,7 +2691,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invNormalizedPositiveZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invNormalizedPositiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2631,7 +2717,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invPositiveX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invPositiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2648,7 +2734,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, _t12 * _t16);
             dest.put(destOffset + 1, _t10 * _t16);
             dest.put(destOffset + 2, _t9 * _t16);
@@ -2668,7 +2754,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invPositiveY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invPositiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2685,7 +2771,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, _t9 * _t16);
             dest.put(destOffset + 1, _t12 * _t16);
             dest.put(destOffset + 2, _t10 * _t16);
@@ -2705,7 +2791,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer invPositiveZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.invPositiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2722,7 +2808,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, _t10 * _t16);
             dest.put(destOffset + 1, _t9 * _t16);
             dest.put(destOffset + 2, _t12 * _t16);
@@ -2740,7 +2826,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float length_api(java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return FloatQuatOps.length(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2759,7 +2845,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static float lengthSquared_api(java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             return FloatQuatOps.lengthSquared(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -2807,7 +2893,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer negativeX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.negativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2824,7 +2910,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, -(_t12 * _t16));
             dest.put(destOffset + 1, -(_t9 * _t16));
             dest.put(destOffset + 2, -(_t10 * _t16));
@@ -2844,7 +2930,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer negativeY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.negativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2861,7 +2947,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, -(_t10 * _t16));
             dest.put(destOffset + 1, -(_t12 * _t16));
             dest.put(destOffset + 2, -(_t9 * _t16));
@@ -2881,7 +2967,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer negativeZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.negativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2898,7 +2984,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, -(_t9 * _t16));
             dest.put(destOffset + 1, -(_t10 * _t16));
             dest.put(destOffset + 2, -(_t12 * _t16));
@@ -2924,7 +3010,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _selfw = src.get(srcOffset + 3);
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dest.put(destOffset + 0, _selfx * _t4);
             dest.put(destOffset + 1, _selfy * _t4);
             dest.put(destOffset + 2, _selfz * _t4);
@@ -2946,7 +3032,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer normalizedNegativeX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.normalizedNegativeX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2972,7 +3058,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer normalizedNegativeY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.normalizedNegativeY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -2998,7 +3084,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer normalizedNegativeZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.normalizedNegativeZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3024,7 +3110,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer normalizedPositiveX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.normalizedPositiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3050,7 +3136,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer normalizedPositiveY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.normalizedPositiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3076,7 +3162,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer normalizedPositiveZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.normalizedPositiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3102,7 +3188,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer positiveX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.positiveX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3119,7 +3205,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfx, _selfx, _selfw * _selfw)));
         float _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, _t12 * _t16);
             dest.put(destOffset + 1, _t9 * _t16);
             dest.put(destOffset + 2, _t10 * _t16);
@@ -3139,7 +3225,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer positiveY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.positiveY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3156,7 +3242,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(-_selfz, _selfz, Math.fma(_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, _t10 * _t16);
             dest.put(destOffset + 1, _t12 * _t16);
             dest.put(destOffset + 2, _t9 * _t16);
@@ -3176,7 +3262,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer positiveZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.positiveZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -3193,7 +3279,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t12 = Math.fma(_selfz, _selfz, Math.fma(-_selfy, _selfy, Math.fma(_selfw, _selfw, -(_selfx * _selfx))));
         float _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         float _t16 = (1.0f / (float) Math.sqrt(_t15));
-        if (_t15 > 0.0f) {
+        if (_t15 != 0.0f) {
             dest.put(destOffset + 0, _t9 * _t16);
             dest.put(destOffset + 1, _t10 * _t16);
             dest.put(destOffset + 2, _t12 * _t16);
@@ -3233,7 +3319,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
         float _t26 = (float) Math.sin(_t24);
-        float _t28 = _t26 * _t10 * (1.0f / (float) Math.sqrt(_t23));
+        float _t28 = _t26 * _t10 / _t24;
         if (_t23 > 0.0f) {
             dest.put(destOffset + 0, _t19 * _t28);
             dest.put(destOffset + 1, _t20 * _t28);
@@ -3255,7 +3341,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateTowards_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float targetX, float targetY, float targetZ, float targetW, float step) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateTowards(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, targetX, targetY, targetZ, targetW, step);
             return dest;
         }
@@ -3311,7 +3397,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         }
         float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         float _t73 = (1.0f / (float) Math.sqrt(_t72));
-        if (_t72 > 0.0f) {
+        if (_t72 != 0.0f) {
             dest.put(destOffset + 0, _t73 * _t67);
             dest.put(destOffset + 1, _t73 * _t68);
             dest.put(destOffset + 2, _t73 * _t66);
@@ -3386,7 +3472,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         }
         float _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         float _t73 = (1.0f / (float) Math.sqrt(_t72));
-        if (_t72 > 0.0f) {
+        if (_t72 != 0.0f) {
             dest.put(destOffset + 0, _t73 * _t67);
             dest.put(destOffset + 1, _t73 * _t68);
             dest.put(destOffset + 2, _t73 * _t66);
@@ -3408,7 +3494,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer lookAlong_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.lookAlong(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
             return dest;
         }
@@ -3423,7 +3509,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = dirZ * _t3;
             _t8 = dirY * _t3;
             _t9 = dirX * _t3;
@@ -3441,7 +3527,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -3464,33 +3550,33 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t108, _t109, _t110, _t111;
         if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
+            _t108 = _sp0 * _t57;
+            _t109 = _sp0 * _t37;
             _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
+            _t111 = _sp0 * _t56;
         } else {
             if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
-                _t110 = 0.5f * _t56 * _t65;
+                _t108 = _sp1 * _t38;
+                _t109 = _sp1 * _t58;
+                _t110 = _sp1 * _t56;
                 _t111 = 0.5f * (float) Math.sqrt(_t61);
             } else {
                 if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
+                    _t108 = _sp2 * _t54;
                     _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
+                    _t110 = _sp2 * _t37;
+                    _t111 = _sp2 * _t58;
                 } else {
                     _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
+                    _t109 = _sp3 * _t54;
+                    _t110 = _sp3 * _t57;
+                    _t111 = _sp3 * _t38;
                 }
             }
         }
@@ -3511,7 +3597,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer lookAlong_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer dir, int dirOffset, java.nio.FloatBuffer up, int upOffset) {
-        if (dest.hasArray() && src.hasArray() && dir.hasArray() && up.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && dir.hasArray() && dirOffset >= 0 && dirOffset <= dir.limit() - 3 && up.hasArray() && upOffset >= 0 && upOffset <= up.limit() - 3) {
             FloatQuatOps.lookAlong(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, dir.array(), dir.arrayOffset() + dirOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
@@ -3532,7 +3618,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _dirz * _t3;
             _t8 = _diry * _t3;
             _t9 = _dirx * _t3;
@@ -3550,7 +3636,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -3573,33 +3659,33 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t65 = (1.0f / (float) Math.sqrt(_t61));
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t108, _t109, _t110, _t111;
         if (_t59 > 0.0f) {
-            _t108 = 0.5f * _t57 * _t68;
-            _t109 = 0.5f * _t37 * _t68;
+            _t108 = _sp0 * _t57;
+            _t109 = _sp0 * _t37;
             _t110 = 0.5f * (float) Math.sqrt(_t60);
-            _t111 = 0.5f * _t56 * _t68;
+            _t111 = _sp0 * _t56;
         } else {
             if (_t31 > _t55) {
-                _t108 = 0.5f * _t38 * _t65;
-                _t109 = 0.5f * _t58 * _t65;
-                _t110 = 0.5f * _t56 * _t65;
+                _t108 = _sp1 * _t38;
+                _t109 = _sp1 * _t58;
+                _t110 = _sp1 * _t56;
                 _t111 = 0.5f * (float) Math.sqrt(_t61);
             } else {
                 if (_t49 > _t7) {
-                    _t108 = 0.5f * _t54 * _t66;
+                    _t108 = _sp2 * _t54;
                     _t109 = 0.5f * (float) Math.sqrt(_t62);
-                    _t110 = 0.5f * _t37 * _t66;
-                    _t111 = 0.5f * _t58 * _t66;
+                    _t110 = _sp2 * _t37;
+                    _t111 = _sp2 * _t58;
                 } else {
                     _t108 = 0.5f * (float) Math.sqrt(_t63);
-                    _t109 = 0.5f * _t54 * _t67;
-                    _t110 = 0.5f * _t57 * _t67;
-                    _t111 = 0.5f * _t38 * _t67;
+                    _t109 = _sp3 * _t54;
+                    _t110 = _sp3 * _t57;
+                    _t111 = _sp3 * _t38;
                 }
             }
         }
@@ -3656,7 +3742,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = dirZ * _t3;
             _t8 = dirY * _t3;
             _t9 = dirX * _t3;
@@ -3674,7 +3760,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -3697,32 +3783,32 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t64 = (1.0f / (float) Math.sqrt(_t60));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         if (_t59 > 0.0f) {
-            dest.put(destOffset + 0, 0.5f * _t55 * _t64);
-            dest.put(destOffset + 1, 0.5f * _t38 * _t64);
-            dest.put(destOffset + 2, 0.5f * _t58 * _t64);
+            dest.put(destOffset + 0, _sp0 * _t55);
+            dest.put(destOffset + 1, _sp0 * _t38);
+            dest.put(destOffset + 2, _sp0 * _t58);
             dest.put(destOffset + 3, 0.5f * (float) Math.sqrt(_t60));
         } else {
             if (_t31 > _t56) {
                 dest.put(destOffset + 0, 0.5f * (float) Math.sqrt(_t61));
-                dest.put(destOffset + 1, 0.5f * _t57 * _t67);
-                dest.put(destOffset + 2, 0.5f * _t37 * _t67);
-                dest.put(destOffset + 3, 0.5f * _t55 * _t67);
+                dest.put(destOffset + 1, _sp3 * _t57);
+                dest.put(destOffset + 2, _sp3 * _t37);
+                dest.put(destOffset + 3, _sp3 * _t55);
             } else {
                 if (_t49 > _t7) {
-                    dest.put(destOffset + 0, 0.5f * _t57 * _t65);
+                    dest.put(destOffset + 0, _sp1 * _t57);
                     dest.put(destOffset + 1, 0.5f * (float) Math.sqrt(_t62));
-                    dest.put(destOffset + 2, 0.5f * _t54 * _t65);
-                    dest.put(destOffset + 3, 0.5f * _t38 * _t65);
+                    dest.put(destOffset + 2, _sp1 * _t54);
+                    dest.put(destOffset + 3, _sp1 * _t38);
                 } else {
-                    dest.put(destOffset + 0, 0.5f * _t37 * _t66);
-                    dest.put(destOffset + 1, 0.5f * _t54 * _t66);
+                    dest.put(destOffset + 0, _sp2 * _t37);
+                    dest.put(destOffset + 1, _sp2 * _t54);
                     dest.put(destOffset + 2, 0.5f * (float) Math.sqrt(_t63));
-                    dest.put(destOffset + 3, 0.5f * _t58 * _t66);
+                    dest.put(destOffset + 3, _sp2 * _t58);
                 }
             }
         }
@@ -3747,7 +3833,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _dirz * _t3;
             _t8 = _diry * _t3;
             _t9 = _dirx * _t3;
@@ -3765,7 +3851,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t31, _t32, _t33;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -3788,32 +3874,32 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         float _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0f - _t7 - _t31));
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
-        float _t64 = (1.0f / (float) Math.sqrt(_t60));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         if (_t59 > 0.0f) {
-            dest.put(destOffset + 0, 0.5f * _t55 * _t64);
-            dest.put(destOffset + 1, 0.5f * _t38 * _t64);
-            dest.put(destOffset + 2, 0.5f * _t58 * _t64);
+            dest.put(destOffset + 0, _sp0 * _t55);
+            dest.put(destOffset + 1, _sp0 * _t38);
+            dest.put(destOffset + 2, _sp0 * _t58);
             dest.put(destOffset + 3, 0.5f * (float) Math.sqrt(_t60));
         } else {
             if (_t31 > _t56) {
                 dest.put(destOffset + 0, 0.5f * (float) Math.sqrt(_t61));
-                dest.put(destOffset + 1, 0.5f * _t57 * _t67);
-                dest.put(destOffset + 2, 0.5f * _t37 * _t67);
-                dest.put(destOffset + 3, 0.5f * _t55 * _t67);
+                dest.put(destOffset + 1, _sp3 * _t57);
+                dest.put(destOffset + 2, _sp3 * _t37);
+                dest.put(destOffset + 3, _sp3 * _t55);
             } else {
                 if (_t49 > _t7) {
-                    dest.put(destOffset + 0, 0.5f * _t57 * _t65);
+                    dest.put(destOffset + 0, _sp1 * _t57);
                     dest.put(destOffset + 1, 0.5f * (float) Math.sqrt(_t62));
-                    dest.put(destOffset + 2, 0.5f * _t54 * _t65);
-                    dest.put(destOffset + 3, 0.5f * _t38 * _t65);
+                    dest.put(destOffset + 2, _sp1 * _t54);
+                    dest.put(destOffset + 3, _sp1 * _t38);
                 } else {
-                    dest.put(destOffset + 0, 0.5f * _t37 * _t66);
-                    dest.put(destOffset + 1, 0.5f * _t54 * _t66);
+                    dest.put(destOffset + 0, _sp2 * _t37);
+                    dest.put(destOffset + 1, _sp2 * _t54);
                     dest.put(destOffset + 2, 0.5f * (float) Math.sqrt(_t63));
-                    dest.put(destOffset + 3, 0.5f * _t58 * _t66);
+                    dest.put(destOffset + 3, _sp2 * _t58);
                 }
             }
         }
@@ -3849,13 +3935,13 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
-        if (_t23 > 1.0E-6f) {
+        if (_t23 > 6.0E-8f) {
             dest.put(destOffset + 0, _t14 * _t32);
             dest.put(destOffset + 1, _t16 * _t32);
             dest.put(destOffset + 2, _t15 * _t32);
-            dest.put(destOffset + 3, 0.5f * _t22 * _t32);
+            dest.put(destOffset + 3, _t23 * _t32);
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 dest.put(destOffset + 0, _t30 * _t17);
                 dest.put(destOffset + 1, _t30 * _t19);
                 dest.put(destOffset + 2, _t30 * _t18);
@@ -3907,13 +3993,13 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
-        if (_t23 > 1.0E-6f) {
+        if (_t23 > 6.0E-8f) {
             dest.put(destOffset + 0, _t14 * _t32);
             dest.put(destOffset + 1, _t16 * _t32);
             dest.put(destOffset + 2, _t15 * _t32);
-            dest.put(destOffset + 3, 0.5f * _t22 * _t32);
+            dest.put(destOffset + 3, _t23 * _t32);
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 dest.put(destOffset + 0, _t30 * _t17);
                 dest.put(destOffset + 1, _t30 * _t19);
                 dest.put(destOffset + 2, _t30 * _t18);
@@ -3935,7 +4021,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationX_api(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationX(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
@@ -3959,7 +4045,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationXYZ_api(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleY, float angleZ) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationXYZ(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
@@ -3994,7 +4080,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationXZY_api(java.nio.FloatBuffer dest, int destOffset, float angleX, float angleZ, float angleY) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationXZY(dest.array(), dest.arrayOffset() + destOffset, angleX, angleZ, angleY);
             return dest;
         }
@@ -4029,7 +4115,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationY_api(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationY(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
@@ -4080,7 +4166,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationYZX_api(java.nio.FloatBuffer dest, int destOffset, float angleY, float angleZ, float angleX) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationYZX(dest.array(), dest.arrayOffset() + destOffset, angleY, angleZ, angleX);
             return dest;
         }
@@ -4115,7 +4201,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationZ_api(java.nio.FloatBuffer dest, int destOffset, float angle) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationZ(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
@@ -4139,7 +4225,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationZXY_api(java.nio.FloatBuffer dest, int destOffset, float angleZ, float angleX, float angleY) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationZXY(dest.array(), dest.arrayOffset() + destOffset, angleZ, angleX, angleY);
             return dest;
         }
@@ -4174,7 +4260,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationZYX_api(java.nio.FloatBuffer dest, int destOffset, float angleZ, float angleY, float angleX) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             FloatQuatOps.makeRotationZYX(dest.array(), dest.arrayOffset() + destOffset, angleZ, angleY, angleX);
             return dest;
         }
@@ -4210,7 +4296,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.preRotateX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4240,7 +4326,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.preRotateY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4270,7 +4356,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.preRotateZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4300,7 +4386,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateAxis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, axisX, axisY, axisZ);
             return dest;
         }
@@ -4334,7 +4420,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateAxis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset, float angle) {
-        if (dest.hasArray() && src.hasArray() && axis.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             FloatQuatOps.rotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset, angle);
             return dest;
         }
@@ -4370,7 +4456,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateTo_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float fromDirX, float fromDirY, float fromDirZ, float toDirX, float toDirY, float toDirZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateTo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
             return dest;
         }
@@ -4405,13 +4491,13 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         float _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6f) {
-            _t41 = 0.5f * _t22 * _t35;
+        if (_t23 > 6.0E-8f) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 _t41 = 0.0f;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -4440,7 +4526,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateTo_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer fromDir, int fromDirOffset, java.nio.FloatBuffer toDir, int toDirOffset) {
-        if (dest.hasArray() && src.hasArray() && fromDir.hasArray() && toDir.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && fromDir.hasArray() && fromDirOffset >= 0 && fromDirOffset <= fromDir.limit() - 3 && toDir.hasArray() && toDirOffset >= 0 && toDirOffset <= toDir.limit() - 3) {
             FloatQuatOps.rotateTo(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, fromDir.array(), fromDir.arrayOffset() + fromDirOffset, toDir.array(), toDir.arrayOffset() + toDirOffset);
             return dest;
         }
@@ -4481,13 +4567,13 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t35 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         float _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6f) {
-            _t41 = 0.5f * _t22 * _t35;
+        if (_t23 > 6.0E-8f) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0f) {
+            if (_t29 != 0.0f) {
                 _t41 = 0.0f;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -4514,7 +4600,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4544,7 +4630,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateXYZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateXYZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleX, angleY, angleZ);
             return dest;
         }
@@ -4588,7 +4674,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateXZY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleZ, float angleY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateXZY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleX, angleZ, angleY);
             return dest;
         }
@@ -4632,7 +4718,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4662,7 +4748,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateYXZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleY, float angleX, float angleZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateYXZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleY, angleX, angleZ);
             return dest;
         }
@@ -4706,7 +4792,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateYZX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleY, float angleZ, float angleX) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateYZX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleY, angleZ, angleX);
             return dest;
         }
@@ -4750,7 +4836,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4780,7 +4866,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateZXY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleZ, float angleX, float angleY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateZXY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleZ, angleX, angleY);
             return dest;
         }
@@ -4824,7 +4910,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateZYX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleZ, float angleY, float angleX) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.rotateZYX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleZ, angleY, angleX);
             return dest;
         }
@@ -4868,7 +4954,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer transform_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.transform(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY, vZ);
             return dest;
         }
@@ -4898,7 +4984,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer transform_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (dest.hasArray() && src.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 3) {
             FloatQuatOps.transform(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -4930,7 +5016,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer transformInverse_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             FloatQuatOps.transformInverse(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY, vZ);
             return dest;
         }
@@ -4960,7 +5046,7 @@ public final class FloatQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer transformInverse_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset) {
-        if (dest.hasArray() && src.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 3) {
             FloatQuatOps.transformInverse(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -4984,4 +5070,20 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         return dest;
     }
 
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
+    }
 }

@@ -245,7 +245,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
         float _t21, _t23, _t27;
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             _t21 = _self01 * _t9;
             _t23 = _self11 * _t9;
             _t27 = _self21 * _t9;
@@ -255,7 +255,7 @@ public final class Float3x4OpsKernelsSegment {
             _t27 = 0.0f;
         }
         float _t22, _t24, _t26;
-        if (_t7 > 0.0f) {
+        if (_t7 != 0.0f) {
             _t22 = _self12 * _t10;
             _t24 = _self02 * _t10;
             _t26 = _self22 * _t10;
@@ -265,7 +265,7 @@ public final class Float3x4OpsKernelsSegment {
             _t26 = 0.0f;
         }
         float _t25, _t28, _t29;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t25 = _self20 * _t11;
             _t28 = _self00 * _t11;
             _t29 = _self10 * _t11;
@@ -298,32 +298,32 @@ public final class Float3x4OpsKernelsSegment {
         float _t63 = 1.0f + (_t49 - (_t23 + _t26));
         float _t64 = 1.0f + (_t23 - (_t49 + _t26));
         float _t65 = 1.0f + (_t26 - _t52);
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t63));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         if (_t58 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t36 * _t66);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t56 * _t66);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t57 * _t66);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp0 * _t36);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp0 * _t56);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp0 * _t57);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * (float) Math.sqrt(_t62));
         } else {
             if (_t49 > _t37) {
                 dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * (float) Math.sqrt(_t63));
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t53 * _t69);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t55 * _t69);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t36 * _t69);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp3 * _t53);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp3 * _t55);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp3 * _t36);
             } else {
                 if (_t23 > _t26) {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t53 * _t67);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp1 * _t53);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * (float) Math.sqrt(_t64));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t39 * _t67);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t56 * _t67);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp1 * _t39);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp1 * _t56);
                 } else {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t55 * _t68);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t39 * _t68);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp2 * _t55);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp2 * _t39);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * (float) Math.sqrt(_t65));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t57 * _t68);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp2 * _t57);
                 }
             }
         }
@@ -437,32 +437,32 @@ public final class Float3x4OpsKernelsSegment {
         float _t15 = 1.0f + (_self00 - (_self11 + _self22));
         float _t16 = 1.0f + (_self11 - (_self00 + _self22));
         float _t17 = 1.0f + (_self22 - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t1 * _t18);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t7 * _t18);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t9 * _t18);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp0 * _t1);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp0 * _t7);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp0 * _t9);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * (float) Math.sqrt(_t14));
         } else {
             if (_self00 > _t2) {
                 dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * (float) Math.sqrt(_t15));
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t4 * _t21);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t6 * _t21);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t1 * _t21);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp3 * _t4);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp3 * _t6);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp3 * _t1);
             } else {
                 if (_self11 > _self22) {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t4 * _t19);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp1 * _t4);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * (float) Math.sqrt(_t16));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t8 * _t19);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t7 * _t19);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp1 * _t8);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp1 * _t7);
                 } else {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t6 * _t20);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t8 * _t20);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp2 * _t6);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp2 * _t8);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * (float) Math.sqrt(_t17));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t9 * _t20);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp2 * _t9);
                 }
             }
         }
@@ -483,15 +483,54 @@ public final class Float3x4OpsKernelsSegment {
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
-        float _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t6 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t7 = Math.fma(_self10, _self21, -(_self11 * _self20));
         float _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t7 * _t12));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t8 * _t12));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t6 * _t12));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3x4OpsKernelsSegment.invNegativeX_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t6 * _t13));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t8 * _t13));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t7 * _t13));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeX_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x4OpsKernelsSegment.invNegativeX_degenerate_unsafe(dest, destOffset, src, srcOffset);
+        return Float3x4OpsKernelsSegment.invNegativeX_degenerate_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeX_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float3x4OpsKernelsAddress.invNegativeX_degenerate_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeX_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _t0 = unitScale(_self10, _self11, _self12);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self10 * _t0;
+        float _t9 = _self21 * _t1;
+        float _t10 = _self11 * _t0;
+        float _t11 = _self20 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self12 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t21 * _t26));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t22 * _t26));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t20 * _t26));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -514,15 +553,54 @@ public final class Float3x4OpsKernelsSegment {
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
-        float _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
-        float _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
-        float _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t8 * _t12));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t7 * _t12));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t6 * _t12));
+        float _t6 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        float _t7 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        float _t8 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3x4OpsKernelsSegment.invNegativeY_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t6 * _t13));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t8 * _t13));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t7 * _t13));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeY_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x4OpsKernelsSegment.invNegativeY_degenerate_unsafe(dest, destOffset, src, srcOffset);
+        return Float3x4OpsKernelsSegment.invNegativeY_degenerate_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeY_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float3x4OpsKernelsAddress.invNegativeY_degenerate_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeY_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self01 * _t0;
+        float _t9 = _self20 * _t1;
+        float _t10 = _self00 * _t0;
+        float _t11 = _self21 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t22 * _t26));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t21 * _t26));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t20 * _t26));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -545,15 +623,54 @@ public final class Float3x4OpsKernelsSegment {
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
         float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
         float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
-        float _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
-        float _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t6 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t7 = Math.fma(_self00, _self11, -(_self01 * _self10));
         float _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t7 * _t12));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t8 * _t12));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t6 * _t12));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3x4OpsKernelsSegment.invNegativeZ_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t6 * _t13));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t8 * _t13));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t7 * _t13));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeZ_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x4OpsKernelsSegment.invNegativeZ_degenerate_unsafe(dest, destOffset, src, srcOffset);
+        return Float3x4OpsKernelsSegment.invNegativeZ_degenerate_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeZ_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float3x4OpsKernelsAddress.invNegativeZ_degenerate_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invNegativeZ_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self10, _self11, _self12);
+        float _t8 = _self00 * _t0;
+        float _t9 = _self11 * _t1;
+        float _t10 = _self01 * _t0;
+        float _t11 = _self10 * _t1;
+        float _t12 = _self12 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_t21 * _t26));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_t22 * _t26));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_t20 * _t26));
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -0.0f);
@@ -678,15 +795,54 @@ public final class Float3x4OpsKernelsSegment {
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
-        float _t6 = Math.fma(_self10, _self21, -(_self11 * _self20));
-        float _t7 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t6 = Math.fma(_self11, _self22, -(_self12 * _self21));
+        float _t7 = Math.fma(_self10, _self21, -(_self11 * _self20));
         float _t8 = Math.fma(_self12, _self20, -(_self10 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t7 * _t12);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t8 * _t12);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t6 * _t12);
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3x4OpsKernelsSegment.invPositiveX_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t6 * _t13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t8 * _t13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t7 * _t13);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveX_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x4OpsKernelsSegment.invPositiveX_degenerate_unsafe(dest, destOffset, src, srcOffset);
+        return Float3x4OpsKernelsSegment.invPositiveX_degenerate_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveX_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float3x4OpsKernelsAddress.invPositiveX_degenerate_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveX_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _t0 = unitScale(_self10, _self11, _self12);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self10 * _t0;
+        float _t9 = _self21 * _t1;
+        float _t10 = _self11 * _t0;
+        float _t11 = _self20 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self12 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t21 * _t26);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t22 * _t26);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t20 * _t26);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -709,15 +865,54 @@ public final class Float3x4OpsKernelsSegment {
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
-        float _t6 = Math.fma(_self01, _self20, -(_self00 * _self21));
-        float _t7 = Math.fma(_self00, _self22, -(_self02 * _self20));
-        float _t8 = Math.fma(_self02, _self21, -(_self01 * _self22));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t8 * _t12);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t7 * _t12);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t6 * _t12);
+        float _t6 = Math.fma(_self02, _self21, -(_self01 * _self22));
+        float _t7 = Math.fma(_self01, _self20, -(_self00 * _self21));
+        float _t8 = Math.fma(_self00, _self22, -(_self02 * _self20));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3x4OpsKernelsSegment.invPositiveY_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t6 * _t13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t8 * _t13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t7 * _t13);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveY_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x4OpsKernelsSegment.invPositiveY_degenerate_unsafe(dest, destOffset, src, srcOffset);
+        return Float3x4OpsKernelsSegment.invPositiveY_degenerate_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveY_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float3x4OpsKernelsAddress.invPositiveY_degenerate_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveY_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
+        float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
+        float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self01 * _t0;
+        float _t9 = _self20 * _t1;
+        float _t10 = _self00 * _t0;
+        float _t11 = _self21 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t22 * _t26);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t21 * _t26);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t20 * _t26);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -740,15 +935,54 @@ public final class Float3x4OpsKernelsSegment {
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
         float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
         float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
-        float _t6 = Math.fma(_self00, _self11, -(_self01 * _self10));
-        float _t7 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t6 = Math.fma(_self01, _self12, -(_self02 * _self11));
+        float _t7 = Math.fma(_self00, _self11, -(_self01 * _self10));
         float _t8 = Math.fma(_self02, _self10, -(_self00 * _self12));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t7 * _t12);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t8 * _t12);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t6 * _t12);
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3x4OpsKernelsSegment.invPositiveZ_degenerate(dest, destOffset, src, srcOffset);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t6 * _t13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t8 * _t13);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t7 * _t13);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveZ_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3x4OpsKernelsSegment.invPositiveZ_degenerate_unsafe(dest, destOffset, src, srcOffset);
+        return Float3x4OpsKernelsSegment.invPositiveZ_degenerate_api(dest, destOffset, src, srcOffset);
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveZ_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float3x4OpsKernelsAddress.invPositiveZ_degenerate_unsafe(_destBase, _srcBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment invPositiveZ_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self02 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 16L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 20L);
+        float _self12 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 24L);
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self10, _self11, _self12);
+        float _t8 = _self00 * _t0;
+        float _t9 = _self11 * _t1;
+        float _t10 = _self01 * _t0;
+        float _t11 = _self10 * _t1;
+        float _t12 = _self12 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t21 * _t26);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t22 * _t26);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t20 * _t26);
         } else {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.0f);
@@ -770,7 +1004,7 @@ public final class Float3x4OpsKernelsSegment {
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_self00 * _t3));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_self10 * _t3));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_self20 * _t3));
@@ -795,7 +1029,7 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_self01 * _t3));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_self11 * _t3));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_self21 * _t3));
@@ -820,7 +1054,7 @@ public final class Float3x4OpsKernelsSegment {
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, -(_self02 * _t3));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, -(_self12 * _t3));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, -(_self22 * _t3));
@@ -973,7 +1207,7 @@ public final class Float3x4OpsKernelsSegment {
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 32L);
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00 * _t3);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10 * _t3);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _self20 * _t3);
@@ -998,7 +1232,7 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _t2 = Math.fma(_self21, _self21, Math.fma(_self01, _self01, _self11 * _self11));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self01 * _t3);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self11 * _t3);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _self21 * _t3);
@@ -1023,7 +1257,7 @@ public final class Float3x4OpsKernelsSegment {
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _t2 = Math.fma(_self22, _self22, Math.fma(_self02, _self02, _self12 * _self12));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self02 * _t3);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self12 * _t3);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _self22 * _t3);
@@ -1560,33 +1794,33 @@ public final class Float3x4OpsKernelsSegment {
         float _t16 = _self00 + (1.0f - _self11 - _self22);
         float _t17 = _self11 + (_t2 - _self22);
         float _t18 = _self22 + (_t2 - _self11);
-        float _t19 = (1.0f / (float) Math.sqrt(_t15));
-        float _t21 = (1.0f / (float) Math.sqrt(_t17));
-        float _t22 = (1.0f / (float) Math.sqrt(_t18));
-        float _t23 = (1.0f / (float) Math.sqrt(_t16));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t18));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _t63, _t64, _t65, _t66;
         if (_t14 > 0.0f) {
-            _t63 = 0.5f * _t4 * _t19;
-            _t64 = 0.5f * _t8 * _t19;
-            _t65 = 0.5f * _t10 * _t19;
+            _t63 = _sp0 * _t4;
+            _t64 = _sp0 * _t8;
+            _t65 = _sp0 * _t10;
             _t66 = 0.5f * (float) Math.sqrt(_t15);
         } else {
             if (_self00 > _t5) {
                 _t63 = 0.5f * (float) Math.sqrt(_t16);
-                _t64 = 0.5f * _t6 * _t23;
-                _t65 = 0.5f * _t7 * _t23;
-                _t66 = 0.5f * _t4 * _t23;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t7;
+                _t66 = _sp3 * _t4;
             } else {
                 if (_self11 > _self22) {
-                    _t63 = 0.5f * _t6 * _t21;
+                    _t63 = _sp1 * _t6;
                     _t64 = 0.5f * (float) Math.sqrt(_t17);
-                    _t65 = 0.5f * _t9 * _t21;
-                    _t66 = 0.5f * _t8 * _t21;
+                    _t65 = _sp1 * _t9;
+                    _t66 = _sp1 * _t8;
                 } else {
-                    _t63 = 0.5f * _t7 * _t22;
-                    _t64 = 0.5f * _t9 * _t22;
+                    _t63 = _sp2 * _t7;
+                    _t64 = _sp2 * _t9;
                     _t65 = 0.5f * (float) Math.sqrt(_t18);
-                    _t66 = 0.5f * _t10 * _t22;
+                    _t66 = _sp2 * _t10;
                 }
             }
         }
@@ -1655,35 +1889,35 @@ public final class Float3x4OpsKernelsSegment {
         float _t54 = Math.fma(-_self01, _t12, _t45);
         float _t59 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t44));
         float _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t32 * _t61);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, 0.5f * _t53 * _t61);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, 0.5f * _t54 * _t61);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp0 * _t32);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _sp0 * _t53);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _sp0 * _t54);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, 0.5f * (float) Math.sqrt(_t60));
         } else {
             if (_t44 > _t33) {
                 dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * (float) Math.sqrt(_t64));
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, 0.5f * _t51 * _t67);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, 0.5f * _t52 * _t67);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, 0.5f * _t32 * _t67);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _sp3 * _t51);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _sp3 * _t52);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _sp3 * _t32);
             } else {
                 if (_t21 > _t16) {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t51 * _t65);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp1 * _t51);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, 0.5f * (float) Math.sqrt(_t62));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, 0.5f * _t28 * _t65);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, 0.5f * _t53 * _t65);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _sp1 * _t28);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _sp1 * _t53);
                 } else {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t52 * _t66);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, 0.5f * _t28 * _t66);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp2 * _t52);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _sp2 * _t28);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, 0.5f * (float) Math.sqrt(_t63));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, 0.5f * _t54 * _t66);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _sp2 * _t54);
                 }
             }
         }
@@ -1720,8 +1954,8 @@ public final class Float3x4OpsKernelsSegment {
         float _t11 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = _self10 * _t14;
         float _t17 = _self22 * _t13;
         float _t18 = _self12 * _t13;
@@ -1751,20 +1985,20 @@ public final class Float3x4OpsKernelsSegment {
         float _t55 = Math.fma(-_self01, _t12, _t46);
         float _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t45));
         float _t61 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self03);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self13);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _self23);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _t44 < 0.0f ? -_t15 : _t15);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, (float) Math.sqrt(_t9));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, (float) Math.sqrt(_t10));
@@ -1791,7 +2025,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -1808,7 +2042,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t34, _t35, _t36;
-        if (_t29 > 0.0f) {
+        if (_t29 != 0.0f) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -1824,7 +2058,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
         float _t54, _t55, _t56;
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -1857,32 +2091,32 @@ public final class Float3x4OpsKernelsSegment {
         float _t87 = 1.0f + (_t73 - (_t36 + _t56));
         float _t88 = 1.0f + (_t36 - (_t73 + _t56));
         float _t89 = 1.0f + (_t56 - _t76);
-        float _t90 = (1.0f / (float) Math.sqrt(_t86));
-        float _t91 = (1.0f / (float) Math.sqrt(_t88));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t87));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t86));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
         if (_t82 > 0.0f) {
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t60 * _t90);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t81 * _t90);
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t78 * _t90);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp0 * _t60);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp0 * _t81);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp0 * _t78);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * (float) Math.sqrt(_t86));
         } else {
             if (_t73 > _t61) {
                 dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * (float) Math.sqrt(_t87));
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t77 * _t93);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t80 * _t93);
-                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t60 * _t93);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp3 * _t77);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp3 * _t80);
+                dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp3 * _t60);
             } else {
                 if (_t36 > _t56) {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t77 * _t91);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp1 * _t77);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * (float) Math.sqrt(_t88));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * _t63 * _t91);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t81 * _t91);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sp1 * _t63);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp1 * _t81);
                 } else {
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, 0.5f * _t80 * _t92);
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, 0.5f * _t63 * _t92);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sp2 * _t80);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sp2 * _t63);
                     dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 0.5f * (float) Math.sqrt(_t89));
-                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 0.5f * _t78 * _t92);
+                    dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _sp2 * _t78);
                 }
             }
         }
@@ -1907,10 +2141,10 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -1927,7 +2161,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -1943,7 +2177,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -1978,7 +2212,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -1998,7 +2232,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -2016,7 +2250,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -2060,10 +2294,10 @@ public final class Float3x4OpsKernelsSegment {
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -2080,7 +2314,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t30 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t23 * _t31;
             _t36 = _t22 * _t31;
             _t37 = _t24 * _t31;
@@ -2096,7 +2330,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
         float _t51 = (1.0f / (float) Math.sqrt(_t50));
         float _t55, _t56, _t57;
-        if (_t50 > 0.0f) {
+        if (_t50 != 0.0f) {
             _t55 = _t47 * _t51;
             _t56 = _t46 * _t51;
             _t57 = _t45 * _t51;
@@ -2129,35 +2363,35 @@ public final class Float3x4OpsKernelsSegment {
         float _t88 = 1.0f + (_t74 - (_t37 + _t57));
         float _t89 = 1.0f + (_t37 - (_t74 + _t57));
         float _t90 = 1.0f + (_t57 - _t77);
-        float _t91 = (1.0f / (float) Math.sqrt(_t87));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t90));
-        float _t94 = (1.0f / (float) Math.sqrt(_t88));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t90));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
         translation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 0L, _self03);
         translation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 4L, _self13);
         translation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 8L, _self23);
         if (_t83 > 0.0f) {
-            rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L, 0.5f * _t61 * _t91);
-            rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L, 0.5f * _t82 * _t91);
-            rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L, 0.5f * _t79 * _t91);
+            rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L, _sp0 * _t61);
+            rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L, _sp0 * _t82);
+            rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L, _sp0 * _t79);
             rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L, 0.5f * (float) Math.sqrt(_t87));
         } else {
             if (_t74 > _t62) {
                 rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L, 0.5f * (float) Math.sqrt(_t88));
-                rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L, 0.5f * _t78 * _t94);
-                rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L, 0.5f * _t81 * _t94);
-                rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L, 0.5f * _t61 * _t94);
+                rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L, _sp3 * _t78);
+                rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L, _sp3 * _t81);
+                rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L, _sp3 * _t61);
             } else {
                 if (_t37 > _t57) {
-                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L, 0.5f * _t78 * _t92);
+                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L, _sp1 * _t78);
                     rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L, 0.5f * (float) Math.sqrt(_t89));
-                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L, 0.5f * _t64 * _t92);
-                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L, 0.5f * _t82 * _t92);
+                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L, _sp1 * _t64);
+                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L, _sp1 * _t82);
                 } else {
-                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L, 0.5f * _t81 * _t93);
-                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L, 0.5f * _t64 * _t93);
+                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L, _sp2 * _t81);
+                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L, _sp2 * _t64);
                     rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L, 0.5f * (float) Math.sqrt(_t90));
-                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L, 0.5f * _t79 * _t93);
+                    rotation.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L, _sp2 * _t79);
                 }
             }
         }
@@ -2291,8 +2525,8 @@ public final class Float3x4OpsKernelsSegment {
             float _eself3 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + (_lo + 3) * 4L);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + _lo * 4L, Math.fma(_right00, _eself0, _right10 * _eself1));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (_lo + 1) * 4L, Math.fma(_right01, _eself0, _right11 * _eself1));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (_lo + 2) * 4L, Math.fma(_right02, _eself0, Math.fma(_right12, _eself1, _eself2)));
-            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (_lo + 3) * 4L, _eself3);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (_lo + 2) * 4L, _eself2);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + (_lo + 3) * 4L, Math.fma(_right02, _eself0, Math.fma(_right12, _eself1, _eself3)));
         }
         return dest;
     }
@@ -2466,14 +2700,14 @@ public final class Float3x4OpsKernelsSegment {
         float _other11 = other.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, otherOffset + 12L);
         float _other02 = other.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, otherOffset + 16L);
         float _other12 = other.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, otherOffset + 20L);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_other02, _self20, Math.fma(_other00, _self00, _other01 * _self10)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_other02, _self21, Math.fma(_other00, _self01, _other01 * _self11)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_other02, _self22, Math.fma(_other00, _self02, _other01 * _self12)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_other02, _self23, Math.fma(_other00, _self03, _other01 * _self13)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, Math.fma(_other12, _self20, Math.fma(_other10, _self00, _other11 * _self10)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, Math.fma(_other12, _self21, Math.fma(_other10, _self01, _other11 * _self11)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, Math.fma(_other12, _self22, Math.fma(_other10, _self02, _other11 * _self12)));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_other12, _self23, Math.fma(_other10, _self03, _other11 * _self13)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_other00, _self00, _other01 * _self10));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_other00, _self01, _other01 * _self11));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Math.fma(_other00, _self02, _other01 * _self12));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_other00, _self03, Math.fma(_other01, _self13, _other02)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, Math.fma(_other10, _self00, _other11 * _self10));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, Math.fma(_other10, _self01, _other11 * _self11));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, Math.fma(_other10, _self02, _other11 * _self12));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_other10, _self03, Math.fma(_other11, _self13, _other12)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _self20);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _self21);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _self22);
@@ -2787,7 +3021,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -2802,7 +3036,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -2860,7 +3094,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -2875,7 +3109,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -2934,7 +3168,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -2950,7 +3184,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t22 * _t28;
             _t33 = _t21 * _t28;
             _t34 = _t23 * _t28;
@@ -3014,7 +3248,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
         float _t9 = (1.0f / (float) Math.sqrt(_t8));
         float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t13 = _t4 * _t9;
             _t14 = _t5 * _t9;
             _t15 = _t3 * _t9;
@@ -3030,7 +3264,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t26 * _t31;
             _t36 = _t25 * _t31;
             _t37 = _t24 * _t31;
@@ -3103,7 +3337,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -3119,7 +3353,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t22 * _t28;
             _t33 = _t21 * _t28;
             _t34 = _t23 * _t28;
@@ -3195,7 +3429,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
         float _t9 = (1.0f / (float) Math.sqrt(_t8));
         float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t13 = _t4 * _t9;
             _t14 = _t5 * _t9;
             _t15 = _t3 * _t9;
@@ -3211,7 +3445,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t26 * _t31;
             _t36 = _t25 * _t31;
             _t37 = _t24 * _t31;
@@ -3256,7 +3490,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
         float _t15 = (1.0f / (float) Math.sqrt(_t14));
         float _t19, _t20, _t21;
-        if (_t14 > 0.0f) {
+        if (_t14 != 0.0f) {
             _t19 = _t10 * _t15;
             _t20 = _t11 * _t15;
             _t21 = _t9 * _t15;
@@ -3270,7 +3504,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t30 = Math.fma(upZ, _t20, -(upY * _t21));
         float _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
         float _t34 = (1.0f / (float) Math.sqrt(_t33));
-        if (_t33 > 0.0f) {
+        if (_t33 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t30 * _t34);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t29 * _t34);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _t28 * _t34);
@@ -3319,7 +3553,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
         float _t15 = (1.0f / (float) Math.sqrt(_t14));
         float _t19, _t20, _t21;
-        if (_t14 > 0.0f) {
+        if (_t14 != 0.0f) {
             _t19 = _t10 * _t15;
             _t20 = _t11 * _t15;
             _t21 = _t9 * _t15;
@@ -3333,7 +3567,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t30 = Math.fma(_upz, _t20, -(_upy * _t21));
         float _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
         float _t34 = (1.0f / (float) Math.sqrt(_t33));
-        if (_t33 > 0.0f) {
+        if (_t33 != 0.0f) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t30 * _t34);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t29 * _t34);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _t28 * _t34);
@@ -3367,7 +3601,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -3382,7 +3616,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t19 * _t25;
             _t31 = _t21 * _t25;
@@ -3431,7 +3665,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -3446,7 +3680,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t19 * _t25;
             _t31 = _t21 * _t25;
@@ -3477,33 +3711,36 @@ public final class Float3x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeBillboardSphericalShortest_api(java.lang.foreign.MemorySegment dest, long destOffset, float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ) {
-        float _t0 = targetPosX - objPosX;
-        float _t1 = targetPosZ - objPosZ;
+        float _t0 = targetPosZ - objPosZ;
+        float _t1 = targetPosX - objPosX;
         float _t2 = targetPosY - objPosY;
-        float _t3 = objPosY - targetPosY;
-        float _t10 = _t1 + (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
-        float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
-        float _t13 = _t0 * _t12;
-        float _t14 = _t3 * _t12;
-        float _t15 = _t13 + _t13;
-        float _t16 = _t14 + _t14;
-        float _t17 = -_t15;
-        float _t19 = _t10 * _t12;
-        float _t20 = _t16 * _t13;
-        float _t21 = Math.fma(-_t16, _t14, 1.0f);
-        float _t22 = _t15 * _t19;
-        float _t23 = _t16 * _t19;
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_t17, _t13, 1.0f));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t20);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t22);
+        float _t3 = _t2 + _t2;
+        float _t6 = Math.fma(_t1, _t1, _t2 * _t2);
+        float _t8 = Math.max(Math.fma(_t0, _t0, _t6), 4.7019774E-38f);
+        float _t9 = (float) Math.sqrt(_t8);
+        float _t11 = _t0 + _t9;
+        float _t12 = Math.fma(_t11, _t11, _t6);
+        float _t14 = _t12 / _t9;
+        float _t15 = _t12 > 1.1754944E-38f ? _t1 : _t9;
+        float _t25_inv = 1.0f / Math.fma(0.25f, _t14 * _t14, Math.fma(_t2, _t2, _t15 * _t15));
+        float _sp1 = _t2 * _t25_inv;
+        float _sp0 = _t15 * _t25_inv;
+        float _t26 = _sp1 * _t3;
+        float _t27 = _sp1 * _t14;
+        float _t29 = -(_t3 * _sp0);
+        float _t30 = _sp0 * _t14;
+        float _t32 = 1.0f - (_sp0 + _sp0) * _t15;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t29);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t30);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, objPosX);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t20);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _t21);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, -_t23);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t29);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, 1.0f - _t26);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t27);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, objPosY);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, -_t22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _t23);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, Math.fma(_t17, _t13, _t21));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, -_t30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, -_t27);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _t32 - _t26);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, objPosZ);
         return dest;
     }
@@ -3523,33 +3760,36 @@ public final class Float3x4OpsKernelsSegment {
         float _targetPosx = targetPos.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, targetPosOffset + 0L);
         float _targetPosy = targetPos.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, targetPosOffset + 4L);
         float _targetPosz = targetPos.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, targetPosOffset + 8L);
-        float _t0 = _targetPosx - _objPosx;
-        float _t1 = _targetPosz - _objPosz;
+        float _t0 = _targetPosz - _objPosz;
+        float _t1 = _targetPosx - _objPosx;
         float _t2 = _targetPosy - _objPosy;
-        float _t3 = _objPosy - _targetPosy;
-        float _t10 = _t1 + (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
-        float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
-        float _t13 = _t0 * _t12;
-        float _t14 = _t3 * _t12;
-        float _t15 = _t13 + _t13;
-        float _t16 = _t14 + _t14;
-        float _t17 = -_t15;
-        float _t19 = _t10 * _t12;
-        float _t20 = _t16 * _t13;
-        float _t21 = Math.fma(-_t16, _t14, 1.0f);
-        float _t22 = _t15 * _t19;
-        float _t23 = _t16 * _t19;
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_t17, _t13, 1.0f));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t20);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t22);
+        float _t3 = _t2 + _t2;
+        float _t6 = Math.fma(_t1, _t1, _t2 * _t2);
+        float _t8 = Math.max(Math.fma(_t0, _t0, _t6), 4.7019774E-38f);
+        float _t9 = (float) Math.sqrt(_t8);
+        float _t11 = _t0 + _t9;
+        float _t12 = Math.fma(_t11, _t11, _t6);
+        float _t14 = _t12 / _t9;
+        float _t15 = _t12 > 1.1754944E-38f ? _t1 : _t9;
+        float _t25_inv = 1.0f / Math.fma(0.25f, _t14 * _t14, Math.fma(_t2, _t2, _t15 * _t15));
+        float _sp1 = _t2 * _t25_inv;
+        float _sp0 = _t15 * _t25_inv;
+        float _t26 = _sp1 * _t3;
+        float _t27 = _sp1 * _t14;
+        float _t29 = -(_t3 * _sp0);
+        float _t30 = _sp0 * _t14;
+        float _t32 = 1.0f - (_sp0 + _sp0) * _t15;
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t29);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t30);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _objPosx);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t20);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _t21);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, -_t23);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t29);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, 1.0f - _t26);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t27);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, _objPosy);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, -_t22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _t23);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, Math.fma(_t17, _t13, _t21));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, -_t30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, -_t27);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _t32 - _t26);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, _objPosz);
         return dest;
     }
@@ -3561,6 +3801,7 @@ public final class Float3x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeFromDualQuat_api(java.lang.foreign.MemorySegment dest, long destOffset, float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
+        float _sp0 = dqRX + dqRX;
         float _t0 = dqRY * dqRY;
         float _t2 = dqRZ * dqRW;
         float _t3 = dqRY * dqRW;
@@ -3568,14 +3809,14 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(-2.0f, _t0, _t6));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(-2.0f, _t2, _sp0 * dqRY));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, 2.0f * Math.fma(dqRX, dqRZ, _t3));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW))));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, 2.0f * Math.fma(dqRX, dqRY, _t2));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, Math.fma(-2.0f, _t4, _t6));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW))));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, Math.fma(-2.0f, _t3, _sp0 * dqRZ));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, 2.0f * Math.fma(dqRX, dqRW, _t5));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW))));
@@ -3600,7 +3841,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -3615,7 +3856,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t21 * _t25;
             _t31 = _t19 * _t25;
@@ -3660,7 +3901,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -3675,7 +3916,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t21 * _t25;
             _t30 = _t20 * _t25;
             _t31 = _t19 * _t25;
@@ -3732,7 +3973,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -3747,7 +3988,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t21 * _t25;
             _t31 = _t19 * _t25;
@@ -3804,7 +4045,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -3819,7 +4060,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t21 * _t25;
             _t30 = _t20 * _t25;
             _t31 = _t19 * _t25;
@@ -4909,8 +5150,9 @@ public final class Float3x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeReflection_api(java.lang.foreign.MemorySegment dest, long destOffset, float normalX, float normalY, float normalZ) {
-        float _t6 = -((normalX + normalX) * normalY);
-        float _t7 = -((normalX + normalX) * normalZ);
+        float _sp0 = normalX + normalX;
+        float _t6 = -(_sp0 * normalY);
+        float _t7 = -(_sp0 * normalZ);
         float _t8 = -((normalY + normalY) * normalZ);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(-2.0f, normalX * normalX, 1.0f));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t6);
@@ -4938,8 +5180,9 @@ public final class Float3x4OpsKernelsSegment {
         float _normalx = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 0L);
         float _normaly = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 4L);
         float _normalz = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 8L);
-        float _t6 = -((_normalx + _normalx) * _normaly);
-        float _t7 = -((_normalx + _normalx) * _normalz);
+        float _sp0 = _normalx + _normalx;
+        float _t6 = -(_sp0 * _normaly);
+        float _t7 = -(_sp0 * _normalz);
         float _t8 = -((_normaly + _normaly) * _normalz);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(-2.0f, _normalx * _normalx, 1.0f));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t6);
@@ -5026,7 +5269,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -5041,7 +5284,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -5083,7 +5326,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -5098,7 +5341,7 @@ public final class Float3x4OpsKernelsSegment {
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
         float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
+        if (_t21 != 0.0f) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -7150,18 +7393,19 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _t0 = 1.0f - s;
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, s * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, s * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, s * _self02);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(-s, pivotX, Math.fma(s, _self03, pivotX)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(s, _self03, pivotX * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, s * _self10);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, s * _self11);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, s * _self12);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(-s, pivotY, Math.fma(s, _self13, pivotY)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(s, _self13, pivotY * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, s * _self20);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, s * _self21);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, s * _self22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(-s, pivotZ, Math.fma(s, _self23, pivotZ)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(s, _self23, pivotZ * _t0));
         return dest;
     }
 
@@ -7189,18 +7433,19 @@ public final class Float3x4OpsKernelsSegment {
         float _pivotx = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 0L);
         float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
         float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
+        float _t0 = 1.0f - s;
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, s * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, s * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, s * _self02);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(-s, _pivotx, Math.fma(s, _self03, _pivotx)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(s, _self03, _pivotx * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, s * _self10);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, s * _self11);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, s * _self12);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(-s, _pivoty, Math.fma(s, _self13, _pivoty)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(s, _self13, _pivoty * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, s * _self20);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, s * _self21);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, s * _self22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(-s, _pivotz, Math.fma(s, _self23, _pivotz)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(s, _self23, _pivotz * _t0));
         return dest;
     }
 
@@ -7227,15 +7472,15 @@ public final class Float3x4OpsKernelsSegment {
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, sX * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, sX * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, sX * _self02);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(-pivotX, sX, Math.fma(sX, _self03, pivotX)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(pivotX, 1.0f - sX, sX * _self03));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, sY * _self10);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, sY * _self11);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, sY * _self12);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(-pivotY, sY, Math.fma(sY, _self13, pivotY)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(pivotY, 1.0f - sY, sY * _self13));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, sZ * _self20);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, sZ * _self21);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, sZ * _self22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(-pivotZ, sZ, Math.fma(sZ, _self23, pivotZ)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(pivotZ, 1.0f - sZ, sZ * _self23));
         return dest;
     }
 
@@ -7270,15 +7515,15 @@ public final class Float3x4OpsKernelsSegment {
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sx * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sx * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sx * _self02);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(-_pivotx, _sx, Math.fma(_sx, _self03, _pivotx)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_pivotx, 1.0f - _sx, _sx * _self03));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _sy * _self10);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _sy * _self11);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _sy * _self12);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(-_pivoty, _sy, Math.fma(_sy, _self13, _pivoty)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_pivoty, 1.0f - _sy, _sy * _self13));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _sz * _self20);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _sz * _self21);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _sz * _self22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(-_pivotz, _sz, Math.fma(_sz, _self23, _pivotz)));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(_pivotz, 1.0f - _sz, _sz * _self23));
         return dest;
     }
 
@@ -7376,11 +7621,12 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
+        float _sp0 = normalX + normalX;
         float _t0 = -_self02;
         float _t1 = -_self12;
         float _t2 = -_self22;
-        float _t9 = (normalX + normalX) * normalZ;
-        float _t10 = (normalX + normalX) * normalY;
+        float _t9 = _sp0 * normalZ;
+        float _t10 = _sp0 * normalY;
         float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
@@ -7424,11 +7670,12 @@ public final class Float3x4OpsKernelsSegment {
         float _normalx = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 0L);
         float _normaly = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 4L);
         float _normalz = normal.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, normalOffset + 8L);
+        float _sp0 = _normalx + _normalx;
         float _t0 = -_self02;
         float _t1 = -_self12;
         float _t2 = -_self22;
-        float _t9 = (_normalx + _normalx) * _normalz;
-        float _t10 = (_normalx + _normalx) * _normaly;
+        float _t9 = _sp0 * _normalz;
+        float _t10 = _sp0 * _normaly;
         float _t11 = (_normaly + _normaly) * _normalz;
         float _t12 = Math.fma(-2.0f, _normalx * _normalx, 1.0f);
         float _t13 = Math.fma(-2.0f, _normaly * _normaly, 1.0f);
@@ -8295,21 +8542,22 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        float _t2 = Math.fma(-s, pivotZ, pivotZ);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        float _t3 = pivotZ * _t0;
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, s * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, s * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, s * _self02);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_self00, _t0, Math.fma(_self01, _t1, Math.fma(_self02, _t2, _self03))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_self00, _t1, Math.fma(_self01, _t2, Math.fma(_self02, _t3, _self03))));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, s * _self10);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, s * _self11);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, s * _self12);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_self10, _t0, Math.fma(_self11, _t1, Math.fma(_self12, _t2, _self13))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_self10, _t1, Math.fma(_self11, _t2, Math.fma(_self12, _t3, _self13))));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, s * _self20);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, s * _self21);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, s * _self22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(_self20, _t0, Math.fma(_self21, _t1, Math.fma(_self22, _t2, _self23))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(_self20, _t1, Math.fma(_self21, _t2, Math.fma(_self22, _t3, _self23))));
         return dest;
     }
 
@@ -8337,21 +8585,22 @@ public final class Float3x4OpsKernelsSegment {
         float _pivotx = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 0L);
         float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
         float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
-        float _t0 = Math.fma(-s, _pivotx, _pivotx);
-        float _t1 = Math.fma(-s, _pivoty, _pivoty);
-        float _t2 = Math.fma(-s, _pivotz, _pivotz);
+        float _t0 = 1.0f - s;
+        float _t1 = _pivotx * _t0;
+        float _t2 = _pivoty * _t0;
+        float _t3 = _pivotz * _t0;
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, s * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, s * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, s * _self02);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_self00, _t0, Math.fma(_self01, _t1, Math.fma(_self02, _t2, _self03))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_self00, _t1, Math.fma(_self01, _t2, Math.fma(_self02, _t3, _self03))));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, s * _self10);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, s * _self11);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, s * _self12);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_self10, _t0, Math.fma(_self11, _t1, Math.fma(_self12, _t2, _self13))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_self10, _t1, Math.fma(_self11, _t2, Math.fma(_self12, _t3, _self13))));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, s * _self20);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, s * _self21);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, s * _self22);
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(_self20, _t0, Math.fma(_self21, _t1, Math.fma(_self22, _t2, _self23))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(_self20, _t1, Math.fma(_self21, _t2, Math.fma(_self22, _t3, _self23))));
         return dest;
     }
 
@@ -8375,9 +8624,9 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
-        float _t3 = Math.fma(-pivotX, sX, pivotX);
-        float _t4 = Math.fma(-pivotY, sY, pivotY);
-        float _t5 = Math.fma(-pivotZ, sZ, pivotZ);
+        float _t3 = pivotX * (1.0f - sX);
+        float _t4 = pivotY * (1.0f - sY);
+        float _t5 = pivotZ * (1.0f - sZ);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, sX * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, sY * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, sZ * _self02);
@@ -8421,9 +8670,9 @@ public final class Float3x4OpsKernelsSegment {
         float _pivotx = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 0L);
         float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
         float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
-        float _t3 = Math.fma(-_pivotx, _sx, _pivotx);
-        float _t4 = Math.fma(-_pivoty, _sy, _pivoty);
-        float _t5 = Math.fma(-_pivotz, _sz, _pivotz);
+        float _t3 = _pivotx * (1.0f - _sx);
+        float _t4 = _pivoty * (1.0f - _sy);
+        float _t5 = _pivotz * (1.0f - _sz);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _sx * _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _sy * _self01);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _sz * _self02);
@@ -8564,30 +8813,40 @@ public final class Float3x4OpsKernelsSegment {
         float _self21 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 36L);
         float _self22 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 40L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 44L);
-        float _t0 = minX * _self00;
-        float _t1 = maxX * _self00;
-        float _t2 = minY * _self01;
-        float _t3 = maxY * _self01;
-        float _t4 = minZ * _self02;
-        float _t5 = maxZ * _self02;
-        float _t6 = minX * _self10;
-        float _t7 = maxX * _self10;
-        float _t8 = minY * _self11;
-        float _t9 = maxY * _self11;
-        float _t10 = minZ * _self12;
-        float _t11 = maxZ * _self12;
-        float _t12 = minX * _self20;
-        float _t13 = maxX * _self20;
-        float _t14 = minY * _self21;
-        float _t15 = maxY * _self21;
-        float _t16 = minZ * _self22;
-        float _t17 = maxZ * _self22;
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self03 + Math.min(_t0, _t1) + Math.min(_t2, _t3) + Math.min(_t4, _t5));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self13 + Math.min(_t6, _t7) + Math.min(_t8, _t9) + Math.min(_t10, _t11));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _self23 + Math.min(_t12, _t13) + Math.min(_t14, _t15) + Math.min(_t16, _t17));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self03 + Math.max(_t0, _t1) + Math.max(_t2, _t3) + Math.max(_t4, _t5));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self13 + Math.max(_t6, _t7) + Math.max(_t8, _t9) + Math.max(_t10, _t11));
-        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self23 + Math.max(_t12, _t13) + Math.max(_t14, _t15) + Math.max(_t16, _t17));
+        float _t3 = minX * _self00;
+        float _t4 = maxX * _self00;
+        float _t5 = minY * _self01;
+        float _t6 = maxY * _self01;
+        float _t7 = minZ * _self02;
+        float _t8 = maxZ * _self02;
+        float _t9 = minX * _self10;
+        float _t10 = maxX * _self10;
+        float _t11 = minY * _self11;
+        float _t12 = maxY * _self11;
+        float _t13 = minZ * _self12;
+        float _t14 = maxZ * _self12;
+        float _t15 = minX * _self20;
+        float _t16 = maxX * _self20;
+        float _t17 = minY * _self21;
+        float _t18 = maxY * _self21;
+        float _t19 = minZ * _self22;
+        float _t20 = maxZ * _self22;
+        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t22 < 0.0f) {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Float.POSITIVE_INFINITY);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Float.POSITIVE_INFINITY);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, Float.POSITIVE_INFINITY);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Float.NEGATIVE_INFINITY);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, Float.NEGATIVE_INFINITY);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, Float.NEGATIVE_INFINITY);
+        } else {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self03 + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self13 + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _self23 + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, _self03 + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _self13 + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _self23 + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20));
+        }
         return dest;
     }
 
@@ -9070,4 +9329,22 @@ public final class Float3x4OpsKernelsSegment {
         return dest;
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
 }

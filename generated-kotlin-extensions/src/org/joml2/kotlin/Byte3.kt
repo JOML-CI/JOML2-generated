@@ -37,7 +37,7 @@ inline operator fun Byte3.minus(other: Byte3): Byte3 = sub(other)
 /** [Byte3.cross] as an infix function, so `a cross b` parses. */
 inline infix fun Byte3.cross(other: Byte3): Byte3 = cross(other)
 /** [Byte3.dot] as an infix function, so `a dot b` parses. */
-inline infix fun Byte3.dot(other: Byte3): Byte = dot(other)
+inline infix fun Byte3.dot(other: Byte3): Int = dot(other)
 /** Component 1 of this Byte3 (`x()`), for destructuring declarations. */
 inline operator fun Byte3.component1(): Byte = x()
 /** Component 2 of this Byte3 (`y()`), for destructuring declarations. */

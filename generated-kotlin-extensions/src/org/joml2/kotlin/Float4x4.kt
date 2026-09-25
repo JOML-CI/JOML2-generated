@@ -32,6 +32,8 @@ inline fun Float4x4.obliqueCabinet(angle: Angle): Float4x4 = obliqueCabinet(angl
 inline fun Float4x4.obliqueCavalier(angle: Angle): Float4x4 = obliqueCavalier(angle.radians.toFloat())
 /** [Float4x4.obliqueMilitary] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float4x4.obliqueMilitary(angle: Angle): Float4x4 = obliqueMilitary(angle.radians.toFloat())
+/** [Float4x4.obliquePlanometric] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Float4x4.obliquePlanometric(angle: Angle): Float4x4 = obliquePlanometric(angle.radians.toFloat())
 /** [Float4x4.perspective] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float4x4.perspective(fovy: Angle, aspect: Float, near: Float, far: Float, handedness: Handedness, depthRange: DepthRange): Float4x4 = perspective(fovy.radians.toFloat(), aspect, near, far, handedness, depthRange)
 /** [Float4x4.perspective] taking a type-safe [Angle] in place of the angle in radians. */
@@ -123,6 +125,8 @@ object Float4x4Factory {
     inline fun makeObliqueCavalier(angle: Angle): Float4x4 = Float4x4.makeObliqueCavalier(angle.radians.toFloat())
     /** [Float4x4.makeObliqueMilitary] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeObliqueMilitary(angle: Angle): Float4x4 = Float4x4.makeObliqueMilitary(angle.radians.toFloat())
+    /** [Float4x4.makeObliquePlanometric] taking a type-safe [Angle] in place of the angle in radians. */
+    inline fun makeObliquePlanometric(angle: Angle): Float4x4 = Float4x4.makeObliquePlanometric(angle.radians.toFloat())
     /** [Float4x4.makePerspective] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makePerspective(fovy: Angle, aspect: Float, near: Float, far: Float, handedness: Handedness, depthRange: DepthRange): Float4x4 = Float4x4.makePerspective(fovy.radians.toFloat(), aspect, near, far, handedness, depthRange)
     /** [Float4x4.makePerspective] taking a type-safe [Angle] in place of the angle in radians. */

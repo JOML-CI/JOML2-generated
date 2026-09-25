@@ -476,8 +476,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = m.m10() * _t14;
         double _t17 = m.m22() * _t13;
         double _t18 = m.m12() * _t13;
@@ -507,20 +507,20 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t55 = Math.fma(-m.m01(), _t12, _t46);
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         this.tX = 0.0;
         this.tY = 0.0;
         this.tZ = 0.0;
-        this.rX = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        this.rY = _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67;
-        this.rZ = _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64);
-        this.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67;
+        this.rX = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        this.rY = _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29;
+        this.rZ = _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64);
+        this.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         this.sX = _t44 < 0.0 ? -_t15 : _t15;
         this.sY = Math.sqrt(_t9);
         this.sZ = Math.sqrt(_t10);
@@ -545,8 +545,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = m.m10() * _t14;
         double _t17 = m.m22() * _t13;
         double _t18 = m.m12() * _t13;
@@ -576,20 +576,20 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t55 = Math.fma(-m.m01(), _t12, _t46);
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         this.tX = m.m03();
         this.tY = m.m13();
         this.tZ = m.m23();
-        this.rX = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        this.rY = _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67;
-        this.rZ = _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64);
-        this.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67;
+        this.rX = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        this.rY = _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29;
+        this.rZ = _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64);
+        this.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         this.sX = _t44 < 0.0 ? -_t15 : _t15;
         this.sY = Math.sqrt(_t9);
         this.sZ = Math.sqrt(_t10);
@@ -614,8 +614,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t11 = Math.fma(m.m20(), m.m20(), Math.fma(m.m00(), m.m00(), m.m10() * m.m10()));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = m.m10() * _t14;
         double _t17 = m.m22() * _t13;
         double _t18 = m.m12() * _t13;
@@ -645,20 +645,20 @@ public final class DoubleTransformImpl implements DoubleTransform {
         double _t55 = Math.fma(-m.m01(), _t12, _t46);
         double _t60 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t45));
         double _t61 = Math.fma(m.m11(), _t12, Math.fma(m.m22(), _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(m.m11(), _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(m.m22(), _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         this.tX = m.m03();
         this.tY = m.m13();
         this.tZ = m.m23();
-        this.rX = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        this.rY = _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67;
-        this.rZ = _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64);
-        this.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67;
+        this.rX = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        this.rY = _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29;
+        this.rZ = _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64);
+        this.rW = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         this.sX = _t44 < 0.0 ? -_t15 : _t15;
         this.sY = Math.sqrt(_t9);
         this.sZ = Math.sqrt(_t10);
@@ -775,7 +775,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
 
     /**
-     * Compute the matrix representation of this transform and store the result in {@code dest}.
+     * Compute the matrix representation of this transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -806,6 +807,27 @@ public final class DoubleTransformImpl implements DoubleTransform {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix3x3}: computes and stores it; reached only through it. */
+    private void toMatrix3x3_s37258727_c0(Double3x3Impl _dst, double _r5, double _t3, double _t0, double _r0, double _r6, double _t4, double _r3, double _t5) {
+        _dst.m00 = Math.fma(-Math.fma(_r5, _r5, _t3), _t0, _r0);
+        _dst.m10 = Math.fma(_r6, _r5, _t4) * _t0;
+        _dst.m20 = Math.fma(_r6, _r3, -_t5) * _t0;
+    }
+
+    /** Private column 1 of {@code toMatrix3x3}: computes and stores it; reached only through it. */
+    private void toMatrix3x3_s37258727_c1(Double3x3Impl _dst, double _r6, double _r5, double _t4, double _t1, double _t3, double _r1, double _r4, double _r3) {
+        _dst.m01 = Math.fma(_r6, _r5, -_t4) * _t1;
+        _dst.m11 = Math.fma(-Math.fma(_r6, _r6, _t3), _t1, _r1);
+        _dst.m21 = Math.fma(_r6, _r4, _r5 * _r3) * _t1;
+    }
+
+    /** Private column 2 of {@code toMatrix3x3}: computes and stores it; reached only through it. */
+    private void toMatrix3x3_s37258727_c2(Double3x3Impl _dst, double _r6, double _r3, double _t5, double _t2, double _r5, double _r4, double _r2) {
+        _dst.m02 = Math.fma(_r6, _r3, _t5) * _t2;
+        _dst.m12 = Math.fma(_r5, _r3, -(_r6 * _r4)) * _t2;
+        _dst.m22 = Math.fma(-Math.fma(_r6, _r6, _r5 * _r5), _t2, _r2);
+    }
+
 
     /**
      * Compute the 3x3 linear block ({@code R * S}) of this transform (the translation is dropped)
@@ -816,64 +838,85 @@ public final class DoubleTransformImpl implements DoubleTransform {
      */
     public Double3x3 toMatrix3x3(@Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        double _t0 = this.sX + this.sX;
-        double _t1 = this.sY + this.sY;
-        double _t2 = this.sZ + this.sZ;
-        double _t3 = this.rZ * this.rZ;
-        double _t4 = this.rZ * this.rW;
-        double _t5 = this.rY * this.rW;
-        d.m00 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
-        double _buf0 = Math.fma(this.rX, this.rY, _t4) * _t0;
-        double _buf1 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
-        d.m01 = Math.fma(this.rX, this.rY, -_t4) * _t1;
-        double _buf2 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
-        d.m21 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
-        d.m02 = Math.fma(this.rX, this.rZ, _t5) * _t2;
-        d.m12 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
-        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
-        d.m10 = _buf0;
-        d.m20 = _buf1;
-        d.m11 = _buf2;
+        double _r0 = this.sX;
+        double _r1 = this.sY;
+        double _r2 = this.sZ;
+        double _r3 = this.rZ;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rX;
+        double _t0 = _r0 + _r0;
+        double _t1 = _r1 + _r1;
+        double _t2 = _r2 + _r2;
+        double _t3 = _r3 * _r3;
+        double _t4 = _r3 * _r4;
+        double _t5 = _r5 * _r4;
+        toMatrix3x3_s37258727_c0(d, _r5, _t3, _t0, _r0, _r6, _t4, _r3, _t5);
+        toMatrix3x3_s37258727_c1(d, _r6, _r5, _t4, _t1, _t3, _r1, _r4, _r3);
+        toMatrix3x3_s37258727_c2(d, _r6, _r3, _t5, _t2, _r5, _r4, _r2);
         d.properties = 0;
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c0(Double3x4Impl _dst, double _r5, double _t3, double _t0, double _r0, double _r6, double _t4, double _r3, double _t5) {
+        _dst.m00 = Math.fma(-Math.fma(_r5, _r5, _t3), _t0, _r0);
+        _dst.m10 = Math.fma(_r6, _r5, _t4) * _t0;
+        _dst.m20 = Math.fma(_r6, _r3, -_t5) * _t0;
+    }
+
+    /** Private column 1 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c1(Double3x4Impl _dst, double _r6, double _r5, double _t4, double _t1, double _t3, double _r1, double _r4, double _r3) {
+        _dst.m01 = Math.fma(_r6, _r5, -_t4) * _t1;
+        _dst.m11 = Math.fma(-Math.fma(_r6, _r6, _t3), _t1, _r1);
+        _dst.m21 = Math.fma(_r6, _r4, _r5 * _r3) * _t1;
+    }
+
+    /** Private column 2 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c2(Double3x4Impl _dst, double _r6, double _r3, double _t5, double _t2, double _r5, double _r4, double _r2) {
+        _dst.m02 = Math.fma(_r6, _r3, _t5) * _t2;
+        _dst.m12 = Math.fma(_r5, _r3, -(_r6 * _r4)) * _t2;
+        _dst.m22 = Math.fma(-Math.fma(_r6, _r6, _r5 * _r5), _t2, _r2);
+    }
+
+    /** Private column 3 of {@code toMatrix3x4}: computes and stores it; reached only through it. */
+    private void toMatrix3x4_s38da5fc6_c3(Double3x4Impl _dst, double _r7, double _r8, double _r9) {
+        _dst.m03 = _r7;
+        _dst.m13 = _r8;
+        _dst.m23 = _r9;
+    }
+
 
     /**
-     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
      */
     public Double3x4 toMatrix3x4(@Mutated Double3x4 dest) {
         Double3x4Impl d = (Double3x4Impl) dest;
-        double _t0 = this.sX + this.sX;
-        double _t1 = this.sY + this.sY;
-        double _t2 = this.sZ + this.sZ;
-        double _t3 = this.rZ * this.rZ;
-        double _t4 = this.rZ * this.rW;
-        double _t5 = this.rY * this.rW;
-        double _buf0 = Math.fma(-Math.fma(this.rY, this.rY, _t3), _t0, this.sX);
-        double _buf1 = Math.fma(this.rX, this.rY, -_t4) * _t1;
-        double _buf2 = Math.fma(this.rX, this.rZ, _t5) * _t2;
-        double _buf3 = this.tX;
-        double _buf4 = Math.fma(this.rX, this.rY, _t4) * _t0;
-        double _buf5 = Math.fma(-Math.fma(this.rX, this.rX, _t3), _t1, this.sY);
-        double _buf6 = Math.fma(this.rY, this.rZ, -(this.rX * this.rW)) * _t2;
-        d.m13 = this.tY;
-        d.m20 = Math.fma(this.rX, this.rZ, -_t5) * _t0;
-        double _buf7 = Math.fma(this.rX, this.rW, this.rY * this.rZ) * _t1;
-        d.m22 = Math.fma(-Math.fma(this.rX, this.rX, this.rY * this.rY), _t2, this.sZ);
-        d.m23 = this.tZ;
-        d.m00 = _buf0;
-        d.m01 = _buf1;
-        d.m02 = _buf2;
-        d.m03 = _buf3;
-        d.m10 = _buf4;
-        d.m11 = _buf5;
-        d.m12 = _buf6;
-        d.m21 = _buf7;
+        double _r0 = this.sX;
+        double _r1 = this.sY;
+        double _r2 = this.sZ;
+        double _r3 = this.rZ;
+        double _r4 = this.rW;
+        double _r5 = this.rY;
+        double _r6 = this.rX;
+        double _r7 = this.tX;
+        double _r8 = this.tY;
+        double _r9 = this.tZ;
+        double _t0 = _r0 + _r0;
+        double _t1 = _r1 + _r1;
+        double _t2 = _r2 + _r2;
+        double _t3 = _r3 * _r3;
+        double _t4 = _r3 * _r4;
+        double _t5 = _r5 * _r4;
+        toMatrix3x4_s38da5fc6_c0(d, _r5, _t3, _t0, _r0, _r6, _t4, _r3, _t5);
+        toMatrix3x4_s38da5fc6_c1(d, _r6, _r5, _t4, _t1, _t3, _r1, _r4, _r3);
+        toMatrix3x4_s38da5fc6_c2(d, _r6, _r3, _t5, _t2, _r5, _r4, _r2);
+        toMatrix3x4_s38da5fc6_c3(d, _r7, _r8, _r9);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -1112,7 +1155,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         }
         double _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         double _t50 = (1.0 / Math.sqrt(_t49));
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             d.rX = _t50 * _t44;
             d.rY = _t50 * _t45;
             d.rZ = _t50 * _t43;
@@ -1365,17 +1408,23 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleTransform difference(double otherTX, double otherTY, double otherTZ, double otherRX, double otherRY, double otherRZ, double otherRW, double otherSX, double otherSY, double otherSZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         double _rcp0 = 1.0 / this.sZ;
+        double _sp4 = _rcp0 * this.tZ;
+        double _sp0 = otherTZ * _rcp0;
         double _rcp1 = 1.0 / this.sX;
+        double _sp3 = _rcp1 * this.tX;
+        double _sp1 = otherTX * _rcp1;
         double _rcp2 = 1.0 / this.sY;
-        double _t30 = 2.0 * (otherTZ * this.rX * _rcp0 - otherTX * this.rZ * _rcp1);
-        double _t31 = 2.0 * (otherTX * this.rY * _rcp1 - otherTY * this.rX * _rcp2);
-        double _t32 = 2.0 * (otherTY * this.rZ * _rcp2 - otherTZ * this.rY * _rcp0);
-        double _t33 = 2.0 * (this.tX * this.rZ * _rcp1 - this.tZ * this.rX * _rcp0);
-        double _t34 = 2.0 * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp1);
-        double _t35 = 2.0 * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
-        d.tX = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, otherTX * _rcp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -(this.tX * _rcp1)));
-        d.tY = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, otherTY * _rcp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -(this.tY * _rcp2)));
-        d.tZ = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, otherTZ * _rcp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -(this.tZ * _rcp0)));
+        double _sp5 = _rcp2 * this.tY;
+        double _sp2 = otherTY * _rcp2;
+        double _t30 = 2.0 * (_sp0 * this.rX - _sp1 * this.rZ);
+        double _t31 = 2.0 * (_sp1 * this.rY - _sp2 * this.rX);
+        double _t32 = 2.0 * (_sp2 * this.rZ - _sp0 * this.rY);
+        double _t33 = 2.0 * (_sp3 * this.rZ - _sp4 * this.rX);
+        double _t34 = 2.0 * (_sp5 * this.rX - _sp3 * this.rY);
+        double _t35 = 2.0 * (_sp4 * this.rY - _sp5 * this.rZ);
+        d.tX = Math.fma(this.rZ, _t30, -(this.rY * _t31)) + Math.fma(this.rW, _t32, _sp1) + (Math.fma(this.rZ, _t33, -(this.rY * _t34)) + Math.fma(this.rW, _t35, -_sp3));
+        d.tY = Math.fma(this.rX, _t31, -(this.rZ * _t32)) + Math.fma(this.rW, _t30, _sp2) + (Math.fma(this.rX, _t34, -(this.rZ * _t35)) + Math.fma(this.rW, _t33, -_sp5));
+        d.tZ = Math.fma(this.rY, _t32, -(this.rX * _t30)) + Math.fma(this.rW, _t31, _sp0) + (Math.fma(this.rY, _t35, -(this.rX * _t33)) + Math.fma(this.rW, _t34, -_sp4));
         double _buf0 = Math.fma(otherRX, this.rW, -(otherRW * this.rX)) + Math.fma(otherRY, this.rZ, -(otherRZ * this.rY));
         double _buf1 = Math.fma(otherRY, this.rW, -(otherRW * this.rY)) + Math.fma(otherRZ, this.rX, -(otherRX * this.rZ));
         double _buf2 = Math.fma(otherRX, this.rY, -(otherRY * this.rX)) + Math.fma(otherRZ, this.rW, -(otherRW * this.rZ));
@@ -1391,8 +1440,18 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale and store the result in {@code dest}.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity) and store the result in {@code dest}.
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1400,17 +1459,20 @@ public final class DoubleTransformImpl implements DoubleTransform {
     public DoubleTransform invert(@Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         double _rcp0 = 1.0 / this.sX;
+        double _sp0 = this.tX * _rcp0;
         double _rcp1 = 1.0 / this.sZ;
+        double _sp1 = this.tZ * _rcp1;
         double _rcp2 = 1.0 / this.sY;
+        double _sp2 = this.tY * _rcp2;
         double _t0 = -this.rY;
         double _t1 = -this.rZ;
         double _t2 = -this.rX;
-        double _t18 = 2.0 * (this.tX * this.rZ * _rcp0 - this.tZ * this.rX * _rcp1);
-        double _t19 = 2.0 * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp0);
-        double _t20 = 2.0 * (this.tZ * this.rY * _rcp1 - this.tY * this.rZ * _rcp2);
-        d.tX = Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -(this.tX * _rcp0))));
-        d.tY = Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -(this.tY * _rcp2))));
-        d.tZ = Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -(this.tZ * _rcp1))));
+        double _t18 = 2.0 * (_sp0 * this.rZ - _sp1 * this.rX);
+        double _t19 = 2.0 * (_sp2 * this.rX - _sp0 * this.rY);
+        double _t20 = 2.0 * (_sp1 * this.rY - _sp2 * this.rZ);
+        d.tX = Math.fma(this.rZ, _t18, Math.fma(_t0, _t19, Math.fma(this.rW, _t20, -_sp0)));
+        d.tY = Math.fma(this.rX, _t19, Math.fma(_t1, _t20, Math.fma(this.rW, _t18, -_sp2)));
+        d.tZ = Math.fma(this.rY, _t20, Math.fma(_t2, _t18, Math.fma(this.rW, _t19, -_sp1)));
         d.rX = _t2;
         d.rY = _t0;
         d.rZ = _t1;
@@ -1438,7 +1500,7 @@ public final class DoubleTransformImpl implements DoubleTransform {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         double _t3 = Math.fma(this.rW, this.rW, Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY)));
         double _t4 = (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             d.rX = this.rX * _t4;
             d.rY = this.rY * _t4;
             d.rZ = this.rZ * _t4;
@@ -1463,11 +1525,18 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1497,11 +1566,18 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1531,11 +1607,18 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1564,11 +1647,18 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1597,11 +1687,18 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1630,11 +1727,18 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2846,6 +2950,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Transform {@code v} by this transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -2859,6 +2965,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this transform and store the result in
      * {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2884,6 +2992,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -2897,6 +3007,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2920,6 +3032,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -2934,6 +3048,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -2955,6 +3071,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
 
     /**
      * Transform {@code p} by the inverse of this transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -2968,6 +3086,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this transform and store the
      * result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -2993,6 +3113,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -3006,6 +3128,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -3021,6 +3145,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -3034,6 +3160,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -3049,6 +3177,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -3062,6 +3192,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -3088,6 +3220,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -3102,6 +3236,8 @@ public final class DoubleTransformImpl implements DoubleTransform {
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}

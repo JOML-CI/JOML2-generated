@@ -639,8 +639,8 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t14 = m.m00() * m.m00() + m.m10() * m.m10() + m.m20() * m.m20();
         float _t15 = (1.0f / (float) Math.sqrt(_t12));
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t14));
         float _t18 = (float) Math.sqrt(_t14);
+        float _t17 = 1.0f / _t18;
         float _t19 = m.m11() * _t15;
         float _t20 = m.m22() * _t16;
         float _t21 = m.m10() * _t17;
@@ -675,17 +675,17 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t64 = _t51 - _t20 - _t19;
         float _t65 = _t19 + (_t52 - _t20);
         float _t66 = _t20 + (_t52 - _t19);
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t66));
-        float _t70 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         this.tX = 0.0f;
         this.tY = 0.0f;
         this.tZ = 0.0f;
-        this.rX = _t62 > 0.0f ? 0.5f * _t37 * _t67 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? 0.5f * _t54 * _t68 : 0.5f * _t55 * _t69;
-        this.rY = _t62 > 0.0f ? 0.5f * _t56 * _t67 : _t48 > _t38 ? 0.5f * _t54 * _t70 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : 0.5f * _t39 * _t69;
-        this.rZ = _t62 > 0.0f ? 0.5f * _t57 * _t67 : _t48 > _t38 ? 0.5f * _t55 * _t70 : _t19 > _t20 ? 0.5f * _t39 * _t68 : 0.5f * (float) Math.sqrt(_t66);
-        this.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? 0.5f * _t37 * _t70 : _t19 > _t20 ? 0.5f * _t56 * _t68 : 0.5f * _t57 * _t69;
+        this.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+        this.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
+        this.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
+        this.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
         this.sX = _t47 < 0.0f ? -_t18 : _t18;
         this.sY = (float) Math.sqrt(_t12);
         this.sZ = (float) Math.sqrt(_t13);
@@ -708,8 +708,8 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t14 = m.m00() * m.m00() + m.m10() * m.m10() + m.m20() * m.m20();
         float _t15 = (1.0f / (float) Math.sqrt(_t12));
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t14));
         float _t18 = (float) Math.sqrt(_t14);
+        float _t17 = 1.0f / _t18;
         float _t19 = m.m11() * _t15;
         float _t20 = m.m22() * _t16;
         float _t21 = m.m10() * _t17;
@@ -744,17 +744,17 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t64 = _t51 - _t20 - _t19;
         float _t65 = _t19 + (_t52 - _t20);
         float _t66 = _t20 + (_t52 - _t19);
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t66));
-        float _t70 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         this.tX = m.m03();
         this.tY = m.m13();
         this.tZ = m.m23();
-        this.rX = _t62 > 0.0f ? 0.5f * _t37 * _t67 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? 0.5f * _t54 * _t68 : 0.5f * _t55 * _t69;
-        this.rY = _t62 > 0.0f ? 0.5f * _t56 * _t67 : _t48 > _t38 ? 0.5f * _t54 * _t70 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : 0.5f * _t39 * _t69;
-        this.rZ = _t62 > 0.0f ? 0.5f * _t57 * _t67 : _t48 > _t38 ? 0.5f * _t55 * _t70 : _t19 > _t20 ? 0.5f * _t39 * _t68 : 0.5f * (float) Math.sqrt(_t66);
-        this.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? 0.5f * _t37 * _t70 : _t19 > _t20 ? 0.5f * _t56 * _t68 : 0.5f * _t57 * _t69;
+        this.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+        this.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
+        this.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
+        this.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
         this.sX = _t47 < 0.0f ? -_t18 : _t18;
         this.sY = (float) Math.sqrt(_t12);
         this.sZ = (float) Math.sqrt(_t13);
@@ -777,8 +777,8 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t14 = m.m00() * m.m00() + m.m10() * m.m10() + m.m20() * m.m20();
         float _t15 = (1.0f / (float) Math.sqrt(_t12));
         float _t16 = (1.0f / (float) Math.sqrt(_t13));
-        float _t17 = (1.0f / (float) Math.sqrt(_t14));
         float _t18 = (float) Math.sqrt(_t14);
+        float _t17 = 1.0f / _t18;
         float _t19 = m.m11() * _t15;
         float _t20 = m.m22() * _t16;
         float _t21 = m.m10() * _t17;
@@ -813,17 +813,17 @@ public final class FloatTransformImpl implements FloatTransform {
         float _t64 = _t51 - _t20 - _t19;
         float _t65 = _t19 + (_t52 - _t20);
         float _t66 = _t20 + (_t52 - _t19);
-        float _t67 = (1.0f / (float) Math.sqrt(_t63));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t66));
-        float _t70 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t66));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         this.tX = m.m03();
         this.tY = m.m13();
         this.tZ = m.m23();
-        this.rX = _t62 > 0.0f ? 0.5f * _t37 * _t67 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? 0.5f * _t54 * _t68 : 0.5f * _t55 * _t69;
-        this.rY = _t62 > 0.0f ? 0.5f * _t56 * _t67 : _t48 > _t38 ? 0.5f * _t54 * _t70 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : 0.5f * _t39 * _t69;
-        this.rZ = _t62 > 0.0f ? 0.5f * _t57 * _t67 : _t48 > _t38 ? 0.5f * _t55 * _t70 : _t19 > _t20 ? 0.5f * _t39 * _t68 : 0.5f * (float) Math.sqrt(_t66);
-        this.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? 0.5f * _t37 * _t70 : _t19 > _t20 ? 0.5f * _t56 * _t68 : 0.5f * _t57 * _t69;
+        this.rX = _t62 > 0.0f ? _sp0 * _t37 : _t48 > _t38 ? 0.5f * (float) Math.sqrt(_t64) : _t19 > _t20 ? _sp1 * _t54 : _sp2 * _t55;
+        this.rY = _t62 > 0.0f ? _sp0 * _t56 : _t48 > _t38 ? _sp3 * _t54 : _t19 > _t20 ? 0.5f * (float) Math.sqrt(_t65) : _sp2 * _t39;
+        this.rZ = _t62 > 0.0f ? _sp0 * _t57 : _t48 > _t38 ? _sp3 * _t55 : _t19 > _t20 ? _sp1 * _t39 : 0.5f * (float) Math.sqrt(_t66);
+        this.rW = _t62 > 0.0f ? 0.5f * (float) Math.sqrt(_t63) : _t48 > _t38 ? _sp3 * _t37 : _t19 > _t20 ? _sp1 * _t56 : _sp2 * _t57;
         this.sX = _t47 < 0.0f ? -_t18 : _t18;
         this.sY = (float) Math.sqrt(_t12);
         this.sZ = (float) Math.sqrt(_t13);
@@ -936,55 +936,128 @@ public final class FloatTransformImpl implements FloatTransform {
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c0(Float4x4Impl _dst, float _r0, float _t3, float _t4, float _t0, float _t5, float _t6, float _t7, float _t8) {
+        _dst.m00 = _r0 - (_t3 + _t4) * _t0;
+        _dst.m10 = (_t5 + _t6) * _t0;
+        _dst.m20 = (_t7 - _t8) * _t0;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c1(Float4x4Impl _dst, float _t5, float _t6, float _t1, float _r1, float _t9, float _t4, float _t11, float _t10) {
+        _dst.m01 = (_t5 - _t6) * _t1;
+        _dst.m11 = _r1 - (_t9 + _t4) * _t1;
+        _dst.m21 = (_t11 + _t10) * _t1;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c2(Float4x4Impl _dst, float _t7, float _t8, float _t2, float _t10, float _t11, float _r2, float _t9, float _t3) {
+        _dst.m02 = (_t7 + _t8) * _t2;
+        _dst.m12 = (_t10 - _t11) * _t2;
+        _dst.m22 = _r2 - (_t9 + _t3) * _t2;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s5af251ec_c3(Float4x4Impl _dst, float _r7, float _r8, float _r9) {
+        _dst.m03 = _r7;
+        _dst.m13 = _r8;
+        _dst.m23 = _r9;
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code toMatrix}; reached only through it. */
+    private void toMatrix_s5af251ec_tail(Float4x4Impl _dst, float _r5, float _r6, float _r0, float _t3, float _t4, float _t0, float _t5, float _t6, float _t1, float _t7, float _t8, float _t2, float _r7, float _r1, float _t9, float _t10, float _r8, float _r2, float _r9) {
+        float _t11 = _r5 * _r6;
+        toMatrix_s5af251ec_c0(_dst, _r0, _t3, _t4, _t0, _t5, _t6, _t7, _t8);
+        toMatrix_s5af251ec_c1(_dst, _t5, _t6, _t1, _r1, _t9, _t4, _t11, _t10);
+        toMatrix_s5af251ec_c2(_dst, _t7, _t8, _t2, _t10, _t11, _r2, _t9, _t3);
+        toMatrix_s5af251ec_c3(_dst, _r7, _r8, _r9);
+    }
+
 
     /**
-     * Compute the matrix representation of this transform and store the result in {@code dest}.
+     * Compute the matrix representation of this transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
      */
     public Float4x4 toMatrix(@Mutated Float4x4 dest) {
         Float4x4Impl d = (Float4x4Impl) dest;
-        float _t0 = this.sX + this.sX;
-        float _t1 = this.sY + this.sY;
-        float _t2 = this.sZ + this.sZ;
-        float _t3 = this.rY * this.rY;
-        float _t4 = this.rZ * this.rZ;
-        float _t5 = this.rX * this.rY;
-        float _t6 = this.rZ * this.rW;
-        float _t7 = this.rX * this.rZ;
-        float _t8 = this.rY * this.rW;
-        float _t9 = this.rX * this.rX;
-        float _t10 = this.rY * this.rZ;
-        float _t11 = this.rX * this.rW;
-        float _buf0 = this.sX - (_t3 + _t4) * _t0;
-        d.m10 = (_t5 + _t6) * _t0;
-        float _buf1 = (_t7 - _t8) * _t0;
-        d.m30 = 0.0f;
-        float _buf2 = (_t5 - _t6) * _t1;
-        d.m11 = this.sY - (_t9 + _t4) * _t1;
-        float _buf3 = (_t11 + _t10) * _t1;
-        d.m31 = 0.0f;
-        float _buf4 = (_t7 + _t8) * _t2;
-        d.m12 = (_t10 - _t11) * _t2;
-        d.m22 = this.sZ - (_t9 + _t3) * _t2;
-        d.m32 = 0.0f;
-        d.m03 = this.tX;
-        d.m13 = this.tY;
-        d.m23 = this.tZ;
-        d.m33 = 1.0f;
-        d.m00 = _buf0;
-        d.m20 = _buf1;
-        d.m01 = _buf2;
-        d.m21 = _buf3;
-        d.m02 = _buf4;
+        float _r0 = this.sX;
+        float _r1 = this.sY;
+        float _r2 = this.sZ;
+        float _r3 = this.rY;
+        float _r4 = this.rZ;
+        float _r5 = this.rX;
+        float _r6 = this.rW;
+        float _r7 = this.tX;
+        float _r8 = this.tY;
+        float _r9 = this.tZ;
+        float _t0 = _r0 + _r0;
+        float _t1 = _r1 + _r1;
+        float _t2 = _r2 + _r2;
+        float _t3 = _r3 * _r3;
+        float _t4 = _r4 * _r4;
+        float _t5 = _r5 * _r3;
+        float _t6 = _r4 * _r6;
+        float _t7 = _r5 * _r4;
+        float _t8 = _r3 * _r6;
+        float _t9 = _r5 * _r5;
+        float _t10 = _r3 * _r4;
+        toMatrix_s5af251ec_tail(d, _r5, _r6, _r0, _t3, _t4, _t0, _t5, _t6, _t1, _t7, _t8, _t2, _r7, _r1, _t9, _t10, _r8, _r2, _r9);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
 
+    /** Private column 0 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c0(Double4x4Impl _dst, float _r0, float _t3, float _t4, float _t0, float _t5, float _t6, float _t7, float _t8) {
+        _dst.m00 = _r0 - (_t3 + _t4) * _t0;
+        _dst.m10 = (_t5 + _t6) * _t0;
+        _dst.m20 = (_t7 - _t8) * _t0;
+        _dst.m30 = 0.0f;
+    }
+
+    /** Private column 1 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c1(Double4x4Impl _dst, float _t5, float _t6, float _t1, float _r1, float _t9, float _t4, float _t11, float _t10) {
+        _dst.m01 = (_t5 - _t6) * _t1;
+        _dst.m11 = _r1 - (_t9 + _t4) * _t1;
+        _dst.m21 = (_t11 + _t10) * _t1;
+        _dst.m31 = 0.0f;
+    }
+
+    /** Private column 2 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c2(Double4x4Impl _dst, float _t7, float _t8, float _t2, float _t10, float _t11, float _r2, float _t9, float _t3) {
+        _dst.m02 = (_t7 + _t8) * _t2;
+        _dst.m12 = (_t10 - _t11) * _t2;
+        _dst.m22 = _r2 - (_t9 + _t3) * _t2;
+        _dst.m32 = 0.0f;
+    }
+
+    /** Private column 3 of {@code toMatrix}: computes and stores it; reached only through it. */
+    private void toMatrix_s20bb8ca5_c3(Double4x4Impl _dst, float _r7, float _r8, float _r9) {
+        _dst.m03 = _r7;
+        _dst.m13 = _r8;
+        _dst.m23 = _r9;
+        _dst.m33 = 1.0f;
+    }
+
+    /** Private tail of {@code toMatrix}; reached only through it. */
+    private void toMatrix_s20bb8ca5_tail(Double4x4Impl _dst, float _r5, float _r6, float _r0, float _t3, float _t4, float _t0, float _t5, float _t6, float _t1, float _t7, float _t8, float _t2, float _r7, float _r1, float _t9, float _t10, float _r8, float _r2, float _r9) {
+        float _t11 = _r5 * _r6;
+        toMatrix_s20bb8ca5_c0(_dst, _r0, _t3, _t4, _t0, _t5, _t6, _t7, _t8);
+        toMatrix_s20bb8ca5_c1(_dst, _t5, _t6, _t1, _r1, _t9, _t4, _t11, _t10);
+        toMatrix_s20bb8ca5_c2(_dst, _t7, _t8, _t2, _t10, _t11, _r2, _t9, _t3);
+        toMatrix_s20bb8ca5_c3(_dst, _r7, _r8, _r9);
+    }
+
 
     /**
-     * Compute the matrix representation of this transform and store the result in {@code dest}.
+     * Compute the matrix representation of this transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -994,39 +1067,28 @@ public final class FloatTransformImpl implements FloatTransform {
      */
     public Double4x4 toMatrix(@Mutated Double4x4 dest) {
         Double4x4Impl d = (Double4x4Impl) dest;
-        float _t0 = this.sX + this.sX;
-        float _t1 = this.sY + this.sY;
-        float _t2 = this.sZ + this.sZ;
-        float _t3 = this.rY * this.rY;
-        float _t4 = this.rZ * this.rZ;
-        float _t5 = this.rX * this.rY;
-        float _t6 = this.rZ * this.rW;
-        float _t7 = this.rX * this.rZ;
-        float _t8 = this.rY * this.rW;
-        float _t9 = this.rX * this.rX;
-        float _t10 = this.rY * this.rZ;
-        float _t11 = this.rX * this.rW;
-        float _buf0 = this.sX - (_t3 + _t4) * _t0;
-        d.m10 = (_t5 + _t6) * _t0;
-        float _buf1 = (_t7 - _t8) * _t0;
-        d.m30 = 0.0f;
-        float _buf2 = (_t5 - _t6) * _t1;
-        d.m11 = this.sY - (_t9 + _t4) * _t1;
-        float _buf3 = (_t11 + _t10) * _t1;
-        d.m31 = 0.0f;
-        float _buf4 = (_t7 + _t8) * _t2;
-        d.m12 = (_t10 - _t11) * _t2;
-        d.m22 = this.sZ - (_t9 + _t3) * _t2;
-        d.m32 = 0.0f;
-        d.m03 = this.tX;
-        d.m13 = this.tY;
-        d.m23 = this.tZ;
-        d.m33 = 1.0f;
-        d.m00 = _buf0;
-        d.m20 = _buf1;
-        d.m01 = _buf2;
-        d.m21 = _buf3;
-        d.m02 = _buf4;
+        float _r0 = this.sX;
+        float _r1 = this.sY;
+        float _r2 = this.sZ;
+        float _r3 = this.rY;
+        float _r4 = this.rZ;
+        float _r5 = this.rX;
+        float _r6 = this.rW;
+        float _r7 = this.tX;
+        float _r8 = this.tY;
+        float _r9 = this.tZ;
+        float _t0 = _r0 + _r0;
+        float _t1 = _r1 + _r1;
+        float _t2 = _r2 + _r2;
+        float _t3 = _r3 * _r3;
+        float _t4 = _r4 * _r4;
+        float _t5 = _r5 * _r3;
+        float _t6 = _r4 * _r6;
+        float _t7 = _r5 * _r4;
+        float _t8 = _r3 * _r6;
+        float _t9 = _r5 * _r5;
+        float _t10 = _r3 * _r4;
+        toMatrix_s20bb8ca5_tail(d, _r5, _r6, _r0, _t3, _t4, _t0, _t5, _t6, _t1, _t7, _t8, _t2, _r7, _r1, _t9, _t10, _r8, _r2, _r9);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -1106,8 +1168,9 @@ public final class FloatTransformImpl implements FloatTransform {
 
 
     /**
-     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -1148,8 +1211,9 @@ public final class FloatTransformImpl implements FloatTransform {
 
 
     /**
-     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1467,7 +1531,7 @@ public final class FloatTransformImpl implements FloatTransform {
         }
         float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
         float _t64 = (1.0f / (float) Math.sqrt(_t63));
-        if (_t63 > 0.0f) {
+        if (_t63 != 0.0f) {
             d.rX = _t64 * _t53;
             d.rY = _t64 * _t54;
             d.rZ = _t64 * _t55;
@@ -1563,7 +1627,7 @@ public final class FloatTransformImpl implements FloatTransform {
         }
         float _t63 = _t53 * _t53 + _t54 * _t54 + _t55 * _t55 + _t56 * _t56;
         float _t64 = (1.0f / (float) Math.sqrt(_t63));
-        if (_t63 > 0.0f) {
+        if (_t63 != 0.0f) {
             d.rX = _t64 * _t53;
             d.rY = _t64 * _t54;
             d.rZ = _t64 * _t55;
@@ -2021,17 +2085,23 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatTransform difference(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _rcp0 = 1.0f / this.sZ;
+        float _sp4 = _rcp0 * this.tZ;
+        float _sp0 = otherTZ * _rcp0;
         float _rcp1 = 1.0f / this.sX;
+        float _sp3 = _rcp1 * this.tX;
+        float _sp1 = otherTX * _rcp1;
         float _rcp2 = 1.0f / this.sY;
-        float _t30 = 2.0f * (otherTZ * this.rX * _rcp0 - otherTX * this.rZ * _rcp1);
-        float _t31 = 2.0f * (otherTX * this.rY * _rcp1 - otherTY * this.rX * _rcp2);
-        float _t32 = 2.0f * (otherTY * this.rZ * _rcp2 - otherTZ * this.rY * _rcp0);
-        float _t33 = 2.0f * (this.tX * this.rZ * _rcp1 - this.tZ * this.rX * _rcp0);
-        float _t34 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp1);
-        float _t35 = 2.0f * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
-        d.tX = this.rZ * _t30 - this.rY * _t31 + (this.rW * _t32 + otherTX * _rcp1) + (this.rZ * _t33 - this.rY * _t34 + (this.rW * _t35 - this.tX * _rcp1));
-        d.tY = this.rX * _t31 - this.rZ * _t32 + (this.rW * _t30 + otherTY * _rcp2) + (this.rX * _t34 - this.rZ * _t35 + (this.rW * _t33 - this.tY * _rcp2));
-        d.tZ = this.rY * _t32 - this.rX * _t30 + (this.rW * _t31 + otherTZ * _rcp0) + (this.rY * _t35 - this.rX * _t33 + (this.rW * _t34 - this.tZ * _rcp0));
+        float _sp5 = _rcp2 * this.tY;
+        float _sp2 = otherTY * _rcp2;
+        float _t30 = 2.0f * (_sp0 * this.rX - _sp1 * this.rZ);
+        float _t31 = 2.0f * (_sp1 * this.rY - _sp2 * this.rX);
+        float _t32 = 2.0f * (_sp2 * this.rZ - _sp0 * this.rY);
+        float _t33 = 2.0f * (_sp3 * this.rZ - _sp4 * this.rX);
+        float _t34 = 2.0f * (_sp5 * this.rX - _sp3 * this.rY);
+        float _t35 = 2.0f * (_sp4 * this.rY - _sp5 * this.rZ);
+        d.tX = this.rZ * _t30 - this.rY * _t31 + (this.rW * _t32 + _sp1) + (this.rZ * _t33 - this.rY * _t34 + (this.rW * _t35 - _sp3));
+        d.tY = this.rX * _t31 - this.rZ * _t32 + (this.rW * _t30 + _sp2) + (this.rX * _t34 - this.rZ * _t35 + (this.rW * _t33 - _sp5));
+        d.tZ = this.rY * _t32 - this.rX * _t30 + (this.rW * _t31 + _sp0) + (this.rY * _t35 - this.rX * _t33 + (this.rW * _t34 - _sp4));
         float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW - otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY - otherRY * this.rX + (otherRZ * this.rW - otherRW * this.rZ);
@@ -2091,17 +2161,23 @@ public final class FloatTransformImpl implements FloatTransform {
     public DoubleTransform difference(float otherTX, float otherTY, float otherTZ, float otherRX, float otherRY, float otherRZ, float otherRW, float otherSX, float otherSY, float otherSZ, @Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _rcp0 = 1.0f / this.sZ;
+        float _sp4 = _rcp0 * this.tZ;
+        float _sp0 = otherTZ * _rcp0;
         float _rcp1 = 1.0f / this.sX;
+        float _sp3 = _rcp1 * this.tX;
+        float _sp1 = otherTX * _rcp1;
         float _rcp2 = 1.0f / this.sY;
-        float _t30 = 2.0f * (otherTZ * this.rX * _rcp0 - otherTX * this.rZ * _rcp1);
-        float _t31 = 2.0f * (otherTX * this.rY * _rcp1 - otherTY * this.rX * _rcp2);
-        float _t32 = 2.0f * (otherTY * this.rZ * _rcp2 - otherTZ * this.rY * _rcp0);
-        float _t33 = 2.0f * (this.tX * this.rZ * _rcp1 - this.tZ * this.rX * _rcp0);
-        float _t34 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp1);
-        float _t35 = 2.0f * (this.tZ * this.rY * _rcp0 - this.tY * this.rZ * _rcp2);
-        d.tX = this.rZ * _t30 - this.rY * _t31 + (this.rW * _t32 + otherTX * _rcp1) + (this.rZ * _t33 - this.rY * _t34 + (this.rW * _t35 - this.tX * _rcp1));
-        d.tY = this.rX * _t31 - this.rZ * _t32 + (this.rW * _t30 + otherTY * _rcp2) + (this.rX * _t34 - this.rZ * _t35 + (this.rW * _t33 - this.tY * _rcp2));
-        d.tZ = this.rY * _t32 - this.rX * _t30 + (this.rW * _t31 + otherTZ * _rcp0) + (this.rY * _t35 - this.rX * _t33 + (this.rW * _t34 - this.tZ * _rcp0));
+        float _sp5 = _rcp2 * this.tY;
+        float _sp2 = otherTY * _rcp2;
+        float _t30 = 2.0f * (_sp0 * this.rX - _sp1 * this.rZ);
+        float _t31 = 2.0f * (_sp1 * this.rY - _sp2 * this.rX);
+        float _t32 = 2.0f * (_sp2 * this.rZ - _sp0 * this.rY);
+        float _t33 = 2.0f * (_sp3 * this.rZ - _sp4 * this.rX);
+        float _t34 = 2.0f * (_sp5 * this.rX - _sp3 * this.rY);
+        float _t35 = 2.0f * (_sp4 * this.rY - _sp5 * this.rZ);
+        d.tX = this.rZ * _t30 - this.rY * _t31 + (this.rW * _t32 + _sp1) + (this.rZ * _t33 - this.rY * _t34 + (this.rW * _t35 - _sp3));
+        d.tY = this.rX * _t31 - this.rZ * _t32 + (this.rW * _t30 + _sp2) + (this.rX * _t34 - this.rZ * _t35 + (this.rW * _t33 - _sp5));
+        d.tZ = this.rY * _t32 - this.rX * _t30 + (this.rW * _t31 + _sp0) + (this.rY * _t35 - this.rX * _t33 + (this.rW * _t34 - _sp4));
         float _buf0 = otherRX * this.rW - otherRW * this.rX + (otherRY * this.rZ - otherRZ * this.rY);
         float _buf1 = otherRY * this.rW - otherRW * this.rY + (otherRZ * this.rX - otherRX * this.rZ);
         float _buf2 = otherRX * this.rY - otherRY * this.rX + (otherRZ * this.rW - otherRW * this.rZ);
@@ -2117,8 +2193,18 @@ public final class FloatTransformImpl implements FloatTransform {
 
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale and store the result in {@code dest}.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity) and store the result in {@code dest}.
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2126,14 +2212,17 @@ public final class FloatTransformImpl implements FloatTransform {
     public FloatTransform invert(@Mutated FloatTransform dest) {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _rcp0 = 1.0f / this.sX;
+        float _sp0 = this.tX * _rcp0;
         float _rcp1 = 1.0f / this.sZ;
+        float _sp1 = this.tZ * _rcp1;
         float _rcp2 = 1.0f / this.sY;
-        float _t15 = 2.0f * (this.tX * this.rZ * _rcp0 - this.tZ * this.rX * _rcp1);
-        float _t16 = 2.0f * (this.tZ * this.rY * _rcp1 - this.tY * this.rZ * _rcp2);
-        float _t17 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp0);
-        d.tX = this.rZ * _t15 + (this.rW * _t16 - this.tX * _rcp0 - this.rY * _t17);
-        d.tY = this.rX * _t17 + (this.rW * _t15 - this.tY * _rcp2 - this.rZ * _t16);
-        d.tZ = this.rY * _t16 + (this.rW * _t17 - this.tZ * _rcp1 - this.rX * _t15);
+        float _sp2 = this.tY * _rcp2;
+        float _t15 = 2.0f * (_sp0 * this.rZ - _sp1 * this.rX);
+        float _t16 = 2.0f * (_sp1 * this.rY - _sp2 * this.rZ);
+        float _t17 = 2.0f * (_sp2 * this.rX - _sp0 * this.rY);
+        d.tX = this.rZ * _t15 + (this.rW * _t16 - _sp0 - this.rY * _t17);
+        d.tY = this.rX * _t17 + (this.rW * _t15 - _sp2 - this.rZ * _t16);
+        d.tZ = this.rY * _t16 + (this.rW * _t17 - _sp1 - this.rX * _t15);
         d.rX = -this.rX;
         d.rY = -this.rY;
         d.rZ = -this.rZ;
@@ -2146,11 +2235,21 @@ public final class FloatTransformImpl implements FloatTransform {
 
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale and store the result in {@code dest}.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity) and store the result in {@code dest}.
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2158,14 +2257,17 @@ public final class FloatTransformImpl implements FloatTransform {
     public DoubleTransform invert(@Mutated DoubleTransform dest) {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _rcp0 = 1.0f / this.sX;
+        float _sp0 = this.tX * _rcp0;
         float _rcp1 = 1.0f / this.sZ;
+        float _sp1 = this.tZ * _rcp1;
         float _rcp2 = 1.0f / this.sY;
-        float _t15 = 2.0f * (this.tX * this.rZ * _rcp0 - this.tZ * this.rX * _rcp1);
-        float _t16 = 2.0f * (this.tZ * this.rY * _rcp1 - this.tY * this.rZ * _rcp2);
-        float _t17 = 2.0f * (this.tY * this.rX * _rcp2 - this.tX * this.rY * _rcp0);
-        d.tX = this.rZ * _t15 + (this.rW * _t16 - this.tX * _rcp0 - this.rY * _t17);
-        d.tY = this.rX * _t17 + (this.rW * _t15 - this.tY * _rcp2 - this.rZ * _t16);
-        d.tZ = this.rY * _t16 + (this.rW * _t17 - this.tZ * _rcp1 - this.rX * _t15);
+        float _sp2 = this.tY * _rcp2;
+        float _t15 = 2.0f * (_sp0 * this.rZ - _sp1 * this.rX);
+        float _t16 = 2.0f * (_sp1 * this.rY - _sp2 * this.rZ);
+        float _t17 = 2.0f * (_sp2 * this.rX - _sp0 * this.rY);
+        d.tX = this.rZ * _t15 + (this.rW * _t16 - _sp0 - this.rY * _t17);
+        d.tY = this.rX * _t17 + (this.rW * _t15 - _sp2 - this.rZ * _t16);
+        d.tZ = this.rY * _t16 + (this.rW * _t17 - _sp1 - this.rX * _t15);
         d.rX = -this.rX;
         d.rY = -this.rY;
         d.rZ = -this.rZ;
@@ -2193,7 +2295,7 @@ public final class FloatTransformImpl implements FloatTransform {
         FloatTransformImpl d = (FloatTransformImpl) dest;
         float _t6 = this.rX * this.rX + this.rY * this.rY + this.rZ * this.rZ + this.rW * this.rW;
         float _t7 = (1.0f / (float) Math.sqrt(_t6));
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             d.rX = this.rX * _t7;
             d.rY = this.rY * _t7;
             d.rZ = this.rZ * _t7;
@@ -2233,7 +2335,7 @@ public final class FloatTransformImpl implements FloatTransform {
         DoubleTransformImpl d = (DoubleTransformImpl) dest;
         float _t6 = this.rX * this.rX + this.rY * this.rY + this.rZ * this.rZ + this.rW * this.rW;
         float _t7 = (1.0f / (float) Math.sqrt(_t6));
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             d.rX = this.rX * _t7;
             d.rY = this.rY * _t7;
             d.rZ = this.rZ * _t7;
@@ -2258,11 +2360,18 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2295,6 +2404,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2303,6 +2417,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2335,11 +2451,18 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2372,6 +2495,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2380,6 +2508,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2412,11 +2542,18 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2449,6 +2586,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2457,6 +2599,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2489,11 +2633,18 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2526,6 +2677,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2534,6 +2690,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2566,11 +2724,18 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2603,6 +2768,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2611,6 +2781,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2643,11 +2815,18 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2680,6 +2859,11 @@ public final class FloatTransformImpl implements FloatTransform {
      * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -2688,6 +2872,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -4753,6 +4939,8 @@ public final class FloatTransformImpl implements FloatTransform {
 
     /**
      * Transform {@code v} by this transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -4768,6 +4956,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -4781,6 +4971,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this transform and store the result in
      * {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4809,6 +5001,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4834,6 +5028,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -4850,6 +5046,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -4863,6 +5061,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4888,6 +5088,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4911,6 +5113,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -4928,6 +5132,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -4942,6 +5148,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4968,6 +5176,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -4989,6 +5199,8 @@ public final class FloatTransformImpl implements FloatTransform {
 
     /**
      * Transform {@code p} by the inverse of this transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -5004,6 +5216,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -5017,6 +5231,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by the inverse of this transform and store the
      * result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -5045,6 +5261,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -5070,6 +5288,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -5086,6 +5306,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -5099,6 +5321,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -5117,6 +5341,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -5132,6 +5358,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -5148,6 +5376,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -5161,6 +5391,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -5179,6 +5411,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -5194,6 +5428,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -5210,6 +5446,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -5223,6 +5461,8 @@ public final class FloatTransformImpl implements FloatTransform {
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -5251,6 +5491,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -5277,6 +5519,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -5294,6 +5538,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -5308,6 +5554,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -5334,6 +5582,8 @@ public final class FloatTransformImpl implements FloatTransform {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}

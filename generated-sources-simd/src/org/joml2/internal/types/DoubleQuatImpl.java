@@ -335,25 +335,13 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
      */
-    /** Private vector tail of {@code makeFromMatrix_s7190f6d9}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s7190f6d9_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).fma(VEC_1, DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeFromMatrix_s610e977e}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s610e977e_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).mul(VEC_1).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public DoubleQuat makeFromMatrix(Double3x3R m) {
         if (SimdMath.USE_FMA) return makeFromMatrix_fma(m);
         return makeFromMatrix_mulAdd(m);
@@ -417,27 +405,29 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeFromMatrix_s7190f6d9}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s7190f6d9_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeFromMatrix_s610e977e}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s610e977e_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
      */
-    /** Private vector tail of {@code makeFromMatrix_s597223b8}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s597223b8_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).fma(VEC_1, DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeFromMatrix_s75f34a3f}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s75f34a3f_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).mul(VEC_1).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public DoubleQuat makeFromMatrix(Double3x4R m) {
         if (SimdMath.USE_FMA) return makeFromMatrix_fma(m);
         return makeFromMatrix_mulAdd(m);
@@ -501,27 +491,29 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeFromMatrix_s597223b8}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s597223b8_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeFromMatrix_s75f34a3f}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s75f34a3f_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
-     * Set this quaternion to the rotation represented by the given matrix.
+     * Set this quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first).
      *
      * @param m the matrix to convert
      * @return this
      */
-    /** Private vector tail of {@code makeFromMatrix_s4dbb94d7}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s4dbb94d7_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).fma(VEC_1, DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeFromMatrix_s647650c0}: loads, computes and stores every column; reached only through it. */
-    private static void makeFromMatrix_s647650c0_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).mul(VEC_1).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public DoubleQuat makeFromMatrix(Double4x4R m) {
         if (SimdMath.USE_FMA) return makeFromMatrix_fma(m);
         return makeFromMatrix_mulAdd(m);
@@ -585,6 +577,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeFromMatrix_s4dbb94d7}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s4dbb94d7_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeFromMatrix_s647650c0}: loads, computes and stores every column; reached only through it. */
+    private static void makeFromMatrix_s647650c0_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
      * Convert this quaternion to a pure-rotation dual quaternion (zero dual part) and store the
@@ -597,7 +603,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
         DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
-        VEC_2.intoArray(dd, 4);
+        VEC_1.intoArray(dd, 4);
         return dest;
     }
 
@@ -626,7 +632,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _buf2 = 2.0 * Math.fma(sd[0], sd[2], _t2);
         dd[9] = 2.0 * Math.fma(sd[1], sd[2], -(sd[0] * sd[3]));
         dd[10] = Math.fma(-2.0, Math.fma(sd[0], sd[0], sd[1] * sd[1]), 1.0);
-        VEC_2.intoArray(dd, 11);
+        VEC_1.intoArray(dd, 11);
         dd[15] = 1.0;
         dd[0] = _buf0;
         dd[4] = _buf1;
@@ -900,7 +906,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
      */
     @Mutated public DoubleQuat makeIdentity() {
         double[] dd = this.data;
-        VEC_1.intoArray(dd, 0);
+        VEC_2.intoArray(dd, 0);
         return this;
     }
 
@@ -1029,7 +1035,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, alpha).fma(DoubleVector.fromArray(COL_SPECIES, targetData, 0).sub(_sv0), _sv0);
         double _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t11 > 0.0 ? _sv1.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        var _col0 = (_t11 != 0.0 ? _sv1.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1041,7 +1047,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         var _sv1 = DoubleVector.broadcast(COL_SPECIES, alpha).mul(DoubleVector.fromArray(COL_SPECIES, targetData, 0).sub(_sv0)).add(_sv0);
         double _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t11 > 0.0 ? _sv1.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        var _col0 = (_t11 != 0.0 ? _sv1.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1081,7 +1087,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t7 = Math.fma(alpha, targetY - sd[1], sd[1]);
         double _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
+        if (_t11 != 0.0) {
             dd[0] = _t6 * _t12;
             dd[1] = _t7 * _t12;
             dd[2] = _t5 * _t12;
@@ -1113,28 +1119,6 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @param dest will hold the result
      * @return dest
      */
-    /** Private vector tail of {@code nlerpShortest_s2dc9352d}: loads, computes and stores every column; reached only through it. */
-    private static void nlerpShortest_s2dc9352d_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double alpha, double[] sd, double[] targetData) {
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, targetData, 0);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = _sv0.neg();
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1), _sv1);
-        double _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t24 > 0.0 ? DoubleVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1), _sv1).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code nlerpShortest_s362bc8aa}: loads, computes and stores every column; reached only through it. */
-    private static void nlerpShortest_s362bc8aa_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double alpha, double[] sd, double[] targetData) {
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, targetData, 0);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv2 = _sv0.neg();
-        var _sv3 = DoubleVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1)).add(_sv1);
-        double _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t24 > 0.0 ? DoubleVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1)).add(_sv1).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
-        _col0.intoArray(dd, 0);
-    }
-
     public DoubleQuat nlerpShortest(DoubleQuatR target, double alpha, @Mutated DoubleQuat dest) {
         if (SimdMath.USE_FMA) return nlerpShortest_fma(target, alpha, dest);
         return nlerpShortest_mulAdd(target, alpha, dest);
@@ -1170,6 +1154,28 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _r7 = targetData[1];
         nlerpShortest_s362bc8aa_tail(dd, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, alpha, sd, targetData);
         return dest;
+    }
+
+    /** Private vector tail of {@code nlerpShortest_s2dc9352d}: loads, computes and stores every column; reached only through it. */
+    private static void nlerpShortest_s2dc9352d_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double alpha, double[] sd, double[] targetData) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, targetData, 0);
+        var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = _sv0.neg();
+        var _sv3 = DoubleVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1), _sv1);
+        double _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
+        var _col0 = (_t24 != 0.0 ? DoubleVector.broadcast(COL_SPECIES, alpha).fma((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1), _sv1).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code nlerpShortest_s362bc8aa}: loads, computes and stores every column; reached only through it. */
+    private static void nlerpShortest_s362bc8aa_tail(double[] dd, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double alpha, double[] sd, double[] targetData) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, targetData, 0);
+        var _sv1 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
+        var _sv2 = _sv0.neg();
+        var _sv3 = DoubleVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1)).add(_sv1);
+        double _t24 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
+        var _col0 = (_t24 != 0.0 ? DoubleVector.broadcast(COL_SPECIES, alpha).mul((-Math.fma(_r0, _r1, Math.fma(_r2, _r3, Math.fma(_r4, _r5, _r6 * _r7))) > 0.0 ? _sv2 : _sv0).sub(_sv1)).add(_sv1).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -1216,7 +1222,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         }
         double _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         double _t25 = (1.0 / Math.sqrt(_t24));
-        if (_t24 > 0.0) {
+        if (_t24 != 0.0) {
             dd[0] = _t19 * _t25;
             dd[1] = _t20 * _t25;
             dd[2] = _t18 * _t25;
@@ -1258,11 +1264,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] targetData = ((DoubleQuatImpl) target).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, targetData, 0);
-        var _col0 = (Math.abs(_t8) > 1.0E-6 ? _sv0.fma(DoubleVector.broadcast(COL_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(COL_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(COL_SPECIES, _t0))));
+        double _t1 = sd[3] + targetData[3];
+        double _t2 = sd[2] + targetData[2];
+        double _t3 = sd[0] + targetData[0];
+        double _t4 = sd[1] + targetData[1];
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 * (1.0 / Math.sqrt(_t18));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).fma(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5), DoubleVector.fromArray(COL_SPECIES, targetData, 0).mul(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0 - _t5)));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1272,11 +1285,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] targetData = ((DoubleQuatImpl) target).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = DoubleVector.fromArray(COL_SPECIES, targetData, 0);
-        var _col0 = (Math.abs(_t8) > 1.0E-6 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(COL_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(COL_SPECIES, _t0))));
+        double _t1 = sd[3] + targetData[3];
+        double _t2 = sd[2] + targetData[2];
+        double _t3 = sd[0] + targetData[0];
+        double _t4 = sd[1] + targetData[1];
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 * (1.0 / Math.sqrt(_t18));
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).mul(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5)).add(DoubleVector.fromArray(COL_SPECIES, targetData, 0).mul(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0 - _t5)));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1315,27 +1335,61 @@ public final class DoubleQuatImpl implements DoubleQuat {
     private DoubleQuat slerp_fma(double targetX, double targetY, double targetZ, double targetW, double alpha, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
+        double _r0 = sd[3];
+        double _r1 = sd[2];
+        double _r2 = sd[0];
+        double _r3 = sd[1];
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = DoubleVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _col0 = (Math.abs(_t8) > 1.0E-6 ? _sv0.fma(DoubleVector.broadcast(COL_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(COL_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(COL_SPECIES, _t0))));
-        _col0.intoArray(dd, 0);
+        double _t1 = _r0 + targetW;
+        double _t2 = _r1 + targetZ;
+        double _t3 = _r2 + targetX;
+        double _t4 = _r3 + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 * (1.0 / Math.sqrt(_t18));
+        slerp_s21ab8e64_tail(dd, _t0, _t5, _t11, _t12, _t13, _t19, _t21, targetX, targetY, targetZ, targetW, alpha, sd);
         return dest;
     }
 
     private DoubleQuat slerp_mulAdd(double targetX, double targetY, double targetZ, double targetW, double alpha, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
+        double _r0 = sd[3];
+        double _r1 = sd[2];
+        double _r2 = sd[0];
+        double _r3 = sd[1];
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
-        var _sv1 = DoubleVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _col0 = (Math.abs(_t8) > 1.0E-6 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(COL_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(COL_SPECIES, _t0))));
-        _col0.intoArray(dd, 0);
+        double _t1 = _r0 + targetW;
+        double _t2 = _r1 + targetZ;
+        double _t3 = _r2 + targetX;
+        double _t4 = _r3 + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 * (1.0 / Math.sqrt(_t18));
+        slerp_s4797d013_tail(dd, _t0, _t5, _t11, _t12, _t13, _t19, _t21, targetX, targetY, targetZ, targetW, alpha, sd);
         return dest;
+    }
+
+    /** Private vector tail of {@code slerp_s21ab8e64}: loads, computes and stores every column; reached only through it. */
+    private static void slerp_s21ab8e64_tail(double[] dd, double _t0, double _t5, double _t11, double _t12, double _t13, double _t19, double _t21, double targetX, double targetY, double targetZ, double targetW, double alpha, double[] sd) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.fma(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5), DoubleVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0 - _t5)));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code slerp_s4797d013}: loads, computes and stores every column; reached only through it. */
+    private static void slerp_s4797d013_tail(double[] dd, double _t0, double _t5, double _t11, double _t12, double _t13, double _t19, double _t21, double targetX, double targetY, double targetZ, double targetW, double alpha, double[] sd) {
+        var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
+        var _col0 = _sv0.mul(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(_t0 * _t12) : _t11 > _t13 ? _t0 : _t5)).add(DoubleVector.zero(COL_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(COL_SPECIES, _t19 > 2.0E-14 ? _t21 * Math.sin(alpha * _t12) : _t11 > _t13 ? alpha : 1.0 - _t5)));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -1366,7 +1420,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0 ? _sv0.fma(DoubleVector.broadcast(COL_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))), DoubleVector.broadcast(COL_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))).mul(_sv2)).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : DoubleVector.broadcast(COL_SPECIES, alpha).fma(_sv2, _sv0.mul(DoubleVector.broadcast(COL_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t49 > 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        var _col0 = (_t49 != 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1380,7 +1434,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))).add(DoubleVector.broadcast(COL_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))).mul(_sv2)).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : DoubleVector.broadcast(COL_SPECIES, alpha).mul(_sv2).add(_sv0.mul(DoubleVector.broadcast(COL_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t49 > 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        var _col0 = (_t49 != 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -1444,7 +1498,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         }
         double _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         double _t50 = (1.0 / Math.sqrt(_t49));
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             dd[0] = _t50 * _t44;
             dd[1] = _t50 * _t45;
             dd[2] = _t50 * _t43;
@@ -1479,61 +1533,92 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 1.0 - t;
         double _t1 = t + t;
+        double _t3 = control0Data[3] + control1Data[3];
+        double _t4 = control0Data[2] + control1Data[2];
+        double _t5 = control0Data[0] + control1Data[0];
+        double _t6 = control0Data[1] + control1Data[1];
+        double _t7 = t < 0.5 ? 1.0 : 0.0;
+        double _t8 = sd[3] + targetData[3];
+        double _t9 = sd[2] + targetData[2];
+        double _t10 = sd[0] + targetData[0];
+        double _t11 = sd[1] + targetData[1];
+        double _t12 = 1.0 - _t7;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
-        double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(control0Data[3], control1Data[3], Math.fma(control0Data[2], control1Data[2], Math.fma(control0Data[0], control1Data[0], control0Data[1] * control1Data[1]))))));
-        double _t34 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))));
-        double _t35 = Math.sin(_t33);
-        double _t35_inv = 1.0 / _t35;
-        double _t36 = Math.sin(_t34);
-        double _t36_inv = 1.0 / _t36;
-        double _t37 = Math.abs(_t35);
-        double _t39 = Math.abs(_t36);
-        double _t41 = Math.sin(t * _t33);
-        double _t42 = Math.sin(t * _t34);
-        double _t45 = Math.sin(_t0 * _t33);
-        double _t46 = Math.sin(_t0 * _t34);
-        double _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6) {
-            _t71 = Math.fma(control0Data[3], _t45, control1Data[3] * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Data[2], _t45, control1Data[2] * _t41) * _t35_inv;
-            _t75 = Math.fma(control0Data[0], _t45, control1Data[0] * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Data[1], _t45, control1Data[1] * _t41) * _t35_inv;
+        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
+        double _t25 = Math.min(4.0, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        double _t27 = quatArcAngle(_t25);
+        double _t28 = quatArcAngle(_t26);
+        double _t29 = 4.0 - _t25;
+        double _t30 = 4.0 - _t26;
+        double _t39 = _t29 * _t25;
+        double _t40 = _t30 * _t26;
+        double _t41 = Math.sqrt(_t39);
+        double _t43 = Math.sqrt(_t40);
+        double _t45 = 2.0 / _t41;
+        double _t46 = 2.0 / _t43;
+        double _t55, _t57;
+        if (_t41 > 2.0E-14) {
+            _t55 = _t45 * Math.sin(t * _t27);
+            _t57 = _t45 * Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1Data[3], control0Data[3] * _t0);
-            _t73 = Math.fma(t, control1Data[2], control0Data[2] * _t0);
-            _t75 = Math.fma(t, control1Data[0], control0Data[0] * _t0);
-            _t77 = Math.fma(t, control1Data[1], control0Data[1] * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        double _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6) {
-            _t72 = Math.fma(sd[3], _t46, targetData[3] * _t42) * _t36_inv;
-            _t74 = Math.fma(sd[2], _t46, targetData[2] * _t42) * _t36_inv;
-            _t76 = Math.fma(sd[0], _t46, targetData[0] * _t42) * _t36_inv;
-            _t78 = Math.fma(sd[1], _t46, targetData[1] * _t42) * _t36_inv;
+        double _t56, _t58;
+        if (_t43 > 2.0E-14) {
+            _t56 = _t46 * Math.sin(t * _t28);
+            _t58 = _t46 * Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetData[3], sd[3] * _t0);
-            _t74 = Math.fma(t, targetData[2], sd[2] * _t0);
-            _t76 = Math.fma(t, targetData[0], sd[0] * _t0);
-            _t78 = Math.fma(t, targetData[1], sd[1] * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        double _t85 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        double _t86 = Math.sin(_t85);
-        double _t86_inv = 1.0 / _t86;
-        double _t87 = Math.abs(_t86);
-        double _t89 = Math.sin(_t13 * _t85);
-        double _t91 = Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6) {
-            dd[0] = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            dd[1] = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            dd[2] = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            dd[3] = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        double _t67 = Math.fma(control0Data[0], _t57, control1Data[0] * _t55);
+        double _t68 = Math.fma(control0Data[3], _t57, control1Data[3] * _t55);
+        double _t69 = Math.fma(sd[3], _t58, targetData[3] * _t56);
+        double _t70 = Math.fma(control0Data[2], _t57, control1Data[2] * _t55);
+        double _t71 = Math.fma(sd[2], _t58, targetData[2] * _t56);
+        double _t72 = Math.fma(sd[0], _t58, targetData[0] * _t56);
+        double _t73 = Math.fma(control0Data[1], _t57, control1Data[1] * _t55);
+        double _t74 = Math.fma(sd[1], _t58, targetData[1] * _t56);
+        double _t75 = _t68 + _t69;
+        double _t76 = _t70 + _t71;
+        double _t77 = _t67 + _t72;
+        double _t78 = _t73 + _t74;
+        double _t83 = Math.min(4.0, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        double _t84 = quatArcAngle(_t83);
+        double _t85 = 4.0 - _t83;
+        double _t90 = _t85 * _t83;
+        double _t91 = Math.sqrt(_t90);
+        double _t93 = 2.0 / _t91;
+        double _t98, _t99;
+        if (_t91 > 2.0E-14) {
+            _t98 = _t93 * Math.sin(_t13 * _t84);
+            _t99 = _t93 * Math.sin(_t14 * _t84);
         } else {
-            dd[0] = Math.fma(_t14, _t76, _t13 * _t75);
-            dd[1] = Math.fma(_t14, _t78, _t13 * _t77);
-            dd[2] = Math.fma(_t14, _t74, _t13 * _t73);
-            dd[3] = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0 - _t17;
+                _t99 = _t17;
+            }
         }
+        dd[0] = Math.fma(_t67, _t98, _t72 * _t99);
+        dd[1] = Math.fma(_t73, _t98, _t74 * _t99);
+        dd[2] = Math.fma(_t70, _t98, _t71 * _t99);
+        dd[3] = Math.fma(_t68, _t98, _t69 * _t99);
         return dest;
     }
 
@@ -1576,61 +1661,92 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         double _t0 = 1.0 - t;
         double _t1 = t + t;
+        double _t3 = control0W + control1W;
+        double _t4 = control0Z + control1Z;
+        double _t5 = control0X + control1X;
+        double _t6 = control0Y + control1Y;
+        double _t7 = t < 0.5 ? 1.0 : 0.0;
+        double _t8 = sd[3] + targetW;
+        double _t9 = sd[2] + targetZ;
+        double _t10 = sd[0] + targetX;
+        double _t11 = sd[1] + targetY;
+        double _t12 = 1.0 - _t7;
         double _t13 = _t0 * _t1;
         double _t14 = Math.fma(-_t0, _t1, 1.0);
-        double _t33 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(control0W, control1W, Math.fma(control0Z, control1Z, Math.fma(control0X, control1X, control0Y * control1Y))))));
-        double _t34 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(sd[3], targetW, Math.fma(sd[2], targetZ, Math.fma(sd[0], targetX, sd[1] * targetY))))));
-        double _t35 = Math.sin(_t33);
-        double _t35_inv = 1.0 / _t35;
-        double _t36 = Math.sin(_t34);
-        double _t36_inv = 1.0 / _t36;
-        double _t37 = Math.abs(_t35);
-        double _t39 = Math.abs(_t36);
-        double _t41 = Math.sin(t * _t33);
-        double _t42 = Math.sin(t * _t34);
-        double _t45 = Math.sin(_t0 * _t33);
-        double _t46 = Math.sin(_t0 * _t34);
-        double _t71, _t73, _t75, _t77;
-        if (_t37 > 1.0E-6) {
-            _t71 = Math.fma(control0W, _t45, control1W * _t41) * _t35_inv;
-            _t73 = Math.fma(control0Z, _t45, control1Z * _t41) * _t35_inv;
-            _t75 = Math.fma(control0X, _t45, control1X * _t41) * _t35_inv;
-            _t77 = Math.fma(control0Y, _t45, control1Y * _t41) * _t35_inv;
+        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
+        double _t25 = Math.min(4.0, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
+        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        double _t27 = quatArcAngle(_t25);
+        double _t28 = quatArcAngle(_t26);
+        double _t29 = 4.0 - _t25;
+        double _t30 = 4.0 - _t26;
+        double _t39 = _t29 * _t25;
+        double _t40 = _t30 * _t26;
+        double _t41 = Math.sqrt(_t39);
+        double _t43 = Math.sqrt(_t40);
+        double _t45 = 2.0 / _t41;
+        double _t46 = 2.0 / _t43;
+        double _t55, _t57;
+        if (_t41 > 2.0E-14) {
+            _t55 = _t45 * Math.sin(t * _t27);
+            _t57 = _t45 * Math.sin(_t0 * _t27);
         } else {
-            _t71 = Math.fma(t, control1W, control0W * _t0);
-            _t73 = Math.fma(t, control1Z, control0Z * _t0);
-            _t75 = Math.fma(t, control1X, control0X * _t0);
-            _t77 = Math.fma(t, control1Y, control0Y * _t0);
+            if (_t25 > _t29) {
+                _t55 = t;
+                _t57 = _t0;
+            } else {
+                _t55 = _t12;
+                _t57 = _t7;
+            }
         }
-        double _t72, _t74, _t76, _t78;
-        if (_t39 > 1.0E-6) {
-            _t72 = Math.fma(sd[3], _t46, targetW * _t42) * _t36_inv;
-            _t74 = Math.fma(sd[2], _t46, targetZ * _t42) * _t36_inv;
-            _t76 = Math.fma(sd[0], _t46, targetX * _t42) * _t36_inv;
-            _t78 = Math.fma(sd[1], _t46, targetY * _t42) * _t36_inv;
+        double _t56, _t58;
+        if (_t43 > 2.0E-14) {
+            _t56 = _t46 * Math.sin(t * _t28);
+            _t58 = _t46 * Math.sin(_t0 * _t28);
         } else {
-            _t72 = Math.fma(t, targetW, sd[3] * _t0);
-            _t74 = Math.fma(t, targetZ, sd[2] * _t0);
-            _t76 = Math.fma(t, targetX, sd[0] * _t0);
-            _t78 = Math.fma(t, targetY, sd[1] * _t0);
+            if (_t26 > _t30) {
+                _t56 = t;
+                _t58 = _t0;
+            } else {
+                _t56 = _t12;
+                _t58 = _t7;
+            }
         }
-        double _t85 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_t71, _t72, Math.fma(_t73, _t74, Math.fma(_t75, _t76, _t77 * _t78))))));
-        double _t86 = Math.sin(_t85);
-        double _t86_inv = 1.0 / _t86;
-        double _t87 = Math.abs(_t86);
-        double _t89 = Math.sin(_t13 * _t85);
-        double _t91 = Math.sin(_t14 * _t85);
-        if (_t87 > 1.0E-6) {
-            dd[0] = Math.fma(_t91, _t76, _t89 * _t75) * _t86_inv;
-            dd[1] = Math.fma(_t91, _t78, _t89 * _t77) * _t86_inv;
-            dd[2] = Math.fma(_t91, _t74, _t89 * _t73) * _t86_inv;
-            dd[3] = Math.fma(_t91, _t72, _t89 * _t71) * _t86_inv;
+        double _t67 = Math.fma(control0X, _t57, control1X * _t55);
+        double _t68 = Math.fma(control0W, _t57, control1W * _t55);
+        double _t69 = Math.fma(sd[3], _t58, targetW * _t56);
+        double _t70 = Math.fma(control0Z, _t57, control1Z * _t55);
+        double _t71 = Math.fma(sd[2], _t58, targetZ * _t56);
+        double _t72 = Math.fma(sd[0], _t58, targetX * _t56);
+        double _t73 = Math.fma(control0Y, _t57, control1Y * _t55);
+        double _t74 = Math.fma(sd[1], _t58, targetY * _t56);
+        double _t75 = _t68 + _t69;
+        double _t76 = _t70 + _t71;
+        double _t77 = _t67 + _t72;
+        double _t78 = _t73 + _t74;
+        double _t83 = Math.min(4.0, Math.fma(_t75, _t75, Math.fma(_t76, _t76, Math.fma(_t77, _t77, _t78 * _t78))));
+        double _t84 = quatArcAngle(_t83);
+        double _t85 = 4.0 - _t83;
+        double _t90 = _t85 * _t83;
+        double _t91 = Math.sqrt(_t90);
+        double _t93 = 2.0 / _t91;
+        double _t98, _t99;
+        if (_t91 > 2.0E-14) {
+            _t98 = _t93 * Math.sin(_t13 * _t84);
+            _t99 = _t93 * Math.sin(_t14 * _t84);
         } else {
-            dd[0] = Math.fma(_t14, _t76, _t13 * _t75);
-            dd[1] = Math.fma(_t14, _t78, _t13 * _t77);
-            dd[2] = Math.fma(_t14, _t74, _t13 * _t73);
-            dd[3] = Math.fma(_t14, _t72, _t13 * _t71);
+            if (_t83 > _t85) {
+                _t98 = _t13;
+                _t99 = _t14;
+            } else {
+                _t98 = 1.0 - _t17;
+                _t99 = _t17;
+            }
         }
+        dd[0] = Math.fma(_t67, _t98, _t72 * _t99);
+        dd[1] = Math.fma(_t73, _t98, _t74 * _t99);
+        dd[2] = Math.fma(_t70, _t98, _t71 * _t99);
+        dd[3] = Math.fma(_t68, _t98, _t69 * _t99);
         return dest;
     }
 
@@ -1775,6 +1891,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param other the quaternion to measure the angle to
      * @return the angle in radians between this quaternion and {@code other}
@@ -1790,6 +1908,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code double} resolution all the
      * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param otherX the {@code x} component of the quaternion
      *        {@code (otherX, otherY, otherZ, otherW)}
@@ -1955,12 +2075,13 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] sd = this.data;
         double[] otherData = ((DoubleQuatImpl) other).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
-        double _t3_inv = 1.0 / _t3;
+        double _t3_inv = 1.0 / Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        double _sp1 = _t3_inv * sd[2];
+        double _sp0 = sd[1] * _t3_inv;
         double _buf0 = (Math.fma(otherData[0], sd[3], -(otherData[3] * sd[0])) + Math.fma(otherData[1], sd[2], -(otherData[2] * sd[1]))) * _t3_inv;
-        double _buf1 = -(otherData[3] * sd[1] * _t3_inv) - otherData[0] * sd[2] * _t3_inv + Math.fma(otherData[1], sd[3], otherData[2] * sd[0]) * _t3_inv;
+        double _buf1 = -(otherData[3] * _sp0) - otherData[0] * _sp1 + Math.fma(otherData[1], sd[3], otherData[2] * sd[0]) * _t3_inv;
         double _buf2 = (Math.fma(otherData[0], sd[1], -(otherData[3] * sd[2])) + Math.fma(otherData[2], sd[3], -(otherData[1] * sd[0]))) * _t3_inv;
-        dd[3] = Math.fma(otherData[0], sd[0], otherData[3] * sd[3]) * _t3_inv - (-(otherData[1] * sd[1] * _t3_inv) - otherData[2] * sd[2] * _t3_inv);
+        dd[3] = Math.fma(otherData[0], sd[0], otherData[3] * sd[3]) * _t3_inv - (-(otherData[1] * _sp0) - otherData[2] * _sp1);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -1988,15 +2109,15 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat difference(double otherX, double otherY, double otherZ, double otherW, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t3 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
-        double _t3_inv = 1.0 / _t3;
+        double _t3_inv = 1.0 / Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        double _sp1 = _t3_inv * sd[2];
+        double _sp0 = sd[1] * _t3_inv;
         double _buf0 = (Math.fma(otherX, sd[3], -(otherW * sd[0])) + Math.fma(otherY, sd[2], -(otherZ * sd[1]))) * _t3_inv;
-        double _buf1 = -(otherW * sd[1] * _t3_inv) - otherX * sd[2] * _t3_inv + Math.fma(otherY, sd[3], otherZ * sd[0]) * _t3_inv;
-        double _buf2 = (Math.fma(otherX, sd[1], -(otherW * sd[2])) + Math.fma(otherZ, sd[3], -(otherY * sd[0]))) * _t3_inv;
-        dd[3] = Math.fma(otherX, sd[0], otherW * sd[3]) * _t3_inv - (-(otherY * sd[1] * _t3_inv) - otherZ * sd[2] * _t3_inv);
+        double _buf1 = -(otherW * _sp0) - otherX * _sp1 + Math.fma(otherY, sd[3], otherZ * sd[0]) * _t3_inv;
+        dd[2] = (Math.fma(otherX, sd[1], -(otherW * sd[2])) + Math.fma(otherZ, sd[3], -(otherY * sd[0]))) * _t3_inv;
+        dd[3] = Math.fma(otherX, sd[0], otherW * sd[3]) * _t3_inv - (-(otherY * _sp0) - otherZ * _sp1);
         dd[0] = _buf0;
         dd[1] = _buf1;
-        dd[2] = _buf2;
         return dest;
     }
 
@@ -2056,11 +2177,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2093,11 +2221,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2130,11 +2265,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2166,11 +2308,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2202,11 +2351,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2238,11 +2394,18 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * Get the Euler angles in radians of this quaternion, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -2291,7 +2454,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t7 = Math.sqrt(_t6);
         double _t9 = Math.sin(_t7);
         double _t10 = Math.cosFromSin(_t9, _t7);
-        double _t11 = _t9 * (1.0 / Math.sqrt(_t6));
+        double _t11 = _t9 / _t7;
         double _t15, _t16, _t17;
         if (_t6 > 0.0) {
             _t15 = _t2 * _t11;
@@ -2338,7 +2501,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t7 = Math.sqrt(_t6);
         double _t9 = Math.sin(_t7);
         double _t10 = Math.cosFromSin(_t9, _t7);
-        double _t11 = _t9 * (1.0 / Math.sqrt(_t6));
+        double _t11 = _t9 / _t7;
         double _t15, _t16, _t17;
         if (_t6 > 0.0) {
             _t15 = _t2 * _t11;
@@ -2380,7 +2543,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = -(_t12 * _t16);
             dd[1] = -(_t10 * _t16);
             dd[2] = -(_t9 * _t16);
@@ -2413,7 +2576,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = -(_t9 * _t16);
             dd[1] = -(_t12 * _t16);
             dd[2] = -(_t10 * _t16);
@@ -2446,7 +2609,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = -(_t10 * _t16);
             dd[1] = -(_t9 * _t16);
             dd[2] = -(_t12 * _t16);
@@ -2611,7 +2774,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = _t12 * _t16;
             dd[1] = _t10 * _t16;
             dd[2] = _t9 * _t16;
@@ -2644,7 +2807,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = _t9 * _t16;
             dd[1] = _t12 * _t16;
             dd[2] = _t10 * _t16;
@@ -2677,7 +2840,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = _t10 * _t16;
             dd[1] = _t9 * _t16;
             dd[2] = _t12 * _t16;
@@ -2755,7 +2918,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = -(_t12 * _t16);
             dd[1] = -(_t9 * _t16);
             dd[2] = -(_t10 * _t16);
@@ -2788,7 +2951,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = -(_t10 * _t16);
             dd[1] = -(_t12 * _t16);
             dd[2] = -(_t9 * _t16);
@@ -2821,7 +2984,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = -(_t9 * _t16);
             dd[1] = -(_t10 * _t16);
             dd[2] = -(_t12 * _t16);
@@ -2849,7 +3012,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = ((DoubleQuatImpl) dest).data;
         var _sv0 = DoubleVector.fromArray(COL_SPECIES, sd, 0);
         double _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t3 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        var _col0 = (_t3 != 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -3007,7 +3170,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[0], sd[0], sd[3] * sd[3])));
         double _t15 = Math.fma(_t10, _t10, Math.fma(_t12, _t12, _t9 * _t9));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = _t12 * _t16;
             dd[1] = _t9 * _t16;
             dd[2] = _t10 * _t16;
@@ -3040,7 +3203,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(-sd[2], sd[2], Math.fma(sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t9, _t9, Math.fma(_t12, _t12, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = _t10 * _t16;
             dd[1] = _t12 * _t16;
             dd[2] = _t9 * _t16;
@@ -3073,7 +3236,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t12 = Math.fma(sd[2], sd[2], Math.fma(-sd[1], sd[1], Math.fma(sd[3], sd[3], -(sd[0] * sd[0]))));
         double _t15 = Math.fma(_t12, _t12, Math.fma(_t9, _t9, _t10 * _t10));
         double _t16 = (1.0 / Math.sqrt(_t15));
-        if (_t15 > 0.0) {
+        if (_t15 != 0.0) {
             dd[0] = _t9 * _t16;
             dd[1] = _t10 * _t16;
             dd[2] = _t12 * _t16;
@@ -3097,12 +3260,6 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @param dest will hold the result
      * @return dest
      */
-    /** Private vector tail of {@code pow_s74ed0648}: loads, computes and stores every column; reached only through it. */
-    private static void pow_s74ed0648_tail(double[] dd, double _t10, double _t18, double _t19, double _t20, double _t23, double _t24, double _t26) {
-        var _col0 = (_t23 > 0.0 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, Math.cosFromSin(_t26, _t24)).mul(DoubleVector.broadcast(COL_SPECIES, _t26 * _t10 * (1.0 / Math.sqrt(_t23))).withLane(3, _t10)) : DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t26, _t24) * _t10));
-        _col0.intoArray(dd, 0);
-    }
-
     public DoubleQuat pow(double t, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
@@ -3121,6 +3278,12 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t26 = Math.sin(_t24);
         pow_s74ed0648_tail(dd, _t10, _t18, _t19, _t20, _t23, _t24, _t26);
         return dest;
+    }
+
+    /** Private vector tail of {@code pow_s74ed0648}: loads, computes and stores every column; reached only through it. */
+    private static void pow_s74ed0648_tail(double[] dd, double _t10, double _t18, double _t19, double _t20, double _t23, double _t24, double _t26) {
+        var _col0 = (_t23 > 0.0 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t19).withLane(1, _t20).withLane(2, _t18).withLane(3, Math.cosFromSin(_t26, _t24)).mul(DoubleVector.broadcast(COL_SPECIES, _t26 * _t10 * (1.0 / Math.sqrt(_t23))).withLane(3, _t10)) : DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t26, _t24) * _t10));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -3176,6 +3339,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
      * resolution down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param target the target rotation
      * @param step the maximum rotation angle in radians
@@ -3196,7 +3361,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0 ? _sv0.fma(DoubleVector.broadcast(COL_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))))), DoubleVector.broadcast(COL_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : _sv0.fma(DoubleVector.broadcast(COL_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0)), _sv2.mul(DoubleVector.broadcast(COL_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t72 > 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        var _col0 = (_t72 != 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -3210,7 +3375,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         var _sv2 = (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))) > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))).add(DoubleVector.broadcast(COL_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1])))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(COL_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))))))))) : _sv0.mul(DoubleVector.broadcast(COL_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0))).add(_sv2.mul(DoubleVector.broadcast(COL_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] - (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])))))), Math.sqrt(Math.fma(sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), sd[3] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[3] : targetData[3]), Math.fma(sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), sd[2] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[2] : targetData[2]), Math.fma(sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), sd[0] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[0] : targetData[0]), (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1])) * (sd[1] + (-Math.fma(sd[3], targetData[3], Math.fma(sd[2], targetData[2], Math.fma(sd[0], targetData[0], sd[1] * targetData[1]))) > 0.0 ? -targetData[1] : targetData[1]))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _col0 = (_t72 > 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
+        var _col0 = (_t72 != 0.0 ? _sv3.mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(COL_SPECIES, 0.0));
         _col0.intoArray(dd, 0);
         return dest;
     }
@@ -3222,6 +3387,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * <p>
      * The rotation angle is recovered with {@code atan2}, so it keeps full {@code double}
      * resolution down to 0 - small rotations are not truncated.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param targetX the {@code x} component of the quaternion
      *        {@code (targetX, targetY, targetZ, targetW)}
@@ -3282,7 +3449,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         }
         double _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         double _t73 = (1.0 / Math.sqrt(_t72));
-        if (_t72 > 0.0) {
+        if (_t72 != 0.0) {
             dd[0] = _t73 * _t67;
             dd[1] = _t73 * _t68;
             dd[2] = _t73 * _t66;
@@ -3304,6 +3471,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -3316,84 +3488,72 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dirData = ((Double3Impl) dir).data;
         double[] upData = ((Double3Impl) up).data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t2 = Math.fma(dirData[2], dirData[2], Math.fma(dirData[0], dirData[0], dirData[1] * dirData[1]));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
-            _t7 = dirData[2] * _t3;
-            _t8 = dirData[1] * _t3;
-            _t9 = dirData[0] * _t3;
-        } else {
-            _t7 = 0.0;
-            _t8 = 0.0;
-            _t9 = 0.0;
-        }
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(upData[0], _t8, -(upData[1] * _t9));
-        double _t22 = Math.fma(upData[1], _t7, -(upData[2] * _t8));
-        double _t23 = Math.fma(upData[2], _t9, -(upData[0] * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0;
-            _t32 = 0.0;
-            _t33 = 0.0;
-        }
-        double _t34 = 1.0 + _t31;
-        double _t37 = _t9 - _t32;
-        double _t38 = _t9 + _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.max(_t49, _t7);
-        double _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t65 = (1.0 / Math.sqrt(_t61));
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t63));
-        double _t68 = (1.0 / Math.sqrt(_t60));
+        double _t1 = -dirData[2];
+        double _t5 = (1.0 / Math.sqrt(Math.fma(dirData[2], dirData[2], Math.fma(dirData[0], dirData[0], dirData[1] * dirData[1]))));
+        double _t6 = dirData[2] * _t5;
+        double _t7 = dirData[1] * _t5;
+        double _t8 = dirData[0] * _t5;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t19 = Math.fma(upData[1], _t6, -(upData[2] * _t7));
+        double _t20 = Math.fma(upData[0], _t7, -(upData[1] * _t8));
+        double _t21 = Math.fma(upData[2], _t8, -(upData[0] * _t6));
+        double _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dir, up, dest);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(dirData[0], _t5, _t29);
+        double _t37 = Math.fma(dirData[0], _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(dirData[1], _t5, _t47);
+        double _t52 = Math.max(_t45, _t6);
+        double _t53 = Math.fma(-dirData[1], _t5, _t47);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t59 = Math.fma(dirData[2], _t5, Math.fma(_t19, _t27, _t45));
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirData[2], _t5, 1.0))));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(dirData[2], _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t66));
         double _t108, _t109, _t110, _t111;
         if (_t59 > 0.0) {
-            _t108 = 0.5 * _t57 * _t68;
-            _t109 = 0.5 * _t37 * _t68;
-            _t110 = 0.5 * Math.sqrt(_t60);
-            _t111 = 0.5 * _t56 * _t68;
+            _t108 = _sp0 * _t53;
+            _t109 = _sp0 * _t57;
+            _t110 = _sp0 * _t37;
+            _t111 = 0.5 * Math.sqrt(_t60);
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5 * _t38 * _t65;
-                _t109 = 0.5 * _t58 * _t65;
-                _t110 = 0.5 * _t56 * _t65;
-                _t111 = 0.5 * Math.sqrt(_t61);
+            if (_t28 > _t52) {
+                _t108 = 0.5 * Math.sqrt(_t62);
+                _t109 = _sp3 * _t33;
+                _t110 = _sp3 * _t56;
+                _t111 = _sp3 * _t53;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5 * _t54 * _t66;
-                    _t109 = 0.5 * Math.sqrt(_t62);
-                    _t110 = 0.5 * _t37 * _t66;
-                    _t111 = 0.5 * _t58 * _t66;
+                if (_t45 > _t6) {
+                    _t108 = _sp1 * _t56;
+                    _t109 = _sp1 * _t51;
+                    _t110 = 0.5 * Math.sqrt(_t66);
+                    _t111 = _sp1 * _t37;
                 } else {
-                    _t108 = 0.5 * Math.sqrt(_t63);
-                    _t109 = 0.5 * _t54 * _t67;
-                    _t110 = 0.5 * _t57 * _t67;
-                    _t111 = 0.5 * _t38 * _t67;
+                    _t108 = _sp2 * _t33;
+                    _t109 = 0.5 * Math.sqrt(_t63);
+                    _t110 = _sp2 * _t51;
+                    _t111 = _sp2 * _t57;
                 }
             }
         }
-        double _buf0 = Math.fma(sd[0], _t110, sd[3] * _t111) + Math.fma(sd[1], _t108, -(sd[2] * _t109));
-        double _buf1 = Math.fma(sd[1], _t110, sd[2] * _t111) + Math.fma(sd[3], _t109, -(sd[0] * _t108));
-        double _buf2 = Math.fma(sd[0], _t109, sd[3] * _t108) + Math.fma(sd[2], _t110, -(sd[1] * _t111));
-        dd[3] = Math.fma(sd[3], _t110, -(sd[0] * _t111)) - Math.fma(sd[1], _t109, sd[2] * _t108);
+        double _buf0 = Math.fma(sd[0], _t111, sd[3] * _t108) + Math.fma(sd[1], _t109, -(sd[2] * _t110));
+        double _buf1 = Math.fma(sd[1], _t111, sd[2] * _t108) + Math.fma(sd[3], _t110, -(sd[0] * _t109));
+        double _buf2 = Math.fma(sd[0], _t110, sd[3] * _t109) + Math.fma(sd[2], _t111, -(sd[1] * _t108));
+        dd[3] = Math.fma(sd[3], _t111, -(sd[0] * _t108)) - Math.fma(sd[1], _t110, sd[2] * _t109);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -3408,6 +3568,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * If {@code Q} is {@code this} quaternion and {@code L} the "look along" quaternion, then the
      * new quaternion will be {@code Q * L}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -3421,88 +3586,334 @@ public final class DoubleQuatImpl implements DoubleQuat {
     public DoubleQuat lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated DoubleQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleQuatImpl) dest).data;
-        double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
-            _t7 = 0.0;
-            _t8 = 0.0;
-            _t9 = 0.0;
-        }
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        double _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
-        } else {
-            _t31 = 0.0;
-            _t32 = 0.0;
-            _t33 = 0.0;
-        }
-        double _t34 = 1.0 + _t31;
-        double _t37 = _t9 - _t32;
-        double _t38 = _t9 + _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.max(_t49, _t7);
-        double _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t65 = (1.0 / Math.sqrt(_t61));
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t63));
-        double _t68 = (1.0 / Math.sqrt(_t60));
+        double _t1 = -dirZ;
+        double _t5 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        double _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        double _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        double _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(dirX, _t5, _t29);
+        double _t37 = Math.fma(dirX, _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(dirY, _t5, _t47);
+        double _t52 = Math.max(_t45, _t6);
+        double _t53 = Math.fma(-dirY, _t5, _t47);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0))));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t66));
         double _t108, _t109, _t110, _t111;
         if (_t59 > 0.0) {
-            _t108 = 0.5 * _t57 * _t68;
-            _t109 = 0.5 * _t37 * _t68;
-            _t110 = 0.5 * Math.sqrt(_t60);
-            _t111 = 0.5 * _t56 * _t68;
+            _t108 = _sp0 * _t53;
+            _t109 = _sp0 * _t57;
+            _t110 = _sp0 * _t37;
+            _t111 = 0.5 * Math.sqrt(_t60);
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5 * _t38 * _t65;
-                _t109 = 0.5 * _t58 * _t65;
-                _t110 = 0.5 * _t56 * _t65;
-                _t111 = 0.5 * Math.sqrt(_t61);
+            if (_t28 > _t52) {
+                _t108 = 0.5 * Math.sqrt(_t62);
+                _t109 = _sp3 * _t33;
+                _t110 = _sp3 * _t56;
+                _t111 = _sp3 * _t53;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5 * _t54 * _t66;
-                    _t109 = 0.5 * Math.sqrt(_t62);
-                    _t110 = 0.5 * _t37 * _t66;
-                    _t111 = 0.5 * _t58 * _t66;
+                if (_t45 > _t6) {
+                    _t108 = _sp1 * _t56;
+                    _t109 = _sp1 * _t51;
+                    _t110 = 0.5 * Math.sqrt(_t66);
+                    _t111 = _sp1 * _t37;
                 } else {
-                    _t108 = 0.5 * Math.sqrt(_t63);
-                    _t109 = 0.5 * _t54 * _t67;
-                    _t110 = 0.5 * _t57 * _t67;
-                    _t111 = 0.5 * _t38 * _t67;
+                    _t108 = _sp2 * _t33;
+                    _t109 = 0.5 * Math.sqrt(_t63);
+                    _t110 = _sp2 * _t51;
+                    _t111 = _sp2 * _t57;
                 }
             }
         }
-        double _buf0 = Math.fma(sd[0], _t110, sd[3] * _t111) + Math.fma(sd[1], _t108, -(sd[2] * _t109));
-        double _buf1 = Math.fma(sd[1], _t110, sd[2] * _t111) + Math.fma(sd[3], _t109, -(sd[0] * _t108));
-        double _buf2 = Math.fma(sd[0], _t109, sd[3] * _t108) + Math.fma(sd[2], _t110, -(sd[1] * _t111));
-        dd[3] = Math.fma(sd[3], _t110, -(sd[0] * _t111)) - Math.fma(sd[1], _t109, sd[2] * _t108);
+        double _buf0 = Math.fma(sd[0], _t111, sd[3] * _t108) + Math.fma(sd[1], _t109, -(sd[2] * _t110));
+        double _buf1 = Math.fma(sd[1], _t111, sd[2] * _t108) + Math.fma(sd[3], _t110, -(sd[0] * _t109));
+        double _buf2 = Math.fma(sd[0], _t110, sd[3] * _t109) + Math.fma(sd[2], _t111, -(sd[1] * _t108));
+        dd[3] = Math.fma(sd[3], _t111, -(sd[0] * _t108)) - Math.fma(sd[1], _t110, sd[2] * _t109);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
         return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleQuat lookAlong_degenerate(Double3R dir, Double3R up, @Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dirData = ((Double3Impl) dir).data;
+        double[] upData = ((Double3Impl) up).data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        double _t2 = Math.fma(dirData[2], dirData[2], Math.fma(dirData[0], dirData[0], dirData[1] * dirData[1]));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0) {
+            _t7 = 0.0;
+            _t8 = 1.0;
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 1.0;
+        } else {
+            _t7 = upData[0];
+            _t8 = upData[1];
+            _t9 = upData[2];
+            _t10 = dirData[1] * _t3;
+            _t11 = dirData[0] * _t3;
+            _t12 = dirData[2] * _t3;
+        }
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        double _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0;
+            _t30 = -_t12;
+        }
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0 / Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0 / Math.sqrt(_t35));
+        }
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        double _t68 = Math.max(_t62, _t12);
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t74));
+        double _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t73));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t77));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t78));
+        double _t89 = Math.fma(_t41, _t39, _t66);
+        double _t90 = Math.fma(_t41, _t39, -_t66);
+        double _t123, _t124, _t125, _t126;
+        if (_t72 > 0.0) {
+            _t123 = _sp0 * _t71;
+            _t124 = _sp0 * _t90;
+            _t125 = _sp0 * _t51;
+            _t126 = 0.5 * Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5 * Math.sqrt(_t74);
+                _t124 = _sp3 * _t48;
+                _t125 = _sp3 * _t89;
+                _t126 = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = _sp1 * _t89;
+                    _t124 = _sp1 * _t70;
+                    _t125 = 0.5 * Math.sqrt(_t77);
+                    _t126 = _sp1 * _t51;
+                } else {
+                    _t123 = _sp2 * _t48;
+                    _t124 = 0.5 * Math.sqrt(_t78);
+                    _t125 = _sp2 * _t70;
+                    _t126 = _sp2 * _t90;
+                }
+            }
+        }
+        double _buf0 = Math.fma(sd[0], _t126, sd[3] * _t123) + Math.fma(sd[1], _t124, -(sd[2] * _t125));
+        double _buf1 = Math.fma(sd[1], _t126, sd[2] * _t123) + Math.fma(sd[3], _t125, -(sd[0] * _t124));
+        double _buf2 = Math.fma(sd[0], _t125, sd[3] * _t124) + Math.fma(sd[2], _t126, -(sd[1] * _t123));
+        dd[3] = Math.fma(sd[3], _t126, -(sd[0] * _t123)) - Math.fma(sd[1], _t125, sd[2] * _t124);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private DoubleQuat lookAlong_degenerate(Double3R dir, Double3R up) {
+        return lookAlong_degenerate(dir, up, Joml.RETURN_NEW ? Joml.doubleQuat() : this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleQuat lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0) {
+            _t7 = 0.0;
+            _t8 = 1.0;
+            _t9 = 0.0;
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 1.0;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        double _t25, _t26, _t30;
+        if (_t13 > _t14) {
+            _t25 = 0.0;
+            _t26 = _t15;
+            _t30 = _t11;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0;
+            _t30 = -_t12;
+        }
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0 / Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0 / Math.sqrt(_t35));
+        }
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        double _t68 = Math.max(_t62, _t12);
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t74));
+        double _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t73));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t77));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t78));
+        double _t89 = Math.fma(_t41, _t39, _t66);
+        double _t90 = Math.fma(_t41, _t39, -_t66);
+        double _t123, _t124, _t125, _t126;
+        if (_t72 > 0.0) {
+            _t123 = _sp0 * _t71;
+            _t124 = _sp0 * _t90;
+            _t125 = _sp0 * _t51;
+            _t126 = 0.5 * Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5 * Math.sqrt(_t74);
+                _t124 = _sp3 * _t48;
+                _t125 = _sp3 * _t89;
+                _t126 = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = _sp1 * _t89;
+                    _t124 = _sp1 * _t70;
+                    _t125 = 0.5 * Math.sqrt(_t77);
+                    _t126 = _sp1 * _t51;
+                } else {
+                    _t123 = _sp2 * _t48;
+                    _t124 = 0.5 * Math.sqrt(_t78);
+                    _t125 = _sp2 * _t70;
+                    _t126 = _sp2 * _t90;
+                }
+            }
+        }
+        double _buf0 = Math.fma(sd[0], _t126, sd[3] * _t123) + Math.fma(sd[1], _t124, -(sd[2] * _t125));
+        double _buf1 = Math.fma(sd[1], _t126, sd[2] * _t123) + Math.fma(sd[3], _t125, -(sd[0] * _t124));
+        double _buf2 = Math.fma(sd[0], _t125, sd[3] * _t124) + Math.fma(sd[2], _t126, -(sd[1] * _t123));
+        dd[3] = Math.fma(sd[3], _t126, -(sd[0] * _t123)) - Math.fma(sd[1], _t125, sd[2] * _t124);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private DoubleQuat lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.doubleQuat() : this);
     }
 
 
@@ -3526,7 +3937,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] axisData = ((Double3Impl) axis).data;
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, Math.cosFromSin(_t1, _t0)).fma(VEC_1, DoubleVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(DoubleVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).fma(DoubleVector.broadcast(COL_SPECIES, _t1), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -3536,7 +3947,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] axisData = ((Double3Impl) axis).data;
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, Math.cosFromSin(_t1, _t0)).mul(VEC_1).add(DoubleVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(DoubleVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, axisData[0]).withLane(1, axisData[1]).withLane(2, axisData[2]).mul(DoubleVector.broadcast(COL_SPECIES, _t1)).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -3567,7 +3978,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, Math.cosFromSin(_t1, _t0)).fma(VEC_1, DoubleVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).fma(DoubleVector.broadcast(COL_SPECIES, _t1), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -3576,7 +3987,7 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double[] dd = this.data;
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _col0 = DoubleVector.broadcast(COL_SPECIES, Math.cosFromSin(_t1, _t0)).mul(VEC_1).add(DoubleVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(COL_SPECIES, _t1)));
+        var _col0 = DoubleVector.zero(COL_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(COL_SPECIES, _t1)).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _col0.intoArray(dd, 0);
         return this;
     }
@@ -3584,78 +3995,17 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     /**
      * Set this quaternion to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
      * @param up the direction of "up"
      * @return this
      */
-    /** Private vector tail of {@code makeRotationLookAlong_s9a33d91}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s9a33d91_tail3(double[] dd, double _t7, double _t10, double _t31, double _t32, double _t37, double _t38, double _t49, double _t54, double _t55, double _t57, double _t58, double _t60, double _t61, double _t62, double _t63, double _t67) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t60)).fma(VEC_1, DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s9a33d91}; reached only through it. */
-    private static void makeRotationLookAlong_s9a33d91_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t21, double _t22, double _t23, double _t26, double _t27) {
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
-        double _t34 = 1.0 + _t31;
-        double _t37 = _t9 + _t32;
-        double _t38 = _t9 - _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        makeRotationLookAlong_s9a33d91_tail2(dd, _t7, _t9, _t10, _t12, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s9a33d91}; reached only through it. */
-    private static void makeRotationLookAlong_s9a33d91_tail2(double[] dd, double _t7, double _t9, double _t10, double _t12, double _t31, double _t32, double _t37, double _t38, double _t49, double _t54, double _t55, double _t57, double _t58, double _t60, double _t61, double _t62) {
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t67 = (1.0 / Math.sqrt(_t61));
-        makeRotationLookAlong_s9a33d91_tail3(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
-    /** Private vector tail of {@code makeRotationLookAlong_s17e235c6}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s17e235c6_tail3(double[] dd, double _t7, double _t10, double _t31, double _t32, double _t37, double _t38, double _t49, double _t54, double _t55, double _t57, double _t58, double _t60, double _t61, double _t62, double _t63, double _t67) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t60)).mul(VEC_1).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s17e235c6}; reached only through it. */
-    private static void makeRotationLookAlong_s17e235c6_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t21, double _t22, double _t23, double _t26, double _t27) {
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
-        double _t34 = 1.0 + _t31;
-        double _t37 = _t9 + _t32;
-        double _t38 = _t9 - _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        makeRotationLookAlong_s17e235c6_tail2(dd, _t7, _t9, _t10, _t12, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s17e235c6}; reached only through it. */
-    private static void makeRotationLookAlong_s17e235c6_tail2(double[] dd, double _t7, double _t9, double _t10, double _t12, double _t31, double _t32, double _t37, double _t38, double _t49, double _t54, double _t55, double _t57, double _t58, double _t60, double _t61, double _t62) {
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t67 = (1.0 / Math.sqrt(_t61));
-        makeRotationLookAlong_s17e235c6_tail3(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
     @Mutated public DoubleQuat makeRotationLookAlong(Double3R dir, Double3R up) {
         if (SimdMath.USE_FMA) return makeRotationLookAlong_fma(dir, up);
         return makeRotationLookAlong_mulAdd(dir, up);
@@ -3668,27 +4018,246 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _r0 = dirData[2];
         double _r1 = dirData[0];
         double _r2 = dirData[1];
-        double _r3 = upData[0];
-        double _r4 = upData[1];
-        double _r5 = upData[2];
-        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _r0 * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _r2 * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _r1 * _t3 : 0.0;
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(_r3, _t8, -(_r4 * _t9));
-        double _t22 = Math.fma(_r4, _t7, -(_r5 * _t8));
-        double _t23 = Math.fma(_r5, _t9, -(_r3 * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        makeRotationLookAlong_s9a33d91_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t21, _t22, _t23, _t26, _t27);
+        double _r3 = upData[1];
+        double _r4 = upData[2];
+        double _r5 = upData[0];
+        double _t5 = (1.0 / Math.sqrt(Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2))));
+        double _t6 = _r0 * _t5;
+        double _t7 = _r2 * _t5;
+        double _t8 = _r1 * _t5;
+        double _t19 = Math.fma(_r3, _t6, -(_r4 * _t7));
+        double _t20 = Math.fma(_r5, _t7, -(_r3 * _t8));
+        double _t21 = Math.fma(_r4, _t8, -(_r5 * _t6));
+        double _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0)) return makeRotationLookAlong_degenerate(dir, up);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t1 = -_r0;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(_r1, _t5, _t29);
+        makeRotationLookAlong_s9a33d91_tail(dd, _r0, _r1, _r2, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33);
         return this;
     }
 
     private DoubleQuat makeRotationLookAlong_mulAdd(Double3R dir, Double3R up) {
+        double[] dd = this.data;
+        double[] dirData = ((Double3Impl) dir).data;
+        double[] upData = ((Double3Impl) up).data;
+        double _r0 = dirData[2];
+        double _r1 = dirData[0];
+        double _r2 = dirData[1];
+        double _r3 = upData[1];
+        double _r4 = upData[2];
+        double _r5 = upData[0];
+        double _t5 = (1.0 / Math.sqrt(Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2))));
+        double _t6 = _r0 * _t5;
+        double _t7 = _r2 * _t5;
+        double _t8 = _r1 * _t5;
+        double _t19 = Math.fma(_r3, _t6, -(_r4 * _t7));
+        double _t20 = Math.fma(_r5, _t7, -(_r3 * _t8));
+        double _t21 = Math.fma(_r4, _t8, -(_r5 * _t6));
+        double _ct1 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct1 > 0.0)) return makeRotationLookAlong_degenerate(dir, up);
+        double _t27 = (1.0 / Math.sqrt(_ct1));
+        double _t1 = -_r0;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(_r1, _t5, _t29);
+        makeRotationLookAlong_s17e235c6_tail(dd, _r0, _r1, _r2, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33);
+        return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s9a33d91}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s9a33d91_tail2(double[] dd, double _r0, double _t5, double _t6, double _t19, double _t27, double _t28, double _t33, double _t38, double _t45, double _t51, double _t52, double _t56, double _t57, double _t60, double _t62, double _t63, double _t64, double _t66) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(_r0, _t5, Math.fma(_t19, _t27, _t45)) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s9a33d91}; reached only through it. */
+    private static void makeRotationLookAlong_s9a33d91_tail(double[] dd, double _r0, double _r1, double _r2, double _t5, double _t6, double _t7, double _t8, double _t19, double _t21, double _t27, double _t1, double _t9, double _t11, double _t28, double _t29, double _t30, double _t32, double _t33) {
+        double _t38 = Math.fma(_r1, _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(_r2, _t5, _t46);
+        double _t52 = Math.fma(-_r2, _t5, _t46);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(_r0, _t5, 1.0))));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(_r0, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _t66 = (1.0 / Math.sqrt(_t62));
+        makeRotationLookAlong_s9a33d91_tail2(dd, _r0, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s17e235c6}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s17e235c6_tail2(double[] dd, double _r0, double _t5, double _t6, double _t19, double _t27, double _t28, double _t33, double _t38, double _t45, double _t51, double _t52, double _t56, double _t57, double _t60, double _t62, double _t63, double _t64, double _t66) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(_r0, _t5, Math.fma(_t19, _t27, _t45)) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s17e235c6}; reached only through it. */
+    private static void makeRotationLookAlong_s17e235c6_tail(double[] dd, double _r0, double _r1, double _r2, double _t5, double _t6, double _t7, double _t8, double _t19, double _t21, double _t27, double _t1, double _t9, double _t11, double _t28, double _t29, double _t30, double _t32, double _t33) {
+        double _t38 = Math.fma(_r1, _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(_r2, _t5, _t46);
+        double _t52 = Math.fma(-_r2, _t5, _t46);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(_r0, _t5, 1.0))));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(_r0, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _t66 = (1.0 / Math.sqrt(_t62));
+        makeRotationLookAlong_s17e235c6_tail2(dd, _r0, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66);
+    }
+
+
+    /**
+     * Set this quaternion to a rotation that makes {@code +z} point along ({@code dirX},
+     * {@code dirY}, {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     *
+     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
+     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
+     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
+     * @return this
+     */
+    @Mutated public DoubleQuat makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        if (SimdMath.USE_FMA) return makeRotationLookAlong_fma(dirX, dirY, dirZ, upX, upY, upZ);
+        return makeRotationLookAlong_mulAdd(dirX, dirY, dirZ, upX, upY, upZ);
+    }
+
+    private DoubleQuat makeRotationLookAlong_fma(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double[] dd = this.data;
+        double _t5 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        double _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        double _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        double _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t1 = -dirZ;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(dirX, _t5, _t29);
+        double _t38 = Math.fma(dirX, _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        makeRotationLookAlong_s169760fb_tail(dd, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33, _t38, _t45, _t46, dirY, dirZ);
+        return this;
+    }
+
+    private DoubleQuat makeRotationLookAlong_mulAdd(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double[] dd = this.data;
+        double _t5 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        double _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        double _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        double _ct1 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct1 > 0.0)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        double _t27 = (1.0 / Math.sqrt(_ct1));
+        double _t1 = -dirZ;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(dirX, _t5, _t29);
+        double _t38 = Math.fma(dirX, _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        makeRotationLookAlong_s687621c_tail(dd, _t5, _t6, _t7, _t8, _t19, _t21, _t27, _t1, _t9, _t11, _t28, _t29, _t30, _t32, _t33, _t38, _t45, _t46, dirY, dirZ);
+        return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s169760fb}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s169760fb_tail2(double[] dd, double _t5, double _t6, double _t19, double _t27, double _t28, double _t33, double _t38, double _t45, double _t51, double _t52, double _t56, double _t57, double _t60, double _t62, double _t63, double _t64, double _t66, double dirZ) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45)) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s169760fb}; reached only through it. */
+    private static void makeRotationLookAlong_s169760fb_tail(double[] dd, double _t5, double _t6, double _t7, double _t8, double _t19, double _t21, double _t27, double _t1, double _t9, double _t11, double _t28, double _t29, double _t30, double _t32, double _t33, double _t38, double _t45, double _t46, double dirY, double dirZ) {
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(dirY, _t5, _t46);
+        double _t52 = Math.fma(-dirY, _t5, _t46);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0))));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _t66 = (1.0 / Math.sqrt(_t62));
+        makeRotationLookAlong_s169760fb_tail2(dd, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66, dirZ);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_s687621c}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_s687621c_tail2(double[] dd, double _t5, double _t6, double _t19, double _t27, double _t28, double _t33, double _t38, double _t45, double _t51, double _t52, double _t56, double _t57, double _t60, double _t62, double _t63, double _t64, double _t66, double dirZ) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45)) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t52).withLane(1, _t38).withLane(2, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t28 > Math.max(_t45, _t6) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t62)).withLane(1, _t56 * _t66).withLane(2, _t33 * _t66).withLane(3, _t52 * _t66)) : (_t45 > _t6 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t56).withLane(2, _t51).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t33).withLane(1, _t51).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_s687621c}; reached only through it. */
+    private static void makeRotationLookAlong_s687621c_tail(double[] dd, double _t5, double _t6, double _t7, double _t8, double _t19, double _t21, double _t27, double _t1, double _t9, double _t11, double _t28, double _t29, double _t30, double _t32, double _t33, double _t38, double _t45, double _t46, double dirY, double dirZ) {
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(dirY, _t5, _t46);
+        double _t52 = Math.fma(-dirY, _t5, _t46);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0))));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _t66 = (1.0 / Math.sqrt(_t62));
+        makeRotationLookAlong_s687621c_tail2(dd, _t5, _t6, _t19, _t27, _t28, _t33, _t38, _t45, _t51, _t52, _t56, _t57, _t60, _t62, _t63, _t64, _t66, dirZ);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private DoubleQuat makeRotationLookAlong_degenerate(Double3R dir, Double3R up) {
+        if (SimdMath.USE_FMA) return makeRotationLookAlong_degenerate_fma(dir, up);
+        return makeRotationLookAlong_degenerate_mulAdd(dir, up);
+    }
+
+    private DoubleQuat makeRotationLookAlong_degenerate_fma(Double3R dir, Double3R up) {
         double[] dd = this.data;
         double[] dirData = ((Double3Impl) dir).data;
         double[] upData = ((Double3Impl) up).data;
@@ -3700,131 +4269,283 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _r5 = upData[2];
         double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _r0 * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _r2 * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _r1 * _t3 : 0.0;
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(_r3, _t8, -(_r4 * _t9));
-        double _t22 = Math.fma(_r4, _t7, -(_r5 * _t8));
-        double _t23 = Math.fma(_r5, _t9, -(_r3 * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        makeRotationLookAlong_s17e235c6_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t21, _t22, _t23, _t26, _t27);
+        double _t7 = _t2 == 0.0 ? 0.0 : _r3;
+        double _t8 = _t2 == 0.0 ? 1.0 : _r4;
+        double _t9 = _t2 == 0.0 ? 0.0 : _r5;
+        double _t10 = _t2 == 0.0 ? 0.0 : _r2 * _t3;
+        double _t11 = _t2 == 0.0 ? 0.0 : _r1 * _t3;
+        double _t12 = _t2 == 0.0 ? 1.0 : _r0 * _t3;
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        makeRotationLookAlong_degenerate_s9a33d91_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18);
         return this;
+    }
+
+    private DoubleQuat makeRotationLookAlong_degenerate_mulAdd(Double3R dir, Double3R up) {
+        double[] dd = this.data;
+        double[] dirData = ((Double3Impl) dir).data;
+        double[] upData = ((Double3Impl) up).data;
+        double _r0 = dirData[2];
+        double _r1 = dirData[0];
+        double _r2 = dirData[1];
+        double _r3 = upData[0];
+        double _r4 = upData[1];
+        double _r5 = upData[2];
+        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7 = _t2 == 0.0 ? 0.0 : _r3;
+        double _t8 = _t2 == 0.0 ? 1.0 : _r4;
+        double _t9 = _t2 == 0.0 ? 0.0 : _r5;
+        double _t10 = _t2 == 0.0 ? 0.0 : _r2 * _t3;
+        double _t11 = _t2 == 0.0 ? 0.0 : _r1 * _t3;
+        double _t12 = _t2 == 0.0 ? 1.0 : _r0 * _t3;
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        makeRotationLookAlong_degenerate_s17e235c6_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18);
+        return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s9a33d91}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s9a33d91_tail3(double[] dd, double _t11, double _t12, double _t38, double _t41, double _t44, double _t45, double _t48, double _t51, double _t62, double _t70, double _t71, double _t73, double _t74, double _t76, double _t77, double _t78, double _t81, double _t82) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t73))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t76)))).withLane(1, Math.sqrt(_t76))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t77)))).withLane(2, Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s9a33d91}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s9a33d91_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _t15, double _t17, double _t18) {
+        double _t25 = _t13 > _t14 ? 0.0 : _t10;
+        double _t26 = _t13 > _t14 ? _t15 : 0.0;
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t30 = _t13 > _t14 ? _t11 : -_t12;
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37 = _t35 == 0.0 ? _t25 : _t27;
+        double _t38 = _t35 == 0.0 ? _t26 : _t29;
+        double _t39 = _t35 == 0.0 ? _t30 : _t28;
+        double _t41 = (1.0 / Math.sqrt(_t35 == 0.0 ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        makeRotationLookAlong_degenerate_s9a33d91_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t37, _t38, _t39, _t41, _t42, _t43, _t44);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s9a33d91}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s9a33d91_tail2(double[] dd, double _t10, double _t11, double _t12, double _t15, double _t17, double _t18, double _t37, double _t38, double _t39, double _t41, double _t42, double _t43, double _t44) {
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _t78 = (1.0 / Math.sqrt(_t74));
+        double _t81 = Math.fma(_t41, _t39, _t66);
+        double _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s9a33d91_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s17e235c6}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s17e235c6_tail3(double[] dd, double _t11, double _t12, double _t38, double _t41, double _t44, double _t45, double _t48, double _t51, double _t62, double _t70, double _t71, double _t73, double _t74, double _t76, double _t77, double _t78, double _t81, double _t82) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t73)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t76)))).withLane(1, Math.sqrt(_t76))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t77)))).withLane(2, Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s17e235c6}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s17e235c6_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _t15, double _t17, double _t18) {
+        double _t25 = _t13 > _t14 ? 0.0 : _t10;
+        double _t26 = _t13 > _t14 ? _t15 : 0.0;
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t30 = _t13 > _t14 ? _t11 : -_t12;
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37 = _t35 == 0.0 ? _t25 : _t27;
+        double _t38 = _t35 == 0.0 ? _t26 : _t29;
+        double _t39 = _t35 == 0.0 ? _t30 : _t28;
+        double _t41 = (1.0 / Math.sqrt(_t35 == 0.0 ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        makeRotationLookAlong_degenerate_s17e235c6_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t37, _t38, _t39, _t41, _t42, _t43, _t44);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s17e235c6}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s17e235c6_tail2(double[] dd, double _t10, double _t11, double _t12, double _t15, double _t17, double _t18, double _t37, double _t38, double _t39, double _t41, double _t42, double _t43, double _t44) {
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _t78 = (1.0 / Math.sqrt(_t74));
+        double _t81 = Math.fma(_t41, _t39, _t66);
+        double _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s17e235c6_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
     }
 
 
     /**
-     * Set this quaternion to a rotation that makes {@code +z} point along ({@code dirX},
-     * {@code dirY}, {@code dirZ}).
-     *
-     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
-     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
-     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
-     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
-     * @return this
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
      */
-    /** Private vector tail of {@code makeRotationLookAlong_s169760fb}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s169760fb_tail2(double[] dd, double _t7, double _t10, double _t31, double _t32, double _t37, double _t38, double _t49, double _t54, double _t55, double _t57, double _t58, double _t60, double _t61, double _t62, double _t63, double _t67) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t60)).fma(VEC_1, DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
+    @Mutated private DoubleQuat makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        if (SimdMath.USE_FMA) return makeRotationLookAlong_degenerate_fma(dirX, dirY, dirZ, upX, upY, upZ);
+        return makeRotationLookAlong_degenerate_mulAdd(dirX, dirY, dirZ, upX, upY, upZ);
     }
 
-    /** Private tail of {@code makeRotationLookAlong_s169760fb}; reached only through it. */
-    private static void makeRotationLookAlong_s169760fb_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t31, double _t32, double _t33) {
-        double _t34 = 1.0 + _t31;
-        double _t37 = _t9 + _t32;
-        double _t38 = _t9 - _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t67 = (1.0 / Math.sqrt(_t61));
-        makeRotationLookAlong_s169760fb_tail2(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
-    /** Private vector tail of {@code makeRotationLookAlong_s687621c}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationLookAlong_s687621c_tail2(double[] dd, double _t7, double _t10, double _t31, double _t32, double _t37, double _t38, double _t49, double _t54, double _t55, double _t57, double _t58, double _t60, double _t61, double _t62, double _t63, double _t67) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7)) > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t60)).mul(VEC_1).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31 > Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49 > _t7 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong_s687621c}; reached only through it. */
-    private static void makeRotationLookAlong_s687621c_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t31, double _t32, double _t33) {
-        double _t34 = 1.0 + _t31;
-        double _t37 = _t9 + _t32;
-        double _t38 = _t9 - _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t67 = (1.0 / Math.sqrt(_t61));
-        makeRotationLookAlong_s687621c_tail2(dd, _t7, _t10, _t31, _t32, _t37, _t38, _t49, _t54, _t55, _t57, _t58, _t60, _t61, _t62, _t63, _t67);
-    }
-
-    @Mutated public DoubleQuat makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
-        if (SimdMath.USE_FMA) return makeRotationLookAlong_fma(dirX, dirY, dirZ, upX, upY, upZ);
-        return makeRotationLookAlong_mulAdd(dirX, dirY, dirZ, upX, upY, upZ);
-    }
-
-    private DoubleQuat makeRotationLookAlong_fma(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+    private DoubleQuat makeRotationLookAlong_degenerate_fma(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double[] dd = this.data;
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? dirZ * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? dirY * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? dirX * _t3 : 0.0;
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        double _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
-        makeRotationLookAlong_s169760fb_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t31, _t32, _t33);
+        double _t7 = _t2 == 0.0 ? 0.0 : upX;
+        double _t8 = _t2 == 0.0 ? 1.0 : upY;
+        double _t9 = _t2 == 0.0 ? 0.0 : upZ;
+        double _t10 = _t2 == 0.0 ? 0.0 : dirY * _t3;
+        double _t11 = _t2 == 0.0 ? 0.0 : dirX * _t3;
+        double _t12 = _t2 == 0.0 ? 1.0 : dirZ * _t3;
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        double _t25 = _t13 > _t14 ? 0.0 : _t10;
+        double _t26 = _t13 > _t14 ? _t15 : 0.0;
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        makeRotationLookAlong_degenerate_s169760fb_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18, _t25, _t26, _t27);
         return this;
     }
 
-    private DoubleQuat makeRotationLookAlong_mulAdd(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+    private DoubleQuat makeRotationLookAlong_degenerate_mulAdd(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double[] dd = this.data;
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? dirZ * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? dirY * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? dirX * _t3 : 0.0;
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        double _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
-        makeRotationLookAlong_s687621c_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t31, _t32, _t33);
+        double _t7 = _t2 == 0.0 ? 0.0 : upX;
+        double _t8 = _t2 == 0.0 ? 1.0 : upY;
+        double _t9 = _t2 == 0.0 ? 0.0 : upZ;
+        double _t10 = _t2 == 0.0 ? 0.0 : dirY * _t3;
+        double _t11 = _t2 == 0.0 ? 0.0 : dirX * _t3;
+        double _t12 = _t2 == 0.0 ? 1.0 : dirZ * _t3;
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        double _t25 = _t13 > _t14 ? 0.0 : _t10;
+        double _t26 = _t13 > _t14 ? _t15 : 0.0;
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        makeRotationLookAlong_degenerate_s687621c_tail(dd, _t7, _t8, _t9, _t10, _t11, _t12, _t13, _t14, _t15, _t17, _t18, _t25, _t26, _t27);
         return this;
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s169760fb}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s169760fb_tail3(double[] dd, double _t11, double _t12, double _t38, double _t41, double _t44, double _t45, double _t48, double _t51, double _t62, double _t70, double _t71, double _t73, double _t74, double _t76, double _t77, double _t78, double _t81, double _t82) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t73))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t76)))).withLane(1, Math.sqrt(_t76))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t77)))).withLane(2, Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s169760fb}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s169760fb_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _t15, double _t17, double _t18, double _t25, double _t26, double _t27) {
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t30 = _t13 > _t14 ? _t11 : -_t12;
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37 = _t35 == 0.0 ? _t25 : _t27;
+        double _t38 = _t35 == 0.0 ? _t26 : _t29;
+        double _t39 = _t35 == 0.0 ? _t30 : _t28;
+        double _t41 = (1.0 / Math.sqrt(_t35 == 0.0 ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        makeRotationLookAlong_degenerate_s169760fb_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t38, _t39, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t48, _t51);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s169760fb}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s169760fb_tail2(double[] dd, double _t10, double _t11, double _t12, double _t15, double _t17, double _t18, double _t38, double _t39, double _t41, double _t42, double _t43, double _t44, double _t45, double _t46, double _t47, double _t48, double _t51) {
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _t78 = (1.0 / Math.sqrt(_t74));
+        double _t81 = Math.fma(_t41, _t39, _t66);
+        double _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s169760fb_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
+    }
+
+    /** Private vector tail of {@code makeRotationLookAlong_degenerate_s687621c}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s687621c_tail3(double[] dd, double _t11, double _t12, double _t38, double _t41, double _t44, double _t45, double _t48, double _t51, double _t62, double _t70, double _t71, double _t73, double _t74, double _t76, double _t77, double _t78, double _t81, double _t82) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12))) > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t71).withLane(1, _t51).withLane(2, _t82).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t73)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t73)))) : (_t44 > Math.max(_t62, _t12) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t74)).withLane(1, _t81 * _t78).withLane(2, _t48 * _t78).withLane(3, _t71 * _t78)) : (_t62 > _t12 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t81).withLane(2, _t70).withLane(3, _t51).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t76)))).withLane(1, Math.sqrt(_t76))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t48).withLane(1, _t70).withLane(3, _t82).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t77)))).withLane(2, Math.sqrt(_t77))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s687621c}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s687621c_tail(double[] dd, double _t7, double _t8, double _t9, double _t10, double _t11, double _t12, double _t13, double _t14, double _t15, double _t17, double _t18, double _t25, double _t26, double _t27) {
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t30 = _t13 > _t14 ? _t11 : -_t12;
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37 = _t35 == 0.0 ? _t25 : _t27;
+        double _t38 = _t35 == 0.0 ? _t26 : _t29;
+        double _t39 = _t35 == 0.0 ? _t30 : _t28;
+        double _t41 = (1.0 / Math.sqrt(_t35 == 0.0 ? Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30)) : _t35));
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        makeRotationLookAlong_degenerate_s687621c_tail2(dd, _t10, _t11, _t12, _t15, _t17, _t18, _t38, _t39, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t48, _t51);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate_s687621c}; reached only through it. */
+    private static void makeRotationLookAlong_degenerate_s687621c_tail2(double[] dd, double _t10, double _t11, double _t12, double _t15, double _t17, double _t18, double _t38, double _t39, double _t41, double _t42, double _t43, double _t44, double _t45, double _t46, double _t47, double _t48, double _t51) {
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _t78 = (1.0 / Math.sqrt(_t74));
+        double _t81 = Math.fma(_t41, _t39, _t66);
+        double _t82 = Math.fma(_t41, _t39, -_t66);
+        makeRotationLookAlong_degenerate_s687621c_tail3(dd, _t11, _t12, _t38, _t41, _t44, _t45, _t48, _t51, _t62, _t70, _t71, _t73, _t74, _t76, _t77, _t78, _t81, _t82);
     }
 
 
@@ -3833,29 +4554,16 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * must be unit vectors; for opposite vectors an arbitrary perpendicular rotation axis is
      * chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param fromDir the direction to rotate from (must be a unit vector)
      * @param toDir the direction to rotate onto (must be a unit vector)
      * @return this
      */
-    /** Private vector tail of {@code makeRotationTo_s5f982a20}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s5f982a20_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.fma(VEC_1, DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeRotationTo_s78f6cad7}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s78f6cad7_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.mul(VEC_1).add(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public DoubleQuat makeRotationTo(Double3R fromDir, Double3R toDir) {
         if (SimdMath.USE_FMA) return makeRotationTo_fma(fromDir, toDir);
         return makeRotationTo_mulAdd(fromDir, toDir);
@@ -3915,16 +4623,31 @@ public final class DoubleQuatImpl implements DoubleQuat {
         return this;
     }
 
+    /** Private vector tail of {@code makeRotationTo_s5f982a20}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s5f982a20_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = (0.5 * _t22 > 1.0E-13 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0 ? DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0)) : _sv0));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeRotationTo_s78f6cad7}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s78f6cad7_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = (0.5 * _t22 > 1.0E-13 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0 ? DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0)) : _sv0));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
      * Set this quaternion to the rotation that rotates ({@code fromDirX}, {@code fromDirY},
      * {@code fromDirZ}) onto ({@code toDirX}, {@code toDirY}, {@code toDirZ}) (both must be unit
      * vectors; for opposite vectors an arbitrary perpendicular rotation axis is chosen).
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -3934,20 +4657,6 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * @param toDirZ the {@code z} component of the vector {@code (toDirX, toDirY, toDirZ)}
      * @return this
      */
-    /** Private vector tail of {@code makeRotationTo_s103d514}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s103d514_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.fma(VEC_1, DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code makeRotationTo_s2961cb63}: loads, computes and stores every column; reached only through it. */
-    private static void makeRotationTo_s2961cb63_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
-        var _col0 = (0.5 * _t22 > 1.0E-6 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 > 0.0 ? _sv0.mul(VEC_1).add(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
-        _col0.intoArray(dd, 0);
-    }
-
     @Mutated public DoubleQuat makeRotationTo(double fromDirX, double fromDirY, double fromDirZ, double toDirX, double toDirY, double toDirZ) {
         if (SimdMath.USE_FMA) return makeRotationTo_fma(fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
         return makeRotationTo_mulAdd(fromDirX, fromDirY, fromDirZ, toDirX, toDirY, toDirZ);
@@ -3989,6 +4698,20 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         makeRotationTo_s2961cb63_tail(dd, _t14, _t15, _t16, _t17, _t18, _t19, _t22, _t29, _t32);
         return this;
+    }
+
+    /** Private vector tail of {@code makeRotationTo_s103d514}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s103d514_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = (0.5 * _t22 > 1.0E-13 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0 ? DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).fma(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0)) : _sv0));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code makeRotationTo_s2961cb63}: loads, computes and stores every column; reached only through it. */
+    private static void makeRotationTo_s2961cb63_tail(double[] dd, double _t14, double _t15, double _t16, double _t17, double _t18, double _t19, double _t22, double _t29, double _t32) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = (0.5 * _t22 > 1.0E-13 ? DoubleVector.zero(COL_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(COL_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29 != 0.0 ? DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0)) : _sv0));
+        _col0.intoArray(dd, 0);
     }
 
 
@@ -4438,10 +5161,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param fromDir the direction to rotate from (must be a unit vector)
      * @param toDir the direction to rotate onto (must be a unit vector)
@@ -4476,13 +5200,13 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         double _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6) {
-            _t41 = 0.5 * _t22 * _t35;
+        if (_t23 > 1.0E-13) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0) {
+            if (_t29 != 0.0) {
                 _t41 = 0.0;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -4515,10 +5239,11 @@ public final class DoubleQuatImpl implements DoubleQuat {
      * quaternion will be {@code Q * R}. So when transforming a vector {@code v} with the new
      * quaternion by using {@code Q * R * v}, the rotation will be applied first.
      * <p>
-     * The half-vector form is exact for nearly antiparallel inputs all the way down to the
-     * 180-degree fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than
-     * {@code 1e-6} (about 0.08 degrees from opposite); only there is the perpendicular axis chosen
-     * arbitrarily.
+     * The half-vector form stays accurate for nearly antiparallel inputs down to the 180-degree
+     * fallback, which is taken when {@code 1 + dot(fromDir, toDir)} is no larger than {@code 1e-13}
+     * (about 4.5e-7 radians from opposite); only there is the perpendicular axis chosen
+     * arbitrarily, and the result is then off by at most that angle. The threshold also covers
+     * directions normalized only to {@code float} precision.
      *
      * @param fromDirX the {@code x} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
      * @param fromDirY the {@code y} component of the vector {@code (fromDirX, fromDirY, fromDirZ)}
@@ -4555,13 +5280,13 @@ public final class DoubleQuatImpl implements DoubleQuat {
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t35 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t14, _t14, Math.fma(_t15, _t15, _t16 * _t16)))));
         double _t41, _t45, _t46, _t47;
-        if (_t23 > 1.0E-6) {
-            _t41 = 0.5 * _t22 * _t35;
+        if (_t23 > 1.0E-13) {
+            _t41 = _t23 * _t35;
             _t45 = _t15 * _t35;
             _t46 = _t14 * _t35;
             _t47 = _t16 * _t35;
         } else {
-            if (_t29 > 0.0) {
+            if (_t29 != 0.0) {
                 _t41 = 0.0;
                 _t45 = _t30 * _t17;
                 _t46 = _t30 * _t18;
@@ -4940,6 +5665,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     /**
      * Transform {@code v} by this quaternion and store the result in {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -4953,6 +5680,8 @@ public final class DoubleQuatImpl implements DoubleQuat {
     /**
      * Transform ({@code vX}, {@code vY}, {@code vZ}) by this quaternion and store the result in
      * {@code dest}.
+     * <p>
+     * This quaternion must have unit length.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -5160,7 +5889,23 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
     private static final VectorSpecies<Double> COL_SPECIES = DoubleVector.SPECIES_256;
     private static final VectorMask<Double> MASK_0 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final DoubleVector VEC_1 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
-    private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_1 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 0.0}, 0);
+    private static final DoubleVector VEC_2 = DoubleVector.fromArray(COL_SPECIES, new double[]{0.0, 0.0, 0.0, 1.0}, 0);
 
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
+    }
 }

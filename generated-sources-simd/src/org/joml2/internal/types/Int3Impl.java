@@ -266,9 +266,11 @@ public final class Int3Impl implements Int3 {
     public Int3 ceilDiv(int otherX, int otherY, int otherZ, @Mutated Int3 dest) {
         int[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = java.lang.Math.ceilDiv(sd[0], otherX);
-        dd[1] = java.lang.Math.ceilDiv(sd[1], otherY);
+        int _buf0 = java.lang.Math.ceilDiv(sd[0], otherX);
+        int _buf1 = java.lang.Math.ceilDiv(sd[1], otherY);
         dd[2] = java.lang.Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -289,9 +291,11 @@ public final class Int3Impl implements Int3 {
     public Long3 ceilDiv(int otherX, int otherY, int otherZ, @Mutated Long3 dest) {
         int[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = java.lang.Math.ceilDiv(sd[0], otherX);
-        dd[1] = java.lang.Math.ceilDiv(sd[1], otherY);
+        int _buf0 = java.lang.Math.ceilDiv(sd[0], otherX);
+        int _buf1 = java.lang.Math.ceilDiv(sd[1], otherY);
         dd[2] = java.lang.Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -312,9 +316,11 @@ public final class Int3Impl implements Int3 {
     public Double3 ceilDiv(int otherX, int otherY, int otherZ, @Mutated Double3 dest) {
         int[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = java.lang.Math.ceilDiv(sd[0], otherX);
-        dd[1] = java.lang.Math.ceilDiv(sd[1], otherY);
+        int _buf0 = java.lang.Math.ceilDiv(sd[0], otherX);
+        int _buf1 = java.lang.Math.ceilDiv(sd[1], otherY);
         dd[2] = java.lang.Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -422,9 +428,11 @@ public final class Int3Impl implements Int3 {
     public Int3 ceilMod(int otherX, int otherY, int otherZ, @Mutated Int3 dest) {
         int[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = java.lang.Math.ceilMod(sd[0], otherX);
-        dd[1] = java.lang.Math.ceilMod(sd[1], otherY);
+        int _buf0 = java.lang.Math.ceilMod(sd[0], otherX);
+        int _buf1 = java.lang.Math.ceilMod(sd[1], otherY);
         dd[2] = java.lang.Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -445,9 +453,11 @@ public final class Int3Impl implements Int3 {
     public Long3 ceilMod(int otherX, int otherY, int otherZ, @Mutated Long3 dest) {
         int[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = java.lang.Math.ceilMod(sd[0], otherX);
-        dd[1] = java.lang.Math.ceilMod(sd[1], otherY);
+        int _buf0 = java.lang.Math.ceilMod(sd[0], otherX);
+        int _buf1 = java.lang.Math.ceilMod(sd[1], otherY);
         dd[2] = java.lang.Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -468,9 +478,11 @@ public final class Int3Impl implements Int3 {
     public Double3 ceilMod(int otherX, int otherY, int otherZ, @Mutated Double3 dest) {
         int[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = java.lang.Math.ceilMod(sd[0], otherX);
-        dd[1] = java.lang.Math.ceilMod(sd[1], otherY);
+        int _buf0 = java.lang.Math.ceilMod(sd[0], otherX);
+        int _buf1 = java.lang.Math.ceilMod(sd[1], otherY);
         dd[2] = java.lang.Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -578,9 +590,11 @@ public final class Int3Impl implements Int3 {
     public Int3 div(int otherX, int otherY, int otherZ, @Mutated Int3 dest) {
         int[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -601,9 +615,11 @@ public final class Int3Impl implements Int3 {
     public Long3 div(int otherX, int otherY, int otherZ, @Mutated Long3 dest) {
         int[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -624,9 +640,11 @@ public final class Int3Impl implements Int3 {
     public Double3 div(int otherX, int otherY, int otherZ, @Mutated Double3 dest) {
         int[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -734,9 +752,11 @@ public final class Int3Impl implements Int3 {
     public Int3 floorDiv(int otherX, int otherY, int otherZ, @Mutated Int3 dest) {
         int[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -757,9 +777,11 @@ public final class Int3Impl implements Int3 {
     public Long3 floorDiv(int otherX, int otherY, int otherZ, @Mutated Long3 dest) {
         int[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -780,9 +802,11 @@ public final class Int3Impl implements Int3 {
     public Double3 floorDiv(int otherX, int otherY, int otherZ, @Mutated Double3 dest) {
         int[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -890,9 +914,11 @@ public final class Int3Impl implements Int3 {
     public Int3 floorMod(int otherX, int otherY, int otherZ, @Mutated Int3 dest) {
         int[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -913,9 +939,11 @@ public final class Int3Impl implements Int3 {
     public Long3 floorMod(int otherX, int otherY, int otherZ, @Mutated Long3 dest) {
         int[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -936,9 +964,11 @@ public final class Int3Impl implements Int3 {
     public Double3 floorMod(int otherX, int otherY, int otherZ, @Mutated Double3 dest) {
         int[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1260,9 +1290,11 @@ public final class Int3Impl implements Int3 {
     public Int3 rem(int otherX, int otherY, int otherZ, @Mutated Int3 dest) {
         int[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1284,9 +1316,11 @@ public final class Int3Impl implements Int3 {
     public Long3 rem(int otherX, int otherY, int otherZ, @Mutated Long3 dest) {
         int[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1308,9 +1342,11 @@ public final class Int3Impl implements Int3 {
     public Double3 rem(int otherX, int otherY, int otherZ, @Mutated Double3 dest) {
         int[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -2828,12 +2864,15 @@ public final class Int3Impl implements Int3 {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public int compAdd() {
+    public long compAdd() {
         int[] sd = this.data;
-        return sd[2] + (sd[0] + sd[1]);
+        return (long) sd[2] + ((long) sd[0] + (long) sd[1]);
     }
 
 
@@ -2861,12 +2900,15 @@ public final class Int3Impl implements Int3 {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the product of all components of this vector
      */
-    public int compMul() {
+    public long compMul() {
         int[] sd = this.data;
-        return sd[2] * sd[0] * sd[1];
+        return (long) sd[2] * (long) sd[0] * (long) sd[1];
     }
 
 
@@ -2992,11 +3034,14 @@ public final class Int3Impl implements Int3 {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public int distanceSquared(Int3R other) {
+    public long distanceSquared(Int3R other) {
         return distanceSquared(other.x(), other.y(), other.z());
     }
 
@@ -3004,6 +3049,9 @@ public final class Int3Impl implements Int3 {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -3011,58 +3059,70 @@ public final class Int3Impl implements Int3 {
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public int distanceSquared(int otherX, int otherY, int otherZ) {
+    public long distanceSquared(int otherX, int otherY, int otherZ) {
         int[] sd = this.data;
-        int _t0 = sd[0] - otherX;
-        int _t1 = sd[1] - otherY;
-        int _t2 = sd[2] - otherZ;
+        long _t0 = (long) sd[0] - (long) otherX;
+        long _t1 = (long) sd[1] - (long) otherY;
+        long _t2 = (long) sd[2] - (long) otherZ;
         return _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public int dot(Int3R other) {
+    public long dot(Int3R other) {
         return dot(other.x(), other.y(), other.z());
     }
 
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      */
-    public int dot(int otherX, int otherY, int otherZ) {
+    public long dot(int otherX, int otherY, int otherZ) {
         int[] sd = this.data;
-        return otherX * sd[0] + otherY * sd[1] + otherZ * sd[2];
+        return (long) otherX * (long) sd[0] + (long) otherY * (long) sd[1] + (long) otherZ * (long) sd[2];
     }
 
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the squared length of this vector
      */
-    public int lengthSquared() {
+    public long lengthSquared() {
         int[] sd = this.data;
-        return sd[0] * sd[0] + sd[1] * sd[1] + sd[2] * sd[2];
+        return (long) sd[0] * (long) sd[0] + (long) sd[1] * (long) sd[1] + (long) sd[2] * (long) sd[2];
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public int manhattanDistance(Int3R other) {
+    public long manhattanDistance(Int3R other) {
         return manhattanDistance(other.x(), other.y(), other.z());
     }
 
@@ -3070,6 +3130,9 @@ public final class Int3Impl implements Int3 {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -3077,20 +3140,23 @@ public final class Int3Impl implements Int3 {
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public int manhattanDistance(int otherX, int otherY, int otherZ) {
+    public long manhattanDistance(int otherX, int otherY, int otherZ) {
         int[] sd = this.data;
-        return Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY) + Math.abs(sd[2] - otherZ);
+        return Math.abs((long) sd[0] - (long) otherX) + Math.abs((long) sd[1] - (long) otherY) + Math.abs((long) sd[2] - (long) otherZ);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public int manhattanLength() {
+    public long manhattanLength() {
         int[] sd = this.data;
-        return Math.abs(sd[0]) + Math.abs(sd[1]) + Math.abs(sd[2]);
+        return Math.abs((long) sd[0]) + Math.abs((long) sd[1]) + Math.abs((long) sd[2]);
     }
 
 

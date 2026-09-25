@@ -74,7 +74,7 @@ public final class FloatQuatOpsSimd {
         float _t17 = 1.0f + (_m22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -103,7 +103,7 @@ public final class FloatQuatOpsSimd {
         float _t17 = 1.0f + (_m22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -137,7 +137,7 @@ public final class FloatQuatOpsSimd {
         float _t17 = 1.0f + (_m22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -166,7 +166,7 @@ public final class FloatQuatOpsSimd {
         float _t17 = 1.0f + (_m22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -200,7 +200,7 @@ public final class FloatQuatOpsSimd {
         float _t17 = 1.0f + (_m22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -229,7 +229,7 @@ public final class FloatQuatOpsSimd {
         float _t17 = 1.0f + (_m22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -297,7 +297,7 @@ public final class FloatQuatOpsSimd {
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, alpha).fma(FloatVector.fromArray(SIMD_SPECIES, target, targetOffset).sub(_sv0), _sv0);
         float _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t11  >  0.0f ? _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t11  !=  0.0f ? _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -306,7 +306,7 @@ public final class FloatQuatOpsSimd {
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, alpha).mul(FloatVector.fromArray(SIMD_SPECIES, target, targetOffset).sub(_sv0)).add(_sv0);
         float _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t11  >  0.0f ? _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t11  !=  0.0f ? _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t11)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -321,7 +321,7 @@ public final class FloatQuatOpsSimd {
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, alpha).fma((-Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1])))  >  0.0f ? _sv0.neg() : _sv0).sub(_sv1), _sv1);
         float _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0f ? _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t24  !=  0.0f ? _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -331,7 +331,7 @@ public final class FloatQuatOpsSimd {
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, alpha).mul((-Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1])))  >  0.0f ? _sv0.neg() : _sv0).sub(_sv1)).add(_sv1);
         float _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0f ? _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t24  !=  0.0f ? _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t24)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -343,22 +343,62 @@ public final class FloatQuatOpsSimd {
 
     public static float[] slerp_fma(float[] dest, int destOffset, float[] src, int srcOffset, float targetX, float targetY, float targetZ, float targetW, float alpha) {
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(src[srcOffset + 3], targetW, Math.fma(src[srcOffset + 2], targetZ, Math.fma(src[srcOffset + 0], targetX, src[srcOffset + 1] * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = FloatVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6f ? _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0 * _t7)), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t0))));
+        float _t1 = src[srcOffset + 3] + targetW;
+        float _t2 = src[srcOffset + 2] + targetZ;
+        float _t3 = src[srcOffset + 0] + targetX;
+        float _t4 = src[srcOffset + 1] + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _w0, _w1;
+        if (_t19 > 2.0E-6f) {
+            _w0 = _t21 * (float) Math.sin(_t0 * _t12);
+            _w1 = _t21 * (float) Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0f - _t5;
+            }
+        }
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(FloatVector.broadcast(SIMD_SPECIES, _w0), FloatVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(FloatVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static float[] slerp_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float targetX, float targetY, float targetZ, float targetW, float alpha) {
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(src[srcOffset + 3], targetW, Math.fma(src[srcOffset + 2], targetZ, Math.fma(src[srcOffset + 0], targetX, src[srcOffset + 1] * targetY))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = FloatVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0 * _t7))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t0))));
+        float _t1 = src[srcOffset + 3] + targetW;
+        float _t2 = src[srcOffset + 2] + targetZ;
+        float _t3 = src[srcOffset + 0] + targetX;
+        float _t4 = src[srcOffset + 1] + targetY;
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _w0, _w1;
+        if (_t19 > 2.0E-6f) {
+            _w0 = _t21 * (float) Math.sin(_t0 * _t12);
+            _w1 = _t21 * (float) Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0f - _t5;
+            }
+        }
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(FloatVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(FloatVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -370,22 +410,62 @@ public final class FloatQuatOpsSimd {
 
     public static float[] slerp_fma(float[] dest, int destOffset, float[] src, int srcOffset, float[] target, int targetOffset, float alpha) {
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1]))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = FloatVector.fromArray(SIMD_SPECIES, target, targetOffset);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6f ? _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0 * _t7)), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t0))));
+        float _t1 = src[srcOffset + 3] + target[targetOffset + 3];
+        float _t2 = src[srcOffset + 2] + target[targetOffset + 2];
+        float _t3 = src[srcOffset + 0] + target[targetOffset + 0];
+        float _t4 = src[srcOffset + 1] + target[targetOffset + 1];
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _w0, _w1;
+        if (_t19 > 2.0E-6f) {
+            _w0 = _t21 * (float) Math.sin(_t0 * _t12);
+            _w1 = _t21 * (float) Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0f - _t5;
+            }
+        }
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(FloatVector.broadcast(SIMD_SPECIES, _w0), FloatVector.fromArray(SIMD_SPECIES, target, targetOffset).mul(FloatVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static float[] slerp_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float[] target, int targetOffset, float alpha) {
         float _t0 = 1.0f - alpha;
-        float _t7 = (float) Math.acos(Math.min(1.0f, Math.max(-1.0f, Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1]))))));
-        float _t8 = (float) Math.sin(_t7);
-        var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = FloatVector.fromArray(SIMD_SPECIES, target, targetOffset);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(_t0 * _t7))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(alpha * _t7)))).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t8)) : FloatVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t0))));
+        float _t1 = src[srcOffset + 3] + target[targetOffset + 3];
+        float _t2 = src[srcOffset + 2] + target[targetOffset + 2];
+        float _t3 = src[srcOffset + 0] + target[targetOffset + 0];
+        float _t4 = src[srcOffset + 1] + target[targetOffset + 1];
+        float _t5 = alpha < 0.5f ? 1.0f : 0.0f;
+        float _t11 = Math.min(4.0f, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        float _t12 = quatArcAngle(_t11);
+        float _t13 = 4.0f - _t11;
+        float _t18 = _t13 * _t11;
+        float _t19 = (float) Math.sqrt(_t18);
+        float _t21 = 2.0f / _t19;
+        float _w0, _w1;
+        if (_t19 > 2.0E-6f) {
+            _w0 = _t21 * (float) Math.sin(_t0 * _t12);
+            _w1 = _t21 * (float) Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0f - _t5;
+            }
+        }
+        var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(FloatVector.fromArray(SIMD_SPECIES, target, targetOffset).mul(FloatVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -409,7 +489,7 @@ public final class FloatQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0f ? _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin((1.0f - alpha) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(alpha * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : FloatVector.broadcast(SIMD_SPECIES, alpha).fma(_sv2, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f - alpha))));
         float _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t49  !=  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -428,7 +508,7 @@ public final class FloatQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin((1.0f - alpha) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin(alpha * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : FloatVector.broadcast(SIMD_SPECIES, alpha).mul(_sv2).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f - alpha))));
         float _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t49  !=  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t49)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -469,7 +549,7 @@ public final class FloatQuatOpsSimd {
     public static float[] normalize(float[] dest, int destOffset, float[] src, int srcOffset) {
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         float _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t3  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t3  !=  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t3)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -482,9 +562,16 @@ public final class FloatQuatOpsSimd {
         float _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         float _t10 = (float) Math.exp(t * (float) Math.log((float) Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
         float _t11 = (float) Math.atan2((float) Math.sqrt(_t2), _selfw) * (1.0f / (float) Math.sqrt(_t2));
-        float _t18 = t * (_t2 > 0.0f ? _selfz * _t11 : 0.0f);
-        float _t19 = t * (_t2 > 0.0f ? _selfx * _t11 : 0.0f);
-        float _t20 = t * (_t2 > 0.0f ? _selfy * _t11 : 0.0f);
+        float _t18, _t19, _t20;
+        if (_t2 > 0.0f) {
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
+        } else {
+            _t18 = t * 0.0f;
+            _t19 = t * 0.0f;
+            _t20 = t * 0.0f;
+        }
         float _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         float _t24 = (float) Math.sqrt(_t23);
         float _t26 = (float) Math.sin(_t24);
@@ -512,7 +599,7 @@ public final class FloatQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0f ? _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin((1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f)) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f))).mul(_sv2)).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, 1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f))));
         float _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t72  !=  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -531,7 +618,7 @@ public final class FloatQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0f ? _sv1.neg() : _sv1);
         var _sv3 = ((float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin((1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f)) * (float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f))).mul(_sv2)).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (float) Math.sin((float) Math.acos(Math.min(1.0f, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f - (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, 4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))) > 0.0f ? Math.min(1.0f, step / (4.0f * (float) Math.atan2((float) Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)))))), (float) Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0f ? -_targety : _targety))))))))) : 0.0f))));
         float _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
+        var _c0 = (_t72  !=  0.0f ? _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t72)))) : FloatVector.broadcast(SIMD_SPECIES, 0.0f));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -544,7 +631,7 @@ public final class FloatQuatOpsSimd {
     public static float[] makeRotationAxis_fma(float[] dest, int destOffset, float angle, float axisX, float axisY, float axisZ) {
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).fma(FloatVector.broadcast(SIMD_SPECIES, _t1), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -552,7 +639,7 @@ public final class FloatQuatOpsSimd {
     public static float[] makeRotationAxis_mulAdd(float[] dest, int destOffset, float angle, float axisX, float axisY, float axisZ) {
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -565,7 +652,7 @@ public final class FloatQuatOpsSimd {
     public static float[] makeRotationAxis_fma(float[] dest, int destOffset, float[] axis, int axisOffset, float angle) {
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).fma(FloatVector.broadcast(SIMD_SPECIES, _t1), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -573,7 +660,7 @@ public final class FloatQuatOpsSimd {
     public static float[] makeRotationAxis_mulAdd(float[] dest, int destOffset, float[] axis, int axisOffset, float angle) {
         float _t0 = 0.5f * angle;
         float _t1 = (float) Math.sin(_t0);
-        var _c0 = FloatVector.broadcast(SIMD_SPECIES, (float) Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = FloatVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(FloatVector.broadcast(SIMD_SPECIES, _t1)).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -586,9 +673,16 @@ public final class FloatQuatOpsSimd {
     public static float[] makeRotationLookAlong_fma(float[] dest, int destOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? dirZ * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? dirY * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? dirX * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t10 = -_t9;
         float _t11 = -_t8;
         float _t12 = -_t7;
@@ -597,9 +691,16 @@ public final class FloatQuatOpsSimd {
         float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
+        float _t31, _t32, _t33;
+        if (_t26 != 0.0f) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0f;
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+        }
         float _t34 = 1.0f + _t31;
         float _t37 = _t9 + _t32;
         float _t38 = _t9 - _t32;
@@ -614,7 +715,7 @@ public final class FloatQuatOpsSimd {
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
         float _t67 = (1.0f / (float) Math.sqrt(_t61));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t60)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -622,9 +723,16 @@ public final class FloatQuatOpsSimd {
     public static float[] makeRotationLookAlong_mulAdd(float[] dest, int destOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? dirZ * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? dirY * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? dirX * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t10 = -_t9;
         float _t11 = -_t8;
         float _t12 = -_t7;
@@ -633,9 +741,16 @@ public final class FloatQuatOpsSimd {
         float _t23 = Math.fma(upZ, _t9, -(upX * _t7));
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
+        float _t31, _t32, _t33;
+        if (_t26 != 0.0f) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0f;
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+        }
         float _t34 = 1.0f + _t31;
         float _t37 = _t9 + _t32;
         float _t38 = _t9 - _t32;
@@ -650,7 +765,7 @@ public final class FloatQuatOpsSimd {
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
         float _t67 = (1.0f / (float) Math.sqrt(_t61));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t60)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -669,9 +784,16 @@ public final class FloatQuatOpsSimd {
         float _upz = up[upOffset + 2];
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _dirz * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _diry * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _dirx * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t10 = -_t9;
         float _t11 = -_t8;
         float _t12 = -_t7;
@@ -680,9 +802,16 @@ public final class FloatQuatOpsSimd {
         float _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
+        float _t31, _t32, _t33;
+        if (_t26 != 0.0f) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0f;
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+        }
         float _t34 = 1.0f + _t31;
         float _t37 = _t9 + _t32;
         float _t38 = _t9 - _t32;
@@ -697,7 +826,7 @@ public final class FloatQuatOpsSimd {
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
         float _t67 = (1.0f / (float) Math.sqrt(_t61));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t60)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -711,9 +840,16 @@ public final class FloatQuatOpsSimd {
         float _upz = up[upOffset + 2];
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _dirz * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _diry * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _dirx * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t10 = -_t9;
         float _t11 = -_t8;
         float _t12 = -_t7;
@@ -722,9 +858,16 @@ public final class FloatQuatOpsSimd {
         float _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         float _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
-        float _t31 = _t26 > 0.0f ? _t22 * _t27 : 0.0f;
-        float _t32 = _t26 > 0.0f ? _t21 * _t27 : 0.0f;
-        float _t33 = _t26 > 0.0f ? _t23 * _t27 : 0.0f;
+        float _t31, _t32, _t33;
+        if (_t26 != 0.0f) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0f;
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+        }
         float _t34 = 1.0f + _t31;
         float _t37 = _t9 + _t32;
         float _t38 = _t9 - _t32;
@@ -739,7 +882,7 @@ public final class FloatQuatOpsSimd {
         float _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0f + _t7 - _t31));
         float _t67 = (1.0f / (float) Math.sqrt(_t61));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t60)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t60)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).withLane(1, (float) Math.sqrt(_t62))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t63)))).withLane(2, (float) Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -757,14 +900,21 @@ public final class FloatQuatOpsSimd {
         float _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         float _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        float _t17 = _t12 > 0.0f ? fromDirY : 0.0f;
-        float _t18 = _t12 > 0.0f ? 0.0f : -fromDirY;
-        float _t19 = _t12 > 0.0f ? -fromDirX : fromDirZ;
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = fromDirY;
+            _t18 = 0.0f;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
         float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _c0 = (0.5f * _t22  >  1.0E-6f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0f ? _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5f * _t22  >  6.0E-8f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0f ? FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).fma(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0f)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -777,14 +927,21 @@ public final class FloatQuatOpsSimd {
         float _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         float _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         float _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        float _t17 = _t12 > 0.0f ? fromDirY : 0.0f;
-        float _t18 = _t12 > 0.0f ? 0.0f : -fromDirY;
-        float _t19 = _t12 > 0.0f ? -fromDirX : fromDirZ;
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = fromDirY;
+            _t18 = 0.0f;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
         float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _c0 = (0.5f * _t22  >  1.0E-6f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0f ? _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5f * _t22  >  6.0E-8f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0f ? FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0f)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -808,14 +965,21 @@ public final class FloatQuatOpsSimd {
         float _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         float _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         float _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        float _t17 = _t12 > 0.0f ? _fromDiry : 0.0f;
-        float _t18 = _t12 > 0.0f ? 0.0f : -_fromDiry;
-        float _t19 = _t12 > 0.0f ? -_fromDirx : _fromDirz;
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = _fromDiry;
+            _t18 = 0.0f;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _c0 = (0.5f * _t22  >  1.0E-6f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0f ? _sv0.fma(UNIT_W, FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5f * _t22  >  6.0E-8f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0f ? FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).fma(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0f)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -834,14 +998,21 @@ public final class FloatQuatOpsSimd {
         float _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         float _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         float _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        float _t17 = _t12 > 0.0f ? _fromDiry : 0.0f;
-        float _t18 = _t12 > 0.0f ? 0.0f : -_fromDiry;
-        float _t19 = _t12 > 0.0f ? -_fromDirx : _fromDirz;
+        float _t17, _t18, _t19;
+        if (_t12 > 0.0f) {
+            _t17 = _fromDiry;
+            _t18 = 0.0f;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0f;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         float _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         float _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         float _t32 = (1.0f / (float) Math.sqrt(Math.fma(0.25f, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.0f);
-        var _c0 = (0.5f * _t22  >  1.0E-6f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0f ? _sv0.mul(UNIT_W).add(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5f * _t22  >  6.0E-8f ? FloatVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5f).mul(FloatVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0f ? FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t29))).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0f)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -919,7 +1090,7 @@ public final class FloatQuatOpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -931,7 +1102,7 @@ public final class FloatQuatOpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr(dest, destOffset, _srcArr, _srcOff, count * 4);
@@ -943,7 +1114,7 @@ public final class FloatQuatOpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr_one(_destArr, _destOff, src, srcOffset);
@@ -955,7 +1126,7 @@ public final class FloatQuatOpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr(_destArr, _destOff, src, srcOffset, count * 4);
@@ -967,10 +1138,10 @@ public final class FloatQuatOpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr_one(_destArr, _destOff, _srcArr, _srcOff);
@@ -979,7 +1150,7 @@ public final class FloatQuatOpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < 4; _i++)
@@ -993,10 +1164,10 @@ public final class FloatQuatOpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr(_destArr, _destOff, _srcArr, _srcOff, count * 4);
@@ -1005,7 +1176,7 @@ public final class FloatQuatOpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < count * 4; _i++)
@@ -1016,5 +1187,21 @@ public final class FloatQuatOpsSimd {
             }
         }
         return dest;
+    }
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
     }
 }

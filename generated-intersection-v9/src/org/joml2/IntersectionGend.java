@@ -52,33 +52,38 @@ public final class IntersectionGend {
         double _t12 = pZ - v2Z;
         double _t13 = pX - v2X;
         double _t14 = pY - v2Y;
-        double _t21 = _t11 * _t5;
-        double _t23 = _t14 * _t8;
-        double _t39 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
-        double _t40 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
-        double _t41 = Math.fma(_t9, _t1, Math.fma(_t10, _t3, _t21));
-        double _t42 = Math.fma(_t9, _t6, Math.fma(_t10, _t7, _t11 * _t8));
-        double _t43 = Math.fma(_t12, _t6, Math.fma(_t13, _t7, _t23));
-        double _t44 = Math.fma(_t12, _t1, Math.fma(_t13, _t3, _t14 * _t5));
-        double _t52 = _t42 - _t41;
-        double _t53 = _t39 - _t41;
-        double _t53_inv = 1.0 / _t53;
-        double _t54 = _t40 - _t43;
-        double _t54_inv = 1.0 / _t54;
-        double _t60 = Math.fma(_t39, _t42, -(_t40 * _t41));
-        double _t61 = Math.fma(_t40, _t44, -(_t39 * _t43));
-        double _t62 = Math.fma(_t41, _t43, -(_t42 * _t44));
-        double _t63 = Math.fma(_t10, _t7, Math.fma(_t11, _t8, _t9 * _t6)) + Math.fma(-_t10, _t3, Math.fma(-_t9, _t1, -_t21)) + (Math.fma(_t13, _t3, Math.fma(_t14, _t5, _t12 * _t1)) + Math.fma(-_t13, _t7, Math.fma(-_t12, _t6, -_t23)));
-        double _t63_inv = 1.0 / _t63;
-        double _t65 = _t61 + _t62 + _t60;
-        double _t65_inv = 1.0 / _t65;
-        if ((_t39 <= 0.0) && (_t40 <= 0.0)) return Joml.double3(v0X, v0Y, v0Z);
-        if ((_t41 >= 0.0) && (_t42 <= _t41)) return Joml.double3(v1X, v1Y, v1Z);
-        if ((_t60 <= 0.0) && ((_t39 >= 0.0) && (_t41 <= 0.0))) return Joml.double3(v0X + _t39 * _t3 * _t53_inv, v0Y + _t39 * _t5 * _t53_inv, v0Z + _t39 * _t1 * _t53_inv);
-        if ((_t43 >= 0.0) && (_t44 <= _t43)) return Joml.double3(v2X, v2Y, v2Z);
-        if ((_t61 <= 0.0) && ((_t40 >= 0.0) && (_t43 <= 0.0))) return Joml.double3(v0X + _t40 * _t7 * _t54_inv, v0Y + _t40 * _t8 * _t54_inv, v0Z + _t40 * _t6 * _t54_inv);
-        if ((_t62 <= 0.0) && ((_t52 >= 0.0) && (_t44 - _t43 >= 0.0))) return Joml.double3(v1X + (v2X - v1X) * _t52 * _t63_inv, v1Y + (v2Y - v1Y) * _t52 * _t63_inv, v1Z + (v2Z - v1Z) * _t52 * _t63_inv);
-        return Joml.double3(v0X + _t3 * _t61 * _t65_inv + _t7 * _t60 * _t65_inv, v0Y + _t5 * _t61 * _t65_inv + _t8 * _t60 * _t65_inv, v0Z + _t1 * _t61 * _t65_inv + _t6 * _t60 * _t65_inv);
+        double _t15 = v2Z - v1Z;
+        double _t16 = v2X - v1X;
+        double _t17 = v2Y - v1Y;
+        double _t42 = Math.fma(_t1, _t7, -(_t3 * _t6));
+        double _t43 = Math.fma(_t5, _t6, -(_t1 * _t8));
+        double _t44 = Math.fma(_t3, _t8, -(_t5 * _t7));
+        double _t52 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
+        double _t53 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
+        double _t54 = Math.fma(_t9, _t1, Math.fma(_t10, _t3, _t11 * _t5));
+        double _t55 = Math.fma(_t9, _t6, Math.fma(_t10, _t7, _t11 * _t8));
+        double _t56 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
+        double _sp0 = _t52 / _t56;
+        double _t57 = Math.fma(_t12, _t6, Math.fma(_t13, _t7, _t14 * _t8));
+        double _t58 = Math.fma(_t12, _t1, Math.fma(_t13, _t3, _t14 * _t5));
+        double _t59 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _sp1 = _t53 / _t59;
+        double _t60 = Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17));
+        double _t63 = Math.fma(_t2, _t42, -(_t4 * _t43));
+        double _t64 = Math.fma(_t4, _t44, -(_t0 * _t42));
+        double _t65 = Math.fma(_t0, _t43, -(_t2 * _t44));
+        double _t67 = _t14 * _t65;
+        double _t68 = _t55 - _t54;
+        double _sp2 = _t68 / _t60;
+        double _t71 = Math.fma(_t10, _t64, _t11 * _t65);
+        double _sp3 = Math.fma(_t0, _t44, Math.fma(_t2, _t43, _t4 * _t42)) / Math.fma(_t44, _t44, Math.fma(_t43, _t43, _t42 * _t42));
+        if ((_t52 <= 0.0) && (_t53 <= 0.0)) return Joml.double3(v0X, v0Y, v0Z);
+        if ((_t54 >= 0.0) && (_t55 <= _t54)) return Joml.double3(v1X, v1Y, v1Z);
+        if ((-Math.fma(_t9, _t63, _t71) <= 0.0) && ((_t52 >= 0.0) && ((_t54 <= 0.0) && (_t56 > 0.0)))) return Joml.double3(v0X + _sp0 * _t3, v0Y + _sp0 * _t5, v0Z + _sp0 * _t1);
+        if ((_t57 >= 0.0) && (_t58 <= _t57)) return Joml.double3(v2X, v2Y, v2Z);
+        if ((Math.fma(_t12, _t63, Math.fma(_t13, _t64, _t67)) <= 0.0) && ((_t53 >= 0.0) && ((_t57 <= 0.0) && (_t59 > 0.0)))) return Joml.double3(v0X + _sp1 * _t7, v0Y + _sp1 * _t8, v0Z + _sp1 * _t6);
+        if ((_t71 + Math.fma(_t9, _t63, _t43 * _t43) + (Math.fma(_t42, _t42, _t44 * _t44) + Math.fma(-_t13, _t64, Math.fma(-_t12, _t63, -_t67))) <= 0.0) && ((_t68 >= 0.0) && ((_t58 - _t57 >= 0.0) && (_t60 > 0.0)))) return Joml.double3(v1X + _t16 * _sp2, v1Y + _t17 * _sp2, v1Z + _t15 * _sp2);
+        return Joml.double3(pX - _sp3 * _t43, pY - _sp3 * _t42, pZ - _sp3 * _t44);
     }
 
     /**
@@ -112,9 +117,8 @@ public final class IntersectionGend {
      * specified point.
      * <p>
      * The projection parameter is clamped to <code>[0, 1]</code>, so the closest point never leaves
-     * the segment and is one of the end points whenever the perpendicular foot falls outside it.
-     * The two end points must not coincide - this method divides by the squared length of the
-     * segment.
+     * the segment and is one of the end points whenever the perpendicular foot falls outside it. A
+     * segment whose two end points coincide is the point they share, which is then the result.
      *
      * @param aX the x coordinate of the first end point of the line segment
      * @param aY the y coordinate of the first end point of the line segment
@@ -132,8 +136,8 @@ public final class IntersectionGend {
         double _t0 = bX - aX;
         double _t1 = bZ - aZ;
         double _t4 = bY - aY;
-        double _t13 = Math.clamp(Math.fma(_t1, pZ - aZ, Math.fma(_t0, pX - aX, _t4 * (pY - aY))) / Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t4 * _t4)), 0.0, 1.0);
-        result.set(Math.fma(_t0, _t13, aX), Math.fma(_t4, _t13, aY), Math.fma(_t1, _t13, aZ));
+        double _t14 = Math.clamp(Math.fma(_t1, pZ - aZ, Math.fma(_t0, pX - aX, _t4 * (pY - aY))) / Math.max(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t4 * _t4)), 4.9E-324), 0.0, 1.0);
+        result.set(Math.fma(_t0, _t14, aX), Math.fma(_t4, _t14, aY), Math.fma(_t1, _t14, aZ));
         return result;
     }
 
@@ -142,9 +146,8 @@ public final class IntersectionGend {
      * specified point.
      * <p>
      * The projection parameter is clamped to <code>[0, 1]</code>, so the closest point never leaves
-     * the segment and is one of the end points whenever the perpendicular foot falls outside it.
-     * The two end points must not coincide - this method divides by the squared length of the
-     * segment.
+     * the segment and is one of the end points whenever the perpendicular foot falls outside it. A
+     * segment whose two end points coincide is the point they share, which is then the result.
      *
      * @param a the first end point of the line segment
      * @param b the second end point of the line segment
@@ -296,7 +299,10 @@ public final class IntersectionGend {
      * <p>
      * The point need not lie in the triangle's plane: one whose orthogonal projection falls inside
      * the triangle yields that projection, and the region code is then
-     * <code>POINT_ON_TRIANGLE_FACE</code>.
+     * <code>POINT_ON_TRIANGLE_FACE</code>. The regions are decided with the signed sub-triangle
+     * areas (triple products against the triangle's normal), which stays accurate for thin
+     * triangles. A degenerate triangle - collinear or coincident vertices - yields the closest
+     * point of the segment or point it collapses to.
      * <p>
      * Reference: Book "Real-Time Collision Detection" chapter 5.1.5 "Closest Point on Triangle to
      * Point"
@@ -337,51 +343,56 @@ public final class IntersectionGend {
         double _t12 = pZ - v2Z;
         double _t13 = pX - v2X;
         double _t14 = pY - v2Y;
-        double _t21 = _t11 * _t5;
-        double _t23 = _t14 * _t8;
-        double _t39 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
-        double _t40 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
-        double _t41 = Math.fma(_t9, _t1, Math.fma(_t10, _t3, _t21));
-        double _t42 = Math.fma(_t9, _t6, Math.fma(_t10, _t7, _t11 * _t8));
-        double _t43 = Math.fma(_t12, _t6, Math.fma(_t13, _t7, _t23));
-        double _t44 = Math.fma(_t12, _t1, Math.fma(_t13, _t3, _t14 * _t5));
-        double _t52 = _t42 - _t41;
-        double _t53 = _t39 - _t41;
-        double _t53_inv = 1.0 / _t53;
-        double _t54 = _t40 - _t43;
-        double _t54_inv = 1.0 / _t54;
-        double _t60 = Math.fma(_t39, _t42, -(_t40 * _t41));
-        double _t61 = Math.fma(_t40, _t44, -(_t39 * _t43));
-        double _t62 = Math.fma(_t41, _t43, -(_t42 * _t44));
-        double _t63 = Math.fma(_t10, _t7, Math.fma(_t11, _t8, _t9 * _t6)) + Math.fma(-_t10, _t3, Math.fma(-_t9, _t1, -_t21)) + (Math.fma(_t13, _t3, Math.fma(_t14, _t5, _t12 * _t1)) + Math.fma(-_t13, _t7, Math.fma(-_t12, _t6, -_t23)));
-        double _t63_inv = 1.0 / _t63;
-        double _t65 = _t61 + _t62 + _t60;
-        double _t65_inv = 1.0 / _t65;
-        if ((_t39 <= 0.0) && (_t40 <= 0.0)) {
+        double _t15 = v2Z - v1Z;
+        double _t16 = v2X - v1X;
+        double _t17 = v2Y - v1Y;
+        double _t42 = Math.fma(_t1, _t7, -(_t3 * _t6));
+        double _t43 = Math.fma(_t5, _t6, -(_t1 * _t8));
+        double _t44 = Math.fma(_t3, _t8, -(_t5 * _t7));
+        double _t52 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
+        double _t53 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
+        double _t54 = Math.fma(_t9, _t1, Math.fma(_t10, _t3, _t11 * _t5));
+        double _t55 = Math.fma(_t9, _t6, Math.fma(_t10, _t7, _t11 * _t8));
+        double _t56 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
+        double _sp0 = _t52 / _t56;
+        double _t57 = Math.fma(_t12, _t6, Math.fma(_t13, _t7, _t14 * _t8));
+        double _t58 = Math.fma(_t12, _t1, Math.fma(_t13, _t3, _t14 * _t5));
+        double _t59 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
+        double _sp1 = _t53 / _t59;
+        double _t60 = Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17));
+        double _t63 = Math.fma(_t2, _t42, -(_t4 * _t43));
+        double _t64 = Math.fma(_t4, _t44, -(_t0 * _t42));
+        double _t65 = Math.fma(_t0, _t43, -(_t2 * _t44));
+        double _t67 = _t14 * _t65;
+        double _t68 = _t55 - _t54;
+        double _sp2 = _t68 / _t60;
+        double _t71 = Math.fma(_t10, _t64, _t11 * _t65);
+        double _sp3 = Math.fma(_t0, _t44, Math.fma(_t2, _t43, _t4 * _t42)) / Math.fma(_t44, _t44, Math.fma(_t43, _t43, _t42 * _t42));
+        if ((_t52 <= 0.0) && (_t53 <= 0.0)) {
             result.set(v0X, v0Y, v0Z);
             return 1;
         }
-        if ((_t41 >= 0.0) && (_t42 <= _t41)) {
+        if ((_t54 >= 0.0) && (_t55 <= _t54)) {
             result.set(v1X, v1Y, v1Z);
             return 2;
         }
-        if ((_t60 <= 0.0) && ((_t39 >= 0.0) && (_t41 <= 0.0))) {
-            result.set(v0X + _t39 * _t3 * _t53_inv, v0Y + _t39 * _t5 * _t53_inv, v0Z + _t39 * _t1 * _t53_inv);
+        if ((-Math.fma(_t9, _t63, _t71) <= 0.0) && ((_t52 >= 0.0) && ((_t54 <= 0.0) && (_t56 > 0.0)))) {
+            result.set(v0X + _sp0 * _t3, v0Y + _sp0 * _t5, v0Z + _sp0 * _t1);
             return 4;
         }
-        if ((_t43 >= 0.0) && (_t44 <= _t43)) {
+        if ((_t57 >= 0.0) && (_t58 <= _t57)) {
             result.set(v2X, v2Y, v2Z);
             return 3;
         }
-        if ((_t61 <= 0.0) && ((_t40 >= 0.0) && (_t43 <= 0.0))) {
-            result.set(v0X + _t40 * _t7 * _t54_inv, v0Y + _t40 * _t8 * _t54_inv, v0Z + _t40 * _t6 * _t54_inv);
+        if ((Math.fma(_t12, _t63, Math.fma(_t13, _t64, _t67)) <= 0.0) && ((_t53 >= 0.0) && ((_t57 <= 0.0) && (_t59 > 0.0)))) {
+            result.set(v0X + _sp1 * _t7, v0Y + _sp1 * _t8, v0Z + _sp1 * _t6);
             return 6;
         }
-        if ((_t62 <= 0.0) && ((_t52 >= 0.0) && (_t44 - _t43 >= 0.0))) {
-            result.set(v1X + (v2X - v1X) * _t52 * _t63_inv, v1Y + (v2Y - v1Y) * _t52 * _t63_inv, v1Z + (v2Z - v1Z) * _t52 * _t63_inv);
+        if ((_t71 + Math.fma(_t9, _t63, _t43 * _t43) + (Math.fma(_t42, _t42, _t44 * _t44) + Math.fma(-_t13, _t64, Math.fma(-_t12, _t63, -_t67))) <= 0.0) && ((_t68 >= 0.0) && ((_t58 - _t57 >= 0.0) && (_t60 > 0.0)))) {
+            result.set(v1X + _t16 * _sp2, v1Y + _t17 * _sp2, v1Z + _t15 * _sp2);
             return 5;
         }
-        result.set(v0X + _t3 * _t61 * _t65_inv + _t7 * _t60 * _t65_inv, v0Y + _t5 * _t61 * _t65_inv + _t8 * _t60 * _t65_inv, v0Z + _t1 * _t61 * _t65_inv + _t6 * _t60 * _t65_inv);
+        result.set(pX - _sp3 * _t43, pY - _sp3 * _t42, pZ - _sp3 * _t44);
         return 7;
     }
 
@@ -403,7 +414,10 @@ public final class IntersectionGend {
      * <p>
      * The point need not lie in the triangle's plane: one whose orthogonal projection falls inside
      * the triangle yields that projection, and the region code is then
-     * <code>POINT_ON_TRIANGLE_FACE</code>.
+     * <code>POINT_ON_TRIANGLE_FACE</code>. The regions are decided with the signed sub-triangle
+     * areas (triple products against the triangle's normal), which stays accurate for thin
+     * triangles. A degenerate triangle - collinear or coincident vertices - yields the closest
+     * point of the segment or point it collapses to.
      * <p>
      * Reference: Book "Real-Time Collision Detection" chapter 5.1.5 "Closest Point on Triangle to
      * Point"
@@ -429,9 +443,10 @@ public final class IntersectionGend {
      * given point, and classify which feature of the triangle that point belongs to: one of the
      * three vertices, one of the three edges, or the face.
      * <p>
-     * The vertices may be given in either winding order. The triangle must have a non-zero area,
-     * because the face case divides by a denominator that equals four times the squared area of the
-     * triangle.
+     * The vertices may be given in either winding order. The Voronoi regions are decided with the
+     * signed sub-triangle areas (cross products), which stays accurate for thin triangles, and a
+     * point in the face region is returned as it is. A degenerate triangle - collinear or
+     * coincident vertices - yields the closest point of the segment or point it collapses to.
      * <p>
      * Reference: Book "Real-Time Collision Detection" chapter 5.1.5 "Closest Point on Triangle to
      * Point"
@@ -462,49 +477,49 @@ public final class IntersectionGend {
         double _t7 = pY - v1Y;
         double _t8 = pX - v2X;
         double _t9 = pY - v2Y;
-        double _t22 = Math.fma(_t0, _t1, _t2 * _t3);
-        double _t23 = Math.fma(_t0, _t4, _t2 * _t5);
-        double _t24 = Math.fma(_t6, _t1, _t7 * _t3);
-        double _t25 = Math.fma(_t6, _t4, _t7 * _t5);
-        double _t26 = Math.fma(_t8, _t4, _t9 * _t5);
-        double _t27 = Math.fma(_t8, _t1, _t9 * _t3);
-        double _t33 = _t25 - _t24;
-        double _t34 = _t22 - _t24;
-        double _t34_inv = 1.0 / _t34;
-        double _t35 = _t23 - _t26;
-        double _t35_inv = 1.0 / _t35;
-        double _t41 = Math.fma(_t22, _t25, -(_t23 * _t24));
-        double _t42 = Math.fma(_t23, _t27, -(_t22 * _t26));
-        double _t43 = Math.fma(_t24, _t26, -(_t25 * _t27));
-        double _t44 = _t25 + Math.fma(-_t7, _t3, -(_t6 * _t1)) + (_t27 + Math.fma(-_t9, _t5, -(_t8 * _t4)));
-        double _t44_inv = 1.0 / _t44;
-        double _t46 = _t42 + _t43 + _t41;
-        double _t46_inv = 1.0 / _t46;
-        if ((_t22 <= 0.0) && (_t23 <= 0.0)) {
+        double _t10 = v2X - v1X;
+        double _t11 = v2Y - v1Y;
+        double _t27 = Math.fma(_t0, _t1, _t2 * _t3);
+        double _t28 = Math.fma(_t0, _t4, _t2 * _t5);
+        double _t29 = Math.fma(_t6, _t1, _t7 * _t3);
+        double _t30 = Math.fma(_t6, _t4, _t7 * _t5);
+        double _t31 = Math.fma(_t1, _t1, _t3 * _t3);
+        double _sp0 = _t27 / _t31;
+        double _t32 = Math.fma(_t8, _t4, _t9 * _t5);
+        double _t33 = Math.fma(_t8, _t1, _t9 * _t3);
+        double _t34 = Math.fma(_t4, _t4, _t5 * _t5);
+        double _sp1 = _t28 / _t34;
+        double _t35 = Math.fma(_t10, _t10, _t11 * _t11);
+        double _t36 = Math.fma(_t0, _t7, -(_t6 * _t2));
+        double _t37 = Math.fma(_t1, _t5, -(_t3 * _t4));
+        double _t38 = Math.fma(_t8, _t2, -(_t0 * _t9));
+        double _t39 = _t30 - _t29;
+        double _sp2 = _t39 / _t35;
+        if ((_t27 <= 0.0) && (_t28 <= 0.0)) {
             result.set(v0X, v0Y);
             return 1;
         }
-        if ((_t24 >= 0.0) && (_t25 <= _t24)) {
+        if ((_t29 >= 0.0) && (_t30 <= _t29)) {
             result.set(v1X, v1Y);
             return 2;
         }
-        if ((_t41 <= 0.0) && ((_t22 >= 0.0) && (_t24 <= 0.0))) {
-            result.set(v0X + _t22 * _t1 * _t34_inv, v0Y + _t22 * _t3 * _t34_inv);
+        if ((_t36 * _t37 <= 0.0) && ((_t27 >= 0.0) && ((_t29 <= 0.0) && (_t31 > 0.0)))) {
+            result.set(v0X + _sp0 * _t1, v0Y + _sp0 * _t3);
             return 4;
         }
-        if ((_t26 >= 0.0) && (_t27 <= _t26)) {
+        if ((_t32 >= 0.0) && (_t33 <= _t32)) {
             result.set(v2X, v2Y);
             return 3;
         }
-        if ((_t42 <= 0.0) && ((_t23 >= 0.0) && (_t26 <= 0.0))) {
-            result.set(v0X + _t23 * _t4 * _t35_inv, v0Y + _t23 * _t5 * _t35_inv);
+        if ((_t38 * _t37 <= 0.0) && ((_t28 >= 0.0) && ((_t32 <= 0.0) && (_t34 > 0.0)))) {
+            result.set(v0X + _sp1 * _t4, v0Y + _sp1 * _t5);
             return 6;
         }
-        if ((_t43 <= 0.0) && ((_t33 >= 0.0) && (_t27 - _t26 >= 0.0))) {
-            result.set(v1X + (v2X - v1X) * _t33 * _t44_inv, v1Y + (v2Y - v1Y) * _t33 * _t44_inv);
+        if (((_t37 - _t38 - _t36) * _t37 <= 0.0) && ((_t39 >= 0.0) && ((_t33 - _t32 >= 0.0) && (_t35 > 0.0)))) {
+            result.set(v1X + _t10 * _sp2, v1Y + _t11 * _sp2);
             return 5;
         }
-        result.set(v0X + _t1 * _t42 * _t46_inv + _t4 * _t41 * _t46_inv, v0Y + _t3 * _t42 * _t46_inv + _t5 * _t41 * _t46_inv);
+        result.set(pX, pY);
         return 7;
     }
 
@@ -513,9 +528,10 @@ public final class IntersectionGend {
      * given point, and classify which feature of the triangle that point belongs to: one of the
      * three vertices, one of the three edges, or the face.
      * <p>
-     * The vertices may be given in either winding order. The triangle must have a non-zero area,
-     * because the face case divides by a denominator that equals four times the squared area of the
-     * triangle.
+     * The vertices may be given in either winding order. The Voronoi regions are decided with the
+     * signed sub-triangle areas (cross products), which stays accurate for thin triangles, and a
+     * point in the face region is returned as it is. A degenerate triangle - collinear or
+     * coincident vertices - yields the closest point of the segment or point it collapses to.
      * <p>
      * Reference: Book "Real-Time Collision Detection" chapter 5.1.5 "Closest Point on Triangle to
      * Point"
@@ -553,10 +569,8 @@ public final class IntersectionGend {
      * @return the orthogonal projection of the given point onto the plane
      */
     public static Double3 projectPointOnPlane(double pX, double pY, double pZ, double nX, double nY, double nZ, double d) {
-        double _t4 = Math.fma(nZ, nZ, Math.fma(nX, nX, nY * nY));
-        double _t4_inv = 1.0 / _t4;
-        double _t5 = Math.fma(nX, pX, Math.fma(nY, pY, Math.fma(nZ, pZ, d)));
-        return Joml.double3(pX - nX * _t5 * _t4_inv, pY - nY * _t5 * _t4_inv, pZ - nZ * _t5 * _t4_inv);
+        double _sp0 = Math.fma(nX, pX, Math.fma(nY, pY, Math.fma(nZ, pZ, d))) / Math.fma(nZ, nZ, Math.fma(nX, nX, nY * nY));
+        return Joml.double3(pX - nX * _sp0, pY - nY * _sp0, pZ - nZ * _sp0);
     }
 
     /**
@@ -840,8 +854,10 @@ public final class IntersectionGend {
      * <p>
      * Both bounds are exclusive. The smaller of the two roots is taken when it lies in that open
      * range, otherwise the larger root is taken when it does; when neither root qualifies, or when
-     * the discriminant <i>b*b - 4*a*c</i> is negative, the result is positive infinity.
-     * <code>a</code> must not be zero, since both roots are formed by dividing by <i>2*a</i>.
+     * the discriminant <i>b*b - 4*a*c</i> is negative, the result is positive infinity. The roots
+     * are formed with the numerically stable <i>q = -(b + sign(b)*sqrt(b*b - 4*a*c)) / 2</i>, as
+     * <i>q / a</i> and <i>c / q</i>, so a root near zero keeps its precision; with
+     * <code>a = 0</code> the equation is linear and its root <i>-c / b</i> is used.
      *
      * @param a the quadratic factor
      * @param b the linear factor
@@ -851,16 +867,14 @@ public final class IntersectionGend {
      *        and <code>maxR</code>, or positive infinity when there is no such root
      */
     public static double computeLowestRoot(double a, double b, double c, double maxR) {
-        double _t1 = a + a;
-        double _t1_inv = 1.0 / _t1;
-        double _t4 = Math.fma(b, b, -(c * 4.0 * a));
-        double _t5 = Math.sqrt(_t4);
-        double _t8 = (_t5 - b) * _t1_inv;
-        double _t9 = (-b - _t5) * _t1_inv;
-        double _t10 = Math.min(_t9, _t8);
-        double _t11 = Math.max(_t9, _t8);
+        double _t3 = Math.fma(b, b, -(c * 4.0 * a));
+        double _t7 = -0.5 * (b + Math.copySign(Math.sqrt(_t3), b));
+        double _t8 = _t7 / a;
+        double _t9 = c / _t7;
+        double _t10 = Math.min(_t8, _t9);
+        double _t11 = Math.max(_t8, _t9);
         double _t13 = _t11 > 0.0 ? _t11 < maxR ? _t11 : Double.POSITIVE_INFINITY : Double.POSITIVE_INFINITY;
-        return _t4 < 0.0 ? Double.POSITIVE_INFINITY : _t10 > 0.0 ? _t10 < maxR ? _t10 : _t13 : _t13;
+        return _t3 < 0.0 ? Double.POSITIVE_INFINITY : _t10 > 0.0 ? _t10 < maxR ? _t10 : _t13 : _t13;
     }
 
     /**
@@ -892,11 +906,12 @@ public final class IntersectionGend {
     public static boolean intersectCircleCircle(double aX, double aY, double radiusSquaredA, double bX, double bY, double radiusSquaredB, Double3 intersectionCenterAndHL) {
         double _t0 = bX - aX;
         double _t1 = bY - aY;
-        double _t4 = Math.fma(_t0, _t0, _t1 * _t1);
-        double _t8 = 0.5 + (radiusSquaredA - radiusSquaredB) / (_t4 + _t4);
-        double _t11 = Math.sqrt(Math.fma(-_t4, _t8 * _t8, radiusSquaredA));
-        if ((_t4 != 0.0) && (_t11 >= 0.0)) {
-            intersectionCenterAndHL.set(Math.fma(_t8, _t0, aX), Math.fma(_t8, _t1, aY), _t11);
+        double _t2 = radiusSquaredB < radiusSquaredA ? radiusSquaredB : radiusSquaredA;
+        double _t6 = Math.fma(_t0, _t0, _t1 * _t1);
+        double _t10 = 0.5 + (_t2 - (radiusSquaredB < radiusSquaredA ? radiusSquaredA : radiusSquaredB)) / (_t6 + _t6);
+        double _t13 = Math.sqrt(Math.fma(-_t6, _t10 * _t10, _t2));
+        if ((_t6 != 0.0) && (_t13 >= 0.0)) {
+            intersectionCenterAndHL.set(Math.fma(_t10, radiusSquaredB < radiusSquaredA ? aX - bX : _t0, radiusSquaredB < radiusSquaredA ? bX : aX), Math.fma(_t10, radiusSquaredB < radiusSquaredA ? aY - bY : _t1, radiusSquaredB < radiusSquaredA ? bY : aY), _t13);
             return true;
         }
         return false;
@@ -1375,12 +1390,10 @@ public final class IntersectionGend {
         double _t0 = p1Z - p0Z;
         double _t1 = p1X - p0X;
         double _t2 = p1Y - p0Y;
-        double _t6 = Math.fma(a, p0X, Math.fma(b, p0Y, Math.fma(c, p0Z, d)));
-        double _t8 = Math.fma(c, _t0, Math.fma(a, _t1, b * _t2));
-        double _t8_inv = 1.0 / _t8;
-        double _t10 = -(_t6 * _t8_inv);
+        double _sp0 = Math.fma(a, p0X, Math.fma(b, p0Y, Math.fma(c, p0Z, d))) / Math.fma(c, _t0, Math.fma(a, _t1, b * _t2));
+        double _t10 = -_sp0;
         if ((_t10 >= 0.0) && (_t10 <= 1.0)) {
-            intersectionPoint.set(p0X - _t6 * _t1 * _t8_inv, p0Y - _t6 * _t2 * _t8_inv, p0Z - _t6 * _t0 * _t8_inv);
+            intersectionPoint.set(p0X - _sp0 * _t1, p0Y - _sp0 * _t2, p0Z - _sp0 * _t0);
             return true;
         }
         return false;
@@ -1618,13 +1631,12 @@ public final class IntersectionGend {
      */
     public static boolean intersectPlaneSweptSphere(double a, double b, double c, double d, double centerX, double centerY, double centerZ, double radius, double vX, double vY, double vZ, Double4 pointAndTime) {
         double _t4 = Math.fma(c, vZ, Math.fma(a, vX, b * vY));
-        double _t4_inv = 1.0 / _t4;
         double _t5 = Math.fma(a, centerX, Math.fma(b, centerY, Math.fma(c, centerZ, d)));
         double _t6 = Math.abs(_t5);
         double _t7 = _t5 > 0.0 ? radius : -radius;
-        double _t11 = Math.fma(-a, centerX, Math.fma(-b, centerY, Math.fma(-c, centerZ, _t7 - d)));
+        double _sp0 = Math.fma(-a, centerX, Math.fma(-b, centerY, Math.fma(-c, centerZ, _t7 - d))) / _t4;
         if ((_t6 <= radius) || (_t5 * _t4 < 0.0)) {
-            pointAndTime.set(_t6 <= radius ? centerX : Math.fma(-a, _t7, centerX + vX * _t11 * _t4_inv), _t6 <= radius ? centerY : Math.fma(-b, _t7, centerY + vY * _t11 * _t4_inv), _t6 <= radius ? centerZ : Math.fma(-c, _t7, centerZ + vZ * _t11 * _t4_inv), _t6 <= radius ? 0.0 : _t11 * _t4_inv);
+            pointAndTime.set(_t6 <= radius ? centerX : Math.fma(-a, _t7, centerX + vX * _sp0), _t6 <= radius ? centerY : Math.fma(-b, _t7, centerY + vY * _sp0), _t6 <= radius ? centerZ : Math.fma(-c, _t7, centerZ + vZ * _sp0), _t6 <= radius ? 0.0 : _sp0);
             return true;
         }
         return false;
@@ -2373,13 +2385,13 @@ public final class IntersectionGend {
         double _t0 = bZ - aZ;
         double _t1 = bX - aX;
         double _t2 = bY - aY;
-        double _t8 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        double _t10 = _t8 + _t8;
-        double _t10_inv = 1.0 / _t10;
-        double _t11 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t0, _t0, radiusSquaredA - radiusSquaredB)));
-        double _t14 = radiusSquaredA - _t11 * _t11 / (4.0 * _t8);
-        if ((_t8 != 0.0) && (_t14 >= 0.0)) {
-            centerAndRadiusOfIntersectionCircle.set(aX + _t1 * _t11 * _t10_inv, aY + _t2 * _t11 * _t10_inv, aZ + _t0 * _t11 * _t10_inv, Math.sqrt(_t14));
+        double _t3 = radiusSquaredB < radiusSquaredA ? radiusSquaredB : radiusSquaredA;
+        double _t9 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        double _t13 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t0, _t0, _t3 - (radiusSquaredB < radiusSquaredA ? radiusSquaredA : radiusSquaredB))));
+        double _sp0 = _t13 / (_t9 + _t9);
+        double _t16 = _t3 - _t13 * _t13 / (4.0 * _t9);
+        if ((_t9 != 0.0) && (_t16 >= 0.0)) {
+            centerAndRadiusOfIntersectionCircle.set(_sp0 * (radiusSquaredB < radiusSquaredA ? aX - bX : _t1) + (radiusSquaredB < radiusSquaredA ? bX : aX), _sp0 * (radiusSquaredB < radiusSquaredA ? aY - bY : _t2) + (radiusSquaredB < radiusSquaredA ? bY : aY), _sp0 * (radiusSquaredB < radiusSquaredA ? aZ - bZ : _t0) + (radiusSquaredB < radiusSquaredA ? bZ : aZ), Math.sqrt(_t16));
             return true;
         }
         return false;
@@ -2822,24 +2834,23 @@ public final class IntersectionGend {
     }
 
     /**
-     * Test whether two circles, given by their centers and their radii, intersect.
+     * Test whether two circles, given by their centers and their squared radii, intersect.
      * <p>
-     * The radii are passed unsquared: the test compares the squared distance between the centers
-     * against the square of the sum of the two radii. It is inclusive, so circles that touch in a
-     * single point count as intersecting, and an intersection is also reported when one circle
-     * contains the other.
+     * Unlike the form taking the center coordinates, this form takes the <em>squared</em> radii, as
+     * JOML 1 did. The test is inclusive, so circles that touch in a single point count as
+     * intersecting, and an intersection is also reported when one circle contains the other.
      * <p>
      * Reference: <a
      * href="http://math.stackexchange.com/questions/275514/two-circles-overlap">http://math.stackexchange.com/</a>
      *
-     * @param a the first circle's center
-     * @param rA the radius of the first circle
-     * @param b the second circle's center
-     * @param rB the radius of the second circle
+     * @param centerA the first circle's center
+     * @param radiusSquaredA the square of the first circle's radius
+     * @param centerB the second circle's center
+     * @param radiusSquaredB the square of the second circle's radius
      * @return <code>true</code> iff both circles intersect
      */
-    public static boolean testCircleCircle(Double2R a, double rA, Double2R b, double rB) {
-        return testCircleCircle(a.x(), a.y(), rA, b.x(), b.y(), rB);
+    public static boolean testCircleCircle(Double2R centerA, double radiusSquaredA, Double2R centerB, double radiusSquaredB) {
+        return testCircleCircle(centerA.x(), centerA.y(), Math.sqrt(radiusSquaredA), centerB.x(), centerB.y(), Math.sqrt(radiusSquaredB));
     }
 
     /**
@@ -2878,22 +2889,22 @@ public final class IntersectionGend {
         double _t9 = v2Y - v1Y;
         double _t10 = v0X - v2X;
         double _t11 = v0Y - v2Y;
-        double _t21 = Math.fma(_t0, _t6, _t1 * _t7);
-        double _t22 = Math.fma(_t6, _t6, _t7 * _t7);
-        double _t23 = Math.fma(_t2, _t8, _t3 * _t9);
-        double _t24 = Math.fma(_t8, _t8, _t9 * _t9);
-        double _t25 = Math.fma(_t4, _t10, _t5 * _t11);
-        double _t26 = Math.fma(_t10, _t10, _t11 * _t11);
-        double _t27 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, -radiusSquared));
-        double _t28 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, -radiusSquared));
-        double _t29 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, -radiusSquared));
-        double _t38 = _t25 >= 0.0 ? _t25 <= _t26 ? _t26 * _t29 <= _t25 * _t25 ? 1.0 : 0.0 : 0.0 : 0.0;
-        double _t41 = _t23 >= 0.0 ? _t23 <= _t24 ? _t24 * _t28 <= _t23 * _t23 ? 1.0 : _t38 : _t38 : _t38;
-        double _t44 = _t21 >= 0.0 ? _t21 <= _t22 ? _t22 * _t27 <= _t21 * _t21 ? 1.0 : _t41 : _t41 : _t41;
-        if (_t27 <= 0.0) return true;
-        if (_t28 <= 0.0) return true;
-        if (_t29 <= 0.0) return true;
-        return (_t27 <= 0.0 ? 1.0 : _t28 <= 0.0 ? 1.0 : _t29 <= 0.0 ? 1.0 : Math.fma(_t1, _t6, -(_t0 * _t7)) >= 0.0 ? Math.fma(_t3, _t8, -(_t2 * _t9)) >= 0.0 ? Math.fma(_t5, _t10, -(_t4 * _t11)) >= 0.0 ? 1.0 : _t44 : _t44 : _t44) != 0;
+        double _t24 = Math.fma(_t0, _t6, _t1 * _t7);
+        double _t25 = Math.fma(_t6, _t6, _t7 * _t7);
+        double _t26 = Math.fma(_t2, _t8, _t3 * _t9);
+        double _t27 = Math.fma(_t8, _t8, _t9 * _t9);
+        double _t28 = Math.fma(_t4, _t10, _t5 * _t11);
+        double _t29 = Math.fma(_t10, _t10, _t11 * _t11);
+        double _t30 = Math.fma(_t1, _t6, -(_t0 * _t7));
+        double _t31 = Math.fma(_t3, _t8, -(_t2 * _t9));
+        double _t32 = Math.fma(_t5, _t10, -(_t4 * _t11));
+        double _t41 = _t28 >= 0.0 ? _t28 <= _t29 ? _t32 * _t32 <= radiusSquared * _t29 ? 1.0 : 0.0 : 0.0 : 0.0;
+        double _t44 = _t26 >= 0.0 ? _t26 <= _t27 ? _t31 * _t31 <= radiusSquared * _t27 ? 1.0 : _t41 : _t41 : _t41;
+        double _t47 = _t24 >= 0.0 ? _t24 <= _t25 ? _t30 * _t30 <= radiusSquared * _t25 ? 1.0 : _t44 : _t44 : _t44;
+        if (Math.fma(_t0, _t0, Math.fma(_t1, _t1, -radiusSquared)) <= 0.0) return true;
+        if (Math.fma(_t2, _t2, Math.fma(_t3, _t3, -radiusSquared)) <= 0.0) return true;
+        if (Math.fma(_t4, _t4, Math.fma(_t5, _t5, -radiusSquared)) <= 0.0) return true;
+        return (Math.fma(_t0, _t0, Math.fma(_t1, _t1, -radiusSquared)) <= 0.0 ? 1.0 : Math.fma(_t2, _t2, Math.fma(_t3, _t3, -radiusSquared)) <= 0.0 ? 1.0 : Math.fma(_t4, _t4, Math.fma(_t5, _t5, -radiusSquared)) <= 0.0 ? 1.0 : _t30 >= 0.0 ? _t31 >= 0.0 ? _t32 >= 0.0 ? 1.0 : _t47 : _t47 : _t47) != 0;
     }
 
     /**
@@ -2982,9 +2993,8 @@ public final class IntersectionGend {
      * sphere's center to the closest point on the segment - not on the infinite line through it -
      * is what gets compared against {@code radiusSquared}. The comparison is inclusive, so a
      * segment lying entirely inside the sphere counts as intersecting, as does one that only
-     * touches the sphere's surface. The radius is supplied already squared, and the two end points
-     * must be distinct: the segment's parameter is obtained by dividing by the squared length of
-     * the segment.
+     * touches the sphere's surface. The radius is supplied already squared. A segment whose two end
+     * points coincide is the point they share.
      * <p>
      * Reference: <a
      * href="http://paulbourke.net/geometry/circlesphere/index.html#linesphere">http://paulbourke.net/</a>
@@ -3005,11 +3015,11 @@ public final class IntersectionGend {
         double _t0 = p1Z - p0Z;
         double _t3 = p1X - p0X;
         double _t5 = p1Y - p0Y;
-        double _t16 = Math.clamp(Math.fma(centerZ - p0Z, _t0, Math.fma(centerX - p0X, _t3, (centerY - p0Y) * _t5)) / Math.fma(_t0, _t0, Math.fma(_t3, _t3, _t5 * _t5)), 0.0, 1.0);
-        double _t17 = Math.fma(_t0, _t16, p0Z - centerZ);
-        double _t18 = Math.fma(_t3, _t16, p0X - centerX);
-        double _t19 = Math.fma(_t5, _t16, p0Y - centerY);
-        return Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t19 * _t19)) <= radiusSquared;
+        double _t17 = Math.clamp(Math.fma(centerZ - p0Z, _t0, Math.fma(centerX - p0X, _t3, (centerY - p0Y) * _t5)) / Math.max(Math.fma(_t0, _t0, Math.fma(_t3, _t3, _t5 * _t5)), 4.9E-324), 0.0, 1.0);
+        double _t18 = Math.fma(_t0, _t17, p0Z - centerZ);
+        double _t19 = Math.fma(_t3, _t17, p0X - centerX);
+        double _t20 = Math.fma(_t5, _t17, p0Y - centerY);
+        return Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)) <= radiusSquared;
     }
 
     /**
@@ -3020,9 +3030,8 @@ public final class IntersectionGend {
      * sphere's center to the closest point on the segment - not on the infinite line through it -
      * is what gets compared against {@code radiusSquared}. The comparison is inclusive, so a
      * segment lying entirely inside the sphere counts as intersecting, as does one that only
-     * touches the sphere's surface. The radius is supplied already squared, and the two end points
-     * must be distinct: the segment's parameter is obtained by dividing by the squared length of
-     * the segment.
+     * touches the sphere's surface. The radius is supplied already squared. A segment whose two end
+     * points coincide is the point they share.
      * <p>
      * Reference: <a
      * href="http://paulbourke.net/geometry/circlesphere/index.html#linesphere">http://paulbourke.net/</a>
@@ -3270,15 +3279,15 @@ public final class IntersectionGend {
         double _t5 = bY - aY;
         double _t6 = Math.fma(maX, maX, maY * maY);
         double _t8 = Math.sqrt(_t6);
-        double _t9 = (1.0 / Math.sqrt(_t6));
-        double _t11 = maX * _t9;
-        double _t12 = maY * _t9;
-        double _t17 = Math.sqrt(Math.fma(_t0, _t0, _t1 * _t1)) - _t2;
-        double _t18 = Math.fma(_t4, _t11, _t5 * _t12);
-        double _t20 = Math.fma(-_t18, _t18, Math.fma(_t4, _t4, _t5 * _t5));
-        double _t22 = Math.fma(_t2, _t2, -_t20);
-        if (_t17 <= 0.0) return true;
-        return (_t17 <= 0.0 ? 1.0 : _t8 < _t17 ? 0.0 : _t18 <= 0.0 ? 0.0 : _t20 >= _t2 * _t2 ? 0.0 : _t22 < 0.0 ? 0.0 : _t8 < Math.fma(_t4, _t11, Math.fma(_t5, _t12, -Math.sqrt(_t22))) ? 0.0 : 1.0) != 0;
+        double _t9 = 1.0 / _t8;
+        double _t10 = maX * _t9;
+        double _t11 = maY * _t9;
+        double _t16 = Math.sqrt(Math.fma(_t0, _t0, _t1 * _t1)) - _t2;
+        double _t17 = Math.fma(_t5, _t10, -(_t4 * _t11));
+        double _t18 = _t17 * _t17;
+        double _t20 = Math.fma(_t2, _t2, -_t18);
+        if (_t16 <= 0.0) return true;
+        return (_t16 <= 0.0 ? 1.0 : _t8 < _t16 ? 0.0 : Math.fma(_t4, _t10, _t5 * _t11) <= 0.0 ? 0.0 : _t18 >= _t2 * _t2 ? 0.0 : _t20 < 0.0 ? 0.0 : _t8 < Math.fma(_t4, _t10, Math.fma(_t5, _t11, -Math.sqrt(_t20))) ? 0.0 : 1.0) != 0;
     }
 
     /**
@@ -3675,14 +3684,15 @@ public final class IntersectionGend {
      * Test whether the projection of the given point onto the plane of the triangle formed by the
      * three given vertices lies inside that triangle.
      * <p>
-     * The point need not lie in the triangle's plane: it is resolved against the triangle's own
-     * edge basis, which sees only its in-plane part, so the barycentric coordinates obtained are
-     * those of its orthogonal projection onto that plane. The test is inclusive, so a projection
-     * landing on an edge or on a vertex counts as inside, and it is symmetric in the vertices, so
-     * the winding order does not matter.
-     * <p>
-     * Reference: <a href="http://www.peroxide.dk/papers/collision/collision.pdf">Improved Collision
-     * detection and Response</a>
+     * The point need not lie in the triangle's plane: the test compares the signed areas of the
+     * three sub-triangles the point forms with the triangle's edges against the triangle's normal,
+     * which see only its in-plane part, so it decides for the point's orthogonal projection onto
+     * that plane. The areas are formed from cross products, which keeps the verdict accurate for
+     * thin triangles. The test is inclusive, so a projection landing on an edge or on a vertex
+     * counts as inside, and it is symmetric in the vertices, so the winding order does not matter.
+     * A degenerate triangle - collinear or coincident vertices, or an angle between its first two
+     * edges below about <code>1e-6</code> rad (<code>float</code>) / <code>2e-15</code> rad
+     * (<code>double</code>) - contains no point.
      *
      * @param pX the x coordinate of the point to test
      * @param pY the y coordinate of the point to test
@@ -3700,39 +3710,47 @@ public final class IntersectionGend {
      *        triangle
      */
     public static boolean testPointInTriangle(double pX, double pY, double pZ, double v0X, double v0Y, double v0Z, double v1X, double v1Y, double v1Z, double v2X, double v2Y, double v2Z) {
-        double _t0 = pZ - v0Z;
-        double _t1 = v1Z - v0Z;
-        double _t2 = pX - v0X;
-        double _t3 = v1X - v0X;
-        double _t4 = pY - v0Y;
-        double _t5 = v1Y - v0Y;
-        double _t6 = v2Z - v0Z;
-        double _t7 = v2X - v0X;
-        double _t8 = v2Y - v0Y;
-        double _t19 = Math.fma(_t0, _t1, Math.fma(_t2, _t3, _t4 * _t5));
-        double _t20 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        double _t21 = Math.fma(_t0, _t6, Math.fma(_t2, _t7, _t4 * _t8));
-        double _t22 = Math.fma(_t1, _t6, Math.fma(_t3, _t7, _t5 * _t8));
-        double _t23 = Math.fma(_t1, _t1, Math.fma(_t3, _t3, _t5 * _t5));
-        double _t28 = Math.fma(_t19, _t20, -(_t21 * _t22));
-        double _t29 = Math.fma(_t21, _t23, -(_t19 * _t22));
-        if (!(_t28 >= 0.0)) return false;
-        if (!(_t29 >= 0.0)) return false;
-        return _t28 + _t29 - Math.fma(_t23, _t20, -(_t22 * _t22)) <= 0.0;
+        double _t0 = v1X - v0X;
+        double _t1 = v2Y - v0Y;
+        double _t2 = v1Y - v0Y;
+        double _t3 = v2X - v0X;
+        double _t4 = v2Z - v0Z;
+        double _t5 = v1Z - v0Z;
+        double _t6 = pX - v0X;
+        double _t7 = pY - v0Y;
+        double _t8 = pZ - v0Z;
+        double _t9 = pY - v1Y;
+        double _t10 = v2X - v1X;
+        double _t11 = pX - v1X;
+        double _t12 = v2Y - v1Y;
+        double _t13 = v2Z - v1Z;
+        double _t14 = pZ - v1Z;
+        double _t23 = Math.fma(_t0, _t1, -(_t2 * _t3));
+        double _t24 = Math.fma(_t2, _t4, -(_t5 * _t1));
+        double _t25 = Math.fma(_t5, _t3, -(_t0 * _t4));
+        double _t32 = Math.fma(_t5, _t4, Math.fma(_t0, _t3, _t2 * _t1));
+        double _t33 = Math.fma(_t6, _t25, -(_t7 * _t24));
+        double _t34 = Math.fma(_t7, _t23, -(_t8 * _t25));
+        double _t35 = Math.fma(_t8, _t24, -(_t6 * _t23));
+        if (!(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t25 * _t25)) > _t32 * _t32 * 3.1554436208840472E-30)) return false;
+        if (!(Math.fma(_t5, _t33, Math.fma(_t0, _t34, _t2 * _t35)) >= 0.0)) return false;
+        if (!(-Math.fma(_t4, _t33, Math.fma(_t3, _t34, _t1 * _t35)) >= 0.0)) return false;
+        return Math.fma(Math.fma(_t9, _t10, -(_t11 * _t12)), _t23, Math.fma(Math.fma(_t11, _t13, -(_t14 * _t10)), _t25, Math.fma(_t14, _t12, -(_t9 * _t13)) * _t24)) >= 0.0;
     }
 
     /**
      * Test whether the projection of the given point onto the plane of the triangle formed by the
      * three given vertices lies inside that triangle.
      * <p>
-     * The point need not lie in the triangle's plane: it is resolved against the triangle's own
-     * edge basis, which sees only its in-plane part, so the barycentric coordinates obtained are
-     * those of its orthogonal projection onto that plane. The test is inclusive, so a projection
-     * landing on an edge or on a vertex counts as inside, and it is symmetric in the vertices, so
-     * the winding order does not matter.
-     * <p>
-     * Reference: <a href="http://www.peroxide.dk/papers/collision/collision.pdf">Improved Collision
-     * detection and Response</a>
+     * The point need not lie in the triangle's plane: the test compares the signed areas of the
+     * three sub-triangles the point forms with the triangle's edges against the triangle's normal,
+     * which see only its in-plane part, so it decides for the point's orthogonal projection onto
+     * that plane. The areas are formed from cross products, which keeps the verdict accurate for
+     * thin triangles. The test is inclusive, so a projection landing on an edge or on a vertex
+     * counts as inside, and it is symmetric in the vertices, so the winding order does not matter.
+     * A degenerate triangle - collinear or coincident vertices, or an angle between its first two
+     * edges below about <code>1e-6</code> rad (<code>float</code>) / <code>2e-15</code> rad
+     * (<code>double</code>) - contains no point.
      *
      * @param p the point to test
      * @param v0 the first vertex

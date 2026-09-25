@@ -247,15 +247,21 @@ public class Double3x3Impl implements Double3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -284,13 +290,8 @@ public class Double3x3Impl implements Double3x3 {
     private Double3 getEulerAnglesXZY_translation(@Mutated Double3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        if (1.0 < 1.0E-15) {
-            dd[0] = Math.atan2(-sd[7], 1.0);
-            dd[1] = 0.0;
-        } else {
-            dd[0] = 0.0;
-            dd[1] = Math.atan2(sd[6], 1.0);
-        }
+        dd[0] = 0.0;
+        dd[1] = Math.atan2(sd[6], 1.0);
         dd[2] = 0.0;
         return dest;
     }
@@ -325,15 +326,21 @@ public class Double3x3Impl implements Double3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -395,15 +402,21 @@ public class Double3x3Impl implements Double3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -473,15 +486,21 @@ public class Double3x3Impl implements Double3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -500,6 +519,23 @@ public class Double3x3Impl implements Double3x3 {
      */
     private Double3 getEulerAnglesZXY_identity(@Mutated Double3 dest) {
         return getEulerAnglesXYZ_identity(dest);
+    }
+
+
+    /**
+     * Private body of {@code getEulerAnglesZXY}, specialized by runtime matrix properties; reached
+     * only through the public {@code getEulerAnglesZXY} dispatcher.
+     */
+    private Double3 getEulerAnglesZXY_orthogonal(@Mutated Double3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        double _t1 = Math.fma(sd[3], sd[3], sd[4] * sd[4]);
+        double _buf0 = 0.0;
+        double _buf1 = 0.0;
+        dd[2] = _t1 < _t1 * 1.0E-15 ? Math.atan2(sd[1], sd[0]) : Math.atan2(-sd[3], sd[4]);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        return dest;
     }
 
 
@@ -530,15 +566,21 @@ public class Double3x3Impl implements Double3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -546,6 +588,7 @@ public class Double3x3Impl implements Double3x3 {
     public Double3 getEulerAnglesZXY(@Mutated Double3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getEulerAnglesZXY_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getEulerAnglesZXY_orthogonal(dest);
         return getEulerAnglesZXY_general(dest);
     }
 
@@ -567,10 +610,9 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _buf0 = 0.0;
-        double _buf1 = 0.0;
-        dd[2] = 1.0 < 1.0E-15 ? Math.atan2(-sd[3], sd[4]) : Math.atan2(sd[1], sd[0]);
+        dd[1] = 0.0;
+        dd[2] = Math.atan2(sd[1], sd[0]);
         dd[0] = _buf0;
-        dd[1] = _buf1;
         return dest;
     }
 
@@ -602,15 +644,21 @@ public class Double3x3Impl implements Double3x3 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -639,20 +687,77 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
      * reached only through the public {@code getNormalizedRotation} dispatcher.
      */
+    private DoubleQuat getNormalizedRotation_translation(@Mutated DoubleQuat dest) {
+        if (SimdMath.USE_FMA) return getNormalizedRotation_translation_fma(dest);
+        return getNormalizedRotation_translation_mulAdd(dest);
+    }
+
+    private DoubleQuat getNormalizedRotation_translation_fma(@Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        double _r0 = sd[5];
+        double _r1 = sd[3];
+        double _r2 = sd[4];
+        double _r3 = sd[8];
+        double _r4 = sd[6];
+        double _r5 = sd[7];
+        double _r6 = sd[2];
+        double _r7 = sd[0];
+        double _r8 = sd[1];
+        double _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
+        double _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
+        double _t9 = (1.0 / Math.sqrt(_t6));
+        double _t10 = (1.0 / Math.sqrt(_t7));
+        double _t11 = (1.0 / Math.sqrt(_t8));
+        double _t21 = _t6 != 0.0 ? _r1 * _t9 : 0.0;
+        double _t22 = _t7 != 0.0 ? _r5 * _t10 : 0.0;
+        double _t23 = _t6 != 0.0 ? _r2 * _t9 : 0.0;
+        double _t24 = _t7 != 0.0 ? _r4 * _t10 : 0.0;
+        getNormalizedRotation_translation_s345445af_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
+        return dest;
+    }
+
+    private DoubleQuat getNormalizedRotation_translation_mulAdd(@Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        double _r0 = sd[5];
+        double _r1 = sd[3];
+        double _r2 = sd[4];
+        double _r3 = sd[8];
+        double _r4 = sd[6];
+        double _r5 = sd[7];
+        double _r6 = sd[2];
+        double _r7 = sd[0];
+        double _r8 = sd[1];
+        double _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
+        double _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
+        double _t9 = (1.0 / Math.sqrt(_t6));
+        double _t10 = (1.0 / Math.sqrt(_t7));
+        double _t11 = (1.0 / Math.sqrt(_t8));
+        double _t21 = _t6 != 0.0 ? _r1 * _t9 : 0.0;
+        double _t22 = _t7 != 0.0 ? _r5 * _t10 : 0.0;
+        double _t23 = _t6 != 0.0 ? _r2 * _t9 : 0.0;
+        double _t24 = _t7 != 0.0 ? _r4 * _t10 : 0.0;
+        getNormalizedRotation_translation_s2741d0e8_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
+        return dest;
+    }
+
     /** Private vector tail of {@code getNormalizedRotation_translation_s345445af}: loads, computes and stores every column; reached only through it. */
     private static void getNormalizedRotation_translation_s345445af_tail3(double[] dd, double _t23, double _t26, double _t36, double _t39, double _t49, double _t53, double _t55, double _t56, double _t57, double _t58, double _t62, double _t63, double _t64, double _t65, double _t69) {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t58 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t62)).fma(VEC_0, DoubleVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t65)))).withLane(2, Math.sqrt(_t65))))));
+        var _col0 = (_t58 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t62)))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t65)))).withLane(2, Math.sqrt(_t65))))));
         _col0.intoArray(dd, 0);
     }
 
     /** Private tail of {@code getNormalizedRotation_translation_s345445af}; reached only through it. */
     private static void getNormalizedRotation_translation_s345445af_tail(double[] dd, double _r0, double _r3, double _r6, double _r7, double _r8, double _t6, double _t7, double _t8, double _t9, double _t10, double _t11, double _t21, double _t22, double _t23, double _t24) {
-        double _t25 = _t8 > 0.0 ? _r6 * _t11 : 0.0;
-        double _t26 = _t7 > 0.0 ? _r3 * _t10 : 0.0;
-        double _t27 = _t6 > 0.0 ? _r0 * _t9 : 0.0;
-        double _t28 = _t8 > 0.0 ? _r7 * _t11 : 0.0;
-        double _t29 = _t8 > 0.0 ? _r8 * _t11 : 0.0;
+        double _t25 = _t8 != 0.0 ? _r6 * _t11 : 0.0;
+        double _t26 = _t7 != 0.0 ? _r3 * _t10 : 0.0;
+        double _t27 = _t6 != 0.0 ? _r0 * _t9 : 0.0;
+        double _t28 = _t8 != 0.0 ? _r7 * _t11 : 0.0;
+        double _t29 = _t8 != 0.0 ? _r8 * _t11 : 0.0;
         double _t36 = _t27 - _t22;
         double _t39 = _t27 + _t22;
         double _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
@@ -681,17 +786,17 @@ public class Double3x3Impl implements Double3x3 {
     /** Private vector tail of {@code getNormalizedRotation_translation_s2741d0e8}: loads, computes and stores every column; reached only through it. */
     private static void getNormalizedRotation_translation_s2741d0e8_tail3(double[] dd, double _t23, double _t26, double _t36, double _t39, double _t49, double _t53, double _t55, double _t56, double _t57, double _t58, double _t62, double _t63, double _t64, double _t65, double _t69) {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t58 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t62)).mul(VEC_0).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62)))))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t65)))).withLane(2, Math.sqrt(_t65))))));
+        var _col0 = (_t58 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t62)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t62)))) : (_t49 > Math.max(_t23, _t26) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23 > _t26 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t64)))).withLane(1, Math.sqrt(_t64))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t65)))).withLane(2, Math.sqrt(_t65))))));
         _col0.intoArray(dd, 0);
     }
 
     /** Private tail of {@code getNormalizedRotation_translation_s2741d0e8}; reached only through it. */
     private static void getNormalizedRotation_translation_s2741d0e8_tail(double[] dd, double _r0, double _r3, double _r6, double _r7, double _r8, double _t6, double _t7, double _t8, double _t9, double _t10, double _t11, double _t21, double _t22, double _t23, double _t24) {
-        double _t25 = _t8 > 0.0 ? _r6 * _t11 : 0.0;
-        double _t26 = _t7 > 0.0 ? _r3 * _t10 : 0.0;
-        double _t27 = _t6 > 0.0 ? _r0 * _t9 : 0.0;
-        double _t28 = _t8 > 0.0 ? _r7 * _t11 : 0.0;
-        double _t29 = _t8 > 0.0 ? _r8 * _t11 : 0.0;
+        double _t25 = _t8 != 0.0 ? _r6 * _t11 : 0.0;
+        double _t26 = _t7 != 0.0 ? _r3 * _t10 : 0.0;
+        double _t27 = _t6 != 0.0 ? _r0 * _t9 : 0.0;
+        double _t28 = _t8 != 0.0 ? _r7 * _t11 : 0.0;
+        double _t29 = _t8 != 0.0 ? _r8 * _t11 : 0.0;
         double _t36 = _t27 - _t22;
         double _t39 = _t27 + _t22;
         double _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
@@ -717,64 +822,11 @@ public class Double3x3Impl implements Double3x3 {
         getNormalizedRotation_translation_s2741d0e8_tail3(dd, _t23, _t26, _t36, _t39, _t49, _t53, _t55, _t56, _t57, _t58, _t62, _t63, _t64, _t65, _t69);
     }
 
-    private DoubleQuat getNormalizedRotation_translation(@Mutated DoubleQuat dest) {
-        if (SimdMath.USE_FMA) return getNormalizedRotation_translation_fma(dest);
-        return getNormalizedRotation_translation_mulAdd(dest);
-    }
 
-    private DoubleQuat getNormalizedRotation_translation_fma(@Mutated DoubleQuat dest) {
-        double[] sd = this.data;
-        double[] dd = ((DoubleQuatImpl) dest).data;
-        double _r0 = sd[5];
-        double _r1 = sd[3];
-        double _r2 = sd[4];
-        double _r3 = sd[8];
-        double _r4 = sd[6];
-        double _r5 = sd[7];
-        double _r6 = sd[2];
-        double _r7 = sd[0];
-        double _r8 = sd[1];
-        double _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        double _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
-        double _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
-        double _t9 = (1.0 / Math.sqrt(_t6));
-        double _t10 = (1.0 / Math.sqrt(_t7));
-        double _t11 = (1.0 / Math.sqrt(_t8));
-        double _t21 = _t6 > 0.0 ? _r1 * _t9 : 0.0;
-        double _t22 = _t7 > 0.0 ? _r5 * _t10 : 0.0;
-        double _t23 = _t6 > 0.0 ? _r2 * _t9 : 0.0;
-        double _t24 = _t7 > 0.0 ? _r4 * _t10 : 0.0;
-        getNormalizedRotation_translation_s345445af_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
-        return dest;
-    }
-
-    private DoubleQuat getNormalizedRotation_translation_mulAdd(@Mutated DoubleQuat dest) {
-        double[] sd = this.data;
-        double[] dd = ((DoubleQuatImpl) dest).data;
-        double _r0 = sd[5];
-        double _r1 = sd[3];
-        double _r2 = sd[4];
-        double _r3 = sd[8];
-        double _r4 = sd[6];
-        double _r5 = sd[7];
-        double _r6 = sd[2];
-        double _r7 = sd[0];
-        double _r8 = sd[1];
-        double _t6 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        double _t7 = Math.fma(_r3, _r3, Math.fma(_r4, _r4, _r5 * _r5));
-        double _t8 = Math.fma(_r6, _r6, Math.fma(_r7, _r7, _r8 * _r8));
-        double _t9 = (1.0 / Math.sqrt(_t6));
-        double _t10 = (1.0 / Math.sqrt(_t7));
-        double _t11 = (1.0 / Math.sqrt(_t8));
-        double _t21 = _t6 > 0.0 ? _r1 * _t9 : 0.0;
-        double _t22 = _t7 > 0.0 ? _r5 * _t10 : 0.0;
-        double _t23 = _t6 > 0.0 ? _r2 * _t9 : 0.0;
-        double _t24 = _t7 > 0.0 ? _r4 * _t10 : 0.0;
-        getNormalizedRotation_translation_s2741d0e8_tail(dd, _r0, _r3, _r6, _r7, _r8, _t6, _t7, _t8, _t9, _t10, _t11, _t21, _t22, _t23, _t24);
-        return dest;
-    }
-
-
+    /**
+     * Private body of {@code getNormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getNormalizedRotation} dispatcher.
+     */
     private DoubleQuat getNormalizedRotation_general(@Mutated DoubleQuat dest) {
         return getNormalizedRotation_translation(dest);
     }
@@ -944,7 +996,7 @@ public class Double3x3Impl implements Double3x3 {
     public Double3 getScale(@Mutated Double3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return getScale_identity(dest);
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getScale_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getScale_translation(dest);
         return getScale_general(dest);
     }
 
@@ -1017,20 +1069,6 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
      * reached only through the public {@code getUnnormalizedRotation} dispatcher.
      */
-    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_s345445af}: loads, computes and stores every column; reached only through it. */
-    private static void getUnnormalizedRotation_orthogonal_s345445af_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).fma(VEC_0, DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_s2741d0e8}: loads, computes and stores every column; reached only through it. */
-    private static void getUnnormalizedRotation_orthogonal_s2741d0e8_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
-        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t14)).mul(VEC_0).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
-        _col0.intoArray(dd, 0);
-    }
-
     private DoubleQuat getUnnormalizedRotation_orthogonal(@Mutated DoubleQuat dest) {
         if (SimdMath.USE_FMA) return getUnnormalizedRotation_orthogonal_fma(dest);
         return getUnnormalizedRotation_orthogonal_mulAdd(dest);
@@ -1094,7 +1132,25 @@ public class Double3x3Impl implements Double3x3 {
         return dest;
     }
 
+    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_s345445af}: loads, computes and stores every column; reached only through it. */
+    private static void getUnnormalizedRotation_orthogonal_s345445af_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
 
+    /** Private vector tail of {@code getUnnormalizedRotation_orthogonal_s2741d0e8}: loads, computes and stores every column; reached only through it. */
+    private static void getUnnormalizedRotation_orthogonal_s2741d0e8_tail(double[] dd, double _r0, double _r1, double _r8, double _t1, double _t4, double _t6, double _t7, double _t8, double _t9, double _t10, double _t14, double _t15, double _t16, double _t17, double _t21) {
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
+        var _col0 = (_t10 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_r0 > Math.max(_r1, _r8) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_r1 > _r8 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        _col0.intoArray(dd, 0);
+    }
+
+
+    /**
+     * Private body of {@code getUnnormalizedRotation}, specialized by runtime matrix properties;
+     * reached only through the public {@code getUnnormalizedRotation} dispatcher.
+     */
     private DoubleQuat getUnnormalizedRotation_general(@Mutated DoubleQuat dest) {
         return getUnnormalizedRotation_orthogonal(dest);
     }
@@ -3858,7 +3914,7 @@ public class Double3x3Impl implements Double3x3 {
      * Set this matrix to the given transform's linear block {@code R * S} (the translation is
      * dropped).
      *
-     * @param t the transform to convert
+     * @param t the transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     public @Mutated Double3x3 makeFromTransform(DoubleTransformR t) {
@@ -3877,13 +3933,17 @@ public class Double3x3Impl implements Double3x3 {
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -4276,10 +4336,12 @@ public class Double3x3Impl implements Double3x3 {
     private DoubleDualQuat toDualQuat_orthogonal(@Mutated DoubleDualQuat dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleDualQuatImpl) dest).data;
+        double _sp1 = 0.5 * sd[6];
+        double _sp0 = 0.5 * sd[7];
         double _t0 = Math.max(sd[4], 1.0);
         double _t2 = 1.0 - sd[0];
-        double _t4 = sd[3] + sd[1];
-        double _t5 = sd[1] - sd[3];
+        double _sp2 = 0.5 * (sd[3] + sd[1]);
+        double _sp3 = 0.5 * (sd[1] - sd[3]);
         double _t8 = 1.0 + (sd[0] + sd[4]);
         double _t10 = 1.0 + _t8;
         double _t11 = sd[0] + (1.0 - sd[4] - 1.0);
@@ -4290,35 +4352,31 @@ public class Double3x3Impl implements Double3x3 {
         double _t16 = (1.0 / Math.sqrt(_t13));
         double _t17 = (1.0 / Math.sqrt(_t11));
         if (_t8 > 0.0) {
-            double _buf0 = -(0.5 * sd[7] * _t14);
-            dd[1] = 0.5 * sd[6] * _t14;
-            double _buf1 = 0.5 * _t5 * _t14;
+            double _buf0 = -(_sp0 * _t14);
+            dd[1] = _sp1 * _t14;
+            dd[2] = _sp3 * _t14;
             dd[3] = 0.5 * Math.sqrt(_t10);
             dd[0] = _buf0;
-            dd[2] = _buf1;
         } else {
             if (sd[0] > _t0) {
                 double _buf0 = 0.5 * Math.sqrt(_t11);
-                dd[1] = 0.5 * _t4 * _t17;
-                double _buf1 = 0.5 * sd[6] * _t17;
-                dd[3] = -(0.5 * sd[7] * _t17);
+                dd[1] = _sp2 * _t17;
+                dd[2] = _sp1 * _t17;
+                dd[3] = -(_sp0 * _t17);
                 dd[0] = _buf0;
-                dd[2] = _buf1;
             } else {
                 if (sd[4] > 1.0) {
-                    double _buf0 = 0.5 * _t4 * _t15;
+                    double _buf0 = _sp2 * _t15;
                     dd[1] = 0.5 * Math.sqrt(_t12);
-                    double _buf1 = 0.5 * sd[7] * _t15;
-                    dd[3] = 0.5 * sd[6] * _t15;
+                    dd[2] = _sp0 * _t15;
+                    dd[3] = _sp1 * _t15;
                     dd[0] = _buf0;
-                    dd[2] = _buf1;
                 } else {
-                    double _buf0 = 0.5 * sd[6] * _t16;
-                    dd[1] = 0.5 * sd[7] * _t16;
-                    double _buf1 = 0.5 * Math.sqrt(_t13);
-                    dd[3] = 0.5 * _t5 * _t16;
+                    double _buf0 = _sp1 * _t16;
+                    dd[1] = _sp0 * _t16;
+                    dd[2] = 0.5 * Math.sqrt(_t13);
+                    dd[3] = _sp3 * _t16;
                     dd[0] = _buf0;
-                    dd[2] = _buf1;
                 }
             }
         }
@@ -4347,35 +4405,35 @@ public class Double3x3Impl implements Double3x3 {
         double _t15 = sd[0] + (1.0 - sd[4] - sd[8]);
         double _t16 = sd[4] + (_t1 - sd[8]);
         double _t17 = sd[8] + (_t1 - sd[4]);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t13 > 0.0) {
-            double _buf0 = 0.5 * _t3 * _t18;
-            dd[1] = 0.5 * _t7 * _t18;
-            dd[2] = 0.5 * _t9 * _t18;
+            double _buf0 = _sp0 * _t3;
+            dd[1] = _sp0 * _t7;
+            dd[2] = _sp0 * _t9;
             dd[3] = 0.5 * Math.sqrt(_t14);
             dd[0] = _buf0;
         } else {
             if (sd[0] > _t4) {
                 double _buf0 = 0.5 * Math.sqrt(_t15);
-                dd[1] = 0.5 * _t5 * _t21;
-                dd[2] = 0.5 * _t6 * _t21;
-                dd[3] = 0.5 * _t3 * _t21;
+                dd[1] = _sp3 * _t5;
+                dd[2] = _sp3 * _t6;
+                dd[3] = _sp3 * _t3;
                 dd[0] = _buf0;
             } else {
                 if (sd[4] > sd[8]) {
-                    double _buf0 = 0.5 * _t5 * _t19;
+                    double _buf0 = _sp1 * _t5;
                     dd[1] = 0.5 * Math.sqrt(_t16);
-                    dd[2] = 0.5 * _t8 * _t19;
-                    dd[3] = 0.5 * _t7 * _t19;
+                    dd[2] = _sp1 * _t8;
+                    dd[3] = _sp1 * _t7;
                     dd[0] = _buf0;
                 } else {
-                    double _buf0 = 0.5 * _t6 * _t20;
-                    dd[1] = 0.5 * _t8 * _t20;
+                    double _buf0 = _sp2 * _t6;
+                    dd[1] = _sp2 * _t8;
                     dd[2] = 0.5 * Math.sqrt(_t17);
-                    dd[3] = 0.5 * _t9 * _t20;
+                    dd[3] = _sp2 * _t9;
                     dd[0] = _buf0;
                 }
             }
@@ -4421,9 +4479,10 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] dd = ((DoubleRigidImpl) dest).data;
         double _t2 = (1.0 / Math.sqrt(Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0))));
+        double _sp2 = 0.5 * _t2;
         double _t3 = Math.max(1.0, _t2);
-        double _t5 = sd[7] * _t2;
-        double _t6 = sd[6] * _t2;
+        double _sp0 = _sp2 * sd[7];
+        double _sp1 = _sp2 * sd[6];
         double _t7 = _t2 < 0.0 ? -1.0 : 1.0;
         double _t8 = 1.0 + _t7;
         double _t11 = _t8 + _t2;
@@ -4436,25 +4495,25 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = (1.0 / Math.sqrt(_t17));
         double _t20 = (1.0 / Math.sqrt(_t16));
         if (_t11 > 0.0) {
-            dd[3] = -(0.5 * _t5 * _t18);
-            dd[4] = 0.5 * _t6 * _t18;
+            dd[3] = -(_sp0 * _t18);
+            dd[4] = _sp1 * _t18;
             dd[5] = 0.0;
             dd[6] = 0.5 * Math.sqrt(_t15);
         } else {
             if (_t7 > _t3) {
                 dd[3] = 0.5 * Math.sqrt(_t16);
                 dd[4] = 0.0;
-                dd[5] = 0.5 * _t6 * _t20;
-                dd[6] = -(0.5 * _t5 * _t20);
+                dd[5] = _sp1 * _t20;
+                dd[6] = -(_sp0 * _t20);
             } else {
                 if (1.0 > _t2) {
                     dd[3] = 0.0;
                     dd[4] = 0.5 * Math.sqrt(_t13);
-                    dd[5] = 0.5 * _t5 * _t14;
-                    dd[6] = 0.5 * _t6 * _t14;
+                    dd[5] = _sp0 * _t14;
+                    dd[6] = _sp1 * _t14;
                 } else {
-                    dd[3] = 0.5 * _t6 * _t19;
-                    dd[4] = 0.5 * _t5 * _t19;
+                    dd[3] = _sp1 * _t19;
+                    dd[4] = _sp0 * _t19;
                     dd[5] = 0.5 * Math.sqrt(_t17);
                     dd[6] = 0.0;
                 }
@@ -4508,35 +4567,35 @@ public class Double3x3Impl implements Double3x3 {
         double _t54 = Math.fma(-sd[3], _t12, _t45);
         double _t59 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t44));
         double _t60 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(sd[4], _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(sd[8], _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         if (_t59 > 0.0) {
-            dd[3] = 0.5 * _t32 * _t61;
-            dd[4] = 0.5 * _t53 * _t61;
-            dd[5] = 0.5 * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5 * Math.sqrt(_t64);
-                dd[4] = 0.5 * _t51 * _t67;
-                dd[5] = 0.5 * _t52 * _t67;
-                dd[6] = 0.5 * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5 * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5 * Math.sqrt(_t62);
-                    dd[5] = 0.5 * _t28 * _t65;
-                    dd[6] = 0.5 * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5 * _t52 * _t66;
-                    dd[4] = 0.5 * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5 * Math.sqrt(_t63);
-                    dd[6] = 0.5 * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -4584,9 +4643,10 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((DoubleTransformImpl) dest).data;
         double _t1 = Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0));
         double _t2 = (1.0 / Math.sqrt(_t1));
+        double _sp2 = 0.5 * _t2;
         double _t3 = Math.max(1.0, _t2);
-        double _t5 = sd[7] * _t2;
-        double _t6 = sd[6] * _t2;
+        double _sp0 = _sp2 * sd[7];
+        double _sp1 = _sp2 * sd[6];
         double _t7 = _t2 < 0.0 ? -1.0 : 1.0;
         double _t8 = 1.0 + _t7;
         double _t11 = _t8 + _t2;
@@ -4599,25 +4659,25 @@ public class Double3x3Impl implements Double3x3 {
         double _t19 = (1.0 / Math.sqrt(_t17));
         double _t20 = (1.0 / Math.sqrt(_t16));
         if (_t11 > 0.0) {
-            dd[3] = -(0.5 * _t5 * _t18);
-            dd[4] = 0.5 * _t6 * _t18;
+            dd[3] = -(_sp0 * _t18);
+            dd[4] = _sp1 * _t18;
             dd[5] = 0.0;
             dd[6] = 0.5 * Math.sqrt(_t15);
         } else {
             if (_t7 > _t3) {
                 dd[3] = 0.5 * Math.sqrt(_t16);
                 dd[4] = 0.0;
-                dd[5] = 0.5 * _t6 * _t20;
-                dd[6] = -(0.5 * _t5 * _t20);
+                dd[5] = _sp1 * _t20;
+                dd[6] = -(_sp0 * _t20);
             } else {
                 if (1.0 > _t2) {
                     dd[3] = 0.0;
                     dd[4] = 0.5 * Math.sqrt(_t13);
-                    dd[5] = 0.5 * _t5 * _t14;
-                    dd[6] = 0.5 * _t6 * _t14;
+                    dd[5] = _sp0 * _t14;
+                    dd[6] = _sp1 * _t14;
                 } else {
-                    dd[3] = 0.5 * _t6 * _t19;
-                    dd[4] = 0.5 * _t5 * _t19;
+                    dd[3] = _sp1 * _t19;
+                    dd[4] = _sp0 * _t19;
                     dd[5] = 0.5 * Math.sqrt(_t17);
                     dd[6] = 0.0;
                 }
@@ -4637,6 +4697,119 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
      * through the public {@code toTransform} dispatcher.
      */
+    private DoubleTransform toTransform_orthogonal(@Mutated DoubleTransform dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleTransformImpl) dest).data;
+        double _t0 = -sd[4];
+        double _t6 = Math.fma(sd[0], sd[0], sd[1] * sd[1]);
+        double _t7 = (1.0 / Math.sqrt(Math.fma(sd[3], sd[3], sd[4] * sd[4])));
+        double _t9 = Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0));
+        double _t10 = Math.sqrt(_t6);
+        double _t8 = 1.0 / _t10;
+        double _t11 = (1.0 / Math.sqrt(_t9));
+        double _sp4 = 0.5 * _t11;
+        double _t12 = sd[0] * _t8;
+        double _t13 = sd[4] * _t7;
+        double _t15 = sd[1] * _t8;
+        double _sp0 = _sp4 * sd[7];
+        double _sp1 = _sp4 * sd[6];
+        double _t23 = Math.max(_t13, _t11);
+        double _t26 = Math.fma(_t12, _t13 * _t11, -(sd[3] * _t7 * _t15 * _t11));
+        double _t27, _t28;
+        if (_t26 < 0.0) {
+            _t27 = -_t12;
+            _t28 = -_t15;
+        } else {
+            _t27 = _t12;
+            _t28 = _t15;
+        }
+        double _t29 = 1.0 + _t27;
+        double _sp2 = 0.5 * Math.fma(sd[3], _t7, _t28);
+        double _sp3 = 0.5 * Math.fma(-sd[3], _t7, _t28);
+        double _t38 = Math.fma(sd[4], _t7, _t27 + _t11);
+        double _t39 = Math.fma(sd[4], _t7, _t29 + _t11);
+        double _t40 = Math.fma(sd[4], _t7, 1.0 - _t27 - _t11);
+        double _t41 = (1.0 / Math.sqrt(_t39));
+        double _t42 = Math.fma(_t0, _t7, _t29 - _t11);
+        double _t43 = (1.0 / Math.sqrt(_t40));
+        double _t44 = Math.fma(_t0, _t7, 1.0 + _t11 - _t27);
+        double _t45 = (1.0 / Math.sqrt(_t44));
+        double _t46 = (1.0 / Math.sqrt(_t42));
+        dd[0] = 0.0;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = _t38 > 0.0 ? -(_sp0 * _t41) : _t27 > _t23 ? 0.5 * Math.sqrt(_t42) : _t13 > _t11 ? _sp2 * _t43 : _sp1 * _t45;
+        dd[4] = _t38 > 0.0 ? _sp1 * _t41 : _t27 > _t23 ? _sp2 * _t46 : _t13 > _t11 ? 0.5 * Math.sqrt(_t40) : _sp0 * _t45;
+        dd[5] = _t38 > 0.0 ? _sp3 * _t41 : _t27 > _t23 ? _sp1 * _t46 : _t13 > _t11 ? _sp0 * _t43 : 0.5 * Math.sqrt(_t44);
+        dd[6] = _t38 > 0.0 ? 0.5 * Math.sqrt(_t39) : _t27 > _t23 ? -(_sp0 * _t46) : _t13 > _t11 ? _sp1 * _t43 : _sp3 * _t45;
+        dd[7] = _t26 < 0.0 ? -_t10 : _t10;
+        dd[8] = 1.0;
+        dd[9] = Math.sqrt(_t9);
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
+    private DoubleTransform toTransform_affine(@Mutated DoubleTransform dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleTransformImpl) dest).data;
+        double _t0 = -sd[4];
+        double _t5 = Math.fma(sd[3], sd[3], sd[4] * sd[4]);
+        double _t6 = Math.fma(sd[0], sd[0], sd[1] * sd[1]);
+        double _t7 = (1.0 / Math.sqrt(_t5));
+        double _t9 = Math.fma(sd[6], sd[6], Math.fma(sd[7], sd[7], 1.0));
+        double _t10 = Math.sqrt(_t6);
+        double _t8 = 1.0 / _t10;
+        double _t11 = (1.0 / Math.sqrt(_t9));
+        double _sp4 = 0.5 * _t11;
+        double _t12 = sd[0] * _t8;
+        double _t13 = sd[4] * _t7;
+        double _t15 = sd[1] * _t8;
+        double _sp0 = _sp4 * sd[7];
+        double _sp1 = _sp4 * sd[6];
+        double _t23 = Math.max(_t13, _t11);
+        double _t26 = Math.fma(_t12, _t13 * _t11, -(sd[3] * _t7 * _t15 * _t11));
+        double _t27, _t28;
+        if (_t26 < 0.0) {
+            _t27 = -_t12;
+            _t28 = -_t15;
+        } else {
+            _t27 = _t12;
+            _t28 = _t15;
+        }
+        double _t29 = 1.0 + _t27;
+        double _sp2 = 0.5 * Math.fma(sd[3], _t7, _t28);
+        double _sp3 = 0.5 * Math.fma(-sd[3], _t7, _t28);
+        double _t38 = Math.fma(sd[4], _t7, _t27 + _t11);
+        double _t39 = Math.fma(sd[4], _t7, _t29 + _t11);
+        double _t40 = Math.fma(sd[4], _t7, 1.0 - _t27 - _t11);
+        double _t41 = (1.0 / Math.sqrt(_t39));
+        double _t42 = Math.fma(_t0, _t7, _t29 - _t11);
+        double _t43 = (1.0 / Math.sqrt(_t40));
+        double _t44 = Math.fma(_t0, _t7, 1.0 + _t11 - _t27);
+        double _t45 = (1.0 / Math.sqrt(_t44));
+        double _t46 = (1.0 / Math.sqrt(_t42));
+        dd[0] = 0.0;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = _t38 > 0.0 ? -(_sp0 * _t41) : _t27 > _t23 ? 0.5 * Math.sqrt(_t42) : _t13 > _t11 ? _sp2 * _t43 : _sp1 * _t45;
+        dd[4] = _t38 > 0.0 ? _sp1 * _t41 : _t27 > _t23 ? _sp2 * _t46 : _t13 > _t11 ? 0.5 * Math.sqrt(_t40) : _sp0 * _t45;
+        dd[5] = _t38 > 0.0 ? _sp3 * _t41 : _t27 > _t23 ? _sp1 * _t46 : _t13 > _t11 ? _sp0 * _t43 : 0.5 * Math.sqrt(_t44);
+        dd[6] = _t38 > 0.0 ? 0.5 * Math.sqrt(_t39) : _t27 > _t23 ? -(_sp0 * _t46) : _t13 > _t11 ? _sp1 * _t43 : _sp3 * _t45;
+        dd[7] = _t26 < 0.0 ? -_t10 : _t10;
+        dd[8] = Math.sqrt(_t5);
+        dd[9] = Math.sqrt(_t9);
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code toTransform}, specialized by runtime matrix properties; reached only
+     * through the public {@code toTransform} dispatcher.
+     */
     private DoubleTransform toTransform_general(@Mutated DoubleTransform dest) {
         double[] sd = this.data;
         double[] dd = ((DoubleTransformImpl) dest).data;
@@ -4647,8 +4820,8 @@ public class Double3x3Impl implements Double3x3 {
         double _t11 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = sd[1] * _t14;
         double _t17 = sd[8] * _t13;
         double _t18 = sd[7] * _t13;
@@ -4678,20 +4851,20 @@ public class Double3x3Impl implements Double3x3 {
         double _t55 = Math.fma(-sd[3], _t12, _t46);
         double _t60 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t45));
         double _t61 = Math.fma(sd[4], _t12, Math.fma(sd[8], _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(sd[4], _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(sd[8], _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         dd[0] = 0.0;
         dd[1] = 0.0;
         dd[2] = 0.0;
-        dd[3] = _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67;
-        dd[4] = _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67;
-        dd[5] = _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64);
-        dd[6] = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67;
+        dd[3] = _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dd[4] = _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29;
+        dd[5] = _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64);
+        dd[6] = _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dd[7] = _t44 < 0.0 ? -_t15 : _t15;
         dd[8] = Math.sqrt(_t9);
         dd[9] = Math.sqrt(_t10);
@@ -4711,6 +4884,8 @@ public class Double3x3Impl implements Double3x3 {
         int p = this.properties;
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return toTransform_identity(dest);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return toTransform_translation(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return toTransform_orthogonal(dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return toTransform_affine(dest);
         return toTransform_general(dest);
     }
 
@@ -4728,10 +4903,67 @@ public class Double3x3Impl implements Double3x3 {
      * Private body of {@code decomposeRotation}, specialized by runtime matrix properties; reached
      * only through the public {@code decomposeRotation} dispatcher.
      */
+    private DoubleQuat decomposeRotation_general(@Mutated DoubleQuat dest) {
+        if (SimdMath.USE_FMA) return decomposeRotation_general_fma(dest);
+        return decomposeRotation_general_mulAdd(dest);
+    }
+
+    private DoubleQuat decomposeRotation_general_fma(@Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        double _r0 = sd[2];
+        double _r1 = sd[0];
+        double _r2 = sd[1];
+        double _r3 = sd[5];
+        double _r4 = sd[3];
+        double _r5 = sd[4];
+        double _r6 = sd[8];
+        double _r7 = sd[6];
+        double _r8 = sd[7];
+        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7 = _t2 != 0.0 ? _r0 * _t3 : 0.0;
+        double _t8 = _t2 != 0.0 ? _r1 * _t3 : 0.0;
+        double _t9 = _t2 != 0.0 ? _r2 * _t3 : 0.0;
+        double _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        double _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        double _t21 = Math.fma(_t19, _t7, _r3);
+        double _t22 = Math.fma(_t19, _t8, _r4);
+        double _t23 = Math.fma(_t19, _t9, _r5);
+        decomposeRotation_general_s345445af_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
+        return dest;
+    }
+
+    private DoubleQuat decomposeRotation_general_mulAdd(@Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        double _r0 = sd[2];
+        double _r1 = sd[0];
+        double _r2 = sd[1];
+        double _r3 = sd[5];
+        double _r4 = sd[3];
+        double _r5 = sd[4];
+        double _r6 = sd[8];
+        double _r7 = sd[6];
+        double _r8 = sd[7];
+        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
+        double _t3 = (1.0 / Math.sqrt(_t2));
+        double _t7 = _t2 != 0.0 ? _r0 * _t3 : 0.0;
+        double _t8 = _t2 != 0.0 ? _r1 * _t3 : 0.0;
+        double _t9 = _t2 != 0.0 ? _r2 * _t3 : 0.0;
+        double _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
+        double _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
+        double _t21 = Math.fma(_t19, _t7, _r3);
+        double _t22 = Math.fma(_t19, _t8, _r4);
+        double _t23 = Math.fma(_t19, _t9, _r5);
+        decomposeRotation_general_s2741d0e8_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
+        return dest;
+    }
+
     /** Private vector tail of {@code decomposeRotation_general_s345445af}: loads, computes and stores every column; reached only through it. */
     private static void decomposeRotation_general_s345445af_tail4(double[] dd, double _t36, double _t56, double _t60, double _t63, double _t73, double _t77, double _t78, double _t80, double _t81, double _t82, double _t86, double _t87, double _t88, double _t89, double _t93) {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t82 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t86)).fma(VEC_0, DoubleVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t88)))).withLane(1, Math.sqrt(_t88))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t89)))).withLane(2, Math.sqrt(_t89))))));
+        var _col0 = (_t82 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).fma(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t86))), DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t86)))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t88)))).withLane(1, Math.sqrt(_t88))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t89)))).withLane(2, Math.sqrt(_t89))))));
         _col0.intoArray(dd, 0);
     }
 
@@ -4739,23 +4971,23 @@ public class Double3x3Impl implements Double3x3 {
     private static void decomposeRotation_general_s345445af_tail(double[] dd, double _r6, double _r7, double _r8, double _t7, double _t8, double _t9, double _t20, double _t21, double _t22, double _t23) {
         double _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t34 = _t29 > 0.0 ? _t22 * _t30 : 0.0;
-        double _t35 = _t29 > 0.0 ? _t21 * _t30 : 0.0;
-        double _t36 = _t29 > 0.0 ? _t23 * _t30 : 0.0;
+        double _t34 = _t29 != 0.0 ? _t22 * _t30 : 0.0;
+        double _t35 = _t29 != 0.0 ? _t21 * _t30 : 0.0;
+        double _t36 = _t29 != 0.0 ? _t23 * _t30 : 0.0;
         double _t40 = -Math.fma(Math.fma(_t20, _t7, _r6), _t35, Math.fma(Math.fma(_t20, _t8, _r7), _t34, Math.fma(_t20, _t9, _r8) * _t36));
         double _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _r6));
         double _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _r7));
         double _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _r8));
         double _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         double _t50 = (1.0 / Math.sqrt(_t49));
-        double _t54 = _t49 > 0.0 ? _t46 * _t50 : 0.0;
+        double _t54 = _t49 != 0.0 ? _t46 * _t50 : 0.0;
         decomposeRotation_general_s345445af_tail2(dd, _t7, _t8, _t9, _t34, _t35, _t36, _t44, _t45, _t49, _t50, _t54);
     }
 
     /** Private tail of {@code decomposeRotation_general_s345445af}; reached only through it. */
     private static void decomposeRotation_general_s345445af_tail2(double[] dd, double _t7, double _t8, double _t9, double _t34, double _t35, double _t36, double _t44, double _t45, double _t49, double _t50, double _t54) {
-        double _t55 = _t49 > 0.0 ? _t45 * _t50 : 0.0;
-        double _t56 = _t49 > 0.0 ? _t44 * _t50 : 0.0;
+        double _t55 = _t49 != 0.0 ? _t45 * _t50 : 0.0;
+        double _t56 = _t49 != 0.0 ? _t44 * _t50 : 0.0;
         double _t60 = _t35 - _t54;
         double _t63 = _t35 + _t54;
         double _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
@@ -4784,7 +5016,7 @@ public class Double3x3Impl implements Double3x3 {
     /** Private vector tail of {@code decomposeRotation_general_s2741d0e8}: loads, computes and stores every column; reached only through it. */
     private static void decomposeRotation_general_s2741d0e8_tail4(double[] dd, double _t36, double _t56, double _t60, double _t63, double _t73, double _t77, double _t78, double _t80, double _t81, double _t82, double _t86, double _t87, double _t88, double _t89, double _t93) {
         var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.5);
-        var _col0 = (_t82 > 0.0 ? _sv0.mul(DoubleVector.broadcast(COL_SPECIES, Math.sqrt(_t86)).mul(VEC_0).add(DoubleVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t86)))))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t88)))).withLane(1, Math.sqrt(_t88))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t89)))).withLane(2, Math.sqrt(_t89))))));
+        var _col0 = (_t82 > 0.0 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t86)))).add(DoubleVector.broadcast(COL_SPECIES, 0.0).withLane(3, Math.sqrt(_t86)))) : (_t73 > Math.max(_t36, _t56) ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36 > _t56 ? _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t88)))).withLane(1, Math.sqrt(_t88))) : _sv0.mul(DoubleVector.zero(COL_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(DoubleVector.broadcast(COL_SPECIES, (1.0 / Math.sqrt(_t89)))).withLane(2, Math.sqrt(_t89))))));
         _col0.intoArray(dd, 0);
     }
 
@@ -4792,23 +5024,23 @@ public class Double3x3Impl implements Double3x3 {
     private static void decomposeRotation_general_s2741d0e8_tail(double[] dd, double _r6, double _r7, double _r8, double _t7, double _t8, double _t9, double _t20, double _t21, double _t22, double _t23) {
         double _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t30 = (1.0 / Math.sqrt(_t29));
-        double _t34 = _t29 > 0.0 ? _t22 * _t30 : 0.0;
-        double _t35 = _t29 > 0.0 ? _t21 * _t30 : 0.0;
-        double _t36 = _t29 > 0.0 ? _t23 * _t30 : 0.0;
+        double _t34 = _t29 != 0.0 ? _t22 * _t30 : 0.0;
+        double _t35 = _t29 != 0.0 ? _t21 * _t30 : 0.0;
+        double _t36 = _t29 != 0.0 ? _t23 * _t30 : 0.0;
         double _t40 = -Math.fma(Math.fma(_t20, _t7, _r6), _t35, Math.fma(Math.fma(_t20, _t8, _r7), _t34, Math.fma(_t20, _t9, _r8) * _t36));
         double _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _r6));
         double _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _r7));
         double _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _r8));
         double _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         double _t50 = (1.0 / Math.sqrt(_t49));
-        double _t54 = _t49 > 0.0 ? _t46 * _t50 : 0.0;
+        double _t54 = _t49 != 0.0 ? _t46 * _t50 : 0.0;
         decomposeRotation_general_s2741d0e8_tail2(dd, _t7, _t8, _t9, _t34, _t35, _t36, _t44, _t45, _t49, _t50, _t54);
     }
 
     /** Private tail of {@code decomposeRotation_general_s2741d0e8}; reached only through it. */
     private static void decomposeRotation_general_s2741d0e8_tail2(double[] dd, double _t7, double _t8, double _t9, double _t34, double _t35, double _t36, double _t44, double _t45, double _t49, double _t50, double _t54) {
-        double _t55 = _t49 > 0.0 ? _t45 * _t50 : 0.0;
-        double _t56 = _t49 > 0.0 ? _t44 * _t50 : 0.0;
+        double _t55 = _t49 != 0.0 ? _t45 * _t50 : 0.0;
+        double _t56 = _t49 != 0.0 ? _t44 * _t50 : 0.0;
         double _t60 = _t35 - _t54;
         double _t63 = _t35 + _t54;
         double _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
@@ -4832,63 +5064,6 @@ public class Double3x3Impl implements Double3x3 {
         double _t89 = 1.0 + (_t56 - _t76);
         double _t93 = (1.0 / Math.sqrt(_t87));
         decomposeRotation_general_s2741d0e8_tail4(dd, _t36, _t56, _t60, _t63, _t73, _t77, _t78, _t80, _t81, _t82, _t86, _t87, _t88, _t89, _t93);
-    }
-
-    private DoubleQuat decomposeRotation_general(@Mutated DoubleQuat dest) {
-        if (SimdMath.USE_FMA) return decomposeRotation_general_fma(dest);
-        return decomposeRotation_general_mulAdd(dest);
-    }
-
-    private DoubleQuat decomposeRotation_general_fma(@Mutated DoubleQuat dest) {
-        double[] sd = this.data;
-        double[] dd = ((DoubleQuatImpl) dest).data;
-        double _r0 = sd[2];
-        double _r1 = sd[0];
-        double _r2 = sd[1];
-        double _r3 = sd[5];
-        double _r4 = sd[3];
-        double _r5 = sd[4];
-        double _r6 = sd[8];
-        double _r7 = sd[6];
-        double _r8 = sd[7];
-        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _r0 * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _r1 * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _r2 * _t3 : 0.0;
-        double _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
-        double _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
-        double _t21 = Math.fma(_t19, _t7, _r3);
-        double _t22 = Math.fma(_t19, _t8, _r4);
-        double _t23 = Math.fma(_t19, _t9, _r5);
-        decomposeRotation_general_s345445af_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
-        return dest;
-    }
-
-    private DoubleQuat decomposeRotation_general_mulAdd(@Mutated DoubleQuat dest) {
-        double[] sd = this.data;
-        double[] dd = ((DoubleQuatImpl) dest).data;
-        double _r0 = sd[2];
-        double _r1 = sd[0];
-        double _r2 = sd[1];
-        double _r3 = sd[5];
-        double _r4 = sd[3];
-        double _r5 = sd[4];
-        double _r6 = sd[8];
-        double _r7 = sd[6];
-        double _r8 = sd[7];
-        double _t2 = Math.fma(_r0, _r0, Math.fma(_r1, _r1, _r2 * _r2));
-        double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _r0 * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _r1 * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _r2 * _t3 : 0.0;
-        double _t19 = -Math.fma(_r3, _t7, Math.fma(_r4, _t8, _r5 * _t9));
-        double _t20 = -Math.fma(_r6, _t7, Math.fma(_r7, _t8, _r8 * _t9));
-        double _t21 = Math.fma(_t19, _t7, _r3);
-        double _t22 = Math.fma(_t19, _t8, _r4);
-        double _t23 = Math.fma(_t19, _t9, _r5);
-        decomposeRotation_general_s2741d0e8_tail(dd, _r6, _r7, _r8, _t7, _t8, _t9, _t20, _t21, _t22, _t23);
-        return dest;
     }
 
 
@@ -4926,10 +5101,10 @@ public class Double3x3Impl implements Double3x3 {
         double[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         double _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
-        double _t3 = (1.0 / Math.sqrt(_t2));
         double _t4 = Math.sqrt(_t2);
+        double _t3 = 1.0 / _t4;
         double _t8, _t9, _t10;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t8 = sd[2] * _t3;
             _t9 = sd[0] * _t3;
             _t10 = sd[1] * _t3;
@@ -4946,7 +5121,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t28 = (1.0 / Math.sqrt(_t27));
         double _t32, _t33, _t34;
-        if (_t27 > 0.0) {
+        if (_t27 != 0.0) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -4962,7 +5137,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t52, _t53, _t54;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -5030,7 +5205,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t2 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = sd[2] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[1] * _t3;
@@ -5050,7 +5225,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t28 = _t15 * _t27;
         double _t32, _t33, _t34;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -5068,7 +5243,7 @@ public class Double3x3Impl implements Double3x3 {
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t49 = _t14 * _t48;
         double _t53, _t54, _t55;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -7438,6 +7613,11 @@ public class Double3x3Impl implements Double3x3 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -7456,6 +7636,11 @@ public class Double3x3Impl implements Double3x3 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -7468,12 +7653,229 @@ public class Double3x3Impl implements Double3x3 {
 
 
     /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Double3x3 lookAlong_identity(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t3 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t4 = dirZ * _t3;
+        double _t5 = dirY * _t3;
+        double _t6 = dirX * _t3;
+        double _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        double _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        double _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        double _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t20 = (1.0 / Math.sqrt(_ct0));
+        double _t21 = _t13 * _t20;
+        double _t22 = _t14 * _t20;
+        double _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = _t23;
+        dd[2] = _t22;
+        dd[3] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[4] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[5] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[6] = _t6;
+        dd[7] = _t5;
+        dd[8] = _t4;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Double3x3 lookAlong_translation(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t3 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t4 = dirY * _t3;
+        double _t5 = dirX * _t3;
+        double _t6 = dirZ * _t3;
+        double _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        double _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        double _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        double _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t20 = (1.0 / Math.sqrt(_ct0));
+        double _t21 = _t13 * _t20;
+        double _t22 = _t14 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t26 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        dd[0] = Math.fma(sd[6], _t21, _t22);
+        dd[1] = Math.fma(sd[7], _t21, _t23);
+        dd[2] = _t21;
+        dd[3] = Math.fma(sd[6], _t26, Math.fma(_t4, _t21, -(_t6 * _t23)));
+        dd[4] = Math.fma(sd[7], _t26, Math.fma(_t6, _t22, -(_t5 * _t21)));
+        dd[5] = _t26;
+        dd[6] = Math.fma(dirX, _t3, sd[6] * _t6);
+        dd[7] = Math.fma(dirY, _t3, sd[7] * _t6);
+        dd[8] = _t6;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Double3x3 lookAlong_orthogonal(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _sp14 = dirX * upY;
+        double _t0 = -upY;
+        double _t1 = -upZ;
+        double _t2 = dirZ * sd[4];
+        double _t3 = dirY * sd[4];
+        double _t4 = dirZ * sd[1];
+        double _t5 = dirX * sd[1];
+        double _sp13 = _t5 * upZ;
+        double _t6 = dirY * dirY;
+        double _t7 = dirY * sd[1];
+        double _t8 = dirX * sd[4];
+        double _sp12 = upX * dirX * dirZ;
+        double _t10 = dirX * dirX;
+        double _t11 = dirY * dirZ;
+        double _sp15 = upY * _t11;
+        double _t12 = dirY * _t5;
+        double _t13 = dirZ * _t4;
+        double _t14 = dirY * _t8;
+        double _t15 = dirZ * _t2;
+        double _t18 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, _t6))));
+        double _sp0 = _t18 * _t18;
+        double _sp11 = _sp0 * upZ * sd[7];
+        double _sp8 = upY * _sp0;
+        double _t19 = dirY * _t18;
+        double _t20 = dirX * _t18;
+        double _sp4 = upY * _t20;
+        double _t21 = dirZ * _t18;
+        double _t28 = Math.fma(upX, _t19, -_sp4);
+        double _t29 = Math.fma(upY, _t21, -(upZ * _t19));
+        double _t30 = Math.fma(upZ, _t20, -(upX * _t21));
+        double _ct0 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t35 = (1.0 / Math.sqrt(_ct0));
+        double _sp2 = _t18 * _t35;
+        double _sp1 = _t35 * _sp0;
+        double _sp9 = sd[7] * _sp1;
+        dd[0] = Math.fma(upX, dirY * sd[6], Math.fma(_t0, dirX * sd[6], Math.fma(upY, _t2, Math.fma(_t1, _t3, Math.fma(upX, _t4, -_sp13))))) * _sp2;
+        double _buf0 = Math.fma(upX, dirY * sd[7], Math.fma(_t0, dirX * sd[7], Math.fma(-upX, _t2, Math.fma(upZ, _t8, Math.fma(upY, _t4, -(upZ * _t7)))))) * _sp2;
+        dd[2] = Math.fma(dirY, upX, -_sp14) * _sp2;
+        dd[3] = (Math.fma(upX, _t12, Math.fma(upZ, dirZ * _t7, -(_sp14 * _t5))) + Math.fma(_t0, _t13, Math.fma(_t1, dirZ * _t8, -(upY * _t14))) + (Math.fma(upX, dirY * _t3, Math.fma(upX, _t15, -(_sp12 * sd[6]))) + Math.fma(upZ, sd[6] * _t10, Math.fma(upZ, sd[6] * _t6, -(_sp15 * sd[6]))))) * _sp1;
+        double _buf1 = Math.fma(-(_sp8 * _t12), _t35, Math.fma(upX * _t19 * _t7 * _t18, _t35, -(_sp13 * _t21 * _sp2))) + Math.fma(upX * _t13 * _sp0, _t35, Math.fma(_sp4 * _t8 * _t18, _t35, -(upX * _t14 * _sp1))) + (Math.fma(-(upZ * _t21 * _t3 * _t18), _t35, Math.fma(_sp8 * _t15, _t35, -(_sp12 * _sp9))) + Math.fma(_sp11 * _t10, _t35, Math.fma(_sp11 * _t6, _t35, -(_sp15 * _sp9))));
+        dd[5] = Math.fma(upZ, _t6, Math.fma(_t0, _t11, Math.fma(upZ, _t10, -_sp12))) * _sp1;
+        dd[6] = Math.fma(dirZ, sd[6], Math.fma(dirX, sd[4], -_t7)) * _t18;
+        dd[7] = Math.fma(dirZ, sd[7], Math.fma(dirX, sd[1], _t3)) * _t18;
+        dd[8] = _t21;
+        dd[1] = _buf0;
+        dd[4] = _buf1;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Double3x3 lookAlong_affine(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t3 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t4 = dirY * _t3;
+        double _t5 = dirX * _t3;
+        double _t6 = dirZ * _t3;
+        double _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        double _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        double _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        double _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t20 = (1.0 / Math.sqrt(_ct0));
+        double _t21 = _t13 * _t20;
+        double _t22 = _t14 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        double _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        double _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        double _buf0 = Math.fma(sd[6], _t21, Math.fma(sd[0], _t22, sd[3] * _t23));
+        double _buf1 = Math.fma(sd[7], _t21, Math.fma(sd[1], _t22, sd[4] * _t23));
+        dd[2] = _t21;
+        double _buf2 = Math.fma(sd[6], _t30, Math.fma(sd[0], _t31, sd[3] * _t32));
+        double _buf3 = Math.fma(sd[7], _t30, Math.fma(sd[1], _t31, sd[4] * _t32));
+        dd[5] = _t30;
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[0], _t5, sd[3] * _t4));
+        dd[7] = Math.fma(sd[7], _t6, Math.fma(sd[1], _t5, sd[4] * _t4));
+        dd[8] = _t6;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[3] = _buf2;
+        dd[4] = _buf3;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code lookAlong}, specialized by runtime matrix properties; reached only
+     * through the public {@code lookAlong} dispatcher.
+     */
+    private Double3x3 lookAlong_general(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t3 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t4 = dirY * _t3;
+        double _t5 = dirX * _t3;
+        double _t6 = dirZ * _t3;
+        double _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        double _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        double _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        double _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        double _t20 = (1.0 / Math.sqrt(_ct0));
+        double _t21 = _t13 * _t20;
+        double _t22 = _t14 * _t20;
+        double _t23 = _t15 * _t20;
+        double _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        double _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        double _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        double _buf0 = Math.fma(sd[6], _t21, Math.fma(sd[0], _t22, sd[3] * _t23));
+        double _buf1 = Math.fma(sd[7], _t21, Math.fma(sd[1], _t22, sd[4] * _t23));
+        double _buf2 = Math.fma(sd[8], _t21, Math.fma(sd[2], _t22, sd[5] * _t23));
+        double _buf3 = Math.fma(sd[6], _t30, Math.fma(sd[0], _t31, sd[3] * _t32));
+        double _buf4 = Math.fma(sd[7], _t30, Math.fma(sd[1], _t31, sd[4] * _t32));
+        double _buf5 = Math.fma(sd[8], _t30, Math.fma(sd[2], _t31, sd[5] * _t32));
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[0], _t5, sd[3] * _t4));
+        dd[7] = Math.fma(sd[7], _t6, Math.fma(sd[1], _t5, sd[4] * _t4));
+        dd[8] = Math.fma(sd[8], _t6, Math.fma(sd[2], _t5, sd[5] * _t4));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[3] = _buf3;
+        dd[4] = _buf4;
+        dd[5] = _buf5;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
      * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
      * {@code dirY}, {@code dirZ}) to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -7485,47 +7887,133 @@ public class Double3x3Impl implements Double3x3 {
      * @return dest
      */
     public Double3x3 lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_identity(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAlong_affine(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        return lookAlong_general(dirX, dirY, dirZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Apply a rotation transformation that makes {@code +z} point along ({@code dirX},
+     * {@code dirY}, {@code dirZ}) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
+     * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     *
+     * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param dirZ the {@code z} component of the vector {@code (dirX, dirY, dirZ)}
+     * @param upX the {@code x} component of the vector {@code (upX, upY, upZ)}
+     * @param upY the {@code y} component of the vector {@code (upX, upY, upZ)}
+     * @param upZ the {@code z} component of the vector {@code (upX, upY, upZ)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Double3x3 lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        if (Joml.RETURN_NEW) return lookAlong(dirX, dirY, dirZ, upX, upY, upZ, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_identity(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_translation(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return lookAlong_affine(dirX, dirY, dirZ, upX, upY, upZ, this);
+        return lookAlong_general(dirX, dirY, dirZ, upX, upY, upZ, this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x3 lookAlong_degenerate(Double3R dir, Double3R up, @Mutated Double3x3 dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Double3x3 lookAlong_degenerate(Double3R dir, Double3R up) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x3 lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        double _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0) {
             _t7 = 0.0;
-            _t8 = 0.0;
+            _t8 = 1.0;
             _t9 = 0.0;
-        }
-        double _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        double _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        double _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        double _t22 = (1.0 / Math.sqrt(_t21));
-        double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 1.0;
         } else {
-            _t26 = 0.0;
-            _t27 = 0.0;
-            _t28 = 0.0;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        double _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        double _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        double _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        double _buf0 = Math.fma(sd[6], _t26, Math.fma(sd[0], _t27, sd[3] * _t28));
-        double _buf1 = Math.fma(sd[7], _t26, Math.fma(sd[1], _t27, sd[4] * _t28));
-        double _buf2 = Math.fma(sd[8], _t26, Math.fma(sd[2], _t27, sd[5] * _t28));
-        double _buf3 = Math.fma(sd[6], _t35, Math.fma(sd[0], _t36, sd[3] * _t37));
-        double _buf4 = Math.fma(sd[7], _t35, Math.fma(sd[1], _t36, sd[4] * _t37));
-        double _buf5 = Math.fma(sd[8], _t35, Math.fma(sd[2], _t36, sd[5] * _t37));
-        dd[6] = Math.fma(sd[6], _t9, Math.fma(sd[0], _t8, sd[3] * _t7));
-        dd[7] = Math.fma(sd[7], _t9, Math.fma(sd[1], _t8, sd[4] * _t7));
-        dd[8] = Math.fma(sd[8], _t9, Math.fma(sd[2], _t8, sd[5] * _t7));
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0;
+            _t28 = -_t12;
+        }
+        double _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        double _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0) {
+            _t39 = (1.0 / Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0 / Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        double _t49 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        double _t50 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        double _t51 = Math.fma(_t42, _t11, -(_t41 * _t10));
+        double _buf0 = Math.fma(sd[6], _t40, Math.fma(sd[0], _t41, sd[3] * _t42));
+        double _buf1 = Math.fma(sd[7], _t40, Math.fma(sd[1], _t41, sd[4] * _t42));
+        double _buf2 = Math.fma(sd[8], _t40, Math.fma(sd[2], _t41, sd[5] * _t42));
+        double _buf3 = Math.fma(sd[6], _t51, Math.fma(sd[0], _t50, sd[3] * _t49));
+        double _buf4 = Math.fma(sd[7], _t51, Math.fma(sd[1], _t50, sd[4] * _t49));
+        double _buf5 = Math.fma(sd[8], _t51, Math.fma(sd[2], _t50, sd[5] * _t49));
+        dd[6] = Math.fma(sd[6], _t12, Math.fma(sd[0], _t11, sd[3] * _t10));
+        dd[7] = Math.fma(sd[7], _t12, Math.fma(sd[1], _t11, sd[4] * _t10));
+        dd[8] = Math.fma(sd[8], _t12, Math.fma(sd[2], _t11, sd[5] * _t10));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -7534,6 +8022,16 @@ public class Double3x3Impl implements Double3x3 {
         dd[5] = _buf5;
         ((Double3x3Impl) dest).properties = 0;
         return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double3x3 lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.RETURN_NEW ? Joml.double3x3() : this);
     }
 
 
@@ -7578,6 +8076,7 @@ public class Double3x3Impl implements Double3x3 {
      */
     @Mutated public Double3x3 makeFromDualQuat(double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
         double[] dd = this.data;
+        double _sp0 = dqRX + dqRX;
         double _t0 = dqRY * dqRY;
         double _t2 = dqRZ * dqRW;
         double _t3 = dqRY * dqRW;
@@ -7586,8 +8085,8 @@ public class Double3x3Impl implements Double3x3 {
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dd[0] = Math.fma(-2.0, _t0, _t6);
         dd[1] = 2.0 * Math.fma(dqRX, dqRY, _t2);
-        dd[2] = Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ);
-        dd[3] = Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY);
+        dd[2] = Math.fma(-2.0, _t3, _sp0 * dqRZ);
+        dd[3] = Math.fma(-2.0, _t2, _sp0 * dqRY);
         dd[4] = Math.fma(-2.0, _t4, _t6);
         dd[5] = 2.0 * Math.fma(dqRX, dqRW, _t5);
         dd[6] = 2.0 * Math.fma(dqRX, dqRZ, _t3);
@@ -7671,6 +8170,11 @@ public class Double3x3Impl implements Double3x3 {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -7685,6 +8189,11 @@ public class Double3x3Impl implements Double3x3 {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -7696,42 +8205,105 @@ public class Double3x3Impl implements Double3x3 {
      */
     @Mutated public Double3x3 makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double[] dd = this.data;
+        double _t3 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t4 = dirZ * _t3;
+        double _t5 = dirY * _t3;
+        double _t6 = dirX * _t3;
+        double _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        double _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        double _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        double _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        double _t20 = (1.0 / Math.sqrt(_ct0));
+        double _t21 = _t13 * _t20;
+        double _t22 = _t14 * _t20;
+        double _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = _t23;
+        dd[2] = _t22;
+        dd[3] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[4] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[5] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[6] = _t6;
+        dd[7] = _t5;
+        dd[8] = _t4;
+        ((Double3x3Impl) this).properties = 0;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Double3x3 makeRotationLookAlong_degenerate(Double3R dir, Double3R up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Double3x3 makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double[] dd = this.data;
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        double _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0) {
             _t7 = 0.0;
-            _t8 = 0.0;
+            _t8 = 1.0;
             _t9 = 0.0;
-        }
-        double _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        double _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        double _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        double _t22 = (1.0 / Math.sqrt(_t21));
-        double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
-            _t26 = _t17 * _t22;
-            _t27 = _t16 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 1.0;
         } else {
-            _t26 = 0.0;
-            _t27 = 0.0;
-            _t28 = 0.0;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        dd[0] = _t26;
-        dd[1] = _t28;
-        dd[2] = _t27;
-        dd[3] = Math.fma(_t7, _t27, -(_t9 * _t28));
-        dd[4] = Math.fma(_t9, _t26, -(_t8 * _t27));
-        dd[5] = Math.fma(_t8, _t28, -(_t7 * _t26));
-        dd[6] = _t8;
-        dd[7] = _t7;
-        dd[8] = _t9;
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0;
+            _t28 = -_t12;
+        }
+        double _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        double _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        double _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0) {
+            _t39 = (1.0 / Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0 / Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        dd[0] = _t41;
+        dd[1] = _t42;
+        dd[2] = _t40;
+        dd[3] = Math.fma(_t40, _t10, -(_t42 * _t12));
+        dd[4] = Math.fma(_t41, _t12, -(_t40 * _t11));
+        dd[5] = Math.fma(_t42, _t11, -(_t41 * _t10));
+        dd[6] = _t11;
+        dd[7] = _t10;
+        dd[8] = _t12;
         ((Double3x3Impl) this).properties = 0;
         return this;
     }
@@ -9394,14 +9966,15 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_identity(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = s;
         dd[5] = 0.0;
-        dd[6] = Math.fma(-s, pivotX, pivotX);
-        dd[7] = Math.fma(-s, pivotY, pivotY);
+        dd[6] = pivotX * _t0;
+        dd[7] = pivotY * _t0;
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -9415,10 +9988,11 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_identity_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[4] = s;
-        dd[6] = Math.fma(-s, pivotX, pivotX);
-        dd[7] = Math.fma(-s, pivotY, pivotY);
+        dd[6] = pivotX * _t0;
+        dd[7] = pivotY * _t0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -9431,14 +10005,15 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_translation(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = s;
         dd[5] = 0.0;
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -9452,10 +10027,11 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_translation_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[4] = s;
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -9468,14 +10044,15 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_orthogonal(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s * sd[0];
         dd[1] = s * sd[1];
         dd[2] = 0.0;
         dd[3] = s * sd[3];
         dd[4] = s * sd[4];
         dd[5] = 0.0;
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -9489,12 +10066,13 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_orthogonal_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s * sd[0];
         dd[1] = s * sd[1];
         dd[3] = s * sd[3];
         dd[4] = s * sd[4];
-        dd[6] = Math.fma(-s, pivotX, Math.fma(s, sd[6], pivotX));
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[6] = Math.fma(s, sd[6], pivotX * _t0);
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -9507,16 +10085,17 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_general(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
-        dd[0] = Math.fma(s, sd[0], sd[2] * _t0);
-        dd[1] = Math.fma(s, sd[1], sd[2] * _t1);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
+        dd[0] = Math.fma(s, sd[0], sd[2] * _t1);
+        dd[1] = Math.fma(s, sd[1], sd[2] * _t2);
         dd[2] = sd[2];
-        dd[3] = Math.fma(s, sd[3], sd[5] * _t0);
-        dd[4] = Math.fma(s, sd[4], sd[5] * _t1);
+        dd[3] = Math.fma(s, sd[3], sd[5] * _t1);
+        dd[4] = Math.fma(s, sd[4], sd[5] * _t2);
         dd[5] = sd[5];
-        dd[6] = Math.fma(s, sd[6], sd[8] * _t0);
-        dd[7] = Math.fma(s, sd[7], sd[8] * _t1);
+        dd[6] = Math.fma(s, sd[6], sd[8] * _t1);
+        dd[7] = Math.fma(s, sd[7], sd[8] * _t2);
         dd[8] = sd[8];
         ((Double3x3Impl) dest).properties = 0;
         return dest;
@@ -9618,8 +10197,8 @@ public class Double3x3Impl implements Double3x3 {
         dd[3] = 0.0;
         dd[4] = sY;
         dd[5] = 0.0;
-        dd[6] = Math.fma(-pivotX, sX, pivotX);
-        dd[7] = Math.fma(-pivotY, sY, pivotY);
+        dd[6] = pivotX * (1.0 - sX);
+        dd[7] = pivotY * (1.0 - sY);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -9635,8 +10214,8 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         dd[0] = sX;
         dd[4] = sY;
-        dd[6] = Math.fma(-pivotX, sX, pivotX);
-        dd[7] = Math.fma(-pivotY, sY, pivotY);
+        dd[6] = pivotX * (1.0 - sX);
+        dd[7] = pivotY * (1.0 - sY);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -9655,8 +10234,8 @@ public class Double3x3Impl implements Double3x3 {
         dd[3] = 0.0;
         dd[4] = sY;
         dd[5] = 0.0;
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0 - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0 - sY, sY * sd[7]);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -9672,8 +10251,8 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         dd[0] = sX;
         dd[4] = sY;
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0 - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0 - sY, sY * sd[7]);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -9692,8 +10271,8 @@ public class Double3x3Impl implements Double3x3 {
         dd[3] = sX * sd[3];
         dd[4] = sY * sd[4];
         dd[5] = 0.0;
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0 - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0 - sY, sY * sd[7]);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -9711,8 +10290,8 @@ public class Double3x3Impl implements Double3x3 {
         dd[1] = sY * sd[1];
         dd[3] = sX * sd[3];
         dd[4] = sY * sd[4];
-        dd[6] = Math.fma(-pivotX, sX, Math.fma(sX, sd[6], pivotX));
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[6] = Math.fma(pivotX, 1.0 - sX, sX * sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0 - sY, sY * sd[7]);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -9725,8 +10304,8 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 preScaleAround_general(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         dd[0] = Math.fma(sX, sd[0], sd[2] * _t2);
         dd[1] = Math.fma(sY, sd[1], sd[2] * _t3);
         dd[2] = sd[2];
@@ -14197,14 +14776,15 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_translation(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = 0.0;
         dd[4] = s;
         dd[5] = 0.0;
-        dd[6] = Math.fma(-s, pivotX, sd[6] + pivotX);
-        dd[7] = Math.fma(-s, pivotY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, _t0, sd[6]);
+        dd[7] = Math.fma(pivotY, _t0, sd[7]);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -14218,10 +14798,11 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_translation_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[4] = s;
-        dd[6] = Math.fma(-s, pivotX, sd[6] + pivotX);
-        dd[7] = Math.fma(-s, pivotY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, _t0, sd[6]);
+        dd[7] = Math.fma(pivotY, _t0, sd[7]);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -14234,16 +14815,17 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_orthogonal(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
         double _buf0 = s * sd[0];
         double _buf1 = s * sd[1];
         dd[2] = 0.0;
         double _buf2 = s * sd[3];
         double _buf3 = s * sd[4];
         dd[5] = 0.0;
-        dd[6] = Math.fma(sd[0], _t0, Math.fma(sd[3], _t1, sd[6]));
-        dd[7] = Math.fma(sd[1], _t0, Math.fma(sd[4], _t1, sd[7]));
+        dd[6] = Math.fma(sd[0], _t1, Math.fma(sd[3], _t2, sd[6]));
+        dd[7] = Math.fma(sd[1], _t1, Math.fma(sd[4], _t2, sd[7]));
         dd[8] = 1.0;
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -14261,14 +14843,15 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_orthogonal_self(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
         double _buf0 = s * sd[0];
         double _buf1 = s * sd[1];
         double _buf2 = s * sd[3];
         double _buf3 = s * sd[4];
-        dd[6] = Math.fma(sd[0], _t0, Math.fma(sd[3], _t1, sd[6]));
-        dd[7] = Math.fma(sd[1], _t0, Math.fma(sd[4], _t1, sd[7]));
+        dd[6] = Math.fma(sd[0], _t1, Math.fma(sd[3], _t2, sd[6]));
+        dd[7] = Math.fma(sd[1], _t1, Math.fma(sd[4], _t2, sd[7]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[3] = _buf2;
@@ -14285,17 +14868,18 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_general(double s, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
         double _buf0 = s * sd[0];
         double _buf1 = s * sd[1];
         double _buf2 = s * sd[2];
         double _buf3 = s * sd[3];
         double _buf4 = s * sd[4];
         double _buf5 = s * sd[5];
-        dd[6] = Math.fma(sd[0], _t0, Math.fma(sd[3], _t1, sd[6]));
-        dd[7] = Math.fma(sd[1], _t0, Math.fma(sd[4], _t1, sd[7]));
-        dd[8] = Math.fma(sd[2], _t0, Math.fma(sd[5], _t1, sd[8]));
+        dd[6] = Math.fma(sd[0], _t1, Math.fma(sd[3], _t2, sd[6]));
+        dd[7] = Math.fma(sd[1], _t1, Math.fma(sd[4], _t2, sd[7]));
+        dd[8] = Math.fma(sd[2], _t1, Math.fma(sd[5], _t2, sd[8]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -14420,8 +15004,8 @@ public class Double3x3Impl implements Double3x3 {
         dd[3] = 0.0;
         dd[4] = sY;
         dd[5] = 0.0;
-        dd[6] = Math.fma(-pivotX, sX, sd[6] + pivotX);
-        dd[7] = Math.fma(-pivotY, sY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, 1.0 - sX, sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0 - sY, sd[7]);
         dd[8] = 1.0;
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
@@ -14437,8 +15021,8 @@ public class Double3x3Impl implements Double3x3 {
         double[] dd = ((Double3x3Impl) dest).data;
         dd[0] = sX;
         dd[4] = sY;
-        dd[6] = Math.fma(-pivotX, sX, sd[6] + pivotX);
-        dd[7] = Math.fma(-pivotY, sY, sd[7] + pivotY);
+        dd[6] = Math.fma(pivotX, 1.0 - sX, sd[6]);
+        dd[7] = Math.fma(pivotY, 1.0 - sY, sd[7]);
         ((Double3x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -14451,8 +15035,8 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_orthogonal(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         double _buf0 = sX * sd[0];
         double _buf1 = sX * sd[1];
         dd[2] = 0.0;
@@ -14478,8 +15062,8 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_orthogonal_self(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         double _buf0 = sX * sd[0];
         double _buf1 = sX * sd[1];
         double _buf2 = sY * sd[3];
@@ -14502,8 +15086,8 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 scaleAround_general(double sX, double sY, double pivotX, double pivotY, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         double _buf0 = sX * sd[0];
         double _buf1 = sX * sd[1];
         double _buf2 = sX * sd[2];
@@ -14847,20 +15431,20 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 view_orthogonal(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        double _buf0 = _sp0 * sd[0];
+        double _buf1 = _sp0 * sd[1];
         dd[2] = 0.0;
-        double _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf2 = _sp1 * sd[3];
+        double _buf3 = _sp1 * sd[4];
         dd[5] = 0.0;
-        dd[6] = sd[6] - sd[0] * _t2 * _t0_inv - sd[3] * _t3 * _t1_inv;
-        dd[7] = sd[7] - sd[1] * _t2 * _t0_inv - sd[4] * _t3 * _t1_inv;
+        dd[6] = sd[6] - sd[0] * _sp2 - sd[3] * _sp3;
+        dd[7] = sd[7] - sd[1] * _sp2 - sd[4] * _sp3;
         dd[8] = 1.0;
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -14878,18 +15462,18 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 view_orthogonal_self(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        double _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
-        dd[6] = sd[6] - sd[0] * _t2 * _t0_inv - sd[3] * _t3 * _t1_inv;
-        dd[7] = sd[7] - sd[1] * _t2 * _t0_inv - sd[4] * _t3 * _t1_inv;
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        double _buf0 = _sp0 * sd[0];
+        double _buf1 = _sp0 * sd[1];
+        double _buf2 = _sp1 * sd[3];
+        double _buf3 = _sp1 * sd[4];
+        dd[6] = sd[6] - sd[0] * _sp2 - sd[3] * _sp3;
+        dd[7] = sd[7] - sd[1] * _sp2 - sd[4] * _sp3;
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[3] = _buf2;
@@ -14906,20 +15490,20 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 view_affine(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        double _buf0 = _sp0 * sd[0];
+        double _buf1 = _sp0 * sd[1];
         dd[2] = 0.0;
-        double _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
+        double _buf2 = _sp1 * sd[3];
+        double _buf3 = _sp1 * sd[4];
         dd[5] = 0.0;
-        dd[6] = sd[6] + (-(sd[0] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
-        dd[7] = sd[7] + (-(sd[1] * _t2 * _t0_inv) - sd[4] * _t3 * _t1_inv);
+        dd[6] = sd[6] + (-(sd[0] * _sp2) - sd[3] * _sp3);
+        dd[7] = sd[7] + (-(sd[1] * _sp2) - sd[4] * _sp3);
         dd[8] = 1.0;
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -14937,18 +15521,18 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 view_affine_self(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        double _buf2 = (sd[3] + sd[3]) * _t1_inv;
-        double _buf3 = (sd[4] + sd[4]) * _t1_inv;
-        dd[6] = sd[6] + (-(sd[0] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
-        dd[7] = sd[7] + (-(sd[1] * _t2 * _t0_inv) - sd[4] * _t3 * _t1_inv);
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        double _buf0 = _sp0 * sd[0];
+        double _buf1 = _sp0 * sd[1];
+        double _buf2 = _sp1 * sd[3];
+        double _buf3 = _sp1 * sd[4];
+        dd[6] = sd[6] + (-(sd[0] * _sp2) - sd[3] * _sp3);
+        dd[7] = sd[7] + (-(sd[1] * _sp2) - sd[4] * _sp3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[3] = _buf2;
@@ -14965,21 +15549,21 @@ public class Double3x3Impl implements Double3x3 {
     private Double3x3 view_general(double left, double right, double bottom, double top, @Mutated Double3x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double3x3Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        double _buf2 = (sd[2] + sd[2]) * _t0_inv;
-        double _buf3 = (sd[3] + sd[3]) * _t1_inv;
-        double _buf4 = (sd[4] + sd[4]) * _t1_inv;
-        double _buf5 = (sd[5] + sd[5]) * _t1_inv;
-        dd[6] = sd[6] + (-(sd[0] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
-        dd[7] = sd[7] + (-(sd[1] * _t2 * _t0_inv) - sd[4] * _t3 * _t1_inv);
-        dd[8] = sd[8] + (-(sd[2] * _t2 * _t0_inv) - sd[5] * _t3 * _t1_inv);
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        double _buf0 = _sp0 * sd[0];
+        double _buf1 = _sp0 * sd[1];
+        double _buf2 = _sp0 * sd[2];
+        double _buf3 = _sp1 * sd[3];
+        double _buf4 = _sp1 * sd[4];
+        double _buf5 = _sp1 * sd[5];
+        dd[6] = sd[6] + (-(sd[0] * _sp2) - sd[3] * _sp3);
+        dd[7] = sd[7] + (-(sd[1] * _sp2) - sd[4] * _sp3);
+        dd[8] = sd[8] + (-(sd[2] * _sp2) - sd[5] * _sp3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;

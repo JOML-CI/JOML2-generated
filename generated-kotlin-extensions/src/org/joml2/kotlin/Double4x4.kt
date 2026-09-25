@@ -32,6 +32,8 @@ inline fun Double4x4.obliqueCabinet(angle: Angle): Double4x4 = obliqueCabinet(an
 inline fun Double4x4.obliqueCavalier(angle: Angle): Double4x4 = obliqueCavalier(angle.radians)
 /** [Double4x4.obliqueMilitary] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double4x4.obliqueMilitary(angle: Angle): Double4x4 = obliqueMilitary(angle.radians)
+/** [Double4x4.obliquePlanometric] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Double4x4.obliquePlanometric(angle: Angle): Double4x4 = obliquePlanometric(angle.radians)
 /** [Double4x4.perspective] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double4x4.perspective(fovy: Angle, aspect: Double, near: Double, far: Double, handedness: Handedness, depthRange: DepthRange): Double4x4 = perspective(fovy.radians, aspect, near, far, handedness, depthRange)
 /** [Double4x4.perspective] taking a type-safe [Angle] in place of the angle in radians. */
@@ -123,6 +125,8 @@ object Double4x4Factory {
     inline fun makeObliqueCavalier(angle: Angle): Double4x4 = Double4x4.makeObliqueCavalier(angle.radians)
     /** [Double4x4.makeObliqueMilitary] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makeObliqueMilitary(angle: Angle): Double4x4 = Double4x4.makeObliqueMilitary(angle.radians)
+    /** [Double4x4.makeObliquePlanometric] taking a type-safe [Angle] in place of the angle in radians. */
+    inline fun makeObliquePlanometric(angle: Angle): Double4x4 = Double4x4.makeObliquePlanometric(angle.radians)
     /** [Double4x4.makePerspective] taking a type-safe [Angle] in place of the angle in radians. */
     inline fun makePerspective(fovy: Angle, aspect: Double, near: Double, far: Double, handedness: Handedness, depthRange: DepthRange): Double4x4 = Double4x4.makePerspective(fovy.radians, aspect, near, far, handedness, depthRange)
     /** [Double4x4.makePerspective] taking a type-safe [Angle] in place of the angle in radians. */

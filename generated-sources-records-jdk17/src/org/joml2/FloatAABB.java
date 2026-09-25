@@ -203,10 +203,13 @@ public record FloatAABB(float minX, float minY, float minZ, float maxX, float ma
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private FloatAABB transform_s37cad600_tail(float _t12, Float3x4 m, float _t13, float _t14, float _t15, float _t24, float _t30, float _t17, float _t25, float _t19, float _t26) {
-        float _t31 = Math.fma(_t12, Math.abs(m.m12()), Math.fma(_t13, Math.abs(m.m10()), _t14 * Math.abs(m.m11())));
-        float _t32 = Math.fma(_t12, Math.abs(m.m22()), Math.fma(_t13, Math.abs(m.m20()), _t14 * Math.abs(m.m21())));
-        return new FloatAABB(Math.fma(0.5f, _t15, Math.fma(0.5f, _t24, Math.fma(-0.5f, _t30, m.m03()))), Math.fma(0.5f, _t17, Math.fma(0.5f, _t25, Math.fma(-0.5f, _t31, m.m13()))), Math.fma(0.5f, _t19, Math.fma(0.5f, _t26, Math.fma(-0.5f, _t32, m.m23()))), Math.fma(0.5f, _t15, Math.fma(0.5f, _t24, Math.fma(0.5f, _t30, m.m03()))), Math.fma(0.5f, _t17, Math.fma(0.5f, _t25, Math.fma(0.5f, _t31, m.m13()))), Math.fma(0.5f, _t19, Math.fma(0.5f, _t26, Math.fma(0.5f, _t32, m.m23()))));
+    private FloatAABB transform_s37cad600_tail(float _t11, Float3x4 m, float _t9, float _t10, float _t34, float _t18, float _t28, float _t35, float _t20, float _t29, float _t36, float _t22, float _t30) {
+        float _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
+        if (_t34 < 0.0f) {
+            return new FloatAABB(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        } else {
+            return new FloatAABB(Math.fma(0.5f, _t18, Math.fma(0.5f, _t28, Math.fma(-0.5f, _t35, m.m03()))), Math.fma(0.5f, _t20, Math.fma(0.5f, _t29, Math.fma(-0.5f, _t36, m.m13()))), Math.fma(0.5f, _t22, Math.fma(0.5f, _t30, Math.fma(-0.5f, _t37, m.m23()))), Math.fma(0.5f, _t18, Math.fma(0.5f, _t28, Math.fma(0.5f, _t35, m.m03()))), Math.fma(0.5f, _t20, Math.fma(0.5f, _t29, Math.fma(0.5f, _t36, m.m13()))), Math.fma(0.5f, _t22, Math.fma(0.5f, _t30, Math.fma(0.5f, _t37, m.m23()))));
+        }
     }
 
 
@@ -218,27 +221,32 @@ public record FloatAABB(float minX, float minY, float minZ, float maxX, float ma
      * @return the resulting axis-aligned bounding box
      */
     public FloatAABB transform(Float3x4 m) {
-        float _t9 = this.minZ + this.maxZ;
-        float _t10 = this.minX + this.maxX;
-        float _t11 = this.minY + this.maxY;
-        float _t12 = this.maxZ - this.minZ;
-        float _t13 = this.maxX - this.minX;
-        float _t14 = this.maxY - this.minY;
-        float _t15 = m.m02() * _t9;
-        float _t17 = m.m12() * _t9;
-        float _t19 = m.m22() * _t9;
-        float _t24 = Math.fma(m.m00(), _t10, m.m01() * _t11);
-        float _t25 = Math.fma(m.m10(), _t10, m.m11() * _t11);
-        float _t26 = Math.fma(m.m20(), _t10, m.m21() * _t11);
-        float _t30 = Math.fma(_t12, Math.abs(m.m02()), Math.fma(_t13, Math.abs(m.m00()), _t14 * Math.abs(m.m01())));
-        return transform_s37cad600_tail(_t12, m, _t13, _t14, _t15, _t24, _t30, _t17, _t25, _t19, _t26);
+        float _t9 = this.maxX - this.minX;
+        float _t10 = this.maxY - this.minY;
+        float _t11 = this.maxZ - this.minZ;
+        float _t12 = this.minZ + this.maxZ;
+        float _t13 = this.minX + this.maxX;
+        float _t14 = this.minY + this.maxY;
+        float _t18 = m.m02() * _t12;
+        float _t20 = m.m12() * _t12;
+        float _t22 = m.m22() * _t12;
+        float _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
+        float _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
+        float _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
+        float _t34 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
+        float _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
+        return transform_s37cad600_tail(_t11, m, _t9, _t10, _t34, _t18, _t28, _t35, _t20, _t29, _t36, _t22, _t30);
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private FloatAABB transform_s37d8ed81_tail(float _t12, Float4x4 m, float _t13, float _t14, float _t15, float _t24, float _t30, float _t17, float _t25, float _t19, float _t26) {
-        float _t31 = Math.fma(_t12, Math.abs(m.m12()), Math.fma(_t13, Math.abs(m.m10()), _t14 * Math.abs(m.m11())));
-        float _t32 = Math.fma(_t12, Math.abs(m.m22()), Math.fma(_t13, Math.abs(m.m20()), _t14 * Math.abs(m.m21())));
-        return new FloatAABB(Math.fma(0.5f, _t15, Math.fma(0.5f, _t24, Math.fma(-0.5f, _t30, m.m03()))), Math.fma(0.5f, _t17, Math.fma(0.5f, _t25, Math.fma(-0.5f, _t31, m.m13()))), Math.fma(0.5f, _t19, Math.fma(0.5f, _t26, Math.fma(-0.5f, _t32, m.m23()))), Math.fma(0.5f, _t15, Math.fma(0.5f, _t24, Math.fma(0.5f, _t30, m.m03()))), Math.fma(0.5f, _t17, Math.fma(0.5f, _t25, Math.fma(0.5f, _t31, m.m13()))), Math.fma(0.5f, _t19, Math.fma(0.5f, _t26, Math.fma(0.5f, _t32, m.m23()))));
+    private FloatAABB transform_s37d8ed81_tail(float _t11, Float4x4 m, float _t9, float _t10, float _t34, float _t18, float _t28, float _t35, float _t20, float _t29, float _t36, float _t22, float _t30) {
+        float _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
+        if (_t34 < 0.0f) {
+            return new FloatAABB(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+        } else {
+            return new FloatAABB(Math.fma(0.5f, _t18, Math.fma(0.5f, _t28, Math.fma(-0.5f, _t35, m.m03()))), Math.fma(0.5f, _t20, Math.fma(0.5f, _t29, Math.fma(-0.5f, _t36, m.m13()))), Math.fma(0.5f, _t22, Math.fma(0.5f, _t30, Math.fma(-0.5f, _t37, m.m23()))), Math.fma(0.5f, _t18, Math.fma(0.5f, _t28, Math.fma(0.5f, _t35, m.m03()))), Math.fma(0.5f, _t20, Math.fma(0.5f, _t29, Math.fma(0.5f, _t36, m.m13()))), Math.fma(0.5f, _t22, Math.fma(0.5f, _t30, Math.fma(0.5f, _t37, m.m23()))));
+        }
     }
 
 
@@ -253,20 +261,22 @@ public record FloatAABB(float minX, float minY, float minZ, float maxX, float ma
      * @return the resulting axis-aligned bounding box
      */
     public FloatAABB transform(Float4x4 m) {
-        float _t9 = this.minZ + this.maxZ;
-        float _t10 = this.minX + this.maxX;
-        float _t11 = this.minY + this.maxY;
-        float _t12 = this.maxZ - this.minZ;
-        float _t13 = this.maxX - this.minX;
-        float _t14 = this.maxY - this.minY;
-        float _t15 = m.m02() * _t9;
-        float _t17 = m.m12() * _t9;
-        float _t19 = m.m22() * _t9;
-        float _t24 = Math.fma(m.m00(), _t10, m.m01() * _t11);
-        float _t25 = Math.fma(m.m10(), _t10, m.m11() * _t11);
-        float _t26 = Math.fma(m.m20(), _t10, m.m21() * _t11);
-        float _t30 = Math.fma(_t12, Math.abs(m.m02()), Math.fma(_t13, Math.abs(m.m00()), _t14 * Math.abs(m.m01())));
-        return transform_s37d8ed81_tail(_t12, m, _t13, _t14, _t15, _t24, _t30, _t17, _t25, _t19, _t26);
+        float _t9 = this.maxX - this.minX;
+        float _t10 = this.maxY - this.minY;
+        float _t11 = this.maxZ - this.minZ;
+        float _t12 = this.minZ + this.maxZ;
+        float _t13 = this.minX + this.maxX;
+        float _t14 = this.minY + this.maxY;
+        float _t18 = m.m02() * _t12;
+        float _t20 = m.m12() * _t12;
+        float _t22 = m.m22() * _t12;
+        float _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
+        float _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
+        float _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
+        float _t34 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
+        float _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
+        return transform_s37d8ed81_tail(_t11, m, _t9, _t10, _t34, _t18, _t28, _t35, _t20, _t29, _t36, _t22, _t30);
     }
 
 

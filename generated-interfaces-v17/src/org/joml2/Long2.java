@@ -405,9 +405,9 @@ public interface Long2 extends Long2R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default Long2 set(long s) { return set(s, Joml.RETURN_NEW ? Joml.long2() : this); }
+    @Mutated default Long2 set(long s) { return set(s, this); }
 
     /**
      * Convert this vector to {@code float} precision, returning the result as a new instance.

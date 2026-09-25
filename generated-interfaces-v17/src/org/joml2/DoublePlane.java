@@ -51,9 +51,9 @@ public interface DoublePlane extends DoublePlaneR {
      * Set the normal of this plane to {@code n}.
      *
      * @param n the new normal
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoublePlane setNormal(Double3R n) { return setNormal(n, Joml.RETURN_NEW ? Joml.doublePlane() : this); }
+    @Mutated default DoublePlane setNormal(Double3R n) { return setNormal(n, this); }
 
     /**
      * Set the normal of this plane to ({@code x}, {@code y}, {@code z}).
@@ -61,9 +61,9 @@ public interface DoublePlane extends DoublePlaneR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoublePlane setNormal(double x, double y, double z) { return setNormal(x, y, z, Joml.RETURN_NEW ? Joml.doublePlane() : this); }
+    @Mutated default DoublePlane setNormal(double x, double y, double z) { return setNormal(x, y, z, this); }
 
     /**
      * Convert this plane to {@code float} precision, returning the result as a new instance.

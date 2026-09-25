@@ -1579,10 +1579,11 @@ public final class Float3Impl implements Float3 {
      */
     public Float3 catmullRomTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t0 = t * t;
-        d.x = 0.5f * (t * 2.0f * (-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) + (3.0f * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t0 + (p2X - this.x)));
-        d.y = 0.5f * (t * 2.0f * (-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) + (3.0f * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t0 + (p2Y - this.y)));
-        d.z = 0.5f * (t * 2.0f * (-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) + (3.0f * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t0 + (p2Z - this.z)));
+        float _sp0 = t + t;
+        float _sp1 = 3.0f * t * t;
+        d.x = 0.5f * (_sp0 * (-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) + (_sp1 * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) + (p2X - this.x)));
+        d.y = 0.5f * (_sp0 * (-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) + (_sp1 * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) + (p2Y - this.y)));
+        d.z = 0.5f * (_sp0 * (-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) + (_sp1 * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) + (p2Z - this.z)));
         return d;
     }
 
@@ -1621,10 +1622,11 @@ public final class Float3Impl implements Float3 {
      */
     public Double3 catmullRomTangent(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, float p3X, float p3Y, float p3Z, float t, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t0 = t * t;
-        d.x = 0.5f * (t * 2.0f * (-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) + (3.0f * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) * _t0 + (p2X - this.x)));
-        d.y = 0.5f * (t * 2.0f * (-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) + (3.0f * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) * _t0 + (p2Y - this.y)));
-        d.z = 0.5f * (t * 2.0f * (-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) + (3.0f * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) * _t0 + (p2Z - this.z)));
+        float _sp0 = t + t;
+        float _sp1 = 3.0f * t * t;
+        d.x = 0.5f * (_sp0 * (-5.0f * p1X + (this.x + this.x + (4.0f * p2X - p3X))) + (_sp1 * (3.0f * p1X + (p3X - this.x) - 3.0f * p2X) + (p2X - this.x)));
+        d.y = 0.5f * (_sp0 * (-5.0f * p1Y + (this.y + this.y + (4.0f * p2Y - p3Y))) + (_sp1 * (3.0f * p1Y + (p3Y - this.y) - 3.0f * p2Y) + (p2Y - this.y)));
+        d.z = 0.5f * (_sp0 * (-5.0f * p1Z + (this.z + this.z + (4.0f * p2Z - p3Z))) + (_sp1 * (3.0f * p1Z + (p3Z - this.z) - 3.0f * p2Z) + (p2Z - this.z)));
         return d;
     }
 
@@ -2273,7 +2275,9 @@ public final class Float3Impl implements Float3 {
      * Compute the angle in radians between this vector and {@code other}.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
@@ -2288,7 +2292,9 @@ public final class Float3Impl implements Float3 {
      * {@code otherZ}).
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -2300,7 +2306,44 @@ public final class Float3Impl implements Float3 {
         float _t6 = otherY * this.x - otherX * this.y;
         float _t7 = otherZ * this.x - otherX * this.z;
         float _t8 = otherZ * this.y - otherY * this.z;
-        return (float) Math.atan2((float) Math.sqrt(_t6 * _t6 + _t7 * _t7 + _t8 * _t8), otherX * this.x + otherY * this.y + otherZ * this.z);
+        float _ct0 = _t6 * _t6 + _t7 * _t7 + _t8 * _t8;
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return angleBetween_degenerate(otherX, otherY, otherZ);
+        return (float) Math.atan2((float) Math.sqrt(_ct0), otherX * this.x + otherY * this.y + otherZ * this.z);
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float angleBetween_degenerate(Float3R other) {
+        return angleBetween_degenerate(other.x(), other.y(), other.z());
+    }
+
+
+    /**
+     * Out-of-range path of {@code angleBetween}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float angleBetween_degenerate(float otherX, float otherY, float otherZ) {
+        float _t0 = unitScale(otherX, otherY, otherZ);
+        float _t1 = unitScale(this.x, this.y, this.z);
+        float _t8 = otherY * _t0;
+        float _t9 = this.x * _t1;
+        float _t10 = otherX * _t0;
+        float _t11 = this.y * _t1;
+        float _t12 = otherZ * _t0;
+        float _t13 = this.z * _t1;
+        float _t20 = _t8 * _t9 - _t10 * _t11;
+        float _t21 = _t12 * _t9 - _t10 * _t13;
+        float _t22 = _t12 * _t11 - _t8 * _t13;
+        float _t23 = unitScale(_t20, _t21, _t22);
+        float _t27 = _t20 * _t23;
+        float _t28 = _t21 * _t23;
+        float _t29 = _t22 * _t23;
+        return (float) Math.atan2((float) Math.sqrt(_t27 * _t27 + _t28 * _t28 + _t29 * _t29), (_t10 * _t9 + _t8 * _t11 + _t12 * _t13) * _t23);
     }
 
 
@@ -4022,8 +4065,9 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4038,8 +4082,9 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4057,8 +4102,9 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4073,8 +4119,9 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4092,8 +4139,9 @@ public final class Float3Impl implements Float3 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}, {@code yZ}) and store the result in
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY},
+     * {@code yZ}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign
+     * differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
      * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
@@ -4107,16 +4155,17 @@ public final class Float3Impl implements Float3 {
      */
     public Float3 mod(float yX, float yY, float yZ, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        d.x = this.x - yX * (float) Math.floor(this.x / yX);
-        d.y = this.y - yY * (float) Math.floor(this.y / yY);
-        d.z = this.z - yZ * (float) Math.floor(this.z / yZ);
+        d.x = flooredMod(this.x, yX);
+        d.y = flooredMod(this.y, yY);
+        d.z = flooredMod(this.z, yZ);
         return d;
     }
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}, {@code yZ}) and store the result in
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY},
+     * {@code yZ}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign
+     * differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
      * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
@@ -4133,9 +4182,9 @@ public final class Float3Impl implements Float3 {
      */
     public Double3 mod(float yX, float yY, float yZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        d.x = this.x - yX * (float) Math.floor(this.x / yX);
-        d.y = this.y - yY * (float) Math.floor(this.y / yY);
-        d.z = this.z - yZ * (float) Math.floor(this.z / yZ);
+        d.x = flooredMod(this.x, yX);
+        d.y = flooredMod(this.y, yY);
+        d.z = flooredMod(this.z, yZ);
         return d;
     }
 
@@ -4226,7 +4275,7 @@ public final class Float3Impl implements Float3 {
         Float3Impl d = (Float3Impl) dest;
         float _t4 = this.x * this.x + this.y * this.y + this.z * this.z;
         float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        if (_t4 > 0.0f) {
+        if (_t4 != 0.0f) {
             d.x = this.x * _t5;
             d.y = this.y * _t5;
             d.z = this.z * _t5;
@@ -4258,7 +4307,7 @@ public final class Float3Impl implements Float3 {
         Double3Impl d = (Double3Impl) dest;
         float _t4 = this.x * this.x + this.y * this.y + this.z * this.z;
         float _t5 = (1.0f / (float) Math.sqrt(_t4));
-        if (_t4 > 0.0f) {
+        if (_t4 != 0.0f) {
             d.x = this.x * _t5;
             d.y = this.y * _t5;
             d.z = this.z * _t5;
@@ -4283,7 +4332,7 @@ public final class Float3Impl implements Float3 {
         Float3Impl d = (Float3Impl) dest;
         float _t4 = this.x * this.x + this.y * this.y + this.z * this.z;
         float _t6 = length * (1.0f / (float) Math.sqrt(_t4));
-        if (_t4 > 0.0f) {
+        if (_t4 != 0.0f) {
             d.x = this.x * _t6;
             d.y = this.y * _t6;
             d.z = this.z * _t6;
@@ -4311,7 +4360,7 @@ public final class Float3Impl implements Float3 {
         Double3Impl d = (Double3Impl) dest;
         float _t4 = this.x * this.x + this.y * this.y + this.z * this.z;
         float _t6 = length * (1.0f / (float) Math.sqrt(_t4));
-        if (_t4 > 0.0f) {
+        if (_t4 != 0.0f) {
             d.x = this.x * _t6;
             d.y = this.y * _t6;
             d.z = this.z * _t6;
@@ -4330,7 +4379,9 @@ public final class Float3Impl implements Float3 {
      * the given normal.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the signed angle to
      * @param normal the reference axis that defines the sign of the angle
@@ -4350,7 +4401,9 @@ public final class Float3Impl implements Float3 {
      * normal.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -4367,8 +4420,47 @@ public final class Float3Impl implements Float3 {
         float _t9 = otherZ * this.y - otherY * this.z;
         float _t10 = otherX * this.z - otherZ * this.x;
         float _t11 = otherY * this.x - otherX * this.y;
-        float _t20 = (float) Math.atan2((float) Math.sqrt(_t10 * _t10 + _t9 * _t9 + _t11 * _t11), otherX * this.x + otherY * this.y + otherZ * this.z);
-        return normalX * _t9 + normalY * _t10 + normalZ * _t11 < 0.0f ? -_t20 : _t20;
+        float _ct0 = _t10 * _t10 + _t9 * _t9 + _t11 * _t11;
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return orientedAngle_degenerate(otherX, otherY, otherZ, normalX, normalY, normalZ);
+        float _t21 = (float) Math.atan2((float) Math.sqrt(_ct0), otherX * this.x + otherY * this.y + otherZ * this.z);
+        return normalX * _t9 + normalY * _t10 + normalZ * _t11 < 0.0f ? -_t21 : _t21;
+    }
+
+
+    /**
+     * Out-of-range path of {@code orientedAngle}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float orientedAngle_degenerate(Float3R other, Float3R normal) {
+        return orientedAngle_degenerate(other.x(), other.y(), other.z(), normal.x(), normal.y(), normal.z());
+    }
+
+
+    /**
+     * Out-of-range path of {@code orientedAngle}: its methods leave here when the squared length of
+     * the cross product they form is zero, NaN or outside the normal floating-point range; reached
+     * only through them.
+     */
+    private float orientedAngle_degenerate(float otherX, float otherY, float otherZ, float normalX, float normalY, float normalZ) {
+        float _t0 = unitScale(normalX, normalY, normalZ);
+        float _t1 = unitScale(otherX, otherY, otherZ);
+        float _t2 = unitScale(this.x, this.y, this.z);
+        float _t9 = otherZ * _t1;
+        float _t10 = this.y * _t2;
+        float _t11 = otherY * _t1;
+        float _t12 = this.z * _t2;
+        float _t13 = otherX * _t1;
+        float _t14 = this.x * _t2;
+        float _t24 = _t9 * _t10 - _t11 * _t12;
+        float _t25 = _t13 * _t12 - _t9 * _t14;
+        float _t26 = _t11 * _t14 - _t13 * _t10;
+        float _t29 = unitScale(_t24, _t25, _t26);
+        float _t33 = _t24 * _t29;
+        float _t34 = _t25 * _t29;
+        float _t35 = _t26 * _t29;
+        float _t44 = (float) Math.atan2((float) Math.sqrt(_t34 * _t34 + _t33 * _t33 + _t35 * _t35), (_t13 * _t14 + _t11 * _t10 + _t9 * _t12) * _t29);
+        return normalX * _t0 * _t33 + normalY * _t0 * _t34 + normalZ * _t0 * _t35 < 0.0f ? -_t44 : _t44;
     }
 
 
@@ -4661,12 +4753,10 @@ public final class Float3Impl implements Float3 {
      */
     public Float3 project(float ontoX, float ontoY, float ontoZ, @Mutated Float3 dest) {
         Float3Impl d = (Float3Impl) dest;
-        float _t8 = ontoX * this.x + ontoY * this.y + ontoZ * this.z;
-        float _t9 = ontoX * ontoX + ontoY * ontoY + ontoZ * ontoZ;
-        float _t9_inv = 1.0f / _t9;
-        d.x = ontoX * _t8 * _t9_inv;
-        d.y = ontoY * _t8 * _t9_inv;
-        d.z = ontoZ * _t8 * _t9_inv;
+        float _sp0 = (ontoX * this.x + ontoY * this.y + ontoZ * this.z) / (ontoX * ontoX + ontoY * ontoY + ontoZ * ontoZ);
+        d.x = ontoX * _sp0;
+        d.y = ontoY * _sp0;
+        d.z = ontoZ * _sp0;
         return d;
     }
 
@@ -4686,12 +4776,10 @@ public final class Float3Impl implements Float3 {
      */
     public Double3 project(float ontoX, float ontoY, float ontoZ, @Mutated Double3 dest) {
         Double3Impl d = (Double3Impl) dest;
-        float _t8 = ontoX * this.x + ontoY * this.y + ontoZ * this.z;
-        float _t9 = ontoX * ontoX + ontoY * ontoY + ontoZ * ontoZ;
-        float _t9_inv = 1.0f / _t9;
-        d.x = ontoX * _t8 * _t9_inv;
-        d.y = ontoY * _t8 * _t9_inv;
-        d.z = ontoZ * _t8 * _t9_inv;
+        float _sp0 = (ontoX * this.x + ontoY * this.y + ontoZ * this.z) / (ontoX * ontoX + ontoY * ontoY + ontoZ * ontoZ);
+        d.x = ontoX * _sp0;
+        d.y = ontoY * _sp0;
+        d.z = ontoZ * _sp0;
         return d;
     }
 
@@ -4887,6 +4975,10 @@ public final class Float3Impl implements Float3 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -4903,6 +4995,10 @@ public final class Float3Impl implements Float3 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -4922,6 +5018,10 @@ public final class Float3Impl implements Float3 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normalX the {@code x} component of the vector {@code (normalX, normalY, normalZ)} (the
      *        vector must have unit length)
@@ -4956,6 +5056,10 @@ public final class Float3Impl implements Float3 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5473,6 +5577,10 @@ public final class Float3Impl implements Float3 {
      * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
      * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
      * the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      *
      * @param p1 the second vertex of the triangle (this vector is the first)
      * @param p2 the third vertex of the triangle
@@ -5489,6 +5597,10 @@ public final class Float3Impl implements Float3 {
      * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
      * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
      * the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5509,6 +5621,10 @@ public final class Float3Impl implements Float3 {
      * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
      * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
      * yields the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -5530,17 +5646,12 @@ public final class Float3Impl implements Float3 {
         float _t12 = _t0 * _t1 - _t2 * _t3;
         float _t13 = _t2 * _t4 - _t5 * _t1;
         float _t14 = _t5 * _t3 - _t0 * _t4;
-        float _t19 = _t12 * _t12 + _t13 * _t13 + _t14 * _t14;
-        float _t20 = (1.0f / (float) Math.sqrt(_t19));
-        if (_t19 > 0.0f) {
-            d.x = _t12 * _t20;
-            d.y = _t13 * _t20;
-            d.z = _t14 * _t20;
-        } else {
-            d.x = 0.0f;
-            d.y = 0.0f;
-            d.z = 0.0f;
-        }
+        float _ct0 = _t12 * _t12 + _t13 * _t13 + _t14 * _t14;
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return triangleNormal_degenerate(p1X, p1Y, p1Z, p2X, p2Y, p2Z, dest);
+        float _t21 = (1.0f / (float) Math.sqrt(_ct0));
+        d.x = _t12 * _t21;
+        d.y = _t13 * _t21;
+        d.z = _t14 * _t21;
         return d;
     }
 
@@ -5551,6 +5662,10 @@ public final class Float3Impl implements Float3 {
      * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
      * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
      * yields the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -5575,12 +5690,123 @@ public final class Float3Impl implements Float3 {
         float _t12 = _t0 * _t1 - _t2 * _t3;
         float _t13 = _t2 * _t4 - _t5 * _t1;
         float _t14 = _t5 * _t3 - _t0 * _t4;
-        float _t19 = _t12 * _t12 + _t13 * _t13 + _t14 * _t14;
-        float _t20 = (1.0f / (float) Math.sqrt(_t19));
-        if (_t19 > 0.0f) {
-            d.x = _t12 * _t20;
-            d.y = _t13 * _t20;
-            d.z = _t14 * _t20;
+        float _ct0 = _t12 * _t12 + _t13 * _t13 + _t14 * _t14;
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return triangleNormal_degenerate(p1X, p1Y, p1Z, p2X, p2Y, p2Z, dest);
+        float _t21 = (1.0f / (float) Math.sqrt(_ct0));
+        d.x = _t12 * _t21;
+        d.y = _t13 * _t21;
+        d.z = _t14 * _t21;
+        return d;
+    }
+
+
+    /**
+     * Out-of-range path of {@code triangleNormal}: its methods leave here when the squared length
+     * of the cross product they form is zero, NaN or outside the normal floating-point range;
+     * reached only through them.
+     */
+    private Float3 triangleNormal_degenerate(Float3R p1, Float3R p2, @Mutated Float3 dest) {
+        return triangleNormal_degenerate(p1.x(), p1.y(), p1.z(), p2.x(), p2.y(), p2.z(), dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code triangleNormal}: its methods leave here when the squared length
+     * of the cross product they form is zero, NaN or outside the normal floating-point range;
+     * reached only through them.
+     */
+    private Double3 triangleNormal_degenerate(Float3R p1, Float3R p2, @Mutated Double3 dest) {
+        return triangleNormal_degenerate(p1.x(), p1.y(), p1.z(), p2.x(), p2.y(), p2.z(), dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code triangleNormal}: its methods leave here when the squared length
+     * of the cross product they form is zero, NaN or outside the normal floating-point range;
+     * reached only through them.
+     */
+    private Float3 triangleNormal_degenerate(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, @Mutated Float3 dest) {
+        Float3Impl d = (Float3Impl) dest;
+        float _t0 = p1Y - this.y;
+        float _t1 = p1X - this.x;
+        float _t2 = p1Z - this.z;
+        float _t3 = p2Z - this.z;
+        float _t4 = p2X - this.x;
+        float _t5 = p2Y - this.y;
+        float _t6 = unitScale(_t1, _t0, _t2);
+        float _t7 = unitScale(_t4, _t5, _t3);
+        float _t14 = _t0 * _t6;
+        float _t15 = _t3 * _t7;
+        float _t16 = _t2 * _t6;
+        float _t17 = _t5 * _t7;
+        float _t18 = _t4 * _t7;
+        float _t19 = _t1 * _t6;
+        float _t26 = _t14 * _t15 - _t16 * _t17;
+        float _t27 = _t16 * _t18 - _t19 * _t15;
+        float _t28 = _t19 * _t17 - _t14 * _t18;
+        float _t29 = unitScale(_t26, _t27, _t28);
+        float _t33 = _t26 * _t29;
+        float _t34 = _t27 * _t29;
+        float _t35 = _t28 * _t29;
+        float _t40 = _t33 * _t33 + _t34 * _t34 + _t35 * _t35;
+        float _t41 = (1.0f / (float) Math.sqrt(_t40));
+        if (_t40 != 0.0f) {
+            d.x = _t41 * _t33;
+            d.y = _t41 * _t34;
+            d.z = _t41 * _t35;
+        } else {
+            d.x = 0.0f;
+            d.y = 0.0f;
+            d.z = 0.0f;
+        }
+        return d;
+    }
+
+
+    /**
+     * Out-of-range path of {@code triangleNormal}: its methods leave here when the squared length
+     * of the cross product they form is zero, NaN or outside the normal floating-point range;
+     * reached only through them.
+     */
+    @Mutated private Float3 triangleNormal_degenerate(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z) {
+        return triangleNormal_degenerate(p1X, p1Y, p1Z, p2X, p2Y, p2Z, Joml.RETURN_NEW ? Joml.float3() : this);
+    }
+
+
+    /**
+     * Out-of-range path of {@code triangleNormal}: its methods leave here when the squared length
+     * of the cross product they form is zero, NaN or outside the normal floating-point range;
+     * reached only through them.
+     */
+    private Double3 triangleNormal_degenerate(float p1X, float p1Y, float p1Z, float p2X, float p2Y, float p2Z, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        float _t0 = p1Y - this.y;
+        float _t1 = p1X - this.x;
+        float _t2 = p1Z - this.z;
+        float _t3 = p2Z - this.z;
+        float _t4 = p2X - this.x;
+        float _t5 = p2Y - this.y;
+        float _t6 = unitScale(_t1, _t0, _t2);
+        float _t7 = unitScale(_t4, _t5, _t3);
+        float _t14 = _t0 * _t6;
+        float _t15 = _t3 * _t7;
+        float _t16 = _t2 * _t6;
+        float _t17 = _t5 * _t7;
+        float _t18 = _t4 * _t7;
+        float _t19 = _t1 * _t6;
+        float _t26 = _t14 * _t15 - _t16 * _t17;
+        float _t27 = _t16 * _t18 - _t19 * _t15;
+        float _t28 = _t19 * _t17 - _t14 * _t18;
+        float _t29 = unitScale(_t26, _t27, _t28);
+        float _t33 = _t26 * _t29;
+        float _t34 = _t27 * _t29;
+        float _t35 = _t28 * _t29;
+        float _t40 = _t33 * _t33 + _t34 * _t34 + _t35 * _t35;
+        float _t41 = (1.0f / (float) Math.sqrt(_t40));
+        if (_t40 != 0.0f) {
+            d.x = _t41 * _t33;
+            d.y = _t41 * _t34;
+            d.z = _t41 * _t35;
         } else {
             d.x = 0.0f;
             d.y = 0.0f;
@@ -6132,11 +6358,10 @@ public final class Float3Impl implements Float3 {
         Float3Impl d = (Float3Impl) dest;
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
-        float _t5 = 1.0f - _t1;
-        float _t7 = axisX * this.x + axisY * this.y + axisZ * this.z;
-        float _buf0 = this.x * _t1 + (axisY * this.z - axisZ * this.y) * _t0 + _t5 * axisX * _t7;
-        float _buf1 = this.y * _t1 + (axisZ * this.x - axisX * this.z) * _t0 + _t5 * axisY * _t7;
-        d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _t5 * axisZ * _t7;
+        float _sp0 = (1.0f - _t1) * (axisX * this.x + axisY * this.y + axisZ * this.z);
+        float _buf0 = this.x * _t1 + (axisY * this.z - axisZ * this.y) * _t0 + _sp0 * axisX;
+        float _buf1 = this.y * _t1 + (axisZ * this.x - axisX * this.z) * _t0 + _sp0 * axisY;
+        d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _sp0 * axisZ;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -6167,11 +6392,10 @@ public final class Float3Impl implements Float3 {
         Double3Impl d = (Double3Impl) dest;
         float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
-        float _t5 = 1.0f - _t1;
-        float _t7 = axisX * this.x + axisY * this.y + axisZ * this.z;
-        float _buf0 = this.x * _t1 + (axisY * this.z - axisZ * this.y) * _t0 + _t5 * axisX * _t7;
-        float _buf1 = this.y * _t1 + (axisZ * this.x - axisX * this.z) * _t0 + _t5 * axisY * _t7;
-        d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _t5 * axisZ * _t7;
+        float _sp0 = (1.0f - _t1) * (axisX * this.x + axisY * this.y + axisZ * this.z);
+        float _buf0 = this.x * _t1 + (axisY * this.z - axisZ * this.y) * _t0 + _sp0 * axisX;
+        float _buf1 = this.y * _t1 + (axisZ * this.x - axisX * this.z) * _t0 + _sp0 * axisY;
+        d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _sp0 * axisZ;
         d.x = _buf0;
         d.y = _buf1;
         return d;
@@ -7774,4 +7998,48 @@ public final class Float3Impl implements Float3 {
         return SEG_OPS.loadDouble(this, offset, src);
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = x - y * q;
+            return r * java.lang.Math.signum(y) < 0 ? x - y * (q - 1.0f) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = x - y * q;
+            return r * java.lang.Math.signum(y) < 0 ? x - y * (q - 1.0) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

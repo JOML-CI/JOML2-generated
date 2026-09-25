@@ -35,7 +35,7 @@ inline operator fun Byte2.rem(other: Byte2): Byte2 = rem(other)
 /** [Byte2.sub] as the `-` operator. */
 inline operator fun Byte2.minus(other: Byte2): Byte2 = sub(other)
 /** [Byte2.dot] as an infix function, so `a dot b` parses. */
-inline infix fun Byte2.dot(other: Byte2): Byte = dot(other)
+inline infix fun Byte2.dot(other: Byte2): Int = dot(other)
 /** Component 1 of this Byte2 (`x()`), for destructuring declarations. */
 inline operator fun Byte2.component1(): Byte = x()
 /** Component 2 of this Byte2 (`y()`), for destructuring declarations. */

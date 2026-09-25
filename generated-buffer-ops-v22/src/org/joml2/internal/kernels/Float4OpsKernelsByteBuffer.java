@@ -1110,7 +1110,50 @@ public final class Float4OpsKernelsByteBuffer {
         float _t15 = Math.fma(otherW, _selfx, -(otherX * _selfw));
         float _t16 = Math.fma(otherY, _selfx, -(otherX * _selfy));
         float _t17 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
-        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
+        float _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsByteBuffer.angleBetween_degenerate(src, srcOffset, otherX, otherY, otherZ, otherW);
+        return (float) Math.atan2((float) Math.sqrt(_ct0), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
+    }
+
+    public static float angleBetween_degenerate(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.angleBetween_degenerate_unsafe(src, srcOffset, otherX, otherY, otherZ, otherW);
+        return Float4OpsKernelsByteBuffer.angleBetween_degenerate_api(src, srcOffset, otherX, otherY, otherZ, otherW);
+    }
+
+    public static float angleBetween_degenerate_unsafe(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        return Float4OpsKernelsAddress.angleBetween_degenerate_unsafe(_srcBase, otherX, otherY, otherZ, otherW);
+    }
+
+    public static float angleBetween_degenerate_api(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _selfw = src.getFloat(srcOffset + 12);
+        float _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        float _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        float _t16 = otherW * _t6;
+        float _t17 = _selfz * _t7;
+        float _t18 = otherZ * _t6;
+        float _t19 = _selfw * _t7;
+        float _t20 = otherY * _t6;
+        float _t21 = _selfx * _t7;
+        float _t22 = otherX * _t6;
+        float _t23 = _selfy * _t7;
+        float _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        float _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        float _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        float _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        float _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        float _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        float _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        float _t58 = _t36 * _t51;
+        float _t59 = _t41 * _t51;
+        float _t60 = _t40 * _t51;
+        float _t61 = _t39 * _t51;
+        float _t62 = _t37 * _t51;
+        float _t63 = _t38 * _t51;
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
     }
 
     public static float angleBetween_unsafe(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
@@ -1134,7 +1177,55 @@ public final class Float4OpsKernelsByteBuffer {
         float _t15 = Math.fma(_otherw, _selfx, -(_otherx * _selfw));
         float _t16 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
         float _t17 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
-        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
+        float _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsByteBuffer.angleBetween_degenerate(src, srcOffset, other, otherOffset);
+        return (float) Math.atan2((float) Math.sqrt(_ct0), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
+    }
+
+    public static float angleBetween_degenerate(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.angleBetween_degenerate_unsafe(src, srcOffset, other, otherOffset);
+        return Float4OpsKernelsByteBuffer.angleBetween_degenerate_api(src, srcOffset, other, otherOffset);
+    }
+
+    public static float angleBetween_degenerate_unsafe(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + otherOffset;
+        return Float4OpsKernelsAddress.angleBetween_degenerate_unsafe(_srcBase, _otherBase);
+    }
+
+    public static float angleBetween_degenerate_api(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _selfw = src.getFloat(srcOffset + 12);
+        float _otherx = other.getFloat(otherOffset + 0);
+        float _othery = other.getFloat(otherOffset + 4);
+        float _otherz = other.getFloat(otherOffset + 8);
+        float _otherw = other.getFloat(otherOffset + 12);
+        float _t6 = unitScale(_otherz, _otherw, Math.max(Math.abs(_otherx), Math.abs(_othery)));
+        float _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        float _t16 = _otherw * _t6;
+        float _t17 = _selfz * _t7;
+        float _t18 = _otherz * _t6;
+        float _t19 = _selfw * _t7;
+        float _t20 = _othery * _t6;
+        float _t21 = _selfx * _t7;
+        float _t22 = _otherx * _t6;
+        float _t23 = _selfy * _t7;
+        float _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        float _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        float _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        float _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        float _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        float _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        float _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        float _t58 = _t36 * _t51;
+        float _t59 = _t41 * _t51;
+        float _t60 = _t40 * _t51;
+        float _t61 = _t39 * _t51;
+        float _t62 = _t37 * _t51;
+        float _t63 = _t38 * _t51;
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
     }
 
     public static java.nio.ByteBuffer asin_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
@@ -2165,11 +2256,10 @@ public final class Float4OpsKernelsByteBuffer {
         float _selfy = src.getFloat(srcOffset + 4);
         float _selfz = src.getFloat(srcOffset + 8);
         float _selfw = src.getFloat(srcOffset + 12);
-        float _rcp0 = 1.0f / y;
-        dest.putFloat(destOffset + 0, Math.fma(-y, (float) Math.floor(_selfx * _rcp0), _selfx));
-        dest.putFloat(destOffset + 4, Math.fma(-y, (float) Math.floor(_selfy * _rcp0), _selfy));
-        dest.putFloat(destOffset + 8, Math.fma(-y, (float) Math.floor(_selfz * _rcp0), _selfz));
-        dest.putFloat(destOffset + 12, Math.fma(-y, (float) Math.floor(_selfw * _rcp0), _selfw));
+        dest.putFloat(destOffset + 0, flooredMod(_selfx, y));
+        dest.putFloat(destOffset + 4, flooredMod(_selfy, y));
+        dest.putFloat(destOffset + 8, flooredMod(_selfz, y));
+        dest.putFloat(destOffset + 12, flooredMod(_selfw, y));
         return dest;
     }
 
@@ -2185,10 +2275,10 @@ public final class Float4OpsKernelsByteBuffer {
         float _selfy = src.getFloat(srcOffset + 4);
         float _selfz = src.getFloat(srcOffset + 8);
         float _selfw = src.getFloat(srcOffset + 12);
-        dest.putFloat(destOffset + 0, Math.fma(-yX, (float) Math.floor(_selfx / yX), _selfx));
-        dest.putFloat(destOffset + 4, Math.fma(-yY, (float) Math.floor(_selfy / yY), _selfy));
-        dest.putFloat(destOffset + 8, Math.fma(-yZ, (float) Math.floor(_selfz / yZ), _selfz));
-        dest.putFloat(destOffset + 12, Math.fma(-yW, (float) Math.floor(_selfw / yW), _selfw));
+        dest.putFloat(destOffset + 0, flooredMod(_selfx, yX));
+        dest.putFloat(destOffset + 4, flooredMod(_selfy, yY));
+        dest.putFloat(destOffset + 8, flooredMod(_selfz, yZ));
+        dest.putFloat(destOffset + 12, flooredMod(_selfw, yW));
         return dest;
     }
 
@@ -2209,10 +2299,10 @@ public final class Float4OpsKernelsByteBuffer {
         float _yy = y.getFloat(yOffset + 4);
         float _yz = y.getFloat(yOffset + 8);
         float _yw = y.getFloat(yOffset + 12);
-        dest.putFloat(destOffset + 0, Math.fma(-_yx, (float) Math.floor(_selfx / _yx), _selfx));
-        dest.putFloat(destOffset + 4, Math.fma(-_yy, (float) Math.floor(_selfy / _yy), _selfy));
-        dest.putFloat(destOffset + 8, Math.fma(-_yz, (float) Math.floor(_selfz / _yz), _selfz));
-        dest.putFloat(destOffset + 12, Math.fma(-_yw, (float) Math.floor(_selfw / _yw), _selfw));
+        dest.putFloat(destOffset + 0, flooredMod(_selfx, _yx));
+        dest.putFloat(destOffset + 4, flooredMod(_selfy, _yy));
+        dest.putFloat(destOffset + 8, flooredMod(_selfz, _yz));
+        dest.putFloat(destOffset + 12, flooredMod(_selfw, _yw));
         return dest;
     }
 
@@ -2268,7 +2358,7 @@ public final class Float4OpsKernelsByteBuffer {
         float _selfw = src.getFloat(srcOffset + 12);
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dest.putFloat(destOffset + 0, _selfx * _t4);
             dest.putFloat(destOffset + 4, _selfy * _t4);
             dest.putFloat(destOffset + 8, _selfz * _t4);
@@ -2296,7 +2386,7 @@ public final class Float4OpsKernelsByteBuffer {
         float _selfw = src.getFloat(srcOffset + 12);
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         float _t5 = length * (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             dest.putFloat(destOffset + 0, _selfx * _t5);
             dest.putFloat(destOffset + 4, _selfy * _t5);
             dest.putFloat(destOffset + 8, _selfz * _t5);
@@ -2451,13 +2541,11 @@ public final class Float4OpsKernelsByteBuffer {
         float _selfy = src.getFloat(srcOffset + 4);
         float _selfz = src.getFloat(srcOffset + 8);
         float _selfw = src.getFloat(srcOffset + 12);
-        float _t6 = Math.fma(ontoW, _selfw, Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy)));
-        float _t7 = Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
-        float _t7_inv = 1.0f / _t7;
-        dest.putFloat(destOffset + 0, ontoX * _t6 * _t7_inv);
-        dest.putFloat(destOffset + 4, ontoY * _t6 * _t7_inv);
-        dest.putFloat(destOffset + 8, ontoZ * _t6 * _t7_inv);
-        dest.putFloat(destOffset + 12, ontoW * _t6 * _t7_inv);
+        float _sp0 = Math.fma(ontoW, _selfw, Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy))) / Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
+        dest.putFloat(destOffset + 0, ontoX * _sp0);
+        dest.putFloat(destOffset + 4, ontoY * _sp0);
+        dest.putFloat(destOffset + 8, ontoZ * _sp0);
+        dest.putFloat(destOffset + 12, ontoW * _sp0);
         return dest;
     }
 
@@ -2478,13 +2566,11 @@ public final class Float4OpsKernelsByteBuffer {
         float _ontoy = onto.getFloat(ontoOffset + 4);
         float _ontoz = onto.getFloat(ontoOffset + 8);
         float _ontow = onto.getFloat(ontoOffset + 12);
-        float _t6 = Math.fma(_ontow, _selfw, Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy)));
-        float _t7 = Math.fma(_ontow, _ontow, Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy)));
-        float _t7_inv = 1.0f / _t7;
-        dest.putFloat(destOffset + 0, _ontox * _t6 * _t7_inv);
-        dest.putFloat(destOffset + 4, _ontoy * _t6 * _t7_inv);
-        dest.putFloat(destOffset + 8, _ontoz * _t6 * _t7_inv);
-        dest.putFloat(destOffset + 12, _ontow * _t6 * _t7_inv);
+        float _sp0 = Math.fma(_ontow, _selfw, Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy))) / Math.fma(_ontow, _ontow, Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy)));
+        dest.putFloat(destOffset + 0, _ontox * _sp0);
+        dest.putFloat(destOffset + 4, _ontoy * _sp0);
+        dest.putFloat(destOffset + 8, _ontoz * _sp0);
+        dest.putFloat(destOffset + 12, _ontow * _sp0);
         return dest;
     }
 
@@ -3221,4 +3307,48 @@ public final class Float4OpsKernelsByteBuffer {
         return dest;
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

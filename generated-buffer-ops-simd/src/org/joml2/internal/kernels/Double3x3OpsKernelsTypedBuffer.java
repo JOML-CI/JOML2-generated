@@ -25,7 +25,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getColumn_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int col) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getColumn(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, col);
             return dest;
         }
@@ -65,7 +65,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getEulerAnglesXYZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getEulerAnglesXYZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -101,7 +101,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getEulerAnglesXZY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getEulerAnglesXZY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -137,7 +137,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getEulerAnglesYXZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getEulerAnglesYXZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -173,7 +173,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getEulerAnglesYZX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getEulerAnglesYZX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -209,7 +209,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getEulerAnglesZXY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getEulerAnglesZXY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -245,7 +245,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getEulerAnglesZYX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getEulerAnglesZYX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -281,7 +281,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getNormalizedRotation_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getNormalizedRotation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -305,7 +305,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t10 = (1.0 / Math.sqrt(_t7));
         double _t11 = (1.0 / Math.sqrt(_t8));
         double _t21, _t23, _t27;
-        if (_t6 > 0.0) {
+        if (_t6 != 0.0) {
             _t21 = _self01 * _t9;
             _t23 = _self11 * _t9;
             _t27 = _self21 * _t9;
@@ -315,7 +315,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
             _t27 = 0.0;
         }
         double _t22, _t24, _t26;
-        if (_t7 > 0.0) {
+        if (_t7 != 0.0) {
             _t22 = _self12 * _t10;
             _t24 = _self02 * _t10;
             _t26 = _self22 * _t10;
@@ -325,7 +325,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
             _t26 = 0.0;
         }
         double _t25, _t28, _t29;
-        if (_t8 > 0.0) {
+        if (_t8 != 0.0) {
             _t25 = _self20 * _t11;
             _t28 = _self00 * _t11;
             _t29 = _self10 * _t11;
@@ -358,32 +358,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t63 = 1.0 + (_t49 - (_t23 + _t26));
         double _t64 = 1.0 + (_t23 - (_t49 + _t26));
         double _t65 = 1.0 + (_t26 - _t52);
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
-        double _t69 = (1.0 / Math.sqrt(_t63));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t65));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
         if (_t58 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t36 * _t66);
-            dest.put(destOffset + 1, 0.5 * _t56 * _t66);
-            dest.put(destOffset + 2, 0.5 * _t57 * _t66);
+            dest.put(destOffset + 0, _sp0 * _t36);
+            dest.put(destOffset + 1, _sp0 * _t56);
+            dest.put(destOffset + 2, _sp0 * _t57);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t62));
         } else {
             if (_t49 > _t37) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t63));
-                dest.put(destOffset + 1, 0.5 * _t53 * _t69);
-                dest.put(destOffset + 2, 0.5 * _t55 * _t69);
-                dest.put(destOffset + 3, 0.5 * _t36 * _t69);
+                dest.put(destOffset + 1, _sp3 * _t53);
+                dest.put(destOffset + 2, _sp3 * _t55);
+                dest.put(destOffset + 3, _sp3 * _t36);
             } else {
                 if (_t23 > _t26) {
-                    dest.put(destOffset + 0, 0.5 * _t53 * _t67);
+                    dest.put(destOffset + 0, _sp1 * _t53);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t64));
-                    dest.put(destOffset + 2, 0.5 * _t39 * _t67);
-                    dest.put(destOffset + 3, 0.5 * _t56 * _t67);
+                    dest.put(destOffset + 2, _sp1 * _t39);
+                    dest.put(destOffset + 3, _sp1 * _t56);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t55 * _t68);
-                    dest.put(destOffset + 1, 0.5 * _t39 * _t68);
+                    dest.put(destOffset + 0, _sp2 * _t55);
+                    dest.put(destOffset + 1, _sp2 * _t39);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t65));
-                    dest.put(destOffset + 3, 0.5 * _t57 * _t68);
+                    dest.put(destOffset + 3, _sp2 * _t57);
                 }
             }
         }
@@ -398,7 +398,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getRow_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int row) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getRow(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, row);
             return dest;
         }
@@ -438,7 +438,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getScale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -469,7 +469,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getTranslation_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getTranslation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -492,7 +492,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer getUnnormalizedRotation_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.getUnnormalizedRotation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -522,32 +522,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t15 = 1.0 + (_self00 - (_self11 + _self22));
         double _t16 = 1.0 + (_self11 - (_self00 + _self22));
         double _t17 = 1.0 + (_self22 - _t0);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t10 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t1 * _t18);
-            dest.put(destOffset + 1, 0.5 * _t7 * _t18);
-            dest.put(destOffset + 2, 0.5 * _t9 * _t18);
+            dest.put(destOffset + 0, _sp0 * _t1);
+            dest.put(destOffset + 1, _sp0 * _t7);
+            dest.put(destOffset + 2, _sp0 * _t9);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t14));
         } else {
             if (_self00 > _t2) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t15));
-                dest.put(destOffset + 1, 0.5 * _t4 * _t21);
-                dest.put(destOffset + 2, 0.5 * _t6 * _t21);
-                dest.put(destOffset + 3, 0.5 * _t1 * _t21);
+                dest.put(destOffset + 1, _sp3 * _t4);
+                dest.put(destOffset + 2, _sp3 * _t6);
+                dest.put(destOffset + 3, _sp3 * _t1);
             } else {
                 if (_self11 > _self22) {
-                    dest.put(destOffset + 0, 0.5 * _t4 * _t19);
+                    dest.put(destOffset + 0, _sp1 * _t4);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t16));
-                    dest.put(destOffset + 2, 0.5 * _t8 * _t19);
-                    dest.put(destOffset + 3, 0.5 * _t7 * _t19);
+                    dest.put(destOffset + 2, _sp1 * _t8);
+                    dest.put(destOffset + 3, _sp1 * _t7);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t6 * _t20);
-                    dest.put(destOffset + 1, 0.5 * _t8 * _t20);
+                    dest.put(destOffset + 0, _sp2 * _t6);
+                    dest.put(destOffset + 1, _sp2 * _t8);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t17));
-                    dest.put(destOffset + 3, 0.5 * _t9 * _t20);
+                    dest.put(destOffset + 3, _sp2 * _t9);
                 }
             }
         }
@@ -562,7 +562,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer cofactor_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.cofactor(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -597,7 +597,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static double determinant_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             return Double3x3Ops.determinant(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -621,7 +621,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static double frobeniusNorm_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             return Double3x3Ops.frobeniusNorm(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -647,7 +647,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer invert_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.invert(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -689,7 +689,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer invertProduct_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 9) {
             Double3x3Ops.invertProduct(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -748,7 +748,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer normal_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.normal(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -787,7 +787,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static double trace_api(java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             return Double3x3Ops.trace(src.array(), src.arrayOffset() + srcOffset);
         }
         if (src.order() == java.nio.ByteOrder.nativeOrder()) {
@@ -807,7 +807,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer transpose_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.transpose(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -845,7 +845,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer add_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 9) {
             Double3x3Ops.add(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -869,7 +869,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer negate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.negate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -893,7 +893,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer sub_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 9) {
             Double3x3Ops.sub(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -917,7 +917,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer set_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 9) {
             Double3x3Ops.set(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -940,7 +940,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer setMat2x2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset) {
-        if (dest.hasArray() && m.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && m.hasArray() && mOffset >= 0 && mOffset <= m.limit() - 4) {
             Double3x3Ops.setMat2x2(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
@@ -972,7 +972,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer setMat2x3_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset) {
-        if (dest.hasArray() && m.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && m.hasArray() && mOffset >= 0 && mOffset <= m.limit() - 6) {
             Double3x3Ops.setMat2x3(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
@@ -1006,7 +1006,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer setMat3x4_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset) {
-        if (dest.hasArray() && m.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && m.hasArray() && mOffset >= 0 && mOffset <= m.limit() - 12) {
             Double3x3Ops.setMat3x4(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
@@ -1043,7 +1043,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer setMat4x4_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset) {
-        if (dest.hasArray() && m.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && m.hasArray() && mOffset >= 0 && mOffset <= m.limit() - 16) {
             Double3x3Ops.setMat4x4(dest.array(), dest.arrayOffset() + destOffset, m.array(), m.arrayOffset() + mOffset);
             return dest;
         }
@@ -1072,7 +1072,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer withTranslation_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double tX, double tY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.withTranslation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, tX, tY);
             return dest;
         }
@@ -1108,7 +1108,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer withTranslation_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer t, int tOffset) {
-        if (dest.hasArray() && src.hasArray() && t.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && t.hasArray() && tOffset >= 0 && tOffset <= t.limit() - 2) {
             Double3x3Ops.withTranslation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, t.array(), t.arrayOffset() + tOffset);
             return dest;
         }
@@ -1144,7 +1144,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFromRigid_api(java.nio.DoubleBuffer dest, int destOffset, double rTX, double rTY, double rTZ, double rRX, double rRY, double rRZ, double rRW) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeFromRigid(dest.array(), dest.arrayOffset() + destOffset, rTX, rTY, rTZ, rRX, rRY, rRZ, rRW);
             return dest;
         }
@@ -1174,7 +1174,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFromTransform_api(java.nio.DoubleBuffer dest, int destOffset, double tTX, double tTY, double tTZ, double tRX, double tRY, double tRZ, double tRW, double tSX, double tSY, double tSZ) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeFromTransform(dest.array(), dest.arrayOffset() + destOffset, tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ);
             return dest;
         }
@@ -1208,7 +1208,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer to2x2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.to2x2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1235,7 +1235,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer to2x3_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 6 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.to2x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1262,7 +1262,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer to3x4_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 12 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.to3x4(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1302,7 +1302,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer to4x4_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.to4x4(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1346,7 +1346,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer toDualQuat_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 8 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.toDualQuat(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1376,32 +1376,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t15 = _self00 + (1.0 - _self11 - _self22);
         double _t16 = _self11 + (_t1 - _self22);
         double _t17 = _self22 + (_t1 - _self11);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t13 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t3 * _t18);
-            dest.put(destOffset + 1, 0.5 * _t7 * _t18);
-            dest.put(destOffset + 2, 0.5 * _t9 * _t18);
+            dest.put(destOffset + 0, _sp0 * _t3);
+            dest.put(destOffset + 1, _sp0 * _t7);
+            dest.put(destOffset + 2, _sp0 * _t9);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t14));
         } else {
             if (_self00 > _t4) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t15));
-                dest.put(destOffset + 1, 0.5 * _t5 * _t21);
-                dest.put(destOffset + 2, 0.5 * _t6 * _t21);
-                dest.put(destOffset + 3, 0.5 * _t3 * _t21);
+                dest.put(destOffset + 1, _sp3 * _t5);
+                dest.put(destOffset + 2, _sp3 * _t6);
+                dest.put(destOffset + 3, _sp3 * _t3);
             } else {
                 if (_self11 > _self22) {
-                    dest.put(destOffset + 0, 0.5 * _t5 * _t19);
+                    dest.put(destOffset + 0, _sp1 * _t5);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t16));
-                    dest.put(destOffset + 2, 0.5 * _t8 * _t19);
-                    dest.put(destOffset + 3, 0.5 * _t7 * _t19);
+                    dest.put(destOffset + 2, _sp1 * _t8);
+                    dest.put(destOffset + 3, _sp1 * _t7);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t6 * _t20);
-                    dest.put(destOffset + 1, 0.5 * _t8 * _t20);
+                    dest.put(destOffset + 0, _sp2 * _t6);
+                    dest.put(destOffset + 1, _sp2 * _t8);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t17));
-                    dest.put(destOffset + 3, 0.5 * _t9 * _t20);
+                    dest.put(destOffset + 3, _sp2 * _t9);
                 }
             }
         }
@@ -1420,7 +1420,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer toRigid_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 7 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.toRigid(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1471,35 +1471,35 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t54 = Math.fma(-_self01, _t12, _t45);
         double _t59 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t44));
         double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         if (_t59 > 0.0) {
-            dest.put(destOffset + 3, 0.5 * _t32 * _t61);
-            dest.put(destOffset + 4, 0.5 * _t53 * _t61);
-            dest.put(destOffset + 5, 0.5 * _t54 * _t61);
+            dest.put(destOffset + 3, _sp0 * _t32);
+            dest.put(destOffset + 4, _sp0 * _t53);
+            dest.put(destOffset + 5, _sp0 * _t54);
             dest.put(destOffset + 6, 0.5 * Math.sqrt(_t60));
         } else {
             if (_t44 > _t33) {
                 dest.put(destOffset + 3, 0.5 * Math.sqrt(_t64));
-                dest.put(destOffset + 4, 0.5 * _t51 * _t67);
-                dest.put(destOffset + 5, 0.5 * _t52 * _t67);
-                dest.put(destOffset + 6, 0.5 * _t32 * _t67);
+                dest.put(destOffset + 4, _sp3 * _t51);
+                dest.put(destOffset + 5, _sp3 * _t52);
+                dest.put(destOffset + 6, _sp3 * _t32);
             } else {
                 if (_t21 > _t16) {
-                    dest.put(destOffset + 3, 0.5 * _t51 * _t65);
+                    dest.put(destOffset + 3, _sp1 * _t51);
                     dest.put(destOffset + 4, 0.5 * Math.sqrt(_t62));
-                    dest.put(destOffset + 5, 0.5 * _t28 * _t65);
-                    dest.put(destOffset + 6, 0.5 * _t53 * _t65);
+                    dest.put(destOffset + 5, _sp1 * _t28);
+                    dest.put(destOffset + 6, _sp1 * _t53);
                 } else {
-                    dest.put(destOffset + 3, 0.5 * _t52 * _t66);
-                    dest.put(destOffset + 4, 0.5 * _t28 * _t66);
+                    dest.put(destOffset + 3, _sp2 * _t52);
+                    dest.put(destOffset + 4, _sp2 * _t28);
                     dest.put(destOffset + 5, 0.5 * Math.sqrt(_t63));
-                    dest.put(destOffset + 6, 0.5 * _t54 * _t66);
+                    dest.put(destOffset + 6, _sp2 * _t54);
                 }
             }
         }
@@ -1517,7 +1517,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer toTransform_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 10 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.toTransform(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1541,8 +1541,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t11 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = _self10 * _t14;
         double _t17 = _self22 * _t13;
         double _t18 = _self12 * _t13;
@@ -1572,20 +1572,20 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t55 = Math.fma(-_self01, _t12, _t46);
         double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t45));
         double _t61 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         dest.put(destOffset + 0, 0.0);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
-        dest.put(destOffset + 3, _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67);
-        dest.put(destOffset + 4, _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67);
-        dest.put(destOffset + 5, _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64));
-        dest.put(destOffset + 6, _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67);
+        dest.put(destOffset + 3, _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53);
+        dest.put(destOffset + 4, _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29);
+        dest.put(destOffset + 5, _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64));
+        dest.put(destOffset + 6, _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55);
         dest.put(destOffset + 7, _t44 < 0.0 ? -_t15 : _t15);
         dest.put(destOffset + 8, Math.sqrt(_t9));
         dest.put(destOffset + 9, Math.sqrt(_t10));
@@ -1600,7 +1600,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer decomposeRotation_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.decomposeRotation(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1620,7 +1620,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -1637,7 +1637,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t34, _t35, _t36;
-        if (_t29 > 0.0) {
+        if (_t29 != 0.0) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -1653,7 +1653,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         double _t50 = (1.0 / Math.sqrt(_t49));
         double _t54, _t55, _t56;
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -1686,32 +1686,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t87 = 1.0 + (_t73 - (_t36 + _t56));
         double _t88 = 1.0 + (_t36 - (_t73 + _t56));
         double _t89 = 1.0 + (_t56 - _t76);
-        double _t90 = (1.0 / Math.sqrt(_t86));
-        double _t91 = (1.0 / Math.sqrt(_t88));
-        double _t92 = (1.0 / Math.sqrt(_t89));
-        double _t93 = (1.0 / Math.sqrt(_t87));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t86));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t88));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t89));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t87));
         if (_t82 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t60 * _t90);
-            dest.put(destOffset + 1, 0.5 * _t81 * _t90);
-            dest.put(destOffset + 2, 0.5 * _t78 * _t90);
+            dest.put(destOffset + 0, _sp0 * _t60);
+            dest.put(destOffset + 1, _sp0 * _t81);
+            dest.put(destOffset + 2, _sp0 * _t78);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t86));
         } else {
             if (_t73 > _t61) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t87));
-                dest.put(destOffset + 1, 0.5 * _t77 * _t93);
-                dest.put(destOffset + 2, 0.5 * _t80 * _t93);
-                dest.put(destOffset + 3, 0.5 * _t60 * _t93);
+                dest.put(destOffset + 1, _sp3 * _t77);
+                dest.put(destOffset + 2, _sp3 * _t80);
+                dest.put(destOffset + 3, _sp3 * _t60);
             } else {
                 if (_t36 > _t56) {
-                    dest.put(destOffset + 0, 0.5 * _t77 * _t91);
+                    dest.put(destOffset + 0, _sp1 * _t77);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t88));
-                    dest.put(destOffset + 2, 0.5 * _t63 * _t91);
-                    dest.put(destOffset + 3, 0.5 * _t81 * _t91);
+                    dest.put(destOffset + 2, _sp1 * _t63);
+                    dest.put(destOffset + 3, _sp1 * _t81);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t80 * _t92);
-                    dest.put(destOffset + 1, 0.5 * _t63 * _t92);
+                    dest.put(destOffset + 0, _sp2 * _t80);
+                    dest.put(destOffset + 1, _sp2 * _t63);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t89));
-                    dest.put(destOffset + 3, 0.5 * _t78 * _t92);
+                    dest.put(destOffset + 3, _sp2 * _t78);
                 }
             }
         }
@@ -1726,7 +1726,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer decomposeScale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.decomposeScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1744,10 +1744,10 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        double _t3 = (1.0 / Math.sqrt(_t2));
         double _t4 = Math.sqrt(_t2);
+        double _t3 = 1.0 / _t4;
         double _t8, _t9, _t10;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -1764,7 +1764,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t28 = (1.0 / Math.sqrt(_t27));
         double _t32, _t33, _t34;
-        if (_t27 > 0.0) {
+        if (_t27 != 0.0) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -1780,7 +1780,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t52, _t53, _t54;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -1803,7 +1803,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer decomposeSkew_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.decomposeSkew(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -1823,7 +1823,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -1843,7 +1843,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t28 = _t15 * _t27;
         double _t32, _t33, _t34;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -1861,7 +1861,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t49 = _t14 * _t48;
         double _t53, _t54, _t55;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -1889,7 +1889,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeIdentity_api(java.nio.DoubleBuffer dest, int destOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeIdentity(dest.array(), dest.arrayOffset() + destOffset);
             return dest;
         }
@@ -1918,7 +1918,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lerp_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double t) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 9) {
             Double3x3Ops.lerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, t);
             return dest;
         }
@@ -1943,7 +1943,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer right, int rightOffset) {
-        if (dest.hasArray() && src.hasArray() && right.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && right.hasArray() && rightOffset >= 0 && rightOffset <= right.limit() - 9) {
             Double3x3Ops.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, right.array(), right.arrayOffset() + rightOffset);
             return dest;
         }
@@ -1981,7 +1981,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mulMat2x2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer right, int rightOffset) {
-        if (dest.hasArray() && src.hasArray() && right.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && right.hasArray() && rightOffset >= 0 && rightOffset <= right.limit() - 4) {
             Double3x3Ops.mulMat2x2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, right.array(), right.arrayOffset() + rightOffset);
             return dest;
         }
@@ -2023,7 +2023,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mulMat2x3_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer right, int rightOffset) {
-        if (dest.hasArray() && src.hasArray() && right.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && right.hasArray() && rightOffset >= 0 && rightOffset <= right.limit() - 6) {
             Double3x3Ops.mulMat2x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, right.array(), right.arrayOffset() + rightOffset);
             return dest;
         }
@@ -2067,7 +2067,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preMul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 9) {
             Double3x3Ops.preMul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -2105,7 +2105,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preMulMat2x2_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
             Double3x3Ops.preMulMat2x2(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -2138,7 +2138,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preMulMat2x3_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset) {
-        if (dest.hasArray() && src.hasArray() && other.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 6) {
             Double3x3Ops.preMulMat2x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
             return dest;
         }
@@ -2171,7 +2171,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeOuterProduct_api(java.nio.DoubleBuffer dest, int destOffset, double colX, double colY, double colZ, double rowX, double rowY, double rowZ) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeOuterProduct(dest.array(), dest.arrayOffset() + destOffset, colX, colY, colZ, rowX, rowY, rowZ);
             return dest;
         }
@@ -2200,7 +2200,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeOuterProduct_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer col, int colOffset, java.nio.DoubleBuffer row, int rowOffset) {
-        if (dest.hasArray() && col.hasArray() && row.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && col.hasArray() && colOffset >= 0 && colOffset <= col.limit() - 3 && row.hasArray() && rowOffset >= 0 && rowOffset <= row.limit() - 3) {
             Double3x3Ops.makeOuterProduct(dest.array(), dest.arrayOffset() + destOffset, col.array(), col.arrayOffset() + colOffset, row.array(), row.arrayOffset() + rowOffset);
             return dest;
         }
@@ -2234,7 +2234,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lookAlong_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.lookAlong(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, dirX, dirY, dirZ, upX, upY, upZ);
             return dest;
         }
@@ -2254,7 +2254,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -2269,7 +2269,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -2303,7 +2303,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer lookAlong_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer dir, int dirOffset, java.nio.DoubleBuffer up, int upOffset) {
-        if (dest.hasArray() && src.hasArray() && dir.hasArray() && up.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && dir.hasArray() && dirOffset >= 0 && dirOffset <= dir.limit() - 3 && up.hasArray() && upOffset >= 0 && upOffset <= up.limit() - 3) {
             Double3x3Ops.lookAlong(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, dir.array(), dir.arrayOffset() + dirOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
@@ -2329,7 +2329,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -2344,7 +2344,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -2375,7 +2375,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFromDualQuat_api(java.nio.DoubleBuffer dest, int destOffset, double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeFromDualQuat(dest.array(), dest.arrayOffset() + destOffset, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
             return dest;
         }
@@ -2383,6 +2383,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
             Double3x3OpsKernelsSegment.makeFromDualQuat_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, dqRX, dqRY, dqRZ, dqRW, dqDX, dqDY, dqDZ, dqDW);
             return dest;
         }
+        double _sp0 = dqRX + dqRX;
         double _t0 = dqRY * dqRY;
         double _t2 = dqRZ * dqRW;
         double _t3 = dqRY * dqRW;
@@ -2391,8 +2392,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dest.put(destOffset + 0, Math.fma(-2.0, _t0, _t6));
         dest.put(destOffset + 1, 2.0 * Math.fma(dqRX, dqRY, _t2));
-        dest.put(destOffset + 2, Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ));
-        dest.put(destOffset + 3, Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY));
+        dest.put(destOffset + 2, Math.fma(-2.0, _t3, _sp0 * dqRZ));
+        dest.put(destOffset + 3, Math.fma(-2.0, _t2, _sp0 * dqRY));
         dest.put(destOffset + 4, Math.fma(-2.0, _t4, _t6));
         dest.put(destOffset + 5, 2.0 * Math.fma(dqRX, dqRW, _t5));
         dest.put(destOffset + 6, 2.0 * Math.fma(dqRX, dqRZ, _t3));
@@ -2408,7 +2409,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotation_api(java.nio.DoubleBuffer dest, int destOffset, double angle) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotation(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
@@ -2437,7 +2438,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationAxis_api(java.nio.DoubleBuffer dest, int destOffset, double angle, double axisX, double axisY, double axisZ) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationAxis(dest.array(), dest.arrayOffset() + destOffset, angle, axisX, axisY, axisZ);
             return dest;
         }
@@ -2471,7 +2472,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer axis, int axisOffset, double angle) {
-        if (dest.hasArray() && axis.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             Double3x3Ops.makeRotationAxis(dest.array(), dest.arrayOffset() + destOffset, axis.array(), axis.arrayOffset() + axisOffset, angle);
             return dest;
         }
@@ -2507,7 +2508,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationLookAlong_api(java.nio.DoubleBuffer dest, int destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationLookAlong(dest.array(), dest.arrayOffset() + destOffset, dirX, dirY, dirZ, upX, upY, upZ);
             return dest;
         }
@@ -2518,7 +2519,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -2533,7 +2534,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -2563,7 +2564,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationLookAlong_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer dir, int dirOffset, java.nio.DoubleBuffer up, int upOffset) {
-        if (dest.hasArray() && dir.hasArray() && up.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && dir.hasArray() && dirOffset >= 0 && dirOffset <= dir.limit() - 3 && up.hasArray() && upOffset >= 0 && upOffset <= up.limit() - 3) {
             Double3x3Ops.makeRotationLookAlong(dest.array(), dest.arrayOffset() + destOffset, dir.array(), dir.arrayOffset() + dirOffset, up.array(), up.arrayOffset() + upOffset);
             return dest;
         }
@@ -2580,7 +2581,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -2595,7 +2596,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -2623,7 +2624,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationQuat_api(java.nio.DoubleBuffer dest, int destOffset, double qX, double qY, double qZ, double qW) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationQuat(dest.array(), dest.arrayOffset() + destOffset, qX, qY, qZ, qW);
             return dest;
         }
@@ -2654,7 +2655,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationQuat_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer q, int qOffset) {
-        if (dest.hasArray() && q.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && q.hasArray() && qOffset >= 0 && qOffset <= q.limit() - 4) {
             Double3x3Ops.makeRotationQuat(dest.array(), dest.arrayOffset() + destOffset, q.array(), q.arrayOffset() + qOffset);
             return dest;
         }
@@ -2688,7 +2689,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationX_api(java.nio.DoubleBuffer dest, int destOffset, double angle) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationX(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
@@ -2717,7 +2718,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationXYZ_api(java.nio.DoubleBuffer dest, int destOffset, double angleX, double angleY, double angleZ) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationXYZ(dest.array(), dest.arrayOffset() + destOffset, angleX, angleY, angleZ);
             return dest;
         }
@@ -2752,7 +2753,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationXZY_api(java.nio.DoubleBuffer dest, int destOffset, double angleX, double angleZ, double angleY) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationXZY(dest.array(), dest.arrayOffset() + destOffset, angleX, angleZ, angleY);
             return dest;
         }
@@ -2787,7 +2788,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationY_api(java.nio.DoubleBuffer dest, int destOffset, double angle) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationY(dest.array(), dest.arrayOffset() + destOffset, angle);
             return dest;
         }
@@ -2816,7 +2817,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationYXZ_api(java.nio.DoubleBuffer dest, int destOffset, double angleY, double angleX, double angleZ) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationYXZ(dest.array(), dest.arrayOffset() + destOffset, angleY, angleX, angleZ);
             return dest;
         }
@@ -2851,7 +2852,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationYZX_api(java.nio.DoubleBuffer dest, int destOffset, double angleY, double angleZ, double angleX) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationYZX(dest.array(), dest.arrayOffset() + destOffset, angleY, angleZ, angleX);
             return dest;
         }
@@ -2886,7 +2887,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationZXY_api(java.nio.DoubleBuffer dest, int destOffset, double angleZ, double angleX, double angleY) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationZXY(dest.array(), dest.arrayOffset() + destOffset, angleZ, angleX, angleY);
             return dest;
         }
@@ -2921,7 +2922,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeRotationZYX_api(java.nio.DoubleBuffer dest, int destOffset, double angleZ, double angleY, double angleX) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeRotationZYX(dest.array(), dest.arrayOffset() + destOffset, angleZ, angleY, angleX);
             return dest;
         }
@@ -2956,7 +2957,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeScaling_api(java.nio.DoubleBuffer dest, int destOffset, double vX, double vY) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, vX, vY);
             return dest;
         }
@@ -2984,7 +2985,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeScaling_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 2) {
             Double3x3Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -3013,7 +3014,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeScaling_api(java.nio.DoubleBuffer dest, int destOffset, double s) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeScaling(dest.array(), dest.arrayOffset() + destOffset, s);
             return dest;
         }
@@ -3040,7 +3041,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeTranslation_api(java.nio.DoubleBuffer dest, int destOffset, double vX, double vY) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeTranslation(dest.array(), dest.arrayOffset() + destOffset, vX, vY);
             return dest;
         }
@@ -3068,7 +3069,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeTranslation_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 2) {
             Double3x3Ops.makeTranslation(dest.array(), dest.arrayOffset() + destOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -3097,7 +3098,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeView_api(java.nio.DoubleBuffer dest, int destOffset, double left, double right, double bottom, double top) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9) {
             Double3x3Ops.makeView(dest.array(), dest.arrayOffset() + destOffset, left, right, bottom, top);
             return dest;
         }
@@ -3129,7 +3130,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preRotate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -3168,7 +3169,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double pivotX, double pivotY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preRotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, pivotX, pivotY);
             return dest;
         }
@@ -3212,7 +3213,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer pivot, int pivotOffset, double angle) {
-        if (dest.hasArray() && src.hasArray() && pivot.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 2) {
             Double3x3Ops.preRotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, pivot.array(), pivot.arrayOffset() + pivotOffset, angle);
             return dest;
         }
@@ -3257,7 +3258,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preRotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, axisX, axisY, axisZ);
             return dest;
         }
@@ -3310,7 +3311,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer axis, int axisOffset, double angle) {
-        if (dest.hasArray() && src.hasArray() && axis.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             Double3x3Ops.preRotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset, angle);
             return dest;
         }
@@ -3365,7 +3366,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preRotateX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -3404,7 +3405,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preRotateY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -3443,7 +3444,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preScale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double vX, double vY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY);
             return dest;
         }
@@ -3472,7 +3473,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preScale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && src.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 2) {
             Double3x3Ops.preScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -3502,7 +3503,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preScale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double s) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preScale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s);
             return dest;
         }
@@ -3530,7 +3531,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preScaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double s, double pivotX, double pivotY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preScaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s, pivotX, pivotY);
             return dest;
         }
@@ -3547,16 +3548,17 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
-        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t0));
-        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t1));
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
+        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t1));
+        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t2));
         dest.put(destOffset + 2, _self20);
-        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t0));
-        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t1));
+        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t1));
+        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t2));
         dest.put(destOffset + 5, _self21);
-        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t0));
-        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t1));
+        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t1));
+        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t2));
         dest.put(destOffset + 8, _self22);
         return dest;
     }
@@ -3570,7 +3572,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preScaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer pivot, int pivotOffset, double s) {
-        if (dest.hasArray() && src.hasArray() && pivot.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 2) {
             Double3x3Ops.preScaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, pivot.array(), pivot.arrayOffset() + pivotOffset, s);
             return dest;
         }
@@ -3589,16 +3591,17 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self22 = src.get(srcOffset + 8);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t0 = Math.fma(-s, _pivotx, _pivotx);
-        double _t1 = Math.fma(-s, _pivoty, _pivoty);
-        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t0));
-        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t1));
+        double _t0 = 1.0 - s;
+        double _t1 = _pivotx * _t0;
+        double _t2 = _pivoty * _t0;
+        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t1));
+        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t2));
         dest.put(destOffset + 2, _self20);
-        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t0));
-        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t1));
+        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t1));
+        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t2));
         dest.put(destOffset + 5, _self21);
-        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t0));
-        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t1));
+        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t1));
+        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t2));
         dest.put(destOffset + 8, _self22);
         return dest;
     }
@@ -3611,7 +3614,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preScaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double sX, double sY, double pivotX, double pivotY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preScaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, sX, sY, pivotX, pivotY);
             return dest;
         }
@@ -3628,8 +3631,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         dest.put(destOffset + 0, Math.fma(sX, _self00, _self20 * _t2));
         dest.put(destOffset + 1, Math.fma(sY, _self10, _self20 * _t3));
         dest.put(destOffset + 2, _self20);
@@ -3652,7 +3655,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preScaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer s, int sOffset, java.nio.DoubleBuffer pivot, int pivotOffset) {
-        if (dest.hasArray() && src.hasArray() && s.hasArray() && pivot.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && s.hasArray() && sOffset >= 0 && sOffset <= s.limit() - 2 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 2) {
             Double3x3Ops.preScaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s.array(), s.arrayOffset() + sOffset, pivot.array(), pivot.arrayOffset() + pivotOffset);
             return dest;
         }
@@ -3673,8 +3676,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _sy = s.get(sOffset + 1);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t2 = Math.fma(-_pivotx, _sx, _pivotx);
-        double _t3 = Math.fma(-_pivoty, _sy, _pivoty);
+        double _t2 = _pivotx * (1.0 - _sx);
+        double _t3 = _pivoty * (1.0 - _sy);
         dest.put(destOffset + 0, Math.fma(_sx, _self00, _self20 * _t2));
         dest.put(destOffset + 1, Math.fma(_sy, _self10, _self20 * _t3));
         dest.put(destOffset + 2, _self20);
@@ -3695,7 +3698,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preTranslate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double vX, double vY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.preTranslate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY);
             return dest;
         }
@@ -3724,7 +3727,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preTranslate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && src.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 2) {
             Double3x3Ops.preTranslate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -3754,7 +3757,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -3793,7 +3796,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double pivotX, double pivotY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, pivotX, pivotY);
             return dest;
         }
@@ -3837,7 +3840,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer pivot, int pivotOffset, double angle) {
-        if (dest.hasArray() && src.hasArray() && pivot.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 2) {
             Double3x3Ops.rotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, pivot.array(), pivot.arrayOffset() + pivotOffset, angle);
             return dest;
         }
@@ -3882,7 +3885,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, axisX, axisY, axisZ);
             return dest;
         }
@@ -3935,7 +3938,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer axis, int axisOffset, double angle) {
-        if (dest.hasArray() && src.hasArray() && axis.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && axis.hasArray() && axisOffset >= 0 && axisOffset <= axis.limit() - 3) {
             Double3x3Ops.rotateAxis(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, axis.array(), axis.arrayOffset() + axisOffset, angle);
             return dest;
         }
@@ -3990,7 +3993,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4029,7 +4032,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateX180_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateX180(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4066,7 +4069,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateX270_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateX270(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4103,7 +4106,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateX90_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateX90(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4140,7 +4143,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateXYZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateXYZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleX, angleY, angleZ);
             return dest;
         }
@@ -4193,7 +4196,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateXZY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleX, double angleZ, double angleY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateXZY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleX, angleZ, angleY);
             return dest;
         }
@@ -4246,7 +4249,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle);
             return dest;
         }
@@ -4285,7 +4288,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateY180_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateY180(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4322,7 +4325,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateY270_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateY270(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4359,7 +4362,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateY90_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateY90(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4396,7 +4399,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateYXZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleY, double angleX, double angleZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateYXZ(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleY, angleX, angleZ);
             return dest;
         }
@@ -4449,7 +4452,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateYZX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleY, double angleZ, double angleX) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateYZX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleY, angleZ, angleX);
             return dest;
         }
@@ -4502,7 +4505,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZ180_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateZ180(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4539,7 +4542,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZ270_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateZ270(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4576,7 +4579,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZ90_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateZ90(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset);
             return dest;
         }
@@ -4613,7 +4616,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZXY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleZ, double angleX, double angleY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateZXY(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleZ, angleX, angleY);
             return dest;
         }
@@ -4666,7 +4669,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZYX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleZ, double angleY, double angleX) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.rotateZYX(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angleZ, angleY, angleX);
             return dest;
         }
@@ -4719,7 +4722,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer scale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double vX, double vY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.scale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY);
             return dest;
         }
@@ -4757,7 +4760,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer scale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && src.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 2) {
             Double3x3Ops.scale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -4796,7 +4799,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer scale_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double s) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.scale(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s);
             return dest;
         }
@@ -4833,7 +4836,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer scaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double s, double pivotX, double pivotY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.scaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s, pivotX, pivotY);
             return dest;
         }
@@ -4850,17 +4853,18 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
         dest.put(destOffset + 0, s * _self00);
         dest.put(destOffset + 1, s * _self10);
         dest.put(destOffset + 2, s * _self20);
         dest.put(destOffset + 3, s * _self01);
         dest.put(destOffset + 4, s * _self11);
         dest.put(destOffset + 5, s * _self21);
-        dest.put(destOffset + 6, Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02)));
-        dest.put(destOffset + 7, Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12)));
-        dest.put(destOffset + 8, Math.fma(_self20, _t0, Math.fma(_self21, _t1, _self22)));
+        dest.put(destOffset + 6, Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02)));
+        dest.put(destOffset + 7, Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12)));
+        dest.put(destOffset + 8, Math.fma(_self20, _t1, Math.fma(_self21, _t2, _self22)));
         return dest;
     }
 
@@ -4873,7 +4877,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer scaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer pivot, int pivotOffset, double s) {
-        if (dest.hasArray() && src.hasArray() && pivot.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 2) {
             Double3x3Ops.scaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, pivot.array(), pivot.arrayOffset() + pivotOffset, s);
             return dest;
         }
@@ -4892,17 +4896,18 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self22 = src.get(srcOffset + 8);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t0 = Math.fma(-s, _pivotx, _pivotx);
-        double _t1 = Math.fma(-s, _pivoty, _pivoty);
+        double _t0 = 1.0 - s;
+        double _t1 = _pivotx * _t0;
+        double _t2 = _pivoty * _t0;
         dest.put(destOffset + 0, s * _self00);
         dest.put(destOffset + 1, s * _self10);
         dest.put(destOffset + 2, s * _self20);
         dest.put(destOffset + 3, s * _self01);
         dest.put(destOffset + 4, s * _self11);
         dest.put(destOffset + 5, s * _self21);
-        dest.put(destOffset + 6, Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02)));
-        dest.put(destOffset + 7, Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12)));
-        dest.put(destOffset + 8, Math.fma(_self20, _t0, Math.fma(_self21, _t1, _self22)));
+        dest.put(destOffset + 6, Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02)));
+        dest.put(destOffset + 7, Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12)));
+        dest.put(destOffset + 8, Math.fma(_self20, _t1, Math.fma(_self21, _t2, _self22)));
         return dest;
     }
 
@@ -4914,7 +4919,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer scaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double sX, double sY, double pivotX, double pivotY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.scaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, sX, sY, pivotX, pivotY);
             return dest;
         }
@@ -4931,8 +4936,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         dest.put(destOffset + 0, sX * _self00);
         dest.put(destOffset + 1, sX * _self10);
         dest.put(destOffset + 2, sX * _self20);
@@ -4955,7 +4960,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer scaleAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer s, int sOffset, java.nio.DoubleBuffer pivot, int pivotOffset) {
-        if (dest.hasArray() && src.hasArray() && s.hasArray() && pivot.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && s.hasArray() && sOffset >= 0 && sOffset <= s.limit() - 2 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 2) {
             Double3x3Ops.scaleAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, s.array(), s.arrayOffset() + sOffset, pivot.array(), pivot.arrayOffset() + pivotOffset);
             return dest;
         }
@@ -4976,8 +4981,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _sy = s.get(sOffset + 1);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t2 = Math.fma(-_pivotx, _sx, _pivotx);
-        double _t3 = Math.fma(-_pivoty, _sy, _pivoty);
+        double _t2 = _pivotx * (1.0 - _sx);
+        double _t3 = _pivoty * (1.0 - _sy);
         dest.put(destOffset + 0, _sx * _self00);
         dest.put(destOffset + 1, _sx * _self10);
         dest.put(destOffset + 2, _sx * _self20);
@@ -4998,7 +5003,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer translate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double vX, double vY) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.translate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY);
             return dest;
         }
@@ -5036,7 +5041,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer translate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && src.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 2) {
             Double3x3Ops.translate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }
@@ -5075,7 +5080,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer view_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double left, double right, double bottom, double top) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 9 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.view(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, left, right, bottom, top);
             return dest;
         }
@@ -5092,21 +5097,21 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
-        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
-        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
-        dest.put(destOffset + 3, (_self01 + _self01) * _t1_inv);
-        dest.put(destOffset + 4, (_self11 + _self11) * _t1_inv);
-        dest.put(destOffset + 5, (_self21 + _self21) * _t1_inv);
-        dest.put(destOffset + 6, _self02 + (-(_self00 * _t2 * _t0_inv) - _self01 * _t3 * _t1_inv));
-        dest.put(destOffset + 7, _self12 + (-(_self10 * _t2 * _t0_inv) - _self11 * _t3 * _t1_inv));
-        dest.put(destOffset + 8, _self22 + (-(_self20 * _t2 * _t0_inv) - _self21 * _t3 * _t1_inv));
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        dest.put(destOffset + 0, _sp0 * _self00);
+        dest.put(destOffset + 1, _sp0 * _self10);
+        dest.put(destOffset + 2, _sp0 * _self20);
+        dest.put(destOffset + 3, _sp1 * _self01);
+        dest.put(destOffset + 4, _sp1 * _self11);
+        dest.put(destOffset + 5, _sp1 * _self21);
+        dest.put(destOffset + 6, _self02 + (-(_self00 * _sp2) - _self01 * _sp3));
+        dest.put(destOffset + 7, _self12 + (-(_self10 * _sp2) - _self11 * _sp3));
+        dest.put(destOffset + 8, _self22 + (-(_self20 * _sp2) - _self21 * _sp3));
         return dest;
     }
 
@@ -5118,7 +5123,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mulVec3_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double vX, double vY, double vZ) {
-        if (dest.hasArray() && src.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9) {
             Double3x3Ops.mulVec3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, vX, vY, vZ);
             return dest;
         }
@@ -5150,7 +5155,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer mulVec3_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer v, int vOffset) {
-        if (dest.hasArray() && src.hasArray() && v.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 3 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 9 && v.hasArray() && vOffset >= 0 && vOffset <= v.limit() - 3) {
             Double3x3Ops.mulVec3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, v.array(), v.arrayOffset() + vOffset);
             return dest;
         }

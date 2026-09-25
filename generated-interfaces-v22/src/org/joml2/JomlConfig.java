@@ -36,9 +36,9 @@ package org.joml2;
  *
  * <p>{@code returnNew} changes only the computing self-form operations ({@code v.add(o)},
  * {@code m.mul(n)}, {@code q.normalize()}, ...): they leave {@code this} unchanged and return
- * a new instance holding the result. The {@code set*}, {@code make*}, {@code load*} and
- * {@code composeTRS*} methods are setters, not computations, and still mutate and return
- * {@code this}.</p>
+ * a new instance holding the result. The {@code set*}, {@code make*}, {@code load*},
+ * {@code composeTRS*} and {@code targetTo} methods are setters, not computations, and still
+ * mutate and return {@code this}.</p>
  *
  * <p>The UNSAFE store/load backend uses {@code sun.misc.Unsafe}; on JDK 23+ (JEP 471) run with
  * {@code --sun-misc-unsafe-memory-access=allow} or select {@code -Djoml.storeLoadBackend=api}.</p>
@@ -55,8 +55,8 @@ public final class JomlConfig {
      * {@code m.mul(n)}, {@code q.normalize()}, ...) return a freshly allocated
      * instance instead of mutating and returning {@code this} (equivalent to
      * launching with {@code -Djoml.returnNew=true}). The {@code set*}, {@code make*},
-     * {@code load*} and {@code composeTRS*} methods are setters and always mutate
-     * {@code this}. Has no effect in the immutable
+     * {@code load*}, {@code composeTRS*} and {@code targetTo} methods are setters and always
+     * mutate {@code this}. Has no effect in the immutable
      * record and value variants, whose operations always return new instances.
      *
      * @param value {@code true} to make self-forms allocate and return new instances

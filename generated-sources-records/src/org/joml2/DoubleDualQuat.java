@@ -16,6 +16,11 @@ import java.nio.FloatBuffer;
  * whose result equals one of its operands may return that operand instead of allocating a new
  * instance.
  * <p>
+ * A rigid motion is a unit dual quaternion: a unit real part, and a dual part orthogonal to it. The
+ * operations that apply, invert or convert this dual quaternion assume it and do not divide the
+ * real part's length out. A value that has drifted from unit length (after many multiplications,
+ * say) gives wrong results rather than an error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns).
@@ -1223,33 +1228,38 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     }
 
     /** Private tail of {@code exp}; reached only through it. */
-    private DoubleDualQuat exp_s0_tail(double _t12, double _t13, double _t4, double _t9, double _t8, double _t10, double _t11, double _t6, double _t5) {
+    private DoubleDualQuat exp_s0_tail(double _t12, double _t13, double _t4, double _t9, double _t8, double _t10, double _t11, double _sp0, double _t5) {
         double _t14 = _t12 * _t13;
         if (_t4 < 1.0E-28) {
             return new DoubleDualQuat(this.rX, this.rY, this.rZ, 1.0, this.dX, this.dY, this.dZ, -_t5);
         } else {
-            return new DoubleDualQuat(_t9 * _t8, _t10 * _t8, _t11 * _t8, _t13, Math.fma(_t9, _t14, Math.fma(-_t9, _t12, this.dX) * _t6 * _t8), Math.fma(_t10, _t14, Math.fma(-_t10, _t12, this.dY) * _t6 * _t8), Math.fma(_t11, _t14, Math.fma(-_t11, _t12, this.dZ) * _t6 * _t8), -(_t12 * _t8));
+            return new DoubleDualQuat(_t9 * _t8, _t10 * _t8, _t11 * _t8, _t13, Math.fma(_t9, _t14, Math.fma(-_t9, _t12, this.dX) * _sp0), Math.fma(_t10, _t14, Math.fma(-_t10, _t12, this.dY) * _sp0), Math.fma(_t11, _t14, Math.fma(-_t11, _t12, this.dZ) * _sp0), -(_t12 * _t8));
         }
     }
 
 
     /**
      * Compute the exponential of this dual quaternion, returning the result as a value.
+     * <p>
+     * This dual quaternion is read as a screw-motion generator, a pure dual quaternion as
+     * {@code log} returns it: its scalar parts {@code rW} and {@code dW} are taken as zero and
+     * ignored. The result is a unit dual quaternion.
      *
      * @return the resulting dual quaternion
      */
     public DoubleDualQuat exp() {
         double _t4 = Math.fma(this.rZ, this.rZ, Math.fma(this.rX, this.rX, this.rY * this.rY));
         double _t5 = Math.fma(this.rZ, this.dZ, Math.fma(this.rX, this.dX, this.rY * this.dY));
-        double _t6 = (1.0 / Math.sqrt(_t4));
         double _t7 = Math.sqrt(_t4);
+        double _t6 = 1.0 / _t7;
         double _t8 = Math.sin(_t7);
+        double _sp0 = _t6 * _t8;
         double _t9 = this.rX * _t6;
         double _t10 = this.rY * _t6;
         double _t11 = this.rZ * _t6;
         double _t12 = _t5 * _t6;
         double _t13 = Math.cosFromSin(_t8, _t7);
-        return exp_s0_tail(_t12, _t13, _t4, _t9, _t8, _t10, _t11, _t6, _t5);
+        return exp_s0_tail(_t12, _t13, _t4, _t9, _t8, _t10, _t11, _sp0, _t5);
     }
 
 
@@ -1267,13 +1277,21 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * Get the Euler angles in radians of this dual quaternion, to be applied about the X, Y and Z
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesXYZ() {
         double _t1 = this.rY * this.rZ;
@@ -1295,13 +1313,21 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * Get the Euler angles in radians of this dual quaternion, to be applied about the X, Z and Y
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesXZY() {
         double _t0 = this.rZ * this.rZ;
@@ -1323,13 +1349,21 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Y, X and Z
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesYXZ() {
         double _t3 = this.rZ * this.rZ;
@@ -1350,13 +1384,21 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Y, Z and X
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesYZX() {
         double _t0 = this.rZ * this.rZ;
@@ -1377,13 +1419,21 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Z, X and Y
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesZXY() {
         double _t1 = this.rZ * this.rZ;
@@ -1404,13 +1454,21 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * Get the Euler angles in radians of this dual quaternion, to be applied about the Z, Y and X
      * axes, in that order, returning the result as a value.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
-     * @return the resulting vector
+     * @return the Euler angles in radians: about X in {@code x}, about Y in {@code y}, about Z in
+     *        {@code z}
      */
     public Double3 getEulerAnglesZYX() {
         double _t0 = this.rZ * this.rZ;
@@ -1468,10 +1526,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     public DoubleDualQuat invert() {
         double _t8 = Math.fma(this.rX, this.rX, this.rY * this.rY) + Math.fma(this.rZ, this.rZ, this.rW * this.rW);
         double _t8_inv = 1.0 / _t8;
-        double _t10 = 2.0 * (Math.fma(this.rX, this.dX, this.rY * this.dY) + Math.fma(this.rZ, this.dZ, this.rW * this.dW));
-        double _t11 = _t8 * _t8;
-        double _t11_inv = 1.0 / _t11;
-        return new DoubleDualQuat(-(this.rX * _t8_inv), -(this.rY * _t8_inv), -(this.rZ * _t8_inv), this.rW * _t8_inv, this.rX * _t10 * _t11_inv - this.dX * _t8_inv, this.rY * _t10 * _t11_inv - this.dY * _t8_inv, this.rZ * _t10 * _t11_inv - this.dZ * _t8_inv, this.dW * _t8_inv - this.rW * _t10 * _t11_inv);
+        double _sp0 = 2.0 * (Math.fma(this.rX, this.dX, this.rY * this.dY) + Math.fma(this.rZ, this.dZ, this.rW * this.dW)) / (_t8 * _t8);
+        return new DoubleDualQuat(-(this.rX * _t8_inv), -(this.rY * _t8_inv), -(this.rZ * _t8_inv), this.rW * _t8_inv, this.rX * _sp0 - this.dX * _t8_inv, this.rY * _sp0 - this.dY * _t8_inv, this.rZ * _sp0 - this.dZ * _t8_inv, this.dW * _t8_inv - this.rW * _sp0);
     }
 
 
@@ -1514,6 +1570,9 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
 
     /**
      * Compute the natural logarithm of this dual quaternion, returning the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion; the result is pure (both scalar parts
+     * zero), the input {@code exp} expects.
      *
      * @return the resulting dual quaternion
      */
@@ -1544,59 +1603,41 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_sa000ec_tail(double _t14, double _t4, double _t19, Double4x4 m, double _t5, double _t16, double _t6, double _t21, double _t7, double _t22, double _t8, double _t23, double _t17, double _t9, double _t10, double _t18, double _t15, double _t0) {
-        double _t63, _t64;
+    private static DoubleDualQuat makeFromMatrix_sa000ec_tail(double _t14, double _sp0, double _t4, Double4x4 m, double _t5, double _t16, double _sp1, double _t6, double _sp2, double _t7, double _t8, double _sp3, double _t17, double _t9, double _t10, double _t18, double _t15, double _t0) {
+        double _t63, _t64, _t65;
         if (_t14 > 0.0) {
-            _t63 = 0.5 * _t4 * _t19;
-            _t64 = 0.5 * _t8 * _t19;
+            _t63 = _sp0 * _t4;
+            _t64 = _sp0 * _t8;
+            _t65 = _sp0 * _t10;
         } else {
             if (m.m00() > _t5) {
                 _t63 = 0.5 * Math.sqrt(_t16);
-                _t64 = 0.5 * _t6 * _t23;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t7;
             } else {
                 if (m.m11() > m.m22()) {
-                    _t63 = 0.5 * _t6 * _t21;
+                    _t63 = _sp1 * _t6;
                     _t64 = 0.5 * Math.sqrt(_t17);
+                    _t65 = _sp1 * _t9;
                 } else {
-                    _t63 = 0.5 * _t7 * _t22;
-                    _t64 = 0.5 * _t9 * _t22;
+                    _t63 = _sp2 * _t7;
+                    _t64 = _sp2 * _t9;
+                    _t65 = 0.5 * Math.sqrt(_t18);
                 }
             }
         }
-        return makeFromMatrix_sa000ec_tail2(_t14, _t10, _t19, m, _t5, _t7, _t23, _t9, _t21, _t18, _t15, _t4, _t8, _t22, _t63, _t64, _t0);
+        return makeFromMatrix_sa000ec_tail2(_t14, _t15, m, _t5, _sp3, _t4, _sp1, _t8, _sp2, _t10, _t63, _t64, _t65, _t0);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_sa000ec_tail2(double _t14, double _t10, double _t19, Double4x4 m, double _t5, double _t7, double _t23, double _t9, double _t21, double _t18, double _t15, double _t4, double _t8, double _t22, double _t63, double _t64, double _t0) {
-        double _t65, _t66;
-        if (_t14 > 0.0) {
-            _t65 = 0.5 * _t10 * _t19;
-            _t66 = 0.5 * Math.sqrt(_t15);
-        } else {
-            if (m.m00() > _t5) {
-                _t65 = 0.5 * _t7 * _t23;
-                _t66 = 0.5 * _t4 * _t23;
-            } else {
-                if (m.m11() > m.m22()) {
-                    _t65 = 0.5 * _t9 * _t21;
-                    _t66 = 0.5 * _t8 * _t21;
-                } else {
-                    _t65 = 0.5 * Math.sqrt(_t18);
-                    _t66 = 0.5 * _t10 * _t22;
-                }
-            }
-        }
+    private static DoubleDualQuat makeFromMatrix_sa000ec_tail2(double _t14, double _t15, Double4x4 m, double _t5, double _sp3, double _t4, double _sp1, double _t8, double _sp2, double _t10, double _t63, double _t64, double _t65, double _t0) {
+        double _t66 = _t14 > 0.0 ? 0.5 * Math.sqrt(_t15) : m.m00() > _t5 ? _sp3 * _t4 : m.m11() > m.m22() ? _sp1 * _t8 : _sp2 * _t10;
         double _sfx0 = _t63;
         double _sfx1 = _t64;
         double _sfx2 = _t65;
         double _sfx3 = _t66;
         double _sfx4 = 0.5 * Math.fma(_t0, _t64, Math.fma(m.m03(), _t66, m.m13() * _t65));
         double _sfx5 = 0.5 * Math.fma(m.m23(), _t63, Math.fma(m.m13(), _t66, -(m.m03() * _t65)));
-        return makeFromMatrix_sa000ec_tail3(m, _t66, _t64, _t63, _t0, _t65, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5);
-    }
-
-    /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_sa000ec_tail3(Double4x4 m, double _t66, double _t64, double _t63, double _t0, double _t65, double _sfx0, double _sfx1, double _sfx2, double _sfx3, double _sfx4, double _sfx5) {
         double _sfx6 = 0.5 * Math.fma(m.m23(), _t66, Math.fma(m.m03(), _t64, -(m.m13() * _t63)));
         double _sfx7 = 0.5 * Math.fma(_t0, _t65, Math.fma(-m.m13(), _t64, -(m.m03() * _t63)));
         return new DoubleDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
@@ -1625,67 +1666,49 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
         double _t16 = m.m00() + (1.0 - m.m11() - m.m22());
         double _t17 = m.m11() + (_t2 - m.m22());
         double _t18 = m.m22() + (_t2 - m.m11());
-        double _t19 = (1.0 / Math.sqrt(_t15));
-        double _t21 = (1.0 / Math.sqrt(_t17));
-        double _t22 = (1.0 / Math.sqrt(_t18));
-        double _t23 = (1.0 / Math.sqrt(_t16));
-        return makeFromMatrix_sa000ec_tail(_t14, _t4, _t19, m, _t5, _t16, _t6, _t21, _t7, _t22, _t8, _t23, _t17, _t9, _t10, _t18, _t15, _t0);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t15));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t18));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t16));
+        return makeFromMatrix_sa000ec_tail(_t14, _sp0, _t4, m, _t5, _t16, _sp1, _t6, _sp2, _t7, _t8, _sp3, _t17, _t9, _t10, _t18, _t15, _t0);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_s91e96b_tail(double _t14, double _t4, double _t19, Double3x4 m, double _t5, double _t16, double _t6, double _t21, double _t7, double _t22, double _t8, double _t23, double _t17, double _t9, double _t10, double _t18, double _t15, double _t0) {
-        double _t63, _t64;
+    private static DoubleDualQuat makeFromMatrix_s91e96b_tail(double _t14, double _sp0, double _t4, Double3x4 m, double _t5, double _t16, double _sp1, double _t6, double _sp2, double _t7, double _t8, double _sp3, double _t17, double _t9, double _t10, double _t18, double _t15, double _t0) {
+        double _t63, _t64, _t65;
         if (_t14 > 0.0) {
-            _t63 = 0.5 * _t4 * _t19;
-            _t64 = 0.5 * _t8 * _t19;
+            _t63 = _sp0 * _t4;
+            _t64 = _sp0 * _t8;
+            _t65 = _sp0 * _t10;
         } else {
             if (m.m00() > _t5) {
                 _t63 = 0.5 * Math.sqrt(_t16);
-                _t64 = 0.5 * _t6 * _t23;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t7;
             } else {
                 if (m.m11() > m.m22()) {
-                    _t63 = 0.5 * _t6 * _t21;
+                    _t63 = _sp1 * _t6;
                     _t64 = 0.5 * Math.sqrt(_t17);
+                    _t65 = _sp1 * _t9;
                 } else {
-                    _t63 = 0.5 * _t7 * _t22;
-                    _t64 = 0.5 * _t9 * _t22;
+                    _t63 = _sp2 * _t7;
+                    _t64 = _sp2 * _t9;
+                    _t65 = 0.5 * Math.sqrt(_t18);
                 }
             }
         }
-        return makeFromMatrix_s91e96b_tail2(_t14, _t10, _t19, m, _t5, _t7, _t23, _t9, _t21, _t18, _t15, _t4, _t8, _t22, _t63, _t64, _t0);
+        return makeFromMatrix_s91e96b_tail2(_t14, _t15, m, _t5, _sp3, _t4, _sp1, _t8, _sp2, _t10, _t63, _t64, _t65, _t0);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_s91e96b_tail2(double _t14, double _t10, double _t19, Double3x4 m, double _t5, double _t7, double _t23, double _t9, double _t21, double _t18, double _t15, double _t4, double _t8, double _t22, double _t63, double _t64, double _t0) {
-        double _t65, _t66;
-        if (_t14 > 0.0) {
-            _t65 = 0.5 * _t10 * _t19;
-            _t66 = 0.5 * Math.sqrt(_t15);
-        } else {
-            if (m.m00() > _t5) {
-                _t65 = 0.5 * _t7 * _t23;
-                _t66 = 0.5 * _t4 * _t23;
-            } else {
-                if (m.m11() > m.m22()) {
-                    _t65 = 0.5 * _t9 * _t21;
-                    _t66 = 0.5 * _t8 * _t21;
-                } else {
-                    _t65 = 0.5 * Math.sqrt(_t18);
-                    _t66 = 0.5 * _t10 * _t22;
-                }
-            }
-        }
+    private static DoubleDualQuat makeFromMatrix_s91e96b_tail2(double _t14, double _t15, Double3x4 m, double _t5, double _sp3, double _t4, double _sp1, double _t8, double _sp2, double _t10, double _t63, double _t64, double _t65, double _t0) {
+        double _t66 = _t14 > 0.0 ? 0.5 * Math.sqrt(_t15) : m.m00() > _t5 ? _sp3 * _t4 : m.m11() > m.m22() ? _sp1 * _t8 : _sp2 * _t10;
         double _sfx0 = _t63;
         double _sfx1 = _t64;
         double _sfx2 = _t65;
         double _sfx3 = _t66;
         double _sfx4 = 0.5 * Math.fma(_t0, _t64, Math.fma(m.m03(), _t66, m.m13() * _t65));
         double _sfx5 = 0.5 * Math.fma(m.m23(), _t63, Math.fma(m.m13(), _t66, -(m.m03() * _t65)));
-        return makeFromMatrix_s91e96b_tail3(m, _t66, _t64, _t63, _t0, _t65, _sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5);
-    }
-
-    /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_s91e96b_tail3(Double3x4 m, double _t66, double _t64, double _t63, double _t0, double _t65, double _sfx0, double _sfx1, double _sfx2, double _sfx3, double _sfx4, double _sfx5) {
         double _sfx6 = 0.5 * Math.fma(m.m23(), _t66, Math.fma(m.m03(), _t64, -(m.m13() * _t63)));
         double _sfx7 = 0.5 * Math.fma(_t0, _t65, Math.fma(-m.m13(), _t64, -(m.m03() * _t63)));
         return new DoubleDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
@@ -1714,56 +1737,43 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
         double _t16 = m.m00() + (1.0 - m.m11() - m.m22());
         double _t17 = m.m11() + (_t2 - m.m22());
         double _t18 = m.m22() + (_t2 - m.m11());
-        double _t19 = (1.0 / Math.sqrt(_t15));
-        double _t21 = (1.0 / Math.sqrt(_t17));
-        double _t22 = (1.0 / Math.sqrt(_t18));
-        double _t23 = (1.0 / Math.sqrt(_t16));
-        return makeFromMatrix_s91e96b_tail(_t14, _t4, _t19, m, _t5, _t16, _t6, _t21, _t7, _t22, _t8, _t23, _t17, _t9, _t10, _t18, _t15, _t0);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t15));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t18));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t16));
+        return makeFromMatrix_s91e96b_tail(_t14, _sp0, _t4, m, _t5, _t16, _sp1, _t6, _sp2, _t7, _t8, _sp3, _t17, _t9, _t10, _t18, _t15, _t0);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_s91e5aa_tail(double _t13, double _t3, double _t18, Double3x3 m, double _t4, double _t15, double _t5, double _t19, double _t6, double _t20, double _t7, double _t21, double _t16, double _t8, double _t9, double _t17, double _t14) {
-        double _sfx0, _sfx1;
+    private static DoubleDualQuat makeFromMatrix_s91e5aa_tail(double _t13, double _sp0, double _t3, Double3x3 m, double _t4, double _t15, double _sp1, double _t5, double _sp2, double _t6, double _t7, double _sp3, double _t16, double _t8, double _t9, double _t17, double _t14) {
+        double _sfx0, _sfx1, _sfx2;
         if (_t13 > 0.0) {
-            _sfx0 = 0.5 * _t3 * _t18;
-            _sfx1 = 0.5 * _t7 * _t18;
+            _sfx0 = _sp0 * _t3;
+            _sfx1 = _sp0 * _t7;
+            _sfx2 = _sp0 * _t9;
         } else {
             if (m.m00() > _t4) {
                 _sfx0 = 0.5 * Math.sqrt(_t15);
-                _sfx1 = 0.5 * _t5 * _t21;
+                _sfx1 = _sp3 * _t5;
+                _sfx2 = _sp3 * _t6;
             } else {
                 if (m.m11() > m.m22()) {
-                    _sfx0 = 0.5 * _t5 * _t19;
+                    _sfx0 = _sp1 * _t5;
                     _sfx1 = 0.5 * Math.sqrt(_t16);
+                    _sfx2 = _sp1 * _t8;
                 } else {
-                    _sfx0 = 0.5 * _t6 * _t20;
-                    _sfx1 = 0.5 * _t8 * _t20;
+                    _sfx0 = _sp2 * _t6;
+                    _sfx1 = _sp2 * _t8;
+                    _sfx2 = 0.5 * Math.sqrt(_t17);
                 }
             }
         }
-        return makeFromMatrix_s91e5aa_tail2(_t13, _t9, _t18, m, _t4, _t6, _t21, _t8, _t19, _t17, _t14, _t3, _t7, _t20, _sfx0, _sfx1);
+        return makeFromMatrix_s91e5aa_tail2(_t13, _t14, m, _t4, _sp3, _t3, _sp1, _t7, _sp2, _t9, _sfx0, _sfx1, _sfx2);
     }
 
     /** Private tail of {@code makeFromMatrix}; reached only through it. */
-    private static DoubleDualQuat makeFromMatrix_s91e5aa_tail2(double _t13, double _t9, double _t18, Double3x3 m, double _t4, double _t6, double _t21, double _t8, double _t19, double _t17, double _t14, double _t3, double _t7, double _t20, double _sfx0, double _sfx1) {
-        double _sfx2, _sfx3;
-        if (_t13 > 0.0) {
-            _sfx2 = 0.5 * _t9 * _t18;
-            _sfx3 = 0.5 * Math.sqrt(_t14);
-        } else {
-            if (m.m00() > _t4) {
-                _sfx2 = 0.5 * _t6 * _t21;
-                _sfx3 = 0.5 * _t3 * _t21;
-            } else {
-                if (m.m11() > m.m22()) {
-                    _sfx2 = 0.5 * _t8 * _t19;
-                    _sfx3 = 0.5 * _t7 * _t19;
-                } else {
-                    _sfx2 = 0.5 * Math.sqrt(_t17);
-                    _sfx3 = 0.5 * _t9 * _t20;
-                }
-            }
-        }
+    private static DoubleDualQuat makeFromMatrix_s91e5aa_tail2(double _t13, double _t14, Double3x3 m, double _t4, double _sp3, double _t3, double _sp1, double _t7, double _sp2, double _t9, double _sfx0, double _sfx1, double _sfx2) {
+        double _sfx3 = _t13 > 0.0 ? 0.5 * Math.sqrt(_t14) : m.m00() > _t4 ? _sp3 * _t3 : m.m11() > m.m22() ? _sp1 * _t7 : _sp2 * _t9;
         double _sfx4 = 0.0;
         double _sfx5 = 0.0;
         double _sfx6 = 0.0;
@@ -1773,7 +1783,9 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
 
 
     /**
-     * Create the rotation represented by the given matrix, with zero translation.
+     * Create the rotation represented by the given matrix (which must be a rotation: orthonormal,
+     * with determinant +1 - a scaled or sheared block gives a wrong quaternion, not a longer one;
+     * {@code getNormalizedRotation} strips scale first), with zero translation.
      *
      * @param m the matrix to convert
      * @return the resulting dual quaternion
@@ -1792,17 +1804,17 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
         double _t15 = m.m00() + (1.0 - m.m11() - m.m22());
         double _t16 = m.m11() + (_t1 - m.m22());
         double _t17 = m.m22() + (_t1 - m.m11());
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
-        return makeFromMatrix_s91e5aa_tail(_t13, _t3, _t18, m, _t4, _t15, _t5, _t19, _t6, _t20, _t7, _t21, _t16, _t8, _t9, _t17, _t14);
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
+        return makeFromMatrix_s91e5aa_tail(_t13, _sp0, _t3, m, _t4, _t15, _sp1, _t5, _sp2, _t6, _t7, _sp3, _t16, _t8, _t9, _t17, _t14);
     }
 
 
     /**
-     * Normalize this dual quaternion so that its real (rotation) part has unit length, returning
-     * the result as a value.
+     * Normalize this dual quaternion so that its real (rotation) part has unit length (a zero real
+     * part yields the zero dual quaternion), returning the result as a value.
      * <p>
      * The squared length is formed at {@code double} precision, so the result is exact only while
      * it stays within the {@code double} range: the magnitude of the real part must lie roughly
@@ -1811,8 +1823,13 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * @return the resulting dual quaternion
      */
     public DoubleDualQuat normalize() {
-        double _t5 = (1.0 / Math.sqrt(Math.fma(this.rX, this.rX, this.rY * this.rY) + Math.fma(this.rZ, this.rZ, this.rW * this.rW)));
-        return new DoubleDualQuat(this.rX * _t5, this.rY * _t5, this.rZ * _t5, this.rW * _t5, this.dX * _t5, this.dY * _t5, this.dZ * _t5, this.dW * _t5);
+        double _t4 = Math.fma(this.rX, this.rX, this.rY * this.rY) + Math.fma(this.rZ, this.rZ, this.rW * this.rW);
+        double _t5 = (1.0 / Math.sqrt(_t4));
+        if (_t4 != 0.0) {
+            return new DoubleDualQuat(this.rX * _t5, this.rY * _t5, this.rZ * _t5, this.rW * _t5, this.dX * _t5, this.dY * _t5, this.dZ * _t5, this.dW * _t5);
+        } else {
+            return DoubleDualQuat.ZERO;
+        }
     }
 
     /** Private tail of {@code pow}; reached only through it. */
@@ -1955,13 +1972,13 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     }
 
     /** Private per-column body of {@code toMatrix}; reached only through it. */
-    private Double4 toMatrix_s0_c0(double _t0, double _t6, double _t2, double _t3) {
-        return new Double4(Math.fma(-2.0, _t0, _t6), 2.0 * Math.fma(this.rX, this.rY, _t2), Math.fma(-2.0, _t3, (this.rX + this.rX) * this.rZ), 0.0);
+    private Double4 toMatrix_s0_c0(double _t0, double _t6, double _t2, double _t3, double _sp0) {
+        return new Double4(Math.fma(-2.0, _t0, _t6), 2.0 * Math.fma(this.rX, this.rY, _t2), Math.fma(-2.0, _t3, _sp0 * this.rZ), 0.0);
     }
 
     /** Private per-column body of {@code toMatrix}; reached only through it. */
-    private Double4 toMatrix_s0_c1(double _t2, double _t4, double _t6, double _t5) {
-        return new Double4(Math.fma(-2.0, _t2, (this.rX + this.rX) * this.rY), Math.fma(-2.0, _t4, _t6), 2.0 * Math.fma(this.rX, this.rW, _t5), 0.0);
+    private Double4 toMatrix_s0_c1(double _t2, double _sp0, double _t4, double _t6, double _t5) {
+        return new Double4(Math.fma(-2.0, _t2, _sp0 * this.rY), Math.fma(-2.0, _t4, _t6), 2.0 * Math.fma(this.rX, this.rW, _t5), 0.0);
     }
 
     /** Private per-column body of {@code toMatrix}; reached only through it. */
@@ -1982,13 +1999,14 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * @return the resulting matrix
      */
     public Double4x4 toMatrix() {
+        double _sp0 = this.rX + this.rX;
         double _t0 = this.rY * this.rY;
         double _t2 = this.rZ * this.rW;
         double _t3 = this.rY * this.rW;
         double _t4 = this.rX * this.rX;
         double _t5 = this.rY * this.rZ;
         double _t6 = Math.fma(-2.0, this.rZ * this.rZ, 1.0);
-        return new Double4x4(toMatrix_s0_c0(_t0, _t6, _t2, _t3), toMatrix_s0_c1(_t2, _t4, _t6, _t5), toMatrix_s0_c2(_t3, _t5, _t4, _t0), toMatrix_s0_c3(), Joml.BIT_ORTHOGONAL);
+        return new Double4x4(toMatrix_s0_c0(_t0, _t6, _t2, _t3, _sp0), toMatrix_s0_c1(_t2, _sp0, _t4, _t6, _t5), toMatrix_s0_c2(_t3, _t5, _t4, _t0), toMatrix_s0_c3(), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2000,23 +2018,24 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * @return the resulting matrix
      */
     public Double3x3 toMatrix3x3() {
+        double _sp0 = this.rX + this.rX;
         double _t0 = this.rY * this.rY;
         double _t2 = this.rZ * this.rW;
         double _t3 = this.rY * this.rW;
         double _t4 = this.rX * this.rX;
         double _t5 = this.rY * this.rZ;
         double _t6 = Math.fma(-2.0, this.rZ * this.rZ, 1.0);
-        return new Double3x3(Math.fma(-2.0, _t0, _t6), Math.fma(-2.0, _t2, (this.rX + this.rX) * this.rY), 2.0 * Math.fma(this.rX, this.rZ, _t3), 2.0 * Math.fma(this.rX, this.rY, _t2), Math.fma(-2.0, _t4, _t6), Math.fma(-2.0, this.rX * this.rW, _t5 + _t5), Math.fma(-2.0, _t3, (this.rX + this.rX) * this.rZ), 2.0 * Math.fma(this.rX, this.rW, _t5), Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0)), 0);
+        return new Double3x3(Math.fma(-2.0, _t0, _t6), Math.fma(-2.0, _t2, _sp0 * this.rY), 2.0 * Math.fma(this.rX, this.rZ, _t3), 2.0 * Math.fma(this.rX, this.rY, _t2), Math.fma(-2.0, _t4, _t6), Math.fma(-2.0, this.rX * this.rW, _t5 + _t5), Math.fma(-2.0, _t3, _sp0 * this.rZ), 2.0 * Math.fma(this.rX, this.rW, _t5), Math.fma(-2.0, _t4, Math.fma(-2.0, _t0, 1.0)), 0);
     }
 
     /** Private per-column body of {@code toMatrix3x4}; reached only through it. */
-    private Double3 toMatrix3x4_s0_c0(double _t0, double _t6, double _t2, double _t3) {
-        return new Double3(Math.fma(-2.0, _t0, _t6), 2.0 * Math.fma(this.rX, this.rY, _t2), Math.fma(-2.0, _t3, (this.rX + this.rX) * this.rZ));
+    private Double3 toMatrix3x4_s0_c0(double _t0, double _t6, double _t2, double _t3, double _sp0) {
+        return new Double3(Math.fma(-2.0, _t0, _t6), 2.0 * Math.fma(this.rX, this.rY, _t2), Math.fma(-2.0, _t3, _sp0 * this.rZ));
     }
 
     /** Private per-column body of {@code toMatrix3x4}; reached only through it. */
-    private Double3 toMatrix3x4_s0_c1(double _t2, double _t4, double _t6, double _t5) {
-        return new Double3(Math.fma(-2.0, _t2, (this.rX + this.rX) * this.rY), Math.fma(-2.0, _t4, _t6), 2.0 * Math.fma(this.rX, this.rW, _t5));
+    private Double3 toMatrix3x4_s0_c1(double _t2, double _sp0, double _t4, double _t6, double _t5) {
+        return new Double3(Math.fma(-2.0, _t2, _sp0 * this.rY), Math.fma(-2.0, _t4, _t6), 2.0 * Math.fma(this.rX, this.rW, _t5));
     }
 
     /** Private per-column body of {@code toMatrix3x4}; reached only through it. */
@@ -2038,13 +2057,14 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * @return the resulting matrix
      */
     public Double3x4 toMatrix3x4() {
+        double _sp0 = this.rX + this.rX;
         double _t0 = this.rY * this.rY;
         double _t2 = this.rZ * this.rW;
         double _t3 = this.rY * this.rW;
         double _t4 = this.rX * this.rX;
         double _t5 = this.rY * this.rZ;
         double _t6 = Math.fma(-2.0, this.rZ * this.rZ, 1.0);
-        return new Double3x4(toMatrix3x4_s0_c0(_t0, _t6, _t2, _t3), toMatrix3x4_s0_c1(_t2, _t4, _t6, _t5), toMatrix3x4_s0_c2(_t3, _t5, _t4, _t0), toMatrix3x4_s0_c3(), Joml.BIT_ORTHOGONAL);
+        return new Double3x4(toMatrix3x4_s0_c0(_t0, _t6, _t2, _t3, _sp0), toMatrix3x4_s0_c1(_t2, _sp0, _t4, _t6, _t5), toMatrix3x4_s0_c2(_t3, _t5, _t4, _t0), toMatrix3x4_s0_c3(), Joml.BIT_ORTHOGONAL);
     }
 
 
@@ -2056,6 +2076,11 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * then the new dual quaternion will be {@code Q * L}. So when transforming a vector {@code v}
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -2067,83 +2092,66 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     }
 
     /** Private tail of {@code lookAlong}; reached only through it. */
-    private DoubleDualQuat lookAlong_s6a304d84_tail(double _t9, double _t32, double _t7, double _t31, double _t33, double _t11, double _t8, double _t12, double _t10, double _t34) {
-        double _t37 = _t9 - _t32;
-        double _t38 = _t9 + _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.max(_t49, _t7);
-        double _t56 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t57 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t58 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t65 = (1.0 / Math.sqrt(_t61));
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t63));
-        double _t68 = (1.0 / Math.sqrt(_t60));
-        return lookAlong_s6a304d84_tail2(_t59, _t57, _t68, _t31, _t55, _t38, _t65, _t49, _t7, _t54, _t66, _t63, _t37, _t58, _t62, _t67, _t60, _t56, _t61);
+    private DoubleDualQuat lookAlong_s6a304d84_tail(double _t45, double _t6, double dirY, double _t5, double _t47, double _t21, double _t27, double _t48, double dirZ, double _t19, double _t28, double _t9, double _t29, double _t11, double _t8, double _t1, double _t32, double _t33, double _t51, double _t37) {
+        double _t52 = Math.max(_t45, _t6);
+        double _t53 = Math.fma(-dirY, _t5, _t47);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0))));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _t66 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t66));
+        return lookAlong_s6a304d84_tail2(_t59, _sp0, _t53, _t28, _t52, _t62, _t45, _t6, _sp1, _t56, _sp2, _t33, _t57, _sp3, _t51, _t63, _t37, _t66, _t60);
     }
 
     /** Private tail of {@code lookAlong}; reached only through it. */
-    private DoubleDualQuat lookAlong_s6a304d84_tail2(double _t59, double _t57, double _t68, double _t31, double _t55, double _t38, double _t65, double _t49, double _t7, double _t54, double _t66, double _t63, double _t37, double _t58, double _t62, double _t67, double _t60, double _t56, double _t61) {
-        double _t108, _t109;
+    private DoubleDualQuat lookAlong_s6a304d84_tail2(double _t59, double _sp0, double _t53, double _t28, double _t52, double _t62, double _t45, double _t6, double _sp1, double _t56, double _sp2, double _t33, double _t57, double _sp3, double _t51, double _t63, double _t37, double _t66, double _t60) {
+        double _t108, _t109, _t110;
         if (_t59 > 0.0) {
-            _t108 = 0.5 * _t57 * _t68;
-            _t109 = 0.5 * _t37 * _t68;
+            _t108 = _sp0 * _t53;
+            _t109 = _sp0 * _t57;
+            _t110 = _sp0 * _t37;
         } else {
-            if (_t31 > _t55) {
-                _t108 = 0.5 * _t38 * _t65;
-                _t109 = 0.5 * _t58 * _t65;
+            if (_t28 > _t52) {
+                _t108 = 0.5 * Math.sqrt(_t62);
+                _t109 = _sp3 * _t33;
+                _t110 = _sp3 * _t56;
             } else {
-                if (_t49 > _t7) {
-                    _t108 = 0.5 * _t54 * _t66;
-                    _t109 = 0.5 * Math.sqrt(_t62);
+                if (_t45 > _t6) {
+                    _t108 = _sp1 * _t56;
+                    _t109 = _sp1 * _t51;
+                    _t110 = 0.5 * Math.sqrt(_t66);
                 } else {
-                    _t108 = 0.5 * Math.sqrt(_t63);
-                    _t109 = 0.5 * _t54 * _t67;
+                    _t108 = _sp2 * _t33;
+                    _t109 = 0.5 * Math.sqrt(_t63);
+                    _t110 = _sp2 * _t51;
                 }
             }
         }
-        return lookAlong_s6a304d84_tail3(_t59, _t60, _t31, _t55, _t56, _t65, _t49, _t7, _t37, _t66, _t57, _t67, _t68, _t61, _t58, _t38, _t108, _t109);
+        return lookAlong_s6a304d84_tail3(_t59, _t60, _t28, _t52, _sp3, _t53, _t45, _t6, _sp1, _t37, _sp2, _t57, _t108, _t109, _t110);
     }
 
     /** Private tail of {@code lookAlong}; reached only through it. */
-    private DoubleDualQuat lookAlong_s6a304d84_tail3(double _t59, double _t60, double _t31, double _t55, double _t56, double _t65, double _t49, double _t7, double _t37, double _t66, double _t57, double _t67, double _t68, double _t61, double _t58, double _t38, double _t108, double _t109) {
-        double _t110, _t111;
-        if (_t59 > 0.0) {
-            _t110 = 0.5 * Math.sqrt(_t60);
-            _t111 = 0.5 * _t56 * _t68;
-        } else {
-            if (_t31 > _t55) {
-                _t110 = 0.5 * _t56 * _t65;
-                _t111 = 0.5 * Math.sqrt(_t61);
-            } else {
-                if (_t49 > _t7) {
-                    _t110 = 0.5 * _t37 * _t66;
-                    _t111 = 0.5 * _t58 * _t66;
-                } else {
-                    _t110 = 0.5 * _t57 * _t67;
-                    _t111 = 0.5 * _t38 * _t67;
-                }
-            }
-        }
-        double _sfx0 = Math.fma(this.rX, _t110, this.rW * _t111) + Math.fma(this.rY, _t108, -(this.rZ * _t109));
-        double _sfx1 = Math.fma(this.rY, _t110, this.rZ * _t111) + Math.fma(this.rW, _t109, -(this.rX * _t108));
-        return lookAlong_s6a304d84_tail4(_t109, _t108, _t110, _t111, _sfx0, _sfx1);
+    private DoubleDualQuat lookAlong_s6a304d84_tail3(double _t59, double _t60, double _t28, double _t52, double _sp3, double _t53, double _t45, double _t6, double _sp1, double _t37, double _sp2, double _t57, double _t108, double _t109, double _t110) {
+        double _t111 = _t59 > 0.0 ? 0.5 * Math.sqrt(_t60) : _t28 > _t52 ? _sp3 * _t53 : _t45 > _t6 ? _sp1 * _t37 : _sp2 * _t57;
+        double _sfx0 = Math.fma(this.rX, _t111, this.rW * _t108) + Math.fma(this.rY, _t109, -(this.rZ * _t110));
+        double _sfx1 = Math.fma(this.rY, _t111, this.rZ * _t108) + Math.fma(this.rW, _t110, -(this.rX * _t109));
+        double _sfx2 = Math.fma(this.rX, _t110, this.rW * _t109) + Math.fma(this.rZ, _t111, -(this.rY * _t108));
+        double _sfx3 = Math.fma(this.rW, _t111, -(this.rX * _t108)) - Math.fma(this.rY, _t110, this.rZ * _t109);
+        return lookAlong_s6a304d84_tail4(_t111, _t108, _t109, _t110, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
     /** Private tail of {@code lookAlong}; reached only through it. */
-    private DoubleDualQuat lookAlong_s6a304d84_tail4(double _t109, double _t108, double _t110, double _t111, double _sfx0, double _sfx1) {
-        double _sfx2 = Math.fma(this.rX, _t109, this.rW * _t108) + Math.fma(this.rZ, _t110, -(this.rY * _t111));
-        double _sfx3 = Math.fma(this.rW, _t110, -(this.rX * _t111)) - Math.fma(this.rY, _t109, this.rZ * _t108);
-        double _sfx4 = Math.fma(this.dX, _t110, this.dW * _t111) + Math.fma(this.dY, _t108, -(this.dZ * _t109));
-        double _sfx5 = Math.fma(this.dY, _t110, this.dZ * _t111) + Math.fma(this.dW, _t109, -(this.dX * _t108));
-        double _sfx6 = Math.fma(this.dX, _t109, this.dW * _t108) + Math.fma(this.dZ, _t110, -(this.dY * _t111));
-        double _sfx7 = Math.fma(this.dW, _t110, -(this.dX * _t111)) - Math.fma(this.dY, _t109, this.dZ * _t108);
+    private DoubleDualQuat lookAlong_s6a304d84_tail4(double _t111, double _t108, double _t109, double _t110, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+        double _sfx4 = Math.fma(this.dX, _t111, this.dW * _t108) + Math.fma(this.dY, _t109, -(this.dZ * _t110));
+        double _sfx5 = Math.fma(this.dY, _t111, this.dZ * _t108) + Math.fma(this.dW, _t110, -(this.dX * _t109));
+        double _sfx6 = Math.fma(this.dX, _t110, this.dW * _t109) + Math.fma(this.dZ, _t111, -(this.dY * _t108));
+        double _sfx7 = Math.fma(this.dW, _t111, -(this.dX * _t108)) - Math.fma(this.dY, _t110, this.dZ * _t109);
         return new DoubleDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
     }
 
@@ -2156,6 +2164,11 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * then the new dual quaternion will be {@code Q * L}. So when transforming a vector {@code v}
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -2166,38 +2179,178 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * @return the resulting dual quaternion
      */
     public DoubleDualQuat lookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double _t5 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        double _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        double _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        double _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t1 = -dirZ;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(dirX, _t5, _t29);
+        double _t37 = Math.fma(dirX, _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t47 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(dirY, _t5, _t47);
+        return lookAlong_s6a304d84_tail(_t45, _t6, dirY, _t5, _t47, _t21, _t27, _t48, dirZ, _t19, _t28, _t9, _t29, _t11, _t8, _t1, _t32, _t33, _t51, _t37);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleDualQuat lookAlong_degenerate(Double3 dir, Double3 up) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private DoubleDualQuat lookAlong_degenerate_s6a304d84_tail(double _t8, double _t12, double _t9, double _t10, double _t13, double _t14, double _t11, double _t27, double _t28, double _t25, double _t26, double _t15, double _t17, double _t18) {
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t30 = _t13 > _t14 ? _t11 : -_t12;
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0 / Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0 / Math.sqrt(_t35));
+        }
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        return lookAlong_degenerate_s6a304d84_tail2(_t62, _t12, _t47, _t11, _t46, _t10, _t15, _t44, _t45, _t41, _t38, _t17, _t43, _t18, _t42, _t39, _t66, _t48, _t51);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private DoubleDualQuat lookAlong_degenerate_s6a304d84_tail2(double _t62, double _t12, double _t47, double _t11, double _t46, double _t10, double _t15, double _t44, double _t45, double _t41, double _t38, double _t17, double _t43, double _t18, double _t42, double _t39, double _t66, double _t48, double _t51) {
+        double _t68 = Math.max(_t62, _t12);
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t74));
+        double _t77 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t78 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t73));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t77));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t78));
+        double _t89 = Math.fma(_t41, _t39, _t66);
+        double _t90 = Math.fma(_t41, _t39, -_t66);
+        return lookAlong_degenerate_s6a304d84_tail3(_t72, _sp0, _t71, _t44, _t68, _t74, _t62, _t12, _sp1, _t89, _sp2, _t48, _t90, _sp3, _t70, _t78, _t51, _t77, _t73);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private DoubleDualQuat lookAlong_degenerate_s6a304d84_tail3(double _t72, double _sp0, double _t71, double _t44, double _t68, double _t74, double _t62, double _t12, double _sp1, double _t89, double _sp2, double _t48, double _t90, double _sp3, double _t70, double _t78, double _t51, double _t77, double _t73) {
+        double _t123, _t124, _t125;
+        if (_t72 > 0.0) {
+            _t123 = _sp0 * _t71;
+            _t124 = _sp0 * _t90;
+            _t125 = _sp0 * _t51;
+        } else {
+            if (_t44 > _t68) {
+                _t123 = 0.5 * Math.sqrt(_t74);
+                _t124 = _sp3 * _t48;
+                _t125 = _sp3 * _t89;
+            } else {
+                if (_t62 > _t12) {
+                    _t123 = _sp1 * _t89;
+                    _t124 = _sp1 * _t70;
+                    _t125 = 0.5 * Math.sqrt(_t77);
+                } else {
+                    _t123 = _sp2 * _t48;
+                    _t124 = 0.5 * Math.sqrt(_t78);
+                    _t125 = _sp2 * _t70;
+                }
+            }
+        }
+        return lookAlong_degenerate_s6a304d84_tail4(_t72, _t73, _t44, _t68, _sp3, _t71, _t62, _t12, _sp1, _t51, _sp2, _t90, _t123, _t124, _t125);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private DoubleDualQuat lookAlong_degenerate_s6a304d84_tail4(double _t72, double _t73, double _t44, double _t68, double _sp3, double _t71, double _t62, double _t12, double _sp1, double _t51, double _sp2, double _t90, double _t123, double _t124, double _t125) {
+        double _t126 = _t72 > 0.0 ? 0.5 * Math.sqrt(_t73) : _t44 > _t68 ? _sp3 * _t71 : _t62 > _t12 ? _sp1 * _t51 : _sp2 * _t90;
+        double _sfx0 = Math.fma(this.rX, _t126, this.rW * _t123) + Math.fma(this.rY, _t124, -(this.rZ * _t125));
+        double _sfx1 = Math.fma(this.rY, _t126, this.rZ * _t123) + Math.fma(this.rW, _t125, -(this.rX * _t124));
+        double _sfx2 = Math.fma(this.rX, _t125, this.rW * _t124) + Math.fma(this.rZ, _t126, -(this.rY * _t123));
+        double _sfx3 = Math.fma(this.rW, _t126, -(this.rX * _t123)) - Math.fma(this.rY, _t125, this.rZ * _t124);
+        return lookAlong_degenerate_s6a304d84_tail5(_t126, _t123, _t124, _t125, _sfx0, _sfx1, _sfx2, _sfx3);
+    }
+
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
+    private DoubleDualQuat lookAlong_degenerate_s6a304d84_tail5(double _t126, double _t123, double _t124, double _t125, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+        double _sfx4 = Math.fma(this.dX, _t126, this.dW * _t123) + Math.fma(this.dY, _t124, -(this.dZ * _t125));
+        double _sfx5 = Math.fma(this.dY, _t126, this.dZ * _t123) + Math.fma(this.dW, _t125, -(this.dX * _t124));
+        double _sfx6 = Math.fma(this.dX, _t125, this.dW * _t124) + Math.fma(this.dZ, _t126, -(this.dY * _t123));
+        double _sfx7 = Math.fma(this.dW, _t126, -(this.dX * _t123)) - Math.fma(this.dY, _t125, this.dZ * _t124);
+        return new DoubleDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private DoubleDualQuat lookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
+        double _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0) {
             _t7 = 0.0;
-            _t8 = 0.0;
+            _t8 = 1.0;
             _t9 = 0.0;
-        }
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        double _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 1.0;
         } else {
-            _t31 = 0.0;
-            _t32 = 0.0;
-            _t33 = 0.0;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        double _t34 = 1.0 + _t31;
-        return lookAlong_s6a304d84_tail(_t9, _t32, _t7, _t31, _t33, _t11, _t8, _t12, _t10, _t34);
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        double _t25, _t26;
+        if (_t13 > _t14) {
+            _t25 = 0.0;
+            _t26 = _t15;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0;
+        }
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        return lookAlong_degenerate_s6a304d84_tail(_t8, _t12, _t9, _t10, _t13, _t14, _t11, _t27, _t28, _t25, _t26, _t15, _t17, _t18);
     }
 
 
@@ -2238,6 +2391,11 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
 
     /**
      * Create a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -2249,67 +2407,48 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     }
 
     /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
-    private static DoubleDualQuat makeRotationLookAlong_s6a304d84_tail(double _t9, double _t32, double _t7, double _t31, double _t33, double _t11, double _t8, double _t12, double _t10, double _t34) {
-        double _t37 = _t9 + _t32;
-        double _t38 = _t9 - _t32;
-        double _t49 = Math.fma(_t7, _t31, -(_t9 * _t32));
-        double _t54 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t8));
-        double _t55 = Math.fma(_t9, _t33, Math.fma(_t11, _t31, _t11));
-        double _t56 = Math.max(_t49, _t7);
-        double _t57 = Math.fma(_t8, _t32, Math.fma(_t12, _t33, _t33));
-        double _t58 = Math.fma(_t11, _t32, Math.fma(_t7, _t33, _t33));
-        double _t59 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7));
-        double _t60 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t34 + _t7));
-        double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
-        double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
-        double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t64 = (1.0 / Math.sqrt(_t60));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t61));
-        return makeRotationLookAlong_s6a304d84_tail2(_t59, _t55, _t64, _t31, _t56, _t61, _t49, _t7, _t57, _t65, _t37, _t66, _t38, _t67, _t62, _t54, _t58, _t63, _t60);
+    private static DoubleDualQuat makeRotationLookAlong_s6a304d84_tail(double dirY, double _t5, double _t46, double _t45, double _t6, double _t21, double _t27, double _t48, double dirZ, double _t19, double _t28, double _t9, double _t29, double _t11, double _t8, double _t1, double _t32, double _t33, double _t38, double _t51) {
+        double _t52 = Math.fma(-dirY, _t5, _t46);
+        double _t53 = Math.max(_t45, _t6);
+        double _t56 = Math.fma(_t21, _t27, _t48);
+        double _t57 = Math.fma(_t21, _t27, -_t48);
+        double _t59 = Math.fma(dirZ, _t5, Math.fma(_t19, _t27, _t45));
+        double _t60 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t19, _t27, Math.fma(dirZ, _t5, 1.0))));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _t62 = Math.fma(_t19, _t27, Math.fma(_t11, _t28, Math.fma(_t8, _t29, Math.fma(_t1, _t5, 1.0))));
+        double _t63 = Math.fma(dirZ, _t5, Math.fma(_t11, _t28, Math.fma(_t8, _t29, _t32)));
+        double _t64 = Math.fma(_t6, _t28, Math.fma(_t9, _t29, Math.fma(_t1, _t5, _t32)));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
+        return makeRotationLookAlong_s6a304d84_tail2(_t59, _sp0, _t52, _t28, _t53, _t62, _t45, _t6, _sp1, _t56, _sp2, _t33, _t38, _sp3, _t64, _t51, _t57, _t63, _t60);
     }
 
     /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
-    private static DoubleDualQuat makeRotationLookAlong_s6a304d84_tail2(double _t59, double _t55, double _t64, double _t31, double _t56, double _t61, double _t49, double _t7, double _t57, double _t65, double _t37, double _t66, double _t38, double _t67, double _t62, double _t54, double _t58, double _t63, double _t60) {
-        double _sfx0, _sfx1;
+    private static DoubleDualQuat makeRotationLookAlong_s6a304d84_tail2(double _t59, double _sp0, double _t52, double _t28, double _t53, double _t62, double _t45, double _t6, double _sp1, double _t56, double _sp2, double _t33, double _t38, double _sp3, double _t64, double _t51, double _t57, double _t63, double _t60) {
+        double _sfx0, _sfx1, _sfx2, _sfx3;
         if (_t59 > 0.0) {
-            _sfx0 = 0.5 * _t55 * _t64;
-            _sfx1 = 0.5 * _t38 * _t64;
-        } else {
-            if (_t31 > _t56) {
-                _sfx0 = 0.5 * Math.sqrt(_t61);
-                _sfx1 = 0.5 * _t57 * _t67;
-            } else {
-                if (_t49 > _t7) {
-                    _sfx0 = 0.5 * _t57 * _t65;
-                    _sfx1 = 0.5 * Math.sqrt(_t62);
-                } else {
-                    _sfx0 = 0.5 * _t37 * _t66;
-                    _sfx1 = 0.5 * _t54 * _t66;
-                }
-            }
-        }
-        return makeRotationLookAlong_s6a304d84_tail3(_t59, _t58, _t64, _t31, _t56, _t37, _t67, _t49, _t7, _t54, _t65, _t63, _t60, _t55, _t38, _t66, _sfx0, _sfx1);
-    }
-
-    /** Private tail of {@code makeRotationLookAlong}; reached only through it. */
-    private static DoubleDualQuat makeRotationLookAlong_s6a304d84_tail3(double _t59, double _t58, double _t64, double _t31, double _t56, double _t37, double _t67, double _t49, double _t7, double _t54, double _t65, double _t63, double _t60, double _t55, double _t38, double _t66, double _sfx0, double _sfx1) {
-        double _sfx2, _sfx3;
-        if (_t59 > 0.0) {
-            _sfx2 = 0.5 * _t58 * _t64;
+            _sfx0 = _sp0 * _t52;
+            _sfx1 = _sp0 * _t38;
+            _sfx2 = _sp0 * _t57;
             _sfx3 = 0.5 * Math.sqrt(_t60);
         } else {
-            if (_t31 > _t56) {
-                _sfx2 = 0.5 * _t37 * _t67;
-                _sfx3 = 0.5 * _t55 * _t67;
+            if (_t28 > _t53) {
+                _sfx0 = 0.5 * Math.sqrt(_t62);
+                _sfx1 = _sp3 * _t56;
+                _sfx2 = _sp3 * _t33;
+                _sfx3 = _sp3 * _t52;
             } else {
-                if (_t49 > _t7) {
-                    _sfx2 = 0.5 * _t54 * _t65;
-                    _sfx3 = 0.5 * _t38 * _t65;
+                if (_t45 > _t6) {
+                    _sfx0 = _sp1 * _t56;
+                    _sfx1 = 0.5 * Math.sqrt(_t64);
+                    _sfx2 = _sp1 * _t51;
+                    _sfx3 = _sp1 * _t38;
                 } else {
+                    _sfx0 = _sp2 * _t33;
+                    _sfx1 = _sp2 * _t51;
                     _sfx2 = 0.5 * Math.sqrt(_t63);
-                    _sfx3 = 0.5 * _t58 * _t66;
+                    _sfx3 = _sp2 * _t57;
                 }
             }
         }
@@ -2324,6 +2463,11 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Create a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -2334,38 +2478,167 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
      * @return the resulting dual quaternion
      */
     public static DoubleDualQuat makeRotationLookAlong(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
+        double _t5 = (1.0 / Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        double _t6 = dirZ * _t5;
+        double _t7 = dirY * _t5;
+        double _t8 = dirX * _t5;
+        double _t19 = Math.fma(upY, _t6, -(upZ * _t7));
+        double _t20 = Math.fma(upX, _t7, -(upY * _t8));
+        double _t21 = Math.fma(upZ, _t8, -(upX * _t6));
+        double _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        double _t27 = (1.0 / Math.sqrt(_ct0));
+        double _t1 = -dirZ;
+        double _t9 = -_t8;
+        double _t11 = -_t6;
+        double _t28 = _t19 * _t27;
+        double _t29 = _t20 * _t27;
+        double _t30 = _t21 * _t27;
+        double _t32 = Math.fma(-_t19, _t27, 1.0);
+        double _t33 = Math.fma(dirX, _t5, _t29);
+        double _t38 = Math.fma(dirX, _t5, -_t29);
+        double _t45 = Math.fma(_t6, _t28, -(_t8 * _t29));
+        double _t46 = Math.fma(_t8, _t30, -(_t7 * _t28));
+        double _t48 = Math.fma(_t7, _t29, -(_t6 * _t30));
+        double _t51 = Math.fma(dirY, _t5, _t46);
+        return makeRotationLookAlong_s6a304d84_tail(dirY, _t5, _t46, _t45, _t6, _t21, _t27, _t48, dirZ, _t19, _t28, _t9, _t29, _t11, _t8, _t1, _t32, _t33, _t38, _t51);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private static DoubleDualQuat makeRotationLookAlong_degenerate(Double3 dir, Double3 up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private static DoubleDualQuat makeRotationLookAlong_degenerate_s6a304d84_tail(double _t8, double _t12, double _t9, double _t10, double _t13, double _t14, double _t11, double _t27, double _t28, double _t25, double _t26, double _t15, double _t17, double _t18) {
+        double _t29 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        double _t30 = _t13 > _t14 ? _t11 : -_t12;
+        double _t35 = Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t29 * _t29));
+        double _t37, _t38, _t39, _t41;
+        if (_t35 == 0.0) {
+            _t37 = _t25;
+            _t38 = _t26;
+            _t39 = _t30;
+            _t41 = (1.0 / Math.sqrt(Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t30 * _t30))));
+        } else {
+            _t37 = _t27;
+            _t38 = _t29;
+            _t39 = _t28;
+            _t41 = (1.0 / Math.sqrt(_t35));
+        }
+        double _t42 = -_t41;
+        double _t43 = _t41 * _t37;
+        double _t44 = _t41 * _t38;
+        double _t45 = -_t43;
+        double _t46 = -_t44;
+        double _t47 = _t41 * _t39;
+        double _t48 = Math.fma(_t41, _t37, _t11);
+        double _t51 = Math.fma(_t42, _t37, _t11);
+        double _t62 = Math.fma(_t44, _t12, -(_t43 * _t11));
+        double _t66 = Math.fma(_t43, _t10, -(_t47 * _t12));
+        return makeRotationLookAlong_degenerate_s6a304d84_tail2(_t62, _t12, _t47, _t11, _t46, _t10, _t15, _t44, _t45, _t41, _t38, _t17, _t43, _t18, _t42, _t39, _t66, _t48, _t51);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private static DoubleDualQuat makeRotationLookAlong_degenerate_s6a304d84_tail2(double _t62, double _t12, double _t47, double _t11, double _t46, double _t10, double _t15, double _t44, double _t45, double _t41, double _t38, double _t17, double _t43, double _t18, double _t42, double _t39, double _t66, double _t48, double _t51) {
+        double _t68 = Math.max(_t62, _t12);
+        double _t70 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t10));
+        double _t71 = Math.fma(_t47, _t11, Math.fma(_t46, _t10, _t15));
+        double _t72 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t12)));
+        double _t73 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t41, _t38, _t17)));
+        double _t74 = Math.fma(_t41, _t38, Math.fma(_t46, _t12, Math.fma(_t43, _t11, _t18)));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t73));
+        double _t76 = Math.fma(_t44, _t12, Math.fma(_t45, _t11, Math.fma(_t42, _t38, _t18)));
+        double _t77 = Math.fma(_t46, _t12, Math.fma(_t43, _t11, Math.fma(_t42, _t38, _t17)));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t74));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t76));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t77));
+        double _t81 = Math.fma(_t41, _t39, _t66);
+        double _t82 = Math.fma(_t41, _t39, -_t66);
+        return makeRotationLookAlong_degenerate_s6a304d84_tail3(_t72, _sp0, _t71, _t44, _t68, _t74, _t62, _t12, _sp1, _t81, _sp2, _t48, _t51, _sp3, _t76, _t70, _t82, _t77, _t73);
+    }
+
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
+    private static DoubleDualQuat makeRotationLookAlong_degenerate_s6a304d84_tail3(double _t72, double _sp0, double _t71, double _t44, double _t68, double _t74, double _t62, double _t12, double _sp1, double _t81, double _sp2, double _t48, double _t51, double _sp3, double _t76, double _t70, double _t82, double _t77, double _t73) {
+        double _sfx0, _sfx1, _sfx2, _sfx3;
+        if (_t72 > 0.0) {
+            _sfx0 = _sp0 * _t71;
+            _sfx1 = _sp0 * _t51;
+            _sfx2 = _sp0 * _t82;
+            _sfx3 = 0.5 * Math.sqrt(_t73);
+        } else {
+            if (_t44 > _t68) {
+                _sfx0 = 0.5 * Math.sqrt(_t74);
+                _sfx1 = _sp3 * _t81;
+                _sfx2 = _sp3 * _t48;
+                _sfx3 = _sp3 * _t71;
+            } else {
+                if (_t62 > _t12) {
+                    _sfx0 = _sp1 * _t81;
+                    _sfx1 = 0.5 * Math.sqrt(_t76);
+                    _sfx2 = _sp1 * _t70;
+                    _sfx3 = _sp1 * _t51;
+                } else {
+                    _sfx0 = _sp2 * _t48;
+                    _sfx1 = _sp2 * _t70;
+                    _sfx2 = 0.5 * Math.sqrt(_t77);
+                    _sfx3 = _sp2 * _t82;
+                }
+            }
+        }
+        double _sfx4 = 0.0;
+        double _sfx5 = 0.0;
+        double _sfx6 = 0.0;
+        double _sfx7 = 0.0;
+        return new DoubleDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private static DoubleDualQuat makeRotationLookAlong_degenerate(double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
-            _t7 = dirZ * _t3;
-            _t8 = dirY * _t3;
-            _t9 = dirX * _t3;
-        } else {
+        double _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0) {
             _t7 = 0.0;
-            _t8 = 0.0;
+            _t8 = 1.0;
             _t9 = 0.0;
-        }
-        double _t10 = -_t9;
-        double _t11 = -_t8;
-        double _t12 = -_t7;
-        double _t21 = Math.fma(upX, _t8, -(upY * _t9));
-        double _t22 = Math.fma(upY, _t7, -(upZ * _t8));
-        double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
-        double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
-            _t31 = _t22 * _t27;
-            _t32 = _t21 * _t27;
-            _t33 = _t23 * _t27;
+            _t10 = 0.0;
+            _t11 = 0.0;
+            _t12 = 1.0;
         } else {
-            _t31 = 0.0;
-            _t32 = 0.0;
-            _t33 = 0.0;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        double _t34 = 1.0 + _t31;
-        return makeRotationLookAlong_s6a304d84_tail(_t9, _t32, _t7, _t31, _t33, _t11, _t8, _t12, _t10, _t34);
+        double _t13 = Math.abs(_t11);
+        double _t14 = Math.abs(_t12);
+        double _t15 = -_t10;
+        double _t17 = 1.0 + _t12;
+        double _t18 = 1.0 - _t12;
+        double _t25, _t26;
+        if (_t13 > _t14) {
+            _t25 = 0.0;
+            _t26 = _t15;
+        } else {
+            _t25 = _t10;
+            _t26 = 0.0;
+        }
+        double _t27 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        double _t28 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        return makeRotationLookAlong_degenerate_s6a304d84_tail(_t8, _t12, _t9, _t10, _t13, _t14, _t11, _t27, _t28, _t25, _t26, _t15, _t17, _t18);
     }
 
 
@@ -3098,6 +3371,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
 
     /**
      * Transform {@code p} by this dual quaternion, returning the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -3116,6 +3391,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Transform ({@code pX}, {@code pY}, {@code pZ}) by this dual quaternion, returning the result
      * as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -3132,6 +3409,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Transform the given direction by this dual quaternion, ignoring any translation, returning
      * the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param v the direction to transform
      * @return the resulting vector
@@ -3144,6 +3423,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Transform the given direction by this dual quaternion, ignoring any translation, returning
      * the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}
@@ -3229,6 +3510,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param p the position to transform
      * @return the resulting vector
@@ -3241,6 +3524,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Transform the given position by this dual quaternion, treating it as a point with an implicit
      * {@code w = 1}, returning the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param pX the {@code x} component of the vector {@code (pX, pY, pZ)}
      * @param pY the {@code y} component of the vector {@code (pX, pY, pZ)}
@@ -3283,6 +3568,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation, returning the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param v the vector to transform
      * @return the resulting vector
@@ -3295,6 +3582,8 @@ public record DoubleDualQuat(double rX, double rY, double rZ, double rW, double 
     /**
      * Transform the given vector by the rotation part of this dual quaternion, ignoring the
      * translation, returning the result as a value.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion.
      *
      * @param vX the {@code x} component of the vector {@code (vX, vY, vZ)}
      * @param vY the {@code y} component of the vector {@code (vX, vY, vZ)}

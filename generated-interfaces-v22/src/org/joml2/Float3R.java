@@ -1560,7 +1560,9 @@ public interface Float3R {
      * Compute the angle in radians between this vector and {@code other}.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the angle to
      * @return the angle in radians between this vector and {@code other}
@@ -1571,7 +1573,9 @@ public interface Float3R {
      * Compute the angle in radians between this vector and ({@code x}, {@code y}, {@code z}).
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2720,8 +2724,9 @@ public interface Float3R {
     Double3 min(float x, float y, float z, @Mutated Double3 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2733,8 +2738,9 @@ public interface Float3R {
     Float3 mod(float y, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2749,8 +2755,9 @@ public interface Float3R {
     Double3 mod(float y, @Mutated Double3 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2762,8 +2769,9 @@ public interface Float3R {
     Float3 mod(Float3R y, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -2778,8 +2786,9 @@ public interface Float3R {
     Double3 mod(Float3R y, @Mutated Double3 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code x}, {@code y}, {@code z}) and store the result in
+     * Compute the component-wise floored modulo of this vector divided by ({@code x}, {@code y},
+     * {@code z}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign
+     * differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
      * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
@@ -2794,8 +2803,9 @@ public interface Float3R {
     Float3 mod(float x, float y, float z, @Mutated Float3 dest);
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code x}, {@code y}, {@code z}) and store the result in
+     * Compute the component-wise floored modulo of this vector divided by ({@code x}, {@code y},
+     * {@code z}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign
+     * differs from {@code y}'s - exactly Kotlin's {@code mod}) and store the result in
      * {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
@@ -2914,7 +2924,9 @@ public interface Float3R {
      * the given normal.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param other the vector to measure the signed angle to
      * @param normal the reference axis that defines the sign of the angle
@@ -2931,7 +2943,9 @@ public interface Float3R {
      * normal.
      * <p>
      * The angle is computed with {@code atan2}, so it keeps full {@code float} resolution all the
-     * way down to 0 (an {@code acos}-based form loses precision for small angles).
+     * way down to 0 (an {@code acos}-based form loses precision for small angles). It holds for
+     * vectors of any finite length: when the squared length of their cross product would leave the
+     * {@code float} range, the vectors are first scaled exactly by powers of two.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -3269,6 +3283,10 @@ public interface Float3R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -3282,6 +3300,10 @@ public interface Float3R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3298,6 +3320,10 @@ public interface Float3R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)} (the vector must have unit
      *        length)
@@ -3316,6 +3342,10 @@ public interface Float3R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3643,6 +3673,10 @@ public interface Float3R {
      * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
      * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
      * the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      *
      * @param p1 the second vertex of the triangle (this vector is the first)
      * @param p2 the third vertex of the triangle
@@ -3656,6 +3690,10 @@ public interface Float3R {
      * {@code normalize((p1 - this) x (p2 - this))} - it points to the side from which the vertices
      * {@code this}, {@code p1}, {@code p2} appear counter-clockwise (a degenerate triangle yields
      * the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -3673,6 +3711,10 @@ public interface Float3R {
      * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
      * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
      * yields the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      *
      * @param p1X the {@code x} component of the vector {@code (p1X, p1Y, p1Z)}
      * @param p1Y the {@code y} component of the vector {@code (p1X, p1Y, p1Z)}
@@ -3691,6 +3733,10 @@ public interface Float3R {
      * side from which the vertices {@code this}, ({@code p1X}, {@code p1Y}, {@code p1Z}),
      * ({@code p2X}, {@code p2Y}, {@code p2Z}) appear counter-clockwise (a degenerate triangle
      * yields the zero vector) and store the result in {@code dest}.
+     * <p>
+     * It holds for triangles of any finite size and shape: when the squared length of the edges'
+     * cross product would leave the {@code float} range, the edges are first scaled exactly by
+     * powers of two.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

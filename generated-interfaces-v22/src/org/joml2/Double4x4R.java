@@ -71,15 +71,21 @@ public interface Double4x4R {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -90,15 +96,21 @@ public interface Double4x4R {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -109,15 +121,21 @@ public interface Double4x4R {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -128,15 +146,21 @@ public interface Double4x4R {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -147,15 +171,21 @@ public interface Double4x4R {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -166,15 +196,21 @@ public interface Double4x4R {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code double} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -239,10 +275,10 @@ public interface Double4x4R {
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -253,10 +289,10 @@ public interface Double4x4R {
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -267,10 +303,10 @@ public interface Double4x4R {
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -353,10 +389,10 @@ public interface Double4x4R {
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -367,10 +403,10 @@ public interface Double4x4R {
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -381,10 +417,10 @@ public interface Double4x4R {
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code double} precision, so the result is exact only while
-     * it stays within the {@code double} range: the magnitude of the selected row of this matrix
-     * must lie roughly between {@code 1.5e-154} and {@code 1.3e154}. Rescale inputs outside that
-     * band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code double} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -933,7 +969,8 @@ public interface Double4x4R {
      * <p>
      * Each constant names a corner of the clip-space cube by the sign its three coordinates take
      * there, so {@code NXNYNZ} is the bottom-left corner of the near plane and {@code PXPYPZ} the
-     * top-right corner of the far plane.
+     * top-right corner of the far plane. A corner on a depth plane at infinity is infinite, with
+     * each component's sign giving the side the frustum recedes to.
      *
      * @param corner the frustum corner to compute
      * @param depthRange the clip-space depth range the projection maps onto
@@ -948,7 +985,8 @@ public interface Double4x4R {
      * <p>
      * Each constant names a corner of the clip-space cube by the sign its three coordinates take
      * there, so {@code NXNYNZ} is the bottom-left corner of the near plane and {@code PXPYPZ} the
-     * top-right corner of the far plane.
+     * top-right corner of the far plane. A corner on a depth plane at infinity is infinite, with
+     * each component's sign giving the side the frustum recedes to.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -1176,6 +1214,11 @@ public interface Double4x4R {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      *
      * @param center the center of the sphere
      * @param radius the radius of the sphere
@@ -1189,6 +1232,11 @@ public interface Double4x4R {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1204,6 +1252,11 @@ public interface Double4x4R {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      *
      * @param sph the sphere to test
      * @param depthRange the clip-space depth range the projection maps onto
@@ -1216,6 +1269,11 @@ public interface Double4x4R {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -1230,6 +1288,11 @@ public interface Double4x4R {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -1246,6 +1309,11 @@ public interface Double4x4R {
     /**
      * Compute the frustum test of the given sphere against the frustum defined by this matrix:
      * {@code 1} if the sphere intersects or is inside the frustum, {@code 0} if fully outside.
+     * <p>
+     * The test compares squares instead of taking a square root per plane, so it is exact only
+     * while the sphere's radius times the length of a plane normal, and the plane-center distance,
+     * stay below roughly {@code 1.3e154}; beyond that the squares overflow and the sphere is
+     * reported visible.
      * <p>
      * Uses {@link DepthRange#NEGATIVE_ONE_TO_ONE} for {@code depthRange}.
      *
@@ -1369,8 +1437,8 @@ public interface Double4x4R {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param right the right operand
      * @param dest will hold the result
@@ -1478,8 +1546,8 @@ public interface Double4x4R {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param other the left operand
      * @param dest will hold the result
@@ -1720,6 +1788,11 @@ public interface Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -1736,6 +1809,11 @@ public interface Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -1755,6 +1833,11 @@ public interface Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -1773,6 +1856,11 @@ public interface Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -1797,6 +1885,11 @@ public interface Double4x4R {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -1815,6 +1908,11 @@ public interface Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -2485,18 +2583,38 @@ public interface Double4x4R {
     Double4x4 obliqueCavalier(double angle, @Mutated Double4x4 dest);
 
     /**
-     * Apply an oblique military projection shear (compose with an orthographic projection for the
-     * full transform) to this matrix and store the result in {@code dest}.
+     * Apply an oblique projection shear drawing the XZ plane true shape and the Y axis at
+     * {@code angle}, depth {@code -y} (the military projection of a Y-up scene seen from below by a
+     * right-handed orthographic projection, or the cavalier projection of a Z-up scene;
+     * {@code obliquePlanometric} shows a Y-up scene from above; compose with an orthographic
+     * projection for the full transform) to this matrix and store the result in {@code dest}.
      * <p>
      * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
      * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
-     * @param angle the angle in radians
+     * @param angle the angle, in radians, at which the Y axis is drawn from the screen's +x axis
      * @param dest will hold the result
      * @return dest
      */
     Double4x4 obliqueMilitary(double angle, @Mutated Double4x4 dest);
+
+    /**
+     * Apply a military (planometric) projection of a Y-up scene seen from above: the XZ plan true
+     * shape turned by {@code angle}, verticals drawn straight up at full length, depth {@code y}
+     * (compose with an orthographic projection for the full transform) to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
+     * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * O * v}, the oblique shear will be applied first.
+     *
+     * @param angle the angle, in radians, by which the XZ plan is turned counter-clockwise on
+     *        screen
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x4 obliquePlanometric(double angle, @Mutated Double4x4 dest);
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel

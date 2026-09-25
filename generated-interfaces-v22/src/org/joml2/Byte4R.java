@@ -2687,9 +2687,10 @@ public interface Byte4R {
     Double4 shr(byte shift, @Mutated Double4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2698,13 +2699,15 @@ public interface Byte4R {
     Byte4 ushr(byte shift, @Mutated Byte4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}. The shift
-     * count is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code short}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2713,13 +2716,15 @@ public interface Byte4R {
     Short4 ushr(byte shift, @Mutated Short4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}. The shift count
-     * is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code int}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2728,13 +2733,15 @@ public interface Byte4R {
     Int4 ushr(byte shift, @Mutated Int4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}. The shift count
-     * is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code long}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2743,13 +2750,15 @@ public interface Byte4R {
     Long4 ushr(byte shift, @Mutated Long4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}. The shift
-     * count is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code double}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3289,12 +3298,12 @@ public interface Byte4R {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    byte compAdd();
+    int compAdd();
 
     /**
      * Compute the largest component of this vector.
@@ -3313,30 +3322,30 @@ public interface Byte4R {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    byte compMul();
+    int compMul();
 
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    byte distanceSquared(Byte4R other);
+    int distanceSquared(Byte4R other);
 
     /**
      * Compute the squared distance between this vector and ({@code x}, {@code y}, {@code z},
      * {@code w}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -3345,24 +3354,24 @@ public interface Byte4R {
      * @return the squared distance between this vector and ({@code x}, {@code y}, {@code z},
      *        {@code w})
      */
-    byte distanceSquared(byte x, byte y, byte z, byte w);
+    int distanceSquared(byte x, byte y, byte z, byte w);
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    byte dot(Byte4R other);
+    int dot(Byte4R other);
 
     /**
      * Compute the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -3370,35 +3379,35 @@ public interface Byte4R {
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @return the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w})
      */
-    byte dot(byte x, byte y, byte z, byte w);
+    int dot(byte x, byte y, byte z, byte w);
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    byte lengthSquared();
+    int lengthSquared();
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    byte manhattanDistance(Byte4R other);
+    int manhattanDistance(Byte4R other);
 
     /**
      * Compute the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
      * {@code w}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -3407,17 +3416,17 @@ public interface Byte4R {
      * @return the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
      *        {@code w})
      */
-    byte manhattanDistance(byte x, byte y, byte z, byte w);
+    int manhattanDistance(byte x, byte y, byte z, byte w);
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    byte manhattanLength();
+    int manhattanLength();
 
     /**
      * Set each component of this vector to the larger of itself and {@code scalar} and store the

@@ -96,32 +96,32 @@ public final class DoubleQuatOpsKernelsArray {
         double _t15 = 1.0 + (_m00 - (_m11 + _m22));
         double _t16 = 1.0 + (_m11 - (_m00 + _m22));
         double _t17 = 1.0 + (_m22 - _t0);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t10 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t1 * _t18;
-            dest[destOffset + 1] = 0.5 * _t7 * _t18;
-            dest[destOffset + 2] = 0.5 * _t9 * _t18;
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
         } else {
             if (_m00 > _t2) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
-                dest[destOffset + 1] = 0.5 * _t4 * _t21;
-                dest[destOffset + 2] = 0.5 * _t6 * _t21;
-                dest[destOffset + 3] = 0.5 * _t1 * _t21;
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
             } else {
                 if (_m11 > _m22) {
-                    dest[destOffset + 0] = 0.5 * _t4 * _t19;
+                    dest[destOffset + 0] = _sp1 * _t4;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
-                    dest[destOffset + 2] = 0.5 * _t8 * _t19;
-                    dest[destOffset + 3] = 0.5 * _t7 * _t19;
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t6 * _t20;
-                    dest[destOffset + 1] = 0.5 * _t8 * _t20;
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
-                    dest[destOffset + 3] = 0.5 * _t9 * _t20;
+                    dest[destOffset + 3] = _sp2 * _t9;
                 }
             }
         }
@@ -151,32 +151,32 @@ public final class DoubleQuatOpsKernelsArray {
         double _t15 = 1.0 + (_m00 - (_m11 + _m22));
         double _t16 = 1.0 + (_m11 - (_m00 + _m22));
         double _t17 = 1.0 + (_m22 - _t0);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t10 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t1 * _t18;
-            dest[destOffset + 1] = 0.5 * _t7 * _t18;
-            dest[destOffset + 2] = 0.5 * _t9 * _t18;
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
         } else {
             if (_m00 > _t2) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
-                dest[destOffset + 1] = 0.5 * _t4 * _t21;
-                dest[destOffset + 2] = 0.5 * _t6 * _t21;
-                dest[destOffset + 3] = 0.5 * _t1 * _t21;
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
             } else {
                 if (_m11 > _m22) {
-                    dest[destOffset + 0] = 0.5 * _t4 * _t19;
+                    dest[destOffset + 0] = _sp1 * _t4;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
-                    dest[destOffset + 2] = 0.5 * _t8 * _t19;
-                    dest[destOffset + 3] = 0.5 * _t7 * _t19;
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t6 * _t20;
-                    dest[destOffset + 1] = 0.5 * _t8 * _t20;
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
-                    dest[destOffset + 3] = 0.5 * _t9 * _t20;
+                    dest[destOffset + 3] = _sp2 * _t9;
                 }
             }
         }
@@ -206,32 +206,32 @@ public final class DoubleQuatOpsKernelsArray {
         double _t15 = 1.0 + (_m00 - (_m11 + _m22));
         double _t16 = 1.0 + (_m11 - (_m00 + _m22));
         double _t17 = 1.0 + (_m22 - _t0);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t10 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t1 * _t18;
-            dest[destOffset + 1] = 0.5 * _t7 * _t18;
-            dest[destOffset + 2] = 0.5 * _t9 * _t18;
+            dest[destOffset + 0] = _sp0 * _t1;
+            dest[destOffset + 1] = _sp0 * _t7;
+            dest[destOffset + 2] = _sp0 * _t9;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t14);
         } else {
             if (_m00 > _t2) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t15);
-                dest[destOffset + 1] = 0.5 * _t4 * _t21;
-                dest[destOffset + 2] = 0.5 * _t6 * _t21;
-                dest[destOffset + 3] = 0.5 * _t1 * _t21;
+                dest[destOffset + 1] = _sp3 * _t4;
+                dest[destOffset + 2] = _sp3 * _t6;
+                dest[destOffset + 3] = _sp3 * _t1;
             } else {
                 if (_m11 > _m22) {
-                    dest[destOffset + 0] = 0.5 * _t4 * _t19;
+                    dest[destOffset + 0] = _sp1 * _t4;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t16);
-                    dest[destOffset + 2] = 0.5 * _t8 * _t19;
-                    dest[destOffset + 3] = 0.5 * _t7 * _t19;
+                    dest[destOffset + 2] = _sp1 * _t8;
+                    dest[destOffset + 3] = _sp1 * _t7;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t6 * _t20;
-                    dest[destOffset + 1] = 0.5 * _t8 * _t20;
+                    dest[destOffset + 0] = _sp2 * _t6;
+                    dest[destOffset + 1] = _sp2 * _t8;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t17);
-                    dest[destOffset + 3] = 0.5 * _t9 * _t20;
+                    dest[destOffset + 3] = _sp2 * _t9;
                 }
             }
         }
@@ -305,7 +305,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t7 = Math.fma(alpha, _targety - _selfy, _selfy);
         double _t11 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, Math.fma(_t6, _t6, _t7 * _t7)));
         double _t12 = (1.0 / Math.sqrt(_t11));
-        if (_t11 > 0.0) {
+        if (_t11 != 0.0) {
             dest[destOffset + 0] = _t6 * _t12;
             dest[destOffset + 1] = _t7 * _t12;
             dest[destOffset + 2] = _t5 * _t12;
@@ -343,7 +343,7 @@ public final class DoubleQuatOpsKernelsArray {
         }
         double _t24 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20)));
         double _t25 = (1.0 / Math.sqrt(_t24));
-        if (_t24 > 0.0) {
+        if (_t24 != 0.0) {
             dest[destOffset + 0] = _t19 * _t25;
             dest[destOffset + 1] = _t20 * _t25;
             dest[destOffset + 2] = _t18 * _t25;
@@ -363,23 +363,34 @@ public final class DoubleQuatOpsKernelsArray {
         double _selfz = src[srcOffset + 2];
         double _selfw = src[srcOffset + 3];
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_selfw, targetW, Math.fma(_selfz, targetZ, Math.fma(_selfx, targetX, _selfy * targetY))))));
-        double _t8 = Math.sin(_t7);
-        double _t8_inv = 1.0 / _t8;
-        double _t9 = Math.abs(_t8);
-        double _t11 = Math.sin(alpha * _t7);
-        double _t13 = Math.sin(_t0 * _t7);
-        if (_t9 > 1.0E-6) {
-            dest[destOffset + 0] = Math.fma(_selfx, _t13, targetX * _t11) * _t8_inv;
-            dest[destOffset + 1] = Math.fma(_selfy, _t13, targetY * _t11) * _t8_inv;
-            dest[destOffset + 2] = Math.fma(_selfz, _t13, targetZ * _t11) * _t8_inv;
-            dest[destOffset + 3] = Math.fma(_selfw, _t13, targetW * _t11) * _t8_inv;
+        double _t1 = _selfw + targetW;
+        double _t2 = _selfz + targetZ;
+        double _t3 = _selfx + targetX;
+        double _t4 = _selfy + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _t26, _t27;
+        if (_t19 > 2.0E-14) {
+            _t26 = _t21 * Math.sin(alpha * _t12);
+            _t27 = _t21 * Math.sin(_t0 * _t12);
         } else {
-            dest[destOffset + 0] = Math.fma(alpha, targetX, _selfx * _t0);
-            dest[destOffset + 1] = Math.fma(alpha, targetY, _selfy * _t0);
-            dest[destOffset + 2] = Math.fma(alpha, targetZ, _selfz * _t0);
-            dest[destOffset + 3] = Math.fma(alpha, targetW, _selfw * _t0);
+            if (_t11 > _t13) {
+                _t26 = alpha;
+                _t27 = _t0;
+            } else {
+                _t26 = 1.0 - _t5;
+                _t27 = _t5;
+            }
         }
+        dest[destOffset + 0] = Math.fma(_selfx, _t27, targetX * _t26);
+        dest[destOffset + 1] = Math.fma(_selfy, _t27, targetY * _t26);
+        dest[destOffset + 2] = Math.fma(_selfz, _t27, targetZ * _t26);
+        dest[destOffset + 3] = Math.fma(_selfw, _t27, targetW * _t26);
         return dest;
     }
 
@@ -393,23 +404,34 @@ public final class DoubleQuatOpsKernelsArray {
         double _targetz = target[targetOffset + 2];
         double _targetw = target[targetOffset + 3];
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))));
-        double _t8 = Math.sin(_t7);
-        double _t8_inv = 1.0 / _t8;
-        double _t9 = Math.abs(_t8);
-        double _t11 = Math.sin(alpha * _t7);
-        double _t13 = Math.sin(_t0 * _t7);
-        if (_t9 > 1.0E-6) {
-            dest[destOffset + 0] = Math.fma(_selfx, _t13, _targetx * _t11) * _t8_inv;
-            dest[destOffset + 1] = Math.fma(_selfy, _t13, _targety * _t11) * _t8_inv;
-            dest[destOffset + 2] = Math.fma(_selfz, _t13, _targetz * _t11) * _t8_inv;
-            dest[destOffset + 3] = Math.fma(_selfw, _t13, _targetw * _t11) * _t8_inv;
+        double _t1 = _selfw + _targetw;
+        double _t2 = _selfz + _targetz;
+        double _t3 = _selfx + _targetx;
+        double _t4 = _selfy + _targety;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _t26, _t27;
+        if (_t19 > 2.0E-14) {
+            _t26 = _t21 * Math.sin(alpha * _t12);
+            _t27 = _t21 * Math.sin(_t0 * _t12);
         } else {
-            dest[destOffset + 0] = Math.fma(alpha, _targetx, _selfx * _t0);
-            dest[destOffset + 1] = Math.fma(alpha, _targety, _selfy * _t0);
-            dest[destOffset + 2] = Math.fma(alpha, _targetz, _selfz * _t0);
-            dest[destOffset + 3] = Math.fma(alpha, _targetw, _selfw * _t0);
+            if (_t11 > _t13) {
+                _t26 = alpha;
+                _t27 = _t0;
+            } else {
+                _t26 = 1.0 - _t5;
+                _t27 = _t5;
+            }
         }
+        dest[destOffset + 0] = Math.fma(_selfx, _t27, _targetx * _t26);
+        dest[destOffset + 1] = Math.fma(_selfy, _t27, _targety * _t26);
+        dest[destOffset + 2] = Math.fma(_selfz, _t27, _targetz * _t26);
+        dest[destOffset + 3] = Math.fma(_selfw, _t27, _targetw * _t26);
         return dest;
     }
 
@@ -456,7 +478,7 @@ public final class DoubleQuatOpsKernelsArray {
         }
         double _t49 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, Math.fma(_t44, _t44, _t45 * _t45)));
         double _t50 = (1.0 / Math.sqrt(_t49));
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             dest[destOffset + 0] = _t50 * _t44;
             dest[destOffset + 1] = _t50 * _t45;
             dest[destOffset + 2] = _t50 * _t43;
@@ -490,7 +512,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t3 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         double _t4 = Math.sqrt(_t3);
         double _t6 = Math.sin(_t4);
-        double _t8 = _t6 * _t0 * (1.0 / Math.sqrt(_t3));
+        double _t8 = _t6 * _t0 / _t4;
         if (_t3 > 0.0) {
             dest[destOffset + 0] = _selfx * _t8;
             dest[destOffset + 1] = _selfy * _t8;
@@ -531,7 +553,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _selfw = src[srcOffset + 3];
         double _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         double _t4 = (1.0 / Math.sqrt(_t3));
-        if (_t3 > 0.0) {
+        if (_t3 != 0.0) {
             dest[destOffset + 0] = _selfx * _t4;
             dest[destOffset + 1] = _selfy * _t4;
             dest[destOffset + 2] = _selfz * _t4;
@@ -566,7 +588,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         double _t24 = Math.sqrt(_t23);
         double _t26 = Math.sin(_t24);
-        double _t28 = _t26 * _t10 * (1.0 / Math.sqrt(_t23));
+        double _t28 = _t26 * _t10 / _t24;
         if (_t23 > 0.0) {
             dest[destOffset + 0] = _t19 * _t28;
             dest[destOffset + 1] = _t20 * _t28;
@@ -633,7 +655,7 @@ public final class DoubleQuatOpsKernelsArray {
         }
         double _t72 = Math.fma(_t65, _t65, Math.fma(_t66, _t66, Math.fma(_t67, _t67, _t68 * _t68)));
         double _t73 = (1.0 / Math.sqrt(_t72));
-        if (_t72 > 0.0) {
+        if (_t72 != 0.0) {
             dest[destOffset + 0] = _t73 * _t67;
             dest[destOffset + 1] = _t73 * _t68;
             dest[destOffset + 2] = _t73 * _t66;
@@ -674,7 +696,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirZ * _t3;
             _t8 = dirY * _t3;
             _t9 = dirX * _t3;
@@ -692,7 +714,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -715,32 +737,32 @@ public final class DoubleQuatOpsKernelsArray {
         double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t64 = (1.0 / Math.sqrt(_t60));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t61));
         if (_t59 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t55 * _t64;
-            dest[destOffset + 1] = 0.5 * _t38 * _t64;
-            dest[destOffset + 2] = 0.5 * _t58 * _t64;
+            dest[destOffset + 0] = _sp0 * _t55;
+            dest[destOffset + 1] = _sp0 * _t38;
+            dest[destOffset + 2] = _sp0 * _t58;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t31 > _t56) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t61);
-                dest[destOffset + 1] = 0.5 * _t57 * _t67;
-                dest[destOffset + 2] = 0.5 * _t37 * _t67;
-                dest[destOffset + 3] = 0.5 * _t55 * _t67;
+                dest[destOffset + 1] = _sp3 * _t57;
+                dest[destOffset + 2] = _sp3 * _t37;
+                dest[destOffset + 3] = _sp3 * _t55;
             } else {
                 if (_t49 > _t7) {
-                    dest[destOffset + 0] = 0.5 * _t57 * _t65;
+                    dest[destOffset + 0] = _sp1 * _t57;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t62);
-                    dest[destOffset + 2] = 0.5 * _t54 * _t65;
-                    dest[destOffset + 3] = 0.5 * _t38 * _t65;
+                    dest[destOffset + 2] = _sp1 * _t54;
+                    dest[destOffset + 3] = _sp1 * _t38;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t37 * _t66;
-                    dest[destOffset + 1] = 0.5 * _t54 * _t66;
+                    dest[destOffset + 0] = _sp2 * _t37;
+                    dest[destOffset + 1] = _sp2 * _t54;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t63);
-                    dest[destOffset + 3] = 0.5 * _t58 * _t66;
+                    dest[destOffset + 3] = _sp2 * _t58;
                 }
             }
         }
@@ -757,7 +779,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _dirz * _t3;
             _t8 = _diry * _t3;
             _t9 = _dirx * _t3;
@@ -775,7 +797,7 @@ public final class DoubleQuatOpsKernelsArray {
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t31, _t32, _t33;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t31 = _t22 * _t27;
             _t32 = _t21 * _t27;
             _t33 = _t23 * _t27;
@@ -798,32 +820,32 @@ public final class DoubleQuatOpsKernelsArray {
         double _t61 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, _t34 - _t7));
         double _t62 = Math.fma(_t7, _t31, Math.fma(_t10, _t32, 1.0 - _t7 - _t31));
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
-        double _t64 = (1.0 / Math.sqrt(_t60));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t61));
         if (_t59 > 0.0) {
-            dest[destOffset + 0] = 0.5 * _t55 * _t64;
-            dest[destOffset + 1] = 0.5 * _t38 * _t64;
-            dest[destOffset + 2] = 0.5 * _t58 * _t64;
+            dest[destOffset + 0] = _sp0 * _t55;
+            dest[destOffset + 1] = _sp0 * _t38;
+            dest[destOffset + 2] = _sp0 * _t58;
             dest[destOffset + 3] = 0.5 * Math.sqrt(_t60);
         } else {
             if (_t31 > _t56) {
                 dest[destOffset + 0] = 0.5 * Math.sqrt(_t61);
-                dest[destOffset + 1] = 0.5 * _t57 * _t67;
-                dest[destOffset + 2] = 0.5 * _t37 * _t67;
-                dest[destOffset + 3] = 0.5 * _t55 * _t67;
+                dest[destOffset + 1] = _sp3 * _t57;
+                dest[destOffset + 2] = _sp3 * _t37;
+                dest[destOffset + 3] = _sp3 * _t55;
             } else {
                 if (_t49 > _t7) {
-                    dest[destOffset + 0] = 0.5 * _t57 * _t65;
+                    dest[destOffset + 0] = _sp1 * _t57;
                     dest[destOffset + 1] = 0.5 * Math.sqrt(_t62);
-                    dest[destOffset + 2] = 0.5 * _t54 * _t65;
-                    dest[destOffset + 3] = 0.5 * _t38 * _t65;
+                    dest[destOffset + 2] = _sp1 * _t54;
+                    dest[destOffset + 3] = _sp1 * _t38;
                 } else {
-                    dest[destOffset + 0] = 0.5 * _t37 * _t66;
-                    dest[destOffset + 1] = 0.5 * _t54 * _t66;
+                    dest[destOffset + 0] = _sp2 * _t37;
+                    dest[destOffset + 1] = _sp2 * _t54;
                     dest[destOffset + 2] = 0.5 * Math.sqrt(_t63);
-                    dest[destOffset + 3] = 0.5 * _t58 * _t66;
+                    dest[destOffset + 3] = _sp2 * _t58;
                 }
             }
         }
@@ -853,13 +875,13 @@ public final class DoubleQuatOpsKernelsArray {
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
-        if (_t23 > 1.0E-6) {
+        if (_t23 > 1.0E-13) {
             dest[destOffset + 0] = _t14 * _t32;
             dest[destOffset + 1] = _t16 * _t32;
             dest[destOffset + 2] = _t15 * _t32;
-            dest[destOffset + 3] = 0.5 * _t22 * _t32;
+            dest[destOffset + 3] = _t23 * _t32;
         } else {
-            if (_t29 > 0.0) {
+            if (_t29 != 0.0) {
                 dest[destOffset + 0] = _t30 * _t17;
                 dest[destOffset + 1] = _t30 * _t19;
                 dest[destOffset + 2] = _t30 * _t18;
@@ -903,13 +925,13 @@ public final class DoubleQuatOpsKernelsArray {
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
-        if (_t23 > 1.0E-6) {
+        if (_t23 > 1.0E-13) {
             dest[destOffset + 0] = _t14 * _t32;
             dest[destOffset + 1] = _t16 * _t32;
             dest[destOffset + 2] = _t15 * _t32;
-            dest[destOffset + 3] = 0.5 * _t22 * _t32;
+            dest[destOffset + 3] = _t23 * _t32;
         } else {
-            if (_t29 > 0.0) {
+            if (_t29 != 0.0) {
                 dest[destOffset + 0] = _t30 * _t17;
                 dest[destOffset + 1] = _t30 * _t19;
                 dest[destOffset + 2] = _t30 * _t18;
@@ -945,4 +967,20 @@ public final class DoubleQuatOpsKernelsArray {
         return dest;
     }
 
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
+    }
 }

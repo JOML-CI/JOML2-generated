@@ -37,7 +37,12 @@ public interface IntRectR {
 
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to add
      * @param dest will hold the result
@@ -46,7 +51,12 @@ public interface IntRectR {
     IntRect add(IntRectR other, @Mutated IntRect dest);
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -58,8 +68,12 @@ public interface IntRectR {
     DoubleRect add(IntRectR other, @Mutated DoubleRect dest);
 
     /**
-     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle and store the
-     * result in {@code dest}.
+     * Add each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -71,8 +85,12 @@ public interface IntRectR {
     IntRect add(int minX, int minY, int maxX, int maxY, @Mutated IntRect dest);
 
     /**
-     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle and store the
-     * result in {@code dest}.
+     * Add each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -87,7 +105,8 @@ public interface IntRectR {
     DoubleRect add(int minX, int minY, int maxX, int maxY, @Mutated DoubleRect dest);
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -95,7 +114,8 @@ public interface IntRectR {
     IntRect negate(@Mutated IntRect dest);
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -106,7 +126,12 @@ public interface IntRectR {
     DoubleRect negate(@Mutated DoubleRect dest);
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to subtract
      * @param dest will hold the result
@@ -115,7 +140,12 @@ public interface IntRectR {
     IntRect sub(IntRectR other, @Mutated IntRect dest);
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -127,8 +157,12 @@ public interface IntRectR {
     DoubleRect sub(IntRectR other, @Mutated DoubleRect dest);
 
     /**
-     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle and
-     * store the result in {@code dest}.
+     * Subtract each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -140,8 +174,12 @@ public interface IntRectR {
     IntRect sub(int minX, int minY, int maxX, int maxY, @Mutated IntRect dest);
 
     /**
-     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle and
-     * store the result in {@code dest}.
+     * Subtract each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code int} precision; each result component is widened to
      * {@code double} only when stored.
@@ -516,10 +554,13 @@ public interface IntRectR {
 
     /**
      * Compute the area of this rectangle.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the area of this rectangle
      */
-    int area();
+    long area();
 
     /**
      * Compute the x coordinate of the center of this rectangle (integer division truncates toward
@@ -686,18 +727,24 @@ public interface IntRectR {
      * Compute the squared distance between this rectangle and the given point, i.e. the squared
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param p the point to measure the distance to
      * @return the squared distance between this rectangle and the given point, i.e. the squared
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
      */
-    int distanceSquaredToPoint(Int2R p);
+    long distanceSquaredToPoint(Int2R p);
 
     /**
      * Compute the squared distance between this rectangle and the given point, i.e. the squared
      * length of the difference between the point and its per-axis clamp into the rectangle's
      * bounds; zero for a point inside or on the rectangle.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param x the {@code x} component of the point {@code (x, y)} to measure the distance to
      * @param y the {@code y} component of the point {@code (x, y)} to measure the distance to
@@ -705,24 +752,30 @@ public interface IntRectR {
      *        length of the difference between the point and its per-axis clamp into the rectangle's
      *        bounds; zero for a point inside or on the rectangle
      */
-    int distanceSquaredToPoint(int x, int y);
+    long distanceSquaredToPoint(int x, int y);
 
     /**
      * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the rectangle to measure the distance to
      * @return the squared distance between this rectangle and the given rectangle, i.e. the squared
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
      */
-    int distanceSquaredToRect(IntRectR other);
+    long distanceSquaredToRect(IntRectR other);
 
     /**
      * Compute the squared distance between this rectangle and the given rectangle, i.e. the squared
      * length of the shortest vector between any two points of the two rectangles; zero when they
      * overlap or touch.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)} to
      *        measure the distance to
@@ -736,7 +789,7 @@ public interface IntRectR {
      *        length of the shortest vector between any two points of the two rectangles; zero when
      *        they overlap or touch
      */
-    int distanceSquaredToRect(int minX, int minY, int maxX, int maxY);
+    long distanceSquaredToRect(int minX, int minY, int maxX, int maxY);
 
     /**
      * Get the center of this rectangle and store the result in {@code dest}.

@@ -1928,8 +1928,9 @@ public final class Double2Impl implements Double2 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1944,8 +1945,9 @@ public final class Double2Impl implements Double2 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1960,8 +1962,9 @@ public final class Double2Impl implements Double2 {
 
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code yX}, {@code yY}) and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by ({@code yX}, {@code yY})
+     * ({@code x % y}, plus {@code y} when that remainder is non-zero and its sign differs from
+     * {@code y}'s - exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1973,8 +1976,8 @@ public final class Double2Impl implements Double2 {
      */
     public Double2 mod(double yX, double yY, @Mutated Double2 dest) {
         Double2Impl d = (Double2Impl) dest;
-        d.x = Math.fma(-yX, Math.floor(this.x / yX), this.x);
-        d.y = Math.fma(-yY, Math.floor(this.y / yY), this.y);
+        d.x = flooredMod(this.x, yX);
+        d.y = flooredMod(this.y, yY);
         return d;
     }
 
@@ -2025,7 +2028,7 @@ public final class Double2Impl implements Double2 {
         Double2Impl d = (Double2Impl) dest;
         double _t1 = Math.fma(this.x, this.x, this.y * this.y);
         double _t2 = (1.0 / Math.sqrt(_t1));
-        if (_t1 > 0.0) {
+        if (_t1 != 0.0) {
             d.x = this.x * _t2;
             d.y = this.y * _t2;
         } else {
@@ -2048,7 +2051,7 @@ public final class Double2Impl implements Double2 {
         Double2Impl d = (Double2Impl) dest;
         double _t1 = Math.fma(this.x, this.x, this.y * this.y);
         double _t3 = length * (1.0 / Math.sqrt(_t1));
-        if (_t1 > 0.0) {
+        if (_t1 != 0.0) {
             d.x = this.x * _t3;
             d.y = this.y * _t3;
         } else {
@@ -2196,11 +2199,9 @@ public final class Double2Impl implements Double2 {
      */
     public Double2 project(double ontoX, double ontoY, @Mutated Double2 dest) {
         Double2Impl d = (Double2Impl) dest;
-        double _t2 = Math.fma(ontoX, this.x, ontoY * this.y);
-        double _t3 = Math.fma(ontoX, ontoX, ontoY * ontoY);
-        double _t3_inv = 1.0 / _t3;
-        d.x = ontoX * _t2 * _t3_inv;
-        d.y = ontoY * _t2 * _t3_inv;
+        double _sp0 = Math.fma(ontoX, this.x, ontoY * this.y) / Math.fma(ontoX, ontoX, ontoY * ontoY);
+        d.x = ontoX * _sp0;
+        d.y = ontoY * _sp0;
         return d;
     }
 
@@ -2288,6 +2289,10 @@ public final class Double2Impl implements Double2 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -2304,6 +2309,10 @@ public final class Double2Impl implements Double2 {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normalX the {@code x} component of the vector {@code (normalX, normalY)} (the vector
      *        must have unit length)
@@ -3012,4 +3021,29 @@ public final class Double2Impl implements Double2 {
         return RAW_OPS.loadFloatUnsafe(this, address);
     }
 
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

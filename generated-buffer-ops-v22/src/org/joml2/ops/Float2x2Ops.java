@@ -50,11 +50,13 @@ import org.joml2.internal.unsafe.*;
  * the flags its overload reads. Every non-bulk buffer, segment and raw-address overload - and the
  * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
  * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
- * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
- * element-wise operations loop over the buffer API directly and freeze nothing. An array overload
- * whose arithmetic contains a fused multiply-add or a transcendental function calls {@link Math}
- * ({@code fma}, {@code sin}, {@code cos}, {@code atan2}, ...), which snapshots and freezes the
- * {@code Math} flags ({@code useFma}, {@code fastmath}, {@code sinLookup}, {@code strictMath}) on
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads loop over the
+ * buffer API directly, and freeze the {@code Math} flags only when their arithmetic calls
+ * {@link Math}: the bulk {@code fma} and the batched matrix transforms do (through
+ * {@code Math.fma}), the other bulk overloads freeze nothing. An array overload whose arithmetic
+ * contains a fused multiply-add or a transcendental function calls {@link Math} ({@code fma},
+ * {@code sin}, {@code cos}, {@code atan2}, ...), which snapshots and freezes the {@code Math} flags
+ * ({@code useFma}, {@code cosFromSin}, {@code fastmath}, {@code sinLookup}, {@code strictMath}) on
  * its first use; the array overloads of the remaining operations (no multiply-add, no
  * transcendental) freeze nothing.</p>
  *

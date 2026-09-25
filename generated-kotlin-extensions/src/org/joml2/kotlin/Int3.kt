@@ -37,7 +37,7 @@ inline operator fun Int3.minus(other: Int3): Int3 = sub(other)
 /** [Int3.cross] as an infix function, so `a cross b` parses. */
 inline infix fun Int3.cross(other: Int3): Int3 = cross(other)
 /** [Int3.dot] as an infix function, so `a dot b` parses. */
-inline infix fun Int3.dot(other: Int3): Int = dot(other)
+inline infix fun Int3.dot(other: Int3): Long = dot(other)
 /** Component 1 of this Int3 (`x()`), for destructuring declarations. */
 inline operator fun Int3.component1(): Int = x()
 /** Component 2 of this Int3 (`y()`), for destructuring declarations. */

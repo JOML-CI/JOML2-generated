@@ -1918,10 +1918,13 @@ public interface Int4R {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    int compAdd();
+    long compAdd();
 
     /**
      * Compute the largest component of this vector.
@@ -1939,22 +1942,31 @@ public interface Int4R {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the product of all components of this vector
      */
-    int compMul();
+    long compMul();
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    int distanceSquared(Int4R other);
+    long distanceSquared(Int4R other);
 
     /**
      * Compute the squared distance between this vector and ({@code x}, {@code y}, {@code z},
      * {@code w}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -1963,18 +1975,24 @@ public interface Int4R {
      * @return the squared distance between this vector and ({@code x}, {@code y}, {@code z},
      *        {@code w})
      */
-    int distanceSquared(int x, int y, int z, int w);
+    long distanceSquared(int x, int y, int z, int w);
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    int dot(Int4R other);
+    long dot(Int4R other);
 
     /**
      * Compute the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -1982,26 +2000,35 @@ public interface Int4R {
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @return the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w})
      */
-    int dot(int x, int y, int z, int w);
+    long dot(int x, int y, int z, int w);
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the squared length of this vector
      */
-    int lengthSquared();
+    long lengthSquared();
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    int manhattanDistance(Int4R other);
+    long manhattanDistance(Int4R other);
 
     /**
      * Compute the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
      * {@code w}).
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -2010,14 +2037,17 @@ public interface Int4R {
      * @return the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
      *        {@code w})
      */
-    int manhattanDistance(int x, int y, int z, int w);
+    long manhattanDistance(int x, int y, int z, int w);
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    int manhattanLength();
+    long manhattanLength();
 
     /**
      * Set each component of this vector to the larger of itself and {@code scalar} and store the

@@ -81,9 +81,9 @@ public interface DoubleOBB extends DoubleOBBR {
      * @param axisX the new local X axis
      * @param axisY the new local Y axis
      * @param axisZ the new local Z axis
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setAxes(Double3R axisX, Double3R axisY, Double3R axisZ) { return setAxes(axisX, axisY, axisZ, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setAxes(Double3R axisX, Double3R axisY, Double3R axisZ) { return setAxes(axisX, axisY, axisZ, this); }
 
     /**
      * Set the local coordinate axes of this oriented bounding box to ({@code axisXX},
@@ -99,17 +99,17 @@ public interface DoubleOBB extends DoubleOBBR {
      * @param axisZX the {@code x} component of the vector {@code (axisZX, axisZY, axisZZ)}
      * @param axisZY the {@code y} component of the vector {@code (axisZX, axisZY, axisZZ)}
      * @param axisZZ the {@code z} component of the vector {@code (axisZX, axisZY, axisZZ)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setAxes(double axisXX, double axisXY, double axisXZ, double axisYX, double axisYY, double axisYZ, double axisZX, double axisZY, double axisZZ) { return setAxes(axisXX, axisXY, axisXZ, axisYX, axisYY, axisYZ, axisZX, axisZY, axisZZ, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setAxes(double axisXX, double axisXY, double axisXZ, double axisYX, double axisYY, double axisYZ, double axisZX, double axisZY, double axisZZ) { return setAxes(axisXX, axisXY, axisXZ, axisYX, axisYY, axisYZ, axisZX, axisZY, axisZZ, this); }
 
     /**
      * Set the center of this oriented bounding box to {@code c}.
      *
      * @param c the new center
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setCenter(Double3R c) { return setCenter(c, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setCenter(Double3R c) { return setCenter(c, this); }
 
     /**
      * Set the center of this oriented bounding box to ({@code x}, {@code y}, {@code z}).
@@ -117,17 +117,17 @@ public interface DoubleOBB extends DoubleOBBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setCenter(double x, double y, double z) { return setCenter(x, y, z, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setCenter(double x, double y, double z) { return setCenter(x, y, z, this); }
 
     /**
      * Set the half extents of this oriented bounding box to {@code h}.
      *
      * @param h the new half extents
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setHalfSize(Double3R h) { return setHalfSize(h, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setHalfSize(Double3R h) { return setHalfSize(h, this); }
 
     /**
      * Set the half extents of this oriented bounding box to ({@code x}, {@code y}, {@code z}).
@@ -135,24 +135,24 @@ public interface DoubleOBB extends DoubleOBBR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setHalfSize(double x, double y, double z) { return setHalfSize(x, y, z, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setHalfSize(double x, double y, double z) { return setHalfSize(x, y, z, this); }
 
     /**
      * Reset the orientation of this oriented bounding box to identity.
      *
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setIdentityOrientation() { return setIdentityOrientation(Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setIdentityOrientation() { return setIdentityOrientation(this); }
 
     /**
      * Set the orientation of this oriented bounding box to {@code q}.
      *
      * @param q the new orientation (must be a unit quaternion)
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setOrientation(DoubleQuatR q) { return setOrientation(q, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setOrientation(DoubleQuatR q) { return setOrientation(q, this); }
 
     /**
      * Set the orientation of this oriented bounding box to ({@code x}, {@code y}, {@code z},
@@ -166,9 +166,9 @@ public interface DoubleOBB extends DoubleOBBR {
      *        have unit length)
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
      *        have unit length)
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleOBB setOrientation(double x, double y, double z, double w) { return setOrientation(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
+    @Mutated default DoubleOBB setOrientation(double x, double y, double z, double w) { return setOrientation(x, y, z, w, this); }
 
     /**
      * Convert this oriented bounding box to {@code float} precision, returning the result as a new
@@ -188,10 +188,11 @@ public interface DoubleOBB extends DoubleOBBR {
     @Mutated DoubleOBB makeIdentity();
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated).
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them).
      *
      * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -199,10 +200,11 @@ public interface DoubleOBB extends DoubleOBBR {
     @Mutated default DoubleOBB transform(Double3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleOBB() : this); }
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated).
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them).
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.

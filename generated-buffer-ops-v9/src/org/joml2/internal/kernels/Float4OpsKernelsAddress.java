@@ -758,7 +758,45 @@ public final class Float4OpsKernelsAddress {
         float _t15 = Math.fma(otherW, _selfx, -(otherX * _selfw));
         float _t16 = Math.fma(otherY, _selfx, -(otherX * _selfy));
         float _t17 = Math.fma(otherZ, _selfx, -(otherX * _selfz));
-        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
+        float _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsAddress.angleBetween_degenerate(src, otherX, otherY, otherZ, otherW);
+        return (float) Math.atan2((float) Math.sqrt(_ct0), Math.fma(otherW, _selfw, Math.fma(otherZ, _selfz, Math.fma(otherX, _selfx, otherY * _selfy))));
+    }
+
+    public static float angleBetween_degenerate(long src, float otherX, float otherY, float otherZ, float otherW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.angleBetween_degenerate_unsafe(src, otherX, otherY, otherZ, otherW);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    public static float angleBetween_degenerate_unsafe(long src, float otherX, float otherY, float otherZ, float otherW) {
+        float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        float _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        float _t16 = otherW * _t6;
+        float _t17 = _selfz * _t7;
+        float _t18 = otherZ * _t6;
+        float _t19 = _selfw * _t7;
+        float _t20 = otherY * _t6;
+        float _t21 = _selfx * _t7;
+        float _t22 = otherX * _t6;
+        float _t23 = _selfy * _t7;
+        float _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        float _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        float _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        float _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        float _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        float _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        float _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        float _t58 = _t36 * _t51;
+        float _t59 = _t41 * _t51;
+        float _t60 = _t40 * _t51;
+        float _t61 = _t39 * _t51;
+        float _t62 = _t37 * _t51;
+        float _t63 = _t38 * _t51;
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
     }
 
     public static float angleBetween_unsafe(long src, long other) {
@@ -776,7 +814,49 @@ public final class Float4OpsKernelsAddress {
         float _t15 = Math.fma(_otherw, _selfx, -(_otherx * _selfw));
         float _t16 = Math.fma(_othery, _selfx, -(_otherx * _selfy));
         float _t17 = Math.fma(_otherz, _selfx, -(_otherx * _selfz));
-        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))))), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
+        float _ct0 = Math.fma(_t12, _t12, Math.fma(_t13, _t13, Math.fma(_t14, _t14, Math.fma(_t15, _t15, Math.fma(_t16, _t16, _t17 * _t17)))));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsAddress.angleBetween_degenerate(src, other);
+        return (float) Math.atan2((float) Math.sqrt(_ct0), Math.fma(_otherw, _selfw, Math.fma(_otherz, _selfz, Math.fma(_otherx, _selfx, _othery * _selfy))));
+    }
+
+    public static float angleBetween_degenerate(long src, long other) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.angleBetween_degenerate_unsafe(src, other);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    public static float angleBetween_degenerate_unsafe(long src, long other) {
+        float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _otherx = UnsafeOpsHolder.U.getFloat(other + 0L);
+        float _othery = UnsafeOpsHolder.U.getFloat(other + 4L);
+        float _otherz = UnsafeOpsHolder.U.getFloat(other + 8L);
+        float _otherw = UnsafeOpsHolder.U.getFloat(other + 12L);
+        float _t6 = unitScale(_otherz, _otherw, Math.max(Math.abs(_otherx), Math.abs(_othery)));
+        float _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        float _t16 = _otherw * _t6;
+        float _t17 = _selfz * _t7;
+        float _t18 = _otherz * _t6;
+        float _t19 = _selfw * _t7;
+        float _t20 = _othery * _t6;
+        float _t21 = _selfx * _t7;
+        float _t22 = _otherx * _t6;
+        float _t23 = _selfy * _t7;
+        float _t36 = Math.fma(_t16, _t17, -(_t18 * _t19));
+        float _t37 = Math.fma(_t20, _t21, -(_t22 * _t23));
+        float _t38 = Math.fma(_t18, _t21, -(_t22 * _t17));
+        float _t39 = Math.fma(_t16, _t21, -(_t22 * _t19));
+        float _t40 = Math.fma(_t18, _t23, -(_t20 * _t17));
+        float _t41 = Math.fma(_t16, _t23, -(_t20 * _t19));
+        float _t51 = unitScale(Math.max(Math.abs(_t37), Math.abs(_t38)), Math.max(Math.abs(_t39), Math.abs(_t40)), Math.max(Math.abs(_t41), Math.abs(_t36)));
+        float _t58 = _t36 * _t51;
+        float _t59 = _t41 * _t51;
+        float _t60 = _t40 * _t51;
+        float _t61 = _t39 * _t51;
+        float _t62 = _t37 * _t51;
+        float _t63 = _t38 * _t51;
+        return (float) Math.atan2((float) Math.sqrt(Math.fma(_t58, _t58, Math.fma(_t59, _t59, Math.fma(_t60, _t60, Math.fma(_t61, _t61, Math.fma(_t62, _t62, _t63 * _t63)))))), Math.fma(_t16, _t19, Math.fma(_t18, _t17, Math.fma(_t22, _t21, _t20 * _t23))) * _t51);
     }
 
     public static long asin_unsafe(long dest, long src) {
@@ -1446,11 +1526,10 @@ public final class Float4OpsKernelsAddress {
         float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
         float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
-        float _rcp0 = 1.0f / y;
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(-y, (float) Math.floor(_selfx * _rcp0), _selfx));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(-y, (float) Math.floor(_selfy * _rcp0), _selfy));
-        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(-y, (float) Math.floor(_selfz * _rcp0), _selfz));
-        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(-y, (float) Math.floor(_selfw * _rcp0), _selfw));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, flooredMod(_selfx, y));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, flooredMod(_selfy, y));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, flooredMod(_selfz, y));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, flooredMod(_selfw, y));
         return dest;
     }
 
@@ -1459,10 +1538,10 @@ public final class Float4OpsKernelsAddress {
         float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
         float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(-yX, (float) Math.floor(_selfx / yX), _selfx));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(-yY, (float) Math.floor(_selfy / yY), _selfy));
-        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(-yZ, (float) Math.floor(_selfz / yZ), _selfz));
-        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(-yW, (float) Math.floor(_selfw / yW), _selfw));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, flooredMod(_selfx, yX));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, flooredMod(_selfy, yY));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, flooredMod(_selfz, yZ));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, flooredMod(_selfw, yW));
         return dest;
     }
 
@@ -1475,10 +1554,10 @@ public final class Float4OpsKernelsAddress {
         float _yy = UnsafeOpsHolder.U.getFloat(y + 4L);
         float _yz = UnsafeOpsHolder.U.getFloat(y + 8L);
         float _yw = UnsafeOpsHolder.U.getFloat(y + 12L);
-        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(-_yx, (float) Math.floor(_selfx / _yx), _selfx));
-        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(-_yy, (float) Math.floor(_selfy / _yy), _selfy));
-        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(-_yz, (float) Math.floor(_selfz / _yz), _selfz));
-        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(-_yw, (float) Math.floor(_selfw / _yw), _selfw));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, flooredMod(_selfx, _yx));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, flooredMod(_selfy, _yy));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, flooredMod(_selfz, _yz));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, flooredMod(_selfw, _yw));
         return dest;
     }
 
@@ -1513,7 +1592,7 @@ public final class Float4OpsKernelsAddress {
         float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         float _t4 = (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             UnsafeOpsHolder.U.putFloat(dest + 0L, _selfx * _t4);
             UnsafeOpsHolder.U.putFloat(dest + 4L, _selfy * _t4);
             UnsafeOpsHolder.U.putFloat(dest + 8L, _selfz * _t4);
@@ -1534,7 +1613,7 @@ public final class Float4OpsKernelsAddress {
         float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
         float _t3 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
         float _t5 = length * (1.0f / (float) Math.sqrt(_t3));
-        if (_t3 > 0.0f) {
+        if (_t3 != 0.0f) {
             UnsafeOpsHolder.U.putFloat(dest + 0L, _selfx * _t5);
             UnsafeOpsHolder.U.putFloat(dest + 4L, _selfy * _t5);
             UnsafeOpsHolder.U.putFloat(dest + 8L, _selfz * _t5);
@@ -1645,13 +1724,11 @@ public final class Float4OpsKernelsAddress {
         float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
         float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
-        float _t6 = Math.fma(ontoW, _selfw, Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy)));
-        float _t7 = Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
-        float _t7_inv = 1.0f / _t7;
-        UnsafeOpsHolder.U.putFloat(dest + 0L, ontoX * _t6 * _t7_inv);
-        UnsafeOpsHolder.U.putFloat(dest + 4L, ontoY * _t6 * _t7_inv);
-        UnsafeOpsHolder.U.putFloat(dest + 8L, ontoZ * _t6 * _t7_inv);
-        UnsafeOpsHolder.U.putFloat(dest + 12L, ontoW * _t6 * _t7_inv);
+        float _sp0 = Math.fma(ontoW, _selfw, Math.fma(ontoZ, _selfz, Math.fma(ontoX, _selfx, ontoY * _selfy))) / Math.fma(ontoW, ontoW, Math.fma(ontoZ, ontoZ, Math.fma(ontoX, ontoX, ontoY * ontoY)));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, ontoX * _sp0);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, ontoY * _sp0);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, ontoZ * _sp0);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, ontoW * _sp0);
         return dest;
     }
 
@@ -1664,13 +1741,11 @@ public final class Float4OpsKernelsAddress {
         float _ontoy = UnsafeOpsHolder.U.getFloat(onto + 4L);
         float _ontoz = UnsafeOpsHolder.U.getFloat(onto + 8L);
         float _ontow = UnsafeOpsHolder.U.getFloat(onto + 12L);
-        float _t6 = Math.fma(_ontow, _selfw, Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy)));
-        float _t7 = Math.fma(_ontow, _ontow, Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy)));
-        float _t7_inv = 1.0f / _t7;
-        UnsafeOpsHolder.U.putFloat(dest + 0L, _ontox * _t6 * _t7_inv);
-        UnsafeOpsHolder.U.putFloat(dest + 4L, _ontoy * _t6 * _t7_inv);
-        UnsafeOpsHolder.U.putFloat(dest + 8L, _ontoz * _t6 * _t7_inv);
-        UnsafeOpsHolder.U.putFloat(dest + 12L, _ontow * _t6 * _t7_inv);
+        float _sp0 = Math.fma(_ontow, _selfw, Math.fma(_ontoz, _selfz, Math.fma(_ontox, _selfx, _ontoy * _selfy))) / Math.fma(_ontow, _ontow, Math.fma(_ontoz, _ontoz, Math.fma(_ontox, _ontox, _ontoy * _ontoy)));
+        UnsafeOpsHolder.U.putFloat(dest + 0L, _ontox * _sp0);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, _ontoy * _sp0);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, _ontoz * _sp0);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, _ontow * _sp0);
         return dest;
     }
 
@@ -2173,4 +2248,48 @@ public final class Float4OpsKernelsAddress {
         return dest;
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
+
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
 }

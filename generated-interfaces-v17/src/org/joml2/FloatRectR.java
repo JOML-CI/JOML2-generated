@@ -38,7 +38,12 @@ public interface FloatRectR {
 
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to add
      * @param dest will hold the result
@@ -47,7 +52,12 @@ public interface FloatRectR {
     FloatRect add(FloatRectR other, @Mutated FloatRect dest);
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -59,8 +69,12 @@ public interface FloatRectR {
     DoubleRect add(FloatRectR other, @Mutated DoubleRect dest);
 
     /**
-     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle and store the
-     * result in {@code dest}.
+     * Add each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -72,8 +86,12 @@ public interface FloatRectR {
     FloatRect add(float minX, float minY, float maxX, float maxY, @Mutated FloatRect dest);
 
     /**
-     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle and store the
-     * result in {@code dest}.
+     * Add each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -88,7 +106,8 @@ public interface FloatRectR {
     DoubleRect add(float minX, float minY, float maxX, float maxY, @Mutated DoubleRect dest);
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -96,7 +115,8 @@ public interface FloatRectR {
     FloatRect negate(@Mutated FloatRect dest);
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -107,7 +127,12 @@ public interface FloatRectR {
     DoubleRect negate(@Mutated DoubleRect dest);
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to subtract
      * @param dest will hold the result
@@ -116,7 +141,12 @@ public interface FloatRectR {
     FloatRect sub(FloatRectR other, @Mutated FloatRect dest);
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -128,8 +158,12 @@ public interface FloatRectR {
     DoubleRect sub(FloatRectR other, @Mutated DoubleRect dest);
 
     /**
-     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle and
-     * store the result in {@code dest}.
+     * Subtract each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -141,8 +175,12 @@ public interface FloatRectR {
     FloatRect sub(float minX, float minY, float maxX, float maxY, @Mutated FloatRect dest);
 
     /**
-     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle and
-     * store the result in {@code dest}.
+     * Subtract each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.

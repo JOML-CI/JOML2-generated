@@ -16,6 +16,198 @@ import org.joml2.internal.unsafe.*;
 public final class Float3x4OpsKernelsArray {
     private Float3x4OpsKernelsArray() {}
 
+    public static float[] invNegativeX_degenerate(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self10 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self12 = src[srcOffset + 6];
+        float _self20 = src[srcOffset + 8];
+        float _self21 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _t0 = unitScale(_self10, _self11, _self12);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self10 * _t0;
+        float _t9 = _self21 * _t1;
+        float _t10 = _self11 * _t0;
+        float _t11 = _self20 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self12 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest[destOffset + 0] = -(_t21 * _t26);
+            dest[destOffset + 1] = -(_t22 * _t26);
+            dest[destOffset + 2] = -(_t20 * _t26);
+        } else {
+            dest[destOffset + 0] = -0.0f;
+            dest[destOffset + 1] = -0.0f;
+            dest[destOffset + 2] = -0.0f;
+        }
+        return dest;
+    }
+
+    public static float[] invNegativeY_degenerate(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self01 = src[srcOffset + 1];
+        float _self02 = src[srcOffset + 2];
+        float _self20 = src[srcOffset + 8];
+        float _self21 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self01 * _t0;
+        float _t9 = _self20 * _t1;
+        float _t10 = _self00 * _t0;
+        float _t11 = _self21 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest[destOffset + 0] = -(_t22 * _t26);
+            dest[destOffset + 1] = -(_t21 * _t26);
+            dest[destOffset + 2] = -(_t20 * _t26);
+        } else {
+            dest[destOffset + 0] = -0.0f;
+            dest[destOffset + 1] = -0.0f;
+            dest[destOffset + 2] = -0.0f;
+        }
+        return dest;
+    }
+
+    public static float[] invNegativeZ_degenerate(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self01 = src[srcOffset + 1];
+        float _self02 = src[srcOffset + 2];
+        float _self10 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self12 = src[srcOffset + 6];
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self10, _self11, _self12);
+        float _t8 = _self00 * _t0;
+        float _t9 = _self11 * _t1;
+        float _t10 = _self01 * _t0;
+        float _t11 = _self10 * _t1;
+        float _t12 = _self12 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest[destOffset + 0] = -(_t21 * _t26);
+            dest[destOffset + 1] = -(_t22 * _t26);
+            dest[destOffset + 2] = -(_t20 * _t26);
+        } else {
+            dest[destOffset + 0] = -0.0f;
+            dest[destOffset + 1] = -0.0f;
+            dest[destOffset + 2] = -0.0f;
+        }
+        return dest;
+    }
+
+    public static float[] invPositiveX_degenerate(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self10 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self12 = src[srcOffset + 6];
+        float _self20 = src[srcOffset + 8];
+        float _self21 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _t0 = unitScale(_self10, _self11, _self12);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self10 * _t0;
+        float _t9 = _self21 * _t1;
+        float _t10 = _self11 * _t0;
+        float _t11 = _self20 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self12 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest[destOffset + 0] = _t21 * _t26;
+            dest[destOffset + 1] = _t22 * _t26;
+            dest[destOffset + 2] = _t20 * _t26;
+        } else {
+            dest[destOffset + 0] = 0.0f;
+            dest[destOffset + 1] = 0.0f;
+            dest[destOffset + 2] = 0.0f;
+        }
+        return dest;
+    }
+
+    public static float[] invPositiveY_degenerate(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self01 = src[srcOffset + 1];
+        float _self02 = src[srcOffset + 2];
+        float _self20 = src[srcOffset + 8];
+        float _self21 = src[srcOffset + 9];
+        float _self22 = src[srcOffset + 10];
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self20, _self21, _self22);
+        float _t8 = _self01 * _t0;
+        float _t9 = _self20 * _t1;
+        float _t10 = _self00 * _t0;
+        float _t11 = _self21 * _t1;
+        float _t12 = _self22 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest[destOffset + 0] = _t22 * _t26;
+            dest[destOffset + 1] = _t21 * _t26;
+            dest[destOffset + 2] = _t20 * _t26;
+        } else {
+            dest[destOffset + 0] = 0.0f;
+            dest[destOffset + 1] = 0.0f;
+            dest[destOffset + 2] = 0.0f;
+        }
+        return dest;
+    }
+
+    public static float[] invPositiveZ_degenerate(float[] dest, int destOffset, float[] src, int srcOffset) {
+        float _self00 = src[srcOffset + 0];
+        float _self01 = src[srcOffset + 1];
+        float _self02 = src[srcOffset + 2];
+        float _self10 = src[srcOffset + 4];
+        float _self11 = src[srcOffset + 5];
+        float _self12 = src[srcOffset + 6];
+        float _t0 = unitScale(_self00, _self01, _self02);
+        float _t1 = unitScale(_self10, _self11, _self12);
+        float _t8 = _self00 * _t0;
+        float _t9 = _self11 * _t1;
+        float _t10 = _self01 * _t0;
+        float _t11 = _self10 * _t1;
+        float _t12 = _self12 * _t1;
+        float _t13 = _self02 * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dest[destOffset + 0] = _t21 * _t26;
+            dest[destOffset + 1] = _t22 * _t26;
+            dest[destOffset + 2] = _t20 * _t26;
+        } else {
+            dest[destOffset + 0] = 0.0f;
+            dest[destOffset + 1] = 0.0f;
+            dest[destOffset + 2] = 0.0f;
+        }
+        return dest;
+    }
+
     public static float[] lookAt_lh(float[] dest, int destOffset, float[] src, int srcOffset, float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
         float _self00 = src[srcOffset + 0];
         float _self01 = src[srcOffset + 1];
@@ -35,7 +227,7 @@ public final class Float3x4OpsKernelsArray {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -51,7 +243,7 @@ public final class Float3x4OpsKernelsArray {
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t22 * _t28;
             _t33 = _t21 * _t28;
             _t34 = _t23 * _t28;
@@ -102,7 +294,7 @@ public final class Float3x4OpsKernelsArray {
         float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
         float _t9 = (1.0f / (float) Math.sqrt(_t8));
         float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t13 = _t4 * _t9;
             _t14 = _t5 * _t9;
             _t15 = _t3 * _t9;
@@ -118,7 +310,7 @@ public final class Float3x4OpsKernelsArray {
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t26 * _t31;
             _t36 = _t25 * _t31;
             _t37 = _t24 * _t31;
@@ -175,7 +367,7 @@ public final class Float3x4OpsKernelsArray {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -191,7 +383,7 @@ public final class Float3x4OpsKernelsArray {
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t22 * _t28;
             _t33 = _t21 * _t28;
             _t34 = _t23 * _t28;
@@ -251,7 +443,7 @@ public final class Float3x4OpsKernelsArray {
         float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
         float _t9 = (1.0f / (float) Math.sqrt(_t8));
         float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t13 = _t4 * _t9;
             _t14 = _t5 * _t9;
             _t15 = _t3 * _t9;
@@ -267,7 +459,7 @@ public final class Float3x4OpsKernelsArray {
         float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t26 * _t31;
             _t36 = _t25 * _t31;
             _t37 = _t24 * _t31;
@@ -303,7 +495,7 @@ public final class Float3x4OpsKernelsArray {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -318,7 +510,7 @@ public final class Float3x4OpsKernelsArray {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t21 * _t25;
             _t31 = _t19 * _t25;
@@ -352,7 +544,7 @@ public final class Float3x4OpsKernelsArray {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -367,7 +559,7 @@ public final class Float3x4OpsKernelsArray {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t21 * _t25;
             _t30 = _t20 * _t25;
             _t31 = _t19 * _t25;
@@ -410,7 +602,7 @@ public final class Float3x4OpsKernelsArray {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t2 * _t6;
             _t11 = _t1 * _t6;
             _t12 = _t0 * _t6;
@@ -425,7 +617,7 @@ public final class Float3x4OpsKernelsArray {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t20 * _t25;
             _t30 = _t21 * _t25;
             _t31 = _t19 * _t25;
@@ -468,7 +660,7 @@ public final class Float3x4OpsKernelsArray {
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
         float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
+        if (_t5 != 0.0f) {
             _t10 = _t1 * _t6;
             _t11 = _t2 * _t6;
             _t12 = _t0 * _t6;
@@ -483,7 +675,7 @@ public final class Float3x4OpsKernelsArray {
         float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t25 = (1.0f / (float) Math.sqrt(_t24));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
+        if (_t24 != 0.0f) {
             _t29 = _t21 * _t25;
             _t30 = _t20 * _t25;
             _t31 = _t19 * _t25;
@@ -510,4 +702,22 @@ public final class Float3x4OpsKernelsArray {
         return dest;
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
 }

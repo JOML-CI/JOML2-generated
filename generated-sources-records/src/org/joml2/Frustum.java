@@ -184,22 +184,22 @@ public class Frustum {
         float invl;
         nxX = m.m30() + m.m00(); nxY = m.m31() + m.m01(); nxZ = m.m32() + m.m02(); nxW = m.m33() + m.m03();
         if (allowTestSpheres) {
-            invl = 1.0f / (float) Math.sqrt(Math.fma(nxX, nxX, Math.fma(nxY, nxY, nxZ * nxZ)));
+            invl = invLength(nxX, nxY, nxZ);
             nxX *= invl; nxY *= invl; nxZ *= invl; nxW *= invl;
         }
         pxX = m.m30() - m.m00(); pxY = m.m31() - m.m01(); pxZ = m.m32() - m.m02(); pxW = m.m33() - m.m03();
         if (allowTestSpheres) {
-            invl = 1.0f / (float) Math.sqrt(Math.fma(pxX, pxX, Math.fma(pxY, pxY, pxZ * pxZ)));
+            invl = invLength(pxX, pxY, pxZ);
             pxX *= invl; pxY *= invl; pxZ *= invl; pxW *= invl;
         }
         nyX = m.m30() + m.m10(); nyY = m.m31() + m.m11(); nyZ = m.m32() + m.m12(); nyW = m.m33() + m.m13();
         if (allowTestSpheres) {
-            invl = 1.0f / (float) Math.sqrt(Math.fma(nyX, nyX, Math.fma(nyY, nyY, nyZ * nyZ)));
+            invl = invLength(nyX, nyY, nyZ);
             nyX *= invl; nyY *= invl; nyZ *= invl; nyW *= invl;
         }
         pyX = m.m30() - m.m10(); pyY = m.m31() - m.m11(); pyZ = m.m32() - m.m12(); pyW = m.m33() - m.m13();
         if (allowTestSpheres) {
-            invl = 1.0f / (float) Math.sqrt(Math.fma(pyX, pyX, Math.fma(pyY, pyY, pyZ * pyZ)));
+            invl = invLength(pyX, pyY, pyZ);
             pyX *= invl; pyY *= invl; pyZ *= invl; pyW *= invl;
         }
         if (zeroBasedDepth) {
@@ -208,12 +208,12 @@ public class Frustum {
             nzX = m.m30() + m.m20(); nzY = m.m31() + m.m21(); nzZ = m.m32() + m.m22(); nzW = m.m33() + m.m23();
         }
         if (allowTestSpheres) {
-            invl = 1.0f / (float) Math.sqrt(Math.fma(nzX, nzX, Math.fma(nzY, nzY, nzZ * nzZ)));
+            invl = invLength(nzX, nzY, nzZ);
             nzX *= invl; nzY *= invl; nzZ *= invl; nzW *= invl;
         }
         pzX = m.m30() - m.m20(); pzY = m.m31() - m.m21(); pzZ = m.m32() - m.m22(); pzW = m.m33() - m.m23();
         if (allowTestSpheres) {
-            invl = 1.0f / (float) Math.sqrt(Math.fma(pzX, pzX, Math.fma(pzY, pzY, pzZ * pzZ)));
+            invl = invLength(pzX, pzY, pzZ);
             pzX *= invl; pzY *= invl; pzZ *= invl; pzW *= invl;
         }
         nxAX = Math.abs(nxX); nxAY = Math.abs(nxY); nxAZ = Math.abs(nxZ);
@@ -223,6 +223,23 @@ public class Frustum {
         nzAX = Math.abs(nzX); nzAY = Math.abs(nzY); nzAZ = Math.abs(nzZ);
         pzAX = Math.abs(pzX); pzAY = Math.abs(pzY); pzAZ = Math.abs(pzZ);
         return this;
+    }
+
+    /**
+     * 1 / |(x, y, z)|, and 1 for the zero vector: an infinite far (or near) plane
+     * extracts as (0, 0, 0, w), holds every point and has no direction to normalize.
+     * The squared length leaves float's range for |(x, y, z)| beyond ~1.8e19 or below
+     * ~1e-19 (an ortho projection a few 1e-20 wide or 1e20 across); only then the
+     * vector is first scaled by its largest component.
+     */
+    private static float invLength(float x, float y, float z) {
+        float lenSq = Math.fma(x, x, Math.fma(y, y, z * z));
+        if (lenSq >= Float.MIN_NORMAL && lenSq < Float.POSITIVE_INFINITY)
+            return 1.0f / (float) Math.sqrt(lenSq);
+        float s = Math.max(Math.abs(x), Math.max(Math.abs(y), Math.abs(z)));
+        if (s == 0.0f) return 1.0f;
+        x /= s; y /= s; z /= s;
+        return 1.0f / (s * (float) Math.sqrt(Math.fma(x, x, Math.fma(y, y, z * z))));
     }
 
     /** The x coefficient (plane normal component) of the left (-X) plane. */
@@ -470,15 +487,18 @@ public class Frustum {
         return Math.fma(a, a < 0 ? minX : maxX, Math.fma(b, b < 0 ? minY : maxY, c * (c < 0 ? minZ : maxZ))) >= -w;
     }
 
-    /** The box vertex farthest along the plane normal is strictly outside this plane (false for NaN, like the inline test it replaces). */
+    /** The box vertex farthest along the plane normal is strictly outside this plane; NaN counts as outside, exactly the negation of {@link #pv}. */
     private static boolean outsidePv(float a, float b, float c, float w, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        return Math.fma(a, a < 0 ? minX : maxX, Math.fma(b, b < 0 ? minY : maxY, c * (c < 0 ? minZ : maxZ))) < -w;
+        return !(Math.fma(a, a < 0 ? minX : maxX, Math.fma(b, b < 0 ? minY : maxY, c * (c < 0 ? minZ : maxZ))) >= -w);
     }
 
     // intersectAabb needs both the farthest and the nearest box vertex per plane. As (centre c,
     // half-extent e) those are dot(n, c) + dot(|n|, e) and dot(n, c) - dot(|n|, e): one fma chain
     // each and no per-component select, with |n| kept by set(). Same verdicts as the p/n-vertex
-    // selects up to rounding; measured 20% faster for intersectAabb. One tiny helper per plane and
+    // selects up to rounding, which can decide a box touching a plane exactly the other way;
+    // measured 20% faster for intersectAabb. c and e are formed from the halved corners, which is
+    // bit-identical to halving the sum and difference and cannot overflow for huge boxes, and
+    // OUTSIDE is !(far >= -w) so that NaN is culled exactly like testAabb and cullingPlane do. One tiny helper per plane and
     // side (no plane index, no switch) keeps every helper and every public box test under
     // HotSpot's 325-byte inline budget; a switch-dispatched pair of helpers sat at 360 bytes,
     // stopped inlining and doubled the cost of every box test.
@@ -619,6 +639,15 @@ public class Frustum {
      * {@link Intersection#OUTSIDE}. To learn <em>which</em> plane culls an outside box -
      * and to feed that back as a coherency hint next frame - use
      * {@link #cullingPlane(float, float, float, float, float, float)} instead.
+     * <p>
+     * The box is evaluated as centre and half-extent rather than by its corners, which
+     * rounds differently: a box that touches a plane exactly can come out on either side
+     * of it, and then be {@link Intersection#OUTSIDE} where {@code testAabb} reports it
+     * visible, or {@link Intersection#INTERSECT} instead of {@link Intersection#INSIDE}.
+     * A box with a NaN coordinate, and the empty box a default-constructed
+     * {@code FloatAABB} holds (min +infinity, max -infinity), are
+     * {@link Intersection#OUTSIDE}, as {@code testAabb} and {@code cullingPlane} cull
+     * them too.
      *
      * @param minX the x coordinate of the corner with the smaller coordinates
      * @param minY the y coordinate of the corner with the smaller coordinates
@@ -629,24 +658,24 @@ public class Frustum {
      * @return how the box relates to the frustum
      */
     public Intersection intersectAabb(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        float cx = (minX + maxX) * 0.5f, cy = (minY + maxY) * 0.5f, cz = (minZ + maxZ) * 0.5f;
-        float ex = (maxX - minX) * 0.5f, ey = (maxY - minY) * 0.5f, ez = (maxZ - minZ) * 0.5f;
-        if (farNx(cx, cy, cz, ex, ey, ez) < -nxW) return Intersection.OUTSIDE;
+        float cx = minX * 0.5f + maxX * 0.5f, cy = minY * 0.5f + maxY * 0.5f, cz = minZ * 0.5f + maxZ * 0.5f;
+        float ex = maxX * 0.5f - minX * 0.5f, ey = maxY * 0.5f - minY * 0.5f, ez = maxZ * 0.5f - minZ * 0.5f;
+        if (!(farNx(cx, cy, cz, ex, ey, ez) >= -nxW)) return Intersection.OUTSIDE;
         boolean inside = nearNx(cx, cy, cz, ex, ey, ez) >= -nxW;
-        if (farPx(cx, cy, cz, ex, ey, ez) < -pxW) return Intersection.OUTSIDE;
+        if (!(farPx(cx, cy, cz, ex, ey, ez) >= -pxW)) return Intersection.OUTSIDE;
         inside &= nearPx(cx, cy, cz, ex, ey, ez) >= -pxW;
-        if (farNy(cx, cy, cz, ex, ey, ez) < -nyW) return Intersection.OUTSIDE;
+        if (!(farNy(cx, cy, cz, ex, ey, ez) >= -nyW)) return Intersection.OUTSIDE;
         inside &= nearNy(cx, cy, cz, ex, ey, ez) >= -nyW;
         return intersectAabbYZ(cx, cy, cz, ex, ey, ez, inside);
     }
 
     /** Second half of {@link #intersectAabb(float, float, float, float, float, float)}: the py, nz and pz planes. */
     private Intersection intersectAabbYZ(float cx, float cy, float cz, float ex, float ey, float ez, boolean inside) {
-        if (farPy(cx, cy, cz, ex, ey, ez) < -pyW) return Intersection.OUTSIDE;
+        if (!(farPy(cx, cy, cz, ex, ey, ez) >= -pyW)) return Intersection.OUTSIDE;
         inside &= nearPy(cx, cy, cz, ex, ey, ez) >= -pyW;
-        if (farNz(cx, cy, cz, ex, ey, ez) < -nzW) return Intersection.OUTSIDE;
+        if (!(farNz(cx, cy, cz, ex, ey, ez) >= -nzW)) return Intersection.OUTSIDE;
         inside &= nearNz(cx, cy, cz, ex, ey, ez) >= -nzW;
-        if (farPz(cx, cy, cz, ex, ey, ez) < -pzW) return Intersection.OUTSIDE;
+        if (!(farPz(cx, cy, cz, ex, ey, ez) >= -pzW)) return Intersection.OUTSIDE;
         inside &= nearPz(cx, cy, cz, ex, ey, ez) >= -pzW;
         return inside ? Intersection.INSIDE : Intersection.INTERSECT;
     }
@@ -698,24 +727,24 @@ public class Frustum {
      * @return how the box relates to the frustum
      */
     public Intersection intersectAabb(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, int mask) {
-        float cx = (minX + maxX) * 0.5f, cy = (minY + maxY) * 0.5f, cz = (minZ + maxZ) * 0.5f;
-        float ex = (maxX - minX) * 0.5f, ey = (maxY - minY) * 0.5f, ez = (maxZ - minZ) * 0.5f;
-        if ((mask & PLANE_MASK_NX) != 0 && farNx(cx, cy, cz, ex, ey, ez) < -nxW) return Intersection.OUTSIDE;
+        float cx = minX * 0.5f + maxX * 0.5f, cy = minY * 0.5f + maxY * 0.5f, cz = minZ * 0.5f + maxZ * 0.5f;
+        float ex = maxX * 0.5f - minX * 0.5f, ey = maxY * 0.5f - minY * 0.5f, ez = maxZ * 0.5f - minZ * 0.5f;
+        if ((mask & PLANE_MASK_NX) != 0 && !(farNx(cx, cy, cz, ex, ey, ez) >= -nxW)) return Intersection.OUTSIDE;
         boolean inside = nearNx(cx, cy, cz, ex, ey, ez) >= -nxW;
-        if ((mask & PLANE_MASK_PX) != 0 && farPx(cx, cy, cz, ex, ey, ez) < -pxW) return Intersection.OUTSIDE;
+        if ((mask & PLANE_MASK_PX) != 0 && !(farPx(cx, cy, cz, ex, ey, ez) >= -pxW)) return Intersection.OUTSIDE;
         inside &= nearPx(cx, cy, cz, ex, ey, ez) >= -pxW;
-        if ((mask & PLANE_MASK_NY) != 0 && farNy(cx, cy, cz, ex, ey, ez) < -nyW) return Intersection.OUTSIDE;
+        if ((mask & PLANE_MASK_NY) != 0 && !(farNy(cx, cy, cz, ex, ey, ez) >= -nyW)) return Intersection.OUTSIDE;
         inside &= nearNy(cx, cy, cz, ex, ey, ez) >= -nyW;
         return intersectAabbYZ(cx, cy, cz, ex, ey, ez, mask, inside);
     }
 
     /** Second half of {@link #intersectAabb(float, float, float, float, float, float, int)}: the py, nz and pz planes. */
     private Intersection intersectAabbYZ(float cx, float cy, float cz, float ex, float ey, float ez, int mask, boolean inside) {
-        if ((mask & PLANE_MASK_PY) != 0 && farPy(cx, cy, cz, ex, ey, ez) < -pyW) return Intersection.OUTSIDE;
+        if ((mask & PLANE_MASK_PY) != 0 && !(farPy(cx, cy, cz, ex, ey, ez) >= -pyW)) return Intersection.OUTSIDE;
         inside &= nearPy(cx, cy, cz, ex, ey, ez) >= -pyW;
-        if ((mask & PLANE_MASK_NZ) != 0 && farNz(cx, cy, cz, ex, ey, ez) < -nzW) return Intersection.OUTSIDE;
+        if ((mask & PLANE_MASK_NZ) != 0 && !(farNz(cx, cy, cz, ex, ey, ez) >= -nzW)) return Intersection.OUTSIDE;
         inside &= nearNz(cx, cy, cz, ex, ey, ez) >= -nzW;
-        if ((mask & PLANE_MASK_PZ) != 0 && farPz(cx, cy, cz, ex, ey, ez) < -pzW) return Intersection.OUTSIDE;
+        if ((mask & PLANE_MASK_PZ) != 0 && !(farPz(cx, cy, cz, ex, ey, ez) >= -pzW)) return Intersection.OUTSIDE;
         inside &= nearPz(cx, cy, cz, ex, ey, ez) >= -pzW;
         return inside ? Intersection.INSIDE : Intersection.INTERSECT;
     }
@@ -973,11 +1002,15 @@ public class Frustum {
      *         the frustum
      */
     public boolean testLineSegment(float aX, float aY, float aZ, float bX, float bY, float bZ) {
+        // Each plane cuts the segment back to its inside part whenever one endpoint is
+        // outside - also when the other lies exactly on the plane (da * db would be
+        // -0.0 there and skip the cut, letting the outside endpoint reach the later
+        // planes' tests). The both-outside case has already returned.
         float da, db;
         da = Math.fma(nxX, aX, Math.fma(nxY, aY, Math.fma(nxZ, aZ, nxW)));
         db = Math.fma(nxX, bX, Math.fma(nxY, bY, Math.fma(nxZ, bZ, nxW)));
         if (da < 0.0f && db < 0.0f) return false;
-        if (da * db < 0.0f) {
+        if (da < 0.0f || db < 0.0f) {
             float p = Math.abs(da) / Math.abs(db - da);
             float dx = Math.fma(bX - aX, p, aX), dy = Math.fma(bY - aY, p, aY), dz = Math.fma(bZ - aZ, p, aZ);
             if (da < 0.0f) { aX = dx; aY = dy; aZ = dz; }
@@ -986,7 +1019,7 @@ public class Frustum {
         da = Math.fma(pxX, aX, Math.fma(pxY, aY, Math.fma(pxZ, aZ, pxW)));
         db = Math.fma(pxX, bX, Math.fma(pxY, bY, Math.fma(pxZ, bZ, pxW)));
         if (da < 0.0f && db < 0.0f) return false;
-        if (da * db < 0.0f) {
+        if (da < 0.0f || db < 0.0f) {
             float p = Math.abs(da) / Math.abs(db - da);
             float dx = Math.fma(bX - aX, p, aX), dy = Math.fma(bY - aY, p, aY), dz = Math.fma(bZ - aZ, p, aZ);
             if (da < 0.0f) { aX = dx; aY = dy; aZ = dz; }
@@ -995,7 +1028,7 @@ public class Frustum {
         da = Math.fma(nyX, aX, Math.fma(nyY, aY, Math.fma(nyZ, aZ, nyW)));
         db = Math.fma(nyX, bX, Math.fma(nyY, bY, Math.fma(nyZ, bZ, nyW)));
         if (da < 0.0f && db < 0.0f) return false;
-        if (da * db < 0.0f) {
+        if (da < 0.0f || db < 0.0f) {
             float p = Math.abs(da) / Math.abs(db - da);
             float dx = Math.fma(bX - aX, p, aX), dy = Math.fma(bY - aY, p, aY), dz = Math.fma(bZ - aZ, p, aZ);
             if (da < 0.0f) { aX = dx; aY = dy; aZ = dz; }
@@ -1004,7 +1037,7 @@ public class Frustum {
         da = Math.fma(pyX, aX, Math.fma(pyY, aY, Math.fma(pyZ, aZ, pyW)));
         db = Math.fma(pyX, bX, Math.fma(pyY, bY, Math.fma(pyZ, bZ, pyW)));
         if (da < 0.0f && db < 0.0f) return false;
-        if (da * db < 0.0f) {
+        if (da < 0.0f || db < 0.0f) {
             float p = Math.abs(da) / Math.abs(db - da);
             float dx = Math.fma(bX - aX, p, aX), dy = Math.fma(bY - aY, p, aY), dz = Math.fma(bZ - aZ, p, aZ);
             if (da < 0.0f) { aX = dx; aY = dy; aZ = dz; }
@@ -1013,7 +1046,7 @@ public class Frustum {
         da = Math.fma(nzX, aX, Math.fma(nzY, aY, Math.fma(nzZ, aZ, nzW)));
         db = Math.fma(nzX, bX, Math.fma(nzY, bY, Math.fma(nzZ, bZ, nzW)));
         if (da < 0.0f && db < 0.0f) return false;
-        if (da * db < 0.0f) {
+        if (da < 0.0f || db < 0.0f) {
             float p = Math.abs(da) / Math.abs(db - da);
             float dx = Math.fma(bX - aX, p, aX), dy = Math.fma(bY - aY, p, aY), dz = Math.fma(bZ - aZ, p, aZ);
             if (da < 0.0f) { aX = dx; aY = dy; aZ = dz; }

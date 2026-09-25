@@ -52,9 +52,9 @@ public interface DoubleSphere extends DoubleSphereR {
      * Set the center of this sphere to {@code c}.
      *
      * @param c the new center
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleSphere setCenter(Double3R c) { return setCenter(c, Joml.RETURN_NEW ? Joml.doubleSphere() : this); }
+    @Mutated default DoubleSphere setCenter(Double3R c) { return setCenter(c, this); }
 
     /**
      * Set the center of this sphere to ({@code x}, {@code y}, {@code z}).
@@ -62,17 +62,17 @@ public interface DoubleSphere extends DoubleSphereR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleSphere setCenter(double x, double y, double z) { return setCenter(x, y, z, Joml.RETURN_NEW ? Joml.doubleSphere() : this); }
+    @Mutated default DoubleSphere setCenter(double x, double y, double z) { return setCenter(x, y, z, this); }
 
     /**
      * Set the radius of this sphere to {@code radius}.
      *
      * @param radius the radius
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleSphere setRadius(double radius) { return setRadius(radius, Joml.RETURN_NEW ? Joml.doubleSphere() : this); }
+    @Mutated default DoubleSphere setRadius(double radius) { return setRadius(radius, this); }
 
     /**
      * Convert this sphere to {@code float} precision, returning the result as a new instance.
@@ -84,8 +84,13 @@ public interface DoubleSphere extends DoubleSphereR {
     default FloatSphere toFloat() { return toFloat(Joml.floatSphere()); }
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      *
      * @param m the transformation matrix to apply
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -93,8 +98,13 @@ public interface DoubleSphere extends DoubleSphereR {
     @Mutated default DoubleSphere transform(Double3x4R m) { return transform(m, Joml.RETURN_NEW ? Joml.doubleSphere() : this); }
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.

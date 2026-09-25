@@ -35,7 +35,7 @@ inline operator fun Short4.rem(other: Short4): Short4 = rem(other)
 /** [Short4.sub] as the `-` operator. */
 inline operator fun Short4.minus(other: Short4): Short4 = sub(other)
 /** [Short4.dot] as an infix function, so `a dot b` parses. */
-inline infix fun Short4.dot(other: Short4): Short = dot(other)
+inline infix fun Short4.dot(other: Short4): Long = dot(other)
 /** Component 1 of this Short4 (`x()`), for destructuring declarations. */
 inline operator fun Short4.component1(): Short = x()
 /** Component 2 of this Short4 (`y()`), for destructuring declarations. */

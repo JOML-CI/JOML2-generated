@@ -19,6 +19,11 @@ import java.nio.ByteBuffer;
  * own classes, so foreign implementations of the {@code *R} interfaces are not supported as
  * arguments.
  * <p>
+ * Its rotation is a unit quaternion. Every operation that applies, composes, inverts or converts
+ * this transform assumes its rotation has unit length and does not divide it out. A value that has
+ * drifted from unit length (after many multiplications, say) gives wrong results rather than an
+ * error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
@@ -228,7 +233,8 @@ public interface FloatTransformR {
     DoubleDualQuat toDualQuat(@Mutated DoubleDualQuat dest);
 
     /**
-     * Compute the matrix representation of this transform and store the result in {@code dest}.
+     * Compute the matrix representation of this transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -236,7 +242,8 @@ public interface FloatTransformR {
     Float4x4 toMatrix(@Mutated Float4x4 dest);
 
     /**
-     * Compute the matrix representation of this transform and store the result in {@code dest}.
+     * Compute the matrix representation of this transform (whose rotation must be a unit
+     * quaternion) and store the result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -268,8 +275,9 @@ public interface FloatTransformR {
     Double3x3 toMatrix3x3(@Mutated Double3x3 dest);
 
     /**
-     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -277,8 +285,9 @@ public interface FloatTransformR {
     Float3x4 toMatrix3x4(@Mutated Float3x4 dest);
 
     /**
-     * Compute the 3x4 matrix representation of this transform (the omitted last row is implicitly
-     * {@code 0, 0, 0, 1}) and store the result in {@code dest}.
+     * Compute the 3x4 matrix representation of this transform (whose rotation must be a unit
+     * quaternion; the omitted last row is implicitly {@code 0, 0, 0, 1}) and store the result in
+     * {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -792,8 +801,18 @@ public interface FloatTransformR {
     DoubleTransform difference(float tX, float tY, float tZ, float rX, float rY, float rZ, float rW, float sX, float sY, float sZ, @Mutated DoubleTransform dest);
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale and store the result in {@code dest}.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity) and store the result in {@code dest}.
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -801,11 +820,21 @@ public interface FloatTransformR {
     FloatTransform invert(@Mutated FloatTransform dest);
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale and store the result in {@code dest}.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity) and store the result in {@code dest}.
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -847,11 +876,18 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -862,6 +898,11 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the X, Y and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -870,6 +911,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -880,11 +923,18 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -895,6 +945,11 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the X, Z and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -903,6 +958,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -913,11 +970,18 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -928,6 +992,11 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Y, X and Z axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -936,6 +1005,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -946,11 +1017,18 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -961,6 +1039,11 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Y, Z and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -969,6 +1052,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -979,11 +1064,18 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -994,6 +1086,11 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Z, X and Y axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1002,6 +1099,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1012,11 +1111,18 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1027,6 +1133,11 @@ public interface FloatTransformR {
      * Get the Euler angles in radians of this transform, to be applied about the Z, Y and X axes,
      * in that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
@@ -1035,6 +1146,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param dest will hold the result
      * @return dest
@@ -1894,6 +2007,8 @@ public interface FloatTransformR {
 
     /**
      * Transform {@code v} by this transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -1906,6 +2021,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -1916,6 +2033,8 @@ public interface FloatTransformR {
     /**
      * Transform ({@code x}, {@code y}, {@code z}) by this transform and store the result in
      * {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1931,6 +2050,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1942,6 +2063,8 @@ public interface FloatTransformR {
 
     /**
      * Transform {@code v} by this transform and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform (also receives the result)
      * @return {@code v}
@@ -1951,6 +2074,8 @@ public interface FloatTransformR {
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -1964,6 +2089,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -1974,6 +2101,8 @@ public interface FloatTransformR {
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -1989,6 +2118,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2001,6 +2132,8 @@ public interface FloatTransformR {
     /**
      * Transform the given direction by the rotation part of this transform, ignoring translation
      * and scale and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform (also receives the result)
      * @return {@code v}
@@ -2011,6 +2144,8 @@ public interface FloatTransformR {
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -2025,6 +2160,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform
      * @param dest will hold the result
@@ -2036,6 +2173,8 @@ public interface FloatTransformR {
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2052,6 +2191,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2065,6 +2206,8 @@ public interface FloatTransformR {
      * Transform the given direction by the inverse of this transform's rotation (world to local),
      * ignoring translation and scale, without materializing {@code invert()} and store the result
      * back into {@code v}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the direction to transform (also receives the result)
      * @return {@code v}
@@ -2073,6 +2216,8 @@ public interface FloatTransformR {
 
     /**
      * Transform {@code p} by the inverse of this transform and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -2085,6 +2230,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -2095,6 +2242,8 @@ public interface FloatTransformR {
     /**
      * Transform ({@code x}, {@code y}, {@code z}) by the inverse of this transform and store the
      * result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2110,6 +2259,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2122,6 +2273,8 @@ public interface FloatTransformR {
     /**
      * Transform {@code p} by the inverse of this transform and store the result back into
      * {@code p}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform (also receives the result)
      * @return {@code p}
@@ -2131,6 +2284,8 @@ public interface FloatTransformR {
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -2144,6 +2299,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform
      * @param dest will hold the result
@@ -2154,6 +2311,8 @@ public interface FloatTransformR {
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2169,6 +2328,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2181,6 +2342,8 @@ public interface FloatTransformR {
     /**
      * Transform the given position by this transform, treating it as a point with an implicit
      * {@code w = 1} and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the position to transform (also receives the result)
      * @return {@code v}
@@ -2190,6 +2353,8 @@ public interface FloatTransformR {
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -2203,6 +2368,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform
      * @param dest will hold the result
@@ -2213,6 +2380,8 @@ public interface FloatTransformR {
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2228,6 +2397,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2240,6 +2411,8 @@ public interface FloatTransformR {
     /**
      * Transform the given position by the inverse of this transform (world to local), without
      * materializing {@code invert()} and store the result back into {@code p}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param p the position to transform (also receives the result)
      * @return {@code p}
@@ -2249,6 +2422,8 @@ public interface FloatTransformR {
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -2262,6 +2437,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -2272,6 +2449,8 @@ public interface FloatTransformR {
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2287,6 +2466,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2299,6 +2480,8 @@ public interface FloatTransformR {
     /**
      * Transform the given vector by the linear part of this transform, i.e. apply its scale and
      * rotation but not its translation and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform (also receives the result)
      * @return {@code v}
@@ -2309,6 +2492,8 @@ public interface FloatTransformR {
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -2323,6 +2508,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform
      * @param dest will hold the result
@@ -2334,6 +2521,8 @@ public interface FloatTransformR {
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result in {@code dest}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2350,6 +2539,8 @@ public interface FloatTransformR {
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
@@ -2363,6 +2554,8 @@ public interface FloatTransformR {
      * Transform the given vector by the inverse of this transform's linear part (world to local),
      * i.e. undo its rotation and scale but not its translation, without materializing
      * {@code invert()} and store the result back into {@code v}.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @param v the vector to transform (also receives the result)
      * @return {@code v}

@@ -332,27 +332,37 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public FloatAABB transform(Float3x4R m, @Mutated FloatAABB dest) {
         FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t9 = this.minZ + this.maxZ;
-        float _t10 = this.minX + this.maxX;
-        float _t11 = this.minY + this.maxY;
-        float _t12 = this.maxX - this.minX;
-        float _t13 = this.maxY - this.minY;
-        float _t14 = this.maxZ - this.minZ;
-        float _t33 = 0.5f * m.m02() * _t9;
-        float _t34 = 0.5f * m.m12() * _t9;
-        float _t35 = 0.5f * m.m22() * _t9;
-        float _t39 = 0.5f * (m.m00() * _t10 + m.m01() * _t11);
-        float _t41 = 0.5f * (m.m10() * _t10 + m.m11() * _t11);
-        float _t43 = 0.5f * (m.m20() * _t10 + m.m21() * _t11);
-        float _t48 = 0.5f * (_t12 * Math.abs(m.m00()) + _t13 * Math.abs(m.m01()) + _t14 * Math.abs(m.m02()));
-        float _t49 = 0.5f * (_t12 * Math.abs(m.m10()) + _t13 * Math.abs(m.m11()) + _t14 * Math.abs(m.m12()));
-        float _t50 = 0.5f * (_t12 * Math.abs(m.m20()) + _t13 * Math.abs(m.m21()) + _t14 * Math.abs(m.m22()));
-        d.minX = _t33 + (_t39 + (m.m03() - _t48));
-        d.minY = _t34 + (_t41 + (m.m13() - _t49));
-        d.minZ = _t35 + (_t43 + (m.m23() - _t50));
-        d.maxX = _t33 + (_t39 + (_t48 + m.m03()));
-        d.maxY = _t34 + (_t41 + (_t49 + m.m13()));
-        d.maxZ = _t35 + (_t43 + (_t50 + m.m23()));
+        float _t9 = this.maxX - this.minX;
+        float _t10 = this.maxY - this.minY;
+        float _t11 = this.maxZ - this.minZ;
+        float _sp0 = 0.5f * (this.minZ + this.maxZ);
+        float _t13 = this.minX + this.maxX;
+        float _t14 = this.minY + this.maxY;
+        float _t36 = _sp0 * m.m02();
+        float _t37 = _sp0 * m.m12();
+        float _t38 = _sp0 * m.m22();
+        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
+        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
+        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
+        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
+        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
+        if (_t49 < 0.0f) {
+            d.minX = Float.POSITIVE_INFINITY;
+            d.minY = Float.POSITIVE_INFINITY;
+            d.minZ = Float.POSITIVE_INFINITY;
+            d.maxX = Float.NEGATIVE_INFINITY;
+            d.maxY = Float.NEGATIVE_INFINITY;
+            d.maxZ = Float.NEGATIVE_INFINITY;
+        } else {
+            d.minX = _t36 + (_t43 + (m.m03() - _t53));
+            d.minY = _t37 + (_t45 + (m.m13() - _t54));
+            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
+            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
+            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
+            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
+        }
         return d;
     }
 
@@ -370,27 +380,37 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public DoubleAABB transform(Float3x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        float _t9 = this.minZ + this.maxZ;
-        float _t10 = this.minX + this.maxX;
-        float _t11 = this.minY + this.maxY;
-        float _t12 = this.maxX - this.minX;
-        float _t13 = this.maxY - this.minY;
-        float _t14 = this.maxZ - this.minZ;
-        float _t33 = 0.5f * m.m02() * _t9;
-        float _t34 = 0.5f * m.m12() * _t9;
-        float _t35 = 0.5f * m.m22() * _t9;
-        float _t39 = 0.5f * (m.m00() * _t10 + m.m01() * _t11);
-        float _t41 = 0.5f * (m.m10() * _t10 + m.m11() * _t11);
-        float _t43 = 0.5f * (m.m20() * _t10 + m.m21() * _t11);
-        float _t48 = 0.5f * (_t12 * Math.abs(m.m00()) + _t13 * Math.abs(m.m01()) + _t14 * Math.abs(m.m02()));
-        float _t49 = 0.5f * (_t12 * Math.abs(m.m10()) + _t13 * Math.abs(m.m11()) + _t14 * Math.abs(m.m12()));
-        float _t50 = 0.5f * (_t12 * Math.abs(m.m20()) + _t13 * Math.abs(m.m21()) + _t14 * Math.abs(m.m22()));
-        d.minX = _t33 + (_t39 + (m.m03() - _t48));
-        d.minY = _t34 + (_t41 + (m.m13() - _t49));
-        d.minZ = _t35 + (_t43 + (m.m23() - _t50));
-        d.maxX = _t33 + (_t39 + (_t48 + m.m03()));
-        d.maxY = _t34 + (_t41 + (_t49 + m.m13()));
-        d.maxZ = _t35 + (_t43 + (_t50 + m.m23()));
+        float _t9 = this.maxX - this.minX;
+        float _t10 = this.maxY - this.minY;
+        float _t11 = this.maxZ - this.minZ;
+        float _sp0 = 0.5f * (this.minZ + this.maxZ);
+        float _t13 = this.minX + this.maxX;
+        float _t14 = this.minY + this.maxY;
+        float _t36 = _sp0 * m.m02();
+        float _t37 = _sp0 * m.m12();
+        float _t38 = _sp0 * m.m22();
+        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
+        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
+        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
+        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
+        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
+        if (_t49 < 0.0f) {
+            d.minX = Float.POSITIVE_INFINITY;
+            d.minY = Float.POSITIVE_INFINITY;
+            d.minZ = Float.POSITIVE_INFINITY;
+            d.maxX = Float.NEGATIVE_INFINITY;
+            d.maxY = Float.NEGATIVE_INFINITY;
+            d.maxZ = Float.NEGATIVE_INFINITY;
+        } else {
+            d.minX = _t36 + (_t43 + (m.m03() - _t53));
+            d.minY = _t37 + (_t45 + (m.m13() - _t54));
+            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
+            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
+            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
+            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
+        }
         return d;
     }
 
@@ -408,27 +428,37 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public FloatAABB transform(Float4x4R m, @Mutated FloatAABB dest) {
         FloatAABBImpl d = (FloatAABBImpl) dest;
-        float _t9 = this.minZ + this.maxZ;
-        float _t10 = this.minX + this.maxX;
-        float _t11 = this.minY + this.maxY;
-        float _t12 = this.maxX - this.minX;
-        float _t13 = this.maxY - this.minY;
-        float _t14 = this.maxZ - this.minZ;
-        float _t33 = 0.5f * m.m02() * _t9;
-        float _t34 = 0.5f * m.m12() * _t9;
-        float _t35 = 0.5f * m.m22() * _t9;
-        float _t39 = 0.5f * (m.m00() * _t10 + m.m01() * _t11);
-        float _t41 = 0.5f * (m.m10() * _t10 + m.m11() * _t11);
-        float _t43 = 0.5f * (m.m20() * _t10 + m.m21() * _t11);
-        float _t48 = 0.5f * (_t12 * Math.abs(m.m00()) + _t13 * Math.abs(m.m01()) + _t14 * Math.abs(m.m02()));
-        float _t49 = 0.5f * (_t12 * Math.abs(m.m10()) + _t13 * Math.abs(m.m11()) + _t14 * Math.abs(m.m12()));
-        float _t50 = 0.5f * (_t12 * Math.abs(m.m20()) + _t13 * Math.abs(m.m21()) + _t14 * Math.abs(m.m22()));
-        d.minX = _t33 + (_t39 + (m.m03() - _t48));
-        d.minY = _t34 + (_t41 + (m.m13() - _t49));
-        d.minZ = _t35 + (_t43 + (m.m23() - _t50));
-        d.maxX = _t33 + (_t39 + (_t48 + m.m03()));
-        d.maxY = _t34 + (_t41 + (_t49 + m.m13()));
-        d.maxZ = _t35 + (_t43 + (_t50 + m.m23()));
+        float _t9 = this.maxX - this.minX;
+        float _t10 = this.maxY - this.minY;
+        float _t11 = this.maxZ - this.minZ;
+        float _sp0 = 0.5f * (this.minZ + this.maxZ);
+        float _t13 = this.minX + this.maxX;
+        float _t14 = this.minY + this.maxY;
+        float _t36 = _sp0 * m.m02();
+        float _t37 = _sp0 * m.m12();
+        float _t38 = _sp0 * m.m22();
+        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
+        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
+        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
+        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
+        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
+        if (_t49 < 0.0f) {
+            d.minX = Float.POSITIVE_INFINITY;
+            d.minY = Float.POSITIVE_INFINITY;
+            d.minZ = Float.POSITIVE_INFINITY;
+            d.maxX = Float.NEGATIVE_INFINITY;
+            d.maxY = Float.NEGATIVE_INFINITY;
+            d.maxZ = Float.NEGATIVE_INFINITY;
+        } else {
+            d.minX = _t36 + (_t43 + (m.m03() - _t53));
+            d.minY = _t37 + (_t45 + (m.m13() - _t54));
+            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
+            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
+            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
+            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
+        }
         return d;
     }
 
@@ -449,27 +479,37 @@ public final class FloatAABBImpl implements FloatAABB {
      */
     public DoubleAABB transform(Float4x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        float _t9 = this.minZ + this.maxZ;
-        float _t10 = this.minX + this.maxX;
-        float _t11 = this.minY + this.maxY;
-        float _t12 = this.maxX - this.minX;
-        float _t13 = this.maxY - this.minY;
-        float _t14 = this.maxZ - this.minZ;
-        float _t33 = 0.5f * m.m02() * _t9;
-        float _t34 = 0.5f * m.m12() * _t9;
-        float _t35 = 0.5f * m.m22() * _t9;
-        float _t39 = 0.5f * (m.m00() * _t10 + m.m01() * _t11);
-        float _t41 = 0.5f * (m.m10() * _t10 + m.m11() * _t11);
-        float _t43 = 0.5f * (m.m20() * _t10 + m.m21() * _t11);
-        float _t48 = 0.5f * (_t12 * Math.abs(m.m00()) + _t13 * Math.abs(m.m01()) + _t14 * Math.abs(m.m02()));
-        float _t49 = 0.5f * (_t12 * Math.abs(m.m10()) + _t13 * Math.abs(m.m11()) + _t14 * Math.abs(m.m12()));
-        float _t50 = 0.5f * (_t12 * Math.abs(m.m20()) + _t13 * Math.abs(m.m21()) + _t14 * Math.abs(m.m22()));
-        d.minX = _t33 + (_t39 + (m.m03() - _t48));
-        d.minY = _t34 + (_t41 + (m.m13() - _t49));
-        d.minZ = _t35 + (_t43 + (m.m23() - _t50));
-        d.maxX = _t33 + (_t39 + (_t48 + m.m03()));
-        d.maxY = _t34 + (_t41 + (_t49 + m.m13()));
-        d.maxZ = _t35 + (_t43 + (_t50 + m.m23()));
+        float _t9 = this.maxX - this.minX;
+        float _t10 = this.maxY - this.minY;
+        float _t11 = this.maxZ - this.minZ;
+        float _sp0 = 0.5f * (this.minZ + this.maxZ);
+        float _t13 = this.minX + this.maxX;
+        float _t14 = this.minY + this.maxY;
+        float _t36 = _sp0 * m.m02();
+        float _t37 = _sp0 * m.m12();
+        float _t38 = _sp0 * m.m22();
+        float _t43 = 0.5f * (m.m00() * _t13 + m.m01() * _t14);
+        float _t45 = 0.5f * (m.m10() * _t13 + m.m11() * _t14);
+        float _t47 = 0.5f * (m.m20() * _t13 + m.m21() * _t14);
+        float _t49 = Math.min(Math.min(0.5f * _t9, 0.5f * _t10), 0.5f * _t11);
+        float _t53 = 0.5f * (_t9 * Math.abs(m.m00()) + _t10 * Math.abs(m.m01()) + _t11 * Math.abs(m.m02()));
+        float _t54 = 0.5f * (_t9 * Math.abs(m.m10()) + _t10 * Math.abs(m.m11()) + _t11 * Math.abs(m.m12()));
+        float _t55 = 0.5f * (_t9 * Math.abs(m.m20()) + _t10 * Math.abs(m.m21()) + _t11 * Math.abs(m.m22()));
+        if (_t49 < 0.0f) {
+            d.minX = Float.POSITIVE_INFINITY;
+            d.minY = Float.POSITIVE_INFINITY;
+            d.minZ = Float.POSITIVE_INFINITY;
+            d.maxX = Float.NEGATIVE_INFINITY;
+            d.maxY = Float.NEGATIVE_INFINITY;
+            d.maxZ = Float.NEGATIVE_INFINITY;
+        } else {
+            d.minX = _t36 + (_t43 + (m.m03() - _t53));
+            d.minY = _t37 + (_t45 + (m.m13() - _t54));
+            d.minZ = _t38 + (_t47 + (m.m23() - _t55));
+            d.maxX = _t36 + (_t43 + (_t53 + m.m03()));
+            d.maxY = _t37 + (_t45 + (_t54 + m.m13()));
+            d.maxZ = _t38 + (_t47 + (_t55 + m.m23()));
+        }
         return d;
     }
 

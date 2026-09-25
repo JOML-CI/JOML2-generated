@@ -244,8 +244,9 @@ public final class Int2Impl implements Int2 {
     public Int2 ceilDiv(int otherX, int otherY, @Mutated Int2 dest) {
         int[] sd = this.data;
         int[] dd = ((Int2Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
         dd[1] = Math.ceilDiv(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -265,8 +266,9 @@ public final class Int2Impl implements Int2 {
     public Long2 ceilDiv(int otherX, int otherY, @Mutated Long2 dest) {
         int[] sd = this.data;
         long[] dd = ((Long2Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
         dd[1] = Math.ceilDiv(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -286,8 +288,9 @@ public final class Int2Impl implements Int2 {
     public Double2 ceilDiv(int otherX, int otherY, @Mutated Double2 dest) {
         int[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
         dd[1] = Math.ceilDiv(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -394,8 +397,9 @@ public final class Int2Impl implements Int2 {
     public Int2 ceilMod(int otherX, int otherY, @Mutated Int2 dest) {
         int[] sd = this.data;
         int[] dd = ((Int2Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
         dd[1] = Math.ceilMod(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -415,8 +419,9 @@ public final class Int2Impl implements Int2 {
     public Long2 ceilMod(int otherX, int otherY, @Mutated Long2 dest) {
         int[] sd = this.data;
         long[] dd = ((Long2Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
         dd[1] = Math.ceilMod(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -436,8 +441,9 @@ public final class Int2Impl implements Int2 {
     public Double2 ceilMod(int otherX, int otherY, @Mutated Double2 dest) {
         int[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
         dd[1] = Math.ceilMod(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -544,8 +550,9 @@ public final class Int2Impl implements Int2 {
     public Int2 div(int otherX, int otherY, @Mutated Int2 dest) {
         int[] sd = this.data;
         int[] dd = ((Int2Impl) dest).data;
-        dd[0] = sd[0] / otherX;
+        int _buf0 = sd[0] / otherX;
         dd[1] = sd[1] / otherY;
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -565,8 +572,9 @@ public final class Int2Impl implements Int2 {
     public Long2 div(int otherX, int otherY, @Mutated Long2 dest) {
         int[] sd = this.data;
         long[] dd = ((Long2Impl) dest).data;
-        dd[0] = sd[0] / otherX;
+        int _buf0 = sd[0] / otherX;
         dd[1] = sd[1] / otherY;
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -586,8 +594,9 @@ public final class Int2Impl implements Int2 {
     public Double2 div(int otherX, int otherY, @Mutated Double2 dest) {
         int[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        dd[0] = sd[0] / otherX;
+        int _buf0 = sd[0] / otherX;
         dd[1] = sd[1] / otherY;
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -694,8 +703,9 @@ public final class Int2Impl implements Int2 {
     public Int2 floorDiv(int otherX, int otherY, @Mutated Int2 dest) {
         int[] sd = this.data;
         int[] dd = ((Int2Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
         dd[1] = Math.floorDiv(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -715,8 +725,9 @@ public final class Int2Impl implements Int2 {
     public Long2 floorDiv(int otherX, int otherY, @Mutated Long2 dest) {
         int[] sd = this.data;
         long[] dd = ((Long2Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
         dd[1] = Math.floorDiv(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -736,8 +747,9 @@ public final class Int2Impl implements Int2 {
     public Double2 floorDiv(int otherX, int otherY, @Mutated Double2 dest) {
         int[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
         dd[1] = Math.floorDiv(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -844,8 +856,9 @@ public final class Int2Impl implements Int2 {
     public Int2 floorMod(int otherX, int otherY, @Mutated Int2 dest) {
         int[] sd = this.data;
         int[] dd = ((Int2Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
+        int _buf0 = Math.floorMod(sd[0], otherX);
         dd[1] = Math.floorMod(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -865,8 +878,9 @@ public final class Int2Impl implements Int2 {
     public Long2 floorMod(int otherX, int otherY, @Mutated Long2 dest) {
         int[] sd = this.data;
         long[] dd = ((Long2Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
+        int _buf0 = Math.floorMod(sd[0], otherX);
         dd[1] = Math.floorMod(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -886,8 +900,9 @@ public final class Int2Impl implements Int2 {
     public Double2 floorMod(int otherX, int otherY, @Mutated Double2 dest) {
         int[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
+        int _buf0 = Math.floorMod(sd[0], otherX);
         dd[1] = Math.floorMod(sd[1], otherY);
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -1199,8 +1214,9 @@ public final class Int2Impl implements Int2 {
     public Int2 rem(int otherX, int otherY, @Mutated Int2 dest) {
         int[] sd = this.data;
         int[] dd = ((Int2Impl) dest).data;
-        dd[0] = sd[0] % otherX;
+        int _buf0 = sd[0] % otherX;
         dd[1] = sd[1] % otherY;
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -1221,8 +1237,9 @@ public final class Int2Impl implements Int2 {
     public Long2 rem(int otherX, int otherY, @Mutated Long2 dest) {
         int[] sd = this.data;
         long[] dd = ((Long2Impl) dest).data;
-        dd[0] = sd[0] % otherX;
+        int _buf0 = sd[0] % otherX;
         dd[1] = sd[1] % otherY;
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -1243,8 +1260,9 @@ public final class Int2Impl implements Int2 {
     public Double2 rem(int otherX, int otherY, @Mutated Double2 dest) {
         int[] sd = this.data;
         double[] dd = ((Double2Impl) dest).data;
-        dd[0] = sd[0] % otherX;
+        int _buf0 = sd[0] % otherX;
         dd[1] = sd[1] % otherY;
+        dd[0] = _buf0;
         return dest;
     }
 
@@ -2679,12 +2697,15 @@ public final class Int2Impl implements Int2 {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public int compAdd() {
+    public long compAdd() {
         int[] sd = this.data;
-        return sd[0] + sd[1];
+        return (long) sd[0] + (long) sd[1];
     }
 
 
@@ -2712,108 +2733,135 @@ public final class Int2Impl implements Int2 {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the product of all components of this vector
      */
-    public int compMul() {
+    public long compMul() {
         int[] sd = this.data;
-        return sd[0] * sd[1];
+        return (long) sd[0] * (long) sd[1];
     }
 
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public int distanceSquared(Int2R other) {
+    public long distanceSquared(Int2R other) {
         return distanceSquared(other.x(), other.y());
     }
 
 
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public int distanceSquared(int otherX, int otherY) {
+    public long distanceSquared(int otherX, int otherY) {
         int[] sd = this.data;
-        int _t0 = sd[0] - otherX;
-        int _t1 = sd[1] - otherY;
+        long _t0 = (long) sd[0] - (long) otherX;
+        long _t1 = (long) sd[1] - (long) otherY;
         return _t0 * _t0 + _t1 * _t1;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public int dot(Int2R other) {
+    public long dot(Int2R other) {
         return dot(other.x(), other.y());
     }
 
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY})
      */
-    public int dot(int otherX, int otherY) {
+    public long dot(int otherX, int otherY) {
         int[] sd = this.data;
-        return otherX * sd[0] + otherY * sd[1];
+        return (long) otherX * (long) sd[0] + (long) otherY * (long) sd[1];
     }
 
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}
+     * range; it is exact as long as it fits in a {@code long}.
      *
      * @return the squared length of this vector
      */
-    public int lengthSquared() {
+    public long lengthSquared() {
         int[] sd = this.data;
-        return sd[0] * sd[0] + sd[1] * sd[1];
+        return (long) sd[0] * (long) sd[0] + (long) sd[1] * (long) sd[1];
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public int manhattanDistance(Int2R other) {
+    public long manhattanDistance(Int2R other) {
         return manhattanDistance(other.x(), other.y());
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public int manhattanDistance(int otherX, int otherY) {
+    public long manhattanDistance(int otherX, int otherY) {
         int[] sd = this.data;
-        return Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY);
+        return Math.abs((long) sd[0] - (long) otherX) + Math.abs((long) sd[1] - (long) otherY);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code int} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public int manhattanLength() {
+    public long manhattanLength() {
         int[] sd = this.data;
-        return Math.abs(sd[0]) + Math.abs(sd[1]);
+        return Math.abs((long) sd[0]) + Math.abs((long) sd[1]);
     }
 
 

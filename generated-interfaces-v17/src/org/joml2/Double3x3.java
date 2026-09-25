@@ -291,7 +291,7 @@ public interface Double3x3 extends Double3x3R {
      * Set this matrix to the given transform's linear block {@code R * S} (the translation is
      * dropped).
      *
-     * @param t the transform to convert
+     * @param t the transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     @Mutated Double3x3 makeFromTransform(DoubleTransformR t);
@@ -307,13 +307,17 @@ public interface Double3x3 extends Double3x3R {
      * @param tZ the {@code tZ} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param rX the {@code rX} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param rY the {@code rY} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param rZ the {@code rZ} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param rW the {@code rW} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param sX the {@code sX} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param sY the {@code sY} component of the transform
@@ -522,6 +526,11 @@ public interface Double3x3 extends Double3x3R {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -537,6 +546,11 @@ public interface Double3x3 extends Double3x3R {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -616,6 +630,11 @@ public interface Double3x3 extends Double3x3R {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -627,6 +646,11 @@ public interface Double3x3 extends Double3x3R {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}

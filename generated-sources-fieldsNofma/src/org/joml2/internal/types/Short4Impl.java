@@ -339,10 +339,13 @@ public final class Short4Impl implements Short4 {
      */
     public Short4 ceilDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Short4 dest) {
         Short4Impl d = (Short4Impl) dest;
-        d.x = (short) (java.lang.Math.ceilDiv(this.x, otherX));
-        d.y = (short) (java.lang.Math.ceilDiv(this.y, otherY));
-        d.z = (short) (java.lang.Math.ceilDiv(this.z, otherZ));
+        int _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = (short) (java.lang.Math.ceilDiv(this.w, otherW));
+        d.x = (short) (_buf0);
+        d.y = (short) (_buf1);
+        d.z = (short) (_buf2);
         return d;
     }
 
@@ -363,10 +366,13 @@ public final class Short4Impl implements Short4 {
      */
     public Int4 ceilDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
-        d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = java.lang.Math.ceilDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -387,10 +393,13 @@ public final class Short4Impl implements Short4 {
      */
     public Long4 ceilDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
-        d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = java.lang.Math.ceilDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -411,10 +420,13 @@ public final class Short4Impl implements Short4 {
      */
     public Double4 ceilDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
-        d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = java.lang.Math.ceilDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -554,10 +566,13 @@ public final class Short4Impl implements Short4 {
      */
     public Short4 ceilMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Short4 dest) {
         Short4Impl d = (Short4Impl) dest;
-        d.x = (short) (java.lang.Math.ceilMod(this.x, otherX));
-        d.y = (short) (java.lang.Math.ceilMod(this.y, otherY));
-        d.z = (short) (java.lang.Math.ceilMod(this.z, otherZ));
+        int _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = (short) (java.lang.Math.ceilMod(this.w, otherW));
+        d.x = (short) (_buf0);
+        d.y = (short) (_buf1);
+        d.z = (short) (_buf2);
         return d;
     }
 
@@ -578,10 +593,13 @@ public final class Short4Impl implements Short4 {
      */
     public Int4 ceilMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
-        d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = java.lang.Math.ceilMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -602,10 +620,13 @@ public final class Short4Impl implements Short4 {
      */
     public Long4 ceilMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
-        d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = java.lang.Math.ceilMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -626,10 +647,13 @@ public final class Short4Impl implements Short4 {
      */
     public Double4 ceilMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
-        d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        int _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        int _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        int _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = java.lang.Math.ceilMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -770,10 +794,13 @@ public final class Short4Impl implements Short4 {
      */
     public Short4 div(short otherX, short otherY, short otherZ, short otherW, @Mutated Short4 dest) {
         Short4Impl d = (Short4Impl) dest;
-        d.x = (short) (this.x / otherX);
-        d.y = (short) (this.y / otherY);
-        d.z = (short) (this.z / otherZ);
+        int _buf0 = this.x / otherX;
+        int _buf1 = this.y / otherY;
+        int _buf2 = this.z / otherZ;
         d.w = (short) (this.w / otherW);
+        d.x = (short) (_buf0);
+        d.y = (short) (_buf1);
+        d.z = (short) (_buf2);
         return d;
     }
 
@@ -795,10 +822,13 @@ public final class Short4Impl implements Short4 {
      */
     public Int4 div(short otherX, short otherY, short otherZ, short otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
-        d.z = this.z / otherZ;
+        int _buf0 = this.x / otherX;
+        int _buf1 = this.y / otherY;
+        int _buf2 = this.z / otherZ;
         d.w = this.w / otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -820,10 +850,13 @@ public final class Short4Impl implements Short4 {
      */
     public Long4 div(short otherX, short otherY, short otherZ, short otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
-        d.z = this.z / otherZ;
+        int _buf0 = this.x / otherX;
+        int _buf1 = this.y / otherY;
+        int _buf2 = this.z / otherZ;
         d.w = this.w / otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -845,10 +878,13 @@ public final class Short4Impl implements Short4 {
      */
     public Double4 div(short otherX, short otherY, short otherZ, short otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
-        d.z = this.z / otherZ;
+        int _buf0 = this.x / otherX;
+        int _buf1 = this.y / otherY;
+        int _buf2 = this.z / otherZ;
         d.w = this.w / otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -988,10 +1024,13 @@ public final class Short4Impl implements Short4 {
      */
     public Short4 floorDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Short4 dest) {
         Short4Impl d = (Short4Impl) dest;
-        d.x = (short) (Math.floorDiv(this.x, otherX));
-        d.y = (short) (Math.floorDiv(this.y, otherY));
-        d.z = (short) (Math.floorDiv(this.z, otherZ));
+        int _buf0 = Math.floorDiv(this.x, otherX);
+        int _buf1 = Math.floorDiv(this.y, otherY);
+        int _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = (short) (Math.floorDiv(this.w, otherW));
+        d.x = (short) (_buf0);
+        d.y = (short) (_buf1);
+        d.z = (short) (_buf2);
         return d;
     }
 
@@ -1012,10 +1051,13 @@ public final class Short4Impl implements Short4 {
      */
     public Int4 floorDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
-        d.z = Math.floorDiv(this.z, otherZ);
+        int _buf0 = Math.floorDiv(this.x, otherX);
+        int _buf1 = Math.floorDiv(this.y, otherY);
+        int _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = Math.floorDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1036,10 +1078,13 @@ public final class Short4Impl implements Short4 {
      */
     public Long4 floorDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
-        d.z = Math.floorDiv(this.z, otherZ);
+        int _buf0 = Math.floorDiv(this.x, otherX);
+        int _buf1 = Math.floorDiv(this.y, otherY);
+        int _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = Math.floorDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1060,10 +1105,13 @@ public final class Short4Impl implements Short4 {
      */
     public Double4 floorDiv(short otherX, short otherY, short otherZ, short otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
-        d.z = Math.floorDiv(this.z, otherZ);
+        int _buf0 = Math.floorDiv(this.x, otherX);
+        int _buf1 = Math.floorDiv(this.y, otherY);
+        int _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = Math.floorDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1203,10 +1251,13 @@ public final class Short4Impl implements Short4 {
      */
     public Short4 floorMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Short4 dest) {
         Short4Impl d = (Short4Impl) dest;
-        d.x = (short) (Math.floorMod(this.x, otherX));
-        d.y = (short) (Math.floorMod(this.y, otherY));
-        d.z = (short) (Math.floorMod(this.z, otherZ));
+        int _buf0 = Math.floorMod(this.x, otherX);
+        int _buf1 = Math.floorMod(this.y, otherY);
+        int _buf2 = Math.floorMod(this.z, otherZ);
         d.w = (short) (Math.floorMod(this.w, otherW));
+        d.x = (short) (_buf0);
+        d.y = (short) (_buf1);
+        d.z = (short) (_buf2);
         return d;
     }
 
@@ -1227,10 +1278,13 @@ public final class Short4Impl implements Short4 {
      */
     public Int4 floorMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
-        d.z = Math.floorMod(this.z, otherZ);
+        int _buf0 = Math.floorMod(this.x, otherX);
+        int _buf1 = Math.floorMod(this.y, otherY);
+        int _buf2 = Math.floorMod(this.z, otherZ);
         d.w = Math.floorMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1251,10 +1305,13 @@ public final class Short4Impl implements Short4 {
      */
     public Long4 floorMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
-        d.z = Math.floorMod(this.z, otherZ);
+        int _buf0 = Math.floorMod(this.x, otherX);
+        int _buf1 = Math.floorMod(this.y, otherY);
+        int _buf2 = Math.floorMod(this.z, otherZ);
         d.w = Math.floorMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1275,10 +1332,13 @@ public final class Short4Impl implements Short4 {
      */
     public Double4 floorMod(short otherX, short otherY, short otherZ, short otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
-        d.z = Math.floorMod(this.z, otherZ);
+        int _buf0 = Math.floorMod(this.x, otherX);
+        int _buf1 = Math.floorMod(this.y, otherY);
+        int _buf2 = Math.floorMod(this.z, otherZ);
         d.w = Math.floorMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1712,10 +1772,13 @@ public final class Short4Impl implements Short4 {
      */
     public Short4 rem(short otherX, short otherY, short otherZ, short otherW, @Mutated Short4 dest) {
         Short4Impl d = (Short4Impl) dest;
-        d.x = (short) (this.x % otherX);
-        d.y = (short) (this.y % otherY);
-        d.z = (short) (this.z % otherZ);
+        int _buf0 = this.x % otherX;
+        int _buf1 = this.y % otherY;
+        int _buf2 = this.z % otherZ;
         d.w = (short) (this.w % otherW);
+        d.x = (short) (_buf0);
+        d.y = (short) (_buf1);
+        d.z = (short) (_buf2);
         return d;
     }
 
@@ -1738,10 +1801,13 @@ public final class Short4Impl implements Short4 {
      */
     public Int4 rem(short otherX, short otherY, short otherZ, short otherW, @Mutated Int4 dest) {
         Int4Impl d = (Int4Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
-        d.z = this.z % otherZ;
+        int _buf0 = this.x % otherX;
+        int _buf1 = this.y % otherY;
+        int _buf2 = this.z % otherZ;
         d.w = this.w % otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1764,10 +1830,13 @@ public final class Short4Impl implements Short4 {
      */
     public Long4 rem(short otherX, short otherY, short otherZ, short otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
-        d.z = this.z % otherZ;
+        int _buf0 = this.x % otherX;
+        int _buf1 = this.y % otherY;
+        int _buf2 = this.z % otherZ;
         d.w = this.w % otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -1790,10 +1859,13 @@ public final class Short4Impl implements Short4 {
      */
     public Double4 rem(short otherX, short otherY, short otherZ, short otherW, @Mutated Double4 dest) {
         Double4Impl d = (Double4Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
-        d.z = this.z % otherZ;
+        int _buf0 = this.x % otherX;
+        int _buf1 = this.y % otherY;
+        int _buf2 = this.z % otherZ;
         d.w = this.w % otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -3078,9 +3150,11 @@ public final class Short4Impl implements Short4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3097,13 +3171,16 @@ public final class Short4Impl implements Short4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}. The shift count
-     * is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code int}. The shift count is
+     * still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3120,13 +3197,16 @@ public final class Short4Impl implements Short4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}. The shift count
-     * is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code long}. The shift count is
+     * still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3143,13 +3223,16 @@ public final class Short4Impl implements Short4 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}. The shift
-     * count is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code double}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3864,13 +3947,13 @@ public final class Short4Impl implements Short4 {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public short compAdd() {
-        return (short) (this.w + (this.z + (this.x + this.y)));
+    public int compAdd() {
+        return this.w + (this.z + (this.x + this.y));
     }
 
 
@@ -3897,26 +3980,26 @@ public final class Short4Impl implements Short4 {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    public short compMul() {
-        return (short) (this.w * this.z * this.x * this.y);
+    public long compMul() {
+        return (long) this.w * (long) this.z * (long) this.x * (long) this.y;
     }
 
 
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public short distanceSquared(Short4R other) {
+    public long distanceSquared(Short4R other) {
         return distanceSquared(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -3925,8 +4008,8 @@ public final class Short4Impl implements Short4 {
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -3935,25 +4018,25 @@ public final class Short4Impl implements Short4 {
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ}, {@code otherW})
      */
-    public short distanceSquared(short otherX, short otherY, short otherZ, short otherW) {
-        short _t0 = (short) (this.x - otherX);
-        short _t1 = (short) (this.y - otherY);
-        short _t2 = (short) (this.z - otherZ);
-        short _t3 = (short) (this.w - otherW);
-        return (short) (_t0 * _t0 + _t1 * _t1 + _t2 * _t2 + _t3 * _t3);
+    public long distanceSquared(short otherX, short otherY, short otherZ, short otherW) {
+        long _t0 = (long) this.x - (long) otherX;
+        long _t1 = (long) this.y - (long) otherY;
+        long _t2 = (long) this.z - (long) otherZ;
+        long _t3 = (long) this.w - (long) otherW;
+        return _t0 * _t0 + _t1 * _t1 + _t2 * _t2 + _t3 * _t3;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public short dot(Short4R other) {
+    public long dot(Short4R other) {
         return dot(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -3962,8 +4045,8 @@ public final class Short4Impl implements Short4 {
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      * {@code otherW}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -3972,34 +4055,34 @@ public final class Short4Impl implements Short4 {
      * @return the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      *        {@code otherW})
      */
-    public short dot(short otherX, short otherY, short otherZ, short otherW) {
-        return (short) (otherX * this.x + otherY * this.y + otherZ * this.z + otherW * this.w);
+    public long dot(short otherX, short otherY, short otherZ, short otherW) {
+        return (long) otherX * (long) this.x + (long) otherY * (long) this.y + (long) otherZ * (long) this.z + (long) otherW * (long) this.w;
     }
 
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    public short lengthSquared() {
-        return (short) (this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+    public long lengthSquared() {
+        return (long) this.x * (long) this.x + (long) this.y * (long) this.y + (long) this.z * (long) this.z + (long) this.w * (long) this.w;
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public short manhattanDistance(Short4R other) {
+    public int manhattanDistance(Short4R other) {
         return manhattanDistance(other.x(), other.y(), other.z(), other.w());
     }
 
@@ -4008,8 +4091,8 @@ public final class Short4Impl implements Short4 {
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -4018,21 +4101,21 @@ public final class Short4Impl implements Short4 {
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ}, {@code otherW})
      */
-    public short manhattanDistance(short otherX, short otherY, short otherZ, short otherW) {
-        return (short) (Math.abs(this.x - otherX) + Math.abs(this.y - otherY) + Math.abs(this.z - otherZ) + Math.abs(this.w - otherW));
+    public int manhattanDistance(short otherX, short otherY, short otherZ, short otherW) {
+        return Math.abs(this.x - otherX) + Math.abs(this.y - otherY) + Math.abs(this.z - otherZ) + Math.abs(this.w - otherW);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public short manhattanLength() {
-        return (short) (Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z) + Math.abs(this.w));
+    public int manhattanLength() {
+        return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z) + Math.abs(this.w);
     }
 
 

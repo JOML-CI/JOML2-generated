@@ -2961,6 +2961,27 @@ public class Float2x3Impl implements Float2x3 {
         return d;
     }
 
+    /** Private column 0 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s2e3258fe_c0(Float3x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r12) {
+        _dst.m00 = Math.fma(_r0, _r1, Math.fma(_r2, _r3, -(_r4 * _r5)));
+        _dst.m10 = Math.fma(_r0, _r12, Math.fma(_r2, _r5, _r4 * _r3));
+        _dst.m20 = _r0;
+    }
+
+    /** Private column 1 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s2e3258fe_c1(Float3x3Impl _dst, float _r6, float _r1, float _r7, float _r3, float _r8, float _r5, float _r12) {
+        _dst.m01 = Math.fma(_r6, _r1, Math.fma(_r7, _r3, -(_r8 * _r5)));
+        _dst.m11 = Math.fma(_r6, _r12, Math.fma(_r7, _r5, _r8 * _r3));
+        _dst.m21 = _r6;
+    }
+
+    /** Private column 2 of {@code mul_orthogonal}: computes and stores it; reached only through it. */
+    private void mul_orthogonal_s2e3258fe_c2(Float3x3Impl _dst, float _r9, float _r1, float _r10, float _r3, float _r11, float _r5, float _r12) {
+        _dst.m02 = Math.fma(_r9, _r1, Math.fma(_r10, _r3, -(_r11 * _r5)));
+        _dst.m12 = Math.fma(_r9, _r12, Math.fma(_r10, _r5, _r11 * _r3));
+        _dst.m22 = _r9;
+    }
+
 
     /**
      * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
@@ -2968,20 +2989,22 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float3x3 mul_orthogonal(Float3x3R right, @Mutated Float3x3 dest) {
         Float3x3Impl d = (Float3x3Impl) dest;
-        float _buf0 = Math.fma(right.m20(), this.m02, Math.fma(right.m00(), this.m11, -(right.m10() * this.m10)));
-        float _buf1 = Math.fma(right.m20(), this.m12, Math.fma(right.m00(), this.m10, right.m10() * this.m11));
-        d.m20 = right.m20();
-        float _buf2 = Math.fma(right.m21(), this.m02, Math.fma(right.m01(), this.m11, -(right.m11() * this.m10)));
-        float _buf3 = Math.fma(right.m21(), this.m12, Math.fma(right.m01(), this.m10, right.m11() * this.m11));
-        d.m21 = right.m21();
-        float _buf4 = Math.fma(right.m22(), this.m02, Math.fma(right.m02(), this.m11, -(right.m12() * this.m10)));
-        d.m12 = Math.fma(right.m22(), this.m12, Math.fma(right.m02(), this.m10, right.m12() * this.m11));
-        d.m22 = right.m22();
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m01 = _buf2;
-        d.m11 = _buf3;
-        d.m02 = _buf4;
+        float _r0 = right.m20();
+        float _r1 = this.m02;
+        float _r2 = right.m00();
+        float _r3 = this.m11;
+        float _r4 = right.m10();
+        float _r5 = this.m10;
+        float _r6 = right.m21();
+        float _r7 = right.m01();
+        float _r8 = right.m11();
+        float _r9 = right.m22();
+        float _r10 = right.m02();
+        float _r11 = right.m12();
+        float _r12 = this.m12;
+        mul_orthogonal_s2e3258fe_c0(d, _r0, _r1, _r2, _r3, _r4, _r5, _r12);
+        mul_orthogonal_s2e3258fe_c1(d, _r6, _r1, _r7, _r3, _r8, _r5, _r12);
+        mul_orthogonal_s2e3258fe_c2(d, _r9, _r1, _r10, _r3, _r11, _r5, _r12);
         d.properties = Joml.BIT_ORTHOGONAL & ((Float3x3Impl) right).properties;
         return d;
     }
@@ -3545,6 +3568,27 @@ public class Float2x3Impl implements Float2x3 {
         return d;
     }
 
+    /** Private column 0 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s36a279f2_c0(Float3x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r9, float _r10, float _r12, float _r13) {
+        _dst.m00 = Math.fma(_r0, _r1, _r2 * _r3);
+        _dst.m10 = Math.fma(_r9, _r1, _r10 * _r3);
+        _dst.m20 = Math.fma(_r12, _r1, _r13 * _r3);
+    }
+
+    /** Private column 1 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s36a279f2_c1(Float3x3Impl _dst, float _r0, float _r4, float _r2, float _r5, float _r9, float _r10, float _r12, float _r13) {
+        _dst.m01 = Math.fma(_r0, _r4, _r2 * _r5);
+        _dst.m11 = Math.fma(_r9, _r4, _r10 * _r5);
+        _dst.m21 = Math.fma(_r12, _r4, _r13 * _r5);
+    }
+
+    /** Private column 2 of {@code preMul_general}: computes and stores it; reached only through it. */
+    private void preMul_general_s36a279f2_c2(Float3x3Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14) {
+        _dst.m02 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r8));
+        _dst.m12 = Math.fma(_r9, _r6, Math.fma(_r10, _r7, _r11));
+        _dst.m22 = Math.fma(_r12, _r6, Math.fma(_r13, _r7, _r14));
+    }
+
 
     /**
      * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
@@ -3552,23 +3596,24 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float3x3 preMul_general(Float3x3R other, @Mutated Float3x3 dest) {
         Float3x3Impl d = (Float3x3Impl) dest;
-        float _buf0 = Math.fma(other.m00(), this.m00, other.m01() * this.m10);
-        float _buf1 = Math.fma(other.m10(), this.m00, other.m11() * this.m10);
-        float _buf2 = Math.fma(other.m20(), this.m00, other.m21() * this.m10);
-        float _buf3 = Math.fma(other.m00(), this.m01, other.m01() * this.m11);
-        float _buf4 = Math.fma(other.m10(), this.m01, other.m11() * this.m11);
-        float _buf5 = Math.fma(other.m20(), this.m01, other.m21() * this.m11);
-        float _buf6 = Math.fma(other.m00(), this.m02, Math.fma(other.m01(), this.m12, other.m02()));
-        float _buf7 = Math.fma(other.m10(), this.m02, Math.fma(other.m11(), this.m12, other.m12()));
-        d.m22 = Math.fma(other.m20(), this.m02, Math.fma(other.m21(), this.m12, other.m22()));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
-        d.m12 = _buf7;
+        float _r0 = other.m00();
+        float _r1 = this.m00;
+        float _r2 = other.m01();
+        float _r3 = this.m10;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = other.m02();
+        float _r9 = other.m10();
+        float _r10 = other.m11();
+        float _r11 = other.m12();
+        float _r12 = other.m20();
+        float _r13 = other.m21();
+        float _r14 = other.m22();
+        preMul_general_s36a279f2_c0(d, _r0, _r1, _r2, _r3, _r9, _r10, _r12, _r13);
+        preMul_general_s36a279f2_c1(d, _r0, _r4, _r2, _r5, _r9, _r10, _r12, _r13);
+        preMul_general_s36a279f2_c2(d, _r0, _r6, _r2, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
         d.properties = 0;
         return d;
     }
@@ -3601,6 +3646,27 @@ public class Float2x3Impl implements Float2x3 {
         return d;
     }
 
+    /** Private column 0 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
+    private void preMul_orthogonal_s36a279f2_c0(Float3x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r7, float _r8, float _r10, float _r11) {
+        _dst.m00 = Math.fma(_r0, _r1, _r2 * _r3);
+        _dst.m10 = Math.fma(_r7, _r1, _r8 * _r3);
+        _dst.m20 = Math.fma(_r10, _r1, _r11 * _r3);
+    }
+
+    /** Private column 1 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
+    private void preMul_orthogonal_s36a279f2_c1(Float3x3Impl _dst, float _r2, float _r1, float _r0, float _r3, float _r8, float _r7, float _r11, float _r10) {
+        _dst.m01 = Math.fma(_r2, _r1, -(_r0 * _r3));
+        _dst.m11 = Math.fma(_r8, _r1, -(_r7 * _r3));
+        _dst.m21 = Math.fma(_r11, _r1, -(_r10 * _r3));
+    }
+
+    /** Private column 2 of {@code preMul_orthogonal}: computes and stores it; reached only through it. */
+    private void preMul_orthogonal_s36a279f2_c2(Float3x3Impl _dst, float _r0, float _r4, float _r2, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12) {
+        _dst.m02 = Math.fma(_r0, _r4, Math.fma(_r2, _r5, _r6));
+        _dst.m12 = Math.fma(_r7, _r4, Math.fma(_r8, _r5, _r9));
+        _dst.m22 = Math.fma(_r10, _r4, Math.fma(_r11, _r5, _r12));
+    }
+
 
     /**
      * Private body of {@code preMul}, specialized by runtime matrix properties; reached only
@@ -3608,23 +3674,22 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float3x3 preMul_orthogonal(Float3x3R other, @Mutated Float3x3 dest) {
         Float3x3Impl d = (Float3x3Impl) dest;
-        float _buf0 = Math.fma(other.m00(), this.m11, other.m01() * this.m10);
-        float _buf1 = Math.fma(other.m10(), this.m11, other.m11() * this.m10);
-        float _buf2 = Math.fma(other.m20(), this.m11, other.m21() * this.m10);
-        float _buf3 = Math.fma(other.m01(), this.m11, -(other.m00() * this.m10));
-        float _buf4 = Math.fma(other.m11(), this.m11, -(other.m10() * this.m10));
-        float _buf5 = Math.fma(other.m21(), this.m11, -(other.m20() * this.m10));
-        float _buf6 = Math.fma(other.m00(), this.m02, Math.fma(other.m01(), this.m12, other.m02()));
-        float _buf7 = Math.fma(other.m10(), this.m02, Math.fma(other.m11(), this.m12, other.m12()));
-        d.m22 = Math.fma(other.m20(), this.m02, Math.fma(other.m21(), this.m12, other.m22()));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
-        d.m12 = _buf7;
+        float _r0 = other.m00();
+        float _r1 = this.m11;
+        float _r2 = other.m01();
+        float _r3 = this.m10;
+        float _r4 = this.m02;
+        float _r5 = this.m12;
+        float _r6 = other.m02();
+        float _r7 = other.m10();
+        float _r8 = other.m11();
+        float _r9 = other.m12();
+        float _r10 = other.m20();
+        float _r11 = other.m21();
+        float _r12 = other.m22();
+        preMul_orthogonal_s36a279f2_c0(d, _r0, _r1, _r2, _r3, _r7, _r8, _r10, _r11);
+        preMul_orthogonal_s36a279f2_c1(d, _r2, _r1, _r0, _r3, _r8, _r7, _r11, _r10);
+        preMul_orthogonal_s36a279f2_c2(d, _r0, _r4, _r2, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12);
         d.properties = Joml.BIT_ORTHOGONAL & ((Float3x3Impl) other).properties;
         return d;
     }
@@ -3737,6 +3802,27 @@ public class Float2x3Impl implements Float2x3 {
         return preMul_general(other, dest);
     }
 
+    /** Private column 0 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1aa50a23_c0(Double3x3Impl _dst, float _r0, float _r1, float _r2, float _r3, float _r9, float _r10, float _r12, float _r13) {
+        _dst.m00 = Math.fma(_r0, _r1, _r2 * _r3);
+        _dst.m10 = Math.fma(_r9, _r1, _r10 * _r3);
+        _dst.m20 = Math.fma(_r12, _r1, _r13 * _r3);
+    }
+
+    /** Private column 1 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1aa50a23_c1(Double3x3Impl _dst, float _r0, float _r4, float _r2, float _r5, float _r9, float _r10, float _r12, float _r13) {
+        _dst.m01 = Math.fma(_r0, _r4, _r2 * _r5);
+        _dst.m11 = Math.fma(_r9, _r4, _r10 * _r5);
+        _dst.m21 = Math.fma(_r12, _r4, _r13 * _r5);
+    }
+
+    /** Private column 2 of {@code preMul}: computes and stores it; reached only through it. */
+    private void preMul_s1aa50a23_c2(Double3x3Impl _dst, float _r0, float _r6, float _r2, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _r13, float _r14) {
+        _dst.m02 = Math.fma(_r0, _r6, Math.fma(_r2, _r7, _r8));
+        _dst.m12 = Math.fma(_r9, _r6, Math.fma(_r10, _r7, _r11));
+        _dst.m22 = Math.fma(_r12, _r6, Math.fma(_r13, _r7, _r14));
+    }
+
 
     /**
      * Pre-multiply the given matrix onto this matrix, i.e. compute {@code other * this} and store
@@ -3751,23 +3837,24 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double3x3 preMul(Float3x3R other, @Mutated Double3x3 dest) {
         Double3x3Impl d = (Double3x3Impl) dest;
-        float _buf0 = Math.fma(other.m00(), this.m00, other.m01() * this.m10);
-        float _buf1 = Math.fma(other.m10(), this.m00, other.m11() * this.m10);
-        float _buf2 = Math.fma(other.m20(), this.m00, other.m21() * this.m10);
-        float _buf3 = Math.fma(other.m00(), this.m01, other.m01() * this.m11);
-        float _buf4 = Math.fma(other.m10(), this.m01, other.m11() * this.m11);
-        float _buf5 = Math.fma(other.m20(), this.m01, other.m21() * this.m11);
-        float _buf6 = Math.fma(other.m00(), this.m02, Math.fma(other.m01(), this.m12, other.m02()));
-        float _buf7 = Math.fma(other.m10(), this.m02, Math.fma(other.m11(), this.m12, other.m12()));
-        d.m22 = Math.fma(other.m20(), this.m02, Math.fma(other.m21(), this.m12, other.m22()));
-        d.m00 = _buf0;
-        d.m10 = _buf1;
-        d.m20 = _buf2;
-        d.m01 = _buf3;
-        d.m11 = _buf4;
-        d.m21 = _buf5;
-        d.m02 = _buf6;
-        d.m12 = _buf7;
+        float _r0 = other.m00();
+        float _r1 = this.m00;
+        float _r2 = other.m01();
+        float _r3 = this.m10;
+        float _r4 = this.m01;
+        float _r5 = this.m11;
+        float _r6 = this.m02;
+        float _r7 = this.m12;
+        float _r8 = other.m02();
+        float _r9 = other.m10();
+        float _r10 = other.m11();
+        float _r11 = other.m12();
+        float _r12 = other.m20();
+        float _r13 = other.m21();
+        float _r14 = other.m22();
+        preMul_s1aa50a23_c0(d, _r0, _r1, _r2, _r3, _r9, _r10, _r12, _r13);
+        preMul_s1aa50a23_c1(d, _r0, _r4, _r2, _r5, _r9, _r10, _r12, _r13);
+        preMul_s1aa50a23_c2(d, _r0, _r6, _r2, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14);
         d.properties = 0;
         return d;
     }
@@ -4704,12 +4791,13 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preScaleAround_identity(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s;
         d.m10 = 0.0f;
         d.m01 = 0.0f;
         d.m11 = s;
-        d.m02 = Math.fma(-s, pivotX, pivotX);
-        d.m12 = Math.fma(-s, pivotY, pivotY);
+        d.m02 = pivotX * _t0;
+        d.m12 = pivotY * _t0;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4721,10 +4809,11 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preScaleAround_identity_self(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s;
         d.m11 = s;
-        d.m02 = Math.fma(-s, pivotX, pivotX);
-        d.m12 = Math.fma(-s, pivotY, pivotY);
+        d.m02 = pivotX * _t0;
+        d.m12 = pivotY * _t0;
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4736,12 +4825,13 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preScaleAround_translation(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s;
         d.m10 = 0.0f;
         d.m01 = 0.0f;
         d.m11 = s;
-        d.m02 = Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX));
-        d.m12 = Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY));
+        d.m02 = Math.fma(s, this.m02, pivotX * _t0);
+        d.m12 = Math.fma(s, this.m12, pivotY * _t0);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4753,10 +4843,11 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preScaleAround_translation_self(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s;
         d.m11 = s;
-        d.m02 = Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX));
-        d.m12 = Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY));
+        d.m02 = Math.fma(s, this.m02, pivotX * _t0);
+        d.m12 = Math.fma(s, this.m12, pivotY * _t0);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4768,12 +4859,13 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 preScaleAround_general(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s * this.m00;
         d.m10 = s * this.m10;
         d.m01 = s * this.m01;
         d.m11 = s * this.m11;
-        d.m02 = Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX));
-        d.m12 = Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY));
+        d.m02 = Math.fma(s, this.m02, pivotX * _t0);
+        d.m12 = Math.fma(s, this.m12, pivotY * _t0);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4842,12 +4934,13 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 preScaleAround(float s, float pivotX, float pivotY, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s * this.m00;
         d.m10 = s * this.m10;
         d.m01 = s * this.m01;
         d.m11 = s * this.m11;
-        d.m02 = Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX));
-        d.m12 = Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY));
+        d.m02 = Math.fma(s, this.m02, pivotX * _t0);
+        d.m12 = Math.fma(s, this.m12, pivotY * _t0);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4918,8 +5011,8 @@ public class Float2x3Impl implements Float2x3 {
         d.m10 = 0.0f;
         d.m01 = 0.0f;
         d.m11 = sY;
-        d.m02 = Math.fma(-pivotX, sX, pivotX);
-        d.m12 = Math.fma(-pivotY, sY, pivotY);
+        d.m02 = pivotX * (1.0f - sX);
+        d.m12 = pivotY * (1.0f - sY);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4933,8 +5026,8 @@ public class Float2x3Impl implements Float2x3 {
         Float2x3Impl d = (Float2x3Impl) dest;
         d.m00 = sX;
         d.m11 = sY;
-        d.m02 = Math.fma(-pivotX, sX, pivotX);
-        d.m12 = Math.fma(-pivotY, sY, pivotY);
+        d.m02 = pivotX * (1.0f - sX);
+        d.m12 = pivotY * (1.0f - sY);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -4950,8 +5043,8 @@ public class Float2x3Impl implements Float2x3 {
         d.m10 = sY * this.m10;
         d.m01 = sX * this.m01;
         d.m11 = sY * this.m11;
-        d.m02 = Math.fma(-pivotX, sX, Math.fma(sX, this.m02, pivotX));
-        d.m12 = Math.fma(-pivotY, sY, Math.fma(sY, this.m12, pivotY));
+        d.m02 = Math.fma(pivotX, 1.0f - sX, sX * this.m02);
+        d.m12 = Math.fma(pivotY, 1.0f - sY, sY * this.m12);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -5025,8 +5118,8 @@ public class Float2x3Impl implements Float2x3 {
         d.m10 = sY * this.m10;
         d.m01 = sX * this.m01;
         d.m11 = sY * this.m11;
-        d.m02 = Math.fma(-pivotX, sX, Math.fma(sX, this.m02, pivotX));
-        d.m12 = Math.fma(-pivotY, sY, Math.fma(sY, this.m12, pivotY));
+        d.m02 = Math.fma(pivotX, 1.0f - sX, sX * this.m02);
+        d.m12 = Math.fma(pivotY, 1.0f - sY, sY * this.m12);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -6024,12 +6117,13 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 scaleAround_translation(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s;
         d.m10 = 0.0f;
         d.m01 = 0.0f;
         d.m11 = s;
-        d.m02 = Math.fma(-s, pivotX, this.m02 + pivotX);
-        d.m12 = Math.fma(-s, pivotY, this.m12 + pivotY);
+        d.m02 = Math.fma(pivotX, _t0, this.m02);
+        d.m12 = Math.fma(pivotY, _t0, this.m12);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -6041,10 +6135,11 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 scaleAround_translation_self(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
+        float _t0 = 1.0f - s;
         d.m00 = s;
         d.m11 = s;
-        d.m02 = Math.fma(-s, pivotX, this.m02 + pivotX);
-        d.m12 = Math.fma(-s, pivotY, this.m12 + pivotY);
+        d.m02 = Math.fma(pivotX, _t0, this.m02);
+        d.m12 = Math.fma(pivotY, _t0, this.m12);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -6056,14 +6151,15 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 scaleAround_orthogonal(float s, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         float _buf0 = s * this.m00;
         float _buf1 = s * this.m10;
         float _buf2 = s * this.m01;
         float _buf3 = s * this.m11;
-        d.m02 = Math.fma(this.m00, _t0, Math.fma(this.m01, _t1, this.m02));
-        d.m12 = Math.fma(this.m10, _t0, Math.fma(this.m11, _t1, this.m12));
+        d.m02 = Math.fma(this.m00, _t1, Math.fma(this.m01, _t2, this.m02));
+        d.m12 = Math.fma(this.m10, _t1, Math.fma(this.m11, _t2, this.m12));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -6147,14 +6243,15 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 scaleAround(float s, float pivotX, float pivotY, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         float _buf0 = s * this.m00;
         float _buf1 = s * this.m10;
         float _buf2 = s * this.m01;
         float _buf3 = s * this.m11;
-        d.m02 = Math.fma(this.m00, _t0, Math.fma(this.m01, _t1, this.m02));
-        d.m12 = Math.fma(this.m10, _t0, Math.fma(this.m11, _t1, this.m12));
+        d.m02 = Math.fma(this.m00, _t1, Math.fma(this.m01, _t2, this.m02));
+        d.m12 = Math.fma(this.m10, _t1, Math.fma(this.m11, _t2, this.m12));
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -6247,8 +6344,8 @@ public class Float2x3Impl implements Float2x3 {
         d.m10 = 0.0f;
         d.m01 = 0.0f;
         d.m11 = sY;
-        d.m02 = Math.fma(-pivotX, sX, this.m02 + pivotX);
-        d.m12 = Math.fma(-pivotY, sY, this.m12 + pivotY);
+        d.m02 = Math.fma(pivotX, 1.0f - sX, this.m02);
+        d.m12 = Math.fma(pivotY, 1.0f - sY, this.m12);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -6262,8 +6359,8 @@ public class Float2x3Impl implements Float2x3 {
         Float2x3Impl d = (Float2x3Impl) dest;
         d.m00 = sX;
         d.m11 = sY;
-        d.m02 = Math.fma(-pivotX, sX, this.m02 + pivotX);
-        d.m12 = Math.fma(-pivotY, sY, this.m12 + pivotY);
+        d.m02 = Math.fma(pivotX, 1.0f - sX, this.m02);
+        d.m12 = Math.fma(pivotY, 1.0f - sY, this.m12);
         d.properties = Joml.BIT_AFFINE;
         return d;
     }
@@ -6275,8 +6372,8 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 scaleAround_orthogonal(float sX, float sY, float pivotX, float pivotY, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         float _buf0 = sX * this.m00;
         float _buf1 = sX * this.m10;
         float _buf2 = sY * this.m01;
@@ -6369,8 +6466,8 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 scaleAround(float sX, float sY, float pivotX, float pivotY, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         float _buf0 = sX * this.m00;
         float _buf1 = sX * this.m10;
         float _buf2 = sY * this.m01;
@@ -6676,18 +6773,18 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 view_orthogonal(float left, float right, float bottom, float top, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (this.m00 + this.m00) * _t0_inv;
-        float _buf1 = (this.m10 + this.m10) * _t0_inv;
-        float _buf2 = (this.m01 + this.m01) * _t1_inv;
-        float _buf3 = (this.m11 + this.m11) * _t1_inv;
-        d.m02 = this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv;
-        d.m12 = this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv;
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * this.m00;
+        float _buf1 = _sp0 * this.m10;
+        float _buf2 = _sp1 * this.m01;
+        float _buf3 = _sp1 * this.m11;
+        d.m02 = this.m02 - this.m00 * _sp2 - this.m01 * _sp3;
+        d.m12 = this.m12 - this.m10 * _sp2 - this.m11 * _sp3;
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -6703,18 +6800,18 @@ public class Float2x3Impl implements Float2x3 {
      */
     private Float2x3 view_general(float left, float right, float bottom, float top, @Mutated Float2x3 dest) {
         Float2x3Impl d = (Float2x3Impl) dest;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (this.m00 + this.m00) * _t0_inv;
-        float _buf1 = (this.m10 + this.m10) * _t0_inv;
-        float _buf2 = (this.m01 + this.m01) * _t1_inv;
-        float _buf3 = (this.m11 + this.m11) * _t1_inv;
-        d.m02 = this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv);
-        d.m12 = this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * this.m00;
+        float _buf1 = _sp0 * this.m10;
+        float _buf2 = _sp1 * this.m01;
+        float _buf3 = _sp1 * this.m11;
+        d.m02 = this.m02 + (-(this.m00 * _sp2) - this.m01 * _sp3);
+        d.m12 = this.m12 + (-(this.m10 * _sp2) - this.m11 * _sp3);
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;
@@ -6792,18 +6889,18 @@ public class Float2x3Impl implements Float2x3 {
      */
     public Double2x3 view(float left, float right, float bottom, float top, @Mutated Double2x3 dest) {
         Double2x3Impl d = (Double2x3Impl) dest;
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        float _buf0 = (this.m00 + this.m00) * _t0_inv;
-        float _buf1 = (this.m10 + this.m10) * _t0_inv;
-        float _buf2 = (this.m01 + this.m01) * _t1_inv;
-        float _buf3 = (this.m11 + this.m11) * _t1_inv;
-        d.m02 = this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv);
-        d.m12 = this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        float _buf0 = _sp0 * this.m00;
+        float _buf1 = _sp0 * this.m10;
+        float _buf2 = _sp1 * this.m01;
+        float _buf3 = _sp1 * this.m11;
+        d.m02 = this.m02 + (-(this.m00 * _sp2) - this.m01 * _sp3);
+        d.m12 = this.m12 + (-(this.m10 * _sp2) - this.m11 * _sp3);
         d.m00 = _buf0;
         d.m10 = _buf1;
         d.m01 = _buf2;

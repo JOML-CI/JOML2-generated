@@ -225,8 +225,14 @@ public final class FloatSphereImpl implements FloatSphere {
 
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      *
      * @param m the transformation matrix to apply
      * @param dest will hold the result
@@ -250,8 +256,14 @@ public final class FloatSphereImpl implements FloatSphere {
 
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -278,8 +290,14 @@ public final class FloatSphereImpl implements FloatSphere {
 
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -288,26 +306,6 @@ public final class FloatSphereImpl implements FloatSphere {
      * @param dest will hold the result
      * @return dest
      */
-    /** Private vector tail of {@code transform_s248ca5d3}: loads, computes and stores every column; reached only through it. */
-    private static void transform_s248ca5d3_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _t9, float _t10, float _t11, float[] mData) {
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, mData, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, mData, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, mData, 4);
-        var _sv3 = FloatVector.fromArray(COL_SPECIES, mData, 12);
-        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r9), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r10), _sv2.fma(FloatVector.broadcast(COL_SPECIES, _r11), _sv3))).withLane(3, _r12 * (float) Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
-    }
-
-    /** Private vector tail of {@code transform_s57bdce44}: loads, computes and stores every column; reached only through it. */
-    private static void transform_s57bdce44_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _t9, float _t10, float _t11, float[] mData) {
-        var _sv0 = FloatVector.fromArray(COL_SPECIES, mData, 8);
-        var _sv1 = FloatVector.fromArray(COL_SPECIES, mData, 0);
-        var _sv2 = FloatVector.fromArray(COL_SPECIES, mData, 4);
-        var _sv3 = FloatVector.fromArray(COL_SPECIES, mData, 12);
-        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r9)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r10)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r11)).add(_sv3))).withLane(3, _r12 * (float) Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
-        _col0.intoArray(dd, 0);
-    }
-
     public FloatSphere transform(Float4x4R m, @Mutated FloatSphere dest) {
         if (SimdMath.USE_FMA) return transform_fma(m, dest);
         return transform_mulAdd(m, dest);
@@ -361,10 +359,36 @@ public final class FloatSphereImpl implements FloatSphere {
         return dest;
     }
 
+    /** Private vector tail of {@code transform_s248ca5d3}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s248ca5d3_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _t9, float _t10, float _t11, float[] mData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.fma(FloatVector.broadcast(COL_SPECIES, _r9), _sv1.fma(FloatVector.broadcast(COL_SPECIES, _r10), _sv2.fma(FloatVector.broadcast(COL_SPECIES, _r11), _sv3))).withLane(3, _r12 * (float) Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
+    }
+
+    /** Private vector tail of {@code transform_s57bdce44}: loads, computes and stores every column; reached only through it. */
+    private static void transform_s57bdce44_tail(float[] dd, float _r0, float _r1, float _r2, float _r3, float _r4, float _r5, float _r6, float _r7, float _r8, float _r9, float _r10, float _r11, float _r12, float _t9, float _t10, float _t11, float[] mData) {
+        var _sv0 = FloatVector.fromArray(COL_SPECIES, mData, 8);
+        var _sv1 = FloatVector.fromArray(COL_SPECIES, mData, 0);
+        var _sv2 = FloatVector.fromArray(COL_SPECIES, mData, 4);
+        var _sv3 = FloatVector.fromArray(COL_SPECIES, mData, 12);
+        var _col0 = _sv0.mul(FloatVector.broadcast(COL_SPECIES, _r9)).add(_sv1.mul(FloatVector.broadcast(COL_SPECIES, _r10)).add(_sv2.mul(FloatVector.broadcast(COL_SPECIES, _r11)).add(_sv3))).withLane(3, _r12 * (float) Math.sqrt(Math.max(Math.max(Math.fma(_r2, _r2, Math.fma(_r4, _r4, Math.fma(_r0, _r0, _t9 + _t10))), Math.fma(_r3, _r3, Math.fma(_r5, _r5, Math.fma(_r1, _r1, _t9 + _t11)))), Math.fma(_r7, _r7, Math.fma(_r8, _r8, Math.fma(_r6, _r6, _t10 + _t11))))));
+        _col0.intoArray(dd, 0);
+    }
+
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.

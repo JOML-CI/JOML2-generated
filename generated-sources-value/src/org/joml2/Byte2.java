@@ -550,9 +550,10 @@ public value record Byte2(byte x, byte y) {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32), returning the result as a value.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32), returning the result as a value.
      *
      * @param shift the number of bit positions to shift by
      * @return the resulting vector
@@ -735,13 +736,13 @@ public value record Byte2(byte x, byte y) {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public byte compAdd() {
-        return (byte) (this.x + this.y);
+    public int compAdd() {
+        return this.x + this.y;
     }
 
 
@@ -768,26 +769,26 @@ public value record Byte2(byte x, byte y) {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    public byte compMul() {
-        return (byte) (this.x * this.y);
+    public int compMul() {
+        return this.x * this.y;
     }
 
 
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public byte distanceSquared(Byte2 other) {
+    public int distanceSquared(Byte2 other) {
         return distanceSquared(other.x(), other.y());
     }
 
@@ -795,30 +796,30 @@ public value record Byte2(byte x, byte y) {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public byte distanceSquared(byte otherX, byte otherY) {
-        byte _t0 = (byte) (this.x - otherX);
-        byte _t1 = (byte) (this.y - otherY);
-        return (byte) (_t0 * _t0 + _t1 * _t1);
+    public int distanceSquared(byte otherX, byte otherY) {
+        int _t0 = this.x - otherX;
+        int _t1 = this.y - otherY;
+        return _t0 * _t0 + _t1 * _t1;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public byte dot(Byte2 other) {
+    public int dot(Byte2 other) {
         return dot(other.x(), other.y());
     }
 
@@ -826,41 +827,41 @@ public value record Byte2(byte x, byte y) {
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY})
      */
-    public byte dot(byte otherX, byte otherY) {
-        return (byte) (otherX * this.x + otherY * this.y);
+    public int dot(byte otherX, byte otherY) {
+        return otherX * this.x + otherY * this.y;
     }
 
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    public byte lengthSquared() {
-        return (byte) (this.x * this.x + this.y * this.y);
+    public int lengthSquared() {
+        return this.x * this.x + this.y * this.y;
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public byte manhattanDistance(Byte2 other) {
+    public int manhattanDistance(Byte2 other) {
         return manhattanDistance(other.x(), other.y());
     }
 
@@ -868,28 +869,28 @@ public value record Byte2(byte x, byte y) {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY})
      */
-    public byte manhattanDistance(byte otherX, byte otherY) {
-        return (byte) (Math.abs(this.x - otherX) + Math.abs(this.y - otherY));
+    public int manhattanDistance(byte otherX, byte otherY) {
+        return Math.abs(this.x - otherX) + Math.abs(this.y - otherY);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public byte manhattanLength() {
-        return (byte) (Math.abs(this.x) + Math.abs(this.y));
+    public int manhattanLength() {
+        return Math.abs(this.x) + Math.abs(this.y);
     }
 
 

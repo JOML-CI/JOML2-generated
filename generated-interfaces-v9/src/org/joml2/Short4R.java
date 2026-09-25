@@ -2131,9 +2131,11 @@ public interface Short4R {
     Double4 shr(short shift, @Mutated Double4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2142,13 +2144,16 @@ public interface Short4R {
     Short4 ushr(short shift, @Mutated Short4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code int}. The shift count
-     * is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code int}. The shift count is
+     * still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2157,13 +2162,16 @@ public interface Short4R {
     Int4 ushr(short shift, @Mutated Int4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code long}. The shift count
-     * is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code long}. The shift count is
+     * still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2172,13 +2180,16 @@ public interface Short4R {
     Long4 ushr(short shift, @Mutated Long4 dest);
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32) and store the result in
+     * {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
-     * before evaluating - and each result component is then stored as {@code double}. The shift
-     * count is still taken modulo this vector's lane width of 16, not the destination's.
+     * The shift is evaluated on the {@code short} lane of 16 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is
+     * {@code 32767}), and each result component is then widened to {@code double}. The shift count
+     * is still taken modulo this vector's lane width of 16, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -2618,12 +2629,12 @@ public interface Short4R {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    short compAdd();
+    int compAdd();
 
     /**
      * Compute the largest component of this vector.
@@ -2642,30 +2653,30 @@ public interface Short4R {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    short compMul();
+    long compMul();
 
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    short distanceSquared(Short4R other);
+    long distanceSquared(Short4R other);
 
     /**
      * Compute the squared distance between this vector and ({@code x}, {@code y}, {@code z},
      * {@code w}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -2674,24 +2685,24 @@ public interface Short4R {
      * @return the squared distance between this vector and ({@code x}, {@code y}, {@code z},
      *        {@code w})
      */
-    short distanceSquared(short x, short y, short z, short w);
+    long distanceSquared(short x, short y, short z, short w);
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    short dot(Short4R other);
+    long dot(Short4R other);
 
     /**
      * Compute the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -2699,35 +2710,35 @@ public interface Short4R {
      * @param w the {@code w} component of the vector {@code (x, y, z, w)}
      * @return the dot product of this vector and ({@code x}, {@code y}, {@code z}, {@code w})
      */
-    short dot(short x, short y, short z, short w);
+    long dot(short x, short y, short z, short w);
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    short lengthSquared();
+    long lengthSquared();
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    short manhattanDistance(Short4R other);
+    int manhattanDistance(Short4R other);
 
     /**
      * Compute the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
      * {@code w}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)}
      * @param y the {@code y} component of the vector {@code (x, y, z, w)}
@@ -2736,17 +2747,17 @@ public interface Short4R {
      * @return the Manhattan distance between this vector and ({@code x}, {@code y}, {@code z},
      *        {@code w})
      */
-    short manhattanDistance(short x, short y, short z, short w);
+    int manhattanDistance(short x, short y, short z, short w);
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code short} on return, so a
-     * result outside the {@code short} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    short manhattanLength();
+    int manhattanLength();
 
     /**
      * Set each component of this vector to the larger of itself and {@code scalar} and store the

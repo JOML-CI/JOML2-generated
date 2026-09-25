@@ -3845,12 +3845,13 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preScaleAround_identity(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = s;
-        dd[4] = Math.fma(-s, pivotX, pivotX);
-        dd[5] = Math.fma(-s, pivotY, pivotY);
+        dd[4] = pivotX * _t0;
+        dd[5] = pivotY * _t0;
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -3863,10 +3864,11 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preScaleAround_identity_self(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[3] = s;
-        dd[4] = Math.fma(-s, pivotX, pivotX);
-        dd[5] = Math.fma(-s, pivotY, pivotY);
+        dd[4] = pivotX * _t0;
+        dd[5] = pivotY * _t0;
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -3879,12 +3881,13 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preScaleAround_translation(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = s;
-        dd[4] = Math.fma(-s, pivotX, Math.fma(s, sd[4], pivotX));
-        dd[5] = Math.fma(-s, pivotY, Math.fma(s, sd[5], pivotY));
+        dd[4] = Math.fma(s, sd[4], pivotX * _t0);
+        dd[5] = Math.fma(s, sd[5], pivotY * _t0);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -3897,10 +3900,11 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preScaleAround_translation_self(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[3] = s;
-        dd[4] = Math.fma(-s, pivotX, Math.fma(s, sd[4], pivotX));
-        dd[5] = Math.fma(-s, pivotY, Math.fma(s, sd[5], pivotY));
+        dd[4] = Math.fma(s, sd[4], pivotX * _t0);
+        dd[5] = Math.fma(s, sd[5], pivotY * _t0);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -3913,12 +3917,13 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 preScaleAround_general(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s * sd[0];
         dd[1] = s * sd[1];
         dd[2] = s * sd[2];
         dd[3] = s * sd[3];
-        dd[4] = Math.fma(-s, pivotX, Math.fma(s, sd[4], pivotX));
-        dd[5] = Math.fma(-s, pivotY, Math.fma(s, sd[5], pivotY));
+        dd[4] = Math.fma(s, sd[4], pivotX * _t0);
+        dd[5] = Math.fma(s, sd[5], pivotY * _t0);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4013,8 +4018,8 @@ public class Double2x3Impl implements Double2x3 {
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = sY;
-        dd[4] = Math.fma(-pivotX, sX, pivotX);
-        dd[5] = Math.fma(-pivotY, sY, pivotY);
+        dd[4] = pivotX * (1.0 - sX);
+        dd[5] = pivotY * (1.0 - sY);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4029,8 +4034,8 @@ public class Double2x3Impl implements Double2x3 {
         double[] dd = ((Double2x3Impl) dest).data;
         dd[0] = sX;
         dd[3] = sY;
-        dd[4] = Math.fma(-pivotX, sX, pivotX);
-        dd[5] = Math.fma(-pivotY, sY, pivotY);
+        dd[4] = pivotX * (1.0 - sX);
+        dd[5] = pivotY * (1.0 - sY);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4047,8 +4052,8 @@ public class Double2x3Impl implements Double2x3 {
         dd[1] = sY * sd[1];
         dd[2] = sX * sd[2];
         dd[3] = sY * sd[3];
-        dd[4] = Math.fma(-pivotX, sX, Math.fma(sX, sd[4], pivotX));
-        dd[5] = Math.fma(-pivotY, sY, Math.fma(sY, sd[5], pivotY));
+        dd[4] = Math.fma(pivotX, 1.0 - sX, sX * sd[4]);
+        dd[5] = Math.fma(pivotY, 1.0 - sY, sY * sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4851,12 +4856,13 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 scaleAround_translation(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = s;
-        dd[4] = Math.fma(-s, pivotX, sd[4] + pivotX);
-        dd[5] = Math.fma(-s, pivotY, sd[5] + pivotY);
+        dd[4] = Math.fma(pivotX, _t0, sd[4]);
+        dd[5] = Math.fma(pivotY, _t0, sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4869,10 +4875,11 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 scaleAround_translation_self(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
+        double _t0 = 1.0 - s;
         dd[0] = s;
         dd[3] = s;
-        dd[4] = Math.fma(-s, pivotX, sd[4] + pivotX);
-        dd[5] = Math.fma(-s, pivotY, sd[5] + pivotY);
+        dd[4] = Math.fma(pivotX, _t0, sd[4]);
+        dd[5] = Math.fma(pivotY, _t0, sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -4885,14 +4892,15 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 scaleAround_orthogonal(double s, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
         double _buf0 = s * sd[0];
         double _buf1 = s * sd[1];
         double _buf2 = s * sd[2];
         double _buf3 = s * sd[3];
-        dd[4] = Math.fma(sd[0], _t0, Math.fma(sd[2], _t1, sd[4]));
-        dd[5] = Math.fma(sd[1], _t0, Math.fma(sd[3], _t1, sd[5]));
+        dd[4] = Math.fma(sd[0], _t1, Math.fma(sd[2], _t2, sd[4]));
+        dd[5] = Math.fma(sd[1], _t1, Math.fma(sd[3], _t2, sd[5]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -5020,8 +5028,8 @@ public class Double2x3Impl implements Double2x3 {
         dd[1] = 0.0;
         dd[2] = 0.0;
         dd[3] = sY;
-        dd[4] = Math.fma(-pivotX, sX, sd[4] + pivotX);
-        dd[5] = Math.fma(-pivotY, sY, sd[5] + pivotY);
+        dd[4] = Math.fma(pivotX, 1.0 - sX, sd[4]);
+        dd[5] = Math.fma(pivotY, 1.0 - sY, sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -5036,8 +5044,8 @@ public class Double2x3Impl implements Double2x3 {
         double[] dd = ((Double2x3Impl) dest).data;
         dd[0] = sX;
         dd[3] = sY;
-        dd[4] = Math.fma(-pivotX, sX, sd[4] + pivotX);
-        dd[5] = Math.fma(-pivotY, sY, sd[5] + pivotY);
+        dd[4] = Math.fma(pivotX, 1.0 - sX, sd[4]);
+        dd[5] = Math.fma(pivotY, 1.0 - sY, sd[5]);
         ((Double2x3Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -5050,8 +5058,8 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 scaleAround_orthogonal(double sX, double sY, double pivotX, double pivotY, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         double _buf0 = sX * sd[0];
         double _buf1 = sX * sd[1];
         double _buf2 = sY * sd[2];
@@ -5357,18 +5365,18 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 view_orthogonal(double left, double right, double bottom, double top, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        double _buf2 = (sd[2] + sd[2]) * _t1_inv;
-        double _buf3 = (sd[3] + sd[3]) * _t1_inv;
-        dd[4] = sd[4] - sd[0] * _t2 * _t0_inv - sd[2] * _t3 * _t1_inv;
-        dd[5] = sd[5] - sd[1] * _t2 * _t0_inv - sd[3] * _t3 * _t1_inv;
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        double _buf0 = _sp0 * sd[0];
+        double _buf1 = _sp0 * sd[1];
+        double _buf2 = _sp1 * sd[2];
+        double _buf3 = _sp1 * sd[3];
+        dd[4] = sd[4] - sd[0] * _sp2 - sd[2] * _sp3;
+        dd[5] = sd[5] - sd[1] * _sp2 - sd[3] * _sp3;
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -5385,18 +5393,18 @@ public class Double2x3Impl implements Double2x3 {
     private Double2x3 view_general(double left, double right, double bottom, double top, @Mutated Double2x3 dest) {
         double[] sd = this.data;
         double[] dd = ((Double2x3Impl) dest).data;
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        double _buf0 = (sd[0] + sd[0]) * _t0_inv;
-        double _buf1 = (sd[1] + sd[1]) * _t0_inv;
-        double _buf2 = (sd[2] + sd[2]) * _t1_inv;
-        double _buf3 = (sd[3] + sd[3]) * _t1_inv;
-        dd[4] = sd[4] + (-(sd[0] * _t2 * _t0_inv) - sd[2] * _t3 * _t1_inv);
-        dd[5] = sd[5] + (-(sd[1] * _t2 * _t0_inv) - sd[3] * _t3 * _t1_inv);
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        double _buf0 = _sp0 * sd[0];
+        double _buf1 = _sp0 * sd[1];
+        double _buf2 = _sp1 * sd[2];
+        double _buf3 = _sp1 * sd[3];
+        dd[4] = sd[4] + (-(sd[0] * _sp2) - sd[2] * _sp3);
+        dd[5] = sd[5] + (-(sd[1] * _sp2) - sd[3] * _sp3);
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;

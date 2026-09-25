@@ -2253,7 +2253,8 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Double2x3 preScaleAround_identity(double s, double pivotX, double pivotY) {
-        return new Double2x3(s, 0.0, Math.fma(-s, pivotX, pivotX), 0.0, s, Math.fma(-s, pivotY, pivotY), Joml.BIT_AFFINE);
+        double _t0 = 1.0 - s;
+        return new Double2x3(s, 0.0, pivotX * _t0, 0.0, s, pivotY * _t0, Joml.BIT_AFFINE);
     }
 
 
@@ -2262,7 +2263,8 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Double2x3 preScaleAround_translation(double s, double pivotX, double pivotY) {
-        return new Double2x3(s, 0.0, Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX)), 0.0, s, Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY)), Joml.BIT_AFFINE);
+        double _t0 = 1.0 - s;
+        return new Double2x3(s, 0.0, Math.fma(s, this.m02, pivotX * _t0), 0.0, s, Math.fma(s, this.m12, pivotY * _t0), Joml.BIT_AFFINE);
     }
 
 
@@ -2271,7 +2273,8 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Double2x3 preScaleAround_general(double s, double pivotX, double pivotY) {
-        return new Double2x3(s * this.m00, s * this.m01, Math.fma(-s, pivotX, Math.fma(s, this.m02, pivotX)), s * this.m10, s * this.m11, Math.fma(-s, pivotY, Math.fma(s, this.m12, pivotY)), Joml.BIT_AFFINE);
+        double _t0 = 1.0 - s;
+        return new Double2x3(s * this.m00, s * this.m01, Math.fma(s, this.m02, pivotX * _t0), s * this.m10, s * this.m11, Math.fma(s, this.m12, pivotY * _t0), Joml.BIT_AFFINE);
     }
 
 
@@ -2318,7 +2321,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Double2x3 preScaleAround_identity(double sX, double sY, double pivotX, double pivotY) {
-        return new Double2x3(sX, 0.0, Math.fma(-pivotX, sX, pivotX), 0.0, sY, Math.fma(-pivotY, sY, pivotY), Joml.BIT_AFFINE);
+        return new Double2x3(sX, 0.0, pivotX * (1.0 - sX), 0.0, sY, pivotY * (1.0 - sY), Joml.BIT_AFFINE);
     }
 
 
@@ -2327,7 +2330,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * only through the public {@code preScaleAround} dispatcher.
      */
     private Double2x3 preScaleAround_general(double sX, double sY, double pivotX, double pivotY) {
-        return new Double2x3(sX * this.m00, sX * this.m01, Math.fma(-pivotX, sX, Math.fma(sX, this.m02, pivotX)), sY * this.m10, sY * this.m11, Math.fma(-pivotY, sY, Math.fma(sY, this.m12, pivotY)), Joml.BIT_AFFINE);
+        return new Double2x3(sX * this.m00, sX * this.m01, Math.fma(pivotX, 1.0 - sX, sX * this.m02), sY * this.m10, sY * this.m11, Math.fma(pivotY, 1.0 - sY, sY * this.m12), Joml.BIT_AFFINE);
     }
 
 
@@ -2721,7 +2724,8 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * through the public {@code scaleAround} dispatcher.
      */
     private Double2x3 scaleAround_translation(double s, double pivotX, double pivotY) {
-        return new Double2x3(s, 0.0, Math.fma(-s, pivotX, this.m02 + pivotX), 0.0, s, Math.fma(-s, pivotY, this.m12 + pivotY), Joml.BIT_AFFINE);
+        double _t0 = 1.0 - s;
+        return new Double2x3(s, 0.0, Math.fma(pivotX, _t0, this.m02), 0.0, s, Math.fma(pivotY, _t0, this.m12), Joml.BIT_AFFINE);
     }
 
 
@@ -2730,9 +2734,10 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * through the public {@code scaleAround} dispatcher.
      */
     private Double2x3 scaleAround_orthogonal(double s, double pivotX, double pivotY) {
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
-        return new Double2x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t0, Math.fma(this.m01, _t1, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t0, Math.fma(this.m11, _t1, this.m12)), Joml.BIT_AFFINE);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
+        return new Double2x3(s * this.m00, s * this.m01, Math.fma(this.m00, _t1, Math.fma(this.m01, _t2, this.m02)), s * this.m10, s * this.m11, Math.fma(this.m10, _t1, Math.fma(this.m11, _t2, this.m12)), Joml.BIT_AFFINE);
     }
 
 
@@ -2798,7 +2803,7 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * through the public {@code scaleAround} dispatcher.
      */
     private Double2x3 scaleAround_translation(double sX, double sY, double pivotX, double pivotY) {
-        return new Double2x3(sX, 0.0, Math.fma(-pivotX, sX, this.m02 + pivotX), 0.0, sY, Math.fma(-pivotY, sY, this.m12 + pivotY), Joml.BIT_AFFINE);
+        return new Double2x3(sX, 0.0, Math.fma(pivotX, 1.0 - sX, this.m02), 0.0, sY, Math.fma(pivotY, 1.0 - sY, this.m12), Joml.BIT_AFFINE);
     }
 
 
@@ -2807,8 +2812,8 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * through the public {@code scaleAround} dispatcher.
      */
     private Double2x3 scaleAround_orthogonal(double sX, double sY, double pivotX, double pivotY) {
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         return new Double2x3(sX * this.m00, sY * this.m01, Math.fma(this.m00, _t2, Math.fma(this.m01, _t3, this.m02)), sX * this.m10, sY * this.m11, Math.fma(this.m10, _t2, Math.fma(this.m11, _t3, this.m12)), Joml.BIT_AFFINE);
     }
 
@@ -2948,13 +2953,13 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * the public {@code view} dispatcher.
      */
     private Double2x3 view_orthogonal(double left, double right, double bottom, double top) {
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        return new Double2x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 - this.m00 * _t2 * _t0_inv - this.m01 * _t3 * _t1_inv, (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 - this.m10 * _t2 * _t0_inv - this.m11 * _t3 * _t1_inv, Joml.BIT_AFFINE);
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        return new Double2x3(_sp0 * this.m00, _sp1 * this.m01, this.m02 - this.m00 * _sp2 - this.m01 * _sp3, _sp0 * this.m10, _sp1 * this.m11, this.m12 - this.m10 * _sp2 - this.m11 * _sp3, Joml.BIT_AFFINE);
     }
 
 
@@ -2963,13 +2968,13 @@ public record Double2x3(double m00, double m01, double m02, double m10, double m
      * the public {@code view} dispatcher.
      */
     private Double2x3 view_general(double left, double right, double bottom, double top) {
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        return new Double2x3((this.m00 + this.m00) * _t0_inv, (this.m01 + this.m01) * _t1_inv, this.m02 + (-(this.m00 * _t2 * _t0_inv) - this.m01 * _t3 * _t1_inv), (this.m10 + this.m10) * _t0_inv, (this.m11 + this.m11) * _t1_inv, this.m12 + (-(this.m10 * _t2 * _t0_inv) - this.m11 * _t3 * _t1_inv), Joml.BIT_AFFINE);
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        return new Double2x3(_sp0 * this.m00, _sp1 * this.m01, this.m02 + (-(this.m00 * _sp2) - this.m01 * _sp3), _sp0 * this.m10, _sp1 * this.m11, this.m12 + (-(this.m10 * _sp2) - this.m11 * _sp3), Joml.BIT_AFFINE);
     }
 
 

@@ -205,10 +205,13 @@ public record DoubleAABB(double minX, double minY, double minZ, double maxX, dou
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private DoubleAABB transform_s91e96b_tail(double _t12, Double3x4 m, double _t13, double _t14, double _t15, double _t24, double _t30, double _t17, double _t25, double _t19, double _t26) {
-        double _t31 = Math.fma(_t12, Math.abs(m.m12()), Math.fma(_t13, Math.abs(m.m10()), _t14 * Math.abs(m.m11())));
-        double _t32 = Math.fma(_t12, Math.abs(m.m22()), Math.fma(_t13, Math.abs(m.m20()), _t14 * Math.abs(m.m21())));
-        return new DoubleAABB(Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(-0.5, _t30, m.m03()))), Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(-0.5, _t31, m.m13()))), Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(-0.5, _t32, m.m23()))), Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(0.5, _t30, m.m03()))), Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(0.5, _t31, m.m13()))), Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(0.5, _t32, m.m23()))));
+    private DoubleAABB transform_s91e96b_tail(double _t11, Double3x4 m, double _t9, double _t10, double _t34, double _t18, double _t28, double _t35, double _t20, double _t29, double _t36, double _t22, double _t30) {
+        double _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
+        if (_t34 < 0.0) {
+            return new DoubleAABB(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        } else {
+            return new DoubleAABB(Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, m.m03()))), Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, m.m13()))), Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, m.m23()))), Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, m.m03()))), Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, m.m13()))), Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, m.m23()))));
+        }
     }
 
 
@@ -220,27 +223,32 @@ public record DoubleAABB(double minX, double minY, double minZ, double maxX, dou
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB transform(Double3x4 m) {
-        double _t9 = this.minZ + this.maxZ;
-        double _t10 = this.minX + this.maxX;
-        double _t11 = this.minY + this.maxY;
-        double _t12 = this.maxZ - this.minZ;
-        double _t13 = this.maxX - this.minX;
-        double _t14 = this.maxY - this.minY;
-        double _t15 = m.m02() * _t9;
-        double _t17 = m.m12() * _t9;
-        double _t19 = m.m22() * _t9;
-        double _t24 = Math.fma(m.m00(), _t10, m.m01() * _t11);
-        double _t25 = Math.fma(m.m10(), _t10, m.m11() * _t11);
-        double _t26 = Math.fma(m.m20(), _t10, m.m21() * _t11);
-        double _t30 = Math.fma(_t12, Math.abs(m.m02()), Math.fma(_t13, Math.abs(m.m00()), _t14 * Math.abs(m.m01())));
-        return transform_s91e96b_tail(_t12, m, _t13, _t14, _t15, _t24, _t30, _t17, _t25, _t19, _t26);
+        double _t9 = this.maxX - this.minX;
+        double _t10 = this.maxY - this.minY;
+        double _t11 = this.maxZ - this.minZ;
+        double _t12 = this.minZ + this.maxZ;
+        double _t13 = this.minX + this.maxX;
+        double _t14 = this.minY + this.maxY;
+        double _t18 = m.m02() * _t12;
+        double _t20 = m.m12() * _t12;
+        double _t22 = m.m22() * _t12;
+        double _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
+        double _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
+        double _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
+        double _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
+        return transform_s91e96b_tail(_t11, m, _t9, _t10, _t34, _t18, _t28, _t35, _t20, _t29, _t36, _t22, _t30);
     }
 
     /** Private tail of {@code transform}; reached only through it. */
-    private DoubleAABB transform_sa000ec_tail(double _t12, Double4x4 m, double _t13, double _t14, double _t15, double _t24, double _t30, double _t17, double _t25, double _t19, double _t26) {
-        double _t31 = Math.fma(_t12, Math.abs(m.m12()), Math.fma(_t13, Math.abs(m.m10()), _t14 * Math.abs(m.m11())));
-        double _t32 = Math.fma(_t12, Math.abs(m.m22()), Math.fma(_t13, Math.abs(m.m20()), _t14 * Math.abs(m.m21())));
-        return new DoubleAABB(Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(-0.5, _t30, m.m03()))), Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(-0.5, _t31, m.m13()))), Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(-0.5, _t32, m.m23()))), Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(0.5, _t30, m.m03()))), Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(0.5, _t31, m.m13()))), Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(0.5, _t32, m.m23()))));
+    private DoubleAABB transform_sa000ec_tail(double _t11, Double4x4 m, double _t9, double _t10, double _t34, double _t18, double _t28, double _t35, double _t20, double _t29, double _t36, double _t22, double _t30) {
+        double _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
+        if (_t34 < 0.0) {
+            return new DoubleAABB(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        } else {
+            return new DoubleAABB(Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, m.m03()))), Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, m.m13()))), Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, m.m23()))), Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, m.m03()))), Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, m.m13()))), Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, m.m23()))));
+        }
     }
 
 
@@ -255,20 +263,22 @@ public record DoubleAABB(double minX, double minY, double minZ, double maxX, dou
      * @return the resulting axis-aligned bounding box
      */
     public DoubleAABB transform(Double4x4 m) {
-        double _t9 = this.minZ + this.maxZ;
-        double _t10 = this.minX + this.maxX;
-        double _t11 = this.minY + this.maxY;
-        double _t12 = this.maxZ - this.minZ;
-        double _t13 = this.maxX - this.minX;
-        double _t14 = this.maxY - this.minY;
-        double _t15 = m.m02() * _t9;
-        double _t17 = m.m12() * _t9;
-        double _t19 = m.m22() * _t9;
-        double _t24 = Math.fma(m.m00(), _t10, m.m01() * _t11);
-        double _t25 = Math.fma(m.m10(), _t10, m.m11() * _t11);
-        double _t26 = Math.fma(m.m20(), _t10, m.m21() * _t11);
-        double _t30 = Math.fma(_t12, Math.abs(m.m02()), Math.fma(_t13, Math.abs(m.m00()), _t14 * Math.abs(m.m01())));
-        return transform_sa000ec_tail(_t12, m, _t13, _t14, _t15, _t24, _t30, _t17, _t25, _t19, _t26);
+        double _t9 = this.maxX - this.minX;
+        double _t10 = this.maxY - this.minY;
+        double _t11 = this.maxZ - this.minZ;
+        double _t12 = this.minZ + this.maxZ;
+        double _t13 = this.minX + this.maxX;
+        double _t14 = this.minY + this.maxY;
+        double _t18 = m.m02() * _t12;
+        double _t20 = m.m12() * _t12;
+        double _t22 = m.m22() * _t12;
+        double _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
+        double _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
+        double _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
+        double _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
+        return transform_sa000ec_tail(_t11, m, _t9, _t10, _t34, _t18, _t28, _t35, _t20, _t29, _t36, _t22, _t30);
     }
 
 

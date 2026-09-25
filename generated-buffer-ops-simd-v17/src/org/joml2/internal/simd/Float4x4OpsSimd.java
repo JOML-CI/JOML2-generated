@@ -42,21 +42,49 @@ public final class Float4x4OpsSimd {
         float _t9 = (1.0f / (float) Math.sqrt(_t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
-        float _t21 = _t6 > 0.0f ? _self01 * _t9 : 0.0f;
-        float _t22 = _t7 > 0.0f ? _self12 * _t10 : 0.0f;
-        float _t23 = _t6 > 0.0f ? _self11 * _t9 : 0.0f;
-        float _t24 = _t7 > 0.0f ? _self02 * _t10 : 0.0f;
-        float _t25 = _t8 > 0.0f ? _self20 * _t11 : 0.0f;
-        float _t26 = _t7 > 0.0f ? _self22 * _t10 : 0.0f;
-        float _t27 = _t6 > 0.0f ? _self21 * _t9 : 0.0f;
-        float _t28 = _t8 > 0.0f ? _self00 * _t11 : 0.0f;
-        float _t29 = _t8 > 0.0f ? _self10 * _t11 : 0.0f;
+        float _t21, _t23, _t27;
+        if (_t6 != 0.0f) {
+            _t21 = _self01 * _t9;
+            _t23 = _self11 * _t9;
+            _t27 = _self21 * _t9;
+        } else {
+            _t21 = 0.0f;
+            _t23 = 0.0f;
+            _t27 = 0.0f;
+        }
+        float _t22, _t24, _t26;
+        if (_t7 != 0.0f) {
+            _t22 = _self12 * _t10;
+            _t24 = _self02 * _t10;
+            _t26 = _self22 * _t10;
+        } else {
+            _t22 = 0.0f;
+            _t24 = 0.0f;
+            _t26 = 0.0f;
+        }
+        float _t25, _t28, _t29;
+        if (_t8 != 0.0f) {
+            _t25 = _self20 * _t11;
+            _t28 = _self00 * _t11;
+            _t29 = _self10 * _t11;
+        } else {
+            _t25 = 0.0f;
+            _t28 = 0.0f;
+            _t29 = 0.0f;
+        }
         float _t36 = _t27 - _t22;
         float _t39 = _t27 + _t22;
         float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
-        float _t49 = _t48 < 0.0f ? -_t28 : _t28;
-        float _t50 = _t48 < 0.0f ? -_t29 : _t29;
-        float _t51 = _t48 < 0.0f ? -_t25 : _t25;
+        float _t49, _t50, _t51;
+        if (_t48 < 0.0f) {
+            _t49 = -_t28;
+            _t50 = -_t29;
+            _t51 = -_t25;
+        } else {
+            _t49 = _t28;
+            _t50 = _t29;
+            _t51 = _t25;
+        }
         float _t52 = _t49 + _t23;
         float _t53 = _t50 + _t21;
         float _t55 = _t51 + _t24;
@@ -69,7 +97,7 @@ public final class Float4x4OpsSimd {
         float _t65 = 1.0f + (_t26 - _t52);
         float _t69 = (1.0f / (float) Math.sqrt(_t63));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t58  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t62)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49  >  Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23  >  _t26 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
+        var _c0 = (_t58  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t62)))) : (_t49  >  Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23  >  _t26 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -90,21 +118,49 @@ public final class Float4x4OpsSimd {
         float _t9 = (1.0f / (float) Math.sqrt(_t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
-        float _t21 = _t6 > 0.0f ? _self01 * _t9 : 0.0f;
-        float _t22 = _t7 > 0.0f ? _self12 * _t10 : 0.0f;
-        float _t23 = _t6 > 0.0f ? _self11 * _t9 : 0.0f;
-        float _t24 = _t7 > 0.0f ? _self02 * _t10 : 0.0f;
-        float _t25 = _t8 > 0.0f ? _self20 * _t11 : 0.0f;
-        float _t26 = _t7 > 0.0f ? _self22 * _t10 : 0.0f;
-        float _t27 = _t6 > 0.0f ? _self21 * _t9 : 0.0f;
-        float _t28 = _t8 > 0.0f ? _self00 * _t11 : 0.0f;
-        float _t29 = _t8 > 0.0f ? _self10 * _t11 : 0.0f;
+        float _t21, _t23, _t27;
+        if (_t6 != 0.0f) {
+            _t21 = _self01 * _t9;
+            _t23 = _self11 * _t9;
+            _t27 = _self21 * _t9;
+        } else {
+            _t21 = 0.0f;
+            _t23 = 0.0f;
+            _t27 = 0.0f;
+        }
+        float _t22, _t24, _t26;
+        if (_t7 != 0.0f) {
+            _t22 = _self12 * _t10;
+            _t24 = _self02 * _t10;
+            _t26 = _self22 * _t10;
+        } else {
+            _t22 = 0.0f;
+            _t24 = 0.0f;
+            _t26 = 0.0f;
+        }
+        float _t25, _t28, _t29;
+        if (_t8 != 0.0f) {
+            _t25 = _self20 * _t11;
+            _t28 = _self00 * _t11;
+            _t29 = _self10 * _t11;
+        } else {
+            _t25 = 0.0f;
+            _t28 = 0.0f;
+            _t29 = 0.0f;
+        }
         float _t36 = _t27 - _t22;
         float _t39 = _t27 + _t22;
         float _t48 = Math.fma(Math.fma(_t21, _t22, -(_t23 * _t24)), _t25, Math.fma(Math.fma(_t23, _t26, -(_t27 * _t22)), _t28, Math.fma(_t27, _t24, -(_t21 * _t26)) * _t29));
-        float _t49 = _t48 < 0.0f ? -_t28 : _t28;
-        float _t50 = _t48 < 0.0f ? -_t29 : _t29;
-        float _t51 = _t48 < 0.0f ? -_t25 : _t25;
+        float _t49, _t50, _t51;
+        if (_t48 < 0.0f) {
+            _t49 = -_t28;
+            _t50 = -_t29;
+            _t51 = -_t25;
+        } else {
+            _t49 = _t28;
+            _t50 = _t29;
+            _t51 = _t25;
+        }
         float _t52 = _t49 + _t23;
         float _t53 = _t50 + _t21;
         float _t55 = _t51 + _t24;
@@ -117,7 +173,7 @@ public final class Float4x4OpsSimd {
         float _t65 = 1.0f + (_t26 - _t52);
         float _t69 = (1.0f / (float) Math.sqrt(_t63));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t58  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t62)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))))) : (_t49  >  Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23  >  _t26 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
+        var _c0 = (_t58  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t36).withLane(1, _t56).withLane(2, _t57).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t62)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t62)))) : (_t49  >  Math.max(_t23, _t26) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t63)).withLane(1, _t53 * _t69).withLane(2, _t55 * _t69).withLane(3, _t36 * _t69)) : (_t23  >  _t26 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t53).withLane(2, _t39).withLane(3, _t56).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t64)))).withLane(1, (float) Math.sqrt(_t64))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t39).withLane(3, _t57).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t65)))).withLane(2, (float) Math.sqrt(_t65))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -151,7 +207,7 @@ public final class Float4x4OpsSimd {
         float _t17 = 1.0f + (_self22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_self00  >  Math.max(_self11, _self22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_self11  >  _self22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_self00  >  Math.max(_self11, _self22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_self11  >  _self22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -180,7 +236,7 @@ public final class Float4x4OpsSimd {
         float _t17 = 1.0f + (_self22 - _t0);
         float _t21 = (1.0f / (float) Math.sqrt(_t15));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t14)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))))) : (_self00  >  Math.max(_self11, _self22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_self11  >  _self22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t14)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t14)))) : (_self00  >  Math.max(_self11, _self22) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_self11  >  _self22 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t16)))).withLane(1, (float) Math.sqrt(_t16))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t17)))).withLane(2, (float) Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -267,9 +323,16 @@ public final class Float4x4OpsSimd {
         float _self12 = src[srcOffset + 9];
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _self20 * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _self00 * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _self10 * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = _self20 * _t3;
+            _t8 = _self00 * _t3;
+            _t9 = _self10 * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t19 = -Math.fma(_self21, _t7, Math.fma(_self01, _t8, _self11 * _t9));
         float _t20 = -Math.fma(_self22, _t7, Math.fma(_self02, _t8, _self12 * _t9));
         float _t21 = Math.fma(_t19, _t7, _self21);
@@ -277,24 +340,45 @@ public final class Float4x4OpsSimd {
         float _t23 = Math.fma(_t19, _t9, _self11);
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
-        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
-        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
+        float _t34, _t35, _t36;
+        if (_t29 != 0.0f) {
+            _t34 = _t22 * _t30;
+            _t35 = _t21 * _t30;
+            _t36 = _t23 * _t30;
+        } else {
+            _t34 = 0.0f;
+            _t35 = 0.0f;
+            _t36 = 0.0f;
+        }
         float _t40 = -Math.fma(Math.fma(_t20, _t7, _self22), _t35, Math.fma(Math.fma(_t20, _t8, _self02), _t34, Math.fma(_t20, _t9, _self12) * _t36));
         float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _self22));
         float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _self02));
         float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _self12));
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
-        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
-        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
+        float _t54, _t55, _t56;
+        if (_t49 != 0.0f) {
+            _t54 = _t46 * _t50;
+            _t55 = _t45 * _t50;
+            _t56 = _t44 * _t50;
+        } else {
+            _t54 = 0.0f;
+            _t55 = 0.0f;
+            _t56 = 0.0f;
+        }
         float _t60 = _t35 - _t54;
         float _t63 = _t35 + _t54;
         float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
-        float _t73 = _t72 < 0.0f ? -_t8 : _t8;
-        float _t74 = _t72 < 0.0f ? -_t9 : _t9;
-        float _t75 = _t72 < 0.0f ? -_t7 : _t7;
+        float _t73, _t74, _t75;
+        if (_t72 < 0.0f) {
+            _t73 = -_t8;
+            _t74 = -_t9;
+            _t75 = -_t7;
+        } else {
+            _t73 = _t8;
+            _t74 = _t9;
+            _t75 = _t7;
+        }
         float _t76 = _t73 + _t36;
         float _t77 = _t74 + _t34;
         float _t78 = _t74 - _t34;
@@ -307,7 +391,7 @@ public final class Float4x4OpsSimd {
         float _t89 = 1.0f + (_t56 - _t76);
         float _t93 = (1.0f / (float) Math.sqrt(_t87));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t82  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t86)).fma(UNIT_W, FloatVector.zero(SIMD_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73  >  Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36  >  _t56 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
+        var _c0 = (_t82  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).fma(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t86))), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t86)))) : (_t73  >  Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36  >  _t56 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -324,9 +408,16 @@ public final class Float4x4OpsSimd {
         float _self12 = src[srcOffset + 9];
         float _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _self20 * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _self00 * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _self10 * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = _self20 * _t3;
+            _t8 = _self00 * _t3;
+            _t9 = _self10 * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t19 = -Math.fma(_self21, _t7, Math.fma(_self01, _t8, _self11 * _t9));
         float _t20 = -Math.fma(_self22, _t7, Math.fma(_self02, _t8, _self12 * _t9));
         float _t21 = Math.fma(_t19, _t7, _self21);
@@ -334,24 +425,45 @@ public final class Float4x4OpsSimd {
         float _t23 = Math.fma(_t19, _t9, _self11);
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
-        float _t34 = _t29 > 0.0f ? _t22 * _t30 : 0.0f;
-        float _t35 = _t29 > 0.0f ? _t21 * _t30 : 0.0f;
-        float _t36 = _t29 > 0.0f ? _t23 * _t30 : 0.0f;
+        float _t34, _t35, _t36;
+        if (_t29 != 0.0f) {
+            _t34 = _t22 * _t30;
+            _t35 = _t21 * _t30;
+            _t36 = _t23 * _t30;
+        } else {
+            _t34 = 0.0f;
+            _t35 = 0.0f;
+            _t36 = 0.0f;
+        }
         float _t40 = -Math.fma(Math.fma(_t20, _t7, _self22), _t35, Math.fma(Math.fma(_t20, _t8, _self02), _t34, Math.fma(_t20, _t9, _self12) * _t36));
         float _t44 = Math.fma(_t20, _t7, Math.fma(_t40, _t35, _self22));
         float _t45 = Math.fma(_t20, _t8, Math.fma(_t40, _t34, _self02));
         float _t46 = Math.fma(_t20, _t9, Math.fma(_t40, _t36, _self12));
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
-        float _t54 = _t49 > 0.0f ? _t46 * _t50 : 0.0f;
-        float _t55 = _t49 > 0.0f ? _t45 * _t50 : 0.0f;
-        float _t56 = _t49 > 0.0f ? _t44 * _t50 : 0.0f;
+        float _t54, _t55, _t56;
+        if (_t49 != 0.0f) {
+            _t54 = _t46 * _t50;
+            _t55 = _t45 * _t50;
+            _t56 = _t44 * _t50;
+        } else {
+            _t54 = 0.0f;
+            _t55 = 0.0f;
+            _t56 = 0.0f;
+        }
         float _t60 = _t35 - _t54;
         float _t63 = _t35 + _t54;
         float _t72 = Math.fma(Math.fma(_t34, _t54, -(_t36 * _t55)), _t7, Math.fma(Math.fma(_t36, _t56, -(_t35 * _t54)), _t8, Math.fma(_t35, _t55, -(_t34 * _t56)) * _t9));
-        float _t73 = _t72 < 0.0f ? -_t8 : _t8;
-        float _t74 = _t72 < 0.0f ? -_t9 : _t9;
-        float _t75 = _t72 < 0.0f ? -_t7 : _t7;
+        float _t73, _t74, _t75;
+        if (_t72 < 0.0f) {
+            _t73 = -_t8;
+            _t74 = -_t9;
+            _t75 = -_t7;
+        } else {
+            _t73 = _t8;
+            _t74 = _t9;
+            _t75 = _t7;
+        }
         float _t76 = _t73 + _t36;
         float _t77 = _t74 + _t34;
         float _t78 = _t74 - _t34;
@@ -364,7 +476,7 @@ public final class Float4x4OpsSimd {
         float _t89 = 1.0f + (_t56 - _t76);
         float _t93 = (1.0f / (float) Math.sqrt(_t87));
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, 0.5f);
-        var _c0 = (_t82  >  0.0f ? _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, (float) Math.sqrt(_t86)).mul(UNIT_W).add(FloatVector.zero(SIMD_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t86)))))) : (_t73  >  Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36  >  _t56 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
+        var _c0 = (_t82  >  0.0f ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t60).withLane(1, _t81).withLane(2, _t78).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t86)))).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, (float) Math.sqrt(_t86)))) : (_t73  >  Math.max(_t36, _t56) ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, (float) Math.sqrt(_t87)).withLane(1, _t77 * _t93).withLane(2, _t80 * _t93).withLane(3, _t60 * _t93)) : (_t36  >  _t56 ? _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t77).withLane(2, _t63).withLane(3, _t81).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t88)))).withLane(1, (float) Math.sqrt(_t88))) : _sv0.mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _t80).withLane(1, _t63).withLane(3, _t78).mul(FloatVector.broadcast(SIMD_SPECIES, (1.0f / (float) Math.sqrt(_t89)))).withLane(2, (float) Math.sqrt(_t89))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -462,8 +574,8 @@ public final class Float4x4OpsSimd {
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 0]).fma(_sv0, FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 1]).mul(_sv1));
         var _c1 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 2]).fma(_sv0, FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 3]).mul(_sv1));
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 4]).fma(_sv0, FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 5]).fma(_sv1, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
-        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        var _c3 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 4]).fma(_sv0, FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 5]).fma(_sv1, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -476,8 +588,8 @@ public final class Float4x4OpsSimd {
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _c0 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 0]).mul(_sv0).add(FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 1]).mul(_sv1));
         var _c1 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 2]).mul(_sv0).add(FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 3]).mul(_sv1));
-        var _c2 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 4]).mul(_sv0).add(FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 5]).mul(_sv1).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8)));
-        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
+        var _c3 = FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 4]).mul(_sv0).add(FloatVector.broadcast(SIMD_SPECIES, right[rightOffset + 5]).mul(_sv1).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -783,6 +895,7 @@ public final class Float4x4OpsSimd {
         float _t0 = (float) Math.sqrt(3.0f);
         float _t1 = (float) Math.sqrt(2.0f);
         float _t2 = (float) Math.sqrt(6.0f);
+        float _sp0 = 0.16666667f * _t2;
         float _t3 = _self02 * _t0;
         float _t4 = _self00 * _t1;
         float _t6 = _self12 * _t0;
@@ -791,10 +904,10 @@ public final class Float4x4OpsSimd {
         float _t10 = _self20 * _t1;
         float _t12 = _self32 * _t0;
         float _t13 = _self30 * _t1;
-        float _t15 = 0.16666667f * _self01 * _t2;
-        float _t16 = 0.16666667f * _self11 * _t2;
-        float _t17 = 0.16666667f * _self21 * _t2;
-        float _t18 = 0.16666667f * _self31 * _t2;
+        float _t15 = _sp0 * _self01;
+        float _t16 = _sp0 * _self11;
+        float _t17 = _sp0 * _self21;
+        float _t18 = _sp0 * _self31;
         dest[destOffset + 0] = Math.fma(-0.33333334f, _t3, Math.fma(0.5f, _t4, _t15));
         dest[destOffset + 1] = Math.fma(-0.33333334f, _t6, Math.fma(0.5f, _t7, _t16));
         dest[destOffset + 2] = Math.fma(-0.33333334f, _t9, Math.fma(0.5f, _t10, _t17));
@@ -864,6 +977,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t4_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -_t0;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = zFar + zFar;
+            } else {
+                _w0 = -((zFar + zNear) * _t4_inv);
+                _w1 = (zFar + zFar) * zNear * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -872,8 +998,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t4_inv)), _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).fma(_sv4, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t4_inv));
+        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).fma(_sv4, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -886,6 +1012,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t4_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -_t0;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = zFar + zFar;
+            } else {
+                _w0 = -((zFar + zNear) * _t4_inv);
+                _w1 = (zFar + zFar) * zNear * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -894,8 +1033,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? -1.0f : -((zFar + zNear) * _t4_inv))).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).mul(_sv4).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t4_inv));
+        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).mul(_sv4).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -913,6 +1052,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t4_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -_t0;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = zFar + zFar;
+            } else {
+                _w0 = (zFar + zNear) * _t4_inv;
+                _w1 = (zFar + zFar) * zNear * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -921,8 +1073,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t4_inv), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).fma(_sv2, _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t4_inv));
+        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).fma(_sv2, _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -935,6 +1087,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t4_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -_t0;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = zFar + zFar;
+            } else {
+                _w0 = (zFar + zNear) * _t4_inv;
+                _w1 = (zFar + zFar) * zNear * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -943,8 +1108,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 1.0f : (zFar + zNear) * _t4_inv)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).mul(_sv2).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -_t0 : zNear == Float.POSITIVE_INFINITY ? zFar + zFar : (zFar + zFar) * zNear * _t4_inv));
+        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).mul(_sv2).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -962,6 +1127,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -zNear;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = zFar;
+            } else {
+                _w0 = -(zFar * _t3_inv);
+                _w1 = zFar * zNear * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -970,8 +1148,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : -(zFar * _t3_inv)), _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).fma(_sv4, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv));
+        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).fma(_sv4, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -984,6 +1162,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -zNear;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = zFar;
+            } else {
+                _w0 = -(zFar * _t3_inv);
+                _w1 = zFar * zNear * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -992,8 +1183,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? 1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : -(zFar * _t3_inv))).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).mul(_sv4).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv));
+        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, -(bottom + top))).mul(_sv4).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(left + right))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -1011,6 +1202,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -zNear;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = zFar;
+            } else {
+                _w0 = zFar * _t3_inv;
+                _w1 = zFar * zNear * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -1019,8 +1223,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : zFar * _t3_inv), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).fma(_sv2, _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv));
+        var _c2 = _sv5.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).fma(_sv2, _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -1033,6 +1237,19 @@ public final class Float4x4OpsSimd {
         float _t1_inv = 1.0f / (right - left);
         float _t2_inv = 1.0f / (top - bottom);
         float _t3_inv = 1.0f / (zNear - zFar);
+        float _w0, _w1;
+        if (zFar == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -zNear;
+        } else {
+            if (zNear == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = zFar;
+            } else {
+                _w0 = zFar * _t3_inv;
+                _w1 = zFar * zNear * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t0);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t1_inv);
@@ -1041,8 +1258,8 @@ public final class Float4x4OpsSimd {
         var _sv5 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.mul(_sv1).mul(_sv2);
         var _c1 = _sv3.mul(_sv1).mul(_sv4);
-        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -1.0f : zNear == Float.POSITIVE_INFINITY ? 0.0f : zFar * _t3_inv)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).mul(_sv2).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, zFar == Float.POSITIVE_INFINITY ? -zNear : zNear == Float.POSITIVE_INFINITY ? zFar : zFar * zNear * _t3_inv));
+        var _c2 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, left + right)).mul(_sv2).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, bottom + top)).mul(_sv4)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv5.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -1058,17 +1275,31 @@ public final class Float4x4OpsSimd {
     public static float[] lookAlong_fma(float[] dest, int destOffset, float[] src, int srcOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? dirY * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? dirX * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? dirZ * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t16 = Math.fma(upX, _t7, -(upY * _t8));
         float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
         float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26 = _t21 > 0.0f ? _t16 * _t22 : 0.0f;
-        float _t27 = _t21 > 0.0f ? _t17 * _t22 : 0.0f;
-        float _t28 = _t21 > 0.0f ? _t18 * _t22 : 0.0f;
+        float _t26, _t27, _t28;
+        if (_t21 != 0.0f) {
+            _t26 = _t16 * _t22;
+            _t27 = _t17 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -1086,17 +1317,31 @@ public final class Float4x4OpsSimd {
     public static float[] lookAlong_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? dirY * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? dirX * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? dirZ * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = dirY * _t3;
+            _t8 = dirX * _t3;
+            _t9 = dirZ * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t16 = Math.fma(upX, _t7, -(upY * _t8));
         float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
         float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26 = _t21 > 0.0f ? _t16 * _t22 : 0.0f;
-        float _t27 = _t21 > 0.0f ? _t17 * _t22 : 0.0f;
-        float _t28 = _t21 > 0.0f ? _t18 * _t22 : 0.0f;
+        float _t26, _t27, _t28;
+        if (_t21 != 0.0f) {
+            _t26 = _t16 * _t22;
+            _t27 = _t17 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -1125,17 +1370,31 @@ public final class Float4x4OpsSimd {
         float _upz = up[upOffset + 2];
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _diry * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _dirx * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _dirz * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = _diry * _t3;
+            _t8 = _dirx * _t3;
+            _t9 = _dirz * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t16 = Math.fma(_upx, _t7, -(_upy * _t8));
         float _t17 = Math.fma(_upy, _t9, -(_upz * _t7));
         float _t18 = Math.fma(_upz, _t8, -(_upx * _t9));
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26 = _t21 > 0.0f ? _t16 * _t22 : 0.0f;
-        float _t27 = _t21 > 0.0f ? _t17 * _t22 : 0.0f;
-        float _t28 = _t21 > 0.0f ? _t18 * _t22 : 0.0f;
+        float _t26, _t27, _t28;
+        if (_t21 != 0.0f) {
+            _t26 = _t16 * _t22;
+            _t27 = _t17 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -1159,17 +1418,31 @@ public final class Float4x4OpsSimd {
         float _upz = up[upOffset + 2];
         float _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7 = _t2 > 0.0f ? _diry * _t3 : 0.0f;
-        float _t8 = _t2 > 0.0f ? _dirx * _t3 : 0.0f;
-        float _t9 = _t2 > 0.0f ? _dirz * _t3 : 0.0f;
+        float _t7, _t8, _t9;
+        if (_t2 != 0.0f) {
+            _t7 = _diry * _t3;
+            _t8 = _dirx * _t3;
+            _t9 = _dirz * _t3;
+        } else {
+            _t7 = 0.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+        }
         float _t16 = Math.fma(_upx, _t7, -(_upy * _t8));
         float _t17 = Math.fma(_upy, _t9, -(_upz * _t7));
         float _t18 = Math.fma(_upz, _t8, -(_upx * _t9));
         float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26 = _t21 > 0.0f ? _t16 * _t22 : 0.0f;
-        float _t27 = _t21 > 0.0f ? _t17 * _t22 : 0.0f;
-        float _t28 = _t21 > 0.0f ? _t18 * _t22 : 0.0f;
+        float _t26, _t27, _t28;
+        if (_t21 != 0.0f) {
+            _t26 = _t16 * _t22;
+            _t27 = _t17 * _t22;
+            _t28 = _t18 * _t22;
+        } else {
+            _t26 = 0.0f;
+            _t27 = 0.0f;
+            _t28 = 0.0f;
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -1195,17 +1468,31 @@ public final class Float4x4OpsSimd {
         float _t2 = centerY - eyeY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10 = _t5 > 0.0f ? _t1 * _t6 : 0.0f;
-        float _t11 = _t5 > 0.0f ? _t2 * _t6 : 0.0f;
-        float _t12 = _t5 > 0.0f ? _t0 * _t6 : 0.0f;
+        float _t10, _t11, _t12;
+        if (_t5 != 0.0f) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
         float _t21 = Math.fma(upX, _t11, -(upY * _t10));
         float _t22 = Math.fma(upY, _t12, -(upZ * _t11));
         float _t23 = Math.fma(upZ, _t10, -(upX * _t12));
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32 = _t27 > 0.0f ? _t22 * _t28 : 0.0f;
-        float _t33 = _t27 > 0.0f ? _t21 * _t28 : 0.0f;
-        float _t34 = _t27 > 0.0f ? _t23 * _t28 : 0.0f;
+        float _t32, _t33, _t34;
+        if (_t27 != 0.0f) {
+            _t32 = _t22 * _t28;
+            _t33 = _t21 * _t28;
+            _t34 = _t23 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
         float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
         float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
         float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
@@ -1229,17 +1516,31 @@ public final class Float4x4OpsSimd {
         float _t2 = centerY - eyeY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10 = _t5 > 0.0f ? _t1 * _t6 : 0.0f;
-        float _t11 = _t5 > 0.0f ? _t2 * _t6 : 0.0f;
-        float _t12 = _t5 > 0.0f ? _t0 * _t6 : 0.0f;
+        float _t10, _t11, _t12;
+        if (_t5 != 0.0f) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
         float _t21 = Math.fma(upX, _t11, -(upY * _t10));
         float _t22 = Math.fma(upY, _t12, -(upZ * _t11));
         float _t23 = Math.fma(upZ, _t10, -(upX * _t12));
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32 = _t27 > 0.0f ? _t22 * _t28 : 0.0f;
-        float _t33 = _t27 > 0.0f ? _t21 * _t28 : 0.0f;
-        float _t34 = _t27 > 0.0f ? _t23 * _t28 : 0.0f;
+        float _t32, _t33, _t34;
+        if (_t27 != 0.0f) {
+            _t32 = _t22 * _t28;
+            _t33 = _t21 * _t28;
+            _t34 = _t23 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
         float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
         float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
         float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
@@ -1272,17 +1573,31 @@ public final class Float4x4OpsSimd {
         float _t6 = centerY - eyeY;
         float _t9 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t9));
-        float _t14 = _t9 > 0.0f ? _t5 * _t10 : 0.0f;
-        float _t15 = _t9 > 0.0f ? _t6 * _t10 : 0.0f;
-        float _t16 = _t9 > 0.0f ? _t4 * _t10 : 0.0f;
+        float _t14, _t15, _t16;
+        if (_t9 != 0.0f) {
+            _t14 = _t5 * _t10;
+            _t15 = _t6 * _t10;
+            _t16 = _t4 * _t10;
+        } else {
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+            _t16 = 0.0f;
+        }
         float _t25 = Math.fma(upY, _t14, -(upX * _t15));
         float _t26 = Math.fma(upX, _t16, -(upZ * _t14));
         float _t27 = Math.fma(upZ, _t15, -(upY * _t16));
         float _t31 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t32 = (1.0f / (float) Math.sqrt(_t31));
-        float _t36 = _t31 > 0.0f ? _t27 * _t32 : 0.0f;
-        float _t37 = _t31 > 0.0f ? _t26 * _t32 : 0.0f;
-        float _t38 = _t31 > 0.0f ? _t25 * _t32 : 0.0f;
+        float _t36, _t37, _t38;
+        if (_t31 != 0.0f) {
+            _t36 = _t27 * _t32;
+            _t37 = _t26 * _t32;
+            _t38 = _t25 * _t32;
+        } else {
+            _t36 = 0.0f;
+            _t37 = 0.0f;
+            _t38 = 0.0f;
+        }
         float _t47 = Math.fma(_t16, _t37, -(_t15 * _t38));
         float _t48 = Math.fma(_t14, _t38, -(_t16 * _t36));
         float _t49 = Math.fma(_t15, _t36, -(_t14 * _t37));
@@ -1310,17 +1625,31 @@ public final class Float4x4OpsSimd {
         float _t6 = centerY - eyeY;
         float _t9 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t9));
-        float _t14 = _t9 > 0.0f ? _t5 * _t10 : 0.0f;
-        float _t15 = _t9 > 0.0f ? _t6 * _t10 : 0.0f;
-        float _t16 = _t9 > 0.0f ? _t4 * _t10 : 0.0f;
+        float _t14, _t15, _t16;
+        if (_t9 != 0.0f) {
+            _t14 = _t5 * _t10;
+            _t15 = _t6 * _t10;
+            _t16 = _t4 * _t10;
+        } else {
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+            _t16 = 0.0f;
+        }
         float _t25 = Math.fma(upY, _t14, -(upX * _t15));
         float _t26 = Math.fma(upX, _t16, -(upZ * _t14));
         float _t27 = Math.fma(upZ, _t15, -(upY * _t16));
         float _t31 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t32 = (1.0f / (float) Math.sqrt(_t31));
-        float _t36 = _t31 > 0.0f ? _t27 * _t32 : 0.0f;
-        float _t37 = _t31 > 0.0f ? _t26 * _t32 : 0.0f;
-        float _t38 = _t31 > 0.0f ? _t25 * _t32 : 0.0f;
+        float _t36, _t37, _t38;
+        if (_t31 != 0.0f) {
+            _t36 = _t27 * _t32;
+            _t37 = _t26 * _t32;
+            _t38 = _t25 * _t32;
+        } else {
+            _t36 = 0.0f;
+            _t37 = 0.0f;
+            _t38 = 0.0f;
+        }
         float _t47 = Math.fma(_t16, _t37, -(_t15 * _t38));
         float _t48 = Math.fma(_t14, _t38, -(_t16 * _t36));
         float _t49 = Math.fma(_t15, _t36, -(_t14 * _t37));
@@ -1355,17 +1684,31 @@ public final class Float4x4OpsSimd {
         float _t2 = center[centerOffset + 1] - _eyey;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10 = _t5 > 0.0f ? _t1 * _t6 : 0.0f;
-        float _t11 = _t5 > 0.0f ? _t2 * _t6 : 0.0f;
-        float _t12 = _t5 > 0.0f ? _t0 * _t6 : 0.0f;
+        float _t10, _t11, _t12;
+        if (_t5 != 0.0f) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
         float _t21 = Math.fma(_upx, _t11, -(_upy * _t10));
         float _t22 = Math.fma(_upy, _t12, -(_upz * _t11));
         float _t23 = Math.fma(_upz, _t10, -(_upx * _t12));
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32 = _t27 > 0.0f ? _t22 * _t28 : 0.0f;
-        float _t33 = _t27 > 0.0f ? _t21 * _t28 : 0.0f;
-        float _t34 = _t27 > 0.0f ? _t23 * _t28 : 0.0f;
+        float _t32, _t33, _t34;
+        if (_t27 != 0.0f) {
+            _t32 = _t22 * _t28;
+            _t33 = _t21 * _t28;
+            _t34 = _t23 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
         float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
         float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
         float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
@@ -1395,17 +1738,31 @@ public final class Float4x4OpsSimd {
         float _t2 = center[centerOffset + 1] - _eyey;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10 = _t5 > 0.0f ? _t1 * _t6 : 0.0f;
-        float _t11 = _t5 > 0.0f ? _t2 * _t6 : 0.0f;
-        float _t12 = _t5 > 0.0f ? _t0 * _t6 : 0.0f;
+        float _t10, _t11, _t12;
+        if (_t5 != 0.0f) {
+            _t10 = _t1 * _t6;
+            _t11 = _t2 * _t6;
+            _t12 = _t0 * _t6;
+        } else {
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+        }
         float _t21 = Math.fma(_upx, _t11, -(_upy * _t10));
         float _t22 = Math.fma(_upy, _t12, -(_upz * _t11));
         float _t23 = Math.fma(_upz, _t10, -(_upx * _t12));
         float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32 = _t27 > 0.0f ? _t22 * _t28 : 0.0f;
-        float _t33 = _t27 > 0.0f ? _t21 * _t28 : 0.0f;
-        float _t34 = _t27 > 0.0f ? _t23 * _t28 : 0.0f;
+        float _t32, _t33, _t34;
+        if (_t27 != 0.0f) {
+            _t32 = _t22 * _t28;
+            _t33 = _t21 * _t28;
+            _t34 = _t23 * _t28;
+        } else {
+            _t32 = 0.0f;
+            _t33 = 0.0f;
+            _t34 = 0.0f;
+        }
         float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
         float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
         float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
@@ -1444,17 +1801,31 @@ public final class Float4x4OpsSimd {
         float _t6 = center[centerOffset + 1] - _eyey;
         float _t9 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t9));
-        float _t14 = _t9 > 0.0f ? _t5 * _t10 : 0.0f;
-        float _t15 = _t9 > 0.0f ? _t6 * _t10 : 0.0f;
-        float _t16 = _t9 > 0.0f ? _t4 * _t10 : 0.0f;
+        float _t14, _t15, _t16;
+        if (_t9 != 0.0f) {
+            _t14 = _t5 * _t10;
+            _t15 = _t6 * _t10;
+            _t16 = _t4 * _t10;
+        } else {
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+            _t16 = 0.0f;
+        }
         float _t25 = Math.fma(_upy, _t14, -(_upx * _t15));
         float _t26 = Math.fma(_upx, _t16, -(_upz * _t14));
         float _t27 = Math.fma(_upz, _t15, -(_upy * _t16));
         float _t31 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t32 = (1.0f / (float) Math.sqrt(_t31));
-        float _t36 = _t31 > 0.0f ? _t27 * _t32 : 0.0f;
-        float _t37 = _t31 > 0.0f ? _t26 * _t32 : 0.0f;
-        float _t38 = _t31 > 0.0f ? _t25 * _t32 : 0.0f;
+        float _t36, _t37, _t38;
+        if (_t31 != 0.0f) {
+            _t36 = _t27 * _t32;
+            _t37 = _t26 * _t32;
+            _t38 = _t25 * _t32;
+        } else {
+            _t36 = 0.0f;
+            _t37 = 0.0f;
+            _t38 = 0.0f;
+        }
         float _t47 = Math.fma(_t16, _t37, -(_t15 * _t38));
         float _t48 = Math.fma(_t14, _t38, -(_t16 * _t36));
         float _t49 = Math.fma(_t15, _t36, -(_t14 * _t37));
@@ -1488,17 +1859,31 @@ public final class Float4x4OpsSimd {
         float _t6 = center[centerOffset + 1] - _eyey;
         float _t9 = Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6));
         float _t10 = (1.0f / (float) Math.sqrt(_t9));
-        float _t14 = _t9 > 0.0f ? _t5 * _t10 : 0.0f;
-        float _t15 = _t9 > 0.0f ? _t6 * _t10 : 0.0f;
-        float _t16 = _t9 > 0.0f ? _t4 * _t10 : 0.0f;
+        float _t14, _t15, _t16;
+        if (_t9 != 0.0f) {
+            _t14 = _t5 * _t10;
+            _t15 = _t6 * _t10;
+            _t16 = _t4 * _t10;
+        } else {
+            _t14 = 0.0f;
+            _t15 = 0.0f;
+            _t16 = 0.0f;
+        }
         float _t25 = Math.fma(_upy, _t14, -(_upx * _t15));
         float _t26 = Math.fma(_upx, _t16, -(_upz * _t14));
         float _t27 = Math.fma(_upz, _t15, -(_upy * _t16));
         float _t31 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t32 = (1.0f / (float) Math.sqrt(_t31));
-        float _t36 = _t31 > 0.0f ? _t27 * _t32 : 0.0f;
-        float _t37 = _t31 > 0.0f ? _t26 * _t32 : 0.0f;
-        float _t38 = _t31 > 0.0f ? _t25 * _t32 : 0.0f;
+        float _t36, _t37, _t38;
+        if (_t31 != 0.0f) {
+            _t36 = _t27 * _t32;
+            _t37 = _t26 * _t32;
+            _t38 = _t25 * _t32;
+        } else {
+            _t36 = 0.0f;
+            _t37 = 0.0f;
+            _t38 = 0.0f;
+        }
         float _t47 = Math.fma(_t16, _t37, -(_t15 * _t38));
         float _t48 = Math.fma(_t14, _t38, -(_t16 * _t36));
         float _t49 = Math.fma(_t15, _t36, -(_t14 * _t37));
@@ -2193,6 +2578,45 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
+    public static float[] obliquePlanometric(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        if (SimdSupport.USE_FMA) return obliquePlanometric_fma(dest, destOffset, src, srcOffset, angle);
+        return obliquePlanometric_mulAdd(dest, destOffset, src, srcOffset, angle);
+    }
+
+    public static float[] obliquePlanometric_fma(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t0);
+        var _c0 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _t1), _sv1.mul(_sv2));
+        var _c1 = _sv1.add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8));
+        var _c2 = _sv0.fma(_sv2, _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
+    public static float[] obliquePlanometric_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
+        var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
+        var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t0);
+        var _c0 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1)).add(_sv1.mul(_sv2));
+        var _c1 = _sv1.add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8));
+        var _c2 = _sv0.mul(_sv2).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -_t1)));
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12);
+        _c0.intoArray(dest, destOffset);
+        _c1.intoArray(dest, destOffset + 4);
+        _c2.intoArray(dest, destOffset + 8);
+        _c3.intoArray(dest, destOffset + 12);
+        return dest;
+    }
+
     public static float[] obliqueZ_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float planeX, float planeY, float planeZ, float planeW) {
         float _self23 = src[srcOffset + 14];
         float _t0 = _self23 + _self23;
@@ -2677,11 +3101,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_no_lh_fma(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t2_inv = 1.0f / (near - far);
         float _t6 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = -((far + near) * _t2_inv);
+                _w1 = (far + far) * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t6)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t6));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2692,11 +3129,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_no_lh_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t2_inv = 1.0f / (near - far);
         float _t6 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = -((far + near) * _t2_inv);
+                _w1 = (far + far) * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t6)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t6));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t2_inv))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2712,11 +3162,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_no_rh_fma(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t2_inv = 1.0f / (near - far);
         float _t6 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = (far + near) * _t2_inv;
+                _w1 = (far + far) * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t6)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t6));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2727,11 +3190,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_no_rh_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t2_inv = 1.0f / (near - far);
         float _t6 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = (far + near) * _t2_inv;
+                _w1 = (far + far) * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t6)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t6));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t2_inv)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t2_inv));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2747,11 +3223,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_zo_lh_fma(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t1_inv = 1.0f / (near - far);
         float _t3 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = -(far * _t1_inv);
+                _w1 = far * near * _t1_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t3)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t3));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t1_inv)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t1_inv));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2762,11 +3251,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_zo_lh_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t1_inv = 1.0f / (near - far);
         float _t3 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = -(far * _t1_inv);
+                _w1 = far * near * _t1_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t3)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t3));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t1_inv))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t1_inv));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12));
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2782,11 +3284,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_zo_rh_fma(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t1_inv = 1.0f / (near - far);
         float _t3 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = far * _t1_inv;
+                _w1 = far * near * _t1_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t3)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t3));
-        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t1_inv), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t1_inv));
+        var _c2 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2797,11 +3312,24 @@ public final class Float4x4OpsSimd {
     public static float[] perspective_zo_rh_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
         float _t1_inv = 1.0f / (near - far);
         float _t3 = (float) Math.tan(0.5f * fovy);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = far * _t1_inv;
+                _w1 = far * near * _t1_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t3)));
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / _t3));
-        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t1_inv)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t1_inv));
+        var _c2 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg());
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2820,14 +3348,27 @@ public final class Float4x4OpsSimd {
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = -((far + near) * _t3_inv);
+                _w1 = (far + far) * near * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t8_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t8)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t3_inv)), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t3_inv));
+        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2841,14 +3382,27 @@ public final class Float4x4OpsSimd {
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = -((far + near) * _t3_inv);
+                _w1 = (far + far) * near * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t8_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t8)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t3_inv))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t3_inv));
+        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2867,14 +3421,27 @@ public final class Float4x4OpsSimd {
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = (far + near) * _t3_inv;
+                _w1 = (far + far) * near * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t8_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t8)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t3_inv), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t3_inv));
+        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2888,14 +3455,27 @@ public final class Float4x4OpsSimd {
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = (far + near) * _t3_inv;
+                _w1 = (far + far) * near * _t3_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t8_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t8)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t3_inv)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t3_inv));
+        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2914,14 +3494,27 @@ public final class Float4x4OpsSimd {
         float _t2_inv = 1.0f / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = -(far * _t2_inv);
+                _w1 = far * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t4_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t4)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv)), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv));
+        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2935,14 +3528,27 @@ public final class Float4x4OpsSimd {
         float _t2_inv = 1.0f / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = -(far * _t2_inv);
+                _w1 = far * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t4_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t4)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t2_inv))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv));
+        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t0 + _t1))).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2961,14 +3567,27 @@ public final class Float4x4OpsSimd {
         float _t2_inv = 1.0f / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = far * _t2_inv;
+                _w1 = far * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t4_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t4)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv));
+        var _c2 = _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).fma(_sv2, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2982,14 +3601,27 @@ public final class Float4x4OpsSimd {
         float _t2_inv = 1.0f / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = far * _t2_inv;
+                _w1 = far * near * _t2_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.broadcast(SIMD_SPECIES, _t4_inv);
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(FloatVector.broadcast(SIMD_SPECIES, 1.0f / (aspect * _t4)));
         var _c1 = _sv1.add(_sv1).mul(_sv2);
-        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t2_inv)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
-        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t2_inv));
+        var _c2 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, _t0 + _t1)).mul(_sv2).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).neg()));
+        var _c3 = _sv3.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -2999,10 +3631,23 @@ public final class Float4x4OpsSimd {
 
     public static float[] perspectiveFrustumSlice_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float near, float far) {
         float _t0_inv = 1.0f / (near - far);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = -((far + near) * _t0_inv);
+                _w1 = (far + far) * near * _t0_inv;
+            }
+        }
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t0_inv));
-        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _w0);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _w1);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3012,10 +3657,23 @@ public final class Float4x4OpsSimd {
 
     public static float[] perspectiveFrustumSlice_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float near, float far) {
         float _t0_inv = 1.0f / (near - far);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = (far + near) * _t0_inv;
+                _w1 = (far + far) * near * _t0_inv;
+            }
+        }
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t0_inv);
-        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t0_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _w0);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _w1);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3025,10 +3683,23 @@ public final class Float4x4OpsSimd {
 
     public static float[] perspectiveFrustumSlice_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float near, float far) {
         float _t0_inv = 1.0f / (near - far);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = -(far * _t0_inv);
+                _w1 = far * near * _t0_inv;
+            }
+        }
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t0_inv));
-        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t0_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _w0);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _w1);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3038,10 +3709,23 @@ public final class Float4x4OpsSimd {
 
     public static float[] perspectiveFrustumSlice_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float near, float far) {
         float _t0_inv = 1.0f / (near - far);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = far * _t0_inv;
+                _w1 = far * near * _t0_inv;
+            }
+        }
         var _c0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _c1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
-        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t0_inv);
-        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t0_inv);
+        var _c2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8).withLane(2, _w0);
+        var _c3 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12).withLane(2, _w1);
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3062,6 +3746,19 @@ public final class Float4x4OpsSimd {
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _t11_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = -((far + near) * _t5_inv);
+                _w1 = (far + far) * near * _t5_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t10_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3069,8 +3766,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t5_inv)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).fma(_sv3, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).fma(_sv1, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t5_inv));
+        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).fma(_sv3, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).fma(_sv1, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3086,6 +3783,19 @@ public final class Float4x4OpsSimd {
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _t11_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = -1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = -((far + near) * _t5_inv);
+                _w1 = (far + far) * near * _t5_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t10_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3093,8 +3803,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? -1.0f : -((far + near) * _t5_inv))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).mul(_sv3).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).mul(_sv1).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t5_inv));
+        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).mul(_sv3).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).mul(_sv1).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3115,6 +3825,19 @@ public final class Float4x4OpsSimd {
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _t11_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = (far + near) * _t5_inv;
+                _w1 = (far + far) * near * _t5_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t10_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3122,8 +3845,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t5_inv), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).fma(_sv1, _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t5_inv));
+        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).fma(_sv1, _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3139,6 +3862,19 @@ public final class Float4x4OpsSimd {
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _t11_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -(near + near);
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 1.0f;
+                _w1 = far + far;
+            } else {
+                _w0 = (far + near) * _t5_inv;
+                _w1 = (far + far) * near * _t5_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t10_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3146,8 +3882,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 1.0f : (far + near) * _t5_inv)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).mul(_sv1).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -(near + near) : near == Float.POSITIVE_INFINITY ? far + far : (far + far) * near * _t5_inv));
+        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).mul(_sv1).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3168,6 +3904,19 @@ public final class Float4x4OpsSimd {
         float _t4_inv = 1.0f / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _t7_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = -(far * _t4_inv);
+                _w1 = far * near * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t6_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3175,8 +3924,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv)), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).fma(_sv3, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).fma(_sv1, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv));
+        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).fma(_sv3, _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).fma(_sv1, FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3192,6 +3941,19 @@ public final class Float4x4OpsSimd {
         float _t4_inv = 1.0f / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _t7_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = 1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = -(far * _t4_inv);
+                _w1 = far * near * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t6_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3199,8 +3961,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? 1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : -(far * _t4_inv))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).mul(_sv3).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).mul(_sv1).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv));
+        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t3 + _t2))).mul(_sv3).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, -(_t1 + _t0))).mul(_sv1).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3221,6 +3983,19 @@ public final class Float4x4OpsSimd {
         float _t4_inv = 1.0f / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _t7_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = far * _t4_inv;
+                _w1 = far * near * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t6_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3228,8 +4003,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).fma(_sv1, _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv));
+        var _c2 = _sv4.fma(FloatVector.broadcast(SIMD_SPECIES, _w0), _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).fma(_sv1, _sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3245,6 +4020,19 @@ public final class Float4x4OpsSimd {
         float _t4_inv = 1.0f / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _t7_inv = 1.0f / (_t2 - _t3);
+        float _w0, _w1;
+        if (far == Float.POSITIVE_INFINITY) {
+            _w0 = -1.0f;
+            _w1 = -near;
+        } else {
+            if (near == Float.POSITIVE_INFINITY) {
+                _w0 = 0.0f;
+                _w1 = far;
+            } else {
+                _w0 = far * _t4_inv;
+                _w1 = far * near * _t4_inv;
+            }
+        }
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _t6_inv);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -3252,8 +4040,8 @@ public final class Float4x4OpsSimd {
         var _sv4 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = _sv0.add(_sv0).mul(_sv1);
         var _c1 = _sv2.add(_sv2).mul(_sv3);
-        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -1.0f : near == Float.POSITIVE_INFINITY ? 0.0f : far * _t4_inv)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).mul(_sv1).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
-        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, far == Float.POSITIVE_INFINITY ? -near : near == Float.POSITIVE_INFINITY ? far : far * near * _t4_inv));
+        var _c2 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w0)).add(_sv0.mul(FloatVector.broadcast(SIMD_SPECIES, _t1 + _t0)).mul(_sv1).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, _t3 + _t2)).mul(_sv3)).sub(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12)));
+        var _c3 = _sv4.mul(FloatVector.broadcast(SIMD_SPECIES, _w1));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -3309,7 +4097,7 @@ public final class Float4x4OpsSimd {
 
     public static float[] preScale_fma(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY, float vZ) {
         for (int _li = 0; _li < 4; _li++) {
-            var _c = FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).fma(UNIT_W, FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)));
+            var _c = FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).fma(FloatVector.zero(SIMD_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, src[(srcOffset + _li * 4) + 3]));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
@@ -3317,7 +4105,7 @@ public final class Float4x4OpsSimd {
 
     public static float[] preScale_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY, float vZ) {
         for (int _li = 0; _li < 4; _li++) {
-            var _c = FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).mul(UNIT_W).add(FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)));
+            var _c = FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, vX).withLane(1, vY).withLane(2, vZ)).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, src[(srcOffset + _li * 4) + 3]));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
@@ -3333,7 +4121,7 @@ public final class Float4x4OpsSimd {
         float _vy = v[vOffset + 1];
         float _vz = v[vOffset + 2];
         for (int _li = 0; _li < 4; _li++) {
-            var _c = FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).fma(UNIT_W, FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz)));
+            var _c = FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).fma(FloatVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz), FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, src[(srcOffset + _li * 4) + 3]));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
@@ -3344,7 +4132,7 @@ public final class Float4x4OpsSimd {
         float _vy = v[vOffset + 1];
         float _vz = v[vOffset + 2];
         for (int _li = 0; _li < 4; _li++) {
-            var _c = FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3]).mul(UNIT_W).add(FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz)));
+            var _c = FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).mul(FloatVector.zero(SIMD_SPECIES).withLane(0, _vx).withLane(1, _vy).withLane(2, _vz)).add(FloatVector.broadcast(SIMD_SPECIES, 0.0f).withLane(3, src[(srcOffset + _li * 4) + 3]));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;
@@ -3368,12 +4156,13 @@ public final class Float4x4OpsSimd {
         float _self31 = src[srcOffset + 7];
         float _self32 = src[srcOffset + 11];
         float _self33 = src[srcOffset + 15];
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        float _t2 = Math.fma(-s, pivotZ, pivotZ);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        float _t3 = pivotZ * _t0;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _self30);
-        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t0).withLane(1, _t1).withLane(2, _t2);
+        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t2).withLane(2, _t3);
         var _sv3 = FloatVector.broadcast(SIMD_SPECIES, _self31);
         var _sv4 = FloatVector.broadcast(SIMD_SPECIES, _self32);
         var _sv5 = FloatVector.broadcast(SIMD_SPECIES, _self33);
@@ -3393,12 +4182,13 @@ public final class Float4x4OpsSimd {
         float _self31 = src[srcOffset + 7];
         float _self32 = src[srcOffset + 11];
         float _self33 = src[srcOffset + 15];
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        float _t2 = Math.fma(-s, pivotZ, pivotZ);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        float _t3 = pivotZ * _t0;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _self30);
-        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t0).withLane(1, _t1).withLane(2, _t2);
+        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t2).withLane(2, _t3);
         var _sv3 = FloatVector.broadcast(SIMD_SPECIES, _self31);
         var _sv4 = FloatVector.broadcast(SIMD_SPECIES, _self32);
         var _sv5 = FloatVector.broadcast(SIMD_SPECIES, _self33);
@@ -3423,15 +4213,13 @@ public final class Float4x4OpsSimd {
         float _self31 = src[srcOffset + 7];
         float _self32 = src[srcOffset + 11];
         float _self33 = src[srcOffset + 15];
-        float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
-        float _t0 = Math.fma(-s, _pivotx, _pivotx);
-        float _t1 = Math.fma(-s, _pivoty, _pivoty);
-        float _t2 = Math.fma(-s, _pivotz, _pivotz);
+        float _t0 = 1.0f - s;
+        float _t1 = pivot[pivotOffset + 0] * _t0;
+        float _t2 = pivot[pivotOffset + 1] * _t0;
+        float _t3 = pivot[pivotOffset + 2] * _t0;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _self30);
-        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t0).withLane(1, _t1).withLane(2, _t2);
+        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t2).withLane(2, _t3);
         var _sv3 = FloatVector.broadcast(SIMD_SPECIES, _self31);
         var _sv4 = FloatVector.broadcast(SIMD_SPECIES, _self32);
         var _sv5 = FloatVector.broadcast(SIMD_SPECIES, _self33);
@@ -3451,15 +4239,13 @@ public final class Float4x4OpsSimd {
         float _self31 = src[srcOffset + 7];
         float _self32 = src[srcOffset + 11];
         float _self33 = src[srcOffset + 15];
-        float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
-        float _t0 = Math.fma(-s, _pivotx, _pivotx);
-        float _t1 = Math.fma(-s, _pivoty, _pivoty);
-        float _t2 = Math.fma(-s, _pivotz, _pivotz);
+        float _t0 = 1.0f - s;
+        float _t1 = pivot[pivotOffset + 0] * _t0;
+        float _t2 = pivot[pivotOffset + 1] * _t0;
+        float _t3 = pivot[pivotOffset + 2] * _t0;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.broadcast(SIMD_SPECIES, _self30);
-        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t0).withLane(1, _t1).withLane(2, _t2);
+        var _sv2 = FloatVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t2).withLane(2, _t3);
         var _sv3 = FloatVector.broadcast(SIMD_SPECIES, _self31);
         var _sv4 = FloatVector.broadcast(SIMD_SPECIES, _self32);
         var _sv5 = FloatVector.broadcast(SIMD_SPECIES, _self33);
@@ -4462,6 +5248,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] scaleAround_fma(float[] dest, int destOffset, float[] src, int srcOffset, float s, float pivotX, float pivotY, float pivotZ) {
+        float _t0 = 1.0f - s;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -4469,7 +5256,7 @@ public final class Float4x4OpsSimd {
         var _c0 = _sv0.mul(_sv1);
         var _c1 = _sv0.mul(_sv2);
         var _c2 = _sv0.mul(_sv3);
-        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, pivotX, pivotX)), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, pivotY, pivotY)), _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, pivotZ, pivotZ)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, pivotX * _t0), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, pivotY * _t0), _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, pivotZ * _t0), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -4478,6 +5265,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] scaleAround_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float s, float pivotX, float pivotY, float pivotZ) {
+        float _t0 = 1.0f - s;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -4485,7 +5273,7 @@ public final class Float4x4OpsSimd {
         var _c0 = _sv0.mul(_sv1);
         var _c1 = _sv0.mul(_sv2);
         var _c2 = _sv0.mul(_sv3);
-        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, pivotX, pivotX))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, pivotY, pivotY))).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, pivotZ, pivotZ))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, pivotX * _t0)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, pivotY * _t0)).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, pivotZ * _t0)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -4499,9 +5287,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] scaleAround_fma(float[] dest, int destOffset, float[] src, int srcOffset, float[] pivot, int pivotOffset, float s) {
-        float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = 1.0f - s;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -4509,7 +5295,7 @@ public final class Float4x4OpsSimd {
         var _c0 = _sv0.mul(_sv1);
         var _c1 = _sv0.mul(_sv2);
         var _c2 = _sv0.mul(_sv3);
-        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, _pivotx, _pivotx)), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, _pivoty, _pivoty)), _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, _pivotz, _pivotz)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 0] * _t0), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 1] * _t0), _sv3.fma(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 2] * _t0), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -4518,9 +5304,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] scaleAround_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float[] pivot, int pivotOffset, float s) {
-        float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = 1.0f - s;
         var _sv0 = FloatVector.broadcast(SIMD_SPECIES, s);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
@@ -4528,7 +5312,7 @@ public final class Float4x4OpsSimd {
         var _c0 = _sv0.mul(_sv1);
         var _c1 = _sv0.mul(_sv2);
         var _c2 = _sv0.mul(_sv3);
-        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, _pivotx, _pivotx))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, _pivoty, _pivoty))).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-s, _pivotz, _pivotz))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv1.mul(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 0] * _t0)).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 1] * _t0)).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 2] * _t0)).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -4548,7 +5332,7 @@ public final class Float4x4OpsSimd {
         var _c0 = FloatVector.broadcast(SIMD_SPECIES, sX).mul(_sv0);
         var _c1 = FloatVector.broadcast(SIMD_SPECIES, sY).mul(_sv1);
         var _c2 = FloatVector.broadcast(SIMD_SPECIES, sZ).mul(_sv2);
-        var _c3 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotX, sX, pivotX)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, sY, pivotY)), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotZ, sZ, pivotZ)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, pivotX * (1.0f - sX)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, pivotY * (1.0f - sY)), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, pivotZ * (1.0f - sZ)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -4563,7 +5347,7 @@ public final class Float4x4OpsSimd {
         var _c0 = FloatVector.broadcast(SIMD_SPECIES, sX).mul(_sv0);
         var _c1 = FloatVector.broadcast(SIMD_SPECIES, sY).mul(_sv1);
         var _c2 = FloatVector.broadcast(SIMD_SPECIES, sZ).mul(_sv2);
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotX, sX, pivotX))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotY, sY, pivotY))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-pivotZ, sZ, pivotZ))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, pivotX * (1.0f - sX))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, pivotY * (1.0f - sY))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, pivotZ * (1.0f - sZ))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -4580,16 +5364,13 @@ public final class Float4x4OpsSimd {
         float _sx = s[sOffset + 0];
         float _sy = s[sOffset + 1];
         float _sz = s[sOffset + 2];
-        float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.broadcast(SIMD_SPECIES, _sx).mul(_sv0);
         var _c1 = FloatVector.broadcast(SIMD_SPECIES, _sy).mul(_sv1);
         var _c2 = FloatVector.broadcast(SIMD_SPECIES, _sz).mul(_sv2);
-        var _c3 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivotx, _sx, _pivotx)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _sy, _pivoty)), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivotz, _sz, _pivotz)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv0.fma(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 0] * (1.0f - _sx)), _sv1.fma(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 1] * (1.0f - _sy)), _sv2.fma(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 2] * (1.0f - _sz)), FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -4601,16 +5382,13 @@ public final class Float4x4OpsSimd {
         float _sx = s[sOffset + 0];
         float _sy = s[sOffset + 1];
         float _sz = s[sOffset + 2];
-        float _pivotx = pivot[pivotOffset + 0];
-        float _pivoty = pivot[pivotOffset + 1];
-        float _pivotz = pivot[pivotOffset + 2];
         var _sv0 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 4);
         var _sv2 = FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 8);
         var _c0 = FloatVector.broadcast(SIMD_SPECIES, _sx).mul(_sv0);
         var _c1 = FloatVector.broadcast(SIMD_SPECIES, _sy).mul(_sv1);
         var _c2 = FloatVector.broadcast(SIMD_SPECIES, _sz).mul(_sv2);
-        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivotx, _sx, _pivotx))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivoty, _sy, _pivoty))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, Math.fma(-_pivotz, _sz, _pivotz))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
+        var _c3 = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 0] * (1.0f - _sx))).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 1] * (1.0f - _sy))).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, pivot[pivotOffset + 2] * (1.0f - _sz))).add(FloatVector.fromArray(SIMD_SPECIES, src, srcOffset + 12))));
         _c0.intoArray(dest, destOffset);
         _c1.intoArray(dest, destOffset + 4);
         _c2.intoArray(dest, destOffset + 8);
@@ -5081,7 +5859,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 16) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -5093,7 +5871,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static float[] copy(float[] dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 134217727 ? -1 : count * 16) >= 0 && srcOffset <= src.limit() - (count > 134217727 ? -1 : count * 16)) {
             float[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr(dest, destOffset, _srcArr, _srcOff, count * 16);
@@ -5105,7 +5883,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr_one(_destArr, _destOff, src, srcOffset);
@@ -5117,7 +5895,7 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, float[] src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 134217727 ? -1 : count * 16) >= 0 && destOffset <= dest.limit() - (count > 134217727 ? -1 : count * 16)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr(_destArr, _destOff, src, srcOffset, count * 16);
@@ -5129,10 +5907,10 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 16) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr_one(_destArr, _destOff, _srcArr, _srcOff);
@@ -5141,7 +5919,7 @@ public final class Float4x4OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 16) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < 16; _i++)
@@ -5155,10 +5933,10 @@ public final class Float4x4OpsSimd {
     }
 
     public static java.nio.FloatBuffer copy(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 134217727 ? -1 : count * 16) >= 0 && destOffset <= dest.limit() - (count > 134217727 ? -1 : count * 16)) {
             float[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 134217727 ? -1 : count * 16) >= 0 && srcOffset <= src.limit() - (count > 134217727 ? -1 : count * 16)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr(_destArr, _destOff, _srcArr, _srcOff, count * 16);
@@ -5167,7 +5945,7 @@ public final class Float4x4OpsSimd {
                     _destArr[_destOff + _i] = src.get(srcOffset + _i);
             }
         } else {
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 134217727 ? -1 : count * 16) >= 0 && srcOffset <= src.limit() - (count > 134217727 ? -1 : count * 16)) {
                 float[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 for (int _i = 0; _i < count * 16; _i++)

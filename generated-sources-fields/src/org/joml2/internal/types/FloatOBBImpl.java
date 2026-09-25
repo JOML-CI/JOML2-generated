@@ -678,10 +678,12 @@ public final class FloatOBBImpl implements FloatOBB {
 
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      *
      * @param m the transformation matrix to apply
      * @param dest will hold the result
@@ -692,44 +694,58 @@ public final class FloatOBBImpl implements FloatOBB {
         float _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
         float _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
         float _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        float _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        float _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t21 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t22 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
         float _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        float _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t24 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t25 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
         float _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
-        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
-        float _t36 = (1.0f / (float) Math.sqrt(_t33));
-        float _t37 = (1.0f / (float) Math.sqrt(_t34));
-        float _t38 = (1.0f / (float) Math.sqrt(_t35));
-        float _buf0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
-        float _buf1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
-        d.cZ = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        d.uXx = _t18 * _t36;
-        d.uXy = _t20 * _t36;
-        d.uXz = _t19 * _t36;
-        d.uYx = _t21 * _t37;
-        d.uYy = _t23 * _t37;
-        d.uYz = _t22 * _t37;
-        d.uZx = _t24 * _t38;
-        d.uZy = _t26 * _t38;
-        d.uZz = _t25 * _t38;
-        d.hsX = this.hsX * (float) Math.sqrt(_t33);
-        d.hsY = this.hsY * (float) Math.sqrt(_t34);
-        d.hsZ = this.hsZ * (float) Math.sqrt(_t35);
+        float _t30 = (1.0f / (float) Math.sqrt(Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20))));
+        float _t31 = _t18 * _t30;
+        float _t32 = _t20 * _t30;
+        float _t33 = _t19 * _t30;
+        float _t36 = Math.fma(_t21, _t33, Math.fma(_t22, _t31, _t23 * _t32));
+        float _t37 = -_t36;
+        float _t38 = Math.fma(_t37, _t31, _t22);
+        float _t39 = Math.fma(_t37, _t33, _t21);
+        float _t40 = Math.fma(_t37, _t32, _t23);
+        float _t44 = (1.0f / (float) Math.sqrt(Math.fma(_t39, _t39, Math.fma(_t38, _t38, _t40 * _t40))));
+        float _t45 = _t38 * _t44;
+        float _t46 = _t40 * _t44;
+        float _t47 = _t39 * _t44;
+        float _t54 = Math.fma(_t32, _t47, -(_t33 * _t46));
+        float _t55 = Math.fma(_t33, _t45, -(_t31 * _t47));
+        float _t56 = Math.fma(_t31, _t46, -(_t32 * _t45));
+        float _buf0 = Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, Math.fma(m.m02(), this.cZ, m.m03())));
+        float _buf1 = Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, Math.fma(m.m12(), this.cZ, m.m13())));
+        d.cZ = Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, Math.fma(m.m22(), this.cZ, m.m23())));
+        d.uXx = _t31;
+        d.uXy = _t32;
+        d.uXz = _t33;
+        d.uYx = _t45;
+        d.uYy = _t46;
+        d.uYz = _t47;
+        d.uZx = _t54;
+        d.uZy = _t55;
+        d.uZz = _t56;
+        float _buf2 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), this.hsY * Math.abs(_t36)));
+        float _buf3 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), this.hsY * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
+        d.hsZ = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), this.hsY * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
         d.cX = _buf0;
         d.cY = _buf1;
+        d.hsX = _buf2;
+        d.hsY = _buf3;
         return d;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -743,44 +759,58 @@ public final class FloatOBBImpl implements FloatOBB {
         float _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
         float _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
         float _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        float _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        float _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t21 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t22 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
         float _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        float _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t24 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t25 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
         float _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
-        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
-        float _t36 = (1.0f / (float) Math.sqrt(_t33));
-        float _t37 = (1.0f / (float) Math.sqrt(_t34));
-        float _t38 = (1.0f / (float) Math.sqrt(_t35));
-        float _buf0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
-        float _buf1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
-        d.cZ = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        d.uXx = _t18 * _t36;
-        d.uXy = _t20 * _t36;
-        d.uXz = _t19 * _t36;
-        d.uYx = _t21 * _t37;
-        d.uYy = _t23 * _t37;
-        d.uYz = _t22 * _t37;
-        d.uZx = _t24 * _t38;
-        d.uZy = _t26 * _t38;
-        d.uZz = _t25 * _t38;
-        d.hsX = this.hsX * (float) Math.sqrt(_t33);
-        d.hsY = this.hsY * (float) Math.sqrt(_t34);
-        d.hsZ = this.hsZ * (float) Math.sqrt(_t35);
+        float _t30 = (1.0f / (float) Math.sqrt(Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20))));
+        float _t31 = _t18 * _t30;
+        float _t32 = _t20 * _t30;
+        float _t33 = _t19 * _t30;
+        float _t36 = Math.fma(_t21, _t33, Math.fma(_t22, _t31, _t23 * _t32));
+        float _t37 = -_t36;
+        float _t38 = Math.fma(_t37, _t31, _t22);
+        float _t39 = Math.fma(_t37, _t33, _t21);
+        float _t40 = Math.fma(_t37, _t32, _t23);
+        float _t44 = (1.0f / (float) Math.sqrt(Math.fma(_t39, _t39, Math.fma(_t38, _t38, _t40 * _t40))));
+        float _t45 = _t38 * _t44;
+        float _t46 = _t40 * _t44;
+        float _t47 = _t39 * _t44;
+        float _t54 = Math.fma(_t32, _t47, -(_t33 * _t46));
+        float _t55 = Math.fma(_t33, _t45, -(_t31 * _t47));
+        float _t56 = Math.fma(_t31, _t46, -(_t32 * _t45));
+        float _buf0 = Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, Math.fma(m.m02(), this.cZ, m.m03())));
+        float _buf1 = Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, Math.fma(m.m12(), this.cZ, m.m13())));
+        d.cZ = Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, Math.fma(m.m22(), this.cZ, m.m23())));
+        d.uXx = _t31;
+        d.uXy = _t32;
+        d.uXz = _t33;
+        d.uYx = _t45;
+        d.uYy = _t46;
+        d.uYz = _t47;
+        d.uZx = _t54;
+        d.uZy = _t55;
+        d.uZz = _t56;
+        float _buf2 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), this.hsY * Math.abs(_t36)));
+        float _buf3 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), this.hsY * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
+        d.hsZ = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), this.hsY * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
         d.cX = _buf0;
         d.cY = _buf1;
+        d.hsX = _buf2;
+        d.hsY = _buf3;
         return d;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -794,44 +824,58 @@ public final class FloatOBBImpl implements FloatOBB {
         float _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
         float _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
         float _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        float _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        float _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t21 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t22 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
         float _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        float _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t24 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t25 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
         float _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
-        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
-        float _t36 = (1.0f / (float) Math.sqrt(_t33));
-        float _t37 = (1.0f / (float) Math.sqrt(_t34));
-        float _t38 = (1.0f / (float) Math.sqrt(_t35));
-        float _buf0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
-        float _buf1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
-        d.cZ = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        d.uXx = _t18 * _t36;
-        d.uXy = _t20 * _t36;
-        d.uXz = _t19 * _t36;
-        d.uYx = _t21 * _t37;
-        d.uYy = _t23 * _t37;
-        d.uYz = _t22 * _t37;
-        d.uZx = _t24 * _t38;
-        d.uZy = _t26 * _t38;
-        d.uZz = _t25 * _t38;
-        d.hsX = this.hsX * (float) Math.sqrt(_t33);
-        d.hsY = this.hsY * (float) Math.sqrt(_t34);
-        d.hsZ = this.hsZ * (float) Math.sqrt(_t35);
+        float _t30 = (1.0f / (float) Math.sqrt(Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20))));
+        float _t31 = _t18 * _t30;
+        float _t32 = _t20 * _t30;
+        float _t33 = _t19 * _t30;
+        float _t36 = Math.fma(_t21, _t33, Math.fma(_t22, _t31, _t23 * _t32));
+        float _t37 = -_t36;
+        float _t38 = Math.fma(_t37, _t31, _t22);
+        float _t39 = Math.fma(_t37, _t33, _t21);
+        float _t40 = Math.fma(_t37, _t32, _t23);
+        float _t44 = (1.0f / (float) Math.sqrt(Math.fma(_t39, _t39, Math.fma(_t38, _t38, _t40 * _t40))));
+        float _t45 = _t38 * _t44;
+        float _t46 = _t40 * _t44;
+        float _t47 = _t39 * _t44;
+        float _t54 = Math.fma(_t32, _t47, -(_t33 * _t46));
+        float _t55 = Math.fma(_t33, _t45, -(_t31 * _t47));
+        float _t56 = Math.fma(_t31, _t46, -(_t32 * _t45));
+        float _buf0 = Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, Math.fma(m.m02(), this.cZ, m.m03())));
+        float _buf1 = Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, Math.fma(m.m12(), this.cZ, m.m13())));
+        d.cZ = Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, Math.fma(m.m22(), this.cZ, m.m23())));
+        d.uXx = _t31;
+        d.uXy = _t32;
+        d.uXz = _t33;
+        d.uYx = _t45;
+        d.uYy = _t46;
+        d.uYz = _t47;
+        d.uZx = _t54;
+        d.uZy = _t55;
+        d.uZz = _t56;
+        float _buf2 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), this.hsY * Math.abs(_t36)));
+        float _buf3 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), this.hsY * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
+        d.hsZ = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), this.hsY * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
         d.cX = _buf0;
         d.cY = _buf1;
+        d.hsX = _buf2;
+        d.hsY = _buf3;
         return d;
     }
 
 
     /**
-     * Transform this oriented bounding box by {@code m}: the center is transformed as a point, each
-     * axis as a direction and renormalized, and each half-size is scaled by the length its
-     * transformed axis had, so the box follows the matrix's scale (exact for rotation and scale; a
-     * shear is approximated) and store the result in {@code dest}.
+     * Transform this oriented bounding box by {@code m}: the center is transformed as a point and
+     * the axes as directions, which are then made orthonormal again (the transformed X axis, the Y
+     * axis perpendicular to it, and their cross product); each half-size becomes the transformed
+     * box's extent along its new axis, so the result encloses the transformed box - exactly when
+     * the matrix keeps the axes perpendicular (a rotation times a scale along them) and store the
+     * result in {@code dest}.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.
@@ -848,35 +892,47 @@ public final class FloatOBBImpl implements FloatOBB {
         float _t18 = Math.fma(m.m02(), this.uXz, Math.fma(m.m00(), this.uXx, m.m01() * this.uXy));
         float _t19 = Math.fma(m.m22(), this.uXz, Math.fma(m.m20(), this.uXx, m.m21() * this.uXy));
         float _t20 = Math.fma(m.m12(), this.uXz, Math.fma(m.m10(), this.uXx, m.m11() * this.uXy));
-        float _t21 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
-        float _t22 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t21 = Math.fma(m.m22(), this.uYz, Math.fma(m.m20(), this.uYx, m.m21() * this.uYy));
+        float _t22 = Math.fma(m.m02(), this.uYz, Math.fma(m.m00(), this.uYx, m.m01() * this.uYy));
         float _t23 = Math.fma(m.m12(), this.uYz, Math.fma(m.m10(), this.uYx, m.m11() * this.uYy));
-        float _t24 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
-        float _t25 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t24 = Math.fma(m.m22(), this.uZz, Math.fma(m.m20(), this.uZx, m.m21() * this.uZy));
+        float _t25 = Math.fma(m.m02(), this.uZz, Math.fma(m.m00(), this.uZx, m.m01() * this.uZy));
         float _t26 = Math.fma(m.m12(), this.uZz, Math.fma(m.m10(), this.uZx, m.m11() * this.uZy));
-        float _t33 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
-        float _t34 = Math.fma(_t22, _t22, Math.fma(_t21, _t21, _t23 * _t23));
-        float _t35 = Math.fma(_t25, _t25, Math.fma(_t24, _t24, _t26 * _t26));
-        float _t36 = (1.0f / (float) Math.sqrt(_t33));
-        float _t37 = (1.0f / (float) Math.sqrt(_t34));
-        float _t38 = (1.0f / (float) Math.sqrt(_t35));
-        float _buf0 = Math.fma(m.m02(), this.cZ, Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, m.m03())));
-        float _buf1 = Math.fma(m.m12(), this.cZ, Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, m.m13())));
-        d.cZ = Math.fma(m.m22(), this.cZ, Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, m.m23())));
-        d.uXx = _t18 * _t36;
-        d.uXy = _t20 * _t36;
-        d.uXz = _t19 * _t36;
-        d.uYx = _t21 * _t37;
-        d.uYy = _t23 * _t37;
-        d.uYz = _t22 * _t37;
-        d.uZx = _t24 * _t38;
-        d.uZy = _t26 * _t38;
-        d.uZz = _t25 * _t38;
-        d.hsX = this.hsX * (float) Math.sqrt(_t33);
-        d.hsY = this.hsY * (float) Math.sqrt(_t34);
-        d.hsZ = this.hsZ * (float) Math.sqrt(_t35);
+        float _t30 = (1.0f / (float) Math.sqrt(Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20))));
+        float _t31 = _t18 * _t30;
+        float _t32 = _t20 * _t30;
+        float _t33 = _t19 * _t30;
+        float _t36 = Math.fma(_t21, _t33, Math.fma(_t22, _t31, _t23 * _t32));
+        float _t37 = -_t36;
+        float _t38 = Math.fma(_t37, _t31, _t22);
+        float _t39 = Math.fma(_t37, _t33, _t21);
+        float _t40 = Math.fma(_t37, _t32, _t23);
+        float _t44 = (1.0f / (float) Math.sqrt(Math.fma(_t39, _t39, Math.fma(_t38, _t38, _t40 * _t40))));
+        float _t45 = _t38 * _t44;
+        float _t46 = _t40 * _t44;
+        float _t47 = _t39 * _t44;
+        float _t54 = Math.fma(_t32, _t47, -(_t33 * _t46));
+        float _t55 = Math.fma(_t33, _t45, -(_t31 * _t47));
+        float _t56 = Math.fma(_t31, _t46, -(_t32 * _t45));
+        float _buf0 = Math.fma(m.m00(), this.cX, Math.fma(m.m01(), this.cY, Math.fma(m.m02(), this.cZ, m.m03())));
+        float _buf1 = Math.fma(m.m10(), this.cX, Math.fma(m.m11(), this.cY, Math.fma(m.m12(), this.cZ, m.m13())));
+        d.cZ = Math.fma(m.m20(), this.cX, Math.fma(m.m21(), this.cY, Math.fma(m.m22(), this.cZ, m.m23())));
+        d.uXx = _t31;
+        d.uXy = _t32;
+        d.uXz = _t33;
+        d.uYx = _t45;
+        d.uYy = _t46;
+        d.uYz = _t47;
+        d.uZx = _t54;
+        d.uZy = _t55;
+        d.uZz = _t56;
+        float _buf2 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t33, Math.fma(_t25, _t31, _t26 * _t32))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t33, Math.fma(_t18, _t31, _t20 * _t32))), this.hsY * Math.abs(_t36)));
+        float _buf3 = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t47, Math.fma(_t25, _t45, _t26 * _t46))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t47, Math.fma(_t18, _t45, _t20 * _t46))), this.hsY * Math.abs(Math.fma(_t21, _t47, Math.fma(_t22, _t45, _t23 * _t46)))));
+        d.hsZ = Math.fma(this.hsZ, Math.abs(Math.fma(_t24, _t56, Math.fma(_t25, _t54, _t26 * _t55))), Math.fma(this.hsX, Math.abs(Math.fma(_t19, _t56, Math.fma(_t18, _t54, _t20 * _t55))), this.hsY * Math.abs(Math.fma(_t21, _t56, Math.fma(_t22, _t54, _t23 * _t55)))));
         d.cX = _buf0;
         d.cY = _buf1;
+        d.hsX = _buf2;
+        d.hsY = _buf3;
         return d;
     }
 

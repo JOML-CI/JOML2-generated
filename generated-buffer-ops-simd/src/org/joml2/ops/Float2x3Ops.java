@@ -51,10 +51,10 @@ import org.joml2.internal.simd.*;
  * the flags its overload reads. Every non-bulk buffer, segment and raw-address overload - and the
  * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
  * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
- * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
- * element-wise operations loop over the buffer API directly and freeze nothing. Every overload with
- * a Vector-API or fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization
- * snapshots {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma},
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads dispatch through
+ * {@code SimdSupport} like every other SIMD path (below). Every overload with a Vector-API or
+ * fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization snapshots
+ * {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma}, {@code cosFromSin},
  * {@code fastmath}, {@code sinLookup}, {@code strictMath}) - and {@code Joml.VECTOR_API}, freezing
  * the {@link JomlConfig} flags as well; the scalar kernels call {@link Math} for their
  * multiply-adds and transcendentals, which freezes the {@code Math} flags likewise. Only the array
@@ -2135,12 +2135,13 @@ public final class Float2x3Ops {
         float _self11 = src[srcOffset + 3];
         float _self02 = src[srcOffset + 4];
         float _self12 = src[srcOffset + 5];
+        float _t0 = 1.0f - s;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self01;
         dest[destOffset + 3] = s * _self11;
-        dest[destOffset + 4] = Math.fma(-s, pivotX, Math.fma(s, _self02, pivotX));
-        dest[destOffset + 5] = Math.fma(-s, pivotY, Math.fma(s, _self12, pivotY));
+        dest[destOffset + 4] = Math.fma(s, _self02, pivotX * _t0);
+        dest[destOffset + 5] = Math.fma(s, _self12, pivotY * _t0);
         return dest;
     }
 
@@ -2195,12 +2196,13 @@ public final class Float2x3Ops {
         float _self12 = src[srcOffset + 5];
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
+        float _t0 = 1.0f - s;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self01;
         dest[destOffset + 3] = s * _self11;
-        dest[destOffset + 4] = Math.fma(-s, _pivotx, Math.fma(s, _self02, _pivotx));
-        dest[destOffset + 5] = Math.fma(-s, _pivoty, Math.fma(s, _self12, _pivoty));
+        dest[destOffset + 4] = Math.fma(s, _self02, _pivotx * _t0);
+        dest[destOffset + 5] = Math.fma(s, _self12, _pivoty * _t0);
         return dest;
     }
 
@@ -2258,8 +2260,8 @@ public final class Float2x3Ops {
         dest[destOffset + 1] = sY * _self10;
         dest[destOffset + 2] = sX * _self01;
         dest[destOffset + 3] = sY * _self11;
-        dest[destOffset + 4] = Math.fma(-pivotX, sX, Math.fma(sX, _self02, pivotX));
-        dest[destOffset + 5] = Math.fma(-pivotY, sY, Math.fma(sY, _self12, pivotY));
+        dest[destOffset + 4] = Math.fma(pivotX, 1.0f - sX, sX * _self02);
+        dest[destOffset + 5] = Math.fma(pivotY, 1.0f - sY, sY * _self12);
         return dest;
     }
 
@@ -2321,8 +2323,8 @@ public final class Float2x3Ops {
         dest[destOffset + 1] = _sy * _self10;
         dest[destOffset + 2] = _sx * _self01;
         dest[destOffset + 3] = _sy * _self11;
-        dest[destOffset + 4] = Math.fma(-_pivotx, _sx, Math.fma(_sx, _self02, _pivotx));
-        dest[destOffset + 5] = Math.fma(-_pivoty, _sy, Math.fma(_sy, _self12, _pivoty));
+        dest[destOffset + 4] = Math.fma(_pivotx, 1.0f - _sx, _sx * _self02);
+        dest[destOffset + 5] = Math.fma(_pivoty, 1.0f - _sy, _sy * _self12);
         return dest;
     }
 
@@ -2833,14 +2835,15 @@ public final class Float2x3Ops {
         float _self11 = src[srcOffset + 3];
         float _self02 = src[srcOffset + 4];
         float _self12 = src[srcOffset + 5];
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self01;
         dest[destOffset + 3] = s * _self11;
-        dest[destOffset + 4] = Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02));
-        dest[destOffset + 5] = Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12));
+        dest[destOffset + 4] = Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02));
+        dest[destOffset + 5] = Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12));
         return dest;
     }
 
@@ -2895,14 +2898,15 @@ public final class Float2x3Ops {
         float _self12 = src[srcOffset + 5];
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
-        float _t0 = Math.fma(-s, _pivotx, _pivotx);
-        float _t1 = Math.fma(-s, _pivoty, _pivoty);
+        float _t0 = 1.0f - s;
+        float _t1 = _pivotx * _t0;
+        float _t2 = _pivoty * _t0;
         dest[destOffset + 0] = s * _self00;
         dest[destOffset + 1] = s * _self10;
         dest[destOffset + 2] = s * _self01;
         dest[destOffset + 3] = s * _self11;
-        dest[destOffset + 4] = Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02));
-        dest[destOffset + 5] = Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12));
+        dest[destOffset + 4] = Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02));
+        dest[destOffset + 5] = Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12));
         return dest;
     }
 
@@ -2956,8 +2960,8 @@ public final class Float2x3Ops {
         float _self11 = src[srcOffset + 3];
         float _self02 = src[srcOffset + 4];
         float _self12 = src[srcOffset + 5];
-        float _t2 = Math.fma(-pivotX, sX, pivotX);
-        float _t3 = Math.fma(-pivotY, sY, pivotY);
+        float _t2 = pivotX * (1.0f - sX);
+        float _t3 = pivotY * (1.0f - sY);
         dest[destOffset + 0] = sX * _self00;
         dest[destOffset + 1] = sX * _self10;
         dest[destOffset + 2] = sY * _self01;
@@ -3021,8 +3025,8 @@ public final class Float2x3Ops {
         float _sy = s[sOffset + 1];
         float _pivotx = pivot[pivotOffset + 0];
         float _pivoty = pivot[pivotOffset + 1];
-        float _t2 = Math.fma(-_pivotx, _sx, _pivotx);
-        float _t3 = Math.fma(-_pivoty, _sy, _pivoty);
+        float _t2 = _pivotx * (1.0f - _sx);
+        float _t3 = _pivoty * (1.0f - _sy);
         dest[destOffset + 0] = _sx * _self00;
         dest[destOffset + 1] = _sx * _self10;
         dest[destOffset + 2] = _sy * _self01;
@@ -3174,18 +3178,18 @@ public final class Float2x3Ops {
         float _self11 = src[srcOffset + 3];
         float _self02 = src[srcOffset + 4];
         float _self12 = src[srcOffset + 5];
-        float _t0 = right - left;
-        float _t0_inv = 1.0f / _t0;
-        float _t1 = top - bottom;
-        float _t1_inv = 1.0f / _t1;
-        float _t2 = left + right;
-        float _t3 = bottom + top;
-        dest[destOffset + 0] = (_self00 + _self00) * _t0_inv;
-        dest[destOffset + 1] = (_self10 + _self10) * _t0_inv;
-        dest[destOffset + 2] = (_self01 + _self01) * _t1_inv;
-        dest[destOffset + 3] = (_self11 + _self11) * _t1_inv;
-        dest[destOffset + 4] = _self02 + (-(_self00 * _t2 * _t0_inv) - _self01 * _t3 * _t1_inv);
-        dest[destOffset + 5] = _self12 + (-(_self10 * _t2 * _t0_inv) - _self11 * _t3 * _t1_inv);
+        float _t0_inv = 1.0f / (right - left);
+        float _sp0 = _t0_inv + _t0_inv;
+        float _t1_inv = 1.0f / (top - bottom);
+        float _sp1 = _t1_inv + _t1_inv;
+        float _sp2 = _t0_inv * (left + right);
+        float _sp3 = _t1_inv * (bottom + top);
+        dest[destOffset + 0] = _sp0 * _self00;
+        dest[destOffset + 1] = _sp0 * _self10;
+        dest[destOffset + 2] = _sp1 * _self01;
+        dest[destOffset + 3] = _sp1 * _self11;
+        dest[destOffset + 4] = _self02 + (-(_self00 * _sp2) - _self01 * _sp3);
+        dest[destOffset + 5] = _self12 + (-(_self10 * _sp2) - _self11 * _sp3);
         return dest;
     }
 

@@ -221,27 +221,37 @@ public final class DoubleAABBImpl implements DoubleAABB {
      */
     public DoubleAABB transform(Double3x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        double _t9 = this.minZ + this.maxZ;
-        double _t10 = this.minX + this.maxX;
-        double _t11 = this.minY + this.maxY;
-        double _t12 = this.maxZ - this.minZ;
-        double _t13 = this.maxX - this.minX;
-        double _t14 = this.maxY - this.minY;
-        double _t15 = m.m02() * _t9;
-        double _t17 = m.m12() * _t9;
-        double _t19 = m.m22() * _t9;
-        double _t24 = Math.fma(m.m00(), _t10, m.m01() * _t11);
-        double _t25 = Math.fma(m.m10(), _t10, m.m11() * _t11);
-        double _t26 = Math.fma(m.m20(), _t10, m.m21() * _t11);
-        double _t30 = Math.fma(_t12, Math.abs(m.m02()), Math.fma(_t13, Math.abs(m.m00()), _t14 * Math.abs(m.m01())));
-        double _t31 = Math.fma(_t12, Math.abs(m.m12()), Math.fma(_t13, Math.abs(m.m10()), _t14 * Math.abs(m.m11())));
-        double _t32 = Math.fma(_t12, Math.abs(m.m22()), Math.fma(_t13, Math.abs(m.m20()), _t14 * Math.abs(m.m21())));
-        d.minX = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(-0.5, _t30, m.m03())));
-        d.minY = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(-0.5, _t31, m.m13())));
-        d.minZ = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(-0.5, _t32, m.m23())));
-        d.maxX = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(0.5, _t30, m.m03())));
-        d.maxY = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(0.5, _t31, m.m13())));
-        d.maxZ = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(0.5, _t32, m.m23())));
+        double _t9 = this.maxX - this.minX;
+        double _t10 = this.maxY - this.minY;
+        double _t11 = this.maxZ - this.minZ;
+        double _t12 = this.minZ + this.maxZ;
+        double _t13 = this.minX + this.maxX;
+        double _t14 = this.minY + this.maxY;
+        double _t18 = m.m02() * _t12;
+        double _t20 = m.m12() * _t12;
+        double _t22 = m.m22() * _t12;
+        double _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
+        double _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
+        double _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
+        double _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
+        double _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
+        if (_t34 < 0.0) {
+            d.minX = Double.POSITIVE_INFINITY;
+            d.minY = Double.POSITIVE_INFINITY;
+            d.minZ = Double.POSITIVE_INFINITY;
+            d.maxX = Double.NEGATIVE_INFINITY;
+            d.maxY = Double.NEGATIVE_INFINITY;
+            d.maxZ = Double.NEGATIVE_INFINITY;
+        } else {
+            d.minX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, m.m03())));
+            d.minY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, m.m13())));
+            d.minZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, m.m23())));
+            d.maxX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, m.m03())));
+            d.maxY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, m.m13())));
+            d.maxZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, m.m23())));
+        }
         return d;
     }
 
@@ -259,27 +269,37 @@ public final class DoubleAABBImpl implements DoubleAABB {
      */
     public DoubleAABB transform(Double4x4R m, @Mutated DoubleAABB dest) {
         DoubleAABBImpl d = (DoubleAABBImpl) dest;
-        double _t9 = this.minZ + this.maxZ;
-        double _t10 = this.minX + this.maxX;
-        double _t11 = this.minY + this.maxY;
-        double _t12 = this.maxZ - this.minZ;
-        double _t13 = this.maxX - this.minX;
-        double _t14 = this.maxY - this.minY;
-        double _t15 = m.m02() * _t9;
-        double _t17 = m.m12() * _t9;
-        double _t19 = m.m22() * _t9;
-        double _t24 = Math.fma(m.m00(), _t10, m.m01() * _t11);
-        double _t25 = Math.fma(m.m10(), _t10, m.m11() * _t11);
-        double _t26 = Math.fma(m.m20(), _t10, m.m21() * _t11);
-        double _t30 = Math.fma(_t12, Math.abs(m.m02()), Math.fma(_t13, Math.abs(m.m00()), _t14 * Math.abs(m.m01())));
-        double _t31 = Math.fma(_t12, Math.abs(m.m12()), Math.fma(_t13, Math.abs(m.m10()), _t14 * Math.abs(m.m11())));
-        double _t32 = Math.fma(_t12, Math.abs(m.m22()), Math.fma(_t13, Math.abs(m.m20()), _t14 * Math.abs(m.m21())));
-        d.minX = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(-0.5, _t30, m.m03())));
-        d.minY = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(-0.5, _t31, m.m13())));
-        d.minZ = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(-0.5, _t32, m.m23())));
-        d.maxX = Math.fma(0.5, _t15, Math.fma(0.5, _t24, Math.fma(0.5, _t30, m.m03())));
-        d.maxY = Math.fma(0.5, _t17, Math.fma(0.5, _t25, Math.fma(0.5, _t31, m.m13())));
-        d.maxZ = Math.fma(0.5, _t19, Math.fma(0.5, _t26, Math.fma(0.5, _t32, m.m23())));
+        double _t9 = this.maxX - this.minX;
+        double _t10 = this.maxY - this.minY;
+        double _t11 = this.maxZ - this.minZ;
+        double _t12 = this.minZ + this.maxZ;
+        double _t13 = this.minX + this.maxX;
+        double _t14 = this.minY + this.maxY;
+        double _t18 = m.m02() * _t12;
+        double _t20 = m.m12() * _t12;
+        double _t22 = m.m22() * _t12;
+        double _t28 = Math.fma(m.m00(), _t13, m.m01() * _t14);
+        double _t29 = Math.fma(m.m10(), _t13, m.m11() * _t14);
+        double _t30 = Math.fma(m.m20(), _t13, m.m21() * _t14);
+        double _t34 = Math.min(Math.min(0.5 * _t9, 0.5 * _t10), 0.5 * _t11);
+        double _t35 = Math.fma(_t11, Math.abs(m.m02()), Math.fma(_t9, Math.abs(m.m00()), _t10 * Math.abs(m.m01())));
+        double _t36 = Math.fma(_t11, Math.abs(m.m12()), Math.fma(_t9, Math.abs(m.m10()), _t10 * Math.abs(m.m11())));
+        double _t37 = Math.fma(_t11, Math.abs(m.m22()), Math.fma(_t9, Math.abs(m.m20()), _t10 * Math.abs(m.m21())));
+        if (_t34 < 0.0) {
+            d.minX = Double.POSITIVE_INFINITY;
+            d.minY = Double.POSITIVE_INFINITY;
+            d.minZ = Double.POSITIVE_INFINITY;
+            d.maxX = Double.NEGATIVE_INFINITY;
+            d.maxY = Double.NEGATIVE_INFINITY;
+            d.maxZ = Double.NEGATIVE_INFINITY;
+        } else {
+            d.minX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(-0.5, _t35, m.m03())));
+            d.minY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(-0.5, _t36, m.m13())));
+            d.minZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(-0.5, _t37, m.m23())));
+            d.maxX = Math.fma(0.5, _t18, Math.fma(0.5, _t28, Math.fma(0.5, _t35, m.m03())));
+            d.maxY = Math.fma(0.5, _t20, Math.fma(0.5, _t29, Math.fma(0.5, _t36, m.m13())));
+            d.maxZ = Math.fma(0.5, _t22, Math.fma(0.5, _t30, Math.fma(0.5, _t37, m.m23())));
+        }
         return d;
     }
 

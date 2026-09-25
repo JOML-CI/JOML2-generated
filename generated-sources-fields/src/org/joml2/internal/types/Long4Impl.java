@@ -126,10 +126,13 @@ public final class Long4Impl implements Long4 {
      */
     public Long4 ceilDiv(long otherX, long otherY, long otherZ, long otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = java.lang.Math.ceilDiv(this.x, otherX);
-        d.y = java.lang.Math.ceilDiv(this.y, otherY);
-        d.z = java.lang.Math.ceilDiv(this.z, otherZ);
+        long _buf0 = java.lang.Math.ceilDiv(this.x, otherX);
+        long _buf1 = java.lang.Math.ceilDiv(this.y, otherY);
+        long _buf2 = java.lang.Math.ceilDiv(this.z, otherZ);
         d.w = java.lang.Math.ceilDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -173,10 +176,13 @@ public final class Long4Impl implements Long4 {
      */
     public Long4 ceilMod(long otherX, long otherY, long otherZ, long otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = java.lang.Math.ceilMod(this.x, otherX);
-        d.y = java.lang.Math.ceilMod(this.y, otherY);
-        d.z = java.lang.Math.ceilMod(this.z, otherZ);
+        long _buf0 = java.lang.Math.ceilMod(this.x, otherX);
+        long _buf1 = java.lang.Math.ceilMod(this.y, otherY);
+        long _buf2 = java.lang.Math.ceilMod(this.z, otherZ);
         d.w = java.lang.Math.ceilMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -221,10 +227,13 @@ public final class Long4Impl implements Long4 {
      */
     public Long4 div(long otherX, long otherY, long otherZ, long otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = this.x / otherX;
-        d.y = this.y / otherY;
-        d.z = this.z / otherZ;
+        long _buf0 = this.x / otherX;
+        long _buf1 = this.y / otherY;
+        long _buf2 = this.z / otherZ;
         d.w = this.w / otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -268,10 +277,13 @@ public final class Long4Impl implements Long4 {
      */
     public Long4 floorDiv(long otherX, long otherY, long otherZ, long otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
-        d.y = Math.floorDiv(this.y, otherY);
-        d.z = Math.floorDiv(this.z, otherZ);
+        long _buf0 = Math.floorDiv(this.x, otherX);
+        long _buf1 = Math.floorDiv(this.y, otherY);
+        long _buf2 = Math.floorDiv(this.z, otherZ);
         d.w = Math.floorDiv(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -315,10 +327,13 @@ public final class Long4Impl implements Long4 {
      */
     public Long4 floorMod(long otherX, long otherY, long otherZ, long otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
-        d.y = Math.floorMod(this.y, otherY);
-        d.z = Math.floorMod(this.z, otherZ);
+        long _buf0 = Math.floorMod(this.x, otherX);
+        long _buf1 = Math.floorMod(this.y, otherY);
+        long _buf2 = Math.floorMod(this.z, otherZ);
         d.w = Math.floorMod(this.w, otherW);
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -428,10 +443,13 @@ public final class Long4Impl implements Long4 {
      */
     public Long4 rem(long otherX, long otherY, long otherZ, long otherW, @Mutated Long4 dest) {
         Long4Impl d = (Long4Impl) dest;
-        d.x = this.x % otherX;
-        d.y = this.y % otherY;
-        d.z = this.z % otherZ;
+        long _buf0 = this.x % otherX;
+        long _buf1 = this.y % otherY;
+        long _buf2 = this.z % otherZ;
         d.w = this.w % otherW;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 
@@ -991,6 +1009,9 @@ public final class Long4Impl implements Long4 {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the sum of all components of this vector
      */
@@ -1021,6 +1042,9 @@ public final class Long4Impl implements Long4 {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the product of all components of this vector
      */
@@ -1031,6 +1055,9 @@ public final class Long4Impl implements Long4 {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
@@ -1043,6 +1070,9 @@ public final class Long4Impl implements Long4 {
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -1062,6 +1092,9 @@ public final class Long4Impl implements Long4 {
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
@@ -1074,6 +1107,9 @@ public final class Long4Impl implements Long4 {
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ},
      * {@code otherW}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -1089,6 +1125,9 @@ public final class Long4Impl implements Long4 {
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the squared length of this vector
      */
@@ -1099,6 +1138,9 @@ public final class Long4Impl implements Long4 {
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
@@ -1111,6 +1153,9 @@ public final class Long4Impl implements Long4 {
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}, {@code otherW}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
@@ -1126,6 +1171,9 @@ public final class Long4Impl implements Long4 {
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */

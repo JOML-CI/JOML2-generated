@@ -16,6 +16,11 @@ import java.nio.ByteBuffer;
  * <p>
  * Instances are created through the {@link Joml} factory methods.
  * <p>
+ * A rigid motion is a unit dual quaternion: a unit real part, and a dual part orthogonal to it. The
+ * operations that apply, invert or convert this dual quaternion assume it and do not divide the
+ * real part's length out. A value that has drifted from unit length (after many multiplications,
+ * say) gives wrong results rather than an error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Float.floatToIntBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
@@ -711,6 +716,10 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Compute the exponential of this dual quaternion.
+     * <p>
+     * This dual quaternion is read as a screw-motion generator, a pure dual quaternion as
+     * {@code log} returns it: its scalar parts {@code rW} and {@code dW} are taken as zero and
+     * ignored. The result is a unit dual quaternion.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -732,6 +741,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Compute the natural logarithm of this dual quaternion.
+     * <p>
+     * This dual quaternion must be a unit dual quaternion; the result is pure (both scalar parts
+     * zero), the input {@code exp} expects.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
@@ -758,7 +770,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat makeFromMatrix(Float3x4R m);
 
     /**
-     * Set this dual quaternion to the rotation represented by the given matrix, with zero
+     * Set this dual quaternion to the rotation represented by the given matrix (which must be a
+     * rotation: orthonormal, with determinant +1 - a scaled or sheared block gives a wrong
+     * quaternion, not a longer one; {@code getNormalizedRotation} strips scale first), with zero
      * translation.
      *
      * @param m the matrix to convert
@@ -767,7 +781,8 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated FloatDualQuat makeFromMatrix(Float3x3R m);
 
     /**
-     * Normalize this dual quaternion so that its real (rotation) part has unit length.
+     * Normalize this dual quaternion so that its real (rotation) part has unit length (a zero real
+     * part yields the zero dual quaternion).
      * <p>
      * The squared length is formed at {@code float} precision, so the result is exact only while it
      * stays within the {@code float} range: the magnitude of the real part must lie roughly between
@@ -790,9 +805,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * Set the rotation of this dual quaternion to {@code rotation}.
      *
      * @param rotation the new rotation
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatDualQuat setRotation(FloatQuatR rotation) { return setRotation(rotation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat setRotation(FloatQuatR rotation) { return setRotation(rotation, this); }
 
     /**
      * Set the rotation of this dual quaternion to ({@code x}, {@code y}, {@code z}, {@code w}).
@@ -801,17 +816,17 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatDualQuat setRotation(float x, float y, float z, float w) { return setRotation(x, y, z, w, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat setRotation(float x, float y, float z, float w) { return setRotation(x, y, z, w, this); }
 
     /**
      * Set the translation of this dual quaternion to {@code translation}.
      *
      * @param translation the new translation
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatDualQuat setTranslation(Float3R translation) { return setTranslation(translation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat setTranslation(Float3R translation) { return setTranslation(translation, this); }
 
     /**
      * Set the translation of this dual quaternion to ({@code x}, {@code y}, {@code z}).
@@ -819,9 +834,9 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default FloatDualQuat setTranslation(float x, float y, float z) { return setTranslation(x, y, z, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+    @Mutated default FloatDualQuat setTranslation(float x, float y, float z) { return setTranslation(x, y, z, this); }
 
     /**
      * Apply a rotation transformation that makes {@code +z} point along {@code dir} to this dual
@@ -831,6 +846,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * then the new dual quaternion will be {@code Q * L}. So when transforming a vector {@code v}
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -847,6 +867,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * then the new dual quaternion will be {@code Q * L}. So when transforming a vector {@code v}
      * with the new dual quaternion by using {@code Q * L * v}, the "look along" will be applied
      * first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -884,6 +909,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
 
     /**
      * Set this dual quaternion to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -895,6 +925,11 @@ public interface FloatDualQuat extends FloatDualQuatR {
     /**
      * Set this dual quaternion to a rotation that makes {@code +z} point along ({@code dirX},
      * {@code dirY}, {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}

@@ -78,8 +78,14 @@ public interface DoubleSphereR {
     FloatSphere toFloat(@Mutated FloatSphere dest);
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      *
      * @param m the transformation matrix to apply
      * @param dest will hold the result
@@ -88,8 +94,14 @@ public interface DoubleSphereR {
     DoubleSphere transform(Double3x4R m, @Mutated DoubleSphere dest);
 
     /**
-     * Transform this sphere by {@code m}, scaling the radius conservatively by the matrix's maximum
-     * axis scale and store the result in {@code dest}.
+     * Transform this sphere by {@code m}, scaling the radius by an upper bound on the matrix's
+     * largest stretch so that the result contains the transformed sphere and store the result in
+     * {@code dest}.
+     * <p>
+     * The radius factor is the square root of the largest absolute row sum of {@code M^T M} over
+     * the upper-left 3x3: exact for a rotation combined with any axis scale, and at most about 1.17
+     * times too large under shear. (The largest column length would be no bound once the scale is
+     * applied after the rotation.) The matrix is taken as affine: its last row is not read.
      * <p>
      * Only the affine part of {@code m} is used: the last row is assumed to be
      * {@code (0, 0, 0, 1)}, so any projective component is ignored.

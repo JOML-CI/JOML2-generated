@@ -365,9 +365,10 @@ public interface Short2 extends Short2R {
     @Mutated default Short2 shr(short shift) { return shr(shift, Joml.RETURN_NEW ? Joml.short2() : this); }
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 16, unlike Java's {@code short} shift, which promotes to
-     * {@code int} and takes it modulo 32).
+     * Logically shift each component of this vector right by {@code shift} bits (the 16 bits of
+     * each component are shifted with zeros entering at the top of that lane, and the shift count
+     * is taken modulo the lane width of 16 - unlike Java's {@code short} {@code >>>}, which
+     * sign-extends to {@code int} first and takes the count modulo 32).
      *
      * @param shift the number of bit positions to shift by
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -412,9 +413,9 @@ public interface Short2 extends Short2R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default Short2 set(short s) { return set(s, Joml.RETURN_NEW ? Joml.short2() : this); }
+    @Mutated default Short2 set(short s) { return set(s, this); }
 
     /**
      * Convert this vector to {@code float} precision, returning the result as a new instance.

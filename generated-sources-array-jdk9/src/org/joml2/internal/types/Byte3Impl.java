@@ -396,9 +396,11 @@ public final class Byte3Impl implements Byte3 {
     public Byte3 ceilDiv(byte otherX, byte otherY, byte otherZ, @Mutated Byte3 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte3Impl) dest).data;
-        dd[0] = (byte) (Math.ceilDiv(sd[0], otherX));
-        dd[1] = (byte) (Math.ceilDiv(sd[1], otherY));
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = (byte) (Math.ceilDiv(sd[2], otherZ));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
         return dest;
     }
 
@@ -419,9 +421,11 @@ public final class Byte3Impl implements Byte3 {
     public Short3 ceilDiv(byte otherX, byte otherY, byte otherZ, @Mutated Short3 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.ceilDiv(sd[0], otherX));
-        dd[1] = (short) (Math.ceilDiv(sd[1], otherY));
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = (short) (Math.ceilDiv(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -442,9 +446,11 @@ public final class Byte3Impl implements Byte3 {
     public Int3 ceilDiv(byte otherX, byte otherY, byte otherZ, @Mutated Int3 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -465,9 +471,11 @@ public final class Byte3Impl implements Byte3 {
     public Long3 ceilDiv(byte otherX, byte otherY, byte otherZ, @Mutated Long3 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -488,9 +496,11 @@ public final class Byte3Impl implements Byte3 {
     public Double3 ceilDiv(byte otherX, byte otherY, byte otherZ, @Mutated Double3 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.ceilDiv(sd[0], otherX);
-        dd[1] = Math.ceilDiv(sd[1], otherY);
+        int _buf0 = Math.ceilDiv(sd[0], otherX);
+        int _buf1 = Math.ceilDiv(sd[1], otherY);
         dd[2] = Math.ceilDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -662,9 +672,11 @@ public final class Byte3Impl implements Byte3 {
     public Byte3 ceilMod(byte otherX, byte otherY, byte otherZ, @Mutated Byte3 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte3Impl) dest).data;
-        dd[0] = (byte) (Math.ceilMod(sd[0], otherX));
-        dd[1] = (byte) (Math.ceilMod(sd[1], otherY));
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = (byte) (Math.ceilMod(sd[2], otherZ));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
         return dest;
     }
 
@@ -685,9 +697,11 @@ public final class Byte3Impl implements Byte3 {
     public Short3 ceilMod(byte otherX, byte otherY, byte otherZ, @Mutated Short3 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.ceilMod(sd[0], otherX));
-        dd[1] = (short) (Math.ceilMod(sd[1], otherY));
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = (short) (Math.ceilMod(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -708,9 +722,11 @@ public final class Byte3Impl implements Byte3 {
     public Int3 ceilMod(byte otherX, byte otherY, byte otherZ, @Mutated Int3 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -731,9 +747,11 @@ public final class Byte3Impl implements Byte3 {
     public Long3 ceilMod(byte otherX, byte otherY, byte otherZ, @Mutated Long3 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -754,9 +772,11 @@ public final class Byte3Impl implements Byte3 {
     public Double3 ceilMod(byte otherX, byte otherY, byte otherZ, @Mutated Double3 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.ceilMod(sd[0], otherX);
-        dd[1] = Math.ceilMod(sd[1], otherY);
+        int _buf0 = Math.ceilMod(sd[0], otherX);
+        int _buf1 = Math.ceilMod(sd[1], otherY);
         dd[2] = Math.ceilMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -928,9 +948,11 @@ public final class Byte3Impl implements Byte3 {
     public Byte3 div(byte otherX, byte otherY, byte otherZ, @Mutated Byte3 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte3Impl) dest).data;
-        dd[0] = (byte) (sd[0] / otherX);
-        dd[1] = (byte) (sd[1] / otherY);
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = (byte) (sd[2] / otherZ);
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
         return dest;
     }
 
@@ -951,9 +973,11 @@ public final class Byte3Impl implements Byte3 {
     public Short3 div(byte otherX, byte otherY, byte otherZ, @Mutated Short3 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (sd[0] / otherX);
-        dd[1] = (short) (sd[1] / otherY);
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = (short) (sd[2] / otherZ);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -974,9 +998,11 @@ public final class Byte3Impl implements Byte3 {
     public Int3 div(byte otherX, byte otherY, byte otherZ, @Mutated Int3 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -997,9 +1023,11 @@ public final class Byte3Impl implements Byte3 {
     public Long3 div(byte otherX, byte otherY, byte otherZ, @Mutated Long3 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1020,9 +1048,11 @@ public final class Byte3Impl implements Byte3 {
     public Double3 div(byte otherX, byte otherY, byte otherZ, @Mutated Double3 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] / otherX;
-        dd[1] = sd[1] / otherY;
+        int _buf0 = sd[0] / otherX;
+        int _buf1 = sd[1] / otherY;
         dd[2] = sd[2] / otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1194,9 +1224,11 @@ public final class Byte3Impl implements Byte3 {
     public Byte3 floorDiv(byte otherX, byte otherY, byte otherZ, @Mutated Byte3 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte3Impl) dest).data;
-        dd[0] = (byte) (Math.floorDiv(sd[0], otherX));
-        dd[1] = (byte) (Math.floorDiv(sd[1], otherY));
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = (byte) (Math.floorDiv(sd[2], otherZ));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
         return dest;
     }
 
@@ -1217,9 +1249,11 @@ public final class Byte3Impl implements Byte3 {
     public Short3 floorDiv(byte otherX, byte otherY, byte otherZ, @Mutated Short3 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.floorDiv(sd[0], otherX));
-        dd[1] = (short) (Math.floorDiv(sd[1], otherY));
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = (short) (Math.floorDiv(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -1240,9 +1274,11 @@ public final class Byte3Impl implements Byte3 {
     public Int3 floorDiv(byte otherX, byte otherY, byte otherZ, @Mutated Int3 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1263,9 +1299,11 @@ public final class Byte3Impl implements Byte3 {
     public Long3 floorDiv(byte otherX, byte otherY, byte otherZ, @Mutated Long3 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1286,9 +1324,11 @@ public final class Byte3Impl implements Byte3 {
     public Double3 floorDiv(byte otherX, byte otherY, byte otherZ, @Mutated Double3 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.floorDiv(sd[0], otherX);
-        dd[1] = Math.floorDiv(sd[1], otherY);
+        int _buf0 = Math.floorDiv(sd[0], otherX);
+        int _buf1 = Math.floorDiv(sd[1], otherY);
         dd[2] = Math.floorDiv(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1460,9 +1500,11 @@ public final class Byte3Impl implements Byte3 {
     public Byte3 floorMod(byte otherX, byte otherY, byte otherZ, @Mutated Byte3 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte3Impl) dest).data;
-        dd[0] = (byte) (Math.floorMod(sd[0], otherX));
-        dd[1] = (byte) (Math.floorMod(sd[1], otherY));
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = (byte) (Math.floorMod(sd[2], otherZ));
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
         return dest;
     }
 
@@ -1483,9 +1525,11 @@ public final class Byte3Impl implements Byte3 {
     public Short3 floorMod(byte otherX, byte otherY, byte otherZ, @Mutated Short3 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (Math.floorMod(sd[0], otherX));
-        dd[1] = (short) (Math.floorMod(sd[1], otherY));
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = (short) (Math.floorMod(sd[2], otherZ));
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -1506,9 +1550,11 @@ public final class Byte3Impl implements Byte3 {
     public Int3 floorMod(byte otherX, byte otherY, byte otherZ, @Mutated Int3 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1529,9 +1575,11 @@ public final class Byte3Impl implements Byte3 {
     public Long3 floorMod(byte otherX, byte otherY, byte otherZ, @Mutated Long3 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -1552,9 +1600,11 @@ public final class Byte3Impl implements Byte3 {
     public Double3 floorMod(byte otherX, byte otherY, byte otherZ, @Mutated Double3 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = Math.floorMod(sd[0], otherX);
-        dd[1] = Math.floorMod(sd[1], otherY);
+        int _buf0 = Math.floorMod(sd[0], otherX);
+        int _buf1 = Math.floorMod(sd[1], otherY);
         dd[2] = Math.floorMod(sd[2], otherZ);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -2090,9 +2140,11 @@ public final class Byte3Impl implements Byte3 {
     public Byte3 rem(byte otherX, byte otherY, byte otherZ, @Mutated Byte3 dest) {
         byte[] sd = this.data;
         byte[] dd = ((Byte3Impl) dest).data;
-        dd[0] = (byte) (sd[0] % otherX);
-        dd[1] = (byte) (sd[1] % otherY);
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = (byte) (sd[2] % otherZ);
+        dd[0] = (byte) (_buf0);
+        dd[1] = (byte) (_buf1);
         return dest;
     }
 
@@ -2114,9 +2166,11 @@ public final class Byte3Impl implements Byte3 {
     public Short3 rem(byte otherX, byte otherY, byte otherZ, @Mutated Short3 dest) {
         byte[] sd = this.data;
         short[] dd = ((Short3Impl) dest).data;
-        dd[0] = (short) (sd[0] % otherX);
-        dd[1] = (short) (sd[1] % otherY);
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = (short) (sd[2] % otherZ);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
         return dest;
     }
 
@@ -2138,9 +2192,11 @@ public final class Byte3Impl implements Byte3 {
     public Int3 rem(byte otherX, byte otherY, byte otherZ, @Mutated Int3 dest) {
         byte[] sd = this.data;
         int[] dd = ((Int3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -2162,9 +2218,11 @@ public final class Byte3Impl implements Byte3 {
     public Long3 rem(byte otherX, byte otherY, byte otherZ, @Mutated Long3 dest) {
         byte[] sd = this.data;
         long[] dd = ((Long3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -2186,9 +2244,11 @@ public final class Byte3Impl implements Byte3 {
     public Double3 rem(byte otherX, byte otherY, byte otherZ, @Mutated Double3 dest) {
         byte[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        dd[0] = sd[0] % otherX;
-        dd[1] = sd[1] % otherY;
+        int _buf0 = sd[0] % otherX;
+        int _buf1 = sd[1] % otherY;
         dd[2] = sd[2] % otherZ;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
         return dest;
     }
 
@@ -3792,9 +3852,10 @@ public final class Byte3Impl implements Byte3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3811,13 +3872,15 @@ public final class Byte3Impl implements Byte3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code short}. The shift
-     * count is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code short}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3834,13 +3897,15 @@ public final class Byte3Impl implements Byte3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code int}. The shift count
-     * is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code int}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3857,13 +3922,15 @@ public final class Byte3Impl implements Byte3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code long}. The shift count
-     * is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code long}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -3880,13 +3947,15 @@ public final class Byte3Impl implements Byte3 {
 
 
     /**
-     * Logically shift each component of this vector right by {@code shift} bits (the shift count is
-     * taken modulo the lane width of 8, unlike Java's {@code byte} shift, which promotes to
-     * {@code int} and takes it modulo 32) and store the result in {@code dest}.
+     * Logically shift each component of this vector right by {@code shift} bits (the 8 bits of each
+     * component are shifted with zeros entering at the top of that lane, and the shift count is
+     * taken modulo the lane width of 8 - unlike Java's {@code byte} {@code >>>}, which sign-extends
+     * to {@code int} first and takes the count modulo 32) and store the result in {@code dest}.
      * <p>
-     * The computation is performed at {@code int} precision - Java promotes {@code byte} operands
-     * before evaluating - and each result component is then stored as {@code double}. The shift
-     * count is still taken modulo this vector's lane width of 8, not the destination's.
+     * The shift is evaluated on the {@code byte} lane of 8 bits, zero-extended rather than
+     * sign-extended as Java's promotion to {@code int} would (so {@code -1 >>> 1} is {@code 127}),
+     * and each result component is then widened to {@code double}. The shift count is still taken
+     * modulo this vector's lane width of 8, not the destination's.
      *
      * @param shift the number of bit positions to shift by
      * @param dest will hold the result
@@ -4726,14 +4795,14 @@ public final class Byte3Impl implements Byte3 {
     /**
      * Compute the sum of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the sum of all components of this vector
      */
-    public byte compAdd() {
+    public int compAdd() {
         byte[] sd = this.data;
-        return (byte) (sd[2] + (sd[0] + sd[1]));
+        return sd[2] + (sd[0] + sd[1]);
     }
 
 
@@ -4762,14 +4831,14 @@ public final class Byte3Impl implements Byte3 {
     /**
      * Compute the product of all components of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the product of all components of this vector
      */
-    public byte compMul() {
+    public int compMul() {
         byte[] sd = this.data;
-        return (byte) (sd[2] * sd[0] * sd[1]);
+        return sd[2] * sd[0] * sd[1];
     }
 
 
@@ -4980,13 +5049,13 @@ public final class Byte3Impl implements Byte3 {
     /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
      */
-    public byte distanceSquared(Byte3R other) {
+    public int distanceSquared(Byte3R other) {
         return distanceSquared(other.x(), other.y(), other.z());
     }
 
@@ -4995,8 +5064,8 @@ public final class Byte3Impl implements Byte3 {
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -5004,25 +5073,25 @@ public final class Byte3Impl implements Byte3 {
      * @return the squared distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public byte distanceSquared(byte otherX, byte otherY, byte otherZ) {
+    public int distanceSquared(byte otherX, byte otherY, byte otherZ) {
         byte[] sd = this.data;
-        byte _t0 = (byte) (sd[0] - otherX);
-        byte _t1 = (byte) (sd[1] - otherY);
-        byte _t2 = (byte) (sd[2] - otherZ);
-        return (byte) (_t0 * _t0 + _t1 * _t1 + _t2 * _t2);
+        int _t0 = sd[0] - otherX;
+        int _t1 = sd[1] - otherY;
+        int _t2 = sd[2] - otherZ;
+        return _t0 * _t0 + _t1 * _t1 + _t2 * _t2;
     }
 
 
     /**
      * Compute the dot product of this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
      */
-    public byte dot(Byte3R other) {
+    public int dot(Byte3R other) {
         return dot(other.x(), other.y(), other.z());
     }
 
@@ -5030,44 +5099,44 @@ public final class Byte3Impl implements Byte3 {
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
      * @return the dot product of this vector and ({@code otherX}, {@code otherY}, {@code otherZ})
      */
-    public byte dot(byte otherX, byte otherY, byte otherZ) {
+    public int dot(byte otherX, byte otherY, byte otherZ) {
         byte[] sd = this.data;
-        return (byte) (otherX * sd[0] + otherY * sd[1] + otherZ * sd[2]);
+        return otherX * sd[0] + otherY * sd[1] + otherZ * sd[2];
     }
 
 
     /**
      * Compute the squared length of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the squared length of this vector
      */
-    public byte lengthSquared() {
+    public int lengthSquared() {
         byte[] sd = this.data;
-        return (byte) (sd[0] * sd[0] + sd[1] * sd[1] + sd[2] * sd[2]);
+        return sd[0] * sd[0] + sd[1] * sd[1] + sd[2] * sd[2];
     }
 
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
      */
-    public byte manhattanDistance(Byte3R other) {
+    public int manhattanDistance(Byte3R other) {
         return manhattanDistance(other.x(), other.y(), other.z());
     }
 
@@ -5076,8 +5145,8 @@ public final class Byte3Impl implements Byte3 {
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      * {@code otherZ}).
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
@@ -5085,23 +5154,23 @@ public final class Byte3Impl implements Byte3 {
      * @return the Manhattan distance between this vector and ({@code otherX}, {@code otherY},
      *        {@code otherZ})
      */
-    public byte manhattanDistance(byte otherX, byte otherY, byte otherZ) {
+    public int manhattanDistance(byte otherX, byte otherY, byte otherZ) {
         byte[] sd = this.data;
-        return (byte) (Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY) + Math.abs(sd[2] - otherZ));
+        return Math.abs(sd[0] - otherX) + Math.abs(sd[1] - otherY) + Math.abs(sd[2] - otherZ);
     }
 
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
      * <p>
-     * The value is computed at {@code int} precision and narrowed to {@code byte} on return, so a
-     * result outside the {@code byte} range wraps.
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */
-    public byte manhattanLength() {
+    public int manhattanLength() {
         byte[] sd = this.data;
-        return (byte) (Math.abs(sd[0]) + Math.abs(sd[1]) + Math.abs(sd[2]));
+        return Math.abs(sd[0]) + Math.abs(sd[1]) + Math.abs(sd[2]);
     }
 
 

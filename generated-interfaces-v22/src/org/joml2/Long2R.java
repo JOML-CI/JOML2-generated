@@ -572,6 +572,9 @@ public interface Long2R {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the sum of all components of this vector
      */
@@ -593,6 +596,9 @@ public interface Long2R {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the product of all components of this vector
      */
@@ -600,6 +606,9 @@ public interface Long2R {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
@@ -608,6 +617,9 @@ public interface Long2R {
 
     /**
      * Compute the squared distance between this vector and ({@code x}, {@code y}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -617,6 +629,9 @@ public interface Long2R {
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
@@ -625,6 +640,9 @@ public interface Long2R {
 
     /**
      * Compute the dot product of this vector and ({@code x}, {@code y}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -634,6 +652,9 @@ public interface Long2R {
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the squared length of this vector
      */
@@ -641,6 +662,9 @@ public interface Long2R {
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
@@ -649,6 +673,9 @@ public interface Long2R {
 
     /**
      * Compute the Manhattan distance between this vector and ({@code x}, {@code y}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param x the {@code x} component of the vector {@code (x, y)}
      * @param y the {@code y} component of the vector {@code (x, y)}
@@ -658,6 +685,9 @@ public interface Long2R {
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */

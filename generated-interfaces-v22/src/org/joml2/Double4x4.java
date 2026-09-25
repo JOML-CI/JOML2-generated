@@ -304,7 +304,7 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to the given transform's {@code T * R * S} composition.
      *
-     * @param t the transform to convert
+     * @param t the transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     @Mutated Double4x4 makeFromTransform(DoubleTransformR t);
@@ -319,13 +319,17 @@ public interface Double4x4 extends Double4x4R {
      * @param tZ the {@code tZ} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param rX the {@code rX} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param rY the {@code rY} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param rZ the {@code rZ} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param rW the {@code rW} component of the transform
-     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
+     *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)} (the rotation quaternion must have
+     *        unit length)
      * @param sX the {@code sX} component of the transform
      *        {@code (tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ)}
      * @param sY the {@code sY} component of the transform
@@ -451,8 +455,8 @@ public interface Double4x4 extends Double4x4R {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param right the right operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -552,8 +556,8 @@ public interface Double4x4 extends Double4x4R {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -882,6 +886,11 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -897,6 +906,11 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -915,6 +929,11 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -931,6 +950,11 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -954,6 +978,11 @@ public interface Double4x4 extends Double4x4R {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -970,6 +999,11 @@ public interface Double4x4 extends Double4x4R {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -1041,6 +1075,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPos the position of the object to orient
      * @param targetPos the position to face (e.g. the camera position)
@@ -1052,6 +1091,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPosX the {@code x} component of the vector {@code (objPosX, objPosY, objPosZ)}
      * @param objPosY the {@code y} component of the vector {@code (objPosX, objPosY, objPosZ)}
@@ -1074,6 +1118,11 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPos the position of the object to orient
      * @param targetPos the position to face (e.g. the camera position)
@@ -1084,6 +1133,11 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPosX the {@code x} component of the vector {@code (objPosX, objPosY, objPosZ)}
      * @param objPosY the {@code y} component of the vector {@code (objPosX, objPosY, objPosZ)}
@@ -1104,6 +1158,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Alias for {@code makeBillboardSpherical}.
      *
      * @param objPos the position of the object to orient
@@ -1115,6 +1174,11 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Alias for {@code makeBillboardSpherical}.
      *
@@ -1289,6 +1353,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -1301,6 +1370,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a "look at" view transformation with the eye at ({@code eyeX},
      * {@code eyeY}, {@code eyeZ}) looking at ({@code centerX}, {@code centerY}, {@code centerZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -1320,6 +1394,11 @@ public interface Double4x4 extends Double4x4R {
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -1332,6 +1411,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a "look at" view transformation with the eye at ({@code eyeX},
      * {@code eyeY}, {@code eyeZ}) looking at ({@code centerX}, {@code centerY}, {@code centerZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -1751,13 +1835,27 @@ public interface Double4x4 extends Double4x4R {
     @Mutated Double4x4 makeObliqueCavalier(double angle);
 
     /**
-     * Set this matrix to an oblique military projection shear (compose with an orthographic
+     * Set this matrix to an oblique projection shear drawing the XZ plane true shape and the Y axis
+     * at {@code angle}, depth {@code -y} (the military projection of a Y-up scene seen from below
+     * by a right-handed orthographic projection, or the cavalier projection of a Z-up scene;
+     * {@code obliquePlanometric} shows a Y-up scene from above; compose with an orthographic
      * projection for the full transform).
      *
-     * @param angle the angle in radians
+     * @param angle the angle, in radians, at which the Y axis is drawn from the screen's +x axis
      * @return this
      */
     @Mutated Double4x4 makeObliqueMilitary(double angle);
+
+    /**
+     * Set this matrix to a military (planometric) projection of a Y-up scene seen from above: the
+     * XZ plan true shape turned by {@code angle}, verticals drawn straight up at full length, depth
+     * {@code y} (compose with an orthographic projection for the full transform).
+     *
+     * @param angle the angle, in radians, by which the XZ plan is turned counter-clockwise on
+     *        screen
+     * @return this
+     */
+    @Mutated Double4x4 makeObliquePlanometric(double angle);
 
     /**
      * Set this matrix to an orthographic projection transformation.
@@ -2386,6 +2484,11 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param p the bottom-left corner of the near-plane rectangle
@@ -2398,6 +2501,11 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -2428,6 +2536,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -2440,6 +2553,11 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a view transformation for the given near-plane rectangle.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -2532,6 +2650,11 @@ public interface Double4x4 extends Double4x4R {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -2543,6 +2666,11 @@ public interface Double4x4 extends Double4x4R {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -3403,17 +3531,35 @@ public interface Double4x4 extends Double4x4R {
     @Mutated default Double4x4 obliqueCavalier(double angle) { return obliqueCavalier(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
     /**
-     * Apply an oblique military projection shear (compose with an orthographic projection for the
-     * full transform) to this matrix.
+     * Apply an oblique projection shear drawing the XZ plane true shape and the Y axis at
+     * {@code angle}, depth {@code -y} (the military projection of a Y-up scene seen from below by a
+     * right-handed orthographic projection, or the cavalier projection of a Z-up scene;
+     * {@code obliquePlanometric} shows a Y-up scene from above; compose with an orthographic
+     * projection for the full transform) to this matrix.
      * <p>
      * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
      * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * O * v}, the oblique shear will be applied first.
      *
-     * @param angle the angle in radians
+     * @param angle the angle, in radians, at which the Y axis is drawn from the screen's +x axis
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double4x4 obliqueMilitary(double angle) { return obliqueMilitary(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
+
+    /**
+     * Apply a military (planometric) projection of a Y-up scene seen from above: the XZ plan true
+     * shape turned by {@code angle}, verticals drawn straight up at full length, depth {@code y}
+     * (compose with an orthographic projection for the full transform) to this matrix.
+     * <p>
+     * If {@code M} is {@code this} matrix and {@code O} the oblique shear matrix, then the new
+     * matrix will be {@code M * O}. So when transforming a vector {@code v} with the new matrix by
+     * using {@code M * O * v}, the oblique shear will be applied first.
+     *
+     * @param angle the angle, in radians, by which the XZ plan is turned counter-clockwise on
+     *        screen
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Double4x4 obliquePlanometric(double angle) { return obliquePlanometric(angle, Joml.RETURN_NEW ? Joml.double4x4() : this); }
 
     /**
      * Modify this perspective projection matrix to use an oblique near clip plane (the Lengyel

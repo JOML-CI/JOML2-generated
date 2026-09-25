@@ -38,7 +38,12 @@ public interface DoubleRectR {
 
 
     /**
-     * Add {@code other} to this rectangle and store the result in {@code dest}.
+     * Add each bound of {@code other} to the corresponding bound of this rectangle and store the
+     * result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to add
      * @param dest will hold the result
@@ -47,8 +52,12 @@ public interface DoubleRectR {
     DoubleRect add(DoubleRectR other, @Mutated DoubleRect dest);
 
     /**
-     * Add ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to this rectangle and store the
-     * result in {@code dest}.
+     * Add each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) to the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the sum of the corresponding
+     * bounds. That is neither the Minkowski sum of the two rectangles nor a translation; to move a
+     * rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}
@@ -60,7 +69,8 @@ public interface DoubleRectR {
     DoubleRect add(double minX, double minY, double maxX, double maxY, @Mutated DoubleRect dest);
 
     /**
-     * Negate this rectangle and store the result in {@code dest}.
+     * Reflect this rectangle through the origin, so that it spans {@code (-maxX, -maxY)} to
+     * {@code (-minX, -minY)} and store the result in {@code dest}.
      *
      * @param dest will hold the result
      * @return dest
@@ -68,7 +78,12 @@ public interface DoubleRectR {
     DoubleRect negate(@Mutated DoubleRect dest);
 
     /**
-     * Subtract {@code other} from this rectangle and store the result in {@code dest}.
+     * Subtract each bound of {@code other} from the corresponding bound of this rectangle and store
+     * the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param other the rectangle to subtract
      * @param dest will hold the result
@@ -77,8 +92,12 @@ public interface DoubleRectR {
     DoubleRect sub(DoubleRectR other, @Mutated DoubleRect dest);
 
     /**
-     * Subtract ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from this rectangle and
-     * store the result in {@code dest}.
+     * Subtract each bound of ({@code minX}, {@code minY}, {@code maxX}, {@code maxY}) from the
+     * corresponding bound of this rectangle and store the result in {@code dest}.
+     * <p>
+     * The bounds combine element-wise: each bound of the result is the difference of the
+     * corresponding bounds. That is neither the Minkowski difference of the two rectangles nor a
+     * translation; to move a rectangle, add the same offset to both of its corners.
      *
      * @param minX the {@code minX} component of the rectangle {@code (minX, minY, maxX, maxY)}
      * @param minY the {@code minY} component of the rectangle {@code (minX, minY, maxX, maxY)}

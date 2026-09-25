@@ -241,7 +241,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t10 = (1.0 / Math.sqrt(_t7));
         double _t11 = (1.0 / Math.sqrt(_t8));
         double _t21, _t23, _t27;
-        if (_t6 > 0.0) {
+        if (_t6 != 0.0) {
             _t21 = _self01 * _t9;
             _t23 = _self11 * _t9;
             _t27 = _self21 * _t9;
@@ -251,7 +251,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
             _t27 = 0.0;
         }
         double _t22, _t24, _t26;
-        if (_t7 > 0.0) {
+        if (_t7 != 0.0) {
             _t22 = _self12 * _t10;
             _t24 = _self02 * _t10;
             _t26 = _self22 * _t10;
@@ -261,7 +261,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
             _t26 = 0.0;
         }
         double _t25, _t28, _t29;
-        if (_t8 > 0.0) {
+        if (_t8 != 0.0) {
             _t25 = _self20 * _t11;
             _t28 = _self00 * _t11;
             _t29 = _self10 * _t11;
@@ -294,32 +294,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t63 = 1.0 + (_t49 - (_t23 + _t26));
         double _t64 = 1.0 + (_t23 - (_t49 + _t26));
         double _t65 = 1.0 + (_t26 - _t52);
-        double _t66 = (1.0 / Math.sqrt(_t62));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
-        double _t69 = (1.0 / Math.sqrt(_t63));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t65));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t63));
         if (_t58 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t36 * _t66);
-            dest.put(destOffset + 1, 0.5 * _t56 * _t66);
-            dest.put(destOffset + 2, 0.5 * _t57 * _t66);
+            dest.put(destOffset + 0, _sp0 * _t36);
+            dest.put(destOffset + 1, _sp0 * _t56);
+            dest.put(destOffset + 2, _sp0 * _t57);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t62));
         } else {
             if (_t49 > _t37) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t63));
-                dest.put(destOffset + 1, 0.5 * _t53 * _t69);
-                dest.put(destOffset + 2, 0.5 * _t55 * _t69);
-                dest.put(destOffset + 3, 0.5 * _t36 * _t69);
+                dest.put(destOffset + 1, _sp3 * _t53);
+                dest.put(destOffset + 2, _sp3 * _t55);
+                dest.put(destOffset + 3, _sp3 * _t36);
             } else {
                 if (_t23 > _t26) {
-                    dest.put(destOffset + 0, 0.5 * _t53 * _t67);
+                    dest.put(destOffset + 0, _sp1 * _t53);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t64));
-                    dest.put(destOffset + 2, 0.5 * _t39 * _t67);
-                    dest.put(destOffset + 3, 0.5 * _t56 * _t67);
+                    dest.put(destOffset + 2, _sp1 * _t39);
+                    dest.put(destOffset + 3, _sp1 * _t56);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t55 * _t68);
-                    dest.put(destOffset + 1, 0.5 * _t39 * _t68);
+                    dest.put(destOffset + 0, _sp2 * _t55);
+                    dest.put(destOffset + 1, _sp2 * _t39);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t65));
-                    dest.put(destOffset + 3, 0.5 * _t57 * _t68);
+                    dest.put(destOffset + 3, _sp2 * _t57);
                 }
             }
         }
@@ -426,32 +426,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t15 = 1.0 + (_self00 - (_self11 + _self22));
         double _t16 = 1.0 + (_self11 - (_self00 + _self22));
         double _t17 = 1.0 + (_self22 - _t0);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t10 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t1 * _t18);
-            dest.put(destOffset + 1, 0.5 * _t7 * _t18);
-            dest.put(destOffset + 2, 0.5 * _t9 * _t18);
+            dest.put(destOffset + 0, _sp0 * _t1);
+            dest.put(destOffset + 1, _sp0 * _t7);
+            dest.put(destOffset + 2, _sp0 * _t9);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t14));
         } else {
             if (_self00 > _t2) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t15));
-                dest.put(destOffset + 1, 0.5 * _t4 * _t21);
-                dest.put(destOffset + 2, 0.5 * _t6 * _t21);
-                dest.put(destOffset + 3, 0.5 * _t1 * _t21);
+                dest.put(destOffset + 1, _sp3 * _t4);
+                dest.put(destOffset + 2, _sp3 * _t6);
+                dest.put(destOffset + 3, _sp3 * _t1);
             } else {
                 if (_self11 > _self22) {
-                    dest.put(destOffset + 0, 0.5 * _t4 * _t19);
+                    dest.put(destOffset + 0, _sp1 * _t4);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t16));
-                    dest.put(destOffset + 2, 0.5 * _t8 * _t19);
-                    dest.put(destOffset + 3, 0.5 * _t7 * _t19);
+                    dest.put(destOffset + 2, _sp1 * _t8);
+                    dest.put(destOffset + 3, _sp1 * _t7);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t6 * _t20);
-                    dest.put(destOffset + 1, 0.5 * _t8 * _t20);
+                    dest.put(destOffset + 0, _sp2 * _t6);
+                    dest.put(destOffset + 1, _sp2 * _t8);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t17));
-                    dest.put(destOffset + 3, 0.5 * _t9 * _t20);
+                    dest.put(destOffset + 3, _sp2 * _t9);
                 }
             }
         }
@@ -1086,32 +1086,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t15 = _self00 + (1.0 - _self11 - _self22);
         double _t16 = _self11 + (_t1 - _self22);
         double _t17 = _self22 + (_t1 - _self11);
-        double _t18 = (1.0 / Math.sqrt(_t14));
-        double _t19 = (1.0 / Math.sqrt(_t16));
-        double _t20 = (1.0 / Math.sqrt(_t17));
-        double _t21 = (1.0 / Math.sqrt(_t15));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t14));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t16));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t17));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t15));
         if (_t13 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t3 * _t18);
-            dest.put(destOffset + 1, 0.5 * _t7 * _t18);
-            dest.put(destOffset + 2, 0.5 * _t9 * _t18);
+            dest.put(destOffset + 0, _sp0 * _t3);
+            dest.put(destOffset + 1, _sp0 * _t7);
+            dest.put(destOffset + 2, _sp0 * _t9);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t14));
         } else {
             if (_self00 > _t4) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t15));
-                dest.put(destOffset + 1, 0.5 * _t5 * _t21);
-                dest.put(destOffset + 2, 0.5 * _t6 * _t21);
-                dest.put(destOffset + 3, 0.5 * _t3 * _t21);
+                dest.put(destOffset + 1, _sp3 * _t5);
+                dest.put(destOffset + 2, _sp3 * _t6);
+                dest.put(destOffset + 3, _sp3 * _t3);
             } else {
                 if (_self11 > _self22) {
-                    dest.put(destOffset + 0, 0.5 * _t5 * _t19);
+                    dest.put(destOffset + 0, _sp1 * _t5);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t16));
-                    dest.put(destOffset + 2, 0.5 * _t8 * _t19);
-                    dest.put(destOffset + 3, 0.5 * _t7 * _t19);
+                    dest.put(destOffset + 2, _sp1 * _t8);
+                    dest.put(destOffset + 3, _sp1 * _t7);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t6 * _t20);
-                    dest.put(destOffset + 1, 0.5 * _t8 * _t20);
+                    dest.put(destOffset + 0, _sp2 * _t6);
+                    dest.put(destOffset + 1, _sp2 * _t8);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t17));
-                    dest.put(destOffset + 3, 0.5 * _t9 * _t20);
+                    dest.put(destOffset + 3, _sp2 * _t9);
                 }
             }
         }
@@ -1173,35 +1173,35 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t54 = Math.fma(-_self01, _t12, _t45);
         double _t59 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t44));
         double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t48));
-        double _t61 = (1.0 / Math.sqrt(_t60));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t60));
         double _t62 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t49));
         double _t63 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t49));
         double _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        double _t65 = (1.0 / Math.sqrt(_t62));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t62));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t64));
         if (_t59 > 0.0) {
-            dest.put(destOffset + 3, 0.5 * _t32 * _t61);
-            dest.put(destOffset + 4, 0.5 * _t53 * _t61);
-            dest.put(destOffset + 5, 0.5 * _t54 * _t61);
+            dest.put(destOffset + 3, _sp0 * _t32);
+            dest.put(destOffset + 4, _sp0 * _t53);
+            dest.put(destOffset + 5, _sp0 * _t54);
             dest.put(destOffset + 6, 0.5 * Math.sqrt(_t60));
         } else {
             if (_t44 > _t33) {
                 dest.put(destOffset + 3, 0.5 * Math.sqrt(_t64));
-                dest.put(destOffset + 4, 0.5 * _t51 * _t67);
-                dest.put(destOffset + 5, 0.5 * _t52 * _t67);
-                dest.put(destOffset + 6, 0.5 * _t32 * _t67);
+                dest.put(destOffset + 4, _sp3 * _t51);
+                dest.put(destOffset + 5, _sp3 * _t52);
+                dest.put(destOffset + 6, _sp3 * _t32);
             } else {
                 if (_t21 > _t16) {
-                    dest.put(destOffset + 3, 0.5 * _t51 * _t65);
+                    dest.put(destOffset + 3, _sp1 * _t51);
                     dest.put(destOffset + 4, 0.5 * Math.sqrt(_t62));
-                    dest.put(destOffset + 5, 0.5 * _t28 * _t65);
-                    dest.put(destOffset + 6, 0.5 * _t53 * _t65);
+                    dest.put(destOffset + 5, _sp1 * _t28);
+                    dest.put(destOffset + 6, _sp1 * _t53);
                 } else {
-                    dest.put(destOffset + 3, 0.5 * _t52 * _t66);
-                    dest.put(destOffset + 4, 0.5 * _t28 * _t66);
+                    dest.put(destOffset + 3, _sp2 * _t52);
+                    dest.put(destOffset + 4, _sp2 * _t28);
                     dest.put(destOffset + 5, 0.5 * Math.sqrt(_t63));
-                    dest.put(destOffset + 6, 0.5 * _t54 * _t66);
+                    dest.put(destOffset + 6, _sp2 * _t54);
                 }
             }
         }
@@ -1235,8 +1235,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t11 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t12 = (1.0 / Math.sqrt(_t9));
         double _t13 = (1.0 / Math.sqrt(_t10));
-        double _t14 = (1.0 / Math.sqrt(_t11));
         double _t15 = Math.sqrt(_t11);
+        double _t14 = 1.0 / _t15;
         double _t16 = _self10 * _t14;
         double _t17 = _self22 * _t13;
         double _t18 = _self12 * _t13;
@@ -1266,20 +1266,20 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t55 = Math.fma(-_self01, _t12, _t46);
         double _t60 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t45));
         double _t61 = Math.fma(_self11, _t12, Math.fma(_self22, _t13, _t49));
-        double _t62 = (1.0 / Math.sqrt(_t61));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t61));
         double _t63 = Math.fma(_self11, _t12, Math.fma(_t1, _t13, _t50));
         double _t64 = Math.fma(_self22, _t13, Math.fma(_t0, _t12, _t50));
         double _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        double _t66 = (1.0 / Math.sqrt(_t63));
-        double _t67 = (1.0 / Math.sqrt(_t64));
-        double _t68 = (1.0 / Math.sqrt(_t65));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t63));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t64));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t65));
         dest.put(destOffset + 0, 0.0);
         dest.put(destOffset + 1, 0.0);
         dest.put(destOffset + 2, 0.0);
-        dest.put(destOffset + 3, _t60 > 0.0 ? 0.5 * _t33 * _t62 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? 0.5 * _t52 * _t66 : 0.5 * _t53 * _t67);
-        dest.put(destOffset + 4, _t60 > 0.0 ? 0.5 * _t54 * _t62 : _t45 > _t34 ? 0.5 * _t52 * _t68 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : 0.5 * _t29 * _t67);
-        dest.put(destOffset + 5, _t60 > 0.0 ? 0.5 * _t55 * _t62 : _t45 > _t34 ? 0.5 * _t53 * _t68 : _t22 > _t17 ? 0.5 * _t29 * _t66 : 0.5 * Math.sqrt(_t64));
-        dest.put(destOffset + 6, _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? 0.5 * _t33 * _t68 : _t22 > _t17 ? 0.5 * _t54 * _t66 : 0.5 * _t55 * _t67);
+        dest.put(destOffset + 3, _t60 > 0.0 ? _sp0 * _t33 : _t45 > _t34 ? 0.5 * Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53);
+        dest.put(destOffset + 4, _t60 > 0.0 ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5 * Math.sqrt(_t63) : _sp2 * _t29);
+        dest.put(destOffset + 5, _t60 > 0.0 ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5 * Math.sqrt(_t64));
+        dest.put(destOffset + 6, _t60 > 0.0 ? 0.5 * Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55);
         dest.put(destOffset + 7, _t44 < 0.0 ? -_t15 : _t15);
         dest.put(destOffset + 8, Math.sqrt(_t9));
         dest.put(destOffset + 9, Math.sqrt(_t10));
@@ -1306,7 +1306,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -1323,7 +1323,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t30 = (1.0 / Math.sqrt(_t29));
         double _t34, _t35, _t36;
-        if (_t29 > 0.0) {
+        if (_t29 != 0.0) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -1339,7 +1339,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         double _t50 = (1.0 / Math.sqrt(_t49));
         double _t54, _t55, _t56;
-        if (_t49 > 0.0) {
+        if (_t49 != 0.0) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -1372,32 +1372,32 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t87 = 1.0 + (_t73 - (_t36 + _t56));
         double _t88 = 1.0 + (_t36 - (_t73 + _t56));
         double _t89 = 1.0 + (_t56 - _t76);
-        double _t90 = (1.0 / Math.sqrt(_t86));
-        double _t91 = (1.0 / Math.sqrt(_t88));
-        double _t92 = (1.0 / Math.sqrt(_t89));
-        double _t93 = (1.0 / Math.sqrt(_t87));
+        double _sp0 = 0.5 * (1.0 / Math.sqrt(_t86));
+        double _sp1 = 0.5 * (1.0 / Math.sqrt(_t88));
+        double _sp2 = 0.5 * (1.0 / Math.sqrt(_t89));
+        double _sp3 = 0.5 * (1.0 / Math.sqrt(_t87));
         if (_t82 > 0.0) {
-            dest.put(destOffset + 0, 0.5 * _t60 * _t90);
-            dest.put(destOffset + 1, 0.5 * _t81 * _t90);
-            dest.put(destOffset + 2, 0.5 * _t78 * _t90);
+            dest.put(destOffset + 0, _sp0 * _t60);
+            dest.put(destOffset + 1, _sp0 * _t81);
+            dest.put(destOffset + 2, _sp0 * _t78);
             dest.put(destOffset + 3, 0.5 * Math.sqrt(_t86));
         } else {
             if (_t73 > _t61) {
                 dest.put(destOffset + 0, 0.5 * Math.sqrt(_t87));
-                dest.put(destOffset + 1, 0.5 * _t77 * _t93);
-                dest.put(destOffset + 2, 0.5 * _t80 * _t93);
-                dest.put(destOffset + 3, 0.5 * _t60 * _t93);
+                dest.put(destOffset + 1, _sp3 * _t77);
+                dest.put(destOffset + 2, _sp3 * _t80);
+                dest.put(destOffset + 3, _sp3 * _t60);
             } else {
                 if (_t36 > _t56) {
-                    dest.put(destOffset + 0, 0.5 * _t77 * _t91);
+                    dest.put(destOffset + 0, _sp1 * _t77);
                     dest.put(destOffset + 1, 0.5 * Math.sqrt(_t88));
-                    dest.put(destOffset + 2, 0.5 * _t63 * _t91);
-                    dest.put(destOffset + 3, 0.5 * _t81 * _t91);
+                    dest.put(destOffset + 2, _sp1 * _t63);
+                    dest.put(destOffset + 3, _sp1 * _t81);
                 } else {
-                    dest.put(destOffset + 0, 0.5 * _t80 * _t92);
-                    dest.put(destOffset + 1, 0.5 * _t63 * _t92);
+                    dest.put(destOffset + 0, _sp2 * _t80);
+                    dest.put(destOffset + 1, _sp2 * _t63);
                     dest.put(destOffset + 2, 0.5 * Math.sqrt(_t89));
-                    dest.put(destOffset + 3, 0.5 * _t78 * _t92);
+                    dest.put(destOffset + 3, _sp2 * _t78);
                 }
             }
         }
@@ -1422,10 +1422,10 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
-        double _t3 = (1.0 / Math.sqrt(_t2));
         double _t4 = Math.sqrt(_t2);
+        double _t3 = 1.0 / _t4;
         double _t8, _t9, _t10;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t8 = _self20 * _t3;
             _t9 = _self00 * _t3;
             _t10 = _self10 * _t3;
@@ -1442,7 +1442,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         double _t28 = (1.0 / Math.sqrt(_t27));
         double _t32, _t33, _t34;
-        if (_t27 > 0.0) {
+        if (_t27 != 0.0) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -1458,7 +1458,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t52, _t53, _t54;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -1493,7 +1493,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_self20, _self20, Math.fma(_self00, _self00, _self10 * _self10));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _self20 * _t3;
             _t8 = _self00 * _t3;
             _t9 = _self10 * _t3;
@@ -1513,7 +1513,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t27 = (1.0 / Math.sqrt(_t26));
         double _t28 = _t15 * _t27;
         double _t32, _t33, _t34;
-        if (_t26 > 0.0) {
+        if (_t26 != 0.0) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -1531,7 +1531,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t48 = (1.0 / Math.sqrt(_t47));
         double _t49 = _t14 * _t48;
         double _t53, _t54, _t55;
-        if (_t47 > 0.0) {
+        if (_t47 != 0.0) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -1836,7 +1836,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -1851,7 +1851,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -1903,7 +1903,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -1918,7 +1918,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t16 * _t22;
             _t27 = _t17 * _t22;
             _t28 = _t18 * _t22;
@@ -1949,6 +1949,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer makeFromDualQuat_api(java.nio.DoubleBuffer dest, int destOffset, double dqRX, double dqRY, double dqRZ, double dqRW, double dqDX, double dqDY, double dqDZ, double dqDW) {
+        double _sp0 = dqRX + dqRX;
         double _t0 = dqRY * dqRY;
         double _t2 = dqRZ * dqRW;
         double _t3 = dqRY * dqRW;
@@ -1957,8 +1958,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t6 = Math.fma(-2.0, dqRZ * dqRZ, 1.0);
         dest.put(destOffset + 0, Math.fma(-2.0, _t0, _t6));
         dest.put(destOffset + 1, 2.0 * Math.fma(dqRX, dqRY, _t2));
-        dest.put(destOffset + 2, Math.fma(-2.0, _t3, (dqRX + dqRX) * dqRZ));
-        dest.put(destOffset + 3, Math.fma(-2.0, _t2, (dqRX + dqRX) * dqRY));
+        dest.put(destOffset + 2, Math.fma(-2.0, _t3, _sp0 * dqRZ));
+        dest.put(destOffset + 3, Math.fma(-2.0, _t2, _sp0 * dqRY));
         dest.put(destOffset + 4, Math.fma(-2.0, _t4, _t6));
         dest.put(destOffset + 5, 2.0 * Math.fma(dqRX, dqRW, _t5));
         dest.put(destOffset + 6, 2.0 * Math.fma(dqRX, dqRZ, _t3));
@@ -2052,7 +2053,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = dirY * _t3;
             _t8 = dirX * _t3;
             _t9 = dirZ * _t3;
@@ -2067,7 +2068,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -2106,7 +2107,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
         double _t7, _t8, _t9;
-        if (_t2 > 0.0) {
+        if (_t2 != 0.0) {
             _t7 = _diry * _t3;
             _t8 = _dirx * _t3;
             _t9 = _dirz * _t3;
@@ -2121,7 +2122,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
         double _t22 = (1.0 / Math.sqrt(_t21));
         double _t26, _t27, _t28;
-        if (_t21 > 0.0) {
+        if (_t21 != 0.0) {
             _t26 = _t17 * _t22;
             _t27 = _t16 * _t22;
             _t28 = _t18 * _t22;
@@ -2857,16 +2858,17 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
-        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t0));
-        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t1));
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
+        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t1));
+        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t2));
         dest.put(destOffset + 2, _self20);
-        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t0));
-        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t1));
+        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t1));
+        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t2));
         dest.put(destOffset + 5, _self21);
-        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t0));
-        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t1));
+        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t1));
+        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t2));
         dest.put(destOffset + 8, _self22);
         return dest;
     }
@@ -2891,16 +2893,17 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self22 = src.get(srcOffset + 8);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t0 = Math.fma(-s, _pivotx, _pivotx);
-        double _t1 = Math.fma(-s, _pivoty, _pivoty);
-        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t0));
-        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t1));
+        double _t0 = 1.0 - s;
+        double _t1 = _pivotx * _t0;
+        double _t2 = _pivoty * _t0;
+        dest.put(destOffset + 0, Math.fma(s, _self00, _self20 * _t1));
+        dest.put(destOffset + 1, Math.fma(s, _self10, _self20 * _t2));
         dest.put(destOffset + 2, _self20);
-        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t0));
-        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t1));
+        dest.put(destOffset + 3, Math.fma(s, _self01, _self21 * _t1));
+        dest.put(destOffset + 4, Math.fma(s, _self11, _self21 * _t2));
         dest.put(destOffset + 5, _self21);
-        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t0));
-        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t1));
+        dest.put(destOffset + 6, Math.fma(s, _self02, _self22 * _t1));
+        dest.put(destOffset + 7, Math.fma(s, _self12, _self22 * _t2));
         dest.put(destOffset + 8, _self22);
         return dest;
     }
@@ -2922,8 +2925,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         dest.put(destOffset + 0, Math.fma(sX, _self00, _self20 * _t2));
         dest.put(destOffset + 1, Math.fma(sY, _self10, _self20 * _t3));
         dest.put(destOffset + 2, _self20);
@@ -2959,8 +2962,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _sy = s.get(sOffset + 1);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t2 = Math.fma(-_pivotx, _sx, _pivotx);
-        double _t3 = Math.fma(-_pivoty, _sy, _pivoty);
+        double _t2 = _pivotx * (1.0 - _sx);
+        double _t3 = _pivoty * (1.0 - _sy);
         dest.put(destOffset + 0, Math.fma(_sx, _self00, _self20 * _t2));
         dest.put(destOffset + 1, Math.fma(_sy, _self10, _self20 * _t3));
         dest.put(destOffset + 2, _self20);
@@ -3912,17 +3915,18 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.fma(-s, pivotX, pivotX);
-        double _t1 = Math.fma(-s, pivotY, pivotY);
+        double _t0 = 1.0 - s;
+        double _t1 = pivotX * _t0;
+        double _t2 = pivotY * _t0;
         dest.put(destOffset + 0, s * _self00);
         dest.put(destOffset + 1, s * _self10);
         dest.put(destOffset + 2, s * _self20);
         dest.put(destOffset + 3, s * _self01);
         dest.put(destOffset + 4, s * _self11);
         dest.put(destOffset + 5, s * _self21);
-        dest.put(destOffset + 6, Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02)));
-        dest.put(destOffset + 7, Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12)));
-        dest.put(destOffset + 8, Math.fma(_self20, _t0, Math.fma(_self21, _t1, _self22)));
+        dest.put(destOffset + 6, Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02)));
+        dest.put(destOffset + 7, Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12)));
+        dest.put(destOffset + 8, Math.fma(_self20, _t1, Math.fma(_self21, _t2, _self22)));
         return dest;
     }
 
@@ -3946,17 +3950,18 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self22 = src.get(srcOffset + 8);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t0 = Math.fma(-s, _pivotx, _pivotx);
-        double _t1 = Math.fma(-s, _pivoty, _pivoty);
+        double _t0 = 1.0 - s;
+        double _t1 = _pivotx * _t0;
+        double _t2 = _pivoty * _t0;
         dest.put(destOffset + 0, s * _self00);
         dest.put(destOffset + 1, s * _self10);
         dest.put(destOffset + 2, s * _self20);
         dest.put(destOffset + 3, s * _self01);
         dest.put(destOffset + 4, s * _self11);
         dest.put(destOffset + 5, s * _self21);
-        dest.put(destOffset + 6, Math.fma(_self00, _t0, Math.fma(_self01, _t1, _self02)));
-        dest.put(destOffset + 7, Math.fma(_self10, _t0, Math.fma(_self11, _t1, _self12)));
-        dest.put(destOffset + 8, Math.fma(_self20, _t0, Math.fma(_self21, _t1, _self22)));
+        dest.put(destOffset + 6, Math.fma(_self00, _t1, Math.fma(_self01, _t2, _self02)));
+        dest.put(destOffset + 7, Math.fma(_self10, _t1, Math.fma(_self11, _t2, _self12)));
+        dest.put(destOffset + 8, Math.fma(_self20, _t1, Math.fma(_self21, _t2, _self22)));
         return dest;
     }
 
@@ -3977,8 +3982,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t2 = Math.fma(-pivotX, sX, pivotX);
-        double _t3 = Math.fma(-pivotY, sY, pivotY);
+        double _t2 = pivotX * (1.0 - sX);
+        double _t3 = pivotY * (1.0 - sY);
         dest.put(destOffset + 0, sX * _self00);
         dest.put(destOffset + 1, sX * _self10);
         dest.put(destOffset + 2, sX * _self20);
@@ -4014,8 +4019,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _sy = s.get(sOffset + 1);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t2 = Math.fma(-_pivotx, _sx, _pivotx);
-        double _t3 = Math.fma(-_pivoty, _sy, _pivoty);
+        double _t2 = _pivotx * (1.0 - _sx);
+        double _t3 = _pivoty * (1.0 - _sy);
         dest.put(destOffset + 0, _sx * _self00);
         dest.put(destOffset + 1, _sx * _self10);
         dest.put(destOffset + 2, _sx * _self20);
@@ -4106,21 +4111,21 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = right - left;
-        double _t0_inv = 1.0 / _t0;
-        double _t1 = top - bottom;
-        double _t1_inv = 1.0 / _t1;
-        double _t2 = left + right;
-        double _t3 = bottom + top;
-        dest.put(destOffset + 0, (_self00 + _self00) * _t0_inv);
-        dest.put(destOffset + 1, (_self10 + _self10) * _t0_inv);
-        dest.put(destOffset + 2, (_self20 + _self20) * _t0_inv);
-        dest.put(destOffset + 3, (_self01 + _self01) * _t1_inv);
-        dest.put(destOffset + 4, (_self11 + _self11) * _t1_inv);
-        dest.put(destOffset + 5, (_self21 + _self21) * _t1_inv);
-        dest.put(destOffset + 6, _self02 + (-(_self00 * _t2 * _t0_inv) - _self01 * _t3 * _t1_inv));
-        dest.put(destOffset + 7, _self12 + (-(_self10 * _t2 * _t0_inv) - _self11 * _t3 * _t1_inv));
-        dest.put(destOffset + 8, _self22 + (-(_self20 * _t2 * _t0_inv) - _self21 * _t3 * _t1_inv));
+        double _t0_inv = 1.0 / (right - left);
+        double _sp0 = _t0_inv + _t0_inv;
+        double _t1_inv = 1.0 / (top - bottom);
+        double _sp1 = _t1_inv + _t1_inv;
+        double _sp2 = _t0_inv * (left + right);
+        double _sp3 = _t1_inv * (bottom + top);
+        dest.put(destOffset + 0, _sp0 * _self00);
+        dest.put(destOffset + 1, _sp0 * _self10);
+        dest.put(destOffset + 2, _sp0 * _self20);
+        dest.put(destOffset + 3, _sp1 * _self01);
+        dest.put(destOffset + 4, _sp1 * _self11);
+        dest.put(destOffset + 5, _sp1 * _self21);
+        dest.put(destOffset + 6, _self02 + (-(_self00 * _sp2) - _self01 * _sp3));
+        dest.put(destOffset + 7, _self12 + (-(_self10 * _sp2) - _self11 * _sp3));
+        dest.put(destOffset + 8, _self22 + (-(_self20 * _sp2) - _self21 * _sp3));
         return dest;
     }
 

@@ -200,9 +200,9 @@ public interface Float4 extends Float4R {
      * Set this vector to {@code s}.
      *
      * @param s the value assigned to every component
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default Float4 set(float s) { return set(s, Joml.RETURN_NEW ? Joml.float4() : this); }
+    @Mutated default Float4 set(float s) { return set(s, this); }
 
     /**
      * Convert this vector to {@code double} precision, returning the result as a new instance.
@@ -1115,8 +1115,9 @@ public interface Float4 extends Float4R {
     @Mutated default Float4 min(float x, float y, float z, float w) { return min(x, y, z, w, Joml.RETURN_NEW ? Joml.float4() : this); }
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}).
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1127,8 +1128,9 @@ public interface Float4 extends Float4R {
     @Mutated default Float4 mod(float y) { return mod(y, Joml.RETURN_NEW ? Joml.float4() : this); }
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}).
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1139,8 +1141,9 @@ public interface Float4 extends Float4R {
     @Mutated default Float4 mod(Float4R y) { return mod(y, Joml.RETURN_NEW ? Joml.float4() : this); }
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by ({@code x}, {@code y}, {@code z}, {@code w}).
+     * Compute the component-wise floored modulo of this vector divided by ({@code x}, {@code y},
+     * {@code z}, {@code w}) ({@code x % y}, plus {@code y} when that remainder is non-zero and its
+     * sign differs from {@code y}'s - exactly Kotlin's {@code mod}).
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -1294,6 +1297,10 @@ public interface Float4 extends Float4R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection).
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param normal the normal of the refracting surface (must be a unit vector)
      * @param eta the ratio of indices of refraction, i.e. the source medium's divided by the
@@ -1306,6 +1313,10 @@ public interface Float4 extends Float4R {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection).
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param x the {@code x} component of the vector {@code (x, y, z, w)} (the vector must have
      *        unit length)

@@ -45,10 +45,10 @@ import org.joml2.internal.simd.*;
  * the flags its overload reads. Every non-bulk buffer and raw-address overload - and the
  * array-to-array {@code copy} - reads {@code Joml.STORE_LOAD_BACKEND}, which class-initializes
  * {@link Joml} and freezes the {@link JomlConfig} flags ({@code returnNew},
- * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads of the
- * element-wise operations loop over the buffer API directly and freeze nothing. Every overload with
- * a Vector-API or fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization
- * snapshots {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma},
+ * {@code storeLoadBackend}, {@code vectorApi}); the bulk {@code count} overloads dispatch through
+ * {@code SimdSupport} like every other SIMD path (below). Every overload with a Vector-API or
+ * fused-multiply-add dispatch consults {@code SimdSupport}, whose initialization snapshots
+ * {@code Math.useFma()} - freezing all {@link Math} flags ({@code useFma}, {@code cosFromSin},
  * {@code fastmath}, {@code sinLookup}, {@code strictMath}) - and {@code Joml.VECTOR_API}, freezing
  * the {@link JomlConfig} flags as well; the scalar kernels call {@link Math} for their
  * multiply-adds and transcendentals, which freezes the {@code Math} flags likewise. Only the array
@@ -4189,8 +4189,9 @@ public final class Float2Ops {
     }
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4205,9 +4206,8 @@ public final class Float2Ops {
     public static float[] mod(float[] dest, int destOffset, float[] src, int srcOffset, float y) {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
-        float _rcp0 = 1.0f / y;
-        dest[destOffset + 0] = Math.fma(-y, (float) Math.floor(_selfx * _rcp0), _selfx);
-        dest[destOffset + 1] = Math.fma(-y, (float) Math.floor(_selfy * _rcp0), _selfy);
+        dest[destOffset + 0] = flooredMod(_selfx, y);
+        dest[destOffset + 1] = flooredMod(_selfy, y);
         return dest;
     }
 
@@ -4231,8 +4231,9 @@ public final class Float2Ops {
     }
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4248,8 +4249,8 @@ public final class Float2Ops {
     public static float[] mod(float[] dest, int destOffset, float[] src, int srcOffset, float yX, float yY) {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
-        dest[destOffset + 0] = Math.fma(-yX, (float) Math.floor(_selfx / yX), _selfx);
-        dest[destOffset + 1] = Math.fma(-yY, (float) Math.floor(_selfy / yY), _selfy);
+        dest[destOffset + 0] = flooredMod(_selfx, yX);
+        dest[destOffset + 1] = flooredMod(_selfy, yY);
         return dest;
     }
 
@@ -4273,8 +4274,9 @@ public final class Float2Ops {
     }
 
     /**
-     * Compute the component-wise floor-modulo {@code x - y * floor(x / y)} (GLSL {@code mod}) of
-     * this vector divided by {@code y} and store the result in {@code dest}.
+     * Compute the component-wise floored modulo of this vector divided by {@code y} ({@code x % y},
+     * plus {@code y} when that remainder is non-zero and its sign differs from {@code y}'s -
+     * exactly Kotlin's {@code mod}) and store the result in {@code dest}.
      * <p>
      * The result takes the sign of the divisor, unlike Java's {@code %} operator, which follows the
      * dividend.
@@ -4292,8 +4294,8 @@ public final class Float2Ops {
         float _selfy = src[srcOffset + 1];
         float _yx = y[yOffset + 0];
         float _yy = y[yOffset + 1];
-        dest[destOffset + 0] = Math.fma(-_yx, (float) Math.floor(_selfx / _yx), _selfx);
-        dest[destOffset + 1] = Math.fma(-_yy, (float) Math.floor(_selfy / _yy), _selfy);
+        dest[destOffset + 0] = flooredMod(_selfx, _yx);
+        dest[destOffset + 1] = flooredMod(_selfy, _yy);
         return dest;
     }
 
@@ -4410,7 +4412,7 @@ public final class Float2Ops {
         float _selfy = src[srcOffset + 1];
         float _t1 = Math.fma(_selfx, _selfx, _selfy * _selfy);
         float _t2 = (1.0f / (float) Math.sqrt(_t1));
-        if (_t1 > 0.0f) {
+        if (_t1 != 0.0f) {
             dest[destOffset + 0] = _selfx * _t2;
             dest[destOffset + 1] = _selfy * _t2;
         } else {
@@ -4455,7 +4457,7 @@ public final class Float2Ops {
         float _selfy = src[srcOffset + 1];
         float _t1 = Math.fma(_selfx, _selfx, _selfy * _selfy);
         float _t3 = length * (1.0f / (float) Math.sqrt(_t1));
-        if (_t1 > 0.0f) {
+        if (_t1 != 0.0f) {
             dest[destOffset + 0] = _selfx * _t3;
             dest[destOffset + 1] = _selfy * _t3;
         } else {
@@ -4784,11 +4786,9 @@ public final class Float2Ops {
     public static float[] project(float[] dest, int destOffset, float[] src, int srcOffset, float ontoX, float ontoY) {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
-        float _t2 = Math.fma(ontoX, _selfx, ontoY * _selfy);
-        float _t3 = Math.fma(ontoX, ontoX, ontoY * ontoY);
-        float _t3_inv = 1.0f / _t3;
-        dest[destOffset + 0] = ontoX * _t2 * _t3_inv;
-        dest[destOffset + 1] = ontoY * _t2 * _t3_inv;
+        float _sp0 = Math.fma(ontoX, _selfx, ontoY * _selfy) / Math.fma(ontoX, ontoX, ontoY * ontoY);
+        dest[destOffset + 0] = ontoX * _sp0;
+        dest[destOffset + 1] = ontoY * _sp0;
         return dest;
     }
 
@@ -4827,11 +4827,9 @@ public final class Float2Ops {
         float _selfy = src[srcOffset + 1];
         float _ontox = onto[ontoOffset + 0];
         float _ontoy = onto[ontoOffset + 1];
-        float _t2 = Math.fma(_ontox, _selfx, _ontoy * _selfy);
-        float _t3 = Math.fma(_ontox, _ontox, _ontoy * _ontoy);
-        float _t3_inv = 1.0f / _t3;
-        dest[destOffset + 0] = _ontox * _t2 * _t3_inv;
-        dest[destOffset + 1] = _ontoy * _t2 * _t3_inv;
+        float _sp0 = Math.fma(_ontox, _selfx, _ontoy * _selfy) / Math.fma(_ontox, _ontox, _ontoy * _ontoy);
+        dest[destOffset + 0] = _ontox * _sp0;
+        dest[destOffset + 1] = _ontoy * _sp0;
         return dest;
     }
 
@@ -5063,6 +5061,10 @@ public final class Float2Ops {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -5115,6 +5117,10 @@ public final class Float2Ops {
      * Refract this vector (which must have unit length) through the surface with the given normal,
      * using the given ratio of indices of refraction (the zero vector is returned on total internal
      * reflection), and store the result in {@code dest}.
+     * <p>
+     * As in GLSL, the normal must face against this vector ({@code dot(this, normal) <= 0}): a
+     * normal on the far side of the surface bends the vector the wrong way, and with a ratio of 1
+     * it comes back reversed. Negate the normal for a vector leaving through the surface.
      *
      * @param dest will hold the result
      * @param destOffset the element index in {@code dest} at which the vector starts
@@ -6642,7 +6648,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && destOffset <= dest.limit() - 2) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 2, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.FLOAT_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 4L, 8L);
             return dest;
@@ -6667,7 +6673,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L, (long) count * 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && (count > 1073741823 ? -1 : count * 2) >= 0 && destOffset <= dest.limit() - (count > 1073741823 ? -1 : count * 2)) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 1073741823 ? -1 : count * 2), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.FLOAT_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset) * 4L, (long) count * 8L);
             return dest;
@@ -6778,7 +6784,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && destOffset <= dest.limit() - 8) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, 8, dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), 8L);
             return dest;
@@ -6804,7 +6810,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, src, null, UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset, (long) count * 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.hasArray() && dest.order() == java.nio.ByteOrder.nativeOrder() && destOffset >= 0 && (count > 268435455 ? -1 : count * 8) >= 0 && destOffset <= dest.limit() - (count > 268435455 ? -1 : count * 8)) {
             java.util.Objects.checkFromIndexSize(dest.arrayOffset() + destOffset, (count > 268435455 ? -1 : count * 8), dest.array().length);
             UnsafeOpsHolder.U.copyMemory(null, src, dest.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (dest.arrayOffset() + destOffset), (long) count * 8L);
             return dest;
@@ -6859,7 +6865,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, dest, 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && srcOffset <= src.limit() - 2) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 2, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.FLOAT_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 4L, null, dest, 8L);
             return dest;
@@ -6884,7 +6890,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L, null, dest, (long) count * 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && (count > 1073741823 ? -1 : count * 2) >= 0 && srcOffset <= src.limit() - (count > 1073741823 ? -1 : count * 2)) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 1073741823 ? -1 : count * 2), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.FLOAT_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset) * 4L, null, dest, (long) count * 8L);
             return dest;
@@ -6910,7 +6916,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest, 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && srcOffset <= src.limit() - 8) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, 8, src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, 8L);
             return dest;
@@ -6936,7 +6942,7 @@ public final class Float2Ops {
             UnsafeOpsHolder.U.copyMemory(null, UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset, null, dest, (long) count * 8L);
             return dest;
         }
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.hasArray() && src.order() == java.nio.ByteOrder.nativeOrder() && srcOffset >= 0 && (count > 268435455 ? -1 : count * 8) >= 0 && srcOffset <= src.limit() - (count > 268435455 ? -1 : count * 8)) {
             java.util.Objects.checkFromIndexSize(src.arrayOffset() + srcOffset, (count > 268435455 ? -1 : count * 8), src.array().length);
             UnsafeOpsHolder.U.copyMemory(src.array(), UnsafeCopy.BYTE_ARRAY_BASE + (long) (src.arrayOffset() + srcOffset), null, dest, (long) count * 8L);
             return dest;
@@ -6976,5 +6982,30 @@ public final class Float2Ops {
             return dest;
         }
         throw new UnsupportedOperationException("raw long address copy requires storeLoadBackend=UNSAFE");
+    }
+    /**
+     * The floored remainder of x and y, exactly kotlin.Float.mod: q = floor(x / y) is off by
+     * at most one (too large) while it fits the mantissa, so x - y * q with one correction is
+     * the floored remainder; % (a runtime call) only when it does not fit or y is infinite.
+     */
+    private static float flooredMod(float x, float y) {
+        float q = (float) Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p24f && java.lang.Math.abs(y) <= Float.MAX_VALUE) {
+            float r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0f), x) : r;
+        }
+        float r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
+    }
+
+    /** Double-precision twin of {@link #flooredMod(float, float)}. */
+    private static double flooredMod(double x, double y) {
+        double q = Math.floor(x / y);
+        if (java.lang.Math.abs(q) < 0x1p53 && java.lang.Math.abs(y) <= Double.MAX_VALUE) {
+            double r = java.lang.Math.fma(-y, q, x);
+            return r * java.lang.Math.signum(y) < 0 ? java.lang.Math.fma(-y, (q - 1.0), x) : r;
+        }
+        double r = x % y;
+        return r * java.lang.Math.signum(y) < 0 ? r + y : r;
     }
 }

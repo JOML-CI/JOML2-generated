@@ -35,7 +35,7 @@ inline operator fun Int2.rem(other: Int2): Int2 = rem(other)
 /** [Int2.sub] as the `-` operator. */
 inline operator fun Int2.minus(other: Int2): Int2 = sub(other)
 /** [Int2.dot] as an infix function, so `a dot b` parses. */
-inline infix fun Int2.dot(other: Int2): Int = dot(other)
+inline infix fun Int2.dot(other: Int2): Long = dot(other)
 /** Component 1 of this Int2 (`x()`), for destructuring declarations. */
 inline operator fun Int2.component1(): Int = x()
 /** Component 2 of this Int2 (`y()`), for destructuring declarations. */

@@ -17,6 +17,11 @@ import java.lang.foreign.MemorySegment;
  * <p>
  * Instances are created through the {@link Joml} factory methods.
  * <p>
+ * Its rotation is a unit quaternion. Every operation that applies, composes, inverts or converts
+ * this transform assumes its rotation has unit length and does not divide it out. A value that has
+ * drifted from unit length (after many multiplications, say) gives wrong results rather than an
+ * error: {@code normalize} it first.
+ * <p>
  * {@code equals} compares the components element-wise and bitwise, as by
  * {@code Double.doubleToLongBits}: {@code 0.0} and {@code -0.0} are not equal, and NaN is equal to
  * NaN. {@code hashCode} is consistent with it (derived from the same bit patterns). Only instances
@@ -170,9 +175,9 @@ public interface DoubleTransform extends DoubleTransformR {
      * Set the rotation of this transform to {@code r}.
      *
      * @param r the new rotation
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleTransform setRotation(DoubleQuatR r) { return setRotation(r, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform setRotation(DoubleQuatR r) { return setRotation(r, this); }
 
     /**
      * Set the rotation of this transform to ({@code x}, {@code y}, {@code z}, {@code w}).
@@ -181,17 +186,17 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
      * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
      * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleTransform setRotation(double x, double y, double z, double w) { return setRotation(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform setRotation(double x, double y, double z, double w) { return setRotation(x, y, z, w, this); }
 
     /**
      * Set the scale of this transform to {@code s}.
      *
      * @param s the scale factors
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleTransform setScale(Double3R s) { return setScale(s, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform setScale(Double3R s) { return setScale(s, this); }
 
     /**
      * Set the scale of this transform to ({@code x}, {@code y}, {@code z}).
@@ -199,25 +204,25 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleTransform setScale(double x, double y, double z) { return setScale(x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform setScale(double x, double y, double z) { return setScale(x, y, z, this); }
 
     /**
      * Set the scale of this transform to {@code uniform}.
      *
      * @param uniform the uniform scale factor
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleTransform setScale(double uniform) { return setScale(uniform, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform setScale(double uniform) { return setScale(uniform, this); }
 
     /**
      * Set the translation of this transform to {@code t}.
      *
      * @param t the translation vector
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleTransform setTranslation(Double3R t) { return setTranslation(t, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform setTranslation(Double3R t) { return setTranslation(t, this); }
 
     /**
      * Set the translation of this transform to ({@code x}, {@code y}, {@code z}).
@@ -225,9 +230,9 @@ public interface DoubleTransform extends DoubleTransformR {
      * @param x the {@code x} component of the vector {@code (x, y, z)}
      * @param y the {@code y} component of the vector {@code (x, y, z)}
      * @param z the {@code z} component of the vector {@code (x, y, z)}
-     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     * @return this
      */
-    @Mutated default DoubleTransform setTranslation(double x, double y, double z) { return setTranslation(x, y, z, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
+    @Mutated default DoubleTransform setTranslation(double x, double y, double z) { return setTranslation(x, y, z, this); }
 
     /**
      * Set this transform to the rigid motion of the unit dual quaternion {@code dq} (translation
@@ -645,8 +650,18 @@ public interface DoubleTransform extends DoubleTransformR {
     @Mutated default DoubleTransform difference(double tX, double tY, double tZ, double rX, double rY, double rZ, double rW, double sX, double sY, double sZ) { return difference(tX, tY, tZ, rX, rY, rZ, rW, sX, sY, sZ, Joml.RETURN_NEW ? Joml.doubleTransform() : this); }
 
     /**
-     * Invert this transform (translation-rotation-scale, without shear); a zero scale axis yields
-     * positive infinity in the corresponding inverse scale.
+     * Invert this transform within its shear-free translation-rotation-scale form
+     * ({@code inverse.mul(this)} is the identity).
+     * <p>
+     * The result is the exact pointwise inverse only for a rigid or uniformly scaled transform:
+     * under non-uniform scale, undoing {@code transformPosition} needs a shear that this type
+     * cannot hold, so {@code this.mul(inverse)} is not the identity and the inverse does not map
+     * transformed points back. {@code transformPositionInverse} and {@code transformVectorInverse}
+     * do that exactly for any scale. A zero scale component has no inverse: the corresponding
+     * inverse scale is infinite (with the sign of the zero) and the inverse translation is not
+     * finite.
+     * <p>
+     * The rotation quaternion of this transform must have unit length.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */

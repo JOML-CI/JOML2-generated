@@ -98,7 +98,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -127,7 +127,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -167,7 +167,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -196,7 +196,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -231,7 +231,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -260,7 +260,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -294,7 +294,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -323,7 +323,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -363,7 +363,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -392,7 +392,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -427,7 +427,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -456,7 +456,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -490,7 +490,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -519,7 +519,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -559,7 +559,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -588,7 +588,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -623,7 +623,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -652,7 +652,7 @@ public final class DoubleQuatOpsSimd {
         double _t17 = 1.0 + (_m22 - _t0);
         double _t21 = (1.0 / Math.sqrt(_t15));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t14)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
+        var _c0 = (_t10  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t1).withLane(1, _t7).withLane(2, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t14)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t14)))) : (_m00  >  Math.max(_m11, _m22) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t15)).withLane(1, _t4 * _t21).withLane(2, _t6 * _t21).withLane(3, _t1 * _t21)) : (_m11  >  _m22 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t4).withLane(2, _t8).withLane(3, _t7).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t16)))).withLane(1, Math.sqrt(_t16))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t6).withLane(1, _t8).withLane(3, _t9).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t17)))).withLane(2, Math.sqrt(_t17))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -790,7 +790,7 @@ public final class DoubleQuatOpsSimd {
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset).sub(_sv0), _sv0);
         double _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t11  >  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t11  !=  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -799,7 +799,7 @@ public final class DoubleQuatOpsSimd {
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset).sub(_sv0)).add(_sv0);
         double _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t11  >  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t11  !=  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -813,7 +813,7 @@ public final class DoubleQuatOpsSimd {
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder()).sub(_sv0), _sv0);
         double _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t11  >  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t11  !=  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -822,7 +822,7 @@ public final class DoubleQuatOpsSimd {
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv1 = DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder()).sub(_sv0)).add(_sv0);
         double _t11 = _sv1.mul(_sv1).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t11  >  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t11  !=  0.0 ? _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t11)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -837,7 +837,7 @@ public final class DoubleQuatOpsSimd {
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, alpha).fma((-Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1])))  >  0.0 ? _sv0.neg() : _sv0).sub(_sv1), _sv1);
         double _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t24  !=  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -847,7 +847,7 @@ public final class DoubleQuatOpsSimd {
         var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, alpha).mul((-Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1])))  >  0.0 ? _sv0.neg() : _sv0).sub(_sv1)).add(_sv1);
         double _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t24  !=  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -869,7 +869,7 @@ public final class DoubleQuatOpsSimd {
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, alpha).fma((-Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 24L), UnsafeOpsHolder.U.getDouble(_targetBase + 24L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 16L), UnsafeOpsHolder.U.getDouble(_targetBase + 16L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 0L), UnsafeOpsHolder.U.getDouble(_targetBase + 0L), UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * UnsafeOpsHolder.U.getDouble(_targetBase + 8L))))  >  0.0 ? _sv0.neg() : _sv0).sub(_sv1), _sv1);
         double _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t24  !=  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -879,7 +879,7 @@ public final class DoubleQuatOpsSimd {
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, alpha).fma((-Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 24L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 16L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 0L), src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 8L))))  >  0.0 ? _sv0.neg() : _sv0).sub(_sv1), _sv1);
         double _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t24  !=  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -896,7 +896,7 @@ public final class DoubleQuatOpsSimd {
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, alpha).mul((-Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 24L), UnsafeOpsHolder.U.getDouble(_targetBase + 24L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 16L), UnsafeOpsHolder.U.getDouble(_targetBase + 16L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 0L), UnsafeOpsHolder.U.getDouble(_targetBase + 0L), UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * UnsafeOpsHolder.U.getDouble(_targetBase + 8L))))  >  0.0 ? _sv0.neg() : _sv0).sub(_sv1)).add(_sv1);
         double _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t24  !=  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -906,7 +906,7 @@ public final class DoubleQuatOpsSimd {
         var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         var _sv2 = DoubleVector.broadcast(SIMD_SPECIES, alpha).mul((-Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 24L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 16L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 0L), src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 8L))))  >  0.0 ? _sv0.neg() : _sv0).sub(_sv1)).add(_sv1);
         double _t24 = _sv2.mul(_sv2).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t24  >  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t24  !=  0.0 ? _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t24)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -918,22 +918,62 @@ public final class DoubleQuatOpsSimd {
 
     public static double[] slerp_fma(double[] dest, int destOffset, double[] src, int srcOffset, double targetX, double targetY, double targetZ, double targetW, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src[srcOffset + 3], targetW, Math.fma(src[srcOffset + 2], targetZ, Math.fma(src[srcOffset + 0], targetX, src[srcOffset + 1] * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src[srcOffset + 3] + targetW;
+        double _t2 = src[srcOffset + 2] + targetZ;
+        double _t3 = src[srcOffset + 0] + targetX;
+        double _t4 = src[srcOffset + 1] + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(DoubleVector.broadcast(SIMD_SPECIES, _w0), DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static double[] slerp_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double targetX, double targetY, double targetZ, double targetW, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src[srcOffset + 3], targetW, Math.fma(src[srcOffset + 2], targetZ, Math.fma(src[srcOffset + 0], targetX, src[srcOffset + 1] * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src[srcOffset + 3] + targetW;
+        double _t2 = src[srcOffset + 2] + targetZ;
+        double _t3 = src[srcOffset + 0] + targetX;
+        double _t4 = src[srcOffset + 1] + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _w0)).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -951,22 +991,62 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment slerp_fma_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double targetX, double targetY, double targetZ, double targetW, double alpha) {
         long _srcBase = src.address() + srcOffset;
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 24L), targetW, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 16L), targetZ, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 0L), targetX, UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) + targetW;
+        double _t2 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) + targetZ;
+        double _t3 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + targetX;
+        double _t4 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).fma(DoubleVector.broadcast(SIMD_SPECIES, _w0), DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment slerp_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double targetX, double targetY, double targetZ, double targetW, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L), targetW, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L), targetZ, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L), targetX, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) + targetW;
+        double _t2 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) + targetZ;
+        double _t3 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + targetX;
+        double _t4 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).fma(DoubleVector.broadcast(SIMD_SPECIES, _w0), DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -979,22 +1059,62 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment slerp_mulAdd_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double targetX, double targetY, double targetZ, double targetW, double alpha) {
         long _srcBase = src.address() + srcOffset;
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 24L), targetW, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 16L), targetZ, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 0L), targetX, UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) + targetW;
+        double _t2 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) + targetZ;
+        double _t3 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + targetX;
+        double _t4 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w0)).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment slerp_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double targetX, double targetY, double targetZ, double targetW, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L), targetW, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L), targetZ, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L), targetX, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * targetY))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) + targetW;
+        double _t2 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) + targetZ;
+        double _t3 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + targetX;
+        double _t4 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) + targetY;
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w0)).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, targetX).withLane(1, targetY).withLane(2, targetZ).withLane(3, targetW).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1006,22 +1126,62 @@ public final class DoubleQuatOpsSimd {
 
     public static double[] slerp_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] target, int targetOffset, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1]))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src[srcOffset + 3] + target[targetOffset + 3];
+        double _t2 = src[srcOffset + 2] + target[targetOffset + 2];
+        double _t3 = src[srcOffset + 0] + target[targetOffset + 0];
+        double _t4 = src[srcOffset + 1] + target[targetOffset + 1];
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).fma(DoubleVector.broadcast(SIMD_SPECIES, _w0), DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
 
     public static double[] slerp_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] target, int targetOffset, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src[srcOffset + 3], target[targetOffset + 3], Math.fma(src[srcOffset + 2], target[targetOffset + 2], Math.fma(src[srcOffset + 0], target[targetOffset + 0], src[srcOffset + 1] * target[targetOffset + 1]))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
-        var _sv1 = DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset);
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src[srcOffset + 3] + target[targetOffset + 3];
+        double _t2 = src[srcOffset + 2] + target[targetOffset + 2];
+        double _t3 = src[srcOffset + 0] + target[targetOffset + 0];
+        double _t4 = src[srcOffset + 1] + target[targetOffset + 1];
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _w0)).add(DoubleVector.fromArray(SIMD_SPECIES, target, targetOffset).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1040,22 +1200,62 @@ public final class DoubleQuatOpsSimd {
         long _srcBase = src.address() + srcOffset;
         long _targetBase = target.address() + targetOffset;
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 24L), UnsafeOpsHolder.U.getDouble(_targetBase + 24L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 16L), UnsafeOpsHolder.U.getDouble(_targetBase + 16L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 0L), UnsafeOpsHolder.U.getDouble(_targetBase + 0L), UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * UnsafeOpsHolder.U.getDouble(_targetBase + 8L)))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) + UnsafeOpsHolder.U.getDouble(_targetBase + 24L);
+        double _t2 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) + UnsafeOpsHolder.U.getDouble(_targetBase + 16L);
+        double _t3 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + UnsafeOpsHolder.U.getDouble(_targetBase + 0L);
+        double _t4 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) + UnsafeOpsHolder.U.getDouble(_targetBase + 8L);
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).fma(DoubleVector.broadcast(SIMD_SPECIES, _w0), DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment slerp_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment target, long targetOffset, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 24L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 16L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 0L), src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 8L)))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7)), _sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv1, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 24L);
+        double _t2 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 16L);
+        double _t3 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 0L);
+        double _t4 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 8L);
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).fma(DoubleVector.broadcast(SIMD_SPECIES, _w0), DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1069,22 +1269,62 @@ public final class DoubleQuatOpsSimd {
         long _srcBase = src.address() + srcOffset;
         long _targetBase = target.address() + targetOffset;
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 24L), UnsafeOpsHolder.U.getDouble(_targetBase + 24L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 16L), UnsafeOpsHolder.U.getDouble(_targetBase + 16L), Math.fma(UnsafeOpsHolder.U.getDouble(_srcBase + 0L), UnsafeOpsHolder.U.getDouble(_targetBase + 0L), UnsafeOpsHolder.U.getDouble(_srcBase + 8L) * UnsafeOpsHolder.U.getDouble(_targetBase + 8L)))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = UnsafeOpsHolder.U.getDouble(_srcBase + 24L) + UnsafeOpsHolder.U.getDouble(_targetBase + 24L);
+        double _t2 = UnsafeOpsHolder.U.getDouble(_srcBase + 16L) + UnsafeOpsHolder.U.getDouble(_targetBase + 16L);
+        double _t3 = UnsafeOpsHolder.U.getDouble(_srcBase + 0L) + UnsafeOpsHolder.U.getDouble(_targetBase + 0L);
+        double _t4 = UnsafeOpsHolder.U.getDouble(_srcBase + 8L) + UnsafeOpsHolder.U.getDouble(_targetBase + 8L);
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w0)).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
 
     public static java.lang.foreign.MemorySegment slerp_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment target, long targetOffset, double alpha) {
         double _t0 = 1.0 - alpha;
-        double _t7 = Math.acos(Math.min(1.0, Math.max(-1.0, Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 24L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 16L), Math.fma(src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L), target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 0L), src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) * target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 8L)))))));
-        double _t8 = Math.sin(_t7);
-        var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
-        var _sv1 = DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder());
-        var _c0 = (Math.abs(_t8)  >  1.0E-6 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(_t0 * _t7))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * _t7)))).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / _t8)) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv1).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, _t0))));
+        double _t1 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 24L);
+        double _t2 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 16L);
+        double _t3 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 0L);
+        double _t4 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L) + target.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, targetOffset + 8L);
+        double _t5 = alpha < 0.5 ? 1.0 : 0.0;
+        double _t11 = Math.min(4.0, Math.fma(_t1, _t1, Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4))));
+        double _t12 = quatArcAngle(_t11);
+        double _t13 = 4.0 - _t11;
+        double _t18 = _t13 * _t11;
+        double _t19 = Math.sqrt(_t18);
+        double _t21 = 2.0 / _t19;
+        double _w0, _w1;
+        if (_t19 > 2.0E-14) {
+            _w0 = _t21 * Math.sin(_t0 * _t12);
+            _w1 = _t21 * Math.sin(alpha * _t12);
+        } else {
+            if (_t11 > _t13) {
+                _w0 = _t0;
+                _w1 = alpha;
+            } else {
+                _w0 = _t5;
+                _w1 = 1.0 - _t5;
+            }
+        }
+        var _c0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w0)).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, target, targetOffset, java.nio.ByteOrder.nativeOrder()).mul(DoubleVector.broadcast(SIMD_SPECIES, _w1)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1108,7 +1348,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv2, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t49  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1127,7 +1367,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv2).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t49  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1158,7 +1398,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv2, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t49  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1177,7 +1417,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : DoubleVector.broadcast(SIMD_SPECIES, alpha).fma(_sv2, _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t49  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1203,7 +1443,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv2).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t49  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1222,7 +1462,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv2).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t49  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t49  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1347,7 +1587,7 @@ public final class DoubleQuatOpsSimd {
     public static double[] normalize(double[] dest, int destOffset, double[] src, int srcOffset) {
         var _sv0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset);
         double _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t3  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t3  !=  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1355,7 +1595,7 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment normalize(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         var _sv0 = DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder());
         double _t3 = _sv0.mul(_sv0).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t3  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t3  !=  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t3)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1368,9 +1608,16 @@ public final class DoubleQuatOpsSimd {
         double _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         double _t10 = Math.exp(t * Math.log(Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
         double _t11 = Math.atan2(Math.sqrt(_t2), _selfw) * (1.0 / Math.sqrt(_t2));
-        double _t18 = t * (_t2 > 0.0 ? _selfz * _t11 : 0.0);
-        double _t19 = t * (_t2 > 0.0 ? _selfx * _t11 : 0.0);
-        double _t20 = t * (_t2 > 0.0 ? _selfy * _t11 : 0.0);
+        double _t18, _t19, _t20;
+        if (_t2 > 0.0) {
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
+        } else {
+            _t18 = t * 0.0;
+            _t19 = t * 0.0;
+            _t20 = t * 0.0;
+        }
         double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         double _t24 = Math.sqrt(_t23);
         double _t26 = Math.sin(_t24);
@@ -1393,9 +1640,16 @@ public final class DoubleQuatOpsSimd {
         double _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         double _t10 = Math.exp(t * Math.log(Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
         double _t11 = Math.atan2(Math.sqrt(_t2), _selfw) * (1.0 / Math.sqrt(_t2));
-        double _t18 = t * (_t2 > 0.0 ? _selfz * _t11 : 0.0);
-        double _t19 = t * (_t2 > 0.0 ? _selfx * _t11 : 0.0);
-        double _t20 = t * (_t2 > 0.0 ? _selfy * _t11 : 0.0);
+        double _t18, _t19, _t20;
+        if (_t2 > 0.0) {
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
+        } else {
+            _t18 = t * 0.0;
+            _t19 = t * 0.0;
+            _t20 = t * 0.0;
+        }
         double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         double _t24 = Math.sqrt(_t23);
         double _t26 = Math.sin(_t24);
@@ -1412,9 +1666,16 @@ public final class DoubleQuatOpsSimd {
         double _t2 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
         double _t10 = Math.exp(t * Math.log(Math.sqrt(Math.fma(_selfw, _selfw, _t2))));
         double _t11 = Math.atan2(Math.sqrt(_t2), _selfw) * (1.0 / Math.sqrt(_t2));
-        double _t18 = t * (_t2 > 0.0 ? _selfz * _t11 : 0.0);
-        double _t19 = t * (_t2 > 0.0 ? _selfx * _t11 : 0.0);
-        double _t20 = t * (_t2 > 0.0 ? _selfy * _t11 : 0.0);
+        double _t18, _t19, _t20;
+        if (_t2 > 0.0) {
+            _t18 = t * _selfz * _t11;
+            _t19 = t * _selfx * _t11;
+            _t20 = t * _selfy * _t11;
+        } else {
+            _t18 = t * 0.0;
+            _t19 = t * 0.0;
+            _t20 = t * 0.0;
+        }
         double _t23 = Math.fma(_t18, _t18, Math.fma(_t19, _t19, _t20 * _t20));
         double _t24 = Math.sqrt(_t23);
         double _t26 = Math.sin(_t24);
@@ -1442,7 +1703,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), DoubleVector.broadcast(SIMD_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t72  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1461,7 +1722,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t72  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1492,7 +1753,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), DoubleVector.broadcast(SIMD_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t72  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1511,7 +1772,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))), DoubleVector.broadcast(SIMD_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.fma(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)), _sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t72  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1537,7 +1798,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t72  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1556,7 +1817,7 @@ public final class DoubleQuatOpsSimd {
         var _sv2 = (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))  >  0.0 ? _sv1.neg() : _sv1);
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0)) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))) * (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, 4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))) > 0.0 ? Math.min(1.0, step / (4.0 * Math.atan2(Math.sqrt(Math.fma(_selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy - (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)))))), Math.sqrt(Math.fma(_selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), _selfw + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetw : _targetw), Math.fma(_selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), _selfz + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetz : _targetz), Math.fma(_selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), _selfx + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targetx : _targetx), (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety)) * (_selfy + (-Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))) > 0.0 ? -_targety : _targety))))))))) : 0.0))));
         double _t72 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
-        var _c0 = (_t72  >  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        var _c0 = (_t72  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t72)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1569,7 +1830,7 @@ public final class DoubleQuatOpsSimd {
     public static double[] makeRotationAxis_fma(double[] dest, int destOffset, double angle, double axisX, double axisY, double axisZ) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1577,7 +1838,7 @@ public final class DoubleQuatOpsSimd {
     public static double[] makeRotationAxis_mulAdd(double[] dest, int destOffset, double angle, double axisX, double axisY, double axisZ) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1590,7 +1851,7 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationAxis_fma(java.lang.foreign.MemorySegment dest, long destOffset, double angle, double axisX, double axisY, double axisZ) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1598,7 +1859,7 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationAxis_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, double angle, double axisX, double axisY, double axisZ) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axisX).withLane(1, axisY).withLane(2, axisZ).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1611,7 +1872,7 @@ public final class DoubleQuatOpsSimd {
     public static double[] makeRotationAxis_fma(double[] dest, int destOffset, double[] axis, int axisOffset, double angle) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1619,7 +1880,7 @@ public final class DoubleQuatOpsSimd {
     public static double[] makeRotationAxis_mulAdd(double[] dest, int destOffset, double[] axis, int axisOffset, double angle) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axis[axisOffset + 0]).withLane(1, axis[axisOffset + 1]).withLane(2, axis[axisOffset + 2]).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1638,7 +1899,7 @@ public final class DoubleQuatOpsSimd {
         long _axisBase = axis.address() + axisOffset;
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getDouble(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getDouble(_axisBase + 8L)).withLane(2, UnsafeOpsHolder.U.getDouble(_axisBase + 16L)).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getDouble(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getDouble(_axisBase + 8L)).withLane(2, UnsafeOpsHolder.U.getDouble(_axisBase + 16L)).fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1646,7 +1907,7 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationAxis_fma_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, double angle) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L)).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L)).fma(DoubleVector.broadcast(SIMD_SPECIES, _t1), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1660,7 +1921,7 @@ public final class DoubleQuatOpsSimd {
         long _axisBase = axis.address() + axisOffset;
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getDouble(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getDouble(_axisBase + 8L)).withLane(2, UnsafeOpsHolder.U.getDouble(_axisBase + 16L)).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, UnsafeOpsHolder.U.getDouble(_axisBase + 0L)).withLane(1, UnsafeOpsHolder.U.getDouble(_axisBase + 8L)).withLane(2, UnsafeOpsHolder.U.getDouble(_axisBase + 16L)).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1668,7 +1929,7 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationAxis_mulAdd_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, double angle) {
         double _t0 = 0.5 * angle;
         double _t1 = Math.sin(_t0);
-        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, Math.cosFromSin(_t1, _t0)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L)).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)));
+        var _c0 = DoubleVector.zero(SIMD_SPECIES).withLane(0, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L)).withLane(1, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L)).withLane(2, axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L)).mul(DoubleVector.broadcast(SIMD_SPECIES, _t1)).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.cosFromSin(_t1, _t0)));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1681,9 +1942,16 @@ public final class DoubleQuatOpsSimd {
     public static double[] makeRotationLookAlong_fma(double[] dest, int destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? dirZ * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? dirY * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? dirX * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1692,9 +1960,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -1709,7 +1984,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1717,9 +1992,16 @@ public final class DoubleQuatOpsSimd {
     public static double[] makeRotationLookAlong_mulAdd(double[] dest, int destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? dirZ * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? dirY * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? dirX * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1728,9 +2010,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -1745,7 +2034,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1758,9 +2047,16 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationLookAlong_fma(java.lang.foreign.MemorySegment dest, long destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? dirZ * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? dirY * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? dirX * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1769,9 +2065,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -1786,7 +2089,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1794,9 +2097,16 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment makeRotationLookAlong_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, double dirX, double dirY, double dirZ, double upX, double upY, double upZ) {
         double _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? dirZ * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? dirY * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? dirX * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = dirZ * _t3;
+            _t8 = dirY * _t3;
+            _t9 = dirX * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1805,9 +2115,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(upZ, _t9, -(upX * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -1822,7 +2139,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1841,9 +2158,16 @@ public final class DoubleQuatOpsSimd {
         double _upz = up[upOffset + 2];
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _dirz * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _diry * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _dirx * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1852,9 +2176,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -1869,7 +2200,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1883,9 +2214,16 @@ public final class DoubleQuatOpsSimd {
         double _upz = up[upOffset + 2];
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _dirz * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _diry * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _dirx * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1894,9 +2232,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -1911,7 +2256,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -1937,9 +2282,16 @@ public final class DoubleQuatOpsSimd {
         double _upz = UnsafeOpsHolder.U.getDouble(_upBase + 16L);
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _dirz * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _diry * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _dirx * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1948,9 +2300,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -1965,7 +2324,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -1979,9 +2338,16 @@ public final class DoubleQuatOpsSimd {
         double _upz = up.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, upOffset + 16L);
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _dirz * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _diry * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _dirx * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -1990,9 +2356,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -2007,7 +2380,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).fma(UNIT_W, DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).fma(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60))), DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2028,9 +2401,16 @@ public final class DoubleQuatOpsSimd {
         double _upz = UnsafeOpsHolder.U.getDouble(_upBase + 16L);
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _dirz * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _diry * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _dirx * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -2039,9 +2419,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -2056,7 +2443,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2070,9 +2457,16 @@ public final class DoubleQuatOpsSimd {
         double _upz = up.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, upOffset + 16L);
         double _t2 = Math.fma(_dirz, _dirz, Math.fma(_dirx, _dirx, _diry * _diry));
         double _t3 = (1.0 / Math.sqrt(_t2));
-        double _t7 = _t2 > 0.0 ? _dirz * _t3 : 0.0;
-        double _t8 = _t2 > 0.0 ? _diry * _t3 : 0.0;
-        double _t9 = _t2 > 0.0 ? _dirx * _t3 : 0.0;
+        double _t7, _t8, _t9;
+        if (_t2 != 0.0) {
+            _t7 = _dirz * _t3;
+            _t8 = _diry * _t3;
+            _t9 = _dirx * _t3;
+        } else {
+            _t7 = 0.0;
+            _t8 = 0.0;
+            _t9 = 0.0;
+        }
         double _t10 = -_t9;
         double _t11 = -_t8;
         double _t12 = -_t7;
@@ -2081,9 +2475,16 @@ public final class DoubleQuatOpsSimd {
         double _t23 = Math.fma(_upz, _t9, -(_upx * _t7));
         double _t26 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         double _t27 = (1.0 / Math.sqrt(_t26));
-        double _t31 = _t26 > 0.0 ? _t22 * _t27 : 0.0;
-        double _t32 = _t26 > 0.0 ? _t21 * _t27 : 0.0;
-        double _t33 = _t26 > 0.0 ? _t23 * _t27 : 0.0;
+        double _t31, _t32, _t33;
+        if (_t26 != 0.0) {
+            _t31 = _t22 * _t27;
+            _t32 = _t21 * _t27;
+            _t33 = _t23 * _t27;
+        } else {
+            _t31 = 0.0;
+            _t32 = 0.0;
+            _t33 = 0.0;
+        }
         double _t34 = 1.0 + _t31;
         double _t37 = _t9 + _t32;
         double _t38 = _t9 - _t32;
@@ -2098,7 +2499,7 @@ public final class DoubleQuatOpsSimd {
         double _t63 = Math.fma(_t12, _t31, Math.fma(_t9, _t32, 1.0 + _t7 - _t31));
         double _t67 = (1.0 / Math.sqrt(_t61));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.5);
-        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sqrt(_t60)).mul(UNIT_W).add(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
+        var _c0 = (Math.fma(_t7, _t31, Math.fma(_t10, _t32, _t31 + _t7))  >  0.0 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t55).withLane(1, _t38).withLane(2, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t60)))).add(DoubleVector.broadcast(SIMD_SPECIES, 0.0).withLane(3, Math.sqrt(_t60)))) : (_t31  >  Math.max(_t49, _t7) ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, Math.sqrt(_t61)).withLane(1, _t57 * _t67).withLane(2, _t37 * _t67).withLane(3, _t55 * _t67)) : (_t49  >  _t7 ? _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t57).withLane(2, _t54).withLane(3, _t38).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t62)))).withLane(1, Math.sqrt(_t62))) : _sv0.mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t37).withLane(1, _t54).withLane(3, _t58).mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t63)))).withLane(2, Math.sqrt(_t63))))));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2116,14 +2517,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
-        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
+            _t18 = 0.0;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).fma(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2136,14 +2544,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
-        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
+            _t18 = 0.0;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2161,14 +2576,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
-        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
+            _t18 = 0.0;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).fma(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2181,14 +2603,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(fromDirY, toDirZ, -(fromDirZ * toDirY));
         double _t15 = Math.fma(fromDirX, toDirY, -(fromDirY * toDirX));
         double _t16 = Math.fma(fromDirZ, toDirX, -(fromDirX * toDirZ));
-        double _t17 = _t12 > 0.0 ? fromDirY : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -fromDirY;
-        double _t19 = _t12 > 0.0 ? -fromDirX : fromDirZ;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = fromDirY;
+            _t18 = 0.0;
+            _t19 = -fromDirX;
+        } else {
+            _t17 = 0.0;
+            _t18 = -fromDirY;
+            _t19 = fromDirZ;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2212,14 +2641,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
-        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
+            _t18 = 0.0;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).fma(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2238,14 +2674,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
-        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
+            _t18 = 0.0;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoArray(dest, destOffset);
         return dest;
     }
@@ -2276,14 +2719,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
-        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
+            _t18 = 0.0;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).fma(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2302,14 +2752,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
-        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
+            _t18 = 0.0;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.fma(UNIT_W, DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).fma(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18), _sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2335,14 +2792,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
-        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
+            _t18 = 0.0;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2361,14 +2825,21 @@ public final class DoubleQuatOpsSimd {
         double _t14 = Math.fma(_fromDiry, _toDirz, -(_fromDirz * _toDiry));
         double _t15 = Math.fma(_fromDirx, _toDiry, -(_fromDiry * _toDirx));
         double _t16 = Math.fma(_fromDirz, _toDirx, -(_fromDirx * _toDirz));
-        double _t17 = _t12 > 0.0 ? _fromDiry : 0.0;
-        double _t18 = _t12 > 0.0 ? 0.0 : -_fromDiry;
-        double _t19 = _t12 > 0.0 ? -_fromDirx : _fromDirz;
+        double _t17, _t18, _t19;
+        if (_t12 > 0.0) {
+            _t17 = _fromDiry;
+            _t18 = 0.0;
+            _t19 = -_fromDirx;
+        } else {
+            _t17 = 0.0;
+            _t18 = -_fromDiry;
+            _t19 = _fromDirz;
+        }
         double _t22 = Math.fma(_t2, _t2, Math.fma(_t3, _t3, _t4 * _t4));
         double _t29 = Math.fma(_t18, _t18, Math.fma(_t17, _t17, _t19 * _t19));
         double _t32 = (1.0 / Math.sqrt(Math.fma(0.25, _t22 * _t22, Math.fma(_t15, _t15, Math.fma(_t14, _t14, _t16 * _t16)))));
         var _sv0 = DoubleVector.broadcast(SIMD_SPECIES, 0.0);
-        var _c0 = (0.5 * _t22  >  1.0E-6 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  >  0.0 ? _sv0.mul(UNIT_W).add(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18))) : _sv0));
+        var _c0 = (0.5 * _t22  >  1.0E-13 ? DoubleVector.zero(SIMD_SPECIES).withLane(0, _t14).withLane(1, _t16).withLane(2, _t15).withLane(3, 0.5).mul(DoubleVector.broadcast(SIMD_SPECIES, _t32).withLane(3, _t22 * _t32)) : (_t29  !=  0.0 ? DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t29))).mul(DoubleVector.zero(SIMD_SPECIES).withLane(0, _t17).withLane(1, _t19).withLane(2, _t18)).add(_sv0.withLane(3, 0.0)) : _sv0));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }
@@ -2559,7 +3030,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -2571,7 +3042,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static double[] copy(double[] dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copyArrArr(dest, destOffset, _srcArr, _srcOff, count * 4);
@@ -2605,7 +3076,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr_one(_destArr, _destOff, src, srcOffset);
@@ -2617,7 +3088,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, double[] src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrArr(_destArr, _destOff, src, srcOffset, count * 4);
@@ -2629,10 +3100,10 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr_one(_destArr, _destOff, _srcArr, _srcOff);
@@ -2642,7 +3113,7 @@ public final class DoubleQuatOpsSimd {
             }
         } else {
             java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copySegArr_one(_destSeg, (long) destOffset * 8, _srcArr, _srcOff);
@@ -2655,10 +3126,10 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copyArrArr(_destArr, _destOff, _srcArr, _srcOff, count * 4);
@@ -2668,7 +3139,7 @@ public final class DoubleQuatOpsSimd {
             }
         } else {
             java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-            if (src.hasArray()) {
+            if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
                 double[] _srcArr = src.array();
                 int _srcOff = src.arrayOffset() + srcOffset;
                 copySegArr(_destSeg, (long) destOffset * 8, _srcArr, _srcOff, count * 4);
@@ -2681,7 +3152,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             java.lang.foreign.MemorySegment _srcSeg = java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0));
@@ -2695,7 +3166,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             java.lang.foreign.MemorySegment _srcSeg = java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0));
@@ -2709,7 +3180,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrSeg_one(_destArr, _destOff, src, srcOffset);
@@ -2721,7 +3192,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.nio.DoubleBuffer copy(java.nio.DoubleBuffer dest, int destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
-        if (dest.hasArray()) {
+        if (dest.hasArray() && destOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && destOffset <= dest.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _destArr = dest.array();
             int _destOff = dest.arrayOffset() + destOffset;
             copyArrSeg(_destArr, _destOff, src, srcOffset, count * 4);
@@ -2746,7 +3217,7 @@ public final class DoubleQuatOpsSimd {
 
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr_one(_destSeg, destOffset, _srcArr, _srcOff);
@@ -2759,7 +3230,7 @@ public final class DoubleQuatOpsSimd {
 
     public static java.nio.ByteBuffer copy(java.nio.ByteBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
         java.lang.foreign.MemorySegment _destSeg = java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0));
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr(_destSeg, destOffset, _srcArr, _srcOff, count * 4);
@@ -2807,7 +3278,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.DoubleBuffer src, int srcOffset) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr_one(dest, destOffset, _srcArr, _srcOff);
@@ -2819,7 +3290,7 @@ public final class DoubleQuatOpsSimd {
     }
 
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.nio.DoubleBuffer src, int srcOffset, int count) {
-        if (src.hasArray()) {
+        if (src.hasArray() && srcOffset >= 0 && (count > 536870911 ? -1 : count * 4) >= 0 && srcOffset <= src.limit() - (count > 536870911 ? -1 : count * 4)) {
             double[] _srcArr = src.array();
             int _srcOff = src.arrayOffset() + srcOffset;
             copySegArr(dest, destOffset, _srcArr, _srcOff, count * 4);
@@ -2850,5 +3321,21 @@ public final class DoubleQuatOpsSimd {
     public static java.lang.foreign.MemorySegment copy(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, int count) {
         copySegSeg(dest, destOffset, src, srcOffset, count * 4);
         return dest;
+    }
+    /**
+     * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:
+     * 2 asin(|a-b|/2) up to pi/2 and pi - 2 asin(|a+b|/2) beyond, so asin always sees an
+     * argument of at most sqrt(2)/2 and the angle stays accurate at both ends.
+     */
+    private static float quatArcAngle(float s) {
+        float d = 4.0f - s;
+        return s > d ? 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(d))
+                : (float) Math.PI - 2.0f * (float) Math.asin(0.5f * (float) Math.sqrt(s));
+    }
+
+    /** Double-precision twin of {@link #quatArcAngle(float)}. */
+    private static double quatArcAngle(double s) {
+        double d = 4.0 - s;
+        return s > d ? 2.0 * Math.asin(0.5 * Math.sqrt(d)) : Math.PI - 2.0 * Math.asin(0.5 * Math.sqrt(s));
     }
 }

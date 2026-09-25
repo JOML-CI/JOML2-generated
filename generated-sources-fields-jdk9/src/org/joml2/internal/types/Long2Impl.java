@@ -106,8 +106,9 @@ public final class Long2Impl implements Long2 {
      */
     public Long2 ceilDiv(long otherX, long otherY, @Mutated Long2 dest) {
         Long2Impl d = (Long2Impl) dest;
-        d.x = Math.ceilDiv(this.x, otherX);
+        long _buf0 = Math.ceilDiv(this.x, otherX);
         d.y = Math.ceilDiv(this.y, otherY);
+        d.x = _buf0;
         return d;
     }
 
@@ -149,8 +150,9 @@ public final class Long2Impl implements Long2 {
      */
     public Long2 ceilMod(long otherX, long otherY, @Mutated Long2 dest) {
         Long2Impl d = (Long2Impl) dest;
-        d.x = Math.ceilMod(this.x, otherX);
+        long _buf0 = Math.ceilMod(this.x, otherX);
         d.y = Math.ceilMod(this.y, otherY);
+        d.x = _buf0;
         return d;
     }
 
@@ -192,8 +194,9 @@ public final class Long2Impl implements Long2 {
      */
     public Long2 div(long otherX, long otherY, @Mutated Long2 dest) {
         Long2Impl d = (Long2Impl) dest;
-        d.x = this.x / otherX;
+        long _buf0 = this.x / otherX;
         d.y = this.y / otherY;
+        d.x = _buf0;
         return d;
     }
 
@@ -235,8 +238,9 @@ public final class Long2Impl implements Long2 {
      */
     public Long2 floorDiv(long otherX, long otherY, @Mutated Long2 dest) {
         Long2Impl d = (Long2Impl) dest;
-        d.x = Math.floorDiv(this.x, otherX);
+        long _buf0 = Math.floorDiv(this.x, otherX);
         d.y = Math.floorDiv(this.y, otherY);
+        d.x = _buf0;
         return d;
     }
 
@@ -278,8 +282,9 @@ public final class Long2Impl implements Long2 {
      */
     public Long2 floorMod(long otherX, long otherY, @Mutated Long2 dest) {
         Long2Impl d = (Long2Impl) dest;
-        d.x = Math.floorMod(this.x, otherX);
+        long _buf0 = Math.floorMod(this.x, otherX);
         d.y = Math.floorMod(this.y, otherY);
+        d.x = _buf0;
         return d;
     }
 
@@ -380,8 +385,9 @@ public final class Long2Impl implements Long2 {
      */
     public Long2 rem(long otherX, long otherY, @Mutated Long2 dest) {
         Long2Impl d = (Long2Impl) dest;
-        d.x = this.x % otherX;
+        long _buf0 = this.x % otherX;
         d.y = this.y % otherY;
+        d.x = _buf0;
         return d;
     }
 
@@ -874,6 +880,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the sum of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the sum of all components of this vector
      */
@@ -904,6 +913,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the product of all components of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the product of all components of this vector
      */
@@ -914,6 +926,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the squared distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the squared distance between this vector and {@code other}
@@ -925,6 +940,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the squared distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -939,6 +957,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the dot product of this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the other operand of the dot product
      * @return the dot product of this vector and {@code other}
@@ -950,6 +971,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the dot product of this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -962,6 +986,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the squared length of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the squared length of this vector
      */
@@ -972,6 +999,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the Manhattan distance between this vector and {@code other}.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param other the vector to measure the distance to
      * @return the Manhattan distance between this vector and {@code other}
@@ -983,6 +1013,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the Manhattan distance between this vector and ({@code otherX}, {@code otherY}).
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
      * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
@@ -995,6 +1028,9 @@ public final class Long2Impl implements Long2 {
 
     /**
      * Compute the Manhattan length (sum of the absolute components) of this vector.
+     * <p>
+     * The value is computed in {@code long}, the widest integer type, so a result outside the
+     * {@code long} range wraps.
      *
      * @return the Manhattan length (sum of the absolute components) of this vector
      */

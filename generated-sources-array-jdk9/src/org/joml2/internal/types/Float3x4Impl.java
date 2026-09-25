@@ -253,15 +253,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -277,15 +283,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Y and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXYZ(e.x(), e.y(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -350,15 +362,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -374,15 +392,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the X, Z and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationXZY(e.x(), e.z(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -445,15 +469,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -469,15 +499,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, X and Z axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYXZ(e.y(), e.x(), e.z())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -538,15 +574,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -562,15 +604,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Y, Z and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationYZX(e.y(), e.z(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -633,15 +681,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -657,15 +711,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, X and Y axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZXY(e.z(), e.x(), e.y())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -728,15 +788,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      *
      * @param dest will hold the result
      * @return dest
@@ -752,15 +818,21 @@ public class Float3x4Impl implements Float3x4 {
      * Get the Euler angles in radians of this matrix, to be applied about the Z, Y and X axes, in
      * that order and store the result in {@code dest}.
      * <p>
+     * The result holds each angle at the component of its axis, not at its position in the order:
+     * the angle about X in {@code x}, about Y in {@code y} and about Z in {@code z}. So, with
+     * {@code e} the result, {@code makeRotationZYX(e.z(), e.y(), e.x())}, which takes the angles in
+     * application order, rebuilds the rotation.
+     * <p>
      * At gimbal lock (a middle rotation of ±90 degrees) the decomposition is not unique; one valid
      * set of angles is returned.
      * <p>
      * The middle angle is recovered with {@code atan2} rather than {@code asin}, so it keeps full
      * {@code float} resolution over its whole range, down to 0.
      * <p>
-     * The upper-left 3x3 of this matrix must be a pure rotation (orthonormal, free of scaling and
-     * shear): the angles are read from its raw elements, so a scaled matrix yields wrong angles
-     * rather than the angles of its rotation part.
+     * The upper-left 3x3 of this matrix must be a rotation, possibly scaled uniformly (orthogonal
+     * columns of equal length): the angles are read from ratios of its raw elements, so a uniform
+     * scale cancels out, but a non-uniform scale or shear yields wrong angles rather than the
+     * angles of its rotation part.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -816,7 +888,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
         float _t21, _t23, _t27;
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             _t21 = sd[1] * _t9;
             _t23 = sd[5] * _t9;
             _t27 = sd[9] * _t9;
@@ -826,7 +898,7 @@ public class Float3x4Impl implements Float3x4 {
             _t27 = 0.0f;
         }
         float _t22, _t24, _t26;
-        if (_t7 > 0.0f) {
+        if (_t7 != 0.0f) {
             _t22 = sd[6] * _t10;
             _t24 = sd[2] * _t10;
             _t26 = sd[10] * _t10;
@@ -836,7 +908,7 @@ public class Float3x4Impl implements Float3x4 {
             _t26 = 0.0f;
         }
         float _t25, _t28, _t29;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t25 = sd[8] * _t11;
             _t28 = sd[0] * _t11;
             _t29 = sd[4] * _t11;
@@ -869,32 +941,32 @@ public class Float3x4Impl implements Float3x4 {
         float _t63 = 1.0f + (_t49 - (_t23 + _t26));
         float _t64 = 1.0f + (_t23 - (_t49 + _t26));
         float _t65 = 1.0f + (_t26 - _t52);
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t63));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         if (_t58 > 0.0f) {
-            dd[0] = 0.5f * _t36 * _t66;
-            dd[1] = 0.5f * _t56 * _t66;
-            dd[2] = 0.5f * _t57 * _t66;
+            dd[0] = _sp0 * _t36;
+            dd[1] = _sp0 * _t56;
+            dd[2] = _sp0 * _t57;
             dd[3] = 0.5f * (float) Math.sqrt(_t62);
         } else {
             if (_t49 > _t37) {
                 dd[0] = 0.5f * (float) Math.sqrt(_t63);
-                dd[1] = 0.5f * _t53 * _t69;
-                dd[2] = 0.5f * _t55 * _t69;
-                dd[3] = 0.5f * _t36 * _t69;
+                dd[1] = _sp3 * _t53;
+                dd[2] = _sp3 * _t55;
+                dd[3] = _sp3 * _t36;
             } else {
                 if (_t23 > _t26) {
-                    dd[0] = 0.5f * _t53 * _t67;
+                    dd[0] = _sp1 * _t53;
                     dd[1] = 0.5f * (float) Math.sqrt(_t64);
-                    dd[2] = 0.5f * _t39 * _t67;
-                    dd[3] = 0.5f * _t56 * _t67;
+                    dd[2] = _sp1 * _t39;
+                    dd[3] = _sp1 * _t56;
                 } else {
-                    dd[0] = 0.5f * _t55 * _t68;
-                    dd[1] = 0.5f * _t39 * _t68;
+                    dd[0] = _sp2 * _t55;
+                    dd[1] = _sp2 * _t39;
                     dd[2] = 0.5f * (float) Math.sqrt(_t65);
-                    dd[3] = 0.5f * _t57 * _t68;
+                    dd[3] = _sp2 * _t57;
                 }
             }
         }
@@ -946,7 +1018,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t10 = (1.0f / (float) Math.sqrt(_t7));
         float _t11 = (1.0f / (float) Math.sqrt(_t8));
         float _t21, _t23, _t27;
-        if (_t6 > 0.0f) {
+        if (_t6 != 0.0f) {
             _t21 = sd[1] * _t9;
             _t23 = sd[5] * _t9;
             _t27 = sd[9] * _t9;
@@ -956,7 +1028,7 @@ public class Float3x4Impl implements Float3x4 {
             _t27 = 0.0f;
         }
         float _t22, _t24, _t26;
-        if (_t7 > 0.0f) {
+        if (_t7 != 0.0f) {
             _t22 = sd[6] * _t10;
             _t24 = sd[2] * _t10;
             _t26 = sd[10] * _t10;
@@ -966,7 +1038,7 @@ public class Float3x4Impl implements Float3x4 {
             _t26 = 0.0f;
         }
         float _t25, _t28, _t29;
-        if (_t8 > 0.0f) {
+        if (_t8 != 0.0f) {
             _t25 = sd[8] * _t11;
             _t28 = sd[0] * _t11;
             _t29 = sd[4] * _t11;
@@ -999,32 +1071,32 @@ public class Float3x4Impl implements Float3x4 {
         float _t63 = 1.0f + (_t49 - (_t23 + _t26));
         float _t64 = 1.0f + (_t23 - (_t49 + _t26));
         float _t65 = 1.0f + (_t26 - _t52);
-        float _t66 = (1.0f / (float) Math.sqrt(_t62));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
-        float _t69 = (1.0f / (float) Math.sqrt(_t63));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
         if (_t58 > 0.0f) {
-            dd[0] = 0.5f * _t36 * _t66;
-            dd[1] = 0.5f * _t56 * _t66;
-            dd[2] = 0.5f * _t57 * _t66;
+            dd[0] = _sp0 * _t36;
+            dd[1] = _sp0 * _t56;
+            dd[2] = _sp0 * _t57;
             dd[3] = 0.5f * (float) Math.sqrt(_t62);
         } else {
             if (_t49 > _t37) {
                 dd[0] = 0.5f * (float) Math.sqrt(_t63);
-                dd[1] = 0.5f * _t53 * _t69;
-                dd[2] = 0.5f * _t55 * _t69;
-                dd[3] = 0.5f * _t36 * _t69;
+                dd[1] = _sp3 * _t53;
+                dd[2] = _sp3 * _t55;
+                dd[3] = _sp3 * _t36;
             } else {
                 if (_t23 > _t26) {
-                    dd[0] = 0.5f * _t53 * _t67;
+                    dd[0] = _sp1 * _t53;
                     dd[1] = 0.5f * (float) Math.sqrt(_t64);
-                    dd[2] = 0.5f * _t39 * _t67;
-                    dd[3] = 0.5f * _t56 * _t67;
+                    dd[2] = _sp1 * _t39;
+                    dd[3] = _sp1 * _t56;
                 } else {
-                    dd[0] = 0.5f * _t55 * _t68;
-                    dd[1] = 0.5f * _t39 * _t68;
+                    dd[0] = _sp2 * _t55;
+                    dd[1] = _sp2 * _t39;
                     dd[2] = 0.5f * (float) Math.sqrt(_t65);
-                    dd[3] = 0.5f * _t57 * _t68;
+                    dd[3] = _sp2 * _t57;
                 }
             }
         }
@@ -1195,7 +1267,7 @@ public class Float3x4Impl implements Float3x4 {
      */
     public Float3 getScale(@Mutated Float3 dest) {
         int p = this.properties;
-        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return getScale_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return getScale_identity(dest);
         return getScale_general(dest);
     }
 
@@ -1308,35 +1380,35 @@ public class Float3x4Impl implements Float3x4 {
         float _t15 = 1.0f + (sd[0] - (sd[5] + sd[10]));
         float _t16 = 1.0f + (sd[5] - (sd[0] + sd[10]));
         float _t17 = 1.0f + (sd[10] - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            float _buf0 = 0.5f * _t1 * _t18;
-            dd[1] = 0.5f * _t7 * _t18;
-            dd[2] = 0.5f * _t9 * _t18;
+            float _buf0 = _sp0 * _t1;
+            dd[1] = _sp0 * _t7;
+            dd[2] = _sp0 * _t9;
             dd[3] = 0.5f * (float) Math.sqrt(_t14);
             dd[0] = _buf0;
         } else {
             if (sd[0] > _t2) {
                 float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                dd[1] = 0.5f * _t4 * _t21;
-                dd[2] = 0.5f * _t6 * _t21;
-                dd[3] = 0.5f * _t1 * _t21;
+                dd[1] = _sp3 * _t4;
+                dd[2] = _sp3 * _t6;
+                dd[3] = _sp3 * _t1;
                 dd[0] = _buf0;
             } else {
                 if (sd[5] > sd[10]) {
-                    float _buf0 = 0.5f * _t4 * _t19;
+                    float _buf0 = _sp1 * _t4;
                     dd[1] = 0.5f * (float) Math.sqrt(_t16);
-                    dd[2] = 0.5f * _t8 * _t19;
-                    dd[3] = 0.5f * _t7 * _t19;
+                    dd[2] = _sp1 * _t8;
+                    dd[3] = _sp1 * _t7;
                     dd[0] = _buf0;
                 } else {
-                    float _buf0 = 0.5f * _t6 * _t20;
-                    dd[1] = 0.5f * _t8 * _t20;
+                    float _buf0 = _sp2 * _t6;
+                    dd[1] = _sp2 * _t8;
                     dd[2] = 0.5f * (float) Math.sqrt(_t17);
-                    dd[3] = 0.5f * _t9 * _t20;
+                    dd[3] = _sp2 * _t9;
                     dd[0] = _buf0;
                 }
             }
@@ -1395,35 +1467,35 @@ public class Float3x4Impl implements Float3x4 {
         float _t15 = 1.0f + (sd[0] - (sd[5] + sd[10]));
         float _t16 = 1.0f + (sd[5] - (sd[0] + sd[10]));
         float _t17 = 1.0f + (sd[10] - _t0);
-        float _t18 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19 = (1.0f / (float) Math.sqrt(_t16));
-        float _t20 = (1.0f / (float) Math.sqrt(_t17));
-        float _t21 = (1.0f / (float) Math.sqrt(_t15));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t14));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
         if (_t10 > 0.0f) {
-            float _buf0 = 0.5f * _t1 * _t18;
-            dd[1] = 0.5f * _t7 * _t18;
-            dd[2] = 0.5f * _t9 * _t18;
+            float _buf0 = _sp0 * _t1;
+            dd[1] = _sp0 * _t7;
+            dd[2] = _sp0 * _t9;
             dd[3] = 0.5f * (float) Math.sqrt(_t14);
             dd[0] = _buf0;
         } else {
             if (sd[0] > _t2) {
                 float _buf0 = 0.5f * (float) Math.sqrt(_t15);
-                dd[1] = 0.5f * _t4 * _t21;
-                dd[2] = 0.5f * _t6 * _t21;
-                dd[3] = 0.5f * _t1 * _t21;
+                dd[1] = _sp3 * _t4;
+                dd[2] = _sp3 * _t6;
+                dd[3] = _sp3 * _t1;
                 dd[0] = _buf0;
             } else {
                 if (sd[5] > sd[10]) {
-                    float _buf0 = 0.5f * _t4 * _t19;
+                    float _buf0 = _sp1 * _t4;
                     dd[1] = 0.5f * (float) Math.sqrt(_t16);
-                    dd[2] = 0.5f * _t8 * _t19;
-                    dd[3] = 0.5f * _t7 * _t19;
+                    dd[2] = _sp1 * _t8;
+                    dd[3] = _sp1 * _t7;
                     dd[0] = _buf0;
                 } else {
-                    float _buf0 = 0.5f * _t6 * _t20;
-                    dd[1] = 0.5f * _t8 * _t20;
+                    float _buf0 = _sp2 * _t6;
+                    dd[1] = _sp2 * _t8;
                     dd[2] = 0.5f * (float) Math.sqrt(_t17);
-                    dd[3] = 0.5f * _t9 * _t20;
+                    dd[3] = _sp2 * _t9;
                     dd[0] = _buf0;
                 }
             }
@@ -1450,23 +1522,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invNegativeX}, specialized by runtime matrix properties; reached only
      * through the public {@code invNegativeX} dispatcher.
      */
+    private Float3 invNegativeX_orthogonal(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        dd[0] = -sd[0];
+        dd[1] = -sd[1];
+        dd[2] = -sd[2];
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code invNegativeX}, specialized by runtime matrix properties; reached only
+     * through the public {@code invNegativeX} dispatcher.
+     */
     private Float3 invNegativeX_general(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        float _t6 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t7 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t6 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t7 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
         float _t8 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = -(_t7 * _t12);
-            dd[1] = -(_t8 * _t12);
-            dd[2] = -(_t6 * _t12);
-        } else {
-            dd[0] = -0.0f;
-            dd[1] = -0.0f;
-            dd[2] = -0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invNegativeX_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = -(_t6 * _t13);
+        dd[1] = -(_t8 * _t13);
+        dd[2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -1475,9 +1556,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -1485,6 +1567,7 @@ public class Float3x4Impl implements Float3x4 {
     public Float3 invNegativeX(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeX_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invNegativeX_orthogonal(dest);
         return invNegativeX_general(dest);
     }
 
@@ -1493,9 +1576,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code -X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1506,15 +1590,96 @@ public class Float3x4Impl implements Float3x4 {
     public Double3 invNegativeX(@Mutated Double3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        float _t6 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t7 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t6 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t7 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
         float _t8 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = -(_t7 * _t12);
-            dd[1] = -(_t8 * _t12);
-            dd[2] = -(_t6 * _t12);
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invNegativeX_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = -(_t6 * _t13);
+        dd[1] = -(_t8 * _t13);
+        dd[2] = -(_t7 * _t13);
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeX_degenerate_identity(@Mutated Float3 dest) {
+        return invNegativeX_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeX_degenerate_general(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = unitScale(sd[4], sd[5], sd[6]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[4] * _t0;
+        float _t9 = sd[9] * _t1;
+        float _t10 = sd[5] * _t0;
+        float _t11 = sd[8] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[6] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = -(_t21 * _t26);
+            dd[1] = -(_t22 * _t26);
+            dd[2] = -(_t20 * _t26);
+        } else {
+            dd[0] = -0.0f;
+            dd[1] = -0.0f;
+            dd[2] = -0.0f;
+        }
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeX_degenerate(@Mutated Float3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeX_degenerate_identity(dest);
+        return invNegativeX_degenerate_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeX_degenerate(@Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = unitScale(sd[4], sd[5], sd[6]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[4] * _t0;
+        float _t9 = sd[9] * _t1;
+        float _t10 = sd[5] * _t0;
+        float _t11 = sd[8] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[6] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = -(_t21 * _t26);
+            dd[1] = -(_t22 * _t26);
+            dd[2] = -(_t20 * _t26);
         } else {
             dd[0] = -0.0f;
             dd[1] = -0.0f;
@@ -1542,23 +1707,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invNegativeY}, specialized by runtime matrix properties; reached only
      * through the public {@code invNegativeY} dispatcher.
      */
+    private Float3 invNegativeY_orthogonal(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        dd[0] = -sd[4];
+        dd[1] = -sd[5];
+        dd[2] = -sd[6];
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code invNegativeY}, specialized by runtime matrix properties; reached only
+     * through the public {@code invNegativeY} dispatcher.
+     */
     private Float3 invNegativeY_general(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        float _t6 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t7 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t8 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = -(_t8 * _t12);
-            dd[1] = -(_t7 * _t12);
-            dd[2] = -(_t6 * _t12);
-        } else {
-            dd[0] = -0.0f;
-            dd[1] = -0.0f;
-            dd[2] = -0.0f;
-        }
+        float _t6 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
+        float _t7 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
+        float _t8 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invNegativeY_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = -(_t6 * _t13);
+        dd[1] = -(_t8 * _t13);
+        dd[2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -1567,9 +1741,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -1577,6 +1752,7 @@ public class Float3x4Impl implements Float3x4 {
     public Float3 invNegativeY(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeY_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invNegativeY_orthogonal(dest);
         return invNegativeY_general(dest);
     }
 
@@ -1585,9 +1761,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code -Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1598,15 +1775,96 @@ public class Float3x4Impl implements Float3x4 {
     public Double3 invNegativeY(@Mutated Double3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        float _t6 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t7 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t8 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = -(_t8 * _t12);
-            dd[1] = -(_t7 * _t12);
-            dd[2] = -(_t6 * _t12);
+        float _t6 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
+        float _t7 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
+        float _t8 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invNegativeY_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = -(_t6 * _t13);
+        dd[1] = -(_t8 * _t13);
+        dd[2] = -(_t7 * _t13);
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeY_degenerate_identity(@Mutated Float3 dest) {
+        return invNegativeY_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeY_degenerate_general(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[1] * _t0;
+        float _t9 = sd[8] * _t1;
+        float _t10 = sd[0] * _t0;
+        float _t11 = sd[9] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = -(_t22 * _t26);
+            dd[1] = -(_t21 * _t26);
+            dd[2] = -(_t20 * _t26);
+        } else {
+            dd[0] = -0.0f;
+            dd[1] = -0.0f;
+            dd[2] = -0.0f;
+        }
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeY_degenerate(@Mutated Float3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeY_degenerate_identity(dest);
+        return invNegativeY_degenerate_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeY_degenerate(@Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[1] * _t0;
+        float _t9 = sd[8] * _t1;
+        float _t10 = sd[0] * _t0;
+        float _t11 = sd[9] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = -(_t22 * _t26);
+            dd[1] = -(_t21 * _t26);
+            dd[2] = -(_t20 * _t26);
         } else {
             dd[0] = -0.0f;
             dd[1] = -0.0f;
@@ -1634,23 +1892,32 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invNegativeZ}, specialized by runtime matrix properties; reached only
      * through the public {@code invNegativeZ} dispatcher.
      */
+    private Float3 invNegativeZ_orthogonal(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        dd[0] = -sd[8];
+        dd[1] = -sd[9];
+        dd[2] = -sd[10];
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code invNegativeZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code invNegativeZ} dispatcher.
+     */
     private Float3 invNegativeZ_general(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        float _t6 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t7 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t6 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t7 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
         float _t8 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = -(_t7 * _t12);
-            dd[1] = -(_t8 * _t12);
-            dd[2] = -(_t6 * _t12);
-        } else {
-            dd[0] = -0.0f;
-            dd[1] = -0.0f;
-            dd[2] = -0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invNegativeZ_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = -(_t6 * _t13);
+        dd[1] = -(_t8 * _t13);
+        dd[2] = -(_t7 * _t13);
         return dest;
     }
 
@@ -1659,9 +1926,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -1669,6 +1937,7 @@ public class Float3x4Impl implements Float3x4 {
     public Float3 invNegativeZ(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeZ_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invNegativeZ_orthogonal(dest);
         return invNegativeZ_general(dest);
     }
 
@@ -1677,9 +1946,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code -Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -1690,15 +1960,96 @@ public class Float3x4Impl implements Float3x4 {
     public Double3 invNegativeZ(@Mutated Double3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        float _t6 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t7 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t6 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t7 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
         float _t8 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = -(_t7 * _t12);
-            dd[1] = -(_t8 * _t12);
-            dd[2] = -(_t6 * _t12);
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invNegativeZ_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = -(_t6 * _t13);
+        dd[1] = -(_t8 * _t13);
+        dd[2] = -(_t7 * _t13);
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeZ_degenerate_identity(@Mutated Float3 dest) {
+        return invNegativeZ_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeZ_degenerate_general(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[4], sd[5], sd[6]);
+        float _t8 = sd[0] * _t0;
+        float _t9 = sd[5] * _t1;
+        float _t10 = sd[1] * _t0;
+        float _t11 = sd[4] * _t1;
+        float _t12 = sd[6] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = -(_t21 * _t26);
+            dd[1] = -(_t22 * _t26);
+            dd[2] = -(_t20 * _t26);
+        } else {
+            dd[0] = -0.0f;
+            dd[1] = -0.0f;
+            dd[2] = -0.0f;
+        }
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invNegativeZ_degenerate(@Mutated Float3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invNegativeZ_degenerate_identity(dest);
+        return invNegativeZ_degenerate_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invNegativeZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invNegativeZ_degenerate(@Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[4], sd[5], sd[6]);
+        float _t8 = sd[0] * _t0;
+        float _t9 = sd[5] * _t1;
+        float _t10 = sd[1] * _t0;
+        float _t11 = sd[4] * _t1;
+        float _t12 = sd[6] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = -(_t21 * _t26);
+            dd[1] = -(_t22 * _t26);
+            dd[2] = -(_t20 * _t26);
         } else {
             dd[0] = -0.0f;
             dd[1] = -0.0f;
@@ -1722,12 +2073,7 @@ public class Float3x4Impl implements Float3x4 {
      * reached only through the public {@code invNormalizedNegativeX} dispatcher.
      */
     private Float3 invNormalizedNegativeX_general(@Mutated Float3 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float3Impl) dest).data;
-        dd[0] = -sd[0];
-        dd[1] = -sd[1];
-        dd[2] = -sd[2];
-        return dest;
+        return invNegativeX_orthogonal(dest);
     }
 
 
@@ -1785,12 +2131,7 @@ public class Float3x4Impl implements Float3x4 {
      * reached only through the public {@code invNormalizedNegativeY} dispatcher.
      */
     private Float3 invNormalizedNegativeY_general(@Mutated Float3 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float3Impl) dest).data;
-        dd[0] = -sd[4];
-        dd[1] = -sd[5];
-        dd[2] = -sd[6];
-        return dest;
+        return invNegativeY_orthogonal(dest);
     }
 
 
@@ -1848,12 +2189,7 @@ public class Float3x4Impl implements Float3x4 {
      * reached only through the public {@code invNormalizedNegativeZ} dispatcher.
      */
     private Float3 invNormalizedNegativeZ_general(@Mutated Float3 dest) {
-        float[] sd = this.data;
-        float[] dd = ((Float3Impl) dest).data;
-        dd[0] = -sd[8];
-        dd[1] = -sd[9];
-        dd[2] = -sd[10];
-        return dest;
+        return invNegativeZ_orthogonal(dest);
     }
 
 
@@ -2114,23 +2450,27 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invPositiveX}, specialized by runtime matrix properties; reached only
      * through the public {@code invPositiveX} dispatcher.
      */
+    private Float3 invPositiveX_orthogonal(@Mutated Float3 dest) {
+        return invNormalizedPositiveX_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code invPositiveX}, specialized by runtime matrix properties; reached only
+     * through the public {@code invPositiveX} dispatcher.
+     */
     private Float3 invPositiveX_general(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        float _t6 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t7 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t6 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t7 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
         float _t8 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = _t7 * _t12;
-            dd[1] = _t8 * _t12;
-            dd[2] = _t6 * _t12;
-        } else {
-            dd[0] = 0.0f;
-            dd[1] = 0.0f;
-            dd[2] = 0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invPositiveX_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = _t6 * _t13;
+        dd[1] = _t8 * _t13;
+        dd[2] = _t7 * _t13;
         return dest;
     }
 
@@ -2139,9 +2479,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -2149,6 +2490,7 @@ public class Float3x4Impl implements Float3x4 {
     public Float3 invPositiveX(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveX_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invPositiveX_orthogonal(dest);
         return invPositiveX_general(dest);
     }
 
@@ -2157,9 +2499,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code +X} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2170,15 +2513,96 @@ public class Float3x4Impl implements Float3x4 {
     public Double3 invPositiveX(@Mutated Double3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        float _t6 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
-        float _t7 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t6 = Math.fma(sd[5], sd[10], -(sd[6] * sd[9]));
+        float _t7 = Math.fma(sd[4], sd[9], -(sd[5] * sd[8]));
         float _t8 = Math.fma(sd[6], sd[8], -(sd[4] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = _t7 * _t12;
-            dd[1] = _t8 * _t12;
-            dd[2] = _t6 * _t12;
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invPositiveX_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = _t6 * _t13;
+        dd[1] = _t8 * _t13;
+        dd[2] = _t7 * _t13;
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveX_degenerate_identity(@Mutated Float3 dest) {
+        return invNormalizedPositiveX_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveX_degenerate_general(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = unitScale(sd[4], sd[5], sd[6]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[4] * _t0;
+        float _t9 = sd[9] * _t1;
+        float _t10 = sd[5] * _t0;
+        float _t11 = sd[8] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[6] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = _t21 * _t26;
+            dd[1] = _t22 * _t26;
+            dd[2] = _t20 * _t26;
+        } else {
+            dd[0] = 0.0f;
+            dd[1] = 0.0f;
+            dd[2] = 0.0f;
+        }
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveX_degenerate(@Mutated Float3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveX_degenerate_identity(dest);
+        return invPositiveX_degenerate_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveX}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveX_degenerate(@Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = unitScale(sd[4], sd[5], sd[6]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[4] * _t0;
+        float _t9 = sd[9] * _t1;
+        float _t10 = sd[5] * _t0;
+        float _t11 = sd[8] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[6] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = _t21 * _t26;
+            dd[1] = _t22 * _t26;
+            dd[2] = _t20 * _t26;
         } else {
             dd[0] = 0.0f;
             dd[1] = 0.0f;
@@ -2201,23 +2625,27 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invPositiveY}, specialized by runtime matrix properties; reached only
      * through the public {@code invPositiveY} dispatcher.
      */
+    private Float3 invPositiveY_orthogonal(@Mutated Float3 dest) {
+        return invNormalizedPositiveY_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code invPositiveY}, specialized by runtime matrix properties; reached only
+     * through the public {@code invPositiveY} dispatcher.
+     */
     private Float3 invPositiveY_general(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        float _t6 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t7 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t8 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = _t8 * _t12;
-            dd[1] = _t7 * _t12;
-            dd[2] = _t6 * _t12;
-        } else {
-            dd[0] = 0.0f;
-            dd[1] = 0.0f;
-            dd[2] = 0.0f;
-        }
+        float _t6 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
+        float _t7 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
+        float _t8 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invPositiveY_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = _t6 * _t13;
+        dd[1] = _t8 * _t13;
+        dd[2] = _t7 * _t13;
         return dest;
     }
 
@@ -2226,9 +2654,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -2236,6 +2665,7 @@ public class Float3x4Impl implements Float3x4 {
     public Float3 invPositiveY(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveY_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invPositiveY_orthogonal(dest);
         return invPositiveY_general(dest);
     }
 
@@ -2244,9 +2674,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code +Y} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2257,15 +2688,96 @@ public class Float3x4Impl implements Float3x4 {
     public Double3 invPositiveY(@Mutated Double3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        float _t6 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
-        float _t7 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
-        float _t8 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = _t8 * _t12;
-            dd[1] = _t7 * _t12;
-            dd[2] = _t6 * _t12;
+        float _t6 = Math.fma(sd[2], sd[9], -(sd[1] * sd[10]));
+        float _t7 = Math.fma(sd[1], sd[8], -(sd[0] * sd[9]));
+        float _t8 = Math.fma(sd[0], sd[10], -(sd[2] * sd[8]));
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t8, _t8, _t6 * _t6));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invPositiveY_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = _t6 * _t13;
+        dd[1] = _t8 * _t13;
+        dd[2] = _t7 * _t13;
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveY_degenerate_identity(@Mutated Float3 dest) {
+        return invNormalizedPositiveY_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveY_degenerate_general(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[1] * _t0;
+        float _t9 = sd[8] * _t1;
+        float _t10 = sd[0] * _t0;
+        float _t11 = sd[9] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = _t22 * _t26;
+            dd[1] = _t21 * _t26;
+            dd[2] = _t20 * _t26;
+        } else {
+            dd[0] = 0.0f;
+            dd[1] = 0.0f;
+            dd[2] = 0.0f;
+        }
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveY_degenerate(@Mutated Float3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveY_degenerate_identity(dest);
+        return invPositiveY_degenerate_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveY}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveY_degenerate(@Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[8], sd[9], sd[10]);
+        float _t8 = sd[1] * _t0;
+        float _t9 = sd[8] * _t1;
+        float _t10 = sd[0] * _t0;
+        float _t11 = sd[9] * _t1;
+        float _t12 = sd[10] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = _t22 * _t26;
+            dd[1] = _t21 * _t26;
+            dd[2] = _t20 * _t26;
         } else {
             dd[0] = 0.0f;
             dd[1] = 0.0f;
@@ -2288,23 +2800,27 @@ public class Float3x4Impl implements Float3x4 {
      * Private body of {@code invPositiveZ}, specialized by runtime matrix properties; reached only
      * through the public {@code invPositiveZ} dispatcher.
      */
+    private Float3 invPositiveZ_orthogonal(@Mutated Float3 dest) {
+        return invNormalizedPositiveZ_general(dest);
+    }
+
+
+    /**
+     * Private body of {@code invPositiveZ}, specialized by runtime matrix properties; reached only
+     * through the public {@code invPositiveZ} dispatcher.
+     */
     private Float3 invPositiveZ_general(@Mutated Float3 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
-        float _t6 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t7 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t6 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t7 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
         float _t8 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = _t7 * _t12;
-            dd[1] = _t8 * _t12;
-            dd[2] = _t6 * _t12;
-        } else {
-            dd[0] = 0.0f;
-            dd[1] = 0.0f;
-            dd[2] = 0.0f;
-        }
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invPositiveZ_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = _t6 * _t13;
+        dd[1] = _t8 * _t13;
+        dd[2] = _t7 * _t13;
         return dest;
     }
 
@@ -2313,9 +2829,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      *
      * @param dest will hold the result
      * @return dest
@@ -2323,6 +2840,7 @@ public class Float3x4Impl implements Float3x4 {
     public Float3 invPositiveZ(@Mutated Float3 dest) {
         int p = this.properties;
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveZ_identity(dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return invPositiveZ_orthogonal(dest);
         return invPositiveZ_general(dest);
     }
 
@@ -2331,9 +2849,10 @@ public class Float3x4Impl implements Float3x4 {
      * Obtain the direction of {@code +Z} before the transformation represented by this matrix is
      * applied and store the result in {@code dest}.
      * <p>
-     * The squared length is formed at {@code float} precision, so the result is exact only while it
-     * stays within the {@code float} range: the magnitude of the selected row of this matrix must
-     * lie roughly between {@code 1e-19} and {@code 1.8e19}. Rescale inputs outside that band first.
+     * It holds for any finite matrix: when the cross product of the two rows the direction is
+     * formed from would leave the {@code float} range, it is recomputed from those rows scaled
+     * exactly by powers of two. When that cross product is exactly zero (a zero row, for instance),
+     * the result is the zero vector.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -2344,15 +2863,96 @@ public class Float3x4Impl implements Float3x4 {
     public Double3 invPositiveZ(@Mutated Double3 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
-        float _t6 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
-        float _t7 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t6 = Math.fma(sd[1], sd[6], -(sd[2] * sd[5]));
+        float _t7 = Math.fma(sd[0], sd[5], -(sd[1] * sd[4]));
         float _t8 = Math.fma(sd[2], sd[4], -(sd[0] * sd[6]));
-        float _t11 = Math.fma(_t6, _t6, Math.fma(_t7, _t7, _t8 * _t8));
-        float _t12 = (1.0f / (float) Math.sqrt(_t11));
-        if (_t11 > 0.0f) {
-            dd[0] = _t7 * _t12;
-            dd[1] = _t8 * _t12;
-            dd[2] = _t6 * _t12;
+        float _ct0 = Math.fma(_t7, _t7, Math.fma(_t6, _t6, _t8 * _t8));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return invPositiveZ_degenerate(dest);
+        float _t13 = (1.0f / (float) Math.sqrt(_ct0));
+        dd[0] = _t6 * _t13;
+        dd[1] = _t8 * _t13;
+        dd[2] = _t7 * _t13;
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveZ_degenerate_identity(@Mutated Float3 dest) {
+        return invNormalizedPositiveZ_identity(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveZ_degenerate_general(@Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[4], sd[5], sd[6]);
+        float _t8 = sd[0] * _t0;
+        float _t9 = sd[5] * _t1;
+        float _t10 = sd[1] * _t0;
+        float _t11 = sd[4] * _t1;
+        float _t12 = sd[6] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = _t21 * _t26;
+            dd[1] = _t22 * _t26;
+            dd[2] = _t20 * _t26;
+        } else {
+            dd[0] = 0.0f;
+            dd[1] = 0.0f;
+            dd[2] = 0.0f;
+        }
+        return dest;
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Float3 invPositiveZ_degenerate(@Mutated Float3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return invPositiveZ_degenerate_identity(dest);
+        return invPositiveZ_degenerate_general(dest);
+    }
+
+
+    /**
+     * Out-of-range path of {@code invPositiveZ}: its methods leave here when the cross product they
+     * normalize leaves the floating-point range (or is NaN); reached only through them.
+     */
+    private Double3 invPositiveZ_degenerate(@Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = unitScale(sd[0], sd[1], sd[2]);
+        float _t1 = unitScale(sd[4], sd[5], sd[6]);
+        float _t8 = sd[0] * _t0;
+        float _t9 = sd[5] * _t1;
+        float _t10 = sd[1] * _t0;
+        float _t11 = sd[4] * _t1;
+        float _t12 = sd[6] * _t1;
+        float _t13 = sd[2] * _t0;
+        float _t20 = Math.fma(_t8, _t9, -(_t10 * _t11));
+        float _t21 = Math.fma(_t10, _t12, -(_t13 * _t9));
+        float _t22 = Math.fma(_t13, _t11, -(_t8 * _t12));
+        float _t25 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t22 * _t22));
+        float _t26 = (1.0f / (float) Math.sqrt(_t25));
+        if (_t25 != 0.0f) {
+            dd[0] = _t21 * _t26;
+            dd[1] = _t22 * _t26;
+            dd[2] = _t20 * _t26;
         } else {
             dd[0] = 0.0f;
             dd[1] = 0.0f;
@@ -2380,7 +2980,7 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = -(sd[0] * _t3);
             dd[1] = -(sd[4] * _t3);
             dd[2] = -(sd[8] * _t3);
@@ -2432,7 +3032,7 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = -(sd[0] * _t3);
             dd[1] = -(sd[4] * _t3);
             dd[2] = -(sd[8] * _t3);
@@ -2463,7 +3063,7 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[9], sd[9], Math.fma(sd[1], sd[1], sd[5] * sd[5]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = -(sd[1] * _t3);
             dd[1] = -(sd[5] * _t3);
             dd[2] = -(sd[9] * _t3);
@@ -2515,7 +3115,7 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[9], sd[9], Math.fma(sd[1], sd[1], sd[5] * sd[5]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = -(sd[1] * _t3);
             dd[1] = -(sd[5] * _t3);
             dd[2] = -(sd[9] * _t3);
@@ -2546,7 +3146,7 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[10], sd[10], Math.fma(sd[2], sd[2], sd[6] * sd[6]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = -(sd[2] * _t3);
             dd[1] = -(sd[6] * _t3);
             dd[2] = -(sd[10] * _t3);
@@ -2598,7 +3198,7 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[10], sd[10], Math.fma(sd[2], sd[2], sd[6] * sd[6]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = -(sd[2] * _t3);
             dd[1] = -(sd[6] * _t3);
             dd[2] = -(sd[10] * _t3);
@@ -3081,7 +3681,7 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = sd[0] * _t3;
             dd[1] = sd[4] * _t3;
             dd[2] = sd[8] * _t3;
@@ -3133,7 +3733,7 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = sd[0] * _t3;
             dd[1] = sd[4] * _t3;
             dd[2] = sd[8] * _t3;
@@ -3164,7 +3764,7 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[9], sd[9], Math.fma(sd[1], sd[1], sd[5] * sd[5]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = sd[1] * _t3;
             dd[1] = sd[5] * _t3;
             dd[2] = sd[9] * _t3;
@@ -3216,7 +3816,7 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[9], sd[9], Math.fma(sd[1], sd[1], sd[5] * sd[5]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = sd[1] * _t3;
             dd[1] = sd[5] * _t3;
             dd[2] = sd[9] * _t3;
@@ -3247,7 +3847,7 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[10], sd[10], Math.fma(sd[2], sd[2], sd[6] * sd[6]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = sd[2] * _t3;
             dd[1] = sd[6] * _t3;
             dd[2] = sd[10] * _t3;
@@ -3299,7 +3899,7 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[10], sd[10], Math.fma(sd[2], sd[2], sd[6] * sd[6]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             dd[0] = sd[2] * _t3;
             dd[1] = sd[6] * _t3;
             dd[2] = sd[10] * _t3;
@@ -5662,7 +6262,7 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to the given transform's {@code T * R * S} composition.
      *
-     * @param t the transform to convert
+     * @param t the transform to convert (whose rotation must be a unit quaternion)
      * @return this
      */
     public @Mutated Float3x4 makeFromTransform(FloatTransformR t) {
@@ -5680,13 +6280,17 @@ public class Float3x4Impl implements Float3x4 {
      * @param tTZ the {@code tZ} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tRX the {@code rX} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRY the {@code rY} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRZ the {@code rZ} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tRW the {@code rW} component of the transform
-     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
+     *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)} (the rotation quaternion
+     *        must have unit length)
      * @param tSX the {@code sX} component of the transform
      *        {@code (tTX, tTY, tTZ, tRX, tRY, tRZ, tRW, tSX, tSY, tSZ)}
      * @param tSY the {@code sY} component of the transform
@@ -5998,33 +6602,33 @@ public class Float3x4Impl implements Float3x4 {
         float _t16 = sd[0] + (1.0f - sd[5] - sd[10]);
         float _t17 = sd[5] + (_t2 - sd[10]);
         float _t18 = sd[10] + (_t2 - sd[5]);
-        float _t19 = (1.0f / (float) Math.sqrt(_t15));
-        float _t21 = (1.0f / (float) Math.sqrt(_t17));
-        float _t22 = (1.0f / (float) Math.sqrt(_t18));
-        float _t23 = (1.0f / (float) Math.sqrt(_t16));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t18));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _t63, _t64, _t65, _t66;
         if (_t14 > 0.0f) {
-            _t63 = 0.5f * _t4 * _t19;
-            _t64 = 0.5f * _t8 * _t19;
-            _t65 = 0.5f * _t10 * _t19;
+            _t63 = _sp0 * _t4;
+            _t64 = _sp0 * _t8;
+            _t65 = _sp0 * _t10;
             _t66 = 0.5f * (float) Math.sqrt(_t15);
         } else {
             if (sd[0] > _t5) {
                 _t63 = 0.5f * (float) Math.sqrt(_t16);
-                _t64 = 0.5f * _t6 * _t23;
-                _t65 = 0.5f * _t7 * _t23;
-                _t66 = 0.5f * _t4 * _t23;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t7;
+                _t66 = _sp3 * _t4;
             } else {
                 if (sd[5] > sd[10]) {
-                    _t63 = 0.5f * _t6 * _t21;
+                    _t63 = _sp1 * _t6;
                     _t64 = 0.5f * (float) Math.sqrt(_t17);
-                    _t65 = 0.5f * _t9 * _t21;
-                    _t66 = 0.5f * _t8 * _t21;
+                    _t65 = _sp1 * _t9;
+                    _t66 = _sp1 * _t8;
                 } else {
-                    _t63 = 0.5f * _t7 * _t22;
-                    _t64 = 0.5f * _t9 * _t22;
+                    _t63 = _sp2 * _t7;
+                    _t64 = _sp2 * _t9;
                     _t65 = 0.5f * (float) Math.sqrt(_t18);
-                    _t66 = 0.5f * _t10 * _t22;
+                    _t66 = _sp2 * _t10;
                 }
             }
         }
@@ -6093,33 +6697,33 @@ public class Float3x4Impl implements Float3x4 {
         float _t16 = sd[0] + (1.0f - sd[5] - sd[10]);
         float _t17 = sd[5] + (_t2 - sd[10]);
         float _t18 = sd[10] + (_t2 - sd[5]);
-        float _t19 = (1.0f / (float) Math.sqrt(_t15));
-        float _t21 = (1.0f / (float) Math.sqrt(_t17));
-        float _t22 = (1.0f / (float) Math.sqrt(_t18));
-        float _t23 = (1.0f / (float) Math.sqrt(_t16));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t15));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t17));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t18));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t16));
         float _t63, _t64, _t65, _t66;
         if (_t14 > 0.0f) {
-            _t63 = 0.5f * _t4 * _t19;
-            _t64 = 0.5f * _t8 * _t19;
-            _t65 = 0.5f * _t10 * _t19;
+            _t63 = _sp0 * _t4;
+            _t64 = _sp0 * _t8;
+            _t65 = _sp0 * _t10;
             _t66 = 0.5f * (float) Math.sqrt(_t15);
         } else {
             if (sd[0] > _t5) {
                 _t63 = 0.5f * (float) Math.sqrt(_t16);
-                _t64 = 0.5f * _t6 * _t23;
-                _t65 = 0.5f * _t7 * _t23;
-                _t66 = 0.5f * _t4 * _t23;
+                _t64 = _sp3 * _t6;
+                _t65 = _sp3 * _t7;
+                _t66 = _sp3 * _t4;
             } else {
                 if (sd[5] > sd[10]) {
-                    _t63 = 0.5f * _t6 * _t21;
+                    _t63 = _sp1 * _t6;
                     _t64 = 0.5f * (float) Math.sqrt(_t17);
-                    _t65 = 0.5f * _t9 * _t21;
-                    _t66 = 0.5f * _t8 * _t21;
+                    _t65 = _sp1 * _t9;
+                    _t66 = _sp1 * _t8;
                 } else {
-                    _t63 = 0.5f * _t7 * _t22;
-                    _t64 = 0.5f * _t9 * _t22;
+                    _t63 = _sp2 * _t7;
+                    _t64 = _sp2 * _t9;
                     _t65 = 0.5f * (float) Math.sqrt(_t18);
-                    _t66 = 0.5f * _t10 * _t22;
+                    _t66 = _sp2 * _t10;
                 }
             }
         }
@@ -6213,35 +6817,35 @@ public class Float3x4Impl implements Float3x4 {
         float _t54 = Math.fma(-sd[1], _t12, _t45);
         float _t59 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t44));
         float _t60 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(sd[5], _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(sd[10], _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dd[3] = 0.5f * _t32 * _t61;
-            dd[4] = 0.5f * _t53 * _t61;
-            dd[5] = 0.5f * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t64);
-                dd[4] = 0.5f * _t51 * _t67;
-                dd[5] = 0.5f * _t52 * _t67;
-                dd[6] = 0.5f * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5f * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5f * (float) Math.sqrt(_t62);
-                    dd[5] = 0.5f * _t28 * _t65;
-                    dd[6] = 0.5f * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5f * _t52 * _t66;
-                    dd[4] = 0.5f * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5f * (float) Math.sqrt(_t63);
-                    dd[6] = 0.5f * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -6318,35 +6922,35 @@ public class Float3x4Impl implements Float3x4 {
         float _t54 = Math.fma(-sd[1], _t12, _t45);
         float _t59 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t44));
         float _t60 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t48));
-        float _t61 = (1.0f / (float) Math.sqrt(_t60));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t60));
         float _t62 = Math.fma(sd[5], _t12, Math.fma(_t1, _t13, _t49));
         float _t63 = Math.fma(sd[10], _t13, Math.fma(_t0, _t12, _t49));
         float _t64 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t48));
-        float _t65 = (1.0f / (float) Math.sqrt(_t62));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t62));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
         if (_t59 > 0.0f) {
-            dd[3] = 0.5f * _t32 * _t61;
-            dd[4] = 0.5f * _t53 * _t61;
-            dd[5] = 0.5f * _t54 * _t61;
+            dd[3] = _sp0 * _t32;
+            dd[4] = _sp0 * _t53;
+            dd[5] = _sp0 * _t54;
             dd[6] = 0.5f * (float) Math.sqrt(_t60);
         } else {
             if (_t44 > _t33) {
                 dd[3] = 0.5f * (float) Math.sqrt(_t64);
-                dd[4] = 0.5f * _t51 * _t67;
-                dd[5] = 0.5f * _t52 * _t67;
-                dd[6] = 0.5f * _t32 * _t67;
+                dd[4] = _sp3 * _t51;
+                dd[5] = _sp3 * _t52;
+                dd[6] = _sp3 * _t32;
             } else {
                 if (_t21 > _t16) {
-                    dd[3] = 0.5f * _t51 * _t65;
+                    dd[3] = _sp1 * _t51;
                     dd[4] = 0.5f * (float) Math.sqrt(_t62);
-                    dd[5] = 0.5f * _t28 * _t65;
-                    dd[6] = 0.5f * _t53 * _t65;
+                    dd[5] = _sp1 * _t28;
+                    dd[6] = _sp1 * _t53;
                 } else {
-                    dd[3] = 0.5f * _t52 * _t66;
-                    dd[4] = 0.5f * _t28 * _t66;
+                    dd[3] = _sp2 * _t52;
+                    dd[4] = _sp2 * _t28;
                     dd[5] = 0.5f * (float) Math.sqrt(_t63);
-                    dd[6] = 0.5f * _t54 * _t66;
+                    dd[6] = _sp2 * _t54;
                 }
             }
         }
@@ -6413,8 +7017,8 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = sd[4] * _t14;
         float _t17 = sd[10] * _t13;
         float _t18 = sd[6] * _t13;
@@ -6444,20 +7048,20 @@ public class Float3x4Impl implements Float3x4 {
         float _t55 = Math.fma(-sd[1], _t12, _t46);
         float _t60 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t45));
         float _t61 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(sd[5], _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(sd[10], _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         dd[0] = sd[3];
         dd[1] = sd[7];
         dd[2] = sd[11];
-        dd[3] = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        dd[4] = _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67;
-        dd[5] = _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64);
-        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67;
+        dd[3] = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dd[4] = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        dd[5] = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dd[7] = _t44 < 0.0f ? -_t15 : _t15;
         dd[8] = (float) Math.sqrt(_t9);
         dd[9] = (float) Math.sqrt(_t10);
@@ -6504,8 +7108,8 @@ public class Float3x4Impl implements Float3x4 {
         float _t11 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t12 = (1.0f / (float) Math.sqrt(_t9));
         float _t13 = (1.0f / (float) Math.sqrt(_t10));
-        float _t14 = (1.0f / (float) Math.sqrt(_t11));
         float _t15 = (float) Math.sqrt(_t11);
+        float _t14 = 1.0f / _t15;
         float _t16 = sd[4] * _t14;
         float _t17 = sd[10] * _t13;
         float _t18 = sd[6] * _t13;
@@ -6535,20 +7139,20 @@ public class Float3x4Impl implements Float3x4 {
         float _t55 = Math.fma(-sd[1], _t12, _t46);
         float _t60 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t45));
         float _t61 = Math.fma(sd[5], _t12, Math.fma(sd[10], _t13, _t49));
-        float _t62 = (1.0f / (float) Math.sqrt(_t61));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t61));
         float _t63 = Math.fma(sd[5], _t12, Math.fma(_t1, _t13, _t50));
         float _t64 = Math.fma(sd[10], _t13, Math.fma(_t0, _t12, _t50));
         float _t65 = Math.fma(_t0, _t12, Math.fma(_t1, _t13, _t49));
-        float _t66 = (1.0f / (float) Math.sqrt(_t63));
-        float _t67 = (1.0f / (float) Math.sqrt(_t64));
-        float _t68 = (1.0f / (float) Math.sqrt(_t65));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t63));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t64));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t65));
         dd[0] = sd[3];
         dd[1] = sd[7];
         dd[2] = sd[11];
-        dd[3] = _t60 > 0.0f ? 0.5f * _t33 * _t62 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? 0.5f * _t52 * _t66 : 0.5f * _t53 * _t67;
-        dd[4] = _t60 > 0.0f ? 0.5f * _t54 * _t62 : _t45 > _t34 ? 0.5f * _t52 * _t68 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : 0.5f * _t29 * _t67;
-        dd[5] = _t60 > 0.0f ? 0.5f * _t55 * _t62 : _t45 > _t34 ? 0.5f * _t53 * _t68 : _t22 > _t17 ? 0.5f * _t29 * _t66 : 0.5f * (float) Math.sqrt(_t64);
-        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? 0.5f * _t33 * _t68 : _t22 > _t17 ? 0.5f * _t54 * _t66 : 0.5f * _t55 * _t67;
+        dd[3] = _t60 > 0.0f ? _sp0 * _t33 : _t45 > _t34 ? 0.5f * (float) Math.sqrt(_t65) : _t22 > _t17 ? _sp1 * _t52 : _sp2 * _t53;
+        dd[4] = _t60 > 0.0f ? _sp0 * _t54 : _t45 > _t34 ? _sp3 * _t52 : _t22 > _t17 ? 0.5f * (float) Math.sqrt(_t63) : _sp2 * _t29;
+        dd[5] = _t60 > 0.0f ? _sp0 * _t55 : _t45 > _t34 ? _sp3 * _t53 : _t22 > _t17 ? _sp1 * _t29 : 0.5f * (float) Math.sqrt(_t64);
+        dd[6] = _t60 > 0.0f ? 0.5f * (float) Math.sqrt(_t61) : _t45 > _t34 ? _sp3 * _t33 : _t22 > _t17 ? _sp1 * _t54 : _sp2 * _t55;
         dd[7] = _t44 < 0.0f ? -_t15 : _t15;
         dd[8] = (float) Math.sqrt(_t9);
         dd[9] = (float) Math.sqrt(_t10);
@@ -6575,7 +7179,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = sd[8] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[4] * _t3;
@@ -6592,7 +7196,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t34, _t35, _t36;
-        if (_t29 > 0.0f) {
+        if (_t29 != 0.0f) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -6608,7 +7212,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
         float _t54, _t55, _t56;
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -6641,32 +7245,32 @@ public class Float3x4Impl implements Float3x4 {
         float _t87 = 1.0f + (_t73 - (_t36 + _t56));
         float _t88 = 1.0f + (_t36 - (_t73 + _t56));
         float _t89 = 1.0f + (_t56 - _t76);
-        float _t90 = (1.0f / (float) Math.sqrt(_t86));
-        float _t91 = (1.0f / (float) Math.sqrt(_t88));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t87));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t86));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
         if (_t82 > 0.0f) {
-            dd[0] = 0.5f * _t60 * _t90;
-            dd[1] = 0.5f * _t81 * _t90;
-            dd[2] = 0.5f * _t78 * _t90;
+            dd[0] = _sp0 * _t60;
+            dd[1] = _sp0 * _t81;
+            dd[2] = _sp0 * _t78;
             dd[3] = 0.5f * (float) Math.sqrt(_t86);
         } else {
             if (_t73 > _t61) {
                 dd[0] = 0.5f * (float) Math.sqrt(_t87);
-                dd[1] = 0.5f * _t77 * _t93;
-                dd[2] = 0.5f * _t80 * _t93;
-                dd[3] = 0.5f * _t60 * _t93;
+                dd[1] = _sp3 * _t77;
+                dd[2] = _sp3 * _t80;
+                dd[3] = _sp3 * _t60;
             } else {
                 if (_t36 > _t56) {
-                    dd[0] = 0.5f * _t77 * _t91;
+                    dd[0] = _sp1 * _t77;
                     dd[1] = 0.5f * (float) Math.sqrt(_t88);
-                    dd[2] = 0.5f * _t63 * _t91;
-                    dd[3] = 0.5f * _t81 * _t91;
+                    dd[2] = _sp1 * _t63;
+                    dd[3] = _sp1 * _t81;
                 } else {
-                    dd[0] = 0.5f * _t80 * _t92;
-                    dd[1] = 0.5f * _t63 * _t92;
+                    dd[0] = _sp2 * _t80;
+                    dd[1] = _sp2 * _t63;
                     dd[2] = 0.5f * (float) Math.sqrt(_t89);
-                    dd[3] = 0.5f * _t78 * _t92;
+                    dd[3] = _sp2 * _t78;
                 }
             }
         }
@@ -6710,7 +7314,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = sd[8] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[4] * _t3;
@@ -6727,7 +7331,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t29 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
         float _t30 = (1.0f / (float) Math.sqrt(_t29));
         float _t34, _t35, _t36;
-        if (_t29 > 0.0f) {
+        if (_t29 != 0.0f) {
             _t34 = _t22 * _t30;
             _t35 = _t21 * _t30;
             _t36 = _t23 * _t30;
@@ -6743,7 +7347,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t49 = Math.fma(_t44, _t44, Math.fma(_t45, _t45, _t46 * _t46));
         float _t50 = (1.0f / (float) Math.sqrt(_t49));
         float _t54, _t55, _t56;
-        if (_t49 > 0.0f) {
+        if (_t49 != 0.0f) {
             _t54 = _t46 * _t50;
             _t55 = _t45 * _t50;
             _t56 = _t44 * _t50;
@@ -6776,32 +7380,32 @@ public class Float3x4Impl implements Float3x4 {
         float _t87 = 1.0f + (_t73 - (_t36 + _t56));
         float _t88 = 1.0f + (_t36 - (_t73 + _t56));
         float _t89 = 1.0f + (_t56 - _t76);
-        float _t90 = (1.0f / (float) Math.sqrt(_t86));
-        float _t91 = (1.0f / (float) Math.sqrt(_t88));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t87));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t86));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
         if (_t82 > 0.0f) {
-            dd[0] = 0.5f * _t60 * _t90;
-            dd[1] = 0.5f * _t81 * _t90;
-            dd[2] = 0.5f * _t78 * _t90;
+            dd[0] = _sp0 * _t60;
+            dd[1] = _sp0 * _t81;
+            dd[2] = _sp0 * _t78;
             dd[3] = 0.5f * (float) Math.sqrt(_t86);
         } else {
             if (_t73 > _t61) {
                 dd[0] = 0.5f * (float) Math.sqrt(_t87);
-                dd[1] = 0.5f * _t77 * _t93;
-                dd[2] = 0.5f * _t80 * _t93;
-                dd[3] = 0.5f * _t60 * _t93;
+                dd[1] = _sp3 * _t77;
+                dd[2] = _sp3 * _t80;
+                dd[3] = _sp3 * _t60;
             } else {
                 if (_t36 > _t56) {
-                    dd[0] = 0.5f * _t77 * _t91;
+                    dd[0] = _sp1 * _t77;
                     dd[1] = 0.5f * (float) Math.sqrt(_t88);
-                    dd[2] = 0.5f * _t63 * _t91;
-                    dd[3] = 0.5f * _t81 * _t91;
+                    dd[2] = _sp1 * _t63;
+                    dd[3] = _sp1 * _t81;
                 } else {
-                    dd[0] = 0.5f * _t80 * _t92;
-                    dd[1] = 0.5f * _t63 * _t92;
+                    dd[0] = _sp2 * _t80;
+                    dd[1] = _sp2 * _t63;
                     dd[2] = 0.5f * (float) Math.sqrt(_t89);
-                    dd[3] = 0.5f * _t78 * _t92;
+                    dd[3] = _sp2 * _t78;
                 }
             }
         }
@@ -6826,10 +7430,10 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] dd = ((Float3Impl) dest).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = sd[8] * _t3;
             _t9 = sd[0] * _t3;
             _t10 = sd[4] * _t3;
@@ -6846,7 +7450,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -6862,7 +7466,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -6916,10 +7520,10 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         double[] dd = ((Double3Impl) dest).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = sd[8] * _t3;
             _t9 = sd[0] * _t3;
             _t10 = sd[4] * _t3;
@@ -6936,7 +7540,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t27 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
         float _t28 = (1.0f / (float) Math.sqrt(_t27));
         float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
+        if (_t27 != 0.0f) {
             _t32 = _t20 * _t28;
             _t33 = _t19 * _t28;
             _t34 = _t21 * _t28;
@@ -6952,7 +7556,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t47 = Math.fma(_t42, _t42, Math.fma(_t43, _t43, _t44 * _t44));
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t52, _t53, _t54;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t52 = _t44 * _t48;
             _t53 = _t43 * _t48;
             _t54 = _t42 * _t48;
@@ -6987,7 +7591,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = sd[8] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[4] * _t3;
@@ -7007,7 +7611,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -7025,7 +7629,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -7087,7 +7691,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t7 = sd[8] * _t3;
             _t8 = sd[0] * _t3;
             _t9 = sd[4] * _t3;
@@ -7107,7 +7711,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t27 = (1.0f / (float) Math.sqrt(_t26));
         float _t28 = _t15 * _t27;
         float _t32, _t33, _t34;
-        if (_t26 > 0.0f) {
+        if (_t26 != 0.0f) {
             _t32 = _t19 * _t27;
             _t33 = _t20 * _t27;
             _t34 = _t21 * _t27;
@@ -7125,7 +7729,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t48 = (1.0f / (float) Math.sqrt(_t47));
         float _t49 = _t14 * _t48;
         float _t53, _t54, _t55;
-        if (_t47 > 0.0f) {
+        if (_t47 != 0.0f) {
             _t53 = _t44 * _t48;
             _t54 = _t43 * _t48;
             _t55 = _t42 * _t48;
@@ -7166,10 +7770,10 @@ public class Float3x4Impl implements Float3x4 {
         float[] rotationData = ((FloatQuatImpl) rotation).data;
         float[] scaleData = ((Float3Impl) scale).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = sd[8] * _t3;
             _t9 = sd[0] * _t3;
             _t10 = sd[4] * _t3;
@@ -7186,7 +7790,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t30 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t23 * _t31;
             _t36 = _t22 * _t31;
             _t37 = _t24 * _t31;
@@ -7202,7 +7806,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
         float _t51 = (1.0f / (float) Math.sqrt(_t50));
         float _t55, _t56, _t57;
-        if (_t50 > 0.0f) {
+        if (_t50 != 0.0f) {
             _t55 = _t47 * _t51;
             _t56 = _t46 * _t51;
             _t57 = _t45 * _t51;
@@ -7235,17 +7839,17 @@ public class Float3x4Impl implements Float3x4 {
         float _t88 = 1.0f + (_t74 - (_t37 + _t57));
         float _t89 = 1.0f + (_t37 - (_t74 + _t57));
         float _t90 = 1.0f + (_t57 - _t77);
-        float _t91 = (1.0f / (float) Math.sqrt(_t87));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t90));
-        float _t94 = (1.0f / (float) Math.sqrt(_t88));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t90));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
         translationData[0] = sd[3];
         translationData[1] = sd[7];
         translationData[2] = sd[11];
-        rotationData[0] = _t83 > 0.0f ? 0.5f * _t61 * _t91 : _t74 > _t62 ? 0.5f * (float) Math.sqrt(_t88) : _t37 > _t57 ? 0.5f * _t78 * _t92 : 0.5f * _t81 * _t93;
-        rotationData[1] = _t83 > 0.0f ? 0.5f * _t82 * _t91 : _t74 > _t62 ? 0.5f * _t78 * _t94 : _t37 > _t57 ? 0.5f * (float) Math.sqrt(_t89) : 0.5f * _t64 * _t93;
-        rotationData[2] = _t83 > 0.0f ? 0.5f * _t79 * _t91 : _t74 > _t62 ? 0.5f * _t81 * _t94 : _t37 > _t57 ? 0.5f * _t64 * _t92 : 0.5f * (float) Math.sqrt(_t90);
-        rotationData[3] = _t83 > 0.0f ? 0.5f * (float) Math.sqrt(_t87) : _t74 > _t62 ? 0.5f * _t61 * _t94 : _t37 > _t57 ? 0.5f * _t82 * _t92 : 0.5f * _t79 * _t93;
+        rotationData[0] = _t83 > 0.0f ? _sp0 * _t61 : _t74 > _t62 ? 0.5f * (float) Math.sqrt(_t88) : _t37 > _t57 ? _sp1 * _t78 : _sp2 * _t81;
+        rotationData[1] = _t83 > 0.0f ? _sp0 * _t82 : _t74 > _t62 ? _sp3 * _t78 : _t37 > _t57 ? 0.5f * (float) Math.sqrt(_t89) : _sp2 * _t64;
+        rotationData[2] = _t83 > 0.0f ? _sp0 * _t79 : _t74 > _t62 ? _sp3 * _t81 : _t37 > _t57 ? _sp1 * _t64 : 0.5f * (float) Math.sqrt(_t90);
+        rotationData[3] = _t83 > 0.0f ? 0.5f * (float) Math.sqrt(_t87) : _t74 > _t62 ? _sp3 * _t61 : _t37 > _t57 ? _sp1 * _t82 : _sp2 * _t79;
         scaleData[0] = _t73 < 0.0f ? -_t4 : _t4;
         scaleData[1] = (float) Math.sqrt(_t30);
         scaleData[2] = (float) Math.sqrt(_t50);
@@ -7275,10 +7879,10 @@ public class Float3x4Impl implements Float3x4 {
         double[] rotationData = ((DoubleQuatImpl) rotation).data;
         double[] scaleData = ((Double3Impl) scale).data;
         float _t2 = Math.fma(sd[8], sd[8], Math.fma(sd[0], sd[0], sd[4] * sd[4]));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
         float _t4 = (float) Math.sqrt(_t2);
+        float _t3 = 1.0f / _t4;
         float _t8, _t9, _t10;
-        if (_t2 > 0.0f) {
+        if (_t2 != 0.0f) {
             _t8 = sd[8] * _t3;
             _t9 = sd[0] * _t3;
             _t10 = sd[4] * _t3;
@@ -7295,7 +7899,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t30 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
         float _t31 = (1.0f / (float) Math.sqrt(_t30));
         float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
+        if (_t30 != 0.0f) {
             _t35 = _t23 * _t31;
             _t36 = _t22 * _t31;
             _t37 = _t24 * _t31;
@@ -7311,7 +7915,7 @@ public class Float3x4Impl implements Float3x4 {
         float _t50 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
         float _t51 = (1.0f / (float) Math.sqrt(_t50));
         float _t55, _t56, _t57;
-        if (_t50 > 0.0f) {
+        if (_t50 != 0.0f) {
             _t55 = _t47 * _t51;
             _t56 = _t46 * _t51;
             _t57 = _t45 * _t51;
@@ -7344,17 +7948,17 @@ public class Float3x4Impl implements Float3x4 {
         float _t88 = 1.0f + (_t74 - (_t37 + _t57));
         float _t89 = 1.0f + (_t37 - (_t74 + _t57));
         float _t90 = 1.0f + (_t57 - _t77);
-        float _t91 = (1.0f / (float) Math.sqrt(_t87));
-        float _t92 = (1.0f / (float) Math.sqrt(_t89));
-        float _t93 = (1.0f / (float) Math.sqrt(_t90));
-        float _t94 = (1.0f / (float) Math.sqrt(_t88));
+        float _sp0 = 0.5f * (1.0f / (float) Math.sqrt(_t87));
+        float _sp1 = 0.5f * (1.0f / (float) Math.sqrt(_t89));
+        float _sp2 = 0.5f * (1.0f / (float) Math.sqrt(_t90));
+        float _sp3 = 0.5f * (1.0f / (float) Math.sqrt(_t88));
         translationData[0] = sd[3];
         translationData[1] = sd[7];
         translationData[2] = sd[11];
-        rotationData[0] = _t83 > 0.0f ? 0.5f * _t61 * _t91 : _t74 > _t62 ? 0.5f * (float) Math.sqrt(_t88) : _t37 > _t57 ? 0.5f * _t78 * _t92 : 0.5f * _t81 * _t93;
-        rotationData[1] = _t83 > 0.0f ? 0.5f * _t82 * _t91 : _t74 > _t62 ? 0.5f * _t78 * _t94 : _t37 > _t57 ? 0.5f * (float) Math.sqrt(_t89) : 0.5f * _t64 * _t93;
-        rotationData[2] = _t83 > 0.0f ? 0.5f * _t79 * _t91 : _t74 > _t62 ? 0.5f * _t81 * _t94 : _t37 > _t57 ? 0.5f * _t64 * _t92 : 0.5f * (float) Math.sqrt(_t90);
-        rotationData[3] = _t83 > 0.0f ? 0.5f * (float) Math.sqrt(_t87) : _t74 > _t62 ? 0.5f * _t61 * _t94 : _t37 > _t57 ? 0.5f * _t82 * _t92 : 0.5f * _t79 * _t93;
+        rotationData[0] = _t83 > 0.0f ? _sp0 * _t61 : _t74 > _t62 ? 0.5f * (float) Math.sqrt(_t88) : _t37 > _t57 ? _sp1 * _t78 : _sp2 * _t81;
+        rotationData[1] = _t83 > 0.0f ? _sp0 * _t82 : _t74 > _t62 ? _sp3 * _t78 : _t37 > _t57 ? 0.5f * (float) Math.sqrt(_t89) : _sp2 * _t64;
+        rotationData[2] = _t83 > 0.0f ? _sp0 * _t79 : _t74 > _t62 ? _sp3 * _t81 : _t37 > _t57 ? _sp1 * _t64 : 0.5f * (float) Math.sqrt(_t90);
+        rotationData[3] = _t83 > 0.0f ? 0.5f * (float) Math.sqrt(_t87) : _t74 > _t62 ? _sp3 * _t61 : _t37 > _t57 ? _sp1 * _t82 : _sp2 * _t79;
         scaleData[0] = _t73 < 0.0f ? -_t4 : _t4;
         scaleData[1] = (float) Math.sqrt(_t30);
         scaleData[2] = (float) Math.sqrt(_t50);
@@ -8299,12 +8903,12 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = rightData[0];
         dd[1] = rightData[2];
-        dd[2] = rightData[4];
-        dd[3] = 0.0f;
+        dd[2] = 0.0f;
+        dd[3] = rightData[4];
         dd[4] = rightData[1];
         dd[5] = rightData[3];
-        dd[6] = rightData[5];
-        dd[7] = 0.0f;
+        dd[6] = 0.0f;
+        dd[7] = rightData[5];
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = 1.0f;
@@ -8324,10 +8928,10 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = rightData[0];
         dd[1] = rightData[2];
-        dd[2] = rightData[4];
+        dd[3] = rightData[4];
         dd[4] = rightData[1];
         dd[5] = rightData[3];
-        dd[6] = rightData[5];
+        dd[7] = rightData[5];
         ((Float3x4Impl) dest).properties = (((Float2x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
@@ -8343,12 +8947,12 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = rightData[0];
         dd[1] = rightData[2];
-        dd[2] = rightData[4];
-        dd[3] = sd[3];
+        dd[2] = 0.0f;
+        dd[3] = rightData[4] + sd[3];
         dd[4] = rightData[1];
         dd[5] = rightData[3];
-        dd[6] = rightData[5];
-        dd[7] = sd[7];
+        dd[6] = 0.0f;
+        dd[7] = rightData[5] + sd[7];
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = 1.0f;
@@ -8368,12 +8972,10 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = rightData[0];
         dd[1] = rightData[2];
-        dd[2] = rightData[4];
-        dd[3] = sd[3];
+        dd[3] = rightData[4] + sd[3];
         dd[4] = rightData[1];
         dd[5] = rightData[3];
-        dd[6] = rightData[5];
-        dd[7] = sd[7];
+        dd[7] = rightData[5] + sd[7];
         dd[11] = sd[11];
         ((Float3x4Impl) dest).properties = (((Float2x3Impl) right).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
         return dest;
@@ -8390,16 +8992,16 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _buf0 = Math.fma(rightData[0], sd[0], rightData[1] * sd[1]);
         float _buf1 = Math.fma(rightData[2], sd[0], rightData[3] * sd[1]);
-        dd[2] = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[1], sd[2]));
-        dd[3] = sd[3];
+        dd[2] = sd[2];
+        dd[3] = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[1], sd[3]));
         float _buf2 = Math.fma(rightData[0], sd[4], rightData[1] * sd[5]);
         float _buf3 = Math.fma(rightData[2], sd[4], rightData[3] * sd[5]);
-        dd[6] = Math.fma(rightData[4], sd[4], Math.fma(rightData[5], sd[5], sd[6]));
-        dd[7] = sd[7];
+        dd[6] = sd[6];
+        dd[7] = Math.fma(rightData[4], sd[4], Math.fma(rightData[5], sd[5], sd[7]));
         float _buf4 = Math.fma(rightData[0], sd[8], rightData[1] * sd[9]);
         float _buf5 = Math.fma(rightData[2], sd[8], rightData[3] * sd[9]);
-        dd[10] = Math.fma(rightData[4], sd[8], Math.fma(rightData[5], sd[9], sd[10]));
-        dd[11] = sd[11];
+        dd[10] = sd[10];
+        dd[11] = Math.fma(rightData[4], sd[8], Math.fma(rightData[5], sd[9], sd[11]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[4] = _buf2;
@@ -8421,16 +9023,16 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         float _buf0 = Math.fma(rightData[0], sd[0], rightData[1] * sd[1]);
         float _buf1 = Math.fma(rightData[2], sd[0], rightData[3] * sd[1]);
-        dd[2] = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[1], sd[2]));
-        dd[3] = sd[3];
+        dd[2] = sd[2];
+        dd[3] = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[1], sd[3]));
         float _buf2 = Math.fma(rightData[0], sd[4], rightData[1] * sd[5]);
         float _buf3 = Math.fma(rightData[2], sd[4], rightData[3] * sd[5]);
-        dd[6] = Math.fma(rightData[4], sd[4], Math.fma(rightData[5], sd[5], sd[6]));
-        dd[7] = sd[7];
+        dd[6] = sd[6];
+        dd[7] = Math.fma(rightData[4], sd[4], Math.fma(rightData[5], sd[5], sd[7]));
         float _buf4 = Math.fma(rightData[0], sd[8], rightData[1] * sd[9]);
         float _buf5 = Math.fma(rightData[2], sd[8], rightData[3] * sd[9]);
-        dd[10] = Math.fma(rightData[4], sd[8], Math.fma(rightData[5], sd[9], sd[10]));
-        dd[11] = sd[11];
+        dd[10] = sd[10];
+        dd[11] = Math.fma(rightData[4], sd[8], Math.fma(rightData[5], sd[9], sd[11]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[4] = _buf2;
@@ -8449,8 +9051,8 @@ public class Float3x4Impl implements Float3x4 {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param right the right operand
      * @param dest will hold the result
@@ -8472,8 +9074,8 @@ public class Float3x4Impl implements Float3x4 {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param right the right operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -8495,8 +9097,8 @@ public class Float3x4Impl implements Float3x4 {
      * {@code M * R}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * R * v}, the transformation of the operand will be applied first.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -8511,16 +9113,16 @@ public class Float3x4Impl implements Float3x4 {
         double[] dd = ((Double3x4Impl) dest).data;
         float _buf0 = Math.fma(rightData[0], sd[0], rightData[1] * sd[1]);
         float _buf1 = Math.fma(rightData[2], sd[0], rightData[3] * sd[1]);
-        dd[2] = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[1], sd[2]));
-        dd[3] = sd[3];
+        dd[2] = sd[2];
+        dd[3] = Math.fma(rightData[4], sd[0], Math.fma(rightData[5], sd[1], sd[3]));
         float _buf2 = Math.fma(rightData[0], sd[4], rightData[1] * sd[5]);
         float _buf3 = Math.fma(rightData[2], sd[4], rightData[3] * sd[5]);
-        dd[6] = Math.fma(rightData[4], sd[4], Math.fma(rightData[5], sd[5], sd[6]));
-        dd[7] = sd[7];
+        dd[6] = sd[6];
+        dd[7] = Math.fma(rightData[4], sd[4], Math.fma(rightData[5], sd[5], sd[7]));
         float _buf4 = Math.fma(rightData[0], sd[8], rightData[1] * sd[9]);
         float _buf5 = Math.fma(rightData[2], sd[8], rightData[3] * sd[9]);
-        dd[10] = Math.fma(rightData[4], sd[8], Math.fma(rightData[5], sd[9], sd[10]));
-        dd[11] = sd[11];
+        dd[10] = sd[10];
+        dd[11] = Math.fma(rightData[4], sd[8], Math.fma(rightData[5], sd[9], sd[11]));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[4] = _buf2;
@@ -9578,12 +10180,12 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = otherData[0];
         dd[1] = otherData[2];
-        dd[2] = otherData[4];
-        dd[3] = 0.0f;
+        dd[2] = 0.0f;
+        dd[3] = otherData[4];
         dd[4] = otherData[1];
         dd[5] = otherData[3];
-        dd[6] = otherData[5];
-        dd[7] = 0.0f;
+        dd[6] = 0.0f;
+        dd[7] = otherData[5];
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = 1.0f;
@@ -9603,10 +10205,10 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = otherData[0];
         dd[1] = otherData[2];
-        dd[2] = otherData[4];
+        dd[3] = otherData[4];
         dd[4] = otherData[1];
         dd[5] = otherData[3];
-        dd[6] = otherData[5];
+        dd[7] = otherData[5];
         ((Float3x4Impl) dest).properties = (((Float2x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_IDENTITY : Joml.BIT_AFFINE;
         return dest;
     }
@@ -9622,12 +10224,12 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = otherData[0];
         dd[1] = otherData[2];
-        dd[2] = otherData[4];
-        float _buf0 = Math.fma(otherData[4], sd[11], Math.fma(otherData[0], sd[3], otherData[2] * sd[7]));
+        dd[2] = 0.0f;
+        float _buf0 = Math.fma(otherData[0], sd[3], Math.fma(otherData[2], sd[7], otherData[4]));
         dd[4] = otherData[1];
         dd[5] = otherData[3];
-        dd[6] = otherData[5];
-        dd[7] = Math.fma(otherData[5], sd[11], Math.fma(otherData[1], sd[3], otherData[3] * sd[7]));
+        dd[6] = 0.0f;
+        dd[7] = Math.fma(otherData[1], sd[3], Math.fma(otherData[3], sd[7], otherData[5]));
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = 1.0f;
@@ -9648,12 +10250,10 @@ public class Float3x4Impl implements Float3x4 {
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = otherData[0];
         dd[1] = otherData[2];
-        dd[2] = otherData[4];
-        float _buf0 = Math.fma(otherData[4], sd[11], Math.fma(otherData[0], sd[3], otherData[2] * sd[7]));
+        float _buf0 = Math.fma(otherData[0], sd[3], Math.fma(otherData[2], sd[7], otherData[4]));
         dd[4] = otherData[1];
         dd[5] = otherData[3];
-        dd[6] = otherData[5];
-        dd[7] = Math.fma(otherData[5], sd[11], Math.fma(otherData[1], sd[3], otherData[3] * sd[7]));
+        dd[7] = Math.fma(otherData[1], sd[3], Math.fma(otherData[3], sd[7], otherData[5]));
         dd[11] = sd[11];
         dd[3] = _buf0;
         ((Float3x4Impl) dest).properties = (((Float2x3Impl) other).properties & Joml.UNIQUE_IDENTITY) != 0 ? Joml.BIT_TRANSLATION : Joml.BIT_AFFINE;
@@ -9669,14 +10269,14 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float2x3Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _buf0 = Math.fma(otherData[4], sd[8], Math.fma(otherData[0], sd[0], otherData[2] * sd[4]));
-        float _buf1 = Math.fma(otherData[4], sd[9], Math.fma(otherData[0], sd[1], otherData[2] * sd[5]));
-        float _buf2 = Math.fma(otherData[4], sd[10], Math.fma(otherData[0], sd[2], otherData[2] * sd[6]));
-        float _buf3 = Math.fma(otherData[4], sd[11], Math.fma(otherData[0], sd[3], otherData[2] * sd[7]));
-        dd[4] = Math.fma(otherData[5], sd[8], Math.fma(otherData[1], sd[0], otherData[3] * sd[4]));
-        dd[5] = Math.fma(otherData[5], sd[9], Math.fma(otherData[1], sd[1], otherData[3] * sd[5]));
-        dd[6] = Math.fma(otherData[5], sd[10], Math.fma(otherData[1], sd[2], otherData[3] * sd[6]));
-        dd[7] = Math.fma(otherData[5], sd[11], Math.fma(otherData[1], sd[3], otherData[3] * sd[7]));
+        float _buf0 = Math.fma(otherData[0], sd[0], otherData[2] * sd[4]);
+        float _buf1 = Math.fma(otherData[0], sd[1], otherData[2] * sd[5]);
+        float _buf2 = Math.fma(otherData[0], sd[2], otherData[2] * sd[6]);
+        float _buf3 = Math.fma(otherData[0], sd[3], Math.fma(otherData[2], sd[7], otherData[4]));
+        dd[4] = Math.fma(otherData[1], sd[0], otherData[3] * sd[4]);
+        dd[5] = Math.fma(otherData[1], sd[1], otherData[3] * sd[5]);
+        dd[6] = Math.fma(otherData[1], sd[2], otherData[3] * sd[6]);
+        dd[7] = Math.fma(otherData[1], sd[3], Math.fma(otherData[3], sd[7], otherData[5]));
         dd[8] = sd[8];
         dd[9] = sd[9];
         dd[10] = sd[10];
@@ -9698,14 +10298,14 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float2x3Impl) other).data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _buf0 = Math.fma(otherData[4], sd[8], Math.fma(otherData[0], sd[0], otherData[2] * sd[4]));
-        float _buf1 = Math.fma(otherData[4], sd[9], Math.fma(otherData[0], sd[1], otherData[2] * sd[5]));
-        float _buf2 = Math.fma(otherData[4], sd[10], Math.fma(otherData[0], sd[2], otherData[2] * sd[6]));
-        float _buf3 = Math.fma(otherData[4], sd[11], Math.fma(otherData[0], sd[3], otherData[2] * sd[7]));
-        dd[4] = Math.fma(otherData[5], sd[8], Math.fma(otherData[1], sd[0], otherData[3] * sd[4]));
-        dd[5] = Math.fma(otherData[5], sd[9], Math.fma(otherData[1], sd[1], otherData[3] * sd[5]));
-        dd[6] = Math.fma(otherData[5], sd[10], Math.fma(otherData[1], sd[2], otherData[3] * sd[6]));
-        dd[7] = Math.fma(otherData[5], sd[11], Math.fma(otherData[1], sd[3], otherData[3] * sd[7]));
+        float _buf0 = Math.fma(otherData[0], sd[0], otherData[2] * sd[4]);
+        float _buf1 = Math.fma(otherData[0], sd[1], otherData[2] * sd[5]);
+        float _buf2 = Math.fma(otherData[0], sd[2], otherData[2] * sd[6]);
+        float _buf3 = Math.fma(otherData[0], sd[3], Math.fma(otherData[2], sd[7], otherData[4]));
+        dd[4] = Math.fma(otherData[1], sd[0], otherData[3] * sd[4]);
+        dd[5] = Math.fma(otherData[1], sd[1], otherData[3] * sd[5]);
+        dd[6] = Math.fma(otherData[1], sd[2], otherData[3] * sd[6]);
+        dd[7] = Math.fma(otherData[1], sd[3], Math.fma(otherData[3], sd[7], otherData[5]));
         dd[8] = sd[8];
         dd[9] = sd[9];
         dd[10] = sd[10];
@@ -9726,8 +10326,8 @@ public class Float3x4Impl implements Float3x4 {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param other the left operand
      * @param dest will hold the result
@@ -9749,8 +10349,8 @@ public class Float3x4Impl implements Float3x4 {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      *
      * @param other the left operand
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -9772,8 +10372,8 @@ public class Float3x4Impl implements Float3x4 {
      * {@code R * M}. So when transforming a vector {@code v} with the new matrix by using
      * {@code R * M * v}, the transformation of the operand will be applied last.
      * <p>
-     * The operand is identity-extended to this matrix's square size before the multiplication, and
-     * the product is projected back onto this shape.
+     * The 2D affine operand acts in the xy-plane: its linear part fills the upper-left 2x2 block
+     * and its translation the x and y translation, while z passes through unchanged.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -9786,14 +10386,14 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] otherData = ((Float2x3Impl) other).data;
         double[] dd = ((Double3x4Impl) dest).data;
-        float _buf0 = Math.fma(otherData[4], sd[8], Math.fma(otherData[0], sd[0], otherData[2] * sd[4]));
-        float _buf1 = Math.fma(otherData[4], sd[9], Math.fma(otherData[0], sd[1], otherData[2] * sd[5]));
-        float _buf2 = Math.fma(otherData[4], sd[10], Math.fma(otherData[0], sd[2], otherData[2] * sd[6]));
-        float _buf3 = Math.fma(otherData[4], sd[11], Math.fma(otherData[0], sd[3], otherData[2] * sd[7]));
-        dd[4] = Math.fma(otherData[5], sd[8], Math.fma(otherData[1], sd[0], otherData[3] * sd[4]));
-        dd[5] = Math.fma(otherData[5], sd[9], Math.fma(otherData[1], sd[1], otherData[3] * sd[5]));
-        dd[6] = Math.fma(otherData[5], sd[10], Math.fma(otherData[1], sd[2], otherData[3] * sd[6]));
-        dd[7] = Math.fma(otherData[5], sd[11], Math.fma(otherData[1], sd[3], otherData[3] * sd[7]));
+        float _buf0 = Math.fma(otherData[0], sd[0], otherData[2] * sd[4]);
+        float _buf1 = Math.fma(otherData[0], sd[1], otherData[2] * sd[5]);
+        float _buf2 = Math.fma(otherData[0], sd[2], otherData[2] * sd[6]);
+        float _buf3 = Math.fma(otherData[0], sd[3], Math.fma(otherData[2], sd[7], otherData[4]));
+        dd[4] = Math.fma(otherData[1], sd[0], otherData[3] * sd[4]);
+        dd[5] = Math.fma(otherData[1], sd[1], otherData[3] * sd[5]);
+        dd[6] = Math.fma(otherData[1], sd[2], otherData[3] * sd[6]);
+        dd[7] = Math.fma(otherData[1], sd[3], Math.fma(otherData[3], sd[7], otherData[5]));
         dd[8] = sd[8];
         dd[9] = sd[9];
         dd[10] = sd[10];
@@ -10481,6 +11081,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -10500,6 +11105,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -10521,6 +11131,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -10539,44 +11154,30 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAlong_identity(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t17 * _t22;
-            _t27 = _t16 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        dd[0] = _t26;
-        dd[1] = Math.fma(_t7, _t27, -(_t9 * _t28));
-        dd[2] = _t8;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[2] = _t6;
         dd[3] = 0.0f;
-        dd[4] = _t28;
-        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
-        dd[6] = _t7;
+        dd[4] = _t23;
+        dd[5] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[6] = _t5;
         dd[7] = 0.0f;
-        dd[8] = _t27;
-        dd[9] = Math.fma(_t8, _t28, -(_t7 * _t26));
-        dd[10] = _t9;
+        dd[8] = _t22;
+        dd[9] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[10] = _t4;
         dd[11] = 0.0f;
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -10590,42 +11191,28 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAlong_identity_self(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t17 * _t22;
-            _t27 = _t16 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        dd[0] = _t26;
-        dd[1] = Math.fma(_t7, _t27, -(_t9 * _t28));
-        dd[2] = _t8;
-        dd[4] = _t28;
-        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
-        dd[6] = _t7;
-        dd[8] = _t27;
-        dd[9] = Math.fma(_t8, _t28, -(_t7 * _t26));
-        dd[10] = _t9;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[2] = _t6;
+        dd[4] = _t23;
+        dd[5] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[6] = _t5;
+        dd[8] = _t22;
+        dd[9] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[10] = _t4;
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -10638,44 +11225,30 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAlong_translation(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t17 * _t22;
-            _t27 = _t16 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        dd[0] = _t26;
-        dd[1] = Math.fma(_t7, _t27, -(_t9 * _t28));
-        dd[2] = _t8;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[2] = _t6;
         dd[3] = sd[3];
-        dd[4] = _t28;
-        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
-        dd[6] = _t7;
+        dd[4] = _t23;
+        dd[5] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[6] = _t5;
         dd[7] = sd[7];
-        dd[8] = _t27;
-        dd[9] = Math.fma(_t8, _t28, -(_t7 * _t26));
-        dd[10] = _t9;
+        dd[8] = _t22;
+        dd[9] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[10] = _t4;
         dd[11] = sd[11];
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
@@ -10689,47 +11262,33 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAlong_orthogonal(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(sd[2], _t26, Math.fma(sd[0], _t27, sd[1] * _t28));
-        float _buf1 = Math.fma(sd[2], _t35, Math.fma(sd[0], _t36, sd[1] * _t37));
-        dd[2] = Math.fma(sd[2], _t9, Math.fma(sd[0], _t8, sd[1] * _t7));
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        float _buf0 = Math.fma(sd[2], _t21, Math.fma(sd[0], _t22, sd[1] * _t23));
+        float _buf1 = Math.fma(sd[2], _t30, Math.fma(sd[0], _t31, sd[1] * _t32));
+        dd[2] = Math.fma(sd[2], _t6, Math.fma(sd[0], _t5, sd[1] * _t4));
         dd[3] = sd[3];
-        float _buf2 = Math.fma(sd[6], _t26, Math.fma(sd[4], _t27, sd[5] * _t28));
-        float _buf3 = Math.fma(sd[6], _t35, Math.fma(sd[4], _t36, sd[5] * _t37));
-        dd[6] = Math.fma(sd[6], _t9, Math.fma(sd[4], _t8, sd[5] * _t7));
+        float _buf2 = Math.fma(sd[6], _t21, Math.fma(sd[4], _t22, sd[5] * _t23));
+        float _buf3 = Math.fma(sd[6], _t30, Math.fma(sd[4], _t31, sd[5] * _t32));
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[4], _t5, sd[5] * _t4));
         dd[7] = sd[7];
-        float _buf4 = Math.fma(sd[10], _t26, Math.fma(sd[8], _t27, sd[9] * _t28));
-        float _buf5 = Math.fma(sd[10], _t35, Math.fma(sd[8], _t36, sd[9] * _t37));
-        dd[10] = Math.fma(sd[10], _t9, Math.fma(sd[8], _t8, sd[9] * _t7));
+        float _buf4 = Math.fma(sd[10], _t21, Math.fma(sd[8], _t22, sd[9] * _t23));
+        float _buf5 = Math.fma(sd[10], _t30, Math.fma(sd[8], _t31, sd[9] * _t32));
+        dd[10] = Math.fma(sd[10], _t6, Math.fma(sd[8], _t5, sd[9] * _t4));
         dd[11] = sd[11];
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -10749,47 +11308,33 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAlong_general(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
-        float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
-            _t7 = 0.0f;
-            _t8 = 0.0f;
-            _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
-        } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
-        }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(sd[2], _t26, Math.fma(sd[0], _t27, sd[1] * _t28));
-        float _buf1 = Math.fma(sd[2], _t35, Math.fma(sd[0], _t36, sd[1] * _t37));
-        dd[2] = Math.fma(sd[2], _t9, Math.fma(sd[0], _t8, sd[1] * _t7));
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        float _buf0 = Math.fma(sd[2], _t21, Math.fma(sd[0], _t22, sd[1] * _t23));
+        float _buf1 = Math.fma(sd[2], _t30, Math.fma(sd[0], _t31, sd[1] * _t32));
+        dd[2] = Math.fma(sd[2], _t6, Math.fma(sd[0], _t5, sd[1] * _t4));
         dd[3] = sd[3];
-        float _buf2 = Math.fma(sd[6], _t26, Math.fma(sd[4], _t27, sd[5] * _t28));
-        float _buf3 = Math.fma(sd[6], _t35, Math.fma(sd[4], _t36, sd[5] * _t37));
-        dd[6] = Math.fma(sd[6], _t9, Math.fma(sd[4], _t8, sd[5] * _t7));
+        float _buf2 = Math.fma(sd[6], _t21, Math.fma(sd[4], _t22, sd[5] * _t23));
+        float _buf3 = Math.fma(sd[6], _t30, Math.fma(sd[4], _t31, sd[5] * _t32));
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[4], _t5, sd[5] * _t4));
         dd[7] = sd[7];
-        float _buf4 = Math.fma(sd[10], _t26, Math.fma(sd[8], _t27, sd[9] * _t28));
-        float _buf5 = Math.fma(sd[10], _t35, Math.fma(sd[8], _t36, sd[9] * _t37));
-        dd[10] = Math.fma(sd[10], _t9, Math.fma(sd[8], _t8, sd[9] * _t7));
+        float _buf4 = Math.fma(sd[10], _t21, Math.fma(sd[8], _t22, sd[9] * _t23));
+        float _buf5 = Math.fma(sd[10], _t30, Math.fma(sd[8], _t31, sd[9] * _t32));
+        dd[10] = Math.fma(sd[10], _t6, Math.fma(sd[8], _t5, sd[9] * _t4));
         dd[11] = sd[11];
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -10809,6 +11354,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -10835,6 +11385,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look along" matrix, then the new
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -10862,6 +11417,11 @@ public class Float3x4Impl implements Float3x4 {
      * matrix will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by
      * using {@code M * L * v}, the "look along" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
      *
@@ -10877,47 +11437,542 @@ public class Float3x4Impl implements Float3x4 {
     public Double3x4 lookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirY * _t3;
+        float _t5 = dirX * _t3;
+        float _t6 = dirZ * _t3;
+        float _t13 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t14 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t15 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _ct0 = Math.fma(_t13, _t13, Math.fma(_t14, _t14, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        float _t30 = Math.fma(_t5, _t23, -(_t4 * _t22));
+        float _t31 = Math.fma(_t4, _t21, -(_t6 * _t23));
+        float _t32 = Math.fma(_t6, _t22, -(_t5 * _t21));
+        float _buf0 = Math.fma(sd[2], _t21, Math.fma(sd[0], _t22, sd[1] * _t23));
+        float _buf1 = Math.fma(sd[2], _t30, Math.fma(sd[0], _t31, sd[1] * _t32));
+        dd[2] = Math.fma(sd[2], _t6, Math.fma(sd[0], _t5, sd[1] * _t4));
+        dd[3] = sd[3];
+        float _buf2 = Math.fma(sd[6], _t21, Math.fma(sd[4], _t22, sd[5] * _t23));
+        float _buf3 = Math.fma(sd[6], _t30, Math.fma(sd[4], _t31, sd[5] * _t32));
+        dd[6] = Math.fma(sd[6], _t6, Math.fma(sd[4], _t5, sd[5] * _t4));
+        dd[7] = sd[7];
+        float _buf4 = Math.fma(sd[10], _t21, Math.fma(sd[8], _t22, sd[9] * _t23));
+        float _buf5 = Math.fma(sd[10], _t30, Math.fma(sd[8], _t31, sd[9] * _t32));
+        dd[10] = Math.fma(sd[10], _t6, Math.fma(sd[8], _t5, sd[9] * _t4));
+        dd[11] = sd[11];
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[4] = _buf2;
+        dd[5] = _buf3;
+        dd[8] = _buf4;
+        dd[9] = _buf5;
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAlong_degenerate(Float3R dir, Float3R up, @Mutated Float3x4 dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate(Float3R dir, Float3R up, @Mutated Double3x4 dest) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Float3x4 lookAlong_degenerate(Float3R dir, Float3R up) {
+        return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAlong_degenerate_identity(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
             _t7 = 0.0f;
-            _t8 = 0.0f;
+            _t8 = 1.0f;
             _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t16 * _t22;
-            _t27 = _t17 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
         } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        float _t35 = Math.fma(_t8, _t28, -(_t7 * _t27));
-        float _t36 = Math.fma(_t7, _t26, -(_t9 * _t28));
-        float _t37 = Math.fma(_t9, _t27, -(_t8 * _t26));
-        float _buf0 = Math.fma(sd[2], _t26, Math.fma(sd[0], _t27, sd[1] * _t28));
-        float _buf1 = Math.fma(sd[2], _t35, Math.fma(sd[0], _t36, sd[1] * _t37));
-        dd[2] = Math.fma(sd[2], _t9, Math.fma(sd[0], _t8, sd[1] * _t7));
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        dd[0] = _t41;
+        dd[1] = Math.fma(_t40, _t10, -(_t42 * _t12));
+        dd[2] = _t11;
+        dd[3] = 0.0f;
+        dd[4] = _t42;
+        dd[5] = Math.fma(_t41, _t12, -(_t40 * _t11));
+        dd[6] = _t10;
+        dd[7] = 0.0f;
+        dd[8] = _t40;
+        dd[9] = Math.fma(_t42, _t11, -(_t41 * _t10));
+        dd[10] = _t12;
+        dd[11] = 0.0f;
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAlong_degenerate_identity_self(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        dd[0] = _t41;
+        dd[1] = Math.fma(_t40, _t10, -(_t42 * _t12));
+        dd[2] = _t11;
+        dd[4] = _t42;
+        dd[5] = Math.fma(_t41, _t12, -(_t40 * _t11));
+        dd[6] = _t10;
+        dd[8] = _t40;
+        dd[9] = Math.fma(_t42, _t11, -(_t41 * _t10));
+        dd[10] = _t12;
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAlong_degenerate_translation(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        dd[0] = _t41;
+        dd[1] = Math.fma(_t40, _t10, -(_t42 * _t12));
+        dd[2] = _t11;
         dd[3] = sd[3];
-        float _buf2 = Math.fma(sd[6], _t26, Math.fma(sd[4], _t27, sd[5] * _t28));
-        float _buf3 = Math.fma(sd[6], _t35, Math.fma(sd[4], _t36, sd[5] * _t37));
-        dd[6] = Math.fma(sd[6], _t9, Math.fma(sd[4], _t8, sd[5] * _t7));
+        dd[4] = _t42;
+        dd[5] = Math.fma(_t41, _t12, -(_t40 * _t11));
+        dd[6] = _t10;
         dd[7] = sd[7];
-        float _buf4 = Math.fma(sd[10], _t26, Math.fma(sd[8], _t27, sd[9] * _t28));
-        float _buf5 = Math.fma(sd[10], _t35, Math.fma(sd[8], _t36, sd[9] * _t37));
-        dd[10] = Math.fma(sd[10], _t9, Math.fma(sd[8], _t8, sd[9] * _t7));
+        dd[8] = _t40;
+        dd[9] = Math.fma(_t42, _t11, -(_t41 * _t10));
+        dd[10] = _t12;
+        dd[11] = sd[11];
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAlong_degenerate_orthogonal(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        float _t49 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        float _t50 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        float _t51 = Math.fma(_t42, _t11, -(_t41 * _t10));
+        float _buf0 = Math.fma(sd[2], _t40, Math.fma(sd[0], _t41, sd[1] * _t42));
+        float _buf1 = Math.fma(sd[2], _t51, Math.fma(sd[0], _t50, sd[1] * _t49));
+        dd[2] = Math.fma(sd[2], _t12, Math.fma(sd[0], _t11, sd[1] * _t10));
+        dd[3] = sd[3];
+        float _buf2 = Math.fma(sd[6], _t40, Math.fma(sd[4], _t41, sd[5] * _t42));
+        float _buf3 = Math.fma(sd[6], _t51, Math.fma(sd[4], _t50, sd[5] * _t49));
+        dd[6] = Math.fma(sd[6], _t12, Math.fma(sd[4], _t11, sd[5] * _t10));
+        dd[7] = sd[7];
+        float _buf4 = Math.fma(sd[10], _t40, Math.fma(sd[8], _t41, sd[9] * _t42));
+        float _buf5 = Math.fma(sd[10], _t51, Math.fma(sd[8], _t50, sd[9] * _t49));
+        dd[10] = Math.fma(sd[10], _t12, Math.fma(sd[8], _t11, sd[9] * _t10));
+        dd[11] = sd[11];
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[4] = _buf2;
+        dd[5] = _buf3;
+        dd[8] = _buf4;
+        dd[9] = _buf5;
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAlong_degenerate_general(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        float _t49 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        float _t50 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        float _t51 = Math.fma(_t42, _t11, -(_t41 * _t10));
+        float _buf0 = Math.fma(sd[2], _t40, Math.fma(sd[0], _t41, sd[1] * _t42));
+        float _buf1 = Math.fma(sd[2], _t51, Math.fma(sd[0], _t50, sd[1] * _t49));
+        dd[2] = Math.fma(sd[2], _t12, Math.fma(sd[0], _t11, sd[1] * _t10));
+        dd[3] = sd[3];
+        float _buf2 = Math.fma(sd[6], _t40, Math.fma(sd[4], _t41, sd[5] * _t42));
+        float _buf3 = Math.fma(sd[6], _t51, Math.fma(sd[4], _t50, sd[5] * _t49));
+        dd[6] = Math.fma(sd[6], _t12, Math.fma(sd[4], _t11, sd[5] * _t10));
+        dd[7] = sd[7];
+        float _buf4 = Math.fma(sd[10], _t40, Math.fma(sd[8], _t41, sd[9] * _t42));
+        float _buf5 = Math.fma(sd[10], _t51, Math.fma(sd[8], _t50, sd[9] * _t49));
+        dd[10] = Math.fma(sd[10], _t12, Math.fma(sd[8], _t11, sd[9] * _t10));
+        dd[11] = sd[11];
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[4] = _buf2;
+        dd[5] = _buf3;
+        dd[8] = _buf4;
+        dd[9] = _buf5;
+        ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_degenerate_identity(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_degenerate_translation(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_degenerate_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, dest);
+        return lookAlong_degenerate_general(dirX, dirY, dirZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float3x4 lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        if (Joml.RETURN_NEW) return lookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ, Joml.float3x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAlong_degenerate_identity_self(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAlong_degenerate_translation(dirX, dirY, dirZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAlong_degenerate_orthogonal(dirX, dirY, dirZ, upX, upY, upZ, this);
+        return lookAlong_degenerate_general(dirX, dirY, dirZ, upX, upY, upZ, this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAlong}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
+        float _t3 = (1.0f / (float) Math.sqrt(_t2));
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
+        }
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        float _t49 = Math.fma(_t41, _t12, -(_t40 * _t11));
+        float _t50 = Math.fma(_t40, _t10, -(_t42 * _t12));
+        float _t51 = Math.fma(_t42, _t11, -(_t41 * _t10));
+        float _buf0 = Math.fma(sd[2], _t40, Math.fma(sd[0], _t41, sd[1] * _t42));
+        float _buf1 = Math.fma(sd[2], _t51, Math.fma(sd[0], _t50, sd[1] * _t49));
+        dd[2] = Math.fma(sd[2], _t12, Math.fma(sd[0], _t11, sd[1] * _t10));
+        dd[3] = sd[3];
+        float _buf2 = Math.fma(sd[6], _t40, Math.fma(sd[4], _t41, sd[5] * _t42));
+        float _buf3 = Math.fma(sd[6], _t51, Math.fma(sd[4], _t50, sd[5] * _t49));
+        dd[6] = Math.fma(sd[6], _t12, Math.fma(sd[4], _t11, sd[5] * _t10));
+        dd[7] = sd[7];
+        float _buf4 = Math.fma(sd[10], _t40, Math.fma(sd[8], _t41, sd[9] * _t42));
+        float _buf5 = Math.fma(sd[10], _t51, Math.fma(sd[8], _t50, sd[9] * _t49));
+        dd[10] = Math.fma(sd[10], _t12, Math.fma(sd[8], _t11, sd[9] * _t10));
         dd[11] = sd[11];
         dd[0] = _buf0;
         dd[1] = _buf1;
@@ -10967,48 +12022,34 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = centerZ - eyeZ;
         float _t1 = centerX - eyeX;
         float _t2 = centerY - eyeY;
-        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t2 * _t6;
-            _t11 = _t1 * _t6;
-            _t12 = _t0 * _t6;
-        } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
-        }
-        float _t19 = Math.fma(upX, _t10, -(upY * _t11));
-        float _t20 = Math.fma(upY, _t12, -(upZ * _t10));
-        float _t21 = Math.fma(upZ, _t11, -(upX * _t12));
-        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
-            _t29 = _t20 * _t25;
-            _t30 = _t21 * _t25;
-            _t31 = _t19 * _t25;
-        } else {
-            _t29 = 0.0f;
-            _t30 = 0.0f;
-            _t31 = 0.0f;
-        }
-        float _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
-        float _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
-        float _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
-        dd[0] = _t29;
-        dd[1] = _t30;
-        dd[2] = _t31;
-        dd[3] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
-        dd[4] = _t38;
-        dd[5] = _t39;
-        dd[6] = _t40;
-        dd[7] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
-        dd[8] = _t11;
-        dd[9] = _t10;
-        dd[10] = _t12;
-        dd[11] = -Math.fma(eyeZ, _t12, Math.fma(eyeX, _t11, eyeY * _t10));
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t2 * _t6;
+        float _t9 = _t1 * _t6;
+        float _t16 = Math.fma(upY, _t7, -(upZ * _t8));
+        float _t17 = Math.fma(upX, _t8, -(upY * _t9));
+        float _t18 = Math.fma(upZ, _t9, -(upX * _t7));
+        float _ct0 = Math.fma(_t17, _t17, Math.fma(_t16, _t16, _t18 * _t18));
+        if (!(_ct0 > 0.0f)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t23 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t24 = _t16 * _t23;
+        float _t25 = _t18 * _t23;
+        float _t26 = _t17 * _t23;
+        float _t33 = Math.fma(_t8, _t26, -(_t7 * _t25));
+        float _t34 = Math.fma(_t7, _t24, -(_t9 * _t26));
+        float _t35 = Math.fma(_t9, _t25, -(_t8 * _t24));
+        dd[0] = _t24;
+        dd[1] = _t25;
+        dd[2] = _t26;
+        dd[3] = -Math.fma(eyeZ, _t26, Math.fma(eyeX, _t24, eyeY * _t25));
+        dd[4] = _t33;
+        dd[5] = _t34;
+        dd[6] = _t35;
+        dd[7] = -Math.fma(eyeZ, _t35, Math.fma(eyeX, _t33, eyeY * _t34));
+        dd[8] = _t9;
+        dd[9] = _t8;
+        dd[10] = _t7;
+        dd[11] = -Math.fma(eyeZ, _t7, Math.fma(eyeX, _t9, eyeY * _t8));
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -11027,48 +12068,34 @@ public class Float3x4Impl implements Float3x4 {
         float _t3 = centerZ - eyeZ;
         float _t4 = centerX - eyeX;
         float _t5 = centerY - eyeY;
-        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        float _t9 = (1.0f / (float) Math.sqrt(_t8));
-        float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
-            _t13 = _t5 * _t9;
-            _t14 = _t4 * _t9;
-            _t15 = _t3 * _t9;
-        } else {
-            _t13 = 0.0f;
-            _t14 = 0.0f;
-            _t15 = 0.0f;
-        }
-        float _t22 = Math.fma(upX, _t13, -(upY * _t14));
-        float _t23 = Math.fma(upY, _t15, -(upZ * _t13));
-        float _t24 = Math.fma(upZ, _t14, -(upX * _t15));
-        float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
-        float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t23 * _t28;
-            _t33 = _t24 * _t28;
-            _t34 = _t22 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        float _t41 = Math.fma(_t13, _t34, -(_t15 * _t33));
-        float _t42 = Math.fma(_t15, _t32, -(_t14 * _t34));
-        float _t43 = Math.fma(_t14, _t33, -(_t13 * _t32));
-        dd[0] = _t32;
-        dd[1] = _t33;
-        dd[2] = _t34;
-        dd[3] = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, sd[3])));
-        dd[4] = _t41;
-        dd[5] = _t42;
-        dd[6] = _t43;
-        dd[7] = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, sd[7])));
-        dd[8] = _t14;
-        dd[9] = _t13;
-        dd[10] = _t15;
-        dd[11] = Math.fma(_t0, _t14, Math.fma(_t1, _t13, Math.fma(_t2, _t15, sd[11])));
+        float _t9 = (1.0f / (float) Math.sqrt(Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5))));
+        float _t10 = _t3 * _t9;
+        float _t11 = _t5 * _t9;
+        float _t12 = _t4 * _t9;
+        float _t19 = Math.fma(upY, _t10, -(upZ * _t11));
+        float _t20 = Math.fma(upX, _t11, -(upY * _t12));
+        float _t21 = Math.fma(upZ, _t12, -(upX * _t10));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t19, _t19, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t26 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t27 = _t19 * _t26;
+        float _t28 = _t21 * _t26;
+        float _t29 = _t20 * _t26;
+        float _t36 = Math.fma(_t11, _t29, -(_t10 * _t28));
+        float _t37 = Math.fma(_t10, _t27, -(_t12 * _t29));
+        float _t38 = Math.fma(_t12, _t28, -(_t11 * _t27));
+        dd[0] = _t27;
+        dd[1] = _t28;
+        dd[2] = _t29;
+        dd[3] = Math.fma(_t0, _t27, Math.fma(_t1, _t28, Math.fma(_t2, _t29, sd[3])));
+        dd[4] = _t36;
+        dd[5] = _t37;
+        dd[6] = _t38;
+        dd[7] = Math.fma(_t0, _t36, Math.fma(_t1, _t37, Math.fma(_t2, _t38, sd[7])));
+        dd[8] = _t12;
+        dd[9] = _t11;
+        dd[10] = _t10;
+        dd[11] = Math.fma(_t0, _t12, Math.fma(_t1, _t11, Math.fma(_t2, _t10, sd[11])));
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -11081,54 +12108,40 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAt_lh_orthogonal(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t0 = centerZ - eyeZ;
-        float _t1 = centerX - eyeX;
+        float _t0 = centerX - eyeX;
+        float _t1 = centerZ - eyeZ;
         float _t2 = centerY - eyeY;
-        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t1 * _t6;
-            _t11 = _t2 * _t6;
-            _t12 = _t0 * _t6;
-        } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
-        }
-        float _t21 = Math.fma(upX, _t11, -(upY * _t10));
-        float _t22 = Math.fma(upY, _t12, -(upZ * _t11));
-        float _t23 = Math.fma(upZ, _t10, -(upX * _t12));
-        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
-        float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t22 * _t28;
-            _t33 = _t21 * _t28;
-            _t34 = _t23 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
-        float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
-        float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
-        float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
-        float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        float _buf0 = Math.fma(sd[2], _t10, Math.fma(sd[0], _t32, sd[1] * _t43));
-        float _buf1 = Math.fma(sd[2], _t11, Math.fma(sd[0], _t34, sd[1] * _t44));
-        float _buf2 = Math.fma(sd[2], _t12, Math.fma(sd[0], _t33, sd[1] * _t45));
-        dd[3] = Math.fma(-sd[0], _t47, Math.fma(-sd[1], _t49, Math.fma(-sd[2], _t24, sd[3])));
-        float _buf3 = Math.fma(sd[6], _t10, Math.fma(sd[4], _t32, sd[5] * _t43));
-        float _buf4 = Math.fma(sd[6], _t11, Math.fma(sd[4], _t34, sd[5] * _t44));
-        float _buf5 = Math.fma(sd[6], _t12, Math.fma(sd[4], _t33, sd[5] * _t45));
-        dd[7] = Math.fma(-sd[4], _t47, Math.fma(-sd[5], _t49, Math.fma(-sd[6], _t24, sd[7])));
-        float _buf6 = Math.fma(sd[10], _t10, Math.fma(sd[8], _t32, sd[9] * _t43));
-        float _buf7 = Math.fma(sd[10], _t11, Math.fma(sd[8], _t34, sd[9] * _t44));
-        float _buf8 = Math.fma(sd[10], _t12, Math.fma(sd[8], _t33, sd[9] * _t45));
-        dd[11] = Math.fma(-sd[8], _t47, Math.fma(-sd[9], _t49, Math.fma(-sd[10], _t24, sd[11])));
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t1 * _t6;
+        float _t9 = _t2 * _t6;
+        float _t18 = Math.fma(upY, _t8, -(upZ * _t9));
+        float _t19 = Math.fma(upX, _t9, -(upY * _t7));
+        float _t20 = Math.fma(upZ, _t7, -(upX * _t8));
+        float _t21 = Math.fma(eyeZ, _t8, Math.fma(eyeX, _t7, eyeY * _t9));
+        float _ct0 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        if (!(_ct0 > 0.0f)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t26 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t27 = _t18 * _t26;
+        float _t28 = _t19 * _t26;
+        float _t29 = _t20 * _t26;
+        float _t38 = Math.fma(_t9, _t28, -(_t8 * _t29));
+        float _t39 = Math.fma(_t8, _t27, -(_t7 * _t28));
+        float _t40 = Math.fma(_t7, _t29, -(_t9 * _t27));
+        float _t42 = Math.fma(eyeZ, _t28, Math.fma(eyeX, _t27, eyeY * _t29));
+        float _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        float _buf0 = Math.fma(sd[2], _t7, Math.fma(sd[0], _t27, sd[1] * _t38));
+        float _buf1 = Math.fma(sd[2], _t9, Math.fma(sd[0], _t29, sd[1] * _t39));
+        float _buf2 = Math.fma(sd[2], _t8, Math.fma(sd[0], _t28, sd[1] * _t40));
+        dd[3] = Math.fma(-sd[0], _t42, Math.fma(-sd[1], _t44, Math.fma(-sd[2], _t21, sd[3])));
+        float _buf3 = Math.fma(sd[6], _t7, Math.fma(sd[4], _t27, sd[5] * _t38));
+        float _buf4 = Math.fma(sd[6], _t9, Math.fma(sd[4], _t29, sd[5] * _t39));
+        float _buf5 = Math.fma(sd[6], _t8, Math.fma(sd[4], _t28, sd[5] * _t40));
+        dd[7] = Math.fma(-sd[4], _t42, Math.fma(-sd[5], _t44, Math.fma(-sd[6], _t21, sd[7])));
+        float _buf6 = Math.fma(sd[10], _t7, Math.fma(sd[8], _t27, sd[9] * _t38));
+        float _buf7 = Math.fma(sd[10], _t9, Math.fma(sd[8], _t29, sd[9] * _t39));
+        float _buf8 = Math.fma(sd[10], _t8, Math.fma(sd[8], _t28, sd[9] * _t40));
+        dd[11] = Math.fma(-sd[8], _t42, Math.fma(-sd[9], _t44, Math.fma(-sd[10], _t21, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -11150,54 +12163,40 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAt_lh_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t0 = centerZ - eyeZ;
-        float _t1 = centerX - eyeX;
+        float _t0 = centerX - eyeX;
+        float _t1 = centerZ - eyeZ;
         float _t2 = centerY - eyeY;
-        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t1 * _t6;
-            _t11 = _t2 * _t6;
-            _t12 = _t0 * _t6;
-        } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
-        }
-        float _t21 = Math.fma(upX, _t11, -(upY * _t10));
-        float _t22 = Math.fma(upY, _t12, -(upZ * _t11));
-        float _t23 = Math.fma(upZ, _t10, -(upX * _t12));
-        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
-        float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t22 * _t28;
-            _t33 = _t21 * _t28;
-            _t34 = _t23 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
-        float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
-        float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
-        float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
-        float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        float _buf0 = Math.fma(sd[2], _t10, Math.fma(sd[0], _t32, sd[1] * _t43));
-        float _buf1 = Math.fma(sd[2], _t11, Math.fma(sd[0], _t34, sd[1] * _t44));
-        float _buf2 = Math.fma(sd[2], _t12, Math.fma(sd[0], _t33, sd[1] * _t45));
-        dd[3] = Math.fma(-sd[0], _t47, Math.fma(-sd[1], _t49, Math.fma(-sd[2], _t24, sd[3])));
-        float _buf3 = Math.fma(sd[6], _t10, Math.fma(sd[4], _t32, sd[5] * _t43));
-        float _buf4 = Math.fma(sd[6], _t11, Math.fma(sd[4], _t34, sd[5] * _t44));
-        float _buf5 = Math.fma(sd[6], _t12, Math.fma(sd[4], _t33, sd[5] * _t45));
-        dd[7] = Math.fma(-sd[4], _t47, Math.fma(-sd[5], _t49, Math.fma(-sd[6], _t24, sd[7])));
-        float _buf6 = Math.fma(sd[10], _t10, Math.fma(sd[8], _t32, sd[9] * _t43));
-        float _buf7 = Math.fma(sd[10], _t11, Math.fma(sd[8], _t34, sd[9] * _t44));
-        float _buf8 = Math.fma(sd[10], _t12, Math.fma(sd[8], _t33, sd[9] * _t45));
-        dd[11] = Math.fma(-sd[8], _t47, Math.fma(-sd[9], _t49, Math.fma(-sd[10], _t24, sd[11])));
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t1 * _t6;
+        float _t9 = _t2 * _t6;
+        float _t18 = Math.fma(upY, _t8, -(upZ * _t9));
+        float _t19 = Math.fma(upX, _t9, -(upY * _t7));
+        float _t20 = Math.fma(upZ, _t7, -(upX * _t8));
+        float _t21 = Math.fma(eyeZ, _t8, Math.fma(eyeX, _t7, eyeY * _t9));
+        float _ct0 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        if (!(_ct0 > 0.0f)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t26 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t27 = _t18 * _t26;
+        float _t28 = _t19 * _t26;
+        float _t29 = _t20 * _t26;
+        float _t38 = Math.fma(_t9, _t28, -(_t8 * _t29));
+        float _t39 = Math.fma(_t8, _t27, -(_t7 * _t28));
+        float _t40 = Math.fma(_t7, _t29, -(_t9 * _t27));
+        float _t42 = Math.fma(eyeZ, _t28, Math.fma(eyeX, _t27, eyeY * _t29));
+        float _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        float _buf0 = Math.fma(sd[2], _t7, Math.fma(sd[0], _t27, sd[1] * _t38));
+        float _buf1 = Math.fma(sd[2], _t9, Math.fma(sd[0], _t29, sd[1] * _t39));
+        float _buf2 = Math.fma(sd[2], _t8, Math.fma(sd[0], _t28, sd[1] * _t40));
+        dd[3] = Math.fma(-sd[0], _t42, Math.fma(-sd[1], _t44, Math.fma(-sd[2], _t21, sd[3])));
+        float _buf3 = Math.fma(sd[6], _t7, Math.fma(sd[4], _t27, sd[5] * _t38));
+        float _buf4 = Math.fma(sd[6], _t9, Math.fma(sd[4], _t29, sd[5] * _t39));
+        float _buf5 = Math.fma(sd[6], _t8, Math.fma(sd[4], _t28, sd[5] * _t40));
+        dd[7] = Math.fma(-sd[4], _t42, Math.fma(-sd[5], _t44, Math.fma(-sd[6], _t21, sd[7])));
+        float _buf6 = Math.fma(sd[10], _t7, Math.fma(sd[8], _t27, sd[9] * _t38));
+        float _buf7 = Math.fma(sd[10], _t9, Math.fma(sd[8], _t29, sd[9] * _t39));
+        float _buf8 = Math.fma(sd[10], _t8, Math.fma(sd[8], _t28, sd[9] * _t40));
+        dd[11] = Math.fma(-sd[8], _t42, Math.fma(-sd[9], _t44, Math.fma(-sd[10], _t21, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -11246,54 +12245,523 @@ public class Float3x4Impl implements Float3x4 {
     private Double3x4 lookAt_lh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
+        float _t0 = centerX - eyeX;
+        float _t1 = centerZ - eyeZ;
+        float _t2 = centerY - eyeY;
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t1 * _t6;
+        float _t9 = _t2 * _t6;
+        float _t18 = Math.fma(upY, _t8, -(upZ * _t9));
+        float _t19 = Math.fma(upX, _t9, -(upY * _t7));
+        float _t20 = Math.fma(upZ, _t7, -(upX * _t8));
+        float _t21 = Math.fma(eyeZ, _t8, Math.fma(eyeX, _t7, eyeY * _t9));
+        float _ct0 = Math.fma(_t19, _t19, Math.fma(_t18, _t18, _t20 * _t20));
+        if (!(_ct0 > 0.0f)) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t26 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t27 = _t18 * _t26;
+        float _t28 = _t19 * _t26;
+        float _t29 = _t20 * _t26;
+        float _t38 = Math.fma(_t9, _t28, -(_t8 * _t29));
+        float _t39 = Math.fma(_t8, _t27, -(_t7 * _t28));
+        float _t40 = Math.fma(_t7, _t29, -(_t9 * _t27));
+        float _t42 = Math.fma(eyeZ, _t28, Math.fma(eyeX, _t27, eyeY * _t29));
+        float _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
+        float _buf0 = Math.fma(sd[2], _t7, Math.fma(sd[0], _t27, sd[1] * _t38));
+        float _buf1 = Math.fma(sd[2], _t9, Math.fma(sd[0], _t29, sd[1] * _t39));
+        float _buf2 = Math.fma(sd[2], _t8, Math.fma(sd[0], _t28, sd[1] * _t40));
+        dd[3] = Math.fma(-sd[0], _t42, Math.fma(-sd[1], _t44, Math.fma(-sd[2], _t21, sd[3])));
+        float _buf3 = Math.fma(sd[6], _t7, Math.fma(sd[4], _t27, sd[5] * _t38));
+        float _buf4 = Math.fma(sd[6], _t9, Math.fma(sd[4], _t29, sd[5] * _t39));
+        float _buf5 = Math.fma(sd[6], _t8, Math.fma(sd[4], _t28, sd[5] * _t40));
+        dd[7] = Math.fma(-sd[4], _t42, Math.fma(-sd[5], _t44, Math.fma(-sd[6], _t21, sd[7])));
+        float _buf6 = Math.fma(sd[10], _t7, Math.fma(sd[8], _t27, sd[9] * _t38));
+        float _buf7 = Math.fma(sd[10], _t9, Math.fma(sd[8], _t29, sd[9] * _t39));
+        float _buf8 = Math.fma(sd[10], _t8, Math.fma(sd[8], _t28, sd[9] * _t40));
+        dd[11] = Math.fma(-sd[8], _t42, Math.fma(-sd[9], _t44, Math.fma(-sd[10], _t21, sd[11])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        dd[8] = _buf6;
+        dd[9] = _buf7;
+        dd[10] = _buf8;
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_lh_degenerate(Float3R eye, Float3R center, Float3R up, @Mutated Float3x4 dest) {
+        return lookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate(Float3R eye, Float3R center, Float3R up, @Mutated Double3x4 dest) {
+        return lookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Float3x4 lookAt_lh_degenerate(Float3R eye, Float3R center, Float3R up) {
+        return lookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_lh_degenerate_identity(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
         float _t0 = centerZ - eyeZ;
         float _t1 = centerX - eyeX;
         float _t2 = centerY - eyeY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t1 * _t6;
-            _t11 = _t2 * _t6;
-            _t12 = _t0 * _t6;
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 1.0f;
         } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t13 = _t2 * _t6;
+            _t14 = _t1 * _t6;
+            _t15 = _t0 * _t6;
+        }
+        float _t16 = Math.abs(_t14);
+        float _t17 = Math.abs(_t15);
+        float _t26 = Math.fma(_t7, _t13, -(_t14 * _t8));
+        float _t27 = Math.fma(_t9, _t14, -(_t7 * _t15));
+        float _t28 = Math.fma(_t8, _t15, -(_t9 * _t13));
+        float _t29, _t30, _t31;
+        if (_t16 > _t17) {
+            _t29 = 0.0f;
+            _t30 = -_t13;
+            _t31 = _t14;
+        } else {
+            _t29 = _t13;
+            _t30 = 0.0f;
+            _t31 = -_t15;
+        }
+        float _t36 = Math.fma(_t26, _t26, Math.fma(_t27, _t27, _t28 * _t28));
+        float _t42, _t43, _t44, _t45;
+        if (_t36 == 0.0f) {
+            _t42 = (1.0f / (float) Math.sqrt(Math.fma(_t29, _t29, Math.fma(_t30, _t30, _t31 * _t31))));
+            _t43 = _t42 * _t29;
+            _t44 = _t42 * _t30;
+            _t45 = _t42 * _t31;
+        } else {
+            _t42 = (1.0f / (float) Math.sqrt(_t36));
+            _t43 = _t42 * _t26;
+            _t44 = _t42 * _t28;
+            _t45 = _t42 * _t27;
+        }
+        float _t52 = Math.fma(_t44, _t15, -(_t43 * _t14));
+        float _t53 = Math.fma(_t43, _t13, -(_t45 * _t15));
+        float _t54 = Math.fma(_t45, _t14, -(_t44 * _t13));
+        dd[0] = _t44;
+        dd[1] = _t45;
+        dd[2] = _t43;
+        dd[3] = -Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45));
+        dd[4] = _t53;
+        dd[5] = _t52;
+        dd[6] = _t54;
+        dd[7] = -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52));
+        dd[8] = _t14;
+        dd[9] = _t13;
+        dd[10] = _t15;
+        dd[11] = -Math.fma(eyeZ, _t15, Math.fma(eyeX, _t14, eyeY * _t13));
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_lh_degenerate_translation(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = -eyeX;
+        float _t1 = -eyeY;
+        float _t2 = -eyeZ;
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t10, _t11, _t12, _t16, _t17, _t18;
+        if (_t8 == 0.0f) {
             _t10 = 0.0f;
-            _t11 = 0.0f;
+            _t11 = 1.0f;
             _t12 = 0.0f;
-        }
-        float _t21 = Math.fma(upX, _t11, -(upY * _t10));
-        float _t22 = Math.fma(upY, _t12, -(upZ * _t11));
-        float _t23 = Math.fma(upZ, _t10, -(upX * _t12));
-        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
-        float _t27 = Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23));
-        float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t22 * _t28;
-            _t33 = _t21 * _t28;
-            _t34 = _t23 * _t28;
+            _t16 = 0.0f;
+            _t17 = 0.0f;
+            _t18 = 1.0f;
         } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
+            _t10 = upX;
+            _t11 = upY;
+            _t12 = upZ;
+            _t16 = _t5 * _t9;
+            _t17 = _t4 * _t9;
+            _t18 = _t3 * _t9;
         }
-        float _t43 = Math.fma(_t11, _t33, -(_t12 * _t34));
-        float _t44 = Math.fma(_t12, _t32, -(_t10 * _t33));
-        float _t45 = Math.fma(_t10, _t34, -(_t11 * _t32));
-        float _t47 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t32, eyeY * _t34));
-        float _t49 = Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44));
-        float _buf0 = Math.fma(sd[2], _t10, Math.fma(sd[0], _t32, sd[1] * _t43));
-        float _buf1 = Math.fma(sd[2], _t11, Math.fma(sd[0], _t34, sd[1] * _t44));
-        float _buf2 = Math.fma(sd[2], _t12, Math.fma(sd[0], _t33, sd[1] * _t45));
-        dd[3] = Math.fma(-sd[0], _t47, Math.fma(-sd[1], _t49, Math.fma(-sd[2], _t24, sd[3])));
-        float _buf3 = Math.fma(sd[6], _t10, Math.fma(sd[4], _t32, sd[5] * _t43));
-        float _buf4 = Math.fma(sd[6], _t11, Math.fma(sd[4], _t34, sd[5] * _t44));
-        float _buf5 = Math.fma(sd[6], _t12, Math.fma(sd[4], _t33, sd[5] * _t45));
-        dd[7] = Math.fma(-sd[4], _t47, Math.fma(-sd[5], _t49, Math.fma(-sd[6], _t24, sd[7])));
-        float _buf6 = Math.fma(sd[10], _t10, Math.fma(sd[8], _t32, sd[9] * _t43));
-        float _buf7 = Math.fma(sd[10], _t11, Math.fma(sd[8], _t34, sd[9] * _t44));
-        float _buf8 = Math.fma(sd[10], _t12, Math.fma(sd[8], _t33, sd[9] * _t45));
-        dd[11] = Math.fma(-sd[8], _t47, Math.fma(-sd[9], _t49, Math.fma(-sd[10], _t24, sd[11])));
+        float _t19 = Math.abs(_t17);
+        float _t20 = Math.abs(_t18);
+        float _t29 = Math.fma(_t10, _t16, -(_t17 * _t11));
+        float _t30 = Math.fma(_t12, _t17, -(_t10 * _t18));
+        float _t31 = Math.fma(_t11, _t18, -(_t12 * _t16));
+        float _t32, _t33, _t34;
+        if (_t19 > _t20) {
+            _t32 = 0.0f;
+            _t33 = -_t16;
+            _t34 = _t17;
+        } else {
+            _t32 = _t16;
+            _t33 = 0.0f;
+            _t34 = -_t18;
+        }
+        float _t39 = Math.fma(_t29, _t29, Math.fma(_t30, _t30, _t31 * _t31));
+        float _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0f) {
+            _t45 = (1.0f / (float) Math.sqrt(Math.fma(_t32, _t32, Math.fma(_t33, _t33, _t34 * _t34))));
+            _t46 = _t45 * _t32;
+            _t47 = _t45 * _t33;
+            _t48 = _t45 * _t34;
+        } else {
+            _t45 = (1.0f / (float) Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t31;
+            _t48 = _t45 * _t30;
+        }
+        float _t55 = Math.fma(_t47, _t18, -(_t46 * _t17));
+        float _t56 = Math.fma(_t46, _t16, -(_t48 * _t18));
+        float _t57 = Math.fma(_t48, _t17, -(_t47 * _t16));
+        dd[0] = _t47;
+        dd[1] = _t48;
+        dd[2] = _t46;
+        dd[3] = Math.fma(_t0, _t47, Math.fma(_t1, _t48, Math.fma(_t2, _t46, sd[3])));
+        dd[4] = _t56;
+        dd[5] = _t55;
+        dd[6] = _t57;
+        dd[7] = Math.fma(_t0, _t56, Math.fma(_t1, _t55, Math.fma(_t2, _t57, sd[7])));
+        dd[8] = _t17;
+        dd[9] = _t16;
+        dd[10] = _t18;
+        dd[11] = Math.fma(_t0, _t17, Math.fma(_t1, _t16, Math.fma(_t2, _t18, sd[11])));
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_lh_degenerate_orthogonal(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t13 = _t1 * _t6;
+            _t14 = _t2 * _t6;
+            _t15 = _t0 * _t6;
+        }
+        float _t16 = Math.abs(_t13);
+        float _t17 = Math.abs(_t15);
+        float _t28 = Math.fma(_t7, _t14, -(_t13 * _t8));
+        float _t29 = Math.fma(_t9, _t13, -(_t7 * _t15));
+        float _t30 = Math.fma(_t8, _t15, -(_t9 * _t14));
+        float _t31, _t32, _t34;
+        if (_t16 > _t17) {
+            _t31 = 0.0f;
+            _t32 = -_t14;
+            _t34 = _t13;
+        } else {
+            _t31 = _t14;
+            _t32 = 0.0f;
+            _t34 = -_t15;
+        }
+        float _t33 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
+        float _t39 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        float _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0f) {
+            _t45 = (1.0f / (float) Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t32, _t32, _t34 * _t34))));
+            _t46 = _t45 * _t31;
+            _t47 = _t45 * _t32;
+            _t48 = _t45 * _t34;
+        } else {
+            _t45 = (1.0f / (float) Math.sqrt(_t39));
+            _t46 = _t45 * _t28;
+            _t47 = _t45 * _t30;
+            _t48 = _t45 * _t29;
+        }
+        float _t57 = Math.fma(_t47, _t15, -(_t46 * _t13));
+        float _t59 = Math.fma(_t46, _t14, -(_t48 * _t15));
+        float _t60 = Math.fma(_t48, _t13, -(_t47 * _t14));
+        float _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
+        float _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
+        float _buf0 = Math.fma(sd[2], _t13, Math.fma(sd[0], _t47, sd[1] * _t59));
+        float _buf1 = Math.fma(sd[2], _t14, Math.fma(sd[0], _t48, sd[1] * _t57));
+        float _buf2 = Math.fma(sd[2], _t15, Math.fma(sd[0], _t46, sd[1] * _t60));
+        dd[3] = Math.fma(-sd[0], _t61, Math.fma(-sd[1], _t63, Math.fma(-sd[2], _t33, sd[3])));
+        float _buf3 = Math.fma(sd[6], _t13, Math.fma(sd[4], _t47, sd[5] * _t59));
+        float _buf4 = Math.fma(sd[6], _t14, Math.fma(sd[4], _t48, sd[5] * _t57));
+        float _buf5 = Math.fma(sd[6], _t15, Math.fma(sd[4], _t46, sd[5] * _t60));
+        dd[7] = Math.fma(-sd[4], _t61, Math.fma(-sd[5], _t63, Math.fma(-sd[6], _t33, sd[7])));
+        float _buf6 = Math.fma(sd[10], _t13, Math.fma(sd[8], _t47, sd[9] * _t59));
+        float _buf7 = Math.fma(sd[10], _t14, Math.fma(sd[8], _t48, sd[9] * _t57));
+        float _buf8 = Math.fma(sd[10], _t15, Math.fma(sd[8], _t46, sd[9] * _t60));
+        dd[11] = Math.fma(-sd[8], _t61, Math.fma(-sd[9], _t63, Math.fma(-sd[10], _t33, sd[11])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        dd[8] = _buf6;
+        dd[9] = _buf7;
+        dd[10] = _buf8;
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_lh_degenerate_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t13 = _t1 * _t6;
+            _t14 = _t2 * _t6;
+            _t15 = _t0 * _t6;
+        }
+        float _t16 = Math.abs(_t13);
+        float _t17 = Math.abs(_t15);
+        float _t28 = Math.fma(_t7, _t14, -(_t13 * _t8));
+        float _t29 = Math.fma(_t9, _t13, -(_t7 * _t15));
+        float _t30 = Math.fma(_t8, _t15, -(_t9 * _t14));
+        float _t31, _t32, _t34;
+        if (_t16 > _t17) {
+            _t31 = 0.0f;
+            _t32 = -_t14;
+            _t34 = _t13;
+        } else {
+            _t31 = _t14;
+            _t32 = 0.0f;
+            _t34 = -_t15;
+        }
+        float _t33 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
+        float _t39 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        float _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0f) {
+            _t45 = (1.0f / (float) Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t32, _t32, _t34 * _t34))));
+            _t46 = _t45 * _t31;
+            _t47 = _t45 * _t32;
+            _t48 = _t45 * _t34;
+        } else {
+            _t45 = (1.0f / (float) Math.sqrt(_t39));
+            _t46 = _t45 * _t28;
+            _t47 = _t45 * _t30;
+            _t48 = _t45 * _t29;
+        }
+        float _t57 = Math.fma(_t47, _t15, -(_t46 * _t13));
+        float _t59 = Math.fma(_t46, _t14, -(_t48 * _t15));
+        float _t60 = Math.fma(_t48, _t13, -(_t47 * _t14));
+        float _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
+        float _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
+        float _buf0 = Math.fma(sd[2], _t13, Math.fma(sd[0], _t47, sd[1] * _t59));
+        float _buf1 = Math.fma(sd[2], _t14, Math.fma(sd[0], _t48, sd[1] * _t57));
+        float _buf2 = Math.fma(sd[2], _t15, Math.fma(sd[0], _t46, sd[1] * _t60));
+        dd[3] = Math.fma(-sd[0], _t61, Math.fma(-sd[1], _t63, Math.fma(-sd[2], _t33, sd[3])));
+        float _buf3 = Math.fma(sd[6], _t13, Math.fma(sd[4], _t47, sd[5] * _t59));
+        float _buf4 = Math.fma(sd[6], _t14, Math.fma(sd[4], _t48, sd[5] * _t57));
+        float _buf5 = Math.fma(sd[6], _t15, Math.fma(sd[4], _t46, sd[5] * _t60));
+        dd[7] = Math.fma(-sd[4], _t61, Math.fma(-sd[5], _t63, Math.fma(-sd[6], _t33, sd[7])));
+        float _buf6 = Math.fma(sd[10], _t13, Math.fma(sd[8], _t47, sd[9] * _t59));
+        float _buf7 = Math.fma(sd[10], _t14, Math.fma(sd[8], _t48, sd[9] * _t57));
+        float _buf8 = Math.fma(sd[10], _t15, Math.fma(sd[8], _t46, sd[9] * _t60));
+        dd[11] = Math.fma(-sd[8], _t61, Math.fma(-sd[9], _t63, Math.fma(-sd[10], _t33, sd[11])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        dd[8] = _buf6;
+        dd[9] = _buf7;
+        dd[10] = _buf8;
+        ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_lh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_lh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_lh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_lh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        return lookAt_lh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float3x4 lookAt_lh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        if (Joml.RETURN_NEW) return lookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Joml.float3x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_lh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_lh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_lh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        return lookAt_lh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_lh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 1.0f;
+        } else {
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t13 = _t1 * _t6;
+            _t14 = _t2 * _t6;
+            _t15 = _t0 * _t6;
+        }
+        float _t16 = Math.abs(_t13);
+        float _t17 = Math.abs(_t15);
+        float _t28 = Math.fma(_t7, _t14, -(_t13 * _t8));
+        float _t29 = Math.fma(_t9, _t13, -(_t7 * _t15));
+        float _t30 = Math.fma(_t8, _t15, -(_t9 * _t14));
+        float _t31, _t32, _t34;
+        if (_t16 > _t17) {
+            _t31 = 0.0f;
+            _t32 = -_t14;
+            _t34 = _t13;
+        } else {
+            _t31 = _t14;
+            _t32 = 0.0f;
+            _t34 = -_t15;
+        }
+        float _t33 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
+        float _t39 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
+        float _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0f) {
+            _t45 = (1.0f / (float) Math.sqrt(Math.fma(_t31, _t31, Math.fma(_t32, _t32, _t34 * _t34))));
+            _t46 = _t45 * _t31;
+            _t47 = _t45 * _t32;
+            _t48 = _t45 * _t34;
+        } else {
+            _t45 = (1.0f / (float) Math.sqrt(_t39));
+            _t46 = _t45 * _t28;
+            _t47 = _t45 * _t30;
+            _t48 = _t45 * _t29;
+        }
+        float _t57 = Math.fma(_t47, _t15, -(_t46 * _t13));
+        float _t59 = Math.fma(_t46, _t14, -(_t48 * _t15));
+        float _t60 = Math.fma(_t48, _t13, -(_t47 * _t14));
+        float _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
+        float _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
+        float _buf0 = Math.fma(sd[2], _t13, Math.fma(sd[0], _t47, sd[1] * _t59));
+        float _buf1 = Math.fma(sd[2], _t14, Math.fma(sd[0], _t48, sd[1] * _t57));
+        float _buf2 = Math.fma(sd[2], _t15, Math.fma(sd[0], _t46, sd[1] * _t60));
+        dd[3] = Math.fma(-sd[0], _t61, Math.fma(-sd[1], _t63, Math.fma(-sd[2], _t33, sd[3])));
+        float _buf3 = Math.fma(sd[6], _t13, Math.fma(sd[4], _t47, sd[5] * _t59));
+        float _buf4 = Math.fma(sd[6], _t14, Math.fma(sd[4], _t48, sd[5] * _t57));
+        float _buf5 = Math.fma(sd[6], _t15, Math.fma(sd[4], _t46, sd[5] * _t60));
+        dd[7] = Math.fma(-sd[4], _t61, Math.fma(-sd[5], _t63, Math.fma(-sd[6], _t33, sd[7])));
+        float _buf6 = Math.fma(sd[10], _t13, Math.fma(sd[8], _t47, sd[9] * _t59));
+        float _buf7 = Math.fma(sd[10], _t14, Math.fma(sd[8], _t48, sd[9] * _t57));
+        float _buf8 = Math.fma(sd[10], _t15, Math.fma(sd[8], _t46, sd[9] * _t60));
+        dd[11] = Math.fma(-sd[8], _t61, Math.fma(-sd[9], _t63, Math.fma(-sd[10], _t33, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -11342,51 +12810,37 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 lookAt_rh_identity(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t0 = centerZ - eyeZ;
-        float _t1 = centerX - eyeX;
-        float _t2 = centerY - eyeY;
-        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
-        float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t1 * _t6;
-            _t11 = _t2 * _t6;
-            _t12 = _t0 * _t6;
-        } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
-        }
-        float _t19 = Math.fma(upY, _t10, -(upX * _t11));
-        float _t20 = Math.fma(upX, _t12, -(upZ * _t10));
-        float _t21 = Math.fma(upZ, _t11, -(upY * _t12));
-        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        float _t25 = (1.0f / (float) Math.sqrt(_t24));
-        float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
-            _t29 = _t21 * _t25;
-            _t30 = _t20 * _t25;
-            _t31 = _t19 * _t25;
-        } else {
-            _t29 = 0.0f;
-            _t30 = 0.0f;
-            _t31 = 0.0f;
-        }
-        float _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
-        float _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
-        float _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
-        dd[0] = _t29;
-        dd[1] = _t30;
-        dd[2] = _t31;
-        dd[3] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
-        dd[4] = _t38;
-        dd[5] = _t39;
-        dd[6] = _t40;
-        dd[7] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
-        dd[8] = -_t10;
-        dd[9] = -_t11;
-        dd[10] = -_t12;
-        dd[11] = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        float _t0 = centerY - eyeY;
+        float _t1 = centerZ - eyeZ;
+        float _t2 = centerX - eyeX;
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t0 * _t0))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t1 * _t6;
+        float _t9 = _t2 * _t6;
+        float _t16 = Math.fma(upZ, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upX * _t7));
+        float _t18 = Math.fma(upX, _t8, -(upZ * _t9));
+        float _ct0 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t16 * _t16));
+        if (!(_ct0 > 0.0f)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t23 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t24 = _t16 * _t23;
+        float _t25 = _t18 * _t23;
+        float _t26 = _t17 * _t23;
+        float _t33 = Math.fma(_t8, _t25, -(_t7 * _t26));
+        float _t34 = Math.fma(_t9, _t26, -(_t8 * _t24));
+        float _t35 = Math.fma(_t7, _t24, -(_t9 * _t25));
+        dd[0] = _t24;
+        dd[1] = _t25;
+        dd[2] = _t26;
+        dd[3] = -Math.fma(eyeZ, _t26, Math.fma(eyeX, _t24, eyeY * _t25));
+        dd[4] = _t33;
+        dd[5] = _t34;
+        dd[6] = _t35;
+        dd[7] = -Math.fma(eyeZ, _t35, Math.fma(eyeX, _t33, eyeY * _t34));
+        dd[8] = -_t9;
+        dd[9] = -_t7;
+        dd[10] = -_t8;
+        dd[11] = Math.fma(eyeZ, _t8, Math.fma(eyeX, _t9, eyeY * _t7));
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -11402,51 +12856,37 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -eyeX;
         float _t1 = -eyeY;
         float _t2 = -eyeZ;
-        float _t3 = centerZ - eyeZ;
-        float _t4 = centerX - eyeX;
-        float _t5 = centerY - eyeY;
-        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        float _t9 = (1.0f / (float) Math.sqrt(_t8));
-        float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
-            _t13 = _t4 * _t9;
-            _t14 = _t5 * _t9;
-            _t15 = _t3 * _t9;
-        } else {
-            _t13 = 0.0f;
-            _t14 = 0.0f;
-            _t15 = 0.0f;
-        }
-        float _t22 = Math.fma(upY, _t13, -(upX * _t14));
-        float _t23 = Math.fma(upX, _t15, -(upZ * _t13));
-        float _t24 = Math.fma(upZ, _t14, -(upY * _t15));
-        float _t27 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t24 * _t24));
-        float _t28 = (1.0f / (float) Math.sqrt(_t27));
-        float _t32, _t33, _t34;
-        if (_t27 > 0.0f) {
-            _t32 = _t24 * _t28;
-            _t33 = _t23 * _t28;
-            _t34 = _t22 * _t28;
-        } else {
-            _t32 = 0.0f;
-            _t33 = 0.0f;
-            _t34 = 0.0f;
-        }
-        float _t41 = Math.fma(_t15, _t33, -(_t14 * _t34));
-        float _t42 = Math.fma(_t13, _t34, -(_t15 * _t32));
-        float _t43 = Math.fma(_t14, _t32, -(_t13 * _t33));
-        dd[0] = _t32;
-        dd[1] = _t33;
-        dd[2] = _t34;
-        dd[3] = Math.fma(_t0, _t32, Math.fma(_t1, _t33, Math.fma(_t2, _t34, sd[3])));
-        dd[4] = _t41;
-        dd[5] = _t42;
-        dd[6] = _t43;
-        dd[7] = Math.fma(_t0, _t41, Math.fma(_t1, _t42, Math.fma(_t2, _t43, sd[7])));
-        dd[8] = -_t13;
-        dd[9] = -_t14;
-        dd[10] = -_t15;
-        dd[11] = Math.fma(eyeX, _t13, Math.fma(eyeY, _t14, Math.fma(eyeZ, _t15, sd[11])));
+        float _t3 = centerY - eyeY;
+        float _t4 = centerZ - eyeZ;
+        float _t5 = centerX - eyeX;
+        float _t9 = (1.0f / (float) Math.sqrt(Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t3 * _t3))));
+        float _t10 = _t3 * _t9;
+        float _t11 = _t4 * _t9;
+        float _t12 = _t5 * _t9;
+        float _t19 = Math.fma(upZ, _t10, -(upY * _t11));
+        float _t20 = Math.fma(upY, _t12, -(upX * _t10));
+        float _t21 = Math.fma(upX, _t11, -(upZ * _t12));
+        float _ct0 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, _t19 * _t19));
+        if (!(_ct0 > 0.0f)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t26 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t27 = _t19 * _t26;
+        float _t28 = _t21 * _t26;
+        float _t29 = _t20 * _t26;
+        float _t36 = Math.fma(_t11, _t28, -(_t10 * _t29));
+        float _t37 = Math.fma(_t12, _t29, -(_t11 * _t27));
+        float _t38 = Math.fma(_t10, _t27, -(_t12 * _t28));
+        dd[0] = _t27;
+        dd[1] = _t28;
+        dd[2] = _t29;
+        dd[3] = Math.fma(_t0, _t27, Math.fma(_t1, _t28, Math.fma(_t2, _t29, sd[3])));
+        dd[4] = _t36;
+        dd[5] = _t37;
+        dd[6] = _t38;
+        dd[7] = Math.fma(_t0, _t36, Math.fma(_t1, _t37, Math.fma(_t2, _t38, sd[7])));
+        dd[8] = -_t12;
+        dd[9] = -_t10;
+        dd[10] = -_t11;
+        dd[11] = Math.fma(eyeX, _t12, Math.fma(eyeY, _t10, Math.fma(eyeZ, _t11, sd[11])));
         ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
         return dest;
     }
@@ -11462,54 +12902,40 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -sd[2];
         float _t1 = -sd[6];
         float _t2 = -sd[10];
-        float _t3 = centerZ - eyeZ;
-        float _t4 = centerX - eyeX;
+        float _t3 = centerX - eyeX;
+        float _t4 = centerZ - eyeZ;
         float _t5 = centerY - eyeY;
-        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        float _t9 = (1.0f / (float) Math.sqrt(_t8));
-        float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
-            _t13 = _t4 * _t9;
-            _t14 = _t5 * _t9;
-            _t15 = _t3 * _t9;
-        } else {
-            _t13 = 0.0f;
-            _t14 = 0.0f;
-            _t15 = 0.0f;
-        }
-        float _t24 = Math.fma(upY, _t13, -(upX * _t14));
-        float _t25 = Math.fma(upX, _t15, -(upZ * _t13));
-        float _t26 = Math.fma(upZ, _t14, -(upY * _t15));
-        float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
-        float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
-        float _t31 = (1.0f / (float) Math.sqrt(_t30));
-        float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
-            _t35 = _t26 * _t31;
-            _t36 = _t25 * _t31;
-            _t37 = _t24 * _t31;
-        } else {
-            _t35 = 0.0f;
-            _t36 = 0.0f;
-            _t37 = 0.0f;
-        }
-        float _t46 = Math.fma(_t15, _t36, -(_t14 * _t37));
-        float _t47 = Math.fma(_t13, _t37, -(_t15 * _t35));
-        float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
-        float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
-        float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        float _buf0 = Math.fma(_t0, _t13, Math.fma(sd[0], _t35, sd[1] * _t46));
-        float _buf1 = Math.fma(_t0, _t14, Math.fma(sd[0], _t36, sd[1] * _t47));
-        float _buf2 = Math.fma(_t0, _t15, Math.fma(sd[0], _t37, sd[1] * _t48));
-        dd[3] = Math.fma(-sd[0], _t50, Math.fma(-sd[1], _t52, Math.fma(sd[2], _t27, sd[3])));
-        float _buf3 = Math.fma(_t1, _t13, Math.fma(sd[4], _t35, sd[5] * _t46));
-        float _buf4 = Math.fma(_t1, _t14, Math.fma(sd[4], _t36, sd[5] * _t47));
-        float _buf5 = Math.fma(_t1, _t15, Math.fma(sd[4], _t37, sd[5] * _t48));
-        dd[7] = Math.fma(-sd[4], _t50, Math.fma(-sd[5], _t52, Math.fma(sd[6], _t27, sd[7])));
-        float _buf6 = Math.fma(_t2, _t13, Math.fma(sd[8], _t35, sd[9] * _t46));
-        float _buf7 = Math.fma(_t2, _t14, Math.fma(sd[8], _t36, sd[9] * _t47));
-        float _buf8 = Math.fma(_t2, _t15, Math.fma(sd[8], _t37, sd[9] * _t48));
-        dd[11] = Math.fma(-sd[8], _t50, Math.fma(-sd[9], _t52, Math.fma(sd[10], _t27, sd[11])));
+        float _t9 = (1.0f / (float) Math.sqrt(Math.fma(_t4, _t4, Math.fma(_t3, _t3, _t5 * _t5))));
+        float _t10 = _t3 * _t9;
+        float _t11 = _t5 * _t9;
+        float _t12 = _t4 * _t9;
+        float _t21 = Math.fma(upZ, _t11, -(upY * _t12));
+        float _t22 = Math.fma(upY, _t10, -(upX * _t11));
+        float _t23 = Math.fma(upX, _t12, -(upZ * _t10));
+        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        float _ct0 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t29 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t30 = _t21 * _t29;
+        float _t31 = _t23 * _t29;
+        float _t32 = _t22 * _t29;
+        float _t41 = Math.fma(_t12, _t31, -(_t11 * _t32));
+        float _t42 = Math.fma(_t10, _t32, -(_t12 * _t30));
+        float _t43 = Math.fma(_t11, _t30, -(_t10 * _t31));
+        float _t45 = Math.fma(eyeZ, _t32, Math.fma(eyeX, _t30, eyeY * _t31));
+        float _t47 = Math.fma(eyeZ, _t43, Math.fma(eyeX, _t41, eyeY * _t42));
+        float _buf0 = Math.fma(_t0, _t10, Math.fma(sd[0], _t30, sd[1] * _t41));
+        float _buf1 = Math.fma(_t0, _t11, Math.fma(sd[0], _t31, sd[1] * _t42));
+        float _buf2 = Math.fma(_t0, _t12, Math.fma(sd[0], _t32, sd[1] * _t43));
+        dd[3] = Math.fma(-sd[0], _t45, Math.fma(-sd[1], _t47, Math.fma(sd[2], _t24, sd[3])));
+        float _buf3 = Math.fma(_t1, _t10, Math.fma(sd[4], _t30, sd[5] * _t41));
+        float _buf4 = Math.fma(_t1, _t11, Math.fma(sd[4], _t31, sd[5] * _t42));
+        float _buf5 = Math.fma(_t1, _t12, Math.fma(sd[4], _t32, sd[5] * _t43));
+        dd[7] = Math.fma(-sd[4], _t45, Math.fma(-sd[5], _t47, Math.fma(sd[6], _t24, sd[7])));
+        float _buf6 = Math.fma(_t2, _t10, Math.fma(sd[8], _t30, sd[9] * _t41));
+        float _buf7 = Math.fma(_t2, _t11, Math.fma(sd[8], _t31, sd[9] * _t42));
+        float _buf8 = Math.fma(_t2, _t12, Math.fma(sd[8], _t32, sd[9] * _t43));
+        dd[11] = Math.fma(-sd[8], _t45, Math.fma(-sd[9], _t47, Math.fma(sd[10], _t24, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -11534,54 +12960,40 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -sd[2];
         float _t1 = -sd[6];
         float _t2 = -sd[10];
-        float _t3 = centerZ - eyeZ;
-        float _t4 = centerX - eyeX;
+        float _t3 = centerX - eyeX;
+        float _t4 = centerZ - eyeZ;
         float _t5 = centerY - eyeY;
-        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
-        float _t9 = (1.0f / (float) Math.sqrt(_t8));
-        float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
-            _t13 = _t4 * _t9;
-            _t14 = _t5 * _t9;
-            _t15 = _t3 * _t9;
-        } else {
-            _t13 = 0.0f;
-            _t14 = 0.0f;
-            _t15 = 0.0f;
-        }
-        float _t24 = Math.fma(upY, _t13, -(upX * _t14));
-        float _t25 = Math.fma(upX, _t15, -(upZ * _t13));
-        float _t26 = Math.fma(upZ, _t14, -(upY * _t15));
-        float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
-        float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
-        float _t31 = (1.0f / (float) Math.sqrt(_t30));
-        float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
-            _t35 = _t26 * _t31;
-            _t36 = _t25 * _t31;
-            _t37 = _t24 * _t31;
-        } else {
-            _t35 = 0.0f;
-            _t36 = 0.0f;
-            _t37 = 0.0f;
-        }
-        float _t46 = Math.fma(_t15, _t36, -(_t14 * _t37));
-        float _t47 = Math.fma(_t13, _t37, -(_t15 * _t35));
-        float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
-        float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
-        float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        float _buf0 = Math.fma(_t0, _t13, Math.fma(sd[0], _t35, sd[1] * _t46));
-        float _buf1 = Math.fma(_t0, _t14, Math.fma(sd[0], _t36, sd[1] * _t47));
-        float _buf2 = Math.fma(_t0, _t15, Math.fma(sd[0], _t37, sd[1] * _t48));
-        dd[3] = Math.fma(-sd[0], _t50, Math.fma(-sd[1], _t52, Math.fma(sd[2], _t27, sd[3])));
-        float _buf3 = Math.fma(_t1, _t13, Math.fma(sd[4], _t35, sd[5] * _t46));
-        float _buf4 = Math.fma(_t1, _t14, Math.fma(sd[4], _t36, sd[5] * _t47));
-        float _buf5 = Math.fma(_t1, _t15, Math.fma(sd[4], _t37, sd[5] * _t48));
-        dd[7] = Math.fma(-sd[4], _t50, Math.fma(-sd[5], _t52, Math.fma(sd[6], _t27, sd[7])));
-        float _buf6 = Math.fma(_t2, _t13, Math.fma(sd[8], _t35, sd[9] * _t46));
-        float _buf7 = Math.fma(_t2, _t14, Math.fma(sd[8], _t36, sd[9] * _t47));
-        float _buf8 = Math.fma(_t2, _t15, Math.fma(sd[8], _t37, sd[9] * _t48));
-        dd[11] = Math.fma(-sd[8], _t50, Math.fma(-sd[9], _t52, Math.fma(sd[10], _t27, sd[11])));
+        float _t9 = (1.0f / (float) Math.sqrt(Math.fma(_t4, _t4, Math.fma(_t3, _t3, _t5 * _t5))));
+        float _t10 = _t3 * _t9;
+        float _t11 = _t5 * _t9;
+        float _t12 = _t4 * _t9;
+        float _t21 = Math.fma(upZ, _t11, -(upY * _t12));
+        float _t22 = Math.fma(upY, _t10, -(upX * _t11));
+        float _t23 = Math.fma(upX, _t12, -(upZ * _t10));
+        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        float _ct0 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t29 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t30 = _t21 * _t29;
+        float _t31 = _t23 * _t29;
+        float _t32 = _t22 * _t29;
+        float _t41 = Math.fma(_t12, _t31, -(_t11 * _t32));
+        float _t42 = Math.fma(_t10, _t32, -(_t12 * _t30));
+        float _t43 = Math.fma(_t11, _t30, -(_t10 * _t31));
+        float _t45 = Math.fma(eyeZ, _t32, Math.fma(eyeX, _t30, eyeY * _t31));
+        float _t47 = Math.fma(eyeZ, _t43, Math.fma(eyeX, _t41, eyeY * _t42));
+        float _buf0 = Math.fma(_t0, _t10, Math.fma(sd[0], _t30, sd[1] * _t41));
+        float _buf1 = Math.fma(_t0, _t11, Math.fma(sd[0], _t31, sd[1] * _t42));
+        float _buf2 = Math.fma(_t0, _t12, Math.fma(sd[0], _t32, sd[1] * _t43));
+        dd[3] = Math.fma(-sd[0], _t45, Math.fma(-sd[1], _t47, Math.fma(sd[2], _t24, sd[3])));
+        float _buf3 = Math.fma(_t1, _t10, Math.fma(sd[4], _t30, sd[5] * _t41));
+        float _buf4 = Math.fma(_t1, _t11, Math.fma(sd[4], _t31, sd[5] * _t42));
+        float _buf5 = Math.fma(_t1, _t12, Math.fma(sd[4], _t32, sd[5] * _t43));
+        dd[7] = Math.fma(-sd[4], _t45, Math.fma(-sd[5], _t47, Math.fma(sd[6], _t24, sd[7])));
+        float _buf6 = Math.fma(_t2, _t10, Math.fma(sd[8], _t30, sd[9] * _t41));
+        float _buf7 = Math.fma(_t2, _t11, Math.fma(sd[8], _t31, sd[9] * _t42));
+        float _buf8 = Math.fma(_t2, _t12, Math.fma(sd[8], _t32, sd[9] * _t43));
+        dd[11] = Math.fma(-sd[8], _t45, Math.fma(-sd[9], _t47, Math.fma(sd[10], _t24, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -11633,54 +13045,536 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = -sd[2];
         float _t1 = -sd[6];
         float _t2 = -sd[10];
+        float _t3 = centerX - eyeX;
+        float _t4 = centerZ - eyeZ;
+        float _t5 = centerY - eyeY;
+        float _t9 = (1.0f / (float) Math.sqrt(Math.fma(_t4, _t4, Math.fma(_t3, _t3, _t5 * _t5))));
+        float _t10 = _t3 * _t9;
+        float _t11 = _t5 * _t9;
+        float _t12 = _t4 * _t9;
+        float _t21 = Math.fma(upZ, _t11, -(upY * _t12));
+        float _t22 = Math.fma(upY, _t10, -(upX * _t11));
+        float _t23 = Math.fma(upX, _t12, -(upZ * _t10));
+        float _t24 = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        float _ct0 = Math.fma(_t22, _t22, Math.fma(_t23, _t23, _t21 * _t21));
+        if (!(_ct0 > 0.0f)) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        float _t29 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t30 = _t21 * _t29;
+        float _t31 = _t23 * _t29;
+        float _t32 = _t22 * _t29;
+        float _t41 = Math.fma(_t12, _t31, -(_t11 * _t32));
+        float _t42 = Math.fma(_t10, _t32, -(_t12 * _t30));
+        float _t43 = Math.fma(_t11, _t30, -(_t10 * _t31));
+        float _t45 = Math.fma(eyeZ, _t32, Math.fma(eyeX, _t30, eyeY * _t31));
+        float _t47 = Math.fma(eyeZ, _t43, Math.fma(eyeX, _t41, eyeY * _t42));
+        float _buf0 = Math.fma(_t0, _t10, Math.fma(sd[0], _t30, sd[1] * _t41));
+        float _buf1 = Math.fma(_t0, _t11, Math.fma(sd[0], _t31, sd[1] * _t42));
+        float _buf2 = Math.fma(_t0, _t12, Math.fma(sd[0], _t32, sd[1] * _t43));
+        dd[3] = Math.fma(-sd[0], _t45, Math.fma(-sd[1], _t47, Math.fma(sd[2], _t24, sd[3])));
+        float _buf3 = Math.fma(_t1, _t10, Math.fma(sd[4], _t30, sd[5] * _t41));
+        float _buf4 = Math.fma(_t1, _t11, Math.fma(sd[4], _t31, sd[5] * _t42));
+        float _buf5 = Math.fma(_t1, _t12, Math.fma(sd[4], _t32, sd[5] * _t43));
+        dd[7] = Math.fma(-sd[4], _t45, Math.fma(-sd[5], _t47, Math.fma(sd[6], _t24, sd[7])));
+        float _buf6 = Math.fma(_t2, _t10, Math.fma(sd[8], _t30, sd[9] * _t41));
+        float _buf7 = Math.fma(_t2, _t11, Math.fma(sd[8], _t31, sd[9] * _t42));
+        float _buf8 = Math.fma(_t2, _t12, Math.fma(sd[8], _t32, sd[9] * _t43));
+        dd[11] = Math.fma(-sd[8], _t45, Math.fma(-sd[9], _t47, Math.fma(sd[10], _t24, sd[11])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        dd[8] = _buf6;
+        dd[9] = _buf7;
+        dd[10] = _buf8;
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_rh_degenerate(Float3R eye, Float3R center, Float3R up, @Mutated Float3x4 dest) {
+        return lookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate(Float3R eye, Float3R center, Float3R up, @Mutated Double3x4 dest) {
+        return lookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z(), dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Float3x4 lookAt_rh_degenerate(Float3R eye, Float3R center, Float3R up) {
+        return lookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_rh_degenerate_identity(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
+        float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
+        float _t6 = (1.0f / (float) Math.sqrt(_t5));
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 1.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = -1.0f;
+        } else {
+            _t7 = upY;
+            _t8 = upX;
+            _t9 = upZ;
+            _t13 = _t1 * _t6;
+            _t14 = _t2 * _t6;
+            _t15 = _t0 * _t6;
+        }
+        float _t16 = Math.abs(_t13);
+        float _t17 = Math.abs(_t15);
+        float _t18 = -_t14;
+        float _t19 = -_t15;
+        float _t26 = Math.fma(_t13, _t7, -(_t8 * _t14));
+        float _t27 = Math.fma(_t15, _t8, -(_t9 * _t13));
+        float _t28 = Math.fma(_t9, _t14, -(_t15 * _t7));
+        float _t29, _t30, _t31;
+        if (_t16 > _t17) {
+            _t29 = 0.0f;
+            _t30 = _t18;
+            _t31 = _t13;
+        } else {
+            _t29 = _t14;
+            _t30 = 0.0f;
+            _t31 = _t19;
+        }
+        float _t36 = Math.fma(_t26, _t26, Math.fma(_t27, _t27, _t28 * _t28));
+        float _t42, _t43, _t44, _t45;
+        if (_t36 == 0.0f) {
+            _t42 = (1.0f / (float) Math.sqrt(Math.fma(_t29, _t29, Math.fma(_t30, _t30, _t31 * _t31))));
+            _t43 = _t42 * _t29;
+            _t44 = _t42 * _t30;
+            _t45 = _t42 * _t31;
+        } else {
+            _t42 = (1.0f / (float) Math.sqrt(_t36));
+            _t43 = _t42 * _t26;
+            _t44 = _t42 * _t28;
+            _t45 = _t42 * _t27;
+        }
+        float _t52 = Math.fma(_t43, _t13, -(_t44 * _t15));
+        float _t53 = Math.fma(_t45, _t15, -(_t43 * _t14));
+        float _t54 = Math.fma(_t44, _t14, -(_t45 * _t13));
+        dd[0] = _t44;
+        dd[1] = _t45;
+        dd[2] = _t43;
+        dd[3] = -Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45));
+        dd[4] = _t53;
+        dd[5] = _t52;
+        dd[6] = _t54;
+        dd[7] = -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52));
+        dd[8] = -_t13;
+        dd[9] = _t18;
+        dd[10] = _t19;
+        dd[11] = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_rh_degenerate_translation(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = -eyeX;
+        float _t1 = -eyeY;
+        float _t2 = -eyeZ;
         float _t3 = centerZ - eyeZ;
         float _t4 = centerX - eyeX;
         float _t5 = centerY - eyeY;
         float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
         float _t9 = (1.0f / (float) Math.sqrt(_t8));
-        float _t13, _t14, _t15;
-        if (_t8 > 0.0f) {
-            _t13 = _t4 * _t9;
-            _t14 = _t5 * _t9;
-            _t15 = _t3 * _t9;
+        float _t10, _t11, _t12, _t16, _t17, _t18;
+        if (_t8 == 0.0f) {
+            _t10 = 1.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+            _t16 = 0.0f;
+            _t17 = 0.0f;
+            _t18 = -1.0f;
         } else {
-            _t13 = 0.0f;
-            _t14 = 0.0f;
-            _t15 = 0.0f;
+            _t10 = upY;
+            _t11 = upX;
+            _t12 = upZ;
+            _t16 = _t4 * _t9;
+            _t17 = _t5 * _t9;
+            _t18 = _t3 * _t9;
         }
-        float _t24 = Math.fma(upY, _t13, -(upX * _t14));
-        float _t25 = Math.fma(upX, _t15, -(upZ * _t13));
-        float _t26 = Math.fma(upZ, _t14, -(upY * _t15));
-        float _t27 = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
-        float _t30 = Math.fma(_t24, _t24, Math.fma(_t25, _t25, _t26 * _t26));
-        float _t31 = (1.0f / (float) Math.sqrt(_t30));
-        float _t35, _t36, _t37;
-        if (_t30 > 0.0f) {
-            _t35 = _t26 * _t31;
-            _t36 = _t25 * _t31;
-            _t37 = _t24 * _t31;
+        float _t19 = Math.abs(_t16);
+        float _t20 = Math.abs(_t18);
+        float _t21 = -_t17;
+        float _t22 = -_t18;
+        float _t29 = Math.fma(_t16, _t10, -(_t11 * _t17));
+        float _t30 = Math.fma(_t18, _t11, -(_t12 * _t16));
+        float _t31 = Math.fma(_t12, _t17, -(_t18 * _t10));
+        float _t32, _t33, _t34;
+        if (_t19 > _t20) {
+            _t32 = 0.0f;
+            _t33 = _t21;
+            _t34 = _t16;
         } else {
+            _t32 = _t17;
+            _t33 = 0.0f;
+            _t34 = _t22;
+        }
+        float _t39 = Math.fma(_t29, _t29, Math.fma(_t30, _t30, _t31 * _t31));
+        float _t45, _t46, _t47, _t48;
+        if (_t39 == 0.0f) {
+            _t45 = (1.0f / (float) Math.sqrt(Math.fma(_t32, _t32, Math.fma(_t33, _t33, _t34 * _t34))));
+            _t46 = _t45 * _t32;
+            _t47 = _t45 * _t33;
+            _t48 = _t45 * _t34;
+        } else {
+            _t45 = (1.0f / (float) Math.sqrt(_t39));
+            _t46 = _t45 * _t29;
+            _t47 = _t45 * _t31;
+            _t48 = _t45 * _t30;
+        }
+        float _t55 = Math.fma(_t46, _t16, -(_t47 * _t18));
+        float _t56 = Math.fma(_t48, _t18, -(_t46 * _t17));
+        float _t57 = Math.fma(_t47, _t17, -(_t48 * _t16));
+        dd[0] = _t47;
+        dd[1] = _t48;
+        dd[2] = _t46;
+        dd[3] = Math.fma(_t0, _t47, Math.fma(_t1, _t48, Math.fma(_t2, _t46, sd[3])));
+        dd[4] = _t56;
+        dd[5] = _t55;
+        dd[6] = _t57;
+        dd[7] = Math.fma(_t0, _t56, Math.fma(_t1, _t55, Math.fma(_t2, _t57, sd[7])));
+        dd[8] = -_t16;
+        dd[9] = _t21;
+        dd[10] = _t22;
+        dd[11] = Math.fma(eyeX, _t16, Math.fma(eyeY, _t17, Math.fma(eyeZ, _t18, sd[11])));
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_rh_degenerate_orthogonal(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = -sd[2];
+        float _t1 = -sd[6];
+        float _t2 = -sd[10];
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t10, _t11, _t12, _t16, _t17, _t18;
+        if (_t8 == 0.0f) {
+            _t10 = 1.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+            _t16 = 0.0f;
+            _t17 = 0.0f;
+            _t18 = -1.0f;
+        } else {
+            _t10 = upY;
+            _t11 = upX;
+            _t12 = upZ;
+            _t16 = _t4 * _t9;
+            _t17 = _t5 * _t9;
+            _t18 = _t3 * _t9;
+        }
+        float _t19 = Math.abs(_t16);
+        float _t20 = Math.abs(_t18);
+        float _t31 = Math.fma(_t16, _t10, -(_t11 * _t17));
+        float _t32 = Math.fma(_t18, _t11, -(_t12 * _t16));
+        float _t33 = Math.fma(_t12, _t17, -(_t18 * _t10));
+        float _t34, _t35, _t37;
+        if (_t19 > _t20) {
+            _t34 = 0.0f;
+            _t35 = -_t17;
+            _t37 = _t16;
+        } else {
+            _t34 = _t17;
             _t35 = 0.0f;
-            _t36 = 0.0f;
-            _t37 = 0.0f;
+            _t37 = -_t18;
         }
-        float _t46 = Math.fma(_t15, _t36, -(_t14 * _t37));
-        float _t47 = Math.fma(_t13, _t37, -(_t15 * _t35));
-        float _t48 = Math.fma(_t14, _t35, -(_t13 * _t36));
-        float _t50 = Math.fma(eyeZ, _t37, Math.fma(eyeX, _t35, eyeY * _t36));
-        float _t52 = Math.fma(eyeZ, _t48, Math.fma(eyeX, _t46, eyeY * _t47));
-        float _buf0 = Math.fma(_t0, _t13, Math.fma(sd[0], _t35, sd[1] * _t46));
-        float _buf1 = Math.fma(_t0, _t14, Math.fma(sd[0], _t36, sd[1] * _t47));
-        float _buf2 = Math.fma(_t0, _t15, Math.fma(sd[0], _t37, sd[1] * _t48));
-        dd[3] = Math.fma(-sd[0], _t50, Math.fma(-sd[1], _t52, Math.fma(sd[2], _t27, sd[3])));
-        float _buf3 = Math.fma(_t1, _t13, Math.fma(sd[4], _t35, sd[5] * _t46));
-        float _buf4 = Math.fma(_t1, _t14, Math.fma(sd[4], _t36, sd[5] * _t47));
-        float _buf5 = Math.fma(_t1, _t15, Math.fma(sd[4], _t37, sd[5] * _t48));
-        dd[7] = Math.fma(-sd[4], _t50, Math.fma(-sd[5], _t52, Math.fma(sd[6], _t27, sd[7])));
-        float _buf6 = Math.fma(_t2, _t13, Math.fma(sd[8], _t35, sd[9] * _t46));
-        float _buf7 = Math.fma(_t2, _t14, Math.fma(sd[8], _t36, sd[9] * _t47));
-        float _buf8 = Math.fma(_t2, _t15, Math.fma(sd[8], _t37, sd[9] * _t48));
-        dd[11] = Math.fma(-sd[8], _t50, Math.fma(-sd[9], _t52, Math.fma(sd[10], _t27, sd[11])));
+        float _t36 = Math.fma(eyeZ, _t18, Math.fma(eyeX, _t16, eyeY * _t17));
+        float _t42 = Math.fma(_t31, _t31, Math.fma(_t32, _t32, _t33 * _t33));
+        float _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0f) {
+            _t48 = (1.0f / (float) Math.sqrt(Math.fma(_t34, _t34, Math.fma(_t35, _t35, _t37 * _t37))));
+            _t49 = _t48 * _t34;
+            _t50 = _t48 * _t35;
+            _t51 = _t48 * _t37;
+        } else {
+            _t48 = (1.0f / (float) Math.sqrt(_t42));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t33;
+            _t51 = _t48 * _t32;
+        }
+        float _t60 = Math.fma(_t49, _t16, -(_t50 * _t18));
+        float _t62 = Math.fma(_t51, _t18, -(_t49 * _t17));
+        float _t63 = Math.fma(_t50, _t17, -(_t51 * _t16));
+        float _t64 = Math.fma(eyeZ, _t49, Math.fma(eyeX, _t50, eyeY * _t51));
+        float _t66 = Math.fma(eyeZ, _t63, Math.fma(eyeX, _t62, eyeY * _t60));
+        float _buf0 = Math.fma(_t0, _t16, Math.fma(sd[0], _t50, sd[1] * _t62));
+        float _buf1 = Math.fma(_t0, _t17, Math.fma(sd[0], _t51, sd[1] * _t60));
+        float _buf2 = Math.fma(_t0, _t18, Math.fma(sd[0], _t49, sd[1] * _t63));
+        dd[3] = Math.fma(-sd[0], _t64, Math.fma(-sd[1], _t66, Math.fma(sd[2], _t36, sd[3])));
+        float _buf3 = Math.fma(_t1, _t16, Math.fma(sd[4], _t50, sd[5] * _t62));
+        float _buf4 = Math.fma(_t1, _t17, Math.fma(sd[4], _t51, sd[5] * _t60));
+        float _buf5 = Math.fma(_t1, _t18, Math.fma(sd[4], _t49, sd[5] * _t63));
+        dd[7] = Math.fma(-sd[4], _t64, Math.fma(-sd[5], _t66, Math.fma(sd[6], _t36, sd[7])));
+        float _buf6 = Math.fma(_t2, _t16, Math.fma(sd[8], _t50, sd[9] * _t62));
+        float _buf7 = Math.fma(_t2, _t17, Math.fma(sd[8], _t51, sd[9] * _t60));
+        float _buf8 = Math.fma(_t2, _t18, Math.fma(sd[8], _t49, sd[9] * _t63));
+        dd[11] = Math.fma(-sd[8], _t64, Math.fma(-sd[9], _t66, Math.fma(sd[10], _t36, sd[11])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        dd[8] = _buf6;
+        dd[9] = _buf7;
+        dd[10] = _buf8;
+        ((Float3x4Impl) dest).properties = Joml.BIT_ORTHOGONAL;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_rh_degenerate_general(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = -sd[2];
+        float _t1 = -sd[6];
+        float _t2 = -sd[10];
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t10, _t11, _t12, _t16, _t17, _t18;
+        if (_t8 == 0.0f) {
+            _t10 = 1.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+            _t16 = 0.0f;
+            _t17 = 0.0f;
+            _t18 = -1.0f;
+        } else {
+            _t10 = upY;
+            _t11 = upX;
+            _t12 = upZ;
+            _t16 = _t4 * _t9;
+            _t17 = _t5 * _t9;
+            _t18 = _t3 * _t9;
+        }
+        float _t19 = Math.abs(_t16);
+        float _t20 = Math.abs(_t18);
+        float _t31 = Math.fma(_t16, _t10, -(_t11 * _t17));
+        float _t32 = Math.fma(_t18, _t11, -(_t12 * _t16));
+        float _t33 = Math.fma(_t12, _t17, -(_t18 * _t10));
+        float _t34, _t35, _t37;
+        if (_t19 > _t20) {
+            _t34 = 0.0f;
+            _t35 = -_t17;
+            _t37 = _t16;
+        } else {
+            _t34 = _t17;
+            _t35 = 0.0f;
+            _t37 = -_t18;
+        }
+        float _t36 = Math.fma(eyeZ, _t18, Math.fma(eyeX, _t16, eyeY * _t17));
+        float _t42 = Math.fma(_t31, _t31, Math.fma(_t32, _t32, _t33 * _t33));
+        float _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0f) {
+            _t48 = (1.0f / (float) Math.sqrt(Math.fma(_t34, _t34, Math.fma(_t35, _t35, _t37 * _t37))));
+            _t49 = _t48 * _t34;
+            _t50 = _t48 * _t35;
+            _t51 = _t48 * _t37;
+        } else {
+            _t48 = (1.0f / (float) Math.sqrt(_t42));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t33;
+            _t51 = _t48 * _t32;
+        }
+        float _t60 = Math.fma(_t49, _t16, -(_t50 * _t18));
+        float _t62 = Math.fma(_t51, _t18, -(_t49 * _t17));
+        float _t63 = Math.fma(_t50, _t17, -(_t51 * _t16));
+        float _t64 = Math.fma(eyeZ, _t49, Math.fma(eyeX, _t50, eyeY * _t51));
+        float _t66 = Math.fma(eyeZ, _t63, Math.fma(eyeX, _t62, eyeY * _t60));
+        float _buf0 = Math.fma(_t0, _t16, Math.fma(sd[0], _t50, sd[1] * _t62));
+        float _buf1 = Math.fma(_t0, _t17, Math.fma(sd[0], _t51, sd[1] * _t60));
+        float _buf2 = Math.fma(_t0, _t18, Math.fma(sd[0], _t49, sd[1] * _t63));
+        dd[3] = Math.fma(-sd[0], _t64, Math.fma(-sd[1], _t66, Math.fma(sd[2], _t36, sd[3])));
+        float _buf3 = Math.fma(_t1, _t16, Math.fma(sd[4], _t50, sd[5] * _t62));
+        float _buf4 = Math.fma(_t1, _t17, Math.fma(sd[4], _t51, sd[5] * _t60));
+        float _buf5 = Math.fma(_t1, _t18, Math.fma(sd[4], _t49, sd[5] * _t63));
+        dd[7] = Math.fma(-sd[4], _t64, Math.fma(-sd[5], _t66, Math.fma(sd[6], _t36, sd[7])));
+        float _buf6 = Math.fma(_t2, _t16, Math.fma(sd[8], _t50, sd[9] * _t62));
+        float _buf7 = Math.fma(_t2, _t17, Math.fma(sd[8], _t51, sd[9] * _t60));
+        float _buf8 = Math.fma(_t2, _t18, Math.fma(sd[8], _t49, sd[9] * _t63));
+        dd[11] = Math.fma(-sd[8], _t64, Math.fma(-sd[9], _t66, Math.fma(sd[10], _t36, sd[11])));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        dd[8] = _buf6;
+        dd[9] = _buf7;
+        dd[10] = _buf8;
+        ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3x4 lookAt_rh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Float3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_rh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_rh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_rh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+        return lookAt_rh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float3x4 lookAt_rh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        if (Joml.RETURN_NEW) return lookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, Joml.float3x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return lookAt_rh_degenerate_identity(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return lookAt_rh_degenerate_translation(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return lookAt_rh_degenerate_orthogonal(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+        return lookAt_rh_degenerate_general(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ, this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code lookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3x4 lookAt_rh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ, @Mutated Double3x4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        float _t0 = -sd[2];
+        float _t1 = -sd[6];
+        float _t2 = -sd[10];
+        float _t3 = centerZ - eyeZ;
+        float _t4 = centerX - eyeX;
+        float _t5 = centerY - eyeY;
+        float _t8 = Math.fma(_t3, _t3, Math.fma(_t4, _t4, _t5 * _t5));
+        float _t9 = (1.0f / (float) Math.sqrt(_t8));
+        float _t10, _t11, _t12, _t16, _t17, _t18;
+        if (_t8 == 0.0f) {
+            _t10 = 1.0f;
+            _t11 = 0.0f;
+            _t12 = 0.0f;
+            _t16 = 0.0f;
+            _t17 = 0.0f;
+            _t18 = -1.0f;
+        } else {
+            _t10 = upY;
+            _t11 = upX;
+            _t12 = upZ;
+            _t16 = _t4 * _t9;
+            _t17 = _t5 * _t9;
+            _t18 = _t3 * _t9;
+        }
+        float _t19 = Math.abs(_t16);
+        float _t20 = Math.abs(_t18);
+        float _t31 = Math.fma(_t16, _t10, -(_t11 * _t17));
+        float _t32 = Math.fma(_t18, _t11, -(_t12 * _t16));
+        float _t33 = Math.fma(_t12, _t17, -(_t18 * _t10));
+        float _t34, _t35, _t37;
+        if (_t19 > _t20) {
+            _t34 = 0.0f;
+            _t35 = -_t17;
+            _t37 = _t16;
+        } else {
+            _t34 = _t17;
+            _t35 = 0.0f;
+            _t37 = -_t18;
+        }
+        float _t36 = Math.fma(eyeZ, _t18, Math.fma(eyeX, _t16, eyeY * _t17));
+        float _t42 = Math.fma(_t31, _t31, Math.fma(_t32, _t32, _t33 * _t33));
+        float _t48, _t49, _t50, _t51;
+        if (_t42 == 0.0f) {
+            _t48 = (1.0f / (float) Math.sqrt(Math.fma(_t34, _t34, Math.fma(_t35, _t35, _t37 * _t37))));
+            _t49 = _t48 * _t34;
+            _t50 = _t48 * _t35;
+            _t51 = _t48 * _t37;
+        } else {
+            _t48 = (1.0f / (float) Math.sqrt(_t42));
+            _t49 = _t48 * _t31;
+            _t50 = _t48 * _t33;
+            _t51 = _t48 * _t32;
+        }
+        float _t60 = Math.fma(_t49, _t16, -(_t50 * _t18));
+        float _t62 = Math.fma(_t51, _t18, -(_t49 * _t17));
+        float _t63 = Math.fma(_t50, _t17, -(_t51 * _t16));
+        float _t64 = Math.fma(eyeZ, _t49, Math.fma(eyeX, _t50, eyeY * _t51));
+        float _t66 = Math.fma(eyeZ, _t63, Math.fma(eyeX, _t62, eyeY * _t60));
+        float _buf0 = Math.fma(_t0, _t16, Math.fma(sd[0], _t50, sd[1] * _t62));
+        float _buf1 = Math.fma(_t0, _t17, Math.fma(sd[0], _t51, sd[1] * _t60));
+        float _buf2 = Math.fma(_t0, _t18, Math.fma(sd[0], _t49, sd[1] * _t63));
+        dd[3] = Math.fma(-sd[0], _t64, Math.fma(-sd[1], _t66, Math.fma(sd[2], _t36, sd[3])));
+        float _buf3 = Math.fma(_t1, _t16, Math.fma(sd[4], _t50, sd[5] * _t62));
+        float _buf4 = Math.fma(_t1, _t17, Math.fma(sd[4], _t51, sd[5] * _t60));
+        float _buf5 = Math.fma(_t1, _t18, Math.fma(sd[4], _t49, sd[5] * _t63));
+        dd[7] = Math.fma(-sd[4], _t64, Math.fma(-sd[5], _t66, Math.fma(sd[6], _t36, sd[7])));
+        float _buf6 = Math.fma(_t2, _t16, Math.fma(sd[8], _t50, sd[9] * _t62));
+        float _buf7 = Math.fma(_t2, _t17, Math.fma(sd[8], _t51, sd[9] * _t60));
+        float _buf8 = Math.fma(_t2, _t18, Math.fma(sd[8], _t49, sd[9] * _t63));
+        dd[11] = Math.fma(-sd[8], _t64, Math.fma(-sd[9], _t66, Math.fma(sd[10], _t36, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -11702,6 +13596,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -11725,6 +13624,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -11747,6 +13651,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -11774,6 +13683,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -11803,6 +13717,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -11832,6 +13751,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
      * {@code double} only when stored.
@@ -11865,6 +13789,11 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -11884,6 +13813,11 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -11901,6 +13835,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      * <p>
@@ -11924,6 +13863,11 @@ public class Float3x4Impl implements Float3x4 {
      * If {@code M} is {@code this} matrix and {@code L} the "look at" matrix, then the new matrix
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -11950,6 +13894,11 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -11975,6 +13924,11 @@ public class Float3x4Impl implements Float3x4 {
      * will be {@code M * L}. So when transforming a vector {@code v} with the new matrix by using
      * {@code M * L * v}, the "look at" will be applied first.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      * <p>
      * The computation is performed at {@code float} precision; each result component is widened to
@@ -11998,6 +13952,11 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPos the position of the object to orient
      * @param targetPos the position to face (e.g. the camera position)
@@ -12012,6 +13971,11 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to a cylindrical billboard transformation that rotates about the given axis
      * to face the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPosX the {@code x} component of the vector {@code (objPosX, objPosY, objPosZ)}
      * @param objPosY the {@code y} component of the vector {@code (objPosX, objPosY, objPosZ)}
@@ -12032,40 +13996,102 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 makeBillboardCylindrical(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
         float[] dd = this.data;
-        float _t0 = targetPosY - objPosY;
-        float _t1 = targetPosX - objPosX;
-        float _t2 = targetPosZ - objPosZ;
-        float _t9 = Math.fma(upX, _t0, -(upY * _t1));
-        float _t10 = Math.fma(upY, _t2, -(upZ * _t0));
-        float _t11 = Math.fma(upZ, _t1, -(upX * _t2));
-        float _t14 = Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11));
-        float _t15 = (1.0f / (float) Math.sqrt(_t14));
-        float _t19, _t20, _t21;
-        if (_t14 > 0.0f) {
-            _t19 = _t10 * _t15;
-            _t20 = _t11 * _t15;
-            _t21 = _t9 * _t15;
-        } else {
-            _t19 = 0.0f;
-            _t20 = 0.0f;
-            _t21 = 0.0f;
-        }
-        float _t28 = Math.fma(upY, _t19, -(upX * _t20));
-        float _t29 = Math.fma(upX, _t21, -(upZ * _t19));
-        float _t30 = Math.fma(upZ, _t20, -(upY * _t21));
-        float _t33 = Math.fma(_t28, _t28, Math.fma(_t29, _t29, _t30 * _t30));
-        float _t34 = (1.0f / (float) Math.sqrt(_t33));
-        dd[0] = _t19;
+        float _t0 = targetPosZ - objPosZ;
+        float _t1 = targetPosY - objPosY;
+        float _t2 = targetPosX - objPosX;
+        float _t9 = Math.fma(upY, _t0, -(upZ * _t1));
+        float _t10 = Math.fma(upX, _t1, -(upY * _t2));
+        float _t11 = Math.fma(upZ, _t2, -(upX * _t0));
+        float _ct0 = Math.fma(_t10, _t10, Math.fma(_t9, _t9, _t11 * _t11));
+        if (!(_ct0 > 0.0f)) return makeBillboardCylindrical_degenerate(objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        float _t16 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t17 = _t9 * _t16;
+        float _t18 = _t11 * _t16;
+        float _t19 = _t10 * _t16;
+        float _t26 = Math.fma(upZ, _t18, -(upY * _t19));
+        float _t27 = Math.fma(upY, _t17, -(upX * _t18));
+        float _t28 = Math.fma(upX, _t19, -(upZ * _t17));
+        float _t32 = (1.0f / (float) Math.sqrt(Math.fma(_t27, _t27, Math.fma(_t28, _t28, _t26 * _t26))));
+        dd[0] = _t17;
         dd[1] = upX;
-        dd[2] = _t33 > 0.0f ? _t30 * _t34 : 0.0f;
+        dd[2] = _t26 * _t32;
         dd[3] = objPosX;
-        dd[4] = _t20;
+        dd[4] = _t18;
         dd[5] = upY;
-        dd[6] = _t33 > 0.0f ? _t29 * _t34 : 0.0f;
+        dd[6] = _t28 * _t32;
         dd[7] = objPosY;
-        dd[8] = _t21;
+        dd[8] = _t19;
         dd[9] = upZ;
-        dd[10] = _t33 > 0.0f ? _t28 * _t34 : 0.0f;
+        dd[10] = _t27 * _t32;
+        dd[11] = objPosZ;
+        ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardCylindrical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Float3x4 makeBillboardCylindrical_degenerate(Float3R objPos, Float3R targetPos, Float3R up) {
+        return makeBillboardCylindrical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardCylindrical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Float3x4 makeBillboardCylindrical_degenerate(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
+        float _t0 = Math.abs(upX);
+        float _t1 = Math.abs(upZ);
+        float _t4 = targetPosY - objPosY;
+        float _t5 = targetPosX - objPosX;
+        float _t6 = targetPosZ - objPosZ;
+        float _t13, _t14, _t15;
+        if (_t0 > _t1) {
+            _t13 = 0.0f;
+            _t14 = -upY;
+            _t15 = upX;
+        } else {
+            _t13 = upY;
+            _t14 = 0.0f;
+            _t15 = -upZ;
+        }
+        float _t16 = Math.fma(upX, _t4, -(upY * _t5));
+        float _t17 = Math.fma(upY, _t6, -(upZ * _t4));
+        float _t18 = Math.fma(upZ, _t5, -(upX * _t6));
+        float _t24 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
+        float _t29, _t30, _t31, _t32;
+        if (_t24 == 0.0f) {
+            _t29 = (1.0f / (float) Math.sqrt(Math.fma(_t13, _t13, Math.fma(_t15, _t15, _t14 * _t14))));
+            _t30 = _t29 * _t13;
+            _t31 = _t29 * _t14;
+            _t32 = _t29 * _t15;
+        } else {
+            _t29 = (1.0f / (float) Math.sqrt(_t24));
+            _t30 = _t29 * _t16;
+            _t31 = _t29 * _t17;
+            _t32 = _t29 * _t18;
+        }
+        float _t39 = Math.fma(upX, _t30, -(upZ * _t31));
+        float _t40 = Math.fma(upZ, _t32, -(upY * _t30));
+        float _t41 = Math.fma(upY, _t31, -(upX * _t32));
+        float _t45 = (1.0f / (float) Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t39, _t39, _t40 * _t40))));
+        dd[0] = _t31;
+        dd[1] = upX;
+        dd[2] = _t40 * _t45;
+        dd[3] = objPosX;
+        dd[4] = _t32;
+        dd[5] = upY;
+        dd[6] = _t39 * _t45;
+        dd[7] = objPosY;
+        dd[8] = _t30;
+        dd[9] = upZ;
+        dd[10] = _t41 * _t45;
         dd[11] = objPosZ;
         ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -12074,6 +14100,11 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPos the position of the object to orient
      * @param targetPos the position to face (e.g. the camera position)
@@ -12087,6 +14118,11 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a spherical billboard transformation that faces the camera.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param objPosX the {@code x} component of the vector {@code (objPosX, objPosY, objPosZ)}
      * @param objPosY the {@code y} component of the vector {@code (objPosX, objPosY, objPosZ)}
@@ -12107,44 +14143,113 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = targetPosZ - objPosZ;
         float _t1 = targetPosX - objPosX;
         float _t2 = targetPosY - objPosY;
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t2 * _t6;
+        float _t9 = _t1 * _t6;
+        float _t16 = Math.fma(upY, _t7, -(upZ * _t8));
+        float _t17 = Math.fma(upX, _t8, -(upY * _t9));
+        float _t18 = Math.fma(upZ, _t9, -(upX * _t7));
+        float _ct0 = Math.fma(_t17, _t17, Math.fma(_t16, _t16, _t18 * _t18));
+        if (!(_ct0 > 0.0f)) return makeBillboardSpherical_degenerate(objPosX, objPosY, objPosZ, targetPosX, targetPosY, targetPosZ, upX, upY, upZ);
+        float _t23 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t24 = _t16 * _t23;
+        float _t25 = _t17 * _t23;
+        float _t26 = _t18 * _t23;
+        dd[0] = _t24;
+        dd[1] = Math.fma(_t8, _t25, -(_t7 * _t26));
+        dd[2] = _t9;
+        dd[3] = objPosX;
+        dd[4] = _t26;
+        dd[5] = Math.fma(_t7, _t24, -(_t9 * _t25));
+        dd[6] = _t8;
+        dd[7] = objPosY;
+        dd[8] = _t25;
+        dd[9] = Math.fma(_t9, _t26, -(_t8 * _t24));
+        dd[10] = _t7;
+        dd[11] = objPosZ;
+        ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardSpherical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Float3x4 makeBillboardSpherical_degenerate(Float3R objPos, Float3R targetPos, Float3R up) {
+        return makeBillboardSpherical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeBillboardSpherical}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Float3x4 makeBillboardSpherical_degenerate(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
+        float _t0 = targetPosZ - objPosZ;
+        float _t1 = targetPosX - objPosX;
+        float _t2 = targetPosY - objPosY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t2 * _t6;
-            _t11 = _t1 * _t6;
-            _t12 = _t0 * _t6;
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 1.0f;
         } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t13 = _t2 * _t6;
+            _t14 = _t1 * _t6;
+            _t15 = _t0 * _t6;
         }
-        float _t19 = Math.fma(upX, _t10, -(upY * _t11));
-        float _t20 = Math.fma(upY, _t12, -(upZ * _t10));
-        float _t21 = Math.fma(upZ, _t11, -(upX * _t12));
-        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        float _t25 = (1.0f / (float) Math.sqrt(_t24));
+        float _t16 = Math.abs(_t14);
+        float _t17 = Math.abs(_t15);
+        float _t26 = Math.fma(_t7, _t13, -(_t14 * _t8));
+        float _t27 = Math.fma(_t9, _t14, -(_t7 * _t15));
+        float _t28 = Math.fma(_t8, _t15, -(_t9 * _t13));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
-            _t29 = _t20 * _t25;
-            _t30 = _t19 * _t25;
-            _t31 = _t21 * _t25;
-        } else {
+        if (_t16 > _t17) {
             _t29 = 0.0f;
+            _t30 = -_t13;
+            _t31 = _t14;
+        } else {
+            _t29 = _t13;
             _t30 = 0.0f;
-            _t31 = 0.0f;
+            _t31 = -_t15;
         }
-        dd[0] = _t29;
-        dd[1] = Math.fma(_t10, _t30, -(_t12 * _t31));
-        dd[2] = _t11;
+        float _t36 = Math.fma(_t26, _t26, Math.fma(_t27, _t27, _t28 * _t28));
+        float _t42, _t43, _t44, _t45;
+        if (_t36 == 0.0f) {
+            _t42 = (1.0f / (float) Math.sqrt(Math.fma(_t29, _t29, Math.fma(_t30, _t30, _t31 * _t31))));
+            _t43 = _t42 * _t29;
+            _t44 = _t42 * _t30;
+            _t45 = _t42 * _t31;
+        } else {
+            _t42 = (1.0f / (float) Math.sqrt(_t36));
+            _t43 = _t42 * _t26;
+            _t44 = _t42 * _t28;
+            _t45 = _t42 * _t27;
+        }
+        dd[0] = _t44;
+        dd[1] = Math.fma(_t43, _t13, -(_t45 * _t15));
+        dd[2] = _t14;
         dd[3] = objPosX;
-        dd[4] = _t31;
-        dd[5] = Math.fma(_t12, _t29, -(_t11 * _t30));
-        dd[6] = _t10;
+        dd[4] = _t45;
+        dd[5] = Math.fma(_t44, _t15, -(_t43 * _t14));
+        dd[6] = _t13;
         dd[7] = objPosY;
-        dd[8] = _t30;
-        dd[9] = Math.fma(_t11, _t31, -(_t10 * _t29));
-        dd[10] = _t12;
+        dd[8] = _t43;
+        dd[9] = Math.fma(_t45, _t14, -(_t44 * _t13));
+        dd[10] = _t15;
         dd[11] = objPosZ;
         ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -12181,33 +14286,36 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 makeBillboardSphericalShortest(float objPosX, float objPosY, float objPosZ, float targetPosX, float targetPosY, float targetPosZ) {
         float[] dd = this.data;
-        float _t0 = targetPosX - objPosX;
-        float _t1 = targetPosZ - objPosZ;
+        float _t0 = targetPosZ - objPosZ;
+        float _t1 = targetPosX - objPosX;
         float _t2 = targetPosY - objPosY;
-        float _t3 = objPosY - targetPosY;
-        float _t10 = _t1 + (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t0, _t0, _t2 * _t2)));
-        float _t12 = (1.0f / (float) Math.sqrt(Math.fma(_t10, _t10, Math.fma(_t3, _t3, _t0 * _t0))));
-        float _t13 = _t0 * _t12;
-        float _t14 = _t3 * _t12;
-        float _t15 = _t13 + _t13;
-        float _t16 = _t14 + _t14;
-        float _t17 = -_t15;
-        float _t19 = _t10 * _t12;
-        float _t20 = _t16 * _t13;
-        float _t21 = Math.fma(-_t16, _t14, 1.0f);
-        float _t22 = _t15 * _t19;
-        float _t23 = _t16 * _t19;
-        dd[0] = Math.fma(_t17, _t13, 1.0f);
-        dd[1] = _t20;
-        dd[2] = _t22;
+        float _t3 = _t2 + _t2;
+        float _t6 = Math.fma(_t1, _t1, _t2 * _t2);
+        float _t8 = Math.max(Math.fma(_t0, _t0, _t6), 4.7019774E-38f);
+        float _t9 = (float) Math.sqrt(_t8);
+        float _t11 = _t0 + _t9;
+        float _t12 = Math.fma(_t11, _t11, _t6);
+        float _t14 = _t12 / _t9;
+        float _t15 = _t12 > 1.1754944E-38f ? _t1 : _t9;
+        float _t25_inv = 1.0f / Math.fma(0.25f, _t14 * _t14, Math.fma(_t2, _t2, _t15 * _t15));
+        float _sp1 = _t2 * _t25_inv;
+        float _sp0 = _t15 * _t25_inv;
+        float _t26 = _sp1 * _t3;
+        float _t27 = _sp1 * _t14;
+        float _t29 = -(_t3 * _sp0);
+        float _t30 = _sp0 * _t14;
+        float _t32 = 1.0f - (_sp0 + _sp0) * _t15;
+        dd[0] = _t32;
+        dd[1] = _t29;
+        dd[2] = _t30;
         dd[3] = objPosX;
-        dd[4] = _t20;
-        dd[5] = _t21;
-        dd[6] = -_t23;
+        dd[4] = _t29;
+        dd[5] = 1.0f - _t26;
+        dd[6] = _t27;
         dd[7] = objPosY;
-        dd[8] = -_t22;
-        dd[9] = _t23;
-        dd[10] = Math.fma(_t17, _t13, _t21);
+        dd[8] = -_t30;
+        dd[9] = -_t27;
+        dd[10] = _t32 - _t26;
         dd[11] = objPosZ;
         ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -12255,6 +14363,7 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 makeFromDualQuat(float dqRX, float dqRY, float dqRZ, float dqRW, float dqDX, float dqDY, float dqDZ, float dqDW) {
         float[] dd = this.data;
+        float _sp0 = dqRX + dqRX;
         float _t0 = dqRY * dqRY;
         float _t2 = dqRZ * dqRW;
         float _t3 = dqRY * dqRW;
@@ -12262,14 +14371,14 @@ public class Float3x4Impl implements Float3x4 {
         float _t5 = dqRY * dqRZ;
         float _t6 = Math.fma(-2.0f, dqRZ * dqRZ, 1.0f);
         dd[0] = Math.fma(-2.0f, _t0, _t6);
-        dd[1] = Math.fma(-2.0f, _t2, (dqRX + dqRX) * dqRY);
+        dd[1] = Math.fma(-2.0f, _t2, _sp0 * dqRY);
         dd[2] = 2.0f * Math.fma(dqRX, dqRZ, _t3);
         dd[3] = 2.0f * (Math.fma(dqRY, dqDZ, -(dqRZ * dqDY)) + Math.fma(dqRW, dqDX, -(dqRX * dqDW)));
         dd[4] = 2.0f * Math.fma(dqRX, dqRY, _t2);
         dd[5] = Math.fma(-2.0f, _t4, _t6);
         dd[6] = Math.fma(-2.0f, dqRX * dqRW, _t5 + _t5);
         dd[7] = 2.0f * (Math.fma(dqRZ, dqDX, -(dqRX * dqDZ)) + Math.fma(dqRW, dqDY, -(dqRY * dqDW)));
-        dd[8] = Math.fma(-2.0f, _t3, (dqRX + dqRX) * dqRZ);
+        dd[8] = Math.fma(-2.0f, _t3, _sp0 * dqRZ);
         dd[9] = 2.0f * Math.fma(dqRX, dqRW, _t5);
         dd[10] = Math.fma(-2.0f, _t4, Math.fma(-2.0f, _t0, 1.0f));
         dd[11] = 2.0f * (Math.fma(dqRX, dqDY, -(dqRY * dqDX)) + Math.fma(dqRW, dqDZ, -(dqRZ * dqDW)));
@@ -12296,48 +14405,120 @@ public class Float3x4Impl implements Float3x4 {
         float _t0 = centerZ - eyeZ;
         float _t1 = centerX - eyeX;
         float _t2 = centerY - eyeY;
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t2 * _t6;
+        float _t9 = _t1 * _t6;
+        float _t16 = Math.fma(upY, _t7, -(upZ * _t8));
+        float _t17 = Math.fma(upX, _t8, -(upY * _t9));
+        float _t18 = Math.fma(upZ, _t9, -(upX * _t7));
+        float _ct0 = Math.fma(_t17, _t17, Math.fma(_t16, _t16, _t18 * _t18));
+        if (!(_ct0 > 0.0f)) return makeLookAt_lh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        float _t23 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t24 = _t16 * _t23;
+        float _t25 = _t18 * _t23;
+        float _t26 = _t17 * _t23;
+        float _t33 = Math.fma(_t8, _t26, -(_t7 * _t25));
+        float _t34 = Math.fma(_t7, _t24, -(_t9 * _t26));
+        float _t35 = Math.fma(_t9, _t25, -(_t8 * _t24));
+        dd[0] = _t24;
+        dd[1] = _t25;
+        dd[2] = _t26;
+        dd[3] = -Math.fma(eyeZ, _t26, Math.fma(eyeX, _t24, eyeY * _t25));
+        dd[4] = _t33;
+        dd[5] = _t34;
+        dd[6] = _t35;
+        dd[7] = -Math.fma(eyeZ, _t35, Math.fma(eyeX, _t33, eyeY * _t34));
+        dd[8] = _t9;
+        dd[9] = _t8;
+        dd[10] = _t7;
+        dd[11] = -Math.fma(eyeZ, _t7, Math.fma(eyeX, _t9, eyeY * _t8));
+        ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Float3x4 makeLookAt_lh_degenerate(Float3R eye, Float3R center, Float3R up) {
+        return makeLookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float3x4 makeLookAt_lh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
+        float _t0 = centerZ - eyeZ;
+        float _t1 = centerX - eyeX;
+        float _t2 = centerY - eyeY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t2 * _t6;
-            _t11 = _t1 * _t6;
-            _t12 = _t0 * _t6;
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 0.0f;
+            _t8 = 1.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = 1.0f;
         } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t13 = _t2 * _t6;
+            _t14 = _t1 * _t6;
+            _t15 = _t0 * _t6;
         }
-        float _t19 = Math.fma(upX, _t10, -(upY * _t11));
-        float _t20 = Math.fma(upY, _t12, -(upZ * _t10));
-        float _t21 = Math.fma(upZ, _t11, -(upX * _t12));
-        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        float _t25 = (1.0f / (float) Math.sqrt(_t24));
+        float _t16 = Math.abs(_t14);
+        float _t17 = Math.abs(_t15);
+        float _t26 = Math.fma(_t7, _t13, -(_t14 * _t8));
+        float _t27 = Math.fma(_t9, _t14, -(_t7 * _t15));
+        float _t28 = Math.fma(_t8, _t15, -(_t9 * _t13));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
-            _t29 = _t20 * _t25;
-            _t30 = _t21 * _t25;
-            _t31 = _t19 * _t25;
-        } else {
+        if (_t16 > _t17) {
             _t29 = 0.0f;
+            _t30 = -_t13;
+            _t31 = _t14;
+        } else {
+            _t29 = _t13;
             _t30 = 0.0f;
-            _t31 = 0.0f;
+            _t31 = -_t15;
         }
-        float _t38 = Math.fma(_t10, _t31, -(_t12 * _t30));
-        float _t39 = Math.fma(_t12, _t29, -(_t11 * _t31));
-        float _t40 = Math.fma(_t11, _t30, -(_t10 * _t29));
-        dd[0] = _t29;
-        dd[1] = _t30;
-        dd[2] = _t31;
-        dd[3] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
-        dd[4] = _t38;
-        dd[5] = _t39;
-        dd[6] = _t40;
-        dd[7] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
-        dd[8] = _t11;
-        dd[9] = _t10;
-        dd[10] = _t12;
-        dd[11] = -Math.fma(eyeZ, _t12, Math.fma(eyeX, _t11, eyeY * _t10));
+        float _t36 = Math.fma(_t26, _t26, Math.fma(_t27, _t27, _t28 * _t28));
+        float _t42, _t43, _t44, _t45;
+        if (_t36 == 0.0f) {
+            _t42 = (1.0f / (float) Math.sqrt(Math.fma(_t29, _t29, Math.fma(_t30, _t30, _t31 * _t31))));
+            _t43 = _t42 * _t29;
+            _t44 = _t42 * _t30;
+            _t45 = _t42 * _t31;
+        } else {
+            _t42 = (1.0f / (float) Math.sqrt(_t36));
+            _t43 = _t42 * _t26;
+            _t44 = _t42 * _t28;
+            _t45 = _t42 * _t27;
+        }
+        float _t52 = Math.fma(_t44, _t15, -(_t43 * _t14));
+        float _t53 = Math.fma(_t43, _t13, -(_t45 * _t15));
+        float _t54 = Math.fma(_t45, _t14, -(_t44 * _t13));
+        dd[0] = _t44;
+        dd[1] = _t45;
+        dd[2] = _t43;
+        dd[3] = -Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45));
+        dd[4] = _t53;
+        dd[5] = _t52;
+        dd[6] = _t54;
+        dd[7] = -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52));
+        dd[8] = _t14;
+        dd[9] = _t13;
+        dd[10] = _t15;
+        dd[11] = -Math.fma(eyeZ, _t15, Math.fma(eyeX, _t14, eyeY * _t13));
         ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
@@ -12358,51 +14539,125 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated private Float3x4 makeLookAt_rh(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
         float[] dd = this.data;
+        float _t0 = centerY - eyeY;
+        float _t1 = centerZ - eyeZ;
+        float _t2 = centerX - eyeX;
+        float _t6 = (1.0f / (float) Math.sqrt(Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t0 * _t0))));
+        float _t7 = _t0 * _t6;
+        float _t8 = _t1 * _t6;
+        float _t9 = _t2 * _t6;
+        float _t16 = Math.fma(upZ, _t7, -(upY * _t8));
+        float _t17 = Math.fma(upY, _t9, -(upX * _t7));
+        float _t18 = Math.fma(upX, _t8, -(upZ * _t9));
+        float _ct0 = Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t16 * _t16));
+        if (!(_ct0 > 0.0f)) return makeLookAt_rh_degenerate(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        float _t23 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t24 = _t16 * _t23;
+        float _t25 = _t18 * _t23;
+        float _t26 = _t17 * _t23;
+        float _t33 = Math.fma(_t8, _t25, -(_t7 * _t26));
+        float _t34 = Math.fma(_t9, _t26, -(_t8 * _t24));
+        float _t35 = Math.fma(_t7, _t24, -(_t9 * _t25));
+        dd[0] = _t24;
+        dd[1] = _t25;
+        dd[2] = _t26;
+        dd[3] = -Math.fma(eyeZ, _t26, Math.fma(eyeX, _t24, eyeY * _t25));
+        dd[4] = _t33;
+        dd[5] = _t34;
+        dd[6] = _t35;
+        dd[7] = -Math.fma(eyeZ, _t35, Math.fma(eyeX, _t33, eyeY * _t34));
+        dd[8] = -_t9;
+        dd[9] = -_t7;
+        dd[10] = -_t8;
+        dd[11] = Math.fma(eyeZ, _t8, Math.fma(eyeX, _t9, eyeY * _t7));
+        ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private @Mutated Float3x4 makeLookAt_rh_degenerate(Float3R eye, Float3R center, Float3R up) {
+        return makeLookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeLookAt}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float3x4 makeLookAt_rh_degenerate(float eyeX, float eyeY, float eyeZ, float centerX, float centerY, float centerZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
         float _t0 = centerZ - eyeZ;
         float _t1 = centerX - eyeX;
         float _t2 = centerY - eyeY;
         float _t5 = Math.fma(_t0, _t0, Math.fma(_t1, _t1, _t2 * _t2));
         float _t6 = (1.0f / (float) Math.sqrt(_t5));
-        float _t10, _t11, _t12;
-        if (_t5 > 0.0f) {
-            _t10 = _t1 * _t6;
-            _t11 = _t2 * _t6;
-            _t12 = _t0 * _t6;
+        float _t7, _t8, _t9, _t13, _t14, _t15;
+        if (_t5 == 0.0f) {
+            _t7 = 1.0f;
+            _t8 = 0.0f;
+            _t9 = 0.0f;
+            _t13 = 0.0f;
+            _t14 = 0.0f;
+            _t15 = -1.0f;
         } else {
-            _t10 = 0.0f;
-            _t11 = 0.0f;
-            _t12 = 0.0f;
+            _t7 = upY;
+            _t8 = upX;
+            _t9 = upZ;
+            _t13 = _t1 * _t6;
+            _t14 = _t2 * _t6;
+            _t15 = _t0 * _t6;
         }
-        float _t19 = Math.fma(upY, _t10, -(upX * _t11));
-        float _t20 = Math.fma(upX, _t12, -(upZ * _t10));
-        float _t21 = Math.fma(upZ, _t11, -(upY * _t12));
-        float _t24 = Math.fma(_t19, _t19, Math.fma(_t20, _t20, _t21 * _t21));
-        float _t25 = (1.0f / (float) Math.sqrt(_t24));
+        float _t16 = Math.abs(_t13);
+        float _t17 = Math.abs(_t15);
+        float _t18 = -_t14;
+        float _t19 = -_t15;
+        float _t26 = Math.fma(_t13, _t7, -(_t8 * _t14));
+        float _t27 = Math.fma(_t15, _t8, -(_t9 * _t13));
+        float _t28 = Math.fma(_t9, _t14, -(_t15 * _t7));
         float _t29, _t30, _t31;
-        if (_t24 > 0.0f) {
-            _t29 = _t21 * _t25;
-            _t30 = _t20 * _t25;
-            _t31 = _t19 * _t25;
-        } else {
+        if (_t16 > _t17) {
             _t29 = 0.0f;
+            _t30 = _t18;
+            _t31 = _t13;
+        } else {
+            _t29 = _t14;
             _t30 = 0.0f;
-            _t31 = 0.0f;
+            _t31 = _t19;
         }
-        float _t38 = Math.fma(_t12, _t30, -(_t11 * _t31));
-        float _t39 = Math.fma(_t10, _t31, -(_t12 * _t29));
-        float _t40 = Math.fma(_t11, _t29, -(_t10 * _t30));
-        dd[0] = _t29;
-        dd[1] = _t30;
-        dd[2] = _t31;
-        dd[3] = -Math.fma(eyeZ, _t31, Math.fma(eyeX, _t29, eyeY * _t30));
-        dd[4] = _t38;
-        dd[5] = _t39;
-        dd[6] = _t40;
-        dd[7] = -Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
-        dd[8] = -_t10;
-        dd[9] = -_t11;
-        dd[10] = -_t12;
-        dd[11] = Math.fma(eyeZ, _t12, Math.fma(eyeX, _t10, eyeY * _t11));
+        float _t36 = Math.fma(_t26, _t26, Math.fma(_t27, _t27, _t28 * _t28));
+        float _t42, _t43, _t44, _t45;
+        if (_t36 == 0.0f) {
+            _t42 = (1.0f / (float) Math.sqrt(Math.fma(_t29, _t29, Math.fma(_t30, _t30, _t31 * _t31))));
+            _t43 = _t42 * _t29;
+            _t44 = _t42 * _t30;
+            _t45 = _t42 * _t31;
+        } else {
+            _t42 = (1.0f / (float) Math.sqrt(_t36));
+            _t43 = _t42 * _t26;
+            _t44 = _t42 * _t28;
+            _t45 = _t42 * _t27;
+        }
+        float _t52 = Math.fma(_t43, _t13, -(_t44 * _t15));
+        float _t53 = Math.fma(_t45, _t15, -(_t43 * _t14));
+        float _t54 = Math.fma(_t44, _t14, -(_t45 * _t13));
+        dd[0] = _t44;
+        dd[1] = _t45;
+        dd[2] = _t43;
+        dd[3] = -Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45));
+        dd[4] = _t53;
+        dd[5] = _t52;
+        dd[6] = _t54;
+        dd[7] = -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52));
+        dd[8] = -_t13;
+        dd[9] = _t18;
+        dd[10] = _t19;
+        dd[11] = Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14));
         ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
     }
@@ -12411,6 +14666,11 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eye the position of the camera
      * @param center the point in space to look at
@@ -12429,6 +14689,11 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to a "look at" view transformation with the eye at ({@code eyeX},
      * {@code eyeY}, {@code eyeZ}) looking at ({@code centerX}, {@code centerY}, {@code centerZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param eyeX the {@code x} component of the vector {@code (eyeX, eyeY, eyeZ)}
      * @param eyeY the {@code y} component of the vector {@code (eyeX, eyeY, eyeZ)}
@@ -12454,6 +14719,11 @@ public class Float3x4Impl implements Float3x4 {
      * Set this matrix to a "look at" view transformation with the eye at {@code eye} looking at
      * {@code center}.
      * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
+     * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
      * @param eye the position of the camera
@@ -12467,6 +14737,11 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to a "look at" view transformation with the eye at ({@code eyeX},
      * {@code eyeY}, {@code eyeZ}) looking at ({@code centerX}, {@code centerY}, {@code centerZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      * <p>
      * Uses {@link Handedness#RIGHT_HANDED} for {@code handedness}.
      *
@@ -13710,8 +15985,9 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 makeReflection(float normalX, float normalY, float normalZ) {
         float[] dd = this.data;
-        float _t6 = -((normalX + normalX) * normalY);
-        float _t7 = -((normalX + normalX) * normalZ);
+        float _sp0 = normalX + normalX;
+        float _t6 = -(_sp0 * normalY);
+        float _t7 = -(_sp0 * normalZ);
         float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
@@ -13785,6 +16061,11 @@ public class Float3x4Impl implements Float3x4 {
 
     /**
      * Set this matrix to a rotation that makes {@code +z} point along {@code dir}.
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dir the direction to look along, i.e. the direction the local {@code +z} axis is
      *        mapped to
@@ -13799,6 +16080,11 @@ public class Float3x4Impl implements Float3x4 {
     /**
      * Set this matrix to a rotation that makes {@code +z} point along ({@code dirX}, {@code dirY},
      * {@code dirZ}).
+     * <p>
+     * Degenerate input still gives a proper rotation: an up vector parallel to the view direction
+     * (or zero) is replaced by one perpendicular to it, and a zero view direction (coinciding
+     * points) gives the identity orientation; NaN input gives NaN. (The raw-storage {@code *Ops}
+     * kernels write zero rows for degenerate input instead.)
      *
      * @param dirX the {@code x} component of the vector {@code (dirX, dirY, dirZ)}
      * @param dirY the {@code y} component of the vector {@code (dirX, dirY, dirZ)}
@@ -13810,44 +16096,110 @@ public class Float3x4Impl implements Float3x4 {
      */
     @Mutated public Float3x4 makeRotationLookAlong(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
         float[] dd = this.data;
+        float _t3 = (1.0f / (float) Math.sqrt(Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY))));
+        float _t4 = dirZ * _t3;
+        float _t5 = dirY * _t3;
+        float _t6 = dirX * _t3;
+        float _t13 = Math.fma(upY, _t4, -(upZ * _t5));
+        float _t14 = Math.fma(upX, _t5, -(upY * _t6));
+        float _t15 = Math.fma(upZ, _t6, -(upX * _t4));
+        float _ct0 = Math.fma(_t14, _t14, Math.fma(_t13, _t13, _t15 * _t15));
+        if (!(_ct0 > 0.0f)) return makeRotationLookAlong_degenerate(dirX, dirY, dirZ, upX, upY, upZ);
+        float _t20 = (1.0f / (float) Math.sqrt(_ct0));
+        float _t21 = _t13 * _t20;
+        float _t22 = _t14 * _t20;
+        float _t23 = _t15 * _t20;
+        dd[0] = _t21;
+        dd[1] = Math.fma(_t5, _t22, -(_t4 * _t23));
+        dd[2] = _t6;
+        dd[3] = 0.0f;
+        dd[4] = _t23;
+        dd[5] = Math.fma(_t4, _t21, -(_t6 * _t22));
+        dd[6] = _t5;
+        dd[7] = 0.0f;
+        dd[8] = _t22;
+        dd[9] = Math.fma(_t6, _t23, -(_t5 * _t21));
+        dd[10] = _t4;
+        dd[11] = 0.0f;
+        ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
+        return this;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    private @Mutated Float3x4 makeRotationLookAlong_degenerate(Float3R dir, Float3R up) {
+        return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
+    }
+
+
+    /**
+     * Degenerate-input path of {@code makeRotationLookAlong}: its methods leave here when their
+     * input spans no proper basis (a zero direction, an up vector parallel to it or zero, NaN);
+     * reached only through them.
+     */
+    @Mutated private Float3x4 makeRotationLookAlong_degenerate(float dirX, float dirY, float dirZ, float upX, float upY, float upZ) {
+        float[] dd = this.data;
         float _t2 = Math.fma(dirZ, dirZ, Math.fma(dirX, dirX, dirY * dirY));
         float _t3 = (1.0f / (float) Math.sqrt(_t2));
-        float _t7, _t8, _t9;
-        if (_t2 > 0.0f) {
-            _t7 = dirY * _t3;
-            _t8 = dirX * _t3;
-            _t9 = dirZ * _t3;
-        } else {
+        float _t7, _t8, _t9, _t10, _t11, _t12;
+        if (_t2 == 0.0f) {
             _t7 = 0.0f;
-            _t8 = 0.0f;
+            _t8 = 1.0f;
             _t9 = 0.0f;
-        }
-        float _t16 = Math.fma(upX, _t7, -(upY * _t8));
-        float _t17 = Math.fma(upY, _t9, -(upZ * _t7));
-        float _t18 = Math.fma(upZ, _t8, -(upX * _t9));
-        float _t21 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, _t18 * _t18));
-        float _t22 = (1.0f / (float) Math.sqrt(_t21));
-        float _t26, _t27, _t28;
-        if (_t21 > 0.0f) {
-            _t26 = _t17 * _t22;
-            _t27 = _t16 * _t22;
-            _t28 = _t18 * _t22;
+            _t10 = 0.0f;
+            _t11 = 0.0f;
+            _t12 = 1.0f;
         } else {
-            _t26 = 0.0f;
-            _t27 = 0.0f;
-            _t28 = 0.0f;
+            _t7 = upX;
+            _t8 = upY;
+            _t9 = upZ;
+            _t10 = dirY * _t3;
+            _t11 = dirX * _t3;
+            _t12 = dirZ * _t3;
         }
-        dd[0] = _t26;
-        dd[1] = Math.fma(_t7, _t27, -(_t9 * _t28));
-        dd[2] = _t8;
+        float _t13 = Math.abs(_t11);
+        float _t14 = Math.abs(_t12);
+        float _t23, _t24, _t28;
+        if (_t13 > _t14) {
+            _t23 = 0.0f;
+            _t24 = -_t10;
+            _t28 = _t11;
+        } else {
+            _t23 = _t10;
+            _t24 = 0.0f;
+            _t28 = -_t12;
+        }
+        float _t25 = Math.fma(_t7, _t10, -(_t11 * _t8));
+        float _t26 = Math.fma(_t9, _t11, -(_t7 * _t12));
+        float _t27 = Math.fma(_t8, _t12, -(_t9 * _t10));
+        float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
+        float _t39, _t40, _t41, _t42;
+        if (_t33 == 0.0f) {
+            _t39 = (1.0f / (float) Math.sqrt(Math.fma(_t23, _t23, Math.fma(_t24, _t24, _t28 * _t28))));
+            _t40 = _t39 * _t23;
+            _t41 = _t39 * _t24;
+            _t42 = _t39 * _t28;
+        } else {
+            _t39 = (1.0f / (float) Math.sqrt(_t33));
+            _t40 = _t39 * _t25;
+            _t41 = _t39 * _t27;
+            _t42 = _t39 * _t26;
+        }
+        dd[0] = _t41;
+        dd[1] = Math.fma(_t40, _t10, -(_t42 * _t12));
+        dd[2] = _t11;
         dd[3] = 0.0f;
-        dd[4] = _t28;
-        dd[5] = Math.fma(_t9, _t26, -(_t8 * _t27));
-        dd[6] = _t7;
+        dd[4] = _t42;
+        dd[5] = Math.fma(_t41, _t12, -(_t40 * _t11));
+        dd[6] = _t10;
         dd[7] = 0.0f;
-        dd[8] = _t27;
-        dd[9] = Math.fma(_t8, _t28, -(_t7 * _t26));
-        dd[10] = _t9;
+        dd[8] = _t40;
+        dd[9] = Math.fma(_t42, _t11, -(_t41 * _t10));
+        dd[10] = _t12;
         dd[11] = 0.0f;
         ((Float3x4Impl) this).properties = Joml.BIT_ORTHOGONAL;
         return this;
@@ -25444,18 +27796,19 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 preScaleAround_identity(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = Math.fma(-s, pivotX, pivotX);
+        dd[3] = pivotX * _t0;
         dd[4] = 0.0f;
         dd[5] = s;
         dd[6] = 0.0f;
-        dd[7] = Math.fma(-s, pivotY, pivotY);
+        dd[7] = pivotY * _t0;
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = s;
-        dd[11] = Math.fma(-s, pivotZ, pivotZ);
+        dd[11] = pivotZ * _t0;
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25468,12 +27821,13 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 preScaleAround_identity_self(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
-        dd[3] = Math.fma(-s, pivotX, pivotX);
+        dd[3] = pivotX * _t0;
         dd[5] = s;
-        dd[7] = Math.fma(-s, pivotY, pivotY);
+        dd[7] = pivotY * _t0;
         dd[10] = s;
-        dd[11] = Math.fma(-s, pivotZ, pivotZ);
+        dd[11] = pivotZ * _t0;
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25486,18 +27840,19 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 preScaleAround_translation(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = Math.fma(-s, pivotX, Math.fma(s, sd[3], pivotX));
+        dd[3] = Math.fma(s, sd[3], pivotX * _t0);
         dd[4] = 0.0f;
         dd[5] = s;
         dd[6] = 0.0f;
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = s;
-        dd[11] = Math.fma(-s, pivotZ, Math.fma(s, sd[11], pivotZ));
+        dd[11] = Math.fma(s, sd[11], pivotZ * _t0);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25510,12 +27865,13 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 preScaleAround_translation_self(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
-        dd[3] = Math.fma(-s, pivotX, Math.fma(s, sd[3], pivotX));
+        dd[3] = Math.fma(s, sd[3], pivotX * _t0);
         dd[5] = s;
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[10] = s;
-        dd[11] = Math.fma(-s, pivotZ, Math.fma(s, sd[11], pivotZ));
+        dd[11] = Math.fma(s, sd[11], pivotZ * _t0);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25528,18 +27884,19 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 preScaleAround_general(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s * sd[0];
         dd[1] = s * sd[1];
         dd[2] = s * sd[2];
-        dd[3] = Math.fma(-s, pivotX, Math.fma(s, sd[3], pivotX));
+        dd[3] = Math.fma(s, sd[3], pivotX * _t0);
         dd[4] = s * sd[4];
         dd[5] = s * sd[5];
         dd[6] = s * sd[6];
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[8] = s * sd[8];
         dd[9] = s * sd[9];
         dd[10] = s * sd[10];
-        dd[11] = Math.fma(-s, pivotZ, Math.fma(s, sd[11], pivotZ));
+        dd[11] = Math.fma(s, sd[11], pivotZ * _t0);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25612,18 +27969,19 @@ public class Float3x4Impl implements Float3x4 {
     public Double3x4 preScaleAround(float s, float pivotX, float pivotY, float pivotZ, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s * sd[0];
         dd[1] = s * sd[1];
         dd[2] = s * sd[2];
-        dd[3] = Math.fma(-s, pivotX, Math.fma(s, sd[3], pivotX));
+        dd[3] = Math.fma(s, sd[3], pivotX * _t0);
         dd[4] = s * sd[4];
         dd[5] = s * sd[5];
         dd[6] = s * sd[6];
-        dd[7] = Math.fma(-s, pivotY, Math.fma(s, sd[7], pivotY));
+        dd[7] = Math.fma(s, sd[7], pivotY * _t0);
         dd[8] = s * sd[8];
         dd[9] = s * sd[9];
         dd[10] = s * sd[10];
-        dd[11] = Math.fma(-s, pivotZ, Math.fma(s, sd[11], pivotZ));
+        dd[11] = Math.fma(s, sd[11], pivotZ * _t0);
         ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25694,15 +28052,15 @@ public class Float3x4Impl implements Float3x4 {
         dd[0] = sX;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = Math.fma(-pivotX, sX, pivotX);
+        dd[3] = pivotX * (1.0f - sX);
         dd[4] = 0.0f;
         dd[5] = sY;
         dd[6] = 0.0f;
-        dd[7] = Math.fma(-pivotY, sY, pivotY);
+        dd[7] = pivotY * (1.0f - sY);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = sZ;
-        dd[11] = Math.fma(-pivotZ, sZ, pivotZ);
+        dd[11] = pivotZ * (1.0f - sZ);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25716,11 +28074,11 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = sX;
-        dd[3] = Math.fma(-pivotX, sX, pivotX);
+        dd[3] = pivotX * (1.0f - sX);
         dd[5] = sY;
-        dd[7] = Math.fma(-pivotY, sY, pivotY);
+        dd[7] = pivotY * (1.0f - sY);
         dd[10] = sZ;
-        dd[11] = Math.fma(-pivotZ, sZ, pivotZ);
+        dd[11] = pivotZ * (1.0f - sZ);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25736,15 +28094,15 @@ public class Float3x4Impl implements Float3x4 {
         dd[0] = sX;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = Math.fma(-pivotX, sX, Math.fma(sX, sd[3], pivotX));
+        dd[3] = Math.fma(pivotX, 1.0f - sX, sX * sd[3]);
         dd[4] = 0.0f;
         dd[5] = sY;
         dd[6] = 0.0f;
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = sZ;
-        dd[11] = Math.fma(-pivotZ, sZ, Math.fma(sZ, sd[11], pivotZ));
+        dd[11] = Math.fma(pivotZ, 1.0f - sZ, sZ * sd[11]);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25758,11 +28116,11 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = sX;
-        dd[3] = Math.fma(-pivotX, sX, Math.fma(sX, sd[3], pivotX));
+        dd[3] = Math.fma(pivotX, 1.0f - sX, sX * sd[3]);
         dd[5] = sY;
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         dd[10] = sZ;
-        dd[11] = Math.fma(-pivotZ, sZ, Math.fma(sZ, sd[11], pivotZ));
+        dd[11] = Math.fma(pivotZ, 1.0f - sZ, sZ * sd[11]);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25778,15 +28136,15 @@ public class Float3x4Impl implements Float3x4 {
         dd[0] = sX * sd[0];
         dd[1] = sX * sd[1];
         dd[2] = sX * sd[2];
-        dd[3] = Math.fma(-pivotX, sX, Math.fma(sX, sd[3], pivotX));
+        dd[3] = Math.fma(pivotX, 1.0f - sX, sX * sd[3]);
         dd[4] = sY * sd[4];
         dd[5] = sY * sd[5];
         dd[6] = sY * sd[6];
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         dd[8] = sZ * sd[8];
         dd[9] = sZ * sd[9];
         dd[10] = sZ * sd[10];
-        dd[11] = Math.fma(-pivotZ, sZ, Math.fma(sZ, sd[11], pivotZ));
+        dd[11] = Math.fma(pivotZ, 1.0f - sZ, sZ * sd[11]);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -25870,15 +28228,15 @@ public class Float3x4Impl implements Float3x4 {
         dd[0] = sX * sd[0];
         dd[1] = sX * sd[1];
         dd[2] = sX * sd[2];
-        dd[3] = Math.fma(-pivotX, sX, Math.fma(sX, sd[3], pivotX));
+        dd[3] = Math.fma(pivotX, 1.0f - sX, sX * sd[3]);
         dd[4] = sY * sd[4];
         dd[5] = sY * sd[5];
         dd[6] = sY * sd[6];
-        dd[7] = Math.fma(-pivotY, sY, Math.fma(sY, sd[7], pivotY));
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sY * sd[7]);
         dd[8] = sZ * sd[8];
         dd[9] = sZ * sd[9];
         dd[10] = sZ * sd[10];
-        dd[11] = Math.fma(-pivotZ, sZ, Math.fma(sZ, sd[11], pivotZ));
+        dd[11] = Math.fma(pivotZ, 1.0f - sZ, sZ * sd[11]);
         ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -26204,8 +28562,9 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 reflect_identity(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t6 = -((normalX + normalX) * normalY);
-        float _t7 = -((normalX + normalX) * normalZ);
+        float _sp0 = normalX + normalX;
+        float _t6 = -(_sp0 * normalY);
+        float _t7 = -(_sp0 * normalZ);
         float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
@@ -26231,8 +28590,9 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 reflect_identity_self(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t6 = -((normalX + normalX) * normalY);
-        float _t7 = -((normalX + normalX) * normalZ);
+        float _sp0 = normalX + normalX;
+        float _t6 = -(_sp0 * normalY);
+        float _t7 = -(_sp0 * normalZ);
         float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
@@ -26255,8 +28615,9 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 reflect_translation(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t6 = -((normalX + normalX) * normalY);
-        float _t7 = -((normalX + normalX) * normalZ);
+        float _sp0 = normalX + normalX;
+        float _t6 = -(_sp0 * normalY);
+        float _t7 = -(_sp0 * normalZ);
         float _t8 = -((normalY + normalY) * normalZ);
         dd[0] = Math.fma(-2.0f, normalX * normalX, 1.0f);
         dd[1] = _t6;
@@ -26282,11 +28643,12 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 reflect_orthogonal(float normalX, float normalY, float normalZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _sp0 = normalX + normalX;
         float _t0 = -sd[2];
         float _t1 = -sd[6];
         float _t2 = -sd[10];
-        float _t9 = (normalX + normalX) * normalZ;
-        float _t10 = (normalX + normalX) * normalY;
+        float _t9 = _sp0 * normalZ;
+        float _t10 = _sp0 * normalY;
         float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
@@ -26398,11 +28760,12 @@ public class Float3x4Impl implements Float3x4 {
     public Double3x4 reflect(float normalX, float normalY, float normalZ, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
+        float _sp0 = normalX + normalX;
         float _t0 = -sd[2];
         float _t1 = -sd[6];
         float _t2 = -sd[10];
-        float _t9 = (normalX + normalX) * normalZ;
-        float _t10 = (normalX + normalX) * normalY;
+        float _t9 = _sp0 * normalZ;
+        float _t10 = _sp0 * normalY;
         float _t11 = (normalY + normalY) * normalZ;
         float _t12 = Math.fma(-2.0f, normalX * normalX, 1.0f);
         float _t13 = Math.fma(-2.0f, normalY * normalY, 1.0f);
@@ -30774,18 +33137,19 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 scaleAround_translation(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = Math.fma(-s, pivotX, sd[3] + pivotX);
+        dd[3] = Math.fma(pivotX, _t0, sd[3]);
         dd[4] = 0.0f;
         dd[5] = s;
         dd[6] = 0.0f;
-        dd[7] = Math.fma(-s, pivotY, sd[7] + pivotY);
+        dd[7] = Math.fma(pivotY, _t0, sd[7]);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = s;
-        dd[11] = Math.fma(-s, pivotZ, sd[11] + pivotZ);
+        dd[11] = Math.fma(pivotZ, _t0, sd[11]);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -30798,12 +33162,13 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 scaleAround_translation_self(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
+        float _t0 = 1.0f - s;
         dd[0] = s;
-        dd[3] = Math.fma(-s, pivotX, sd[3] + pivotX);
+        dd[3] = Math.fma(pivotX, _t0, sd[3]);
         dd[5] = s;
-        dd[7] = Math.fma(-s, pivotY, sd[7] + pivotY);
+        dd[7] = Math.fma(pivotY, _t0, sd[7]);
         dd[10] = s;
-        dd[11] = Math.fma(-s, pivotZ, sd[11] + pivotZ);
+        dd[11] = Math.fma(pivotZ, _t0, sd[11]);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -30816,21 +33181,22 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 scaleAround_orthogonal(float s, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        float _t2 = Math.fma(-s, pivotZ, pivotZ);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        float _t3 = pivotZ * _t0;
         float _buf0 = s * sd[0];
         float _buf1 = s * sd[1];
         float _buf2 = s * sd[2];
-        dd[3] = Math.fma(sd[0], _t0, Math.fma(sd[1], _t1, Math.fma(sd[2], _t2, sd[3])));
+        dd[3] = Math.fma(sd[0], _t1, Math.fma(sd[1], _t2, Math.fma(sd[2], _t3, sd[3])));
         float _buf3 = s * sd[4];
         float _buf4 = s * sd[5];
         float _buf5 = s * sd[6];
-        dd[7] = Math.fma(sd[4], _t0, Math.fma(sd[5], _t1, Math.fma(sd[6], _t2, sd[7])));
+        dd[7] = Math.fma(sd[4], _t1, Math.fma(sd[5], _t2, Math.fma(sd[6], _t3, sd[7])));
         float _buf6 = s * sd[8];
         float _buf7 = s * sd[9];
         float _buf8 = s * sd[10];
-        dd[11] = Math.fma(sd[8], _t0, Math.fma(sd[9], _t1, Math.fma(sd[10], _t2, sd[11])));
+        dd[11] = Math.fma(sd[8], _t1, Math.fma(sd[9], _t2, Math.fma(sd[10], _t3, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -30923,21 +33289,22 @@ public class Float3x4Impl implements Float3x4 {
     public Double3x4 scaleAround(float s, float pivotX, float pivotY, float pivotZ, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        float _t0 = Math.fma(-s, pivotX, pivotX);
-        float _t1 = Math.fma(-s, pivotY, pivotY);
-        float _t2 = Math.fma(-s, pivotZ, pivotZ);
+        float _t0 = 1.0f - s;
+        float _t1 = pivotX * _t0;
+        float _t2 = pivotY * _t0;
+        float _t3 = pivotZ * _t0;
         float _buf0 = s * sd[0];
         float _buf1 = s * sd[1];
         float _buf2 = s * sd[2];
-        dd[3] = Math.fma(sd[0], _t0, Math.fma(sd[1], _t1, Math.fma(sd[2], _t2, sd[3])));
+        dd[3] = Math.fma(sd[0], _t1, Math.fma(sd[1], _t2, Math.fma(sd[2], _t3, sd[3])));
         float _buf3 = s * sd[4];
         float _buf4 = s * sd[5];
         float _buf5 = s * sd[6];
-        dd[7] = Math.fma(sd[4], _t0, Math.fma(sd[5], _t1, Math.fma(sd[6], _t2, sd[7])));
+        dd[7] = Math.fma(sd[4], _t1, Math.fma(sd[5], _t2, Math.fma(sd[6], _t3, sd[7])));
         float _buf6 = s * sd[8];
         float _buf7 = s * sd[9];
         float _buf8 = s * sd[10];
-        dd[11] = Math.fma(sd[8], _t0, Math.fma(sd[9], _t1, Math.fma(sd[10], _t2, sd[11])));
+        dd[11] = Math.fma(sd[8], _t1, Math.fma(sd[9], _t2, Math.fma(sd[10], _t3, sd[11])));
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
@@ -31035,15 +33402,15 @@ public class Float3x4Impl implements Float3x4 {
         dd[0] = sX;
         dd[1] = 0.0f;
         dd[2] = 0.0f;
-        dd[3] = Math.fma(-pivotX, sX, sd[3] + pivotX);
+        dd[3] = Math.fma(pivotX, 1.0f - sX, sd[3]);
         dd[4] = 0.0f;
         dd[5] = sY;
         dd[6] = 0.0f;
-        dd[7] = Math.fma(-pivotY, sY, sd[7] + pivotY);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sd[7]);
         dd[8] = 0.0f;
         dd[9] = 0.0f;
         dd[10] = sZ;
-        dd[11] = Math.fma(-pivotZ, sZ, sd[11] + pivotZ);
+        dd[11] = Math.fma(pivotZ, 1.0f - sZ, sd[11]);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -31057,11 +33424,11 @@ public class Float3x4Impl implements Float3x4 {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
         dd[0] = sX;
-        dd[3] = Math.fma(-pivotX, sX, sd[3] + pivotX);
+        dd[3] = Math.fma(pivotX, 1.0f - sX, sd[3]);
         dd[5] = sY;
-        dd[7] = Math.fma(-pivotY, sY, sd[7] + pivotY);
+        dd[7] = Math.fma(pivotY, 1.0f - sY, sd[7]);
         dd[10] = sZ;
-        dd[11] = Math.fma(-pivotZ, sZ, sd[11] + pivotZ);
+        dd[11] = Math.fma(pivotZ, 1.0f - sZ, sd[11]);
         ((Float3x4Impl) dest).properties = Joml.BIT_AFFINE;
         return dest;
     }
@@ -31074,9 +33441,9 @@ public class Float3x4Impl implements Float3x4 {
     private Float3x4 scaleAround_orthogonal(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ, @Mutated Float3x4 dest) {
         float[] sd = this.data;
         float[] dd = ((Float3x4Impl) dest).data;
-        float _t3 = Math.fma(-pivotX, sX, pivotX);
-        float _t4 = Math.fma(-pivotY, sY, pivotY);
-        float _t5 = Math.fma(-pivotZ, sZ, pivotZ);
+        float _t3 = pivotX * (1.0f - sX);
+        float _t4 = pivotY * (1.0f - sY);
+        float _t5 = pivotZ * (1.0f - sZ);
         float _buf0 = sX * sd[0];
         float _buf1 = sY * sd[1];
         float _buf2 = sZ * sd[2];
@@ -31189,9 +33556,9 @@ public class Float3x4Impl implements Float3x4 {
     public Double3x4 scaleAround(float sX, float sY, float sZ, float pivotX, float pivotY, float pivotZ, @Mutated Double3x4 dest) {
         float[] sd = this.data;
         double[] dd = ((Double3x4Impl) dest).data;
-        float _t3 = Math.fma(-pivotX, sX, pivotX);
-        float _t4 = Math.fma(-pivotY, sY, pivotY);
-        float _t5 = Math.fma(-pivotZ, sZ, pivotZ);
+        float _t3 = pivotX * (1.0f - sX);
+        float _t4 = pivotY * (1.0f - sY);
+        float _t5 = pivotZ * (1.0f - sZ);
         float _buf0 = sX * sd[0];
         float _buf1 = sY * sd[1];
         float _buf2 = sZ * sd[2];
@@ -31611,12 +33978,22 @@ public class Float3x4Impl implements Float3x4 {
     private FloatAABB transformAabb_identity(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated FloatAABB dest) {
         float[] sd = this.data;
         float[] dd = ((FloatAABBImpl) dest).data;
-        dd[0] = Math.min(minX, maxX);
-        dd[1] = Math.min(minY, maxY);
-        dd[2] = Math.min(minZ, maxZ);
-        dd[3] = Math.max(minX, maxX);
-        dd[4] = Math.max(minY, maxY);
-        dd[5] = Math.max(minZ, maxZ);
+        float _t4 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t4 < 0.0f) {
+            dd[0] = Float.POSITIVE_INFINITY;
+            dd[1] = Float.POSITIVE_INFINITY;
+            dd[2] = Float.POSITIVE_INFINITY;
+            dd[3] = Float.NEGATIVE_INFINITY;
+            dd[4] = Float.NEGATIVE_INFINITY;
+            dd[5] = Float.NEGATIVE_INFINITY;
+        } else {
+            dd[0] = Math.min(minX, maxX);
+            dd[1] = Math.min(minY, maxY);
+            dd[2] = Math.min(minZ, maxZ);
+            dd[3] = Math.max(minX, maxX);
+            dd[4] = Math.max(minY, maxY);
+            dd[5] = Math.max(minZ, maxZ);
+        }
         return dest;
     }
 
@@ -31628,12 +34005,22 @@ public class Float3x4Impl implements Float3x4 {
     private FloatAABB transformAabb_translation(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated FloatAABB dest) {
         float[] sd = this.data;
         float[] dd = ((FloatAABBImpl) dest).data;
-        dd[0] = sd[3] + Math.min(minX, maxX);
-        dd[1] = sd[7] + Math.min(minY, maxY);
-        dd[2] = sd[11] + Math.min(minZ, maxZ);
-        dd[3] = sd[3] + Math.max(minX, maxX);
-        dd[4] = sd[7] + Math.max(minY, maxY);
-        dd[5] = sd[11] + Math.max(minZ, maxZ);
+        float _t4 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t4 < 0.0f) {
+            dd[0] = Float.POSITIVE_INFINITY;
+            dd[1] = Float.POSITIVE_INFINITY;
+            dd[2] = Float.POSITIVE_INFINITY;
+            dd[3] = Float.NEGATIVE_INFINITY;
+            dd[4] = Float.NEGATIVE_INFINITY;
+            dd[5] = Float.NEGATIVE_INFINITY;
+        } else {
+            dd[0] = sd[3] + Math.min(minX, maxX);
+            dd[1] = sd[7] + Math.min(minY, maxY);
+            dd[2] = sd[11] + Math.min(minZ, maxZ);
+            dd[3] = sd[3] + Math.max(minX, maxX);
+            dd[4] = sd[7] + Math.max(minY, maxY);
+            dd[5] = sd[11] + Math.max(minZ, maxZ);
+        }
         return dest;
     }
 
@@ -31645,30 +34032,40 @@ public class Float3x4Impl implements Float3x4 {
     private FloatAABB transformAabb_orthogonal(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated FloatAABB dest) {
         float[] sd = this.data;
         float[] dd = ((FloatAABBImpl) dest).data;
-        float _t0 = minX * sd[0];
-        float _t1 = maxX * sd[0];
-        float _t2 = minY * sd[1];
-        float _t3 = maxY * sd[1];
-        float _t4 = minZ * sd[2];
-        float _t5 = maxZ * sd[2];
-        float _t6 = minX * sd[4];
-        float _t7 = maxX * sd[4];
-        float _t8 = minY * sd[5];
-        float _t9 = maxY * sd[5];
-        float _t10 = minZ * sd[6];
-        float _t11 = maxZ * sd[6];
-        float _t12 = minX * sd[8];
-        float _t13 = maxX * sd[8];
-        float _t14 = minY * sd[9];
-        float _t15 = maxY * sd[9];
-        float _t16 = minZ * sd[10];
-        float _t17 = maxZ * sd[10];
-        dd[0] = sd[3] + Math.min(_t0, _t1) + Math.min(_t2, _t3) + Math.min(_t4, _t5);
-        dd[1] = sd[7] + Math.min(_t6, _t7) + Math.min(_t8, _t9) + Math.min(_t10, _t11);
-        dd[2] = sd[11] + Math.min(_t12, _t13) + Math.min(_t14, _t15) + Math.min(_t16, _t17);
-        dd[3] = sd[3] + Math.max(_t0, _t1) + Math.max(_t2, _t3) + Math.max(_t4, _t5);
-        dd[4] = sd[7] + Math.max(_t6, _t7) + Math.max(_t8, _t9) + Math.max(_t10, _t11);
-        dd[5] = sd[11] + Math.max(_t12, _t13) + Math.max(_t14, _t15) + Math.max(_t16, _t17);
+        float _t3 = minX * sd[0];
+        float _t4 = maxX * sd[0];
+        float _t5 = minY * sd[1];
+        float _t6 = maxY * sd[1];
+        float _t7 = minZ * sd[2];
+        float _t8 = maxZ * sd[2];
+        float _t9 = minX * sd[4];
+        float _t10 = maxX * sd[4];
+        float _t11 = minY * sd[5];
+        float _t12 = maxY * sd[5];
+        float _t13 = minZ * sd[6];
+        float _t14 = maxZ * sd[6];
+        float _t15 = minX * sd[8];
+        float _t16 = maxX * sd[8];
+        float _t17 = minY * sd[9];
+        float _t18 = maxY * sd[9];
+        float _t19 = minZ * sd[10];
+        float _t20 = maxZ * sd[10];
+        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t22 < 0.0f) {
+            dd[0] = Float.POSITIVE_INFINITY;
+            dd[1] = Float.POSITIVE_INFINITY;
+            dd[2] = Float.POSITIVE_INFINITY;
+            dd[3] = Float.NEGATIVE_INFINITY;
+            dd[4] = Float.NEGATIVE_INFINITY;
+            dd[5] = Float.NEGATIVE_INFINITY;
+        } else {
+            dd[0] = sd[3] + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+            dd[1] = sd[7] + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+            dd[2] = sd[11] + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+            dd[3] = sd[3] + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+            dd[4] = sd[7] + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+            dd[5] = sd[11] + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+        }
         return dest;
     }
 
@@ -31735,30 +34132,40 @@ public class Float3x4Impl implements Float3x4 {
     public DoubleAABB transformAabb(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, @Mutated DoubleAABB dest) {
         float[] sd = this.data;
         double[] dd = ((DoubleAABBImpl) dest).data;
-        float _t0 = minX * sd[0];
-        float _t1 = maxX * sd[0];
-        float _t2 = minY * sd[1];
-        float _t3 = maxY * sd[1];
-        float _t4 = minZ * sd[2];
-        float _t5 = maxZ * sd[2];
-        float _t6 = minX * sd[4];
-        float _t7 = maxX * sd[4];
-        float _t8 = minY * sd[5];
-        float _t9 = maxY * sd[5];
-        float _t10 = minZ * sd[6];
-        float _t11 = maxZ * sd[6];
-        float _t12 = minX * sd[8];
-        float _t13 = maxX * sd[8];
-        float _t14 = minY * sd[9];
-        float _t15 = maxY * sd[9];
-        float _t16 = minZ * sd[10];
-        float _t17 = maxZ * sd[10];
-        dd[0] = sd[3] + Math.min(_t0, _t1) + Math.min(_t2, _t3) + Math.min(_t4, _t5);
-        dd[1] = sd[7] + Math.min(_t6, _t7) + Math.min(_t8, _t9) + Math.min(_t10, _t11);
-        dd[2] = sd[11] + Math.min(_t12, _t13) + Math.min(_t14, _t15) + Math.min(_t16, _t17);
-        dd[3] = sd[3] + Math.max(_t0, _t1) + Math.max(_t2, _t3) + Math.max(_t4, _t5);
-        dd[4] = sd[7] + Math.max(_t6, _t7) + Math.max(_t8, _t9) + Math.max(_t10, _t11);
-        dd[5] = sd[11] + Math.max(_t12, _t13) + Math.max(_t14, _t15) + Math.max(_t16, _t17);
+        float _t3 = minX * sd[0];
+        float _t4 = maxX * sd[0];
+        float _t5 = minY * sd[1];
+        float _t6 = maxY * sd[1];
+        float _t7 = minZ * sd[2];
+        float _t8 = maxZ * sd[2];
+        float _t9 = minX * sd[4];
+        float _t10 = maxX * sd[4];
+        float _t11 = minY * sd[5];
+        float _t12 = maxY * sd[5];
+        float _t13 = minZ * sd[6];
+        float _t14 = maxZ * sd[6];
+        float _t15 = minX * sd[8];
+        float _t16 = maxX * sd[8];
+        float _t17 = minY * sd[9];
+        float _t18 = maxY * sd[9];
+        float _t19 = minZ * sd[10];
+        float _t20 = maxZ * sd[10];
+        float _t22 = Math.min(Math.min(maxX - minX, maxY - minY), maxZ - minZ);
+        if (_t22 < 0.0f) {
+            dd[0] = Float.POSITIVE_INFINITY;
+            dd[1] = Float.POSITIVE_INFINITY;
+            dd[2] = Float.POSITIVE_INFINITY;
+            dd[3] = Float.NEGATIVE_INFINITY;
+            dd[4] = Float.NEGATIVE_INFINITY;
+            dd[5] = Float.NEGATIVE_INFINITY;
+        } else {
+            dd[0] = sd[3] + Math.min(_t3, _t4) + Math.min(_t5, _t6) + Math.min(_t7, _t8);
+            dd[1] = sd[7] + Math.min(_t9, _t10) + Math.min(_t11, _t12) + Math.min(_t13, _t14);
+            dd[2] = sd[11] + Math.min(_t15, _t16) + Math.min(_t17, _t18) + Math.min(_t19, _t20);
+            dd[3] = sd[3] + Math.max(_t3, _t4) + Math.max(_t5, _t6) + Math.max(_t7, _t8);
+            dd[4] = sd[7] + Math.max(_t9, _t10) + Math.max(_t11, _t12) + Math.max(_t13, _t14);
+            dd[5] = sd[11] + Math.max(_t15, _t16) + Math.max(_t17, _t18) + Math.max(_t19, _t20);
+        }
         return dest;
     }
 
@@ -32727,4 +35134,22 @@ public class Float3x4Impl implements Float3x4 {
         return RAW_OPS.storeRM4x4DoubleUnsafe(this, address);
     }
 
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
+    }
 }
