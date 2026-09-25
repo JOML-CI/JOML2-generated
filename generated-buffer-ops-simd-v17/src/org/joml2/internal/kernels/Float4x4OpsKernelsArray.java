@@ -1983,6 +1983,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] arcball_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -1999,8 +2001,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -centerZ;
         float _t3 = -centerY;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -2032,6 +2032,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] arcball_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float[] center, int centerOffset, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -2051,8 +2053,6 @@ public final class Float4x4OpsKernelsArray {
         float _centerx = center[centerOffset + 0];
         float _centery = center[centerOffset + 1];
         float _centerz = center[centerOffset + 2];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -2084,6 +2084,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] axonometricDimetric_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float alpha) {
+        float _t0 = (float) Math.sin(alpha);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -2100,7 +2101,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(alpha);
         float _t1 = (float) Math.sqrt(2.0f);
         float _sp0 = _t1 * 0.5f;
         float _t2 = (float) Math.cosFromSin(_t0, alpha);
@@ -2182,6 +2182,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] axonometricTrimetric_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float alphaX, float alphaY) {
+        float _t0 = (float) Math.sin(alphaY);
+        float _t1 = (float) Math.sin(alphaX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -2198,8 +2200,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(alphaY);
-        float _t1 = (float) Math.sin(alphaX);
         float _t2 = (float) Math.cosFromSin(_t1, alphaX);
         float _t3 = (float) Math.cosFromSin(_t0, alphaY);
         float _t4 = _t1 * _t0;
@@ -6759,6 +6759,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] obliquePlanometric_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6775,7 +6776,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, _self01 * _t0);
         dest[destOffset + 1] = Math.fma(_self10, _t1, _self11 * _t0);
@@ -8740,6 +8740,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_no_lh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -8758,7 +8759,6 @@ public final class Float4x4OpsKernelsArray {
         float _self33 = src[srcOffset + 15];
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t15, _t16;
@@ -8799,6 +8799,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_no_rh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -8817,7 +8818,6 @@ public final class Float4x4OpsKernelsArray {
         float _self33 = src[srcOffset + 15];
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t13, _t15;
@@ -8865,6 +8865,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_zo_lh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -8882,7 +8883,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t10, _t11;
@@ -8923,6 +8923,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_zo_rh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -8940,7 +8941,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t9, _t10;
@@ -8988,6 +8988,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_no_lh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9005,8 +9007,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -9051,6 +9051,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_no_rh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9068,8 +9070,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -9121,6 +9121,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_zo_lh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9137,8 +9139,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -9183,6 +9183,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_zo_rh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9199,8 +9201,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -9468,6 +9468,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_no_lh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9485,10 +9489,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -9534,6 +9534,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_no_rh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9551,10 +9555,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -9607,6 +9607,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_zo_lh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9623,10 +9627,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -9672,6 +9672,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_zo_rh_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -9688,10 +9692,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -10281,6 +10281,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateAxis_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10297,7 +10298,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t5 = axisX * axisY;
@@ -10332,6 +10332,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateAxis_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float[] axis, int axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10351,7 +10352,6 @@ public final class Float4x4OpsKernelsArray {
         float _axisx = axis[axisOffset + 0];
         float _axisy = axis[axisOffset + 1];
         float _axisz = axis[axisOffset + 2];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t5 = _axisx * _axisy;
@@ -10498,6 +10498,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateX_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10514,7 +10515,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = _self00;
         dest[destOffset + 1] = _self10;
@@ -10536,6 +10536,9 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateXYZ_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10552,9 +10555,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t0, angleX);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleY);
@@ -10588,6 +10588,9 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateXZY_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10604,9 +10607,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t2, angleY);
         float _t4 = (float) Math.cosFromSin(_t0, angleX);
         float _t5 = (float) Math.cosFromSin(_t1, angleZ);
@@ -10640,6 +10640,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateY_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10656,7 +10657,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, -(_self02 * _t0));
         dest[destOffset + 1] = Math.fma(_self10, _t1, -(_self12 * _t0));
@@ -10678,6 +10678,9 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateYXZ_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10694,9 +10697,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleY);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleY);
         float _t4 = (float) Math.cosFromSin(_t2, angleZ);
         float _t5 = (float) Math.cosFromSin(_t0, angleX);
@@ -10730,6 +10730,9 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateYZX_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10746,9 +10749,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t1, angleZ);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);
@@ -10782,6 +10782,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateZ_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10798,7 +10799,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, _self01 * _t0);
         dest[destOffset + 1] = Math.fma(_self10, _t1, _self11 * _t0);
@@ -10820,6 +10820,9 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateZXY_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10836,9 +10839,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleX);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleZ);
@@ -10872,6 +10872,9 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] rotateZYX_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -10888,9 +10891,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t0, angleY);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);

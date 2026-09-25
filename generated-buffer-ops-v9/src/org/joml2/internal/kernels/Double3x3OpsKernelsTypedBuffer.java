@@ -2558,6 +2558,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double pivotX, double pivotY) {
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.sin(0.5 * angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -2567,8 +2569,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angle);
-        double _t2 = Math.sin(0.5 * angle);
         double _t3 = Math.cosFromSin(_t0, angle);
         double _t8 = (_t2 + _t2) * _t2;
         double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
@@ -2594,6 +2594,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer pivot, int pivotOffset, double angle) {
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.sin(0.5 * angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -2605,8 +2607,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self22 = src.get(srcOffset + 8);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t0 = Math.sin(angle);
-        double _t2 = Math.sin(0.5 * angle);
         double _t3 = Math.cosFromSin(_t0, angle);
         double _t8 = (_t2 + _t2) * _t2;
         double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
@@ -2631,6 +2631,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -2640,7 +2641,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t4 = axisX * axisY;
@@ -2676,6 +2676,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer preRotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer axis, int axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -2688,7 +2689,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _axisx = axis.get(axisOffset + 0);
         double _axisy = axis.get(axisOffset + 1);
         double _axisz = axis.get(axisOffset + 2);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t4 = _axisx * _axisy;
@@ -3057,6 +3057,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double pivotX, double pivotY) {
+        double _t0 = Math.sin(angle);
+        double _t3 = Math.sin(0.5 * angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3066,9 +3068,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angle);
         double _t2 = Math.cosFromSin(_t0, angle);
-        double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
         double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
@@ -3093,6 +3093,8 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer pivot, int pivotOffset, double angle) {
+        double _t0 = Math.sin(angle);
+        double _t3 = Math.sin(0.5 * angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3104,9 +3106,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self22 = src.get(srcOffset + 8);
         double _pivotx = pivot.get(pivotOffset + 0);
         double _pivoty = pivot.get(pivotOffset + 1);
-        double _t0 = Math.sin(angle);
         double _t2 = Math.cosFromSin(_t0, angle);
-        double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
         double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
@@ -3130,6 +3130,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3139,7 +3140,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t5 = axisX * axisY;
@@ -3175,6 +3175,7 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateAxis_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer axis, int axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3187,7 +3188,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _axisx = axis.get(axisOffset + 0);
         double _axisy = axis.get(axisOffset + 1);
         double _axisz = axis.get(axisOffset + 2);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t5 = _axisx * _axisy;
@@ -3340,6 +3340,9 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateXYZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3349,9 +3352,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t0, angleX);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleY);
@@ -3385,6 +3385,9 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateXZY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleX, double angleZ, double angleY) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3394,9 +3397,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t2, angleY);
         double _t4 = Math.cosFromSin(_t0, angleX);
         double _t5 = Math.cosFromSin(_t1, angleZ);
@@ -3548,6 +3548,9 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateYXZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleY, double angleX, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3557,9 +3560,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleY);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleY);
         double _t4 = Math.cosFromSin(_t2, angleZ);
         double _t5 = Math.cosFromSin(_t0, angleX);
@@ -3593,6 +3593,9 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateYZX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleY, double angleZ, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3602,9 +3605,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t1, angleZ);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleX);
@@ -3725,6 +3725,9 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZXY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleZ, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3734,9 +3737,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleX);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleZ);
@@ -3770,6 +3770,9 @@ public final class Double3x3OpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZYX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleZ, double angleY, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -3779,9 +3782,6 @@ public final class Double3x3OpsKernelsTypedBuffer {
         double _self02 = src.get(srcOffset + 6);
         double _self12 = src.get(srcOffset + 7);
         double _self22 = src.get(srcOffset + 8);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t0, angleY);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleX);

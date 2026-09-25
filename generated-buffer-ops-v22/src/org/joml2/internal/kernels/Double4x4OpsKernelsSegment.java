@@ -4574,6 +4574,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment arcball_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -4590,8 +4592,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -centerZ;
         double _t3 = -centerY;
         double _t4 = Math.cosFromSin(_t1, angleX);
@@ -4631,6 +4631,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment arcball_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment center, long centerOffset, double radius, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -4650,8 +4652,6 @@ public final class Double4x4OpsKernelsSegment {
         double _centerx = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 0L);
         double _centery = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 8L);
         double _centerz = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 16L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -_centerz;
         double _t3 = -_centery;
         double _t4 = Math.cosFromSin(_t1, angleX);
@@ -4690,6 +4690,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment axonometricDimetric_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alpha) {
+        double _t0 = Math.sin(alpha);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -4706,7 +4707,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
         double _sp0 = _t1 * 0.5;
         double _t2 = Math.cosFromSin(_t0, alpha);
@@ -4802,6 +4802,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment axonometricTrimetric_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double alphaX, double alphaY) {
+        double _t0 = Math.sin(alphaY);
+        double _t1 = Math.sin(alphaX);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -4818,8 +4820,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(alphaY);
-        double _t1 = Math.sin(alphaX);
         double _t2 = Math.cosFromSin(_t1, alphaX);
         double _t3 = Math.cosFromSin(_t0, alphaY);
         double _t4 = _t1 * _t0;
@@ -5907,11 +5907,11 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeArcball_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment center, long centerOffset, double radius, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _centerx = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 0L);
         double _centery = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 8L);
         double _centerz = center.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, centerOffset + 16L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -_centerz;
         double _t3 = -_centery;
         double _t4 = Math.cosFromSin(_t0, angleY);
@@ -8540,9 +8540,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, double fovy, double aspect, double near, double far) {
+        double _t2 = Math.tan(0.5 * fovy);
         double _sp0 = near + near;
         double _t1_inv = 1.0 / (near - far);
-        double _t2 = Math.tan(0.5 * fovy);
         if (far == Double.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 80L, 1.0);
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 112L, -_sp0);
@@ -8584,9 +8584,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, double fovy, double aspect, double near, double far) {
+        double _t2 = Math.tan(0.5 * fovy);
         double _sp0 = near + near;
         double _t1_inv = 1.0 / (near - far);
-        double _t2 = Math.tan(0.5 * fovy);
         if (far == Double.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 80L, -1.0);
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 112L, -_sp0);
@@ -8635,8 +8635,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, double fovy, double aspect, double near, double far) {
-        double _sp0 = far / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
+        double _sp0 = far / (near - far);
         if (far == Double.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 80L, 1.0);
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 112L, -near);
@@ -8678,8 +8678,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, double fovy, double aspect, double near, double far) {
-        double _sp0 = far / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
+        double _sp0 = far / (near - far);
         if (far == Double.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 80L, -1.0);
             dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 112L, -near);
@@ -8728,9 +8728,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleMax);
         double _t1 = Math.tan(angleMin);
+        double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
@@ -8775,9 +8775,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, double angleMin, double angleMax, double aspect, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleMax);
         double _t1 = Math.tan(angleMin);
+        double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
@@ -8928,11 +8928,11 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleRight);
         double _t1 = Math.tan(angleLeft);
         double _t2 = Math.tan(angleUp);
         double _t3 = Math.tan(angleDown);
+        double _sp0 = near + near;
         double _t4_inv = 1.0 / (near - far);
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
@@ -8977,11 +8977,11 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleRight);
         double _t1 = Math.tan(angleLeft);
         double _t2 = Math.tan(angleUp);
         double _t3 = Math.tan(angleDown);
+        double _sp0 = near + near;
         double _t4_inv = 1.0 / (near - far);
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
@@ -10324,10 +10324,10 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeRotationAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L);
         double _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L);
         double _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisy;
         double _t3 = _axisx * _axisz;
@@ -13225,6 +13225,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCabinet_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -13241,7 +13242,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t2 = 0.5 * _t0;
         double _t3 = 0.5 * Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, _self00);
@@ -13271,6 +13271,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCavalier_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -13287,7 +13288,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, _self10);
@@ -13316,6 +13316,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliqueMilitary_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -13332,7 +13333,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, _self10);
@@ -13361,6 +13361,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliquePlanometric_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -13377,7 +13378,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -15569,6 +15569,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double fovy, double aspect, double near, double far) {
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -15587,7 +15588,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t15, _t16;
@@ -15635,6 +15635,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double fovy, double aspect, double near, double far) {
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -15653,7 +15654,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t13, _t15;
@@ -15708,6 +15708,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double fovy, double aspect, double near, double far) {
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -15725,7 +15726,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t10, _t11;
@@ -15773,6 +15773,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double fovy, double aspect, double near, double far) {
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -15790,7 +15791,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t9, _t10;
@@ -15845,6 +15845,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -15862,8 +15864,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -15915,6 +15915,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -15932,8 +15934,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -15992,6 +15992,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16008,8 +16010,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -16061,6 +16061,8 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16077,8 +16079,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -16381,6 +16381,10 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16398,10 +16402,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -16454,6 +16454,10 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16471,10 +16475,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -16534,6 +16534,10 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16550,10 +16554,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;
@@ -16606,6 +16606,10 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16622,10 +16626,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;
@@ -16870,6 +16870,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16886,7 +16887,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t4 = axisX * axisY;
@@ -16929,6 +16929,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment axis, long axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -16948,7 +16949,6 @@ public final class Double4x4OpsKernelsSegment {
         double _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L);
         double _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L);
         double _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t4 = _axisx * _axisy;
@@ -17117,6 +17117,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -17133,7 +17134,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_self10, _t1, -(_self20 * _t0)));
@@ -17162,6 +17162,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -17178,7 +17179,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, _self20 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, _self10);
@@ -17207,6 +17207,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -17223,7 +17224,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, -(_self10 * _t0)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_self00, _t0, _self10 * _t1));
@@ -17987,6 +17987,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18003,7 +18004,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t5 = axisX * axisY;
@@ -18046,6 +18046,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment axis, long axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18065,7 +18066,6 @@ public final class Double4x4OpsKernelsSegment {
         double _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 0L);
         double _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 8L);
         double _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, axisOffset + 16L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t5 = _axisx * _axisy;
@@ -18234,6 +18234,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18250,7 +18251,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, _self10);
@@ -18279,6 +18279,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateXYZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleY, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18295,9 +18298,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t0, angleX);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleY);
@@ -18338,6 +18338,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateXZY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleX, double angleZ, double angleY) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18354,9 +18357,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t2, angleY);
         double _t4 = Math.cosFromSin(_t0, angleX);
         double _t5 = Math.cosFromSin(_t1, angleZ);
@@ -18397,6 +18397,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18413,7 +18414,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, -(_self02 * _t0)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_self10, _t1, -(_self12 * _t0)));
@@ -18442,6 +18442,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateYXZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleY, double angleX, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18458,9 +18461,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleY);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleY);
         double _t4 = Math.cosFromSin(_t2, angleZ);
         double _t5 = Math.cosFromSin(_t0, angleX);
@@ -18501,6 +18501,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateYZX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleY, double angleZ, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18517,9 +18520,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t1, angleZ);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleX);
@@ -18560,6 +18560,7 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18576,7 +18577,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -18605,6 +18605,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateZXY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleZ, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18621,9 +18624,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleX);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleZ);
@@ -18664,6 +18664,9 @@ public final class Double4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateZYX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double angleZ, double angleY, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
         double _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
         double _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
@@ -18680,9 +18683,6 @@ public final class Double4x4OpsKernelsSegment {
         double _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 104L);
         double _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 112L);
         double _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t0, angleY);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleX);

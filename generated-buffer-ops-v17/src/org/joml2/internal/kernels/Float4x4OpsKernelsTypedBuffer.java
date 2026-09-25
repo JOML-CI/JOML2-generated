@@ -4574,6 +4574,8 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer arcball_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4590,8 +4592,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -centerZ;
         float _t3 = -centerY;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -4631,6 +4631,8 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer arcball_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer center, int centerOffset, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4650,8 +4652,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _centerx = center.get(centerOffset + 0);
         float _centery = center.get(centerOffset + 1);
         float _centerz = center.get(centerOffset + 2);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -4690,6 +4690,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer axonometricDimetric_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float alpha) {
+        float _t0 = (float) Math.sin(alpha);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4706,7 +4707,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(alpha);
         float _t1 = (float) Math.sqrt(2.0f);
         float _sp0 = _t1 * 0.5f;
         float _t2 = (float) Math.cosFromSin(_t0, alpha);
@@ -4802,6 +4802,8 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer axonometricTrimetric_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float alphaX, float alphaY) {
+        float _t0 = (float) Math.sin(alphaY);
+        float _t1 = (float) Math.sin(alphaX);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4818,8 +4820,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(alphaY);
-        float _t1 = (float) Math.sin(alphaX);
         float _t2 = (float) Math.cosFromSin(_t1, alphaX);
         float _t3 = (float) Math.cosFromSin(_t0, alphaY);
         float _t4 = _t1 * _t0;
@@ -5907,11 +5907,11 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeArcball_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer center, int centerOffset, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _centerx = center.get(centerOffset + 0);
         float _centery = center.get(centerOffset + 1);
         float _centerz = center.get(centerOffset + 2);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
@@ -8728,9 +8728,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makePerspectiveFovRange_no_lh_api(java.nio.FloatBuffer dest, int destOffset, float angleMin, float angleMax, float aspect, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleMax);
         float _t1 = (float) Math.tan(angleMin);
+        float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
@@ -8775,9 +8775,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makePerspectiveFovRange_no_rh_api(java.nio.FloatBuffer dest, int destOffset, float angleMin, float angleMax, float aspect, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleMax);
         float _t1 = (float) Math.tan(angleMin);
+        float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
@@ -8928,11 +8928,11 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makePerspectiveOffCenterFov_no_lh_api(java.nio.FloatBuffer dest, int destOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleRight);
         float _t1 = (float) Math.tan(angleLeft);
         float _t2 = (float) Math.tan(angleUp);
         float _t3 = (float) Math.tan(angleDown);
+        float _sp0 = near + near;
         float _t4_inv = 1.0f / (near - far);
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
@@ -8977,11 +8977,11 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makePerspectiveOffCenterFov_no_rh_api(java.nio.FloatBuffer dest, int destOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleRight);
         float _t1 = (float) Math.tan(angleLeft);
         float _t2 = (float) Math.tan(angleUp);
         float _t3 = (float) Math.tan(angleDown);
+        float _sp0 = near + near;
         float _t4_inv = 1.0f / (near - far);
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
@@ -10324,10 +10324,10 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer makeRotationAxis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer axis, int axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _axisx = axis.get(axisOffset + 0);
         float _axisy = axis.get(axisOffset + 1);
         float _axisz = axis.get(axisOffset + 2);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisy;
         float _t3 = _axisx * _axisz;
@@ -13225,6 +13225,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer obliqueCabinet_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -13241,7 +13242,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t2 = 0.5f * _t0;
         float _t3 = 0.5f * (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
@@ -13271,6 +13271,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer obliqueCavalier_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -13287,7 +13288,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, _self10);
@@ -13316,6 +13316,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer obliqueMilitary_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -13332,7 +13333,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, _self10);
@@ -13361,6 +13361,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer obliquePlanometric_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -13377,7 +13378,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, _self01 * _t0));
         dest.put(destOffset + 1, Math.fma(_self10, _t1, _self11 * _t0));
@@ -15569,6 +15569,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspective_no_lh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -15587,7 +15588,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self33 = src.get(srcOffset + 15);
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t15, _t16;
@@ -15635,6 +15635,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspective_no_rh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -15653,7 +15654,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self33 = src.get(srcOffset + 15);
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t13, _t15;
@@ -15708,6 +15708,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspective_zo_lh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -15725,7 +15726,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t10, _t11;
@@ -15773,6 +15773,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspective_zo_rh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -15790,7 +15791,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t9, _t10;
@@ -15845,6 +15845,8 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveFovRange_no_lh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -15862,8 +15864,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -15915,6 +15915,8 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveFovRange_no_rh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -15932,8 +15934,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -15992,6 +15992,8 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveFovRange_zo_lh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16008,8 +16010,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -16061,6 +16061,8 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveFovRange_zo_rh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16077,8 +16079,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -16381,6 +16381,10 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveOffCenterFov_no_lh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16398,10 +16402,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -16454,6 +16454,10 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveOffCenterFov_no_rh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16471,10 +16475,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -16534,6 +16534,10 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveOffCenterFov_zo_lh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16550,10 +16554,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -16606,6 +16606,10 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer perspectiveOffCenterFov_zo_rh_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16622,10 +16626,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -16870,6 +16870,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateAxis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16886,7 +16887,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t4 = axisX * axisY;
@@ -16929,6 +16929,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateAxis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -16948,7 +16949,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _axisx = axis.get(axisOffset + 0);
         float _axisy = axis.get(axisOffset + 1);
         float _axisz = axis.get(axisOffset + 2);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t4 = _axisx * _axisy;
@@ -17117,6 +17117,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -17133,7 +17134,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, Math.fma(_self10, _t1, -(_self20 * _t0)));
@@ -17162,6 +17162,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -17178,7 +17179,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, _self20 * _t0));
         dest.put(destOffset + 1, _self10);
@@ -17207,6 +17207,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer preRotateZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -17223,7 +17224,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, -(_self10 * _t0)));
         dest.put(destOffset + 1, Math.fma(_self00, _t0, _self10 * _t1));
@@ -17987,6 +17987,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateAxis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18003,7 +18004,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t5 = axisX * axisY;
@@ -18046,6 +18046,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateAxis_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18065,7 +18066,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _axisx = axis.get(axisOffset + 0);
         float _axisy = axis.get(axisOffset + 1);
         float _axisz = axis.get(axisOffset + 2);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t5 = _axisx * _axisy;
@@ -18234,6 +18234,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18250,7 +18251,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, _self10);
@@ -18279,6 +18279,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateXYZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleY, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18295,9 +18298,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t0, angleX);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleY);
@@ -18338,6 +18338,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateXZY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleX, float angleZ, float angleY) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18354,9 +18357,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t2, angleY);
         float _t4 = (float) Math.cosFromSin(_t0, angleX);
         float _t5 = (float) Math.cosFromSin(_t1, angleZ);
@@ -18397,6 +18397,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18413,7 +18414,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, -(_self02 * _t0)));
         dest.put(destOffset + 1, Math.fma(_self10, _t1, -(_self12 * _t0)));
@@ -18442,6 +18442,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateYXZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleY, float angleX, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18458,9 +18461,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleY);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleY);
         float _t4 = (float) Math.cosFromSin(_t2, angleZ);
         float _t5 = (float) Math.cosFromSin(_t0, angleX);
@@ -18501,6 +18501,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateYZX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleY, float angleZ, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18517,9 +18520,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t1, angleZ);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);
@@ -18560,6 +18560,7 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateZ_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18576,7 +18577,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, _self01 * _t0));
         dest.put(destOffset + 1, Math.fma(_self10, _t1, _self11 * _t0));
@@ -18605,6 +18605,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateZXY_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18621,9 +18624,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleX);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleZ);
@@ -18664,6 +18664,9 @@ public final class Float4x4OpsKernelsTypedBuffer {
     }
 
     public static java.nio.FloatBuffer rotateZYX_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angleZ, float angleY, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -18680,9 +18683,6 @@ public final class Float4x4OpsKernelsTypedBuffer {
         float _self13 = src.get(srcOffset + 13);
         float _self23 = src.get(srcOffset + 14);
         float _self33 = src.get(srcOffset + 15);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t0, angleY);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);

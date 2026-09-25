@@ -1661,6 +1661,7 @@ public final class Double3x4OpsKernelsArray {
     }
 
     public static double[] preRotateAxis_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = src[srcOffset + 0];
         double _self01 = src[srcOffset + 1];
         double _self02 = src[srcOffset + 2];
@@ -1673,7 +1674,6 @@ public final class Double3x4OpsKernelsArray {
         double _self21 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
         double _self23 = src[srcOffset + 11];
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t4 = axisX * axisY;
@@ -1704,6 +1704,7 @@ public final class Double3x4OpsKernelsArray {
     }
 
     public static double[] preRotateAxis_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double[] axis, int axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src[srcOffset + 0];
         double _self01 = src[srcOffset + 1];
         double _self02 = src[srcOffset + 2];
@@ -1719,7 +1720,6 @@ public final class Double3x4OpsKernelsArray {
         double _axisx = axis[axisOffset + 0];
         double _axisy = axis[axisOffset + 1];
         double _axisz = axis[axisOffset + 2];
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t4 = _axisx * _axisy;
@@ -2373,6 +2373,9 @@ public final class Double3x4OpsKernelsArray {
     }
 
     public static double[] rotateYXZ_scalar(double[] dest, int destOffset, double[] src, int srcOffset, double angleY, double angleX, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src[srcOffset + 0];
         double _self01 = src[srcOffset + 1];
         double _self02 = src[srcOffset + 2];
@@ -2385,9 +2388,6 @@ public final class Double3x4OpsKernelsArray {
         double _self21 = src[srcOffset + 9];
         double _self22 = src[srcOffset + 10];
         double _self23 = src[srcOffset + 11];
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleY);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleY);
         double _t4 = Math.cosFromSin(_t2, angleZ);
         double _t5 = Math.cosFromSin(_t0, angleX);

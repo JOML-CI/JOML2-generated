@@ -556,6 +556,8 @@ public final class Double2x3OpsKernelsAddress {
     }
 
     public static long preRotateAround_unsafe(long dest, long src, long pivot, double angle) {
+        double _t0 = Math.sin(angle);
+        double _t3 = Math.sin(0.5 * angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self01 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -564,9 +566,7 @@ public final class Double2x3OpsKernelsAddress {
         double _self12 = UnsafeOpsHolder.U.getDouble(src + 40L);
         double _pivotx = UnsafeOpsHolder.U.getDouble(pivot + 0L);
         double _pivoty = UnsafeOpsHolder.U.getDouble(pivot + 8L);
-        double _t0 = Math.sin(angle);
         double _t2 = Math.cosFromSin(_t0, angle);
-        double _t3 = Math.sin(0.5 * angle);
         double _t5 = (_t3 + _t3) * _t3;
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t2, -(_self10 * _t0)));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self00, _t0, _self10 * _t2));
@@ -759,6 +759,8 @@ public final class Double2x3OpsKernelsAddress {
     }
 
     public static long rotateAround_unsafe(long dest, long src, long pivot, double angle) {
+        double _t0 = Math.sin(angle);
+        double _t3 = Math.sin(0.5 * angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self01 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -767,9 +769,7 @@ public final class Double2x3OpsKernelsAddress {
         double _self12 = UnsafeOpsHolder.U.getDouble(src + 40L);
         double _pivotx = UnsafeOpsHolder.U.getDouble(pivot + 0L);
         double _pivoty = UnsafeOpsHolder.U.getDouble(pivot + 8L);
-        double _t0 = Math.sin(angle);
         double _t2 = Math.cosFromSin(_t0, angle);
-        double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
         double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));

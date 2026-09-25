@@ -556,6 +556,8 @@ public final class Float2x3OpsKernelsAddress {
     }
 
     public static long preRotateAround_unsafe(long dest, long src, long pivot, float angle) {
+        float _t0 = (float) Math.sin(angle);
+        float _t3 = (float) Math.sin(0.5f * angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self01 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -564,9 +566,7 @@ public final class Float2x3OpsKernelsAddress {
         float _self12 = UnsafeOpsHolder.U.getFloat(src + 20L);
         float _pivotx = UnsafeOpsHolder.U.getFloat(pivot + 0L);
         float _pivoty = UnsafeOpsHolder.U.getFloat(pivot + 4L);
-        float _t0 = (float) Math.sin(angle);
         float _t2 = (float) Math.cosFromSin(_t0, angle);
-        float _t3 = (float) Math.sin(0.5f * angle);
         float _t5 = (_t3 + _t3) * _t3;
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t2, -(_self10 * _t0)));
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self00, _t0, _self10 * _t2));
@@ -759,6 +759,8 @@ public final class Float2x3OpsKernelsAddress {
     }
 
     public static long rotateAround_unsafe(long dest, long src, long pivot, float angle) {
+        float _t0 = (float) Math.sin(angle);
+        float _t3 = (float) Math.sin(0.5f * angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self01 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -767,9 +769,7 @@ public final class Float2x3OpsKernelsAddress {
         float _self12 = UnsafeOpsHolder.U.getFloat(src + 20L);
         float _pivotx = UnsafeOpsHolder.U.getFloat(pivot + 0L);
         float _pivoty = UnsafeOpsHolder.U.getFloat(pivot + 4L);
-        float _t0 = (float) Math.sin(angle);
         float _t2 = (float) Math.cosFromSin(_t0, angle);
-        float _t3 = (float) Math.sin(0.5f * angle);
         float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
         float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));

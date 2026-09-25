@@ -1219,37 +1219,19 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer squad_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double control0X, double control0Y, double control0Z, double control0W, double control1X, double control1Y, double control1Z, double control1W, double targetX, double targetY, double targetZ, double targetW, double t) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 1.0 - t;
-        double _t1 = t + t;
         double _t3 = control0W + control1W;
         double _t4 = control0Z + control1Z;
         double _t5 = control0X + control1X;
         double _t6 = control0Y + control1Y;
         double _t7 = t < 0.5 ? 1.0 : 0.0;
-        double _t8 = _selfw + targetW;
-        double _t9 = _selfz + targetZ;
-        double _t10 = _selfx + targetX;
-        double _t11 = _selfy + targetY;
         double _t12 = 1.0 - _t7;
-        double _t13 = _t0 * _t1;
-        double _t14 = Math.fma(-_t0, _t1, 1.0);
-        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
         double _t25 = Math.min(4.0, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
-        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
         double _t27 = quatArcAngle(_t25);
-        double _t28 = quatArcAngle(_t26);
         double _t29 = 4.0 - _t25;
-        double _t30 = 4.0 - _t26;
         double _t39 = _t29 * _t25;
-        double _t40 = _t30 * _t26;
         double _t41 = Math.sqrt(_t39);
-        double _t43 = Math.sqrt(_t40);
         double _t45 = 2.0 / _t41;
-        double _t46 = 2.0 / _t43;
         double _t55, _t57;
         if (_t41 > 2.0E-14) {
             _t55 = _t45 * Math.sin(t * _t27);
@@ -1263,6 +1245,24 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
                 _t57 = _t7;
             }
         }
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
+        double _t1 = t + t;
+        double _t8 = _selfw + targetW;
+        double _t9 = _selfz + targetZ;
+        double _t10 = _selfx + targetX;
+        double _t11 = _selfy + targetY;
+        double _t13 = _t0 * _t1;
+        double _t14 = Math.fma(-_t0, _t1, 1.0);
+        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
+        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        double _t28 = quatArcAngle(_t26);
+        double _t30 = 4.0 - _t26;
+        double _t40 = _t30 * _t26;
+        double _t43 = Math.sqrt(_t40);
+        double _t46 = 2.0 / _t43;
         double _t56, _t58;
         if (_t43 > 2.0E-14) {
             _t56 = _t46 * Math.sin(t * _t28);
@@ -2011,10 +2011,6 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer integrate_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angularVelX, double angularVelY, double angularVelZ, double dt) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 0.5 * dt;
         double _t1 = angularVelZ * _t0;
         double _t2 = angularVelX * _t0;
@@ -2022,8 +2018,12 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
         double _t6 = Math.fma(_t1, _t1, Math.fma(_t2, _t2, _t3 * _t3));
         double _t7 = Math.sqrt(_t6);
         double _t9 = Math.sin(_t7);
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
         double _t10 = Math.cosFromSin(_t9, _t7);
-        double _t11 = _t9 / _t7;
+        double _t11 = _t9 * (1.0 / Math.sqrt(_t6));
         double _t15, _t16, _t17;
         if (_t6 > 0.0) {
             _t15 = _t2 * _t11;
@@ -3915,16 +3915,16 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateXYZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -3951,16 +3951,16 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateXZY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleX, double angleZ, double angleY) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -4009,16 +4009,16 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateYXZ_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleY, double angleX, double angleZ) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -4045,16 +4045,16 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateYZX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleY, double angleZ, double angleX) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -4103,16 +4103,16 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZXY_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleZ, double angleX, double angleY) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -4139,16 +4139,16 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
     }
 
     public static java.nio.DoubleBuffer rotateZYX_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double angleZ, double angleY, double angleX) {
-        double _selfx = src.get(srcOffset + 0);
-        double _selfy = src.get(srcOffset + 1);
-        double _selfz = src.get(srcOffset + 2);
-        double _selfw = src.get(srcOffset + 3);
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);

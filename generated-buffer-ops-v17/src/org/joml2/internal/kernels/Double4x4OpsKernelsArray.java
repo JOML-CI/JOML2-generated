@@ -5735,6 +5735,7 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspective_no_lh(double[] dest, int destOffset, double[] src, int srcOffset, double fovy, double aspect, double near, double far) {
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -5753,7 +5754,6 @@ public final class Double4x4OpsKernelsArray {
         double _self33 = src[srcOffset + 15];
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t15, _t16;
@@ -5789,6 +5789,7 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspective_no_rh(double[] dest, int destOffset, double[] src, int srcOffset, double fovy, double aspect, double near, double far) {
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -5807,7 +5808,6 @@ public final class Double4x4OpsKernelsArray {
         double _self33 = src[srcOffset + 15];
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t13, _t15;
@@ -5850,6 +5850,7 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspective_zo_lh(double[] dest, int destOffset, double[] src, int srcOffset, double fovy, double aspect, double near, double far) {
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -5867,7 +5868,6 @@ public final class Double4x4OpsKernelsArray {
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t10, _t11;
@@ -5903,6 +5903,7 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspective_zo_rh(double[] dest, int destOffset, double[] src, int srcOffset, double fovy, double aspect, double near, double far) {
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -5920,7 +5921,6 @@ public final class Double4x4OpsKernelsArray {
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t9, _t10;
@@ -5963,6 +5963,8 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveFovRange_no_lh(double[] dest, int destOffset, double[] src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -5980,8 +5982,6 @@ public final class Double4x4OpsKernelsArray {
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -6021,6 +6021,8 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveFovRange_no_rh(double[] dest, int destOffset, double[] src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -6038,8 +6040,6 @@ public final class Double4x4OpsKernelsArray {
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -6086,6 +6086,8 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveFovRange_zo_lh(double[] dest, int destOffset, double[] src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -6102,8 +6104,6 @@ public final class Double4x4OpsKernelsArray {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -6143,6 +6143,8 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveFovRange_zo_rh(double[] dest, int destOffset, double[] src, int srcOffset, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -6159,8 +6161,6 @@ public final class Double4x4OpsKernelsArray {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -6403,6 +6403,10 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveOffCenterFov_no_lh(double[] dest, int destOffset, double[] src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -6420,10 +6424,6 @@ public final class Double4x4OpsKernelsArray {
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -6464,6 +6464,10 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveOffCenterFov_no_rh(double[] dest, int destOffset, double[] src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -6481,10 +6485,6 @@ public final class Double4x4OpsKernelsArray {
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -6532,6 +6532,10 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveOffCenterFov_zo_lh(double[] dest, int destOffset, double[] src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -6548,10 +6552,6 @@ public final class Double4x4OpsKernelsArray {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;
@@ -6592,6 +6592,10 @@ public final class Double4x4OpsKernelsArray {
     }
 
     public static double[] perspectiveOffCenterFov_zo_rh(double[] dest, int destOffset, double[] src, int srcOffset, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src[srcOffset + 0];
         double _self10 = src[srcOffset + 1];
         double _self20 = src[srcOffset + 2];
@@ -6608,10 +6612,6 @@ public final class Double4x4OpsKernelsArray {
         double _self13 = src[srcOffset + 13];
         double _self23 = src[srcOffset + 14];
         double _self33 = src[srcOffset + 15];
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;

@@ -2505,37 +2505,19 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] squad(float[] dest, int destOffset, float[] src, int srcOffset, float control0X, float control0Y, float control0Z, float control0W, float control1X, float control1Y, float control1Z, float control1W, float targetX, float targetY, float targetZ, float targetW, float t) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
         float _t0 = 1.0f - t;
-        float _t1 = t + t;
         float _t3 = control0W + control1W;
         float _t4 = control0Z + control1Z;
         float _t5 = control0X + control1X;
         float _t6 = control0Y + control1Y;
         float _t7 = t < 0.5f ? 1.0f : 0.0f;
-        float _t8 = _selfw + targetW;
-        float _t9 = _selfz + targetZ;
-        float _t10 = _selfx + targetX;
-        float _t11 = _selfy + targetY;
         float _t12 = 1.0f - _t7;
-        float _t13 = _t0 * _t1;
-        float _t14 = Math.fma(-_t0, _t1, 1.0f);
-        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
         float _t25 = Math.min(4.0f, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
-        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
         float _t27 = quatArcAngle(_t25);
-        float _t28 = quatArcAngle(_t26);
         float _t29 = 4.0f - _t25;
-        float _t30 = 4.0f - _t26;
         float _t39 = _t29 * _t25;
-        float _t40 = _t30 * _t26;
         float _t41 = (float) Math.sqrt(_t39);
-        float _t43 = (float) Math.sqrt(_t40);
         float _t45 = 2.0f / _t41;
-        float _t46 = 2.0f / _t43;
         float _t55, _t57;
         if (_t41 > 2.0E-6f) {
             _t55 = _t45 * (float) Math.sin(t * _t27);
@@ -2549,6 +2531,24 @@ public final class FloatQuatOps {
                 _t57 = _t7;
             }
         }
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _t1 = t + t;
+        float _t8 = _selfw + targetW;
+        float _t9 = _selfz + targetZ;
+        float _t10 = _selfx + targetX;
+        float _t11 = _selfy + targetY;
+        float _t13 = _t0 * _t1;
+        float _t14 = Math.fma(-_t0, _t1, 1.0f);
+        float _t17 = _t13 < 0.5f ? 1.0f : 0.0f;
+        float _t26 = Math.min(4.0f, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        float _t28 = quatArcAngle(_t26);
+        float _t30 = 4.0f - _t26;
+        float _t40 = _t30 * _t26;
+        float _t43 = (float) Math.sqrt(_t40);
+        float _t46 = 2.0f / _t43;
         float _t56, _t58;
         if (_t43 > 2.0E-6f) {
             _t56 = _t46 * (float) Math.sin(t * _t28);
@@ -8059,16 +8059,16 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] rotateXYZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
         float _t6 = (float) Math.cosFromSin(_t3, _t0);
         float _t7 = (float) Math.cosFromSin(_t4, _t1);
         float _t8 = (float) Math.cosFromSin(_t5, _t2);
@@ -8132,16 +8132,16 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] rotateXZY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
         float _t6 = (float) Math.cosFromSin(_t3, _t0);
         float _t7 = (float) Math.cosFromSin(_t4, _t1);
         float _t8 = (float) Math.cosFromSin(_t5, _t2);
@@ -8256,16 +8256,16 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] rotateYXZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleY;
         float _t2 = 0.5f * angleZ;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
         float _t6 = (float) Math.cosFromSin(_t3, _t0);
         float _t7 = (float) Math.cosFromSin(_t4, _t1);
         float _t8 = (float) Math.cosFromSin(_t5, _t2);
@@ -8329,16 +8329,16 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] rotateYZX(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
         float _t6 = (float) Math.cosFromSin(_t3, _t0);
         float _t7 = (float) Math.cosFromSin(_t4, _t1);
         float _t8 = (float) Math.cosFromSin(_t5, _t2);
@@ -8453,16 +8453,16 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] rotateZXY(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angleX;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleY;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
         float _t6 = (float) Math.cosFromSin(_t3, _t0);
         float _t7 = (float) Math.cosFromSin(_t4, _t1);
         float _t8 = (float) Math.cosFromSin(_t5, _t2);
@@ -8526,16 +8526,16 @@ public final class FloatQuatOps {
      * @return {@code dest}
      */
     public static float[] rotateZYX(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
-        float _selfx = src[srcOffset + 0];
-        float _selfy = src[srcOffset + 1];
-        float _selfz = src[srcOffset + 2];
-        float _selfw = src[srcOffset + 3];
         float _t0 = 0.5f * angleY;
         float _t1 = 0.5f * angleZ;
         float _t2 = 0.5f * angleX;
         float _t3 = (float) Math.sin(_t0);
         float _t4 = (float) Math.sin(_t1);
         float _t5 = (float) Math.sin(_t2);
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
         float _t6 = (float) Math.cosFromSin(_t3, _t0);
         float _t7 = (float) Math.cosFromSin(_t4, _t1);
         float _t8 = (float) Math.cosFromSin(_t5, _t2);

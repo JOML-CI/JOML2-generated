@@ -3854,6 +3854,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long arcball_unsafe(long dest, long src, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -3870,8 +3872,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -centerZ;
         float _t3 = -centerY;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -3903,6 +3903,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long arcball_unsafe(long dest, long src, long center, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -3922,8 +3924,6 @@ public final class Float4x4OpsKernelsAddress {
         float _centerx = UnsafeOpsHolder.U.getFloat(center + 0L);
         float _centery = UnsafeOpsHolder.U.getFloat(center + 4L);
         float _centerz = UnsafeOpsHolder.U.getFloat(center + 8L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -3955,6 +3955,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long axonometricDimetric_unsafe(long dest, long src, float alpha) {
+        float _t0 = (float) Math.sin(alpha);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -3971,7 +3972,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(alpha);
         float _t1 = (float) Math.sqrt(2.0f);
         float _sp0 = _t1 * 0.5f;
         float _t2 = (float) Math.cosFromSin(_t0, alpha);
@@ -4053,6 +4053,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long axonometricTrimetric_unsafe(long dest, long src, float alphaX, float alphaY) {
+        float _t0 = (float) Math.sin(alphaY);
+        float _t1 = (float) Math.sin(alphaX);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -4069,8 +4071,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(alphaY);
-        float _t1 = (float) Math.sin(alphaX);
         float _t2 = (float) Math.cosFromSin(_t1, alphaX);
         float _t3 = (float) Math.cosFromSin(_t0, alphaY);
         float _t4 = _t1 * _t0;
@@ -5043,11 +5043,11 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makeArcball_unsafe(long dest, long center, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _centerx = UnsafeOpsHolder.U.getFloat(center + 0L);
         float _centery = UnsafeOpsHolder.U.getFloat(center + 4L);
         float _centerz = UnsafeOpsHolder.U.getFloat(center + 8L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
@@ -7211,9 +7211,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_no_lh_unsafe(long dest, float fovy, float aspect, float near, float far) {
+        float _t2 = (float) Math.tan(0.5f * fovy);
         float _sp0 = near + near;
         float _t1_inv = 1.0f / (near - far);
-        float _t2 = (float) Math.tan(0.5f * fovy);
         if (far == Float.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putFloat(dest + 40L, 1.0f);
             UnsafeOpsHolder.U.putFloat(dest + 56L, -_sp0);
@@ -7250,9 +7250,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_no_rh_unsafe(long dest, float fovy, float aspect, float near, float far) {
+        float _t2 = (float) Math.tan(0.5f * fovy);
         float _sp0 = near + near;
         float _t1_inv = 1.0f / (near - far);
-        float _t2 = (float) Math.tan(0.5f * fovy);
         if (far == Float.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putFloat(dest + 40L, -1.0f);
             UnsafeOpsHolder.U.putFloat(dest + 56L, -_sp0);
@@ -7296,8 +7296,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_zo_lh_unsafe(long dest, float fovy, float aspect, float near, float far) {
-        float _sp0 = far / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
+        float _sp0 = far / (near - far);
         if (far == Float.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putFloat(dest + 40L, 1.0f);
             UnsafeOpsHolder.U.putFloat(dest + 56L, -near);
@@ -7334,8 +7334,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_zo_rh_unsafe(long dest, float fovy, float aspect, float near, float far) {
-        float _sp0 = far / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
+        float _sp0 = far / (near - far);
         if (far == Float.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putFloat(dest + 40L, -1.0f);
             UnsafeOpsHolder.U.putFloat(dest + 56L, -near);
@@ -7379,9 +7379,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveFovRange_no_lh_unsafe(long dest, float angleMin, float angleMax, float aspect, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleMax);
         float _t1 = (float) Math.tan(angleMin);
+        float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
@@ -7421,9 +7421,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveFovRange_no_rh_unsafe(long dest, float angleMin, float angleMax, float aspect, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleMax);
         float _t1 = (float) Math.tan(angleMin);
+        float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
@@ -7559,11 +7559,11 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveOffCenterFov_no_lh_unsafe(long dest, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleRight);
         float _t1 = (float) Math.tan(angleLeft);
         float _t2 = (float) Math.tan(angleUp);
         float _t3 = (float) Math.tan(angleDown);
+        float _sp0 = near + near;
         float _t4_inv = 1.0f / (near - far);
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
@@ -7603,11 +7603,11 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveOffCenterFov_no_rh_unsafe(long dest, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleRight);
         float _t1 = (float) Math.tan(angleLeft);
         float _t2 = (float) Math.tan(angleUp);
         float _t3 = (float) Math.tan(angleDown);
+        float _sp0 = near + near;
         float _t4_inv = 1.0f / (near - far);
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
@@ -8824,10 +8824,10 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long makeRotationAxis_unsafe(long dest, long axis, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _axisx = UnsafeOpsHolder.U.getFloat(axis + 0L);
         float _axisy = UnsafeOpsHolder.U.getFloat(axis + 4L);
         float _axisz = UnsafeOpsHolder.U.getFloat(axis + 8L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisy;
         float _t3 = _axisx * _axisz;
@@ -11227,6 +11227,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long obliqueCabinet_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -11243,7 +11244,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t2 = 0.5f * _t0;
         float _t3 = 0.5f * (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, _self00);
@@ -11266,6 +11266,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long obliqueCavalier_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -11282,7 +11283,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, _self00);
         UnsafeOpsHolder.U.putFloat(dest + 4L, _self10);
@@ -11304,6 +11304,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long obliqueMilitary_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -11320,7 +11321,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, _self00);
         UnsafeOpsHolder.U.putFloat(dest + 4L, _self10);
@@ -11342,6 +11342,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long obliquePlanometric_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -11358,7 +11359,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -13388,6 +13388,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspective_no_lh_unsafe(long dest, long src, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13406,7 +13407,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t15, _t16;
@@ -13448,6 +13448,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspective_no_rh_unsafe(long dest, long src, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13466,7 +13467,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t13, _t15;
@@ -13515,6 +13515,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspective_zo_lh_unsafe(long dest, long src, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13532,7 +13533,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t10, _t11;
@@ -13574,6 +13574,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspective_zo_rh_unsafe(long dest, long src, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13591,7 +13592,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t9, _t10;
@@ -13640,6 +13640,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_no_lh_unsafe(long dest, long src, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13657,8 +13659,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -13704,6 +13704,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_no_rh_unsafe(long dest, long src, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13721,8 +13723,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -13775,6 +13775,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_zo_lh_unsafe(long dest, long src, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13791,8 +13793,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -13838,6 +13838,8 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_zo_rh_unsafe(long dest, long src, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -13854,8 +13856,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -14128,6 +14128,10 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_no_lh_unsafe(long dest, long src, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14145,10 +14149,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -14195,6 +14195,10 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_no_rh_unsafe(long dest, long src, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14212,10 +14216,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -14269,6 +14269,10 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_zo_lh_unsafe(long dest, long src, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14285,10 +14289,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -14335,6 +14335,10 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_zo_rh_unsafe(long dest, long src, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14351,10 +14355,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -14569,6 +14569,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long preRotateAxis_unsafe(long dest, long src, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14585,7 +14586,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t4 = axisX * axisY;
@@ -14620,6 +14620,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long preRotateAxis_unsafe(long dest, long src, long axis, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14639,7 +14640,6 @@ public final class Float4x4OpsKernelsAddress {
         float _axisx = UnsafeOpsHolder.U.getFloat(axis + 0L);
         float _axisy = UnsafeOpsHolder.U.getFloat(axis + 4L);
         float _axisz = UnsafeOpsHolder.U.getFloat(axis + 8L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t4 = _axisx * _axisy;
@@ -14786,6 +14786,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long preRotateX_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14802,7 +14803,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, _self00);
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t1, -(_self20 * _t0)));
@@ -14824,6 +14824,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long preRotateY_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14840,7 +14841,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t1, _self20 * _t0));
         UnsafeOpsHolder.U.putFloat(dest + 4L, _self10);
@@ -14862,6 +14862,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long preRotateZ_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -14878,7 +14879,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t1, -(_self10 * _t0)));
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self00, _t0, _self10 * _t1));
@@ -15508,6 +15508,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateAxis_unsafe(long dest, long src, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15524,7 +15525,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t5 = axisX * axisY;
@@ -15559,6 +15559,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateAxis_unsafe(long dest, long src, long axis, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15578,7 +15579,6 @@ public final class Float4x4OpsKernelsAddress {
         float _axisx = UnsafeOpsHolder.U.getFloat(axis + 0L);
         float _axisy = UnsafeOpsHolder.U.getFloat(axis + 4L);
         float _axisz = UnsafeOpsHolder.U.getFloat(axis + 8L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t5 = _axisx * _axisy;
@@ -15725,6 +15725,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateX_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15741,7 +15742,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, _self00);
         UnsafeOpsHolder.U.putFloat(dest + 4L, _self10);
@@ -15763,6 +15763,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateXYZ_unsafe(long dest, long src, float angleX, float angleY, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15779,9 +15782,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t0, angleX);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleY);
@@ -15815,6 +15815,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateXZY_unsafe(long dest, long src, float angleX, float angleZ, float angleY) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15831,9 +15834,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t2, angleY);
         float _t4 = (float) Math.cosFromSin(_t0, angleX);
         float _t5 = (float) Math.cosFromSin(_t1, angleZ);
@@ -15867,6 +15867,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateY_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15883,7 +15884,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t1, -(_self02 * _t0)));
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t1, -(_self12 * _t0)));
@@ -15905,6 +15905,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateYXZ_unsafe(long dest, long src, float angleY, float angleX, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15921,9 +15924,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleY);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleY);
         float _t4 = (float) Math.cosFromSin(_t2, angleZ);
         float _t5 = (float) Math.cosFromSin(_t0, angleX);
@@ -15957,6 +15957,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateYZX_unsafe(long dest, long src, float angleY, float angleZ, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -15973,9 +15976,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t1, angleZ);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);
@@ -16009,6 +16009,7 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateZ_unsafe(long dest, long src, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -16025,7 +16026,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -16047,6 +16047,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateZXY_unsafe(long dest, long src, float angleZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -16063,9 +16066,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleX);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleZ);
@@ -16099,6 +16099,9 @@ public final class Float4x4OpsKernelsAddress {
     }
 
     public static long rotateZYX_unsafe(long dest, long src, float angleZ, float angleY, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
         float _self20 = UnsafeOpsHolder.U.getFloat(src + 8L);
@@ -16115,9 +16118,6 @@ public final class Float4x4OpsKernelsAddress {
         float _self13 = UnsafeOpsHolder.U.getFloat(src + 52L);
         float _self23 = UnsafeOpsHolder.U.getFloat(src + 56L);
         float _self33 = UnsafeOpsHolder.U.getFloat(src + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t0, angleY);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);

@@ -2559,6 +2559,8 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer preRotateAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle, double pivotX, double pivotY) {
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.sin(0.5 * angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -2568,8 +2570,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angle);
-        double _t2 = Math.sin(0.5 * angle);
         double _t3 = Math.cosFromSin(_t0, angle);
         double _t8 = (_t2 + _t2) * _t2;
         double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
@@ -2595,6 +2595,8 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer preRotateAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, double angle) {
+        double _t0 = Math.sin(angle);
+        double _t2 = Math.sin(0.5 * angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -2606,8 +2608,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self22 = src.getDouble(srcOffset + 64);
         double _pivotx = pivot.getDouble(pivotOffset + 0);
         double _pivoty = pivot.getDouble(pivotOffset + 8);
-        double _t0 = Math.sin(angle);
-        double _t2 = Math.sin(0.5 * angle);
         double _t3 = Math.cosFromSin(_t0, angle);
         double _t8 = (_t2 + _t2) * _t2;
         double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
@@ -2632,6 +2632,7 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer preRotateAxis_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -2641,7 +2642,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t4 = axisX * axisY;
@@ -2677,6 +2677,7 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer preRotateAxis_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -2689,7 +2690,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _axisx = axis.getDouble(axisOffset + 0);
         double _axisy = axis.getDouble(axisOffset + 8);
         double _axisz = axis.getDouble(axisOffset + 16);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t4 = _axisx * _axisy;
@@ -3058,6 +3058,8 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle, double pivotX, double pivotY) {
+        double _t0 = Math.sin(angle);
+        double _t3 = Math.sin(0.5 * angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3067,9 +3069,7 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angle);
         double _t2 = Math.cosFromSin(_t0, angle);
-        double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
         double _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
@@ -3094,6 +3094,8 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, double angle) {
+        double _t0 = Math.sin(angle);
+        double _t3 = Math.sin(0.5 * angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3105,9 +3107,7 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self22 = src.getDouble(srcOffset + 64);
         double _pivotx = pivot.getDouble(pivotOffset + 0);
         double _pivoty = pivot.getDouble(pivotOffset + 8);
-        double _t0 = Math.sin(angle);
         double _t2 = Math.cosFromSin(_t0, angle);
-        double _t3 = Math.sin(0.5 * angle);
         double _t8 = (_t3 + _t3) * _t3;
         double _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
         double _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
@@ -3131,6 +3131,7 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateAxis_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3140,7 +3141,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t5 = axisX * axisY;
@@ -3176,6 +3176,7 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateAxis_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3188,7 +3189,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _axisx = axis.getDouble(axisOffset + 0);
         double _axisy = axis.getDouble(axisOffset + 8);
         double _axisz = axis.getDouble(axisOffset + 16);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t5 = _axisx * _axisy;
@@ -3341,6 +3341,9 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateXYZ_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleY, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3350,9 +3353,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t0, angleX);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleY);
@@ -3386,6 +3386,9 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateXZY_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleX, double angleZ, double angleY) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3395,9 +3398,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t2, angleY);
         double _t4 = Math.cosFromSin(_t0, angleX);
         double _t5 = Math.cosFromSin(_t1, angleZ);
@@ -3549,6 +3549,9 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateYXZ_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleY, double angleX, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3558,9 +3561,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleY);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleY);
         double _t4 = Math.cosFromSin(_t2, angleZ);
         double _t5 = Math.cosFromSin(_t0, angleX);
@@ -3594,6 +3594,9 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateYZX_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleY, double angleZ, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3603,9 +3606,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t1, angleZ);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleX);
@@ -3726,6 +3726,9 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateZXY_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleZ, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3735,9 +3738,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleX);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleZ);
@@ -3771,6 +3771,9 @@ public final class Double3x3OpsKernelsByteBuffer {
     }
 
     public static java.nio.ByteBuffer rotateZYX_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double angleZ, double angleY, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.getDouble(srcOffset + 0);
         double _self10 = src.getDouble(srcOffset + 8);
         double _self20 = src.getDouble(srcOffset + 16);
@@ -3780,9 +3783,6 @@ public final class Double3x3OpsKernelsByteBuffer {
         double _self02 = src.getDouble(srcOffset + 48);
         double _self12 = src.getDouble(srcOffset + 56);
         double _self22 = src.getDouble(srcOffset + 64);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t0, angleY);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleX);

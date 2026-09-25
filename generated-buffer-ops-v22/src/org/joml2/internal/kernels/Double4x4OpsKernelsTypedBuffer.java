@@ -5392,6 +5392,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.arcball_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, radius, centerX, centerY, centerZ, angleX, angleY);
             return dest;
         }
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -5408,8 +5410,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -centerZ;
         double _t3 = -centerY;
         double _t4 = Math.cosFromSin(_t1, angleX);
@@ -5457,6 +5457,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.arcball_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius, angleX, angleY);
             return dest;
         }
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -5476,8 +5478,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _centerx = center.get(centerOffset + 0);
         double _centery = center.get(centerOffset + 1);
         double _centerz = center.get(centerOffset + 2);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -_centerz;
         double _t3 = -_centery;
         double _t4 = Math.cosFromSin(_t1, angleX);
@@ -5524,6 +5524,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.axonometricDimetric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, alpha);
             return dest;
         }
+        double _t0 = Math.sin(alpha);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -5540,7 +5541,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
         double _sp0 = _t1 * 0.5;
         double _t2 = Math.cosFromSin(_t0, alpha);
@@ -5652,6 +5652,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.axonometricTrimetric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, alphaX, alphaY);
             return dest;
         }
+        double _t0 = Math.sin(alphaY);
+        double _t1 = Math.sin(alphaX);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -5668,8 +5670,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(alphaY);
-        double _t1 = Math.sin(alphaX);
         double _t2 = Math.cosFromSin(_t1, alphaX);
         double _t3 = Math.cosFromSin(_t0, alphaY);
         double _t4 = _t1 * _t0;
@@ -6885,11 +6885,11 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeArcball_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(center.duplicate().position(0)), (long) centerOffset * 8L, radius, angleX, angleY);
             return dest;
         }
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _centerx = center.get(centerOffset + 0);
         double _centery = center.get(centerOffset + 1);
         double _centerz = center.get(centerOffset + 2);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -_centerz;
         double _t3 = -_centery;
         double _t4 = Math.cosFromSin(_t0, angleY);
@@ -10362,9 +10362,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makePerspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
             return dest;
         }
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleMax);
         double _t1 = Math.tan(angleMin);
+        double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
@@ -10417,9 +10417,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makePerspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleMin, angleMax, aspect, near, far);
             return dest;
         }
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleMax);
         double _t1 = Math.tan(angleMin);
+        double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
@@ -10594,11 +10594,11 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleRight);
         double _t1 = Math.tan(angleLeft);
         double _t2 = Math.tan(angleUp);
         double _t3 = Math.tan(angleDown);
+        double _sp0 = near + near;
         double _t4_inv = 1.0 / (near - far);
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
@@ -10651,11 +10651,11 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makePerspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleRight);
         double _t1 = Math.tan(angleLeft);
         double _t2 = Math.tan(angleUp);
         double _t3 = Math.tan(angleDown);
+        double _sp0 = near + near;
         double _t4_inv = 1.0 / (near - far);
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
@@ -12150,10 +12150,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.makeRotationAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _axisx = axis.get(axisOffset + 0);
         double _axisy = axis.get(axisOffset + 1);
         double _axisz = axis.get(axisOffset + 2);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisy;
         double _t3 = _axisx * _axisz;
@@ -15635,6 +15635,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.obliqueCabinet_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -15651,7 +15652,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t2 = 0.5 * _t0;
         double _t3 = 0.5 * Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
@@ -15689,6 +15689,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.obliqueCavalier_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -15705,7 +15706,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, _self10);
@@ -15742,6 +15742,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.obliqueMilitary_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -15758,7 +15759,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, _self10);
@@ -15795,6 +15795,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.obliquePlanometric_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -15811,7 +15812,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, _self01 * _t0));
         dest.put(destOffset + 1, Math.fma(_self10, _t1, _self11 * _t0));
@@ -18203,6 +18203,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspective_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, fovy, aspect, near, far);
             return dest;
         }
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18221,7 +18222,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self33 = src.get(srcOffset + 15);
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t15, _t16;
@@ -18277,6 +18277,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspective_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, fovy, aspect, near, far);
             return dest;
         }
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18295,7 +18296,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self33 = src.get(srcOffset + 15);
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t13, _t15;
@@ -18358,6 +18358,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspective_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, fovy, aspect, near, far);
             return dest;
         }
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18375,7 +18376,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t10, _t11;
@@ -18431,6 +18431,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspective_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, fovy, aspect, near, far);
             return dest;
         }
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18448,7 +18449,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t9, _t10;
@@ -18511,6 +18511,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleMin, angleMax, aspect, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18528,8 +18530,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -18589,6 +18589,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleMin, angleMax, aspect, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18606,8 +18608,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -18674,6 +18674,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveFovRange_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleMin, angleMax, aspect, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18690,8 +18692,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -18751,6 +18751,8 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveFovRange_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleMin, angleMax, aspect, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -18767,8 +18769,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -19111,6 +19111,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -19128,10 +19132,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -19192,6 +19192,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -19209,10 +19213,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -19280,6 +19280,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveOffCenterFov_zo_lh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -19296,10 +19300,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;
@@ -19360,6 +19360,10 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.perspectiveOffCenterFov_zo_rh_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleLeft, angleRight, angleDown, angleUp, near, far);
             return dest;
         }
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -19376,10 +19380,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;
@@ -19656,6 +19656,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle, axisX, axisY, axisZ);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -19672,7 +19673,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t4 = axisX * axisY;
@@ -19723,6 +19723,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -19742,7 +19743,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _axisx = axis.get(axisOffset + 0);
         double _axisy = axis.get(axisOffset + 1);
         double _axisz = axis.get(axisOffset + 2);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t4 = _axisx * _axisy;
@@ -19935,6 +19935,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.preRotateX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -19951,7 +19952,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, Math.fma(_self10, _t1, -(_self20 * _t0)));
@@ -19988,6 +19988,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.preRotateY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -20004,7 +20005,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, _self20 * _t0));
         dest.put(destOffset + 1, _self10);
@@ -20041,6 +20041,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.preRotateZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -20057,7 +20058,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, -(_self10 * _t0)));
         dest.put(destOffset + 1, Math.fma(_self00, _t0, _self10 * _t1));
@@ -20965,6 +20965,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle, axisX, axisY, axisZ);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -20981,7 +20982,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t5 = axisX * axisY;
@@ -21032,6 +21032,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21051,7 +21052,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _axisx = axis.get(axisOffset + 0);
         double _axisy = axis.get(axisOffset + 1);
         double _axisz = axis.get(axisOffset + 2);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t5 = _axisx * _axisy;
@@ -21244,6 +21244,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21260,7 +21261,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, _self00);
         dest.put(destOffset + 1, _self10);
@@ -21297,6 +21297,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleX, angleY, angleZ);
             return dest;
         }
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21313,9 +21316,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t0, angleX);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleY);
@@ -21364,6 +21364,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleX, angleZ, angleY);
             return dest;
         }
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21380,9 +21383,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t2, angleY);
         double _t4 = Math.cosFromSin(_t0, angleX);
         double _t5 = Math.cosFromSin(_t1, angleZ);
@@ -21431,6 +21431,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21447,7 +21448,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, -(_self02 * _t0)));
         dest.put(destOffset + 1, Math.fma(_self10, _t1, -(_self12 * _t0)));
@@ -21484,6 +21484,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleY, angleX, angleZ);
             return dest;
         }
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21500,9 +21503,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleY);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleY);
         double _t4 = Math.cosFromSin(_t2, angleZ);
         double _t5 = Math.cosFromSin(_t0, angleX);
@@ -21551,6 +21551,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleY, angleZ, angleX);
             return dest;
         }
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21567,9 +21570,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t1, angleZ);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleX);
@@ -21618,6 +21618,7 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angle);
             return dest;
         }
+        double _t0 = Math.sin(angle);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21634,7 +21635,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         dest.put(destOffset + 0, Math.fma(_self00, _t1, _self01 * _t0));
         dest.put(destOffset + 1, Math.fma(_self10, _t1, _self11 * _t0));
@@ -21671,6 +21671,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleZ, angleX, angleY);
             return dest;
         }
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21687,9 +21690,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleX);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleZ);
@@ -21738,6 +21738,9 @@ public final class Double4x4OpsKernelsTypedBuffer {
             Double4x4OpsKernelsSegment.rotateZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, angleZ, angleY, angleX);
             return dest;
         }
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = src.get(srcOffset + 0);
         double _self10 = src.get(srcOffset + 1);
         double _self20 = src.get(srcOffset + 2);
@@ -21754,9 +21757,6 @@ public final class Double4x4OpsKernelsTypedBuffer {
         double _self13 = src.get(srcOffset + 13);
         double _self23 = src.get(srcOffset + 14);
         double _self33 = src.get(srcOffset + 15);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t0, angleY);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleX);

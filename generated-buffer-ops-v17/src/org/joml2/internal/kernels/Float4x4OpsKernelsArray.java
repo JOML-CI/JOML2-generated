@@ -5735,6 +5735,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -5753,7 +5754,6 @@ public final class Float4x4OpsKernelsArray {
         float _self33 = src[srcOffset + 15];
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t15, _t16;
@@ -5789,6 +5789,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -5807,7 +5808,6 @@ public final class Float4x4OpsKernelsArray {
         float _self33 = src[srcOffset + 15];
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t13, _t15;
@@ -5850,6 +5850,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -5867,7 +5868,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t10, _t11;
@@ -5903,6 +5903,7 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspective_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -5920,7 +5921,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t9, _t10;
@@ -5963,6 +5963,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -5980,8 +5982,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -6021,6 +6021,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6038,8 +6040,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -6086,6 +6086,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6102,8 +6104,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -6143,6 +6143,8 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveFovRange_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6159,8 +6161,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -6403,6 +6403,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_no_lh(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6420,10 +6424,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -6464,6 +6464,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_no_rh(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6481,10 +6485,6 @@ public final class Float4x4OpsKernelsArray {
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -6532,6 +6532,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_zo_lh(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6548,10 +6552,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -6592,6 +6592,10 @@ public final class Float4x4OpsKernelsArray {
     }
 
     public static float[] perspectiveOffCenterFov_zo_rh(float[] dest, int destOffset, float[] src, int srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6608,10 +6612,6 @@ public final class Float4x4OpsKernelsArray {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;

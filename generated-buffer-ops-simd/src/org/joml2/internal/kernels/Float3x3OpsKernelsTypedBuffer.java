@@ -3177,6 +3177,8 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.preRotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle, pivotX, pivotY);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.sin(0.5f * angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3186,8 +3188,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angle);
-        float _t2 = (float) Math.sin(0.5f * angle);
         float _t3 = (float) Math.cosFromSin(_t0, angle);
         float _t8 = (_t2 + _t2) * _t2;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
@@ -3221,6 +3221,8 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.preRotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 4L, angle);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
+        float _t2 = (float) Math.sin(0.5f * angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3232,8 +3234,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self22 = src.get(srcOffset + 8);
         float _pivotx = pivot.get(pivotOffset + 0);
         float _pivoty = pivot.get(pivotOffset + 1);
-        float _t0 = (float) Math.sin(angle);
-        float _t2 = (float) Math.sin(0.5f * angle);
         float _t3 = (float) Math.cosFromSin(_t0, angle);
         float _t8 = (_t2 + _t2) * _t2;
         float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
@@ -3266,6 +3266,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle, axisX, axisY, axisZ);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3275,7 +3276,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t4 = axisX * axisY;
@@ -3319,6 +3319,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.preRotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 4L, angle);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3331,7 +3332,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _axisx = axis.get(axisOffset + 0);
         float _axisy = axis.get(axisOffset + 1);
         float _axisz = axis.get(axisOffset + 2);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t4 = _axisx * _axisy;
@@ -3804,6 +3804,8 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle, pivotX, pivotY);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
+        float _t3 = (float) Math.sin(0.5f * angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3813,9 +3815,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angle);
         float _t2 = (float) Math.cosFromSin(_t0, angle);
-        float _t3 = (float) Math.sin(0.5f * angle);
         float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(pivotX, _t8, pivotY * _t0);
         float _t10 = Math.fma(pivotY, _t8, -(pivotX * _t0));
@@ -3848,6 +3848,8 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 4L, angle);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
+        float _t3 = (float) Math.sin(0.5f * angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3859,9 +3861,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self22 = src.get(srcOffset + 8);
         float _pivotx = pivot.get(pivotOffset + 0);
         float _pivoty = pivot.get(pivotOffset + 1);
-        float _t0 = (float) Math.sin(angle);
         float _t2 = (float) Math.cosFromSin(_t0, angle);
-        float _t3 = (float) Math.sin(0.5f * angle);
         float _t8 = (_t3 + _t3) * _t3;
         float _t9 = Math.fma(_pivotx, _t8, _pivoty * _t0);
         float _t10 = Math.fma(_pivoty, _t8, -(_pivotx * _t0));
@@ -3893,6 +3893,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle, axisX, axisY, axisZ);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3902,7 +3903,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t5 = axisX * axisY;
@@ -3946,6 +3946,7 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateAxis_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(axis.duplicate().position(0)), (long) axisOffset * 4L, angle);
             return dest;
         }
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -3958,7 +3959,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _axisx = axis.get(axisOffset + 0);
         float _axisy = axis.get(axisOffset + 1);
         float _axisz = axis.get(axisOffset + 2);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t5 = _axisx * _axisy;
@@ -4151,6 +4151,9 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateXYZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angleX, angleY, angleZ);
             return dest;
         }
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4160,9 +4163,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t0, angleX);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleY);
@@ -4204,6 +4204,9 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateXZY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angleX, angleZ, angleY);
             return dest;
         }
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4213,9 +4216,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t2, angleY);
         float _t4 = (float) Math.cosFromSin(_t0, angleX);
         float _t5 = (float) Math.cosFromSin(_t1, angleZ);
@@ -4407,6 +4407,9 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateYXZ_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angleY, angleX, angleZ);
             return dest;
         }
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4416,9 +4419,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleY);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleY);
         float _t4 = (float) Math.cosFromSin(_t2, angleZ);
         float _t5 = (float) Math.cosFromSin(_t0, angleX);
@@ -4460,6 +4460,9 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateYZX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angleY, angleZ, angleX);
             return dest;
         }
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4469,9 +4472,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t1, angleZ);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);
@@ -4624,6 +4624,9 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateZXY_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angleZ, angleX, angleY);
             return dest;
         }
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4633,9 +4636,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleX);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleZ);
@@ -4677,6 +4677,9 @@ public final class Float3x3OpsKernelsTypedBuffer {
             Float3x3OpsKernelsSegment.rotateZYX_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angleZ, angleY, angleX);
             return dest;
         }
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src.get(srcOffset + 0);
         float _self10 = src.get(srcOffset + 1);
         float _self20 = src.get(srcOffset + 2);
@@ -4686,9 +4689,6 @@ public final class Float3x3OpsKernelsTypedBuffer {
         float _self02 = src.get(srcOffset + 6);
         float _self12 = src.get(srcOffset + 7);
         float _self22 = src.get(srcOffset + 8);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t0, angleY);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);

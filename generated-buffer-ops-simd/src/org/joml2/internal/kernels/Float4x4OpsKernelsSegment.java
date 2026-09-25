@@ -4575,6 +4575,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment arcball_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -4591,8 +4593,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -centerZ;
         float _t3 = -centerY;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -4632,6 +4632,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment arcball_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment center, long centerOffset, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -4651,8 +4653,6 @@ public final class Float4x4OpsKernelsSegment {
         float _centerx = center.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, centerOffset + 0L);
         float _centery = center.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, centerOffset + 4L);
         float _centerz = center.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, centerOffset + 8L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -4691,6 +4691,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment axonometricDimetric_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float alpha) {
+        float _t0 = (float) Math.sin(alpha);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -4707,7 +4708,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(alpha);
         float _t1 = (float) Math.sqrt(2.0f);
         float _sp0 = _t1 * 0.5f;
         float _t2 = (float) Math.cosFromSin(_t0, alpha);
@@ -4803,6 +4803,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment axonometricTrimetric_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float alphaX, float alphaY) {
+        float _t0 = (float) Math.sin(alphaY);
+        float _t1 = (float) Math.sin(alphaX);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -4819,8 +4821,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(alphaY);
-        float _t1 = (float) Math.sin(alphaX);
         float _t2 = (float) Math.cosFromSin(_t1, alphaX);
         float _t3 = (float) Math.cosFromSin(_t0, alphaY);
         float _t4 = _t1 * _t0;
@@ -5916,11 +5916,11 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeArcball_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment center, long centerOffset, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _centerx = center.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, centerOffset + 0L);
         float _centery = center.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, centerOffset + 4L);
         float _centerz = center.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, centerOffset + 8L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
@@ -8549,9 +8549,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, float fovy, float aspect, float near, float far) {
+        float _t2 = (float) Math.tan(0.5f * fovy);
         float _sp0 = near + near;
         float _t1_inv = 1.0f / (near - far);
-        float _t2 = (float) Math.tan(0.5f * fovy);
         if (far == Float.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, 1.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, -_sp0);
@@ -8593,9 +8593,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, float fovy, float aspect, float near, float far) {
+        float _t2 = (float) Math.tan(0.5f * fovy);
         float _sp0 = near + near;
         float _t1_inv = 1.0f / (near - far);
-        float _t2 = (float) Math.tan(0.5f * fovy);
         if (far == Float.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, -1.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, -_sp0);
@@ -8644,8 +8644,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, float fovy, float aspect, float near, float far) {
-        float _sp0 = far / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
+        float _sp0 = far / (near - far);
         if (far == Float.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, 1.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, -near);
@@ -8687,8 +8687,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspective_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, float fovy, float aspect, float near, float far) {
-        float _sp0 = far / (near - far);
         float _t2 = (float) Math.tan(0.5f * fovy);
+        float _sp0 = far / (near - far);
         if (far == Float.POSITIVE_INFINITY) {
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, -1.0f);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 56L, -near);
@@ -8737,9 +8737,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, float angleMin, float angleMax, float aspect, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleMax);
         float _t1 = (float) Math.tan(angleMin);
+        float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
@@ -8784,9 +8784,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, float angleMin, float angleMax, float aspect, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleMax);
         float _t1 = (float) Math.tan(angleMin);
+        float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
         float _t3 = _t0 - _t1;
         float _t3_inv = 1.0f / _t3;
@@ -8937,11 +8937,11 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleRight);
         float _t1 = (float) Math.tan(angleLeft);
         float _t2 = (float) Math.tan(angleUp);
         float _t3 = (float) Math.tan(angleDown);
+        float _sp0 = near + near;
         float _t4_inv = 1.0f / (near - far);
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
@@ -8986,11 +8986,11 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makePerspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
-        float _sp0 = near + near;
         float _t0 = (float) Math.tan(angleRight);
         float _t1 = (float) Math.tan(angleLeft);
         float _t2 = (float) Math.tan(angleUp);
         float _t3 = (float) Math.tan(angleDown);
+        float _sp0 = near + near;
         float _t4_inv = 1.0f / (near - far);
         float _t5_inv = 1.0f / (_t0 - _t1);
         float _t6_inv = 1.0f / (_t2 - _t3);
@@ -10333,10 +10333,10 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment makeRotationAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 0L);
         float _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 4L);
         float _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 8L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisy;
         float _t3 = _axisx * _axisz;
@@ -13234,6 +13234,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCabinet_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -13250,7 +13251,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t2 = 0.5f * _t0;
         float _t3 = 0.5f * (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
@@ -13280,6 +13280,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliqueCavalier_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -13296,7 +13297,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
@@ -13325,6 +13325,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliqueMilitary_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -13341,7 +13342,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
@@ -13370,6 +13370,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment obliquePlanometric_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -13386,7 +13387,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -15595,6 +15595,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -15613,7 +15614,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t15, _t16;
@@ -15662,6 +15662,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float fovy, float aspect, float near, float far) {
+        float _t6 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -15680,7 +15681,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp0 = near + near;
         float _t2_inv = 1.0f / (near - far);
-        float _t6 = (float) Math.tan(0.5f * fovy);
         float _t6_inv = 1.0f / _t6;
         float _t9_inv = 1.0f / (aspect * _t6);
         float _t13, _t15;
@@ -15736,6 +15736,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -15753,7 +15754,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t10, _t11;
@@ -15802,6 +15802,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspective_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float fovy, float aspect, float near, float far) {
+        float _t3 = (float) Math.tan(0.5f * fovy);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -15819,7 +15820,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp0 = far / (near - far);
-        float _t3 = (float) Math.tan(0.5f * fovy);
         float _t3_inv = 1.0f / _t3;
         float _t5_inv = 1.0f / (aspect * _t3);
         float _t9, _t10;
@@ -15875,6 +15875,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -15892,8 +15894,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -15946,6 +15946,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -15963,8 +15965,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp3 = near + near;
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _t3_inv = 1.0f / (near - far);
         float _t8 = _t0 - _t1;
         float _t8_inv = 1.0f / _t8;
@@ -16024,6 +16024,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16040,8 +16042,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -16094,6 +16094,8 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveFovRange_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleMin, float angleMax, float aspect, float near, float far) {
+        float _t0 = (float) Math.tan(angleMax);
+        float _t1 = (float) Math.tan(angleMin);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16110,8 +16112,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.tan(angleMax);
-        float _t1 = (float) Math.tan(angleMin);
         float _sp3 = far / (near - far);
         float _t4 = _t0 - _t1;
         float _t4_inv = 1.0f / _t4;
@@ -16419,6 +16419,10 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_no_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16436,10 +16440,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -16493,6 +16493,10 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_no_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16510,10 +16514,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
         float _sp4 = near + near;
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _t5_inv = 1.0f / (near - far);
         float _t10_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t10_inv + _t10_inv;
@@ -16574,6 +16574,10 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_zo_lh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16590,10 +16594,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -16647,6 +16647,10 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment perspectiveOffCenterFov_zo_rh_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleLeft, float angleRight, float angleDown, float angleUp, float near, float far) {
+        float _t0 = (float) Math.tan(angleRight);
+        float _t1 = (float) Math.tan(angleLeft);
+        float _t2 = (float) Math.tan(angleUp);
+        float _t3 = (float) Math.tan(angleDown);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16663,10 +16667,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.tan(angleRight);
-        float _t1 = (float) Math.tan(angleLeft);
-        float _t2 = (float) Math.tan(angleUp);
-        float _t3 = (float) Math.tan(angleDown);
         float _sp4 = far / (near - far);
         float _t6_inv = 1.0f / (_t0 - _t1);
         float _sp0 = _t6_inv + _t6_inv;
@@ -16911,6 +16911,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16927,7 +16928,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t4 = axisX * axisY;
@@ -16970,6 +16970,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -16989,7 +16990,6 @@ public final class Float4x4OpsKernelsSegment {
         float _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 0L);
         float _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 4L);
         float _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 8L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t4 = _axisx * _axisy;
@@ -17158,6 +17158,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -17174,7 +17175,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self10, _t1, -(_self20 * _t0)));
@@ -17203,6 +17203,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -17219,7 +17220,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, _self20 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
@@ -17248,6 +17248,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment preRotateZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -17264,7 +17265,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, -(_self10 * _t0)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self00, _t0, _self10 * _t1));
@@ -18028,6 +18028,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18044,7 +18045,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t5 = axisX * axisY;
@@ -18087,6 +18087,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateAxis_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment axis, long axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18106,7 +18107,6 @@ public final class Float4x4OpsKernelsSegment {
         float _axisx = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 0L);
         float _axisy = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 4L);
         float _axisz = axis.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, axisOffset + 8L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t5 = _axisx * _axisy;
@@ -18275,6 +18275,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18291,7 +18292,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _self00);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _self10);
@@ -18320,6 +18320,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateXYZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleY, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18336,9 +18339,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t0, angleX);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleY);
@@ -18379,6 +18379,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateXZY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleX, float angleZ, float angleY) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18395,9 +18398,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t2, angleY);
         float _t4 = (float) Math.cosFromSin(_t0, angleX);
         float _t5 = (float) Math.cosFromSin(_t1, angleZ);
@@ -18438,6 +18438,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18454,7 +18455,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, -(_self02 * _t0)));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self10, _t1, -(_self12 * _t0)));
@@ -18483,6 +18483,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateYXZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleY, float angleX, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18499,9 +18502,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleY);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleY);
         float _t4 = (float) Math.cosFromSin(_t2, angleZ);
         float _t5 = (float) Math.cosFromSin(_t0, angleX);
@@ -18542,6 +18542,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateYZX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleY, float angleZ, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18558,9 +18561,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t1, angleZ);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);
@@ -18601,6 +18601,7 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateZ_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18617,7 +18618,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -18646,6 +18646,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateZXY_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18662,9 +18665,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleX);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleZ);
@@ -18705,6 +18705,9 @@ public final class Float4x4OpsKernelsSegment {
     }
 
     public static java.lang.foreign.MemorySegment rotateZYX_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angleZ, float angleY, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
         float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
         float _self20 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
@@ -18721,9 +18724,6 @@ public final class Float4x4OpsKernelsSegment {
         float _self13 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 52L);
         float _self23 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 56L);
         float _self33 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 60L);
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t0, angleY);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);

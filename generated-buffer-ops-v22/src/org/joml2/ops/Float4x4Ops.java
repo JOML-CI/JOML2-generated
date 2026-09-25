@@ -6466,6 +6466,8 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] arcball(float[] dest, int destOffset, float[] src, int srcOffset, float radius, float centerX, float centerY, float centerZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6482,8 +6484,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -centerZ;
         float _t3 = -centerY;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -6560,6 +6560,8 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] arcball(float[] dest, int destOffset, float[] src, int srcOffset, float[] center, int centerOffset, float radius, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6579,8 +6581,6 @@ public final class Float4x4Ops {
         float _centerx = center[centerOffset + 0];
         float _centery = center[centerOffset + 1];
         float _centerz = center[centerOffset + 2];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
         float _t2 = -_centerz;
         float _t3 = -_centery;
         float _t4 = (float) Math.cosFromSin(_t1, angleX);
@@ -6653,6 +6653,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] axonometricDimetric(float[] dest, int destOffset, float[] src, int srcOffset, float alpha) {
+        float _t0 = (float) Math.sin(alpha);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6669,7 +6670,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(alpha);
         float _t1 = (float) Math.sqrt(2.0f);
         float _sp0 = _t1 * 0.5f;
         float _t2 = (float) Math.cosFromSin(_t0, alpha);
@@ -6831,6 +6831,8 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] axonometricTrimetric(float[] dest, int destOffset, float[] src, int srcOffset, float alphaX, float alphaY) {
+        float _t0 = (float) Math.sin(alphaY);
+        float _t1 = (float) Math.sin(alphaX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -6847,8 +6849,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(alphaY);
-        float _t1 = (float) Math.sin(alphaX);
         float _t2 = (float) Math.cosFromSin(_t1, alphaX);
         float _t3 = (float) Math.cosFromSin(_t0, alphaY);
         float _t4 = _t1 * _t0;
@@ -19130,6 +19130,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] obliquePlanometric(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -19146,7 +19147,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, _self01 * _t0);
         dest[destOffset + 1] = Math.fma(_self10, _t1, _self11 * _t0);
@@ -21417,6 +21417,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] preRotateAxis(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -21433,7 +21434,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t4 = axisX * axisY;
@@ -21510,6 +21510,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] preRotateAxis(float[] dest, int destOffset, float[] src, int srcOffset, float[] axis, int axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -21529,7 +21530,6 @@ public final class Float4x4Ops {
         float _axisx = axis[axisOffset + 0];
         float _axisy = axis[axisOffset + 1];
         float _axisz = axis[axisOffset + 2];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t4 = _axisx * _axisy;
@@ -21804,6 +21804,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] preRotateX(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -21820,7 +21821,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = _self00;
         dest[destOffset + 1] = Math.fma(_self10, _t1, -(_self20 * _t0));
@@ -21882,6 +21882,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] preRotateY(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -21898,7 +21899,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, _self20 * _t0);
         dest[destOffset + 1] = _self10;
@@ -21960,6 +21960,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] preRotateZ(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -21976,7 +21977,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, -(_self10 * _t0));
         dest[destOffset + 1] = Math.fma(_self00, _t0, _self10 * _t1);
@@ -23266,6 +23266,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateAxis(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -23282,7 +23283,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = axisX * axisZ;
         float _t5 = axisX * axisY;
@@ -23359,6 +23359,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateAxis(float[] dest, int destOffset, float[] src, int srcOffset, float[] axis, int axisOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -23378,7 +23379,6 @@ public final class Float4x4Ops {
         float _axisx = axis[axisOffset + 0];
         float _axisy = axis[axisOffset + 1];
         float _axisz = axis[axisOffset + 2];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         float _t2 = _axisx * _axisz;
         float _t5 = _axisx * _axisy;
@@ -23653,6 +23653,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateX(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -23669,7 +23670,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = _self00;
         dest[destOffset + 1] = _self10;
@@ -23848,6 +23848,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateXYZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleY, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -23864,9 +23867,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t0, angleX);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleY);
@@ -23943,6 +23943,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateXZY(float[] dest, int destOffset, float[] src, int srcOffset, float angleX, float angleZ, float angleY) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleY);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -23959,9 +23962,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleY);
         float _t3 = (float) Math.cosFromSin(_t2, angleY);
         float _t4 = (float) Math.cosFromSin(_t0, angleX);
         float _t5 = (float) Math.cosFromSin(_t1, angleZ);
@@ -24149,6 +24149,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateY(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -24165,7 +24166,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, -(_self02 * _t0));
         dest[destOffset + 1] = Math.fma(_self10, _t1, -(_self12 * _t0));
@@ -24344,6 +24344,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateYXZ(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleX, float angleZ) {
+        float _t0 = (float) Math.sin(angleX);
+        float _t1 = (float) Math.sin(angleY);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -24360,9 +24363,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleX);
-        float _t1 = (float) Math.sin(angleY);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleY);
         float _t4 = (float) Math.cosFromSin(_t2, angleZ);
         float _t5 = (float) Math.cosFromSin(_t0, angleX);
@@ -24439,6 +24439,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateYZX(float[] dest, int destOffset, float[] src, int srcOffset, float angleY, float angleZ, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -24455,9 +24458,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t1, angleZ);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);
@@ -24645,6 +24645,7 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateZ(float[] dest, int destOffset, float[] src, int srcOffset, float angle) {
+        float _t0 = (float) Math.sin(angle);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -24661,7 +24662,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angle);
         float _t1 = (float) Math.cosFromSin(_t0, angle);
         dest[destOffset + 0] = Math.fma(_self00, _t1, _self01 * _t0);
         dest[destOffset + 1] = Math.fma(_self10, _t1, _self11 * _t0);
@@ -24840,6 +24840,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateZXY(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleX, float angleY) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleX);
+        float _t2 = (float) Math.sin(angleZ);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -24856,9 +24859,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleX);
-        float _t2 = (float) Math.sin(angleZ);
         float _t3 = (float) Math.cosFromSin(_t1, angleX);
         float _t4 = (float) Math.cosFromSin(_t0, angleY);
         float _t5 = (float) Math.cosFromSin(_t2, angleZ);
@@ -24935,6 +24935,9 @@ public final class Float4x4Ops {
      * @return {@code dest}
      */
     public static float[] rotateZYX(float[] dest, int destOffset, float[] src, int srcOffset, float angleZ, float angleY, float angleX) {
+        float _t0 = (float) Math.sin(angleY);
+        float _t1 = (float) Math.sin(angleZ);
+        float _t2 = (float) Math.sin(angleX);
         float _self00 = src[srcOffset + 0];
         float _self10 = src[srcOffset + 1];
         float _self20 = src[srcOffset + 2];
@@ -24951,9 +24954,6 @@ public final class Float4x4Ops {
         float _self13 = src[srcOffset + 13];
         float _self23 = src[srcOffset + 14];
         float _self33 = src[srcOffset + 15];
-        float _t0 = (float) Math.sin(angleY);
-        float _t1 = (float) Math.sin(angleZ);
-        float _t2 = (float) Math.sin(angleX);
         float _t3 = (float) Math.cosFromSin(_t0, angleY);
         float _t4 = (float) Math.cosFromSin(_t1, angleZ);
         float _t5 = (float) Math.cosFromSin(_t2, angleX);

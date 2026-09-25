@@ -1889,37 +1889,19 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] squad(double[] dest, int destOffset, double[] src, int srcOffset, double control0X, double control0Y, double control0Z, double control0W, double control1X, double control1Y, double control1Z, double control1W, double targetX, double targetY, double targetZ, double targetW, double t) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
         double _t0 = 1.0 - t;
-        double _t1 = t + t;
         double _t3 = control0W + control1W;
         double _t4 = control0Z + control1Z;
         double _t5 = control0X + control1X;
         double _t6 = control0Y + control1Y;
         double _t7 = t < 0.5 ? 1.0 : 0.0;
-        double _t8 = _selfw + targetW;
-        double _t9 = _selfz + targetZ;
-        double _t10 = _selfx + targetX;
-        double _t11 = _selfy + targetY;
         double _t12 = 1.0 - _t7;
-        double _t13 = _t0 * _t1;
-        double _t14 = Math.fma(-_t0, _t1, 1.0);
-        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
         double _t25 = Math.min(4.0, Math.fma(_t3, _t3, Math.fma(_t4, _t4, Math.fma(_t5, _t5, _t6 * _t6))));
-        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
         double _t27 = quatArcAngle(_t25);
-        double _t28 = quatArcAngle(_t26);
         double _t29 = 4.0 - _t25;
-        double _t30 = 4.0 - _t26;
         double _t39 = _t29 * _t25;
-        double _t40 = _t30 * _t26;
         double _t41 = Math.sqrt(_t39);
-        double _t43 = Math.sqrt(_t40);
         double _t45 = 2.0 / _t41;
-        double _t46 = 2.0 / _t43;
         double _t55, _t57;
         if (_t41 > 2.0E-14) {
             _t55 = _t45 * Math.sin(t * _t27);
@@ -1933,6 +1915,24 @@ public final class DoubleQuatOps {
                 _t57 = _t7;
             }
         }
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
+        double _t1 = t + t;
+        double _t8 = _selfw + targetW;
+        double _t9 = _selfz + targetZ;
+        double _t10 = _selfx + targetX;
+        double _t11 = _selfy + targetY;
+        double _t13 = _t0 * _t1;
+        double _t14 = Math.fma(-_t0, _t1, 1.0);
+        double _t17 = _t13 < 0.5 ? 1.0 : 0.0;
+        double _t26 = Math.min(4.0, Math.fma(_t8, _t8, Math.fma(_t9, _t9, Math.fma(_t10, _t10, _t11 * _t11))));
+        double _t28 = quatArcAngle(_t26);
+        double _t30 = 4.0 - _t26;
+        double _t40 = _t30 * _t26;
+        double _t43 = Math.sqrt(_t40);
+        double _t46 = 2.0 / _t43;
         double _t56, _t58;
         if (_t43 > 2.0E-14) {
             _t56 = _t46 * Math.sin(t * _t28);
@@ -6538,16 +6538,16 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] rotateXYZ(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleY, double angleZ) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -6605,16 +6605,16 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] rotateXZY(double[] dest, int destOffset, double[] src, int srcOffset, double angleX, double angleZ, double angleY) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -6717,16 +6717,16 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] rotateYXZ(double[] dest, int destOffset, double[] src, int srcOffset, double angleY, double angleX, double angleZ) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleY;
         double _t2 = 0.5 * angleZ;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -6784,16 +6784,16 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] rotateYZX(double[] dest, int destOffset, double[] src, int srcOffset, double angleY, double angleZ, double angleX) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -6896,16 +6896,16 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] rotateZXY(double[] dest, int destOffset, double[] src, int srcOffset, double angleZ, double angleX, double angleY) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
         double _t0 = 0.5 * angleX;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleY;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);
@@ -6963,16 +6963,16 @@ public final class DoubleQuatOps {
      * @return {@code dest}
      */
     public static double[] rotateZYX(double[] dest, int destOffset, double[] src, int srcOffset, double angleZ, double angleY, double angleX) {
-        double _selfx = src[srcOffset + 0];
-        double _selfy = src[srcOffset + 1];
-        double _selfz = src[srcOffset + 2];
-        double _selfw = src[srcOffset + 3];
         double _t0 = 0.5 * angleY;
         double _t1 = 0.5 * angleZ;
         double _t2 = 0.5 * angleX;
         double _t3 = Math.sin(_t0);
         double _t4 = Math.sin(_t1);
         double _t5 = Math.sin(_t2);
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
         double _t6 = Math.cosFromSin(_t3, _t0);
         double _t7 = Math.cosFromSin(_t4, _t1);
         double _t8 = Math.cosFromSin(_t5, _t2);

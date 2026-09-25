@@ -3854,6 +3854,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long arcball_unsafe(long dest, long src, double radius, double centerX, double centerY, double centerZ, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -3870,8 +3872,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -centerZ;
         double _t3 = -centerY;
         double _t4 = Math.cosFromSin(_t1, angleX);
@@ -3903,6 +3903,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long arcball_unsafe(long dest, long src, long center, double radius, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -3922,8 +3924,6 @@ public final class Double4x4OpsKernelsAddress {
         double _centerx = UnsafeOpsHolder.U.getDouble(center + 0L);
         double _centery = UnsafeOpsHolder.U.getDouble(center + 8L);
         double _centerz = UnsafeOpsHolder.U.getDouble(center + 16L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -_centerz;
         double _t3 = -_centery;
         double _t4 = Math.cosFromSin(_t1, angleX);
@@ -3955,6 +3955,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long axonometricDimetric_unsafe(long dest, long src, double alpha) {
+        double _t0 = Math.sin(alpha);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -3971,7 +3972,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(alpha);
         double _t1 = Math.sqrt(2.0);
         double _sp0 = _t1 * 0.5;
         double _t2 = Math.cosFromSin(_t0, alpha);
@@ -4053,6 +4053,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long axonometricTrimetric_unsafe(long dest, long src, double alphaX, double alphaY) {
+        double _t0 = Math.sin(alphaY);
+        double _t1 = Math.sin(alphaX);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -4069,8 +4071,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(alphaY);
-        double _t1 = Math.sin(alphaX);
         double _t2 = Math.cosFromSin(_t1, alphaX);
         double _t3 = Math.cosFromSin(_t0, alphaY);
         double _t4 = _t1 * _t0;
@@ -5043,11 +5043,11 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makeArcball_unsafe(long dest, long center, double radius, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
         double _centerx = UnsafeOpsHolder.U.getDouble(center + 0L);
         double _centery = UnsafeOpsHolder.U.getDouble(center + 8L);
         double _centerz = UnsafeOpsHolder.U.getDouble(center + 16L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
         double _t2 = -_centerz;
         double _t3 = -_centery;
         double _t4 = Math.cosFromSin(_t0, angleY);
@@ -7211,9 +7211,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_no_lh_unsafe(long dest, double fovy, double aspect, double near, double far) {
+        double _t2 = Math.tan(0.5 * fovy);
         double _sp0 = near + near;
         double _t1_inv = 1.0 / (near - far);
-        double _t2 = Math.tan(0.5 * fovy);
         if (far == Double.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putDouble(dest + 80L, 1.0);
             UnsafeOpsHolder.U.putDouble(dest + 112L, -_sp0);
@@ -7250,9 +7250,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_no_rh_unsafe(long dest, double fovy, double aspect, double near, double far) {
+        double _t2 = Math.tan(0.5 * fovy);
         double _sp0 = near + near;
         double _t1_inv = 1.0 / (near - far);
-        double _t2 = Math.tan(0.5 * fovy);
         if (far == Double.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putDouble(dest + 80L, -1.0);
             UnsafeOpsHolder.U.putDouble(dest + 112L, -_sp0);
@@ -7296,8 +7296,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_zo_lh_unsafe(long dest, double fovy, double aspect, double near, double far) {
-        double _sp0 = far / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
+        double _sp0 = far / (near - far);
         if (far == Double.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putDouble(dest + 80L, 1.0);
             UnsafeOpsHolder.U.putDouble(dest + 112L, -near);
@@ -7334,8 +7334,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspective_zo_rh_unsafe(long dest, double fovy, double aspect, double near, double far) {
-        double _sp0 = far / (near - far);
         double _t2 = Math.tan(0.5 * fovy);
+        double _sp0 = far / (near - far);
         if (far == Double.POSITIVE_INFINITY) {
             UnsafeOpsHolder.U.putDouble(dest + 80L, -1.0);
             UnsafeOpsHolder.U.putDouble(dest + 112L, -near);
@@ -7379,9 +7379,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveFovRange_no_lh_unsafe(long dest, double angleMin, double angleMax, double aspect, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleMax);
         double _t1 = Math.tan(angleMin);
+        double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
@@ -7421,9 +7421,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveFovRange_no_rh_unsafe(long dest, double angleMin, double angleMax, double aspect, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleMax);
         double _t1 = Math.tan(angleMin);
+        double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
         double _t3 = _t0 - _t1;
         double _t3_inv = 1.0 / _t3;
@@ -7559,11 +7559,11 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveOffCenterFov_no_lh_unsafe(long dest, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleRight);
         double _t1 = Math.tan(angleLeft);
         double _t2 = Math.tan(angleUp);
         double _t3 = Math.tan(angleDown);
+        double _sp0 = near + near;
         double _t4_inv = 1.0 / (near - far);
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
@@ -7603,11 +7603,11 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makePerspectiveOffCenterFov_no_rh_unsafe(long dest, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
-        double _sp0 = near + near;
         double _t0 = Math.tan(angleRight);
         double _t1 = Math.tan(angleLeft);
         double _t2 = Math.tan(angleUp);
         double _t3 = Math.tan(angleDown);
+        double _sp0 = near + near;
         double _t4_inv = 1.0 / (near - far);
         double _t5_inv = 1.0 / (_t0 - _t1);
         double _t6_inv = 1.0 / (_t2 - _t3);
@@ -8824,10 +8824,10 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long makeRotationAxis_unsafe(long dest, long axis, double angle) {
+        double _t0 = Math.sin(angle);
         double _axisx = UnsafeOpsHolder.U.getDouble(axis + 0L);
         double _axisy = UnsafeOpsHolder.U.getDouble(axis + 8L);
         double _axisz = UnsafeOpsHolder.U.getDouble(axis + 16L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisy;
         double _t3 = _axisx * _axisz;
@@ -11227,6 +11227,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long obliqueCabinet_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -11243,7 +11244,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t2 = 0.5 * _t0;
         double _t3 = 0.5 * Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
@@ -11266,6 +11266,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long obliqueCavalier_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -11282,7 +11283,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
         UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
@@ -11304,6 +11304,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long obliqueMilitary_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -11320,7 +11321,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
         UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
@@ -11342,6 +11342,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long obliquePlanometric_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -11358,7 +11359,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -13388,6 +13388,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspective_no_lh_unsafe(long dest, long src, double fovy, double aspect, double near, double far) {
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13406,7 +13407,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t15, _t16;
@@ -13448,6 +13448,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspective_no_rh_unsafe(long dest, long src, double fovy, double aspect, double near, double far) {
+        double _t6 = Math.tan(0.5 * fovy);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13466,7 +13467,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp0 = near + near;
         double _t2_inv = 1.0 / (near - far);
-        double _t6 = Math.tan(0.5 * fovy);
         double _t6_inv = 1.0 / _t6;
         double _t9_inv = 1.0 / (aspect * _t6);
         double _t13, _t15;
@@ -13515,6 +13515,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspective_zo_lh_unsafe(long dest, long src, double fovy, double aspect, double near, double far) {
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13532,7 +13533,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t10, _t11;
@@ -13574,6 +13574,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspective_zo_rh_unsafe(long dest, long src, double fovy, double aspect, double near, double far) {
+        double _t3 = Math.tan(0.5 * fovy);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13591,7 +13592,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp0 = far / (near - far);
-        double _t3 = Math.tan(0.5 * fovy);
         double _t3_inv = 1.0 / _t3;
         double _t5_inv = 1.0 / (aspect * _t3);
         double _t9, _t10;
@@ -13640,6 +13640,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_no_lh_unsafe(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13657,8 +13659,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -13704,6 +13704,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_no_rh_unsafe(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13721,8 +13723,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp3 = near + near;
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _t3_inv = 1.0 / (near - far);
         double _t8 = _t0 - _t1;
         double _t8_inv = 1.0 / _t8;
@@ -13775,6 +13775,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_zo_lh_unsafe(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13791,8 +13793,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -13838,6 +13838,8 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveFovRange_zo_rh_unsafe(long dest, long src, double angleMin, double angleMax, double aspect, double near, double far) {
+        double _t0 = Math.tan(angleMax);
+        double _t1 = Math.tan(angleMin);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -13854,8 +13856,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.tan(angleMax);
-        double _t1 = Math.tan(angleMin);
         double _sp3 = far / (near - far);
         double _t4 = _t0 - _t1;
         double _t4_inv = 1.0 / _t4;
@@ -14128,6 +14128,10 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_no_lh_unsafe(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14145,10 +14149,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -14195,6 +14195,10 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_no_rh_unsafe(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14212,10 +14216,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
         double _sp4 = near + near;
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _t5_inv = 1.0 / (near - far);
         double _t10_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t10_inv + _t10_inv;
@@ -14269,6 +14269,10 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_zo_lh_unsafe(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14285,10 +14289,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;
@@ -14335,6 +14335,10 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long perspectiveOffCenterFov_zo_rh_unsafe(long dest, long src, double angleLeft, double angleRight, double angleDown, double angleUp, double near, double far) {
+        double _t0 = Math.tan(angleRight);
+        double _t1 = Math.tan(angleLeft);
+        double _t2 = Math.tan(angleUp);
+        double _t3 = Math.tan(angleDown);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14351,10 +14355,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.tan(angleRight);
-        double _t1 = Math.tan(angleLeft);
-        double _t2 = Math.tan(angleUp);
-        double _t3 = Math.tan(angleDown);
         double _sp4 = far / (near - far);
         double _t6_inv = 1.0 / (_t0 - _t1);
         double _sp0 = _t6_inv + _t6_inv;
@@ -14569,6 +14569,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long preRotateAxis_unsafe(long dest, long src, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14585,7 +14586,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t4 = axisX * axisY;
@@ -14620,6 +14620,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long preRotateAxis_unsafe(long dest, long src, long axis, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14639,7 +14640,6 @@ public final class Double4x4OpsKernelsAddress {
         double _axisx = UnsafeOpsHolder.U.getDouble(axis + 0L);
         double _axisy = UnsafeOpsHolder.U.getDouble(axis + 8L);
         double _axisz = UnsafeOpsHolder.U.getDouble(axis + 16L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t4 = _axisx * _axisy;
@@ -14786,6 +14786,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long preRotateX_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14802,7 +14803,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t1, -(_self20 * _t0)));
@@ -14824,6 +14824,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long preRotateY_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14840,7 +14841,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t1, _self20 * _t0));
         UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
@@ -14862,6 +14862,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long preRotateZ_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -14878,7 +14879,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t1, -(_self10 * _t0)));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self00, _t0, _self10 * _t1));
@@ -15508,6 +15508,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateAxis_unsafe(long dest, long src, double angle, double axisX, double axisY, double axisZ) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15524,7 +15525,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = axisX * axisZ;
         double _t5 = axisX * axisY;
@@ -15559,6 +15559,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateAxis_unsafe(long dest, long src, long axis, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15578,7 +15579,6 @@ public final class Double4x4OpsKernelsAddress {
         double _axisx = UnsafeOpsHolder.U.getDouble(axis + 0L);
         double _axisy = UnsafeOpsHolder.U.getDouble(axis + 8L);
         double _axisz = UnsafeOpsHolder.U.getDouble(axis + 16L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         double _t2 = _axisx * _axisz;
         double _t5 = _axisx * _axisy;
@@ -15725,6 +15725,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateX_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15741,7 +15742,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, _self00);
         UnsafeOpsHolder.U.putDouble(dest + 8L, _self10);
@@ -15763,6 +15763,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateXYZ_unsafe(long dest, long src, double angleX, double angleY, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15779,9 +15782,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t0, angleX);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleY);
@@ -15815,6 +15815,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateXZY_unsafe(long dest, long src, double angleX, double angleZ, double angleY) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleY);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15831,9 +15834,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleY);
         double _t3 = Math.cosFromSin(_t2, angleY);
         double _t4 = Math.cosFromSin(_t0, angleX);
         double _t5 = Math.cosFromSin(_t1, angleZ);
@@ -15867,6 +15867,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateY_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15883,7 +15884,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t1, -(_self02 * _t0)));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t1, -(_self12 * _t0)));
@@ -15905,6 +15905,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateYXZ_unsafe(long dest, long src, double angleY, double angleX, double angleZ) {
+        double _t0 = Math.sin(angleX);
+        double _t1 = Math.sin(angleY);
+        double _t2 = Math.sin(angleZ);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15921,9 +15924,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angleX);
-        double _t1 = Math.sin(angleY);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleY);
         double _t4 = Math.cosFromSin(_t2, angleZ);
         double _t5 = Math.cosFromSin(_t0, angleX);
@@ -15957,6 +15957,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateYZX_unsafe(long dest, long src, double angleY, double angleZ, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -15973,9 +15976,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t1, angleZ);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleX);
@@ -16009,6 +16009,7 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateZ_unsafe(long dest, long src, double angle) {
+        double _t0 = Math.sin(angle);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16025,7 +16026,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _t1, _self01 * _t0));
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _t1, _self11 * _t0));
@@ -16047,6 +16047,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateZXY_unsafe(long dest, long src, double angleZ, double angleX, double angleY) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleX);
+        double _t2 = Math.sin(angleZ);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16063,9 +16066,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleX);
-        double _t2 = Math.sin(angleZ);
         double _t3 = Math.cosFromSin(_t1, angleX);
         double _t4 = Math.cosFromSin(_t0, angleY);
         double _t5 = Math.cosFromSin(_t2, angleZ);
@@ -16099,6 +16099,9 @@ public final class Double4x4OpsKernelsAddress {
     }
 
     public static long rotateZYX_unsafe(long dest, long src, double angleZ, double angleY, double angleX) {
+        double _t0 = Math.sin(angleY);
+        double _t1 = Math.sin(angleZ);
+        double _t2 = Math.sin(angleX);
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
         double _self20 = UnsafeOpsHolder.U.getDouble(src + 16L);
@@ -16115,9 +16118,6 @@ public final class Double4x4OpsKernelsAddress {
         double _self13 = UnsafeOpsHolder.U.getDouble(src + 104L);
         double _self23 = UnsafeOpsHolder.U.getDouble(src + 112L);
         double _self33 = UnsafeOpsHolder.U.getDouble(src + 120L);
-        double _t0 = Math.sin(angleY);
-        double _t1 = Math.sin(angleZ);
-        double _t2 = Math.sin(angleX);
         double _t3 = Math.cosFromSin(_t0, angleY);
         double _t4 = Math.cosFromSin(_t1, angleZ);
         double _t5 = Math.cosFromSin(_t2, angleX);
