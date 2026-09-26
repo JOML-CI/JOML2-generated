@@ -186,6 +186,26 @@ public class Double3x2Impl implements Double3x2 {
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x2 mul(double scalar, @Mutated Double3x2 dest) {
+        Double3x2Impl d = (Double3x2Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        return d;
+    }
+
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -430,6 +450,54 @@ public class Double3x2Impl implements Double3x2 {
         d.m10 = _buf1;
         d.m01 = _buf2;
         d.m11 = _buf3;
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x2 addScaled(Double3x2R other, double weight, @Mutated Double3x2 dest) {
+        Double3x2Impl d = (Double3x2Impl) dest;
+        d.m00 = weight * other.m00() + this.m00;
+        d.m10 = weight * other.m10() + this.m10;
+        d.m20 = weight * other.m20() + this.m20;
+        d.m01 = weight * other.m01() + this.m01;
+        d.m11 = weight * other.m11() + this.m11;
+        d.m21 = weight * other.m21() + this.m21;
+        return d;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}) scaled by
+     * {@code weight} to this matrix and store the result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11},
+     *        {@code m20}, {@code m21}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x2 addScaled(double m00, double m01, double m10, double m11, double m20, double m21, double weight, @Mutated Double3x2 dest) {
+        Double3x2Impl d = (Double3x2Impl) dest;
+        d.m00 = weight * m00 + this.m00;
+        d.m10 = weight * m10 + this.m10;
+        d.m20 = weight * m20 + this.m20;
+        d.m01 = weight * m01 + this.m01;
+        d.m11 = weight * m11 + this.m11;
+        d.m21 = weight * m21 + this.m21;
         return d;
     }
 

@@ -225,6 +225,17 @@ public value record Float2x4(float m00, float m01, float m02, float m03, float m
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar}, returning the result as a value.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return the resulting matrix
+     */
+    public Float2x4 mul(float scalar) {
+        return new Float2x4(scalar * this.m00, scalar * this.m01, scalar * this.m02, scalar * this.m03, scalar * this.m10, scalar * this.m11, scalar * this.m12, scalar * this.m13);
+    }
+
+
+    /**
      * Negate this matrix, returning the result as a value.
      *
      * @return the resulting matrix
@@ -435,6 +446,40 @@ public value record Float2x4(float m00, float m01, float m02, float m03, float m
      */
     public Float2x4 preMul(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13) {
         return new Float2x4(Math.fma(m00, this.m00, m01 * this.m10), Math.fma(m00, this.m01, m01 * this.m11), Math.fma(m00, this.m02, Math.fma(m01, this.m12, m02)), Math.fma(m00, this.m03, Math.fma(m01, this.m13, m03)), Math.fma(m10, this.m00, m11 * this.m10), Math.fma(m10, this.m01, m11 * this.m11), Math.fma(m10, this.m02, Math.fma(m11, this.m12, m12)), Math.fma(m10, this.m03, Math.fma(m11, this.m13, m13)));
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix, returning the result as a value.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return the resulting matrix
+     */
+    public Float2x4 addScaled(Float2x4 other, float weight) {
+        return new Float2x4(Math.fma(weight, other.m00(), this.m00), Math.fma(weight, other.m01(), this.m01), Math.fma(weight, other.m02(), this.m02), Math.fma(weight, other.m03(), this.m03), Math.fma(weight, other.m10(), this.m10), Math.fma(weight, other.m11(), this.m11), Math.fma(weight, other.m12(), this.m12), Math.fma(weight, other.m13(), this.m13));
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m13}) scaled by {@code weight} to this matrix, returning the result as a
+     * value.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m03 the element in row 0, column 3 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m13 the element in row 1, column 3 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m03},
+     *        {@code m10}, {@code m11}, {@code m12}, {@code m13}) by before adding
+     * @return the resulting matrix
+     */
+    public Float2x4 addScaled(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float weight) {
+        return new Float2x4(Math.fma(weight, m00, this.m00), Math.fma(weight, m01, this.m01), Math.fma(weight, m02, this.m02), Math.fma(weight, m03, this.m03), Math.fma(weight, m10, this.m10), Math.fma(weight, m11, this.m11), Math.fma(weight, m12, this.m12), Math.fma(weight, m13, this.m13));
     }
 
 

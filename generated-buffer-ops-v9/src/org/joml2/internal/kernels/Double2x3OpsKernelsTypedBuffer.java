@@ -232,6 +232,24 @@ public final class Double2x3OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.DoubleBuffer mul_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double2x3OpsKernelsAddress.mul_unsafe(_destBase, _srcBase, scalar);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer mul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
+        for (int _l = 0; _l < 3; _l++) {
+            int _lo = _l * 2;
+            double _eself0 = src.get(srcOffset + _lo);
+            double _eself1 = src.get(srcOffset + _lo + 1);
+            dest.put(destOffset + _lo, scalar * _eself0);
+            dest.put(destOffset + _lo + 1, scalar * _eself1);
+        }
+        return dest;
+    }
+
     public static java.nio.DoubleBuffer negate_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
@@ -627,6 +645,27 @@ public final class Double2x3OpsKernelsTypedBuffer {
         dest.put(destOffset + 6, Math.fma(_other00, _self02, Math.fma(_other01, _self12, _other02)));
         dest.put(destOffset + 7, Math.fma(_other10, _self02, Math.fma(_other11, _self12, _other12)));
         dest.put(destOffset + 8, Math.fma(_other20, _self02, Math.fma(_other21, _self12, _other22)));
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 8L;
+        Double2x3OpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, _otherBase, weight);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double weight) {
+        for (int _l = 0; _l < 3; _l++) {
+            int _lo = _l * 2;
+            double _eself0 = src.get(srcOffset + _lo);
+            double _eself1 = src.get(srcOffset + _lo + 1);
+            double _eother0 = other.get(otherOffset + _lo);
+            double _eother1 = other.get(otherOffset + _lo + 1);
+            dest.put(destOffset + _lo, Math.fma(weight, _eother0, _eself0));
+            dest.put(destOffset + _lo + 1, Math.fma(weight, _eother1, _eself1));
+        }
         return dest;
     }
 

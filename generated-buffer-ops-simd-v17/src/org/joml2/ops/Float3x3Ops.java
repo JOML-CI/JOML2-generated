@@ -1319,6 +1319,44 @@ public final class Float3x3Ops {
     }
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param scalar the factor to multiply each component by
+     * @return {@code dest}
+     */
+    public static float[] mul(float[] dest, int destOffset, float[] src, int srcOffset, float scalar) {
+        for (int _i = 0; _i < 9; _i++) {
+            float _eself = src[srcOffset + _i];
+            dest[destOffset + _i] = scalar * _eself;
+        }
+        return dest;
+    }
+
+    /** {@link #mul(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer mul(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return Float3x3OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return Float3x3OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long mul(long dest, long src, float scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.mul_unsafe(dest, src, scalar);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -3092,6 +3130,47 @@ public final class Float3x3Ops {
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long preMulMat2x3(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.preMulMat2x3_unsafe(dest, src, other);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param other the storage holding the matrix to scale and add
+     * @param otherOffset the element index in {@code other} at which the matrix starts
+     * @param weight the factor to scale the given matrix by before adding
+     * @return {@code dest}
+     */
+    public static float[] addScaled(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float weight) {
+        for (int _i = 0; _i < 9; _i++) {
+            float _eself = src[srcOffset + _i];
+            float _eother = other[otherOffset + _i];
+            dest[destOffset + _i] = Math.fma(weight, _eother, _eself);
+        }
+        return dest;
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer addScaled(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsTypedBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return Float3x3OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float3x3OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return Float3x3OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long addScaled(long dest, long src, long other, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x3OpsKernelsAddress.addScaled_unsafe(dest, src, other, weight);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 

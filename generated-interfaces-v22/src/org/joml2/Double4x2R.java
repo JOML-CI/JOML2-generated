@@ -107,6 +107,16 @@ public interface Double4x2R {
     Double4x2 add(double m00, double m01, double m10, double m11, double m20, double m21, double m30, double m31, @Mutated Double4x2 dest);
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x2 mul(double scalar, @Mutated Double4x2 dest);
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -216,6 +226,37 @@ public interface Double4x2R {
      * @return dest
      */
     Double4x2 preMul(Double4x4R other, @Mutated Double4x2 dest);
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x2 addScaled(Double4x2R other, double weight, @Mutated Double4x2 dest);
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21},
+     * {@code m30}, {@code m31}) scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11},
+     *        {@code m20}, {@code m21}, {@code m30}, {@code m31}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4x2 addScaled(double m00, double m01, double m10, double m11, double m20, double m21, double m30, double m31, double weight, @Mutated Double4x2 dest);
 
     /**
      * Multiply this matrix by the given vector, i.e. compute the matrix-vector product

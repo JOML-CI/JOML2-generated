@@ -302,6 +302,49 @@ public class Float3x2Impl implements Float3x2 {
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3x2 mul(float scalar, @Mutated Float3x2 dest) {
+        Float3x2Impl d = (Float3x2Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        return d;
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x2 mul(float scalar, @Mutated Double3x2 dest) {
+        Double3x2Impl d = (Double3x2Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        return d;
+    }
+
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -725,6 +768,101 @@ public class Float3x2Impl implements Float3x2 {
         d.m10 = _buf1;
         d.m01 = _buf2;
         d.m11 = _buf3;
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3x2 addScaled(Float3x2R other, float weight, @Mutated Float3x2 dest) {
+        Float3x2Impl d = (Float3x2Impl) dest;
+        d.m00 = Math.fma(weight, other.m00(), this.m00);
+        d.m10 = Math.fma(weight, other.m10(), this.m10);
+        d.m20 = Math.fma(weight, other.m20(), this.m20);
+        d.m01 = Math.fma(weight, other.m01(), this.m01);
+        d.m11 = Math.fma(weight, other.m11(), this.m11);
+        d.m21 = Math.fma(weight, other.m21(), this.m21);
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x2 addScaled(Float3x2R other, float weight, @Mutated Double3x2 dest) {
+        return addScaled(other.m00(), other.m01(), other.m10(), other.m11(), other.m20(), other.m21(), weight, dest);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}) scaled by
+     * {@code weight} to this matrix and store the result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11},
+     *        {@code m20}, {@code m21}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3x2 addScaled(float m00, float m01, float m10, float m11, float m20, float m21, float weight, @Mutated Float3x2 dest) {
+        Float3x2Impl d = (Float3x2Impl) dest;
+        d.m00 = Math.fma(weight, m00, this.m00);
+        d.m10 = Math.fma(weight, m10, this.m10);
+        d.m20 = Math.fma(weight, m20, this.m20);
+        d.m01 = Math.fma(weight, m01, this.m01);
+        d.m11 = Math.fma(weight, m11, this.m11);
+        d.m21 = Math.fma(weight, m21, this.m21);
+        return d;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21}) scaled by
+     * {@code weight} to this matrix and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11},
+     *        {@code m20}, {@code m21}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x2 addScaled(float m00, float m01, float m10, float m11, float m20, float m21, float weight, @Mutated Double3x2 dest) {
+        Double3x2Impl d = (Double3x2Impl) dest;
+        d.m00 = Math.fma(weight, m00, this.m00);
+        d.m10 = Math.fma(weight, m10, this.m10);
+        d.m20 = Math.fma(weight, m20, this.m20);
+        d.m01 = Math.fma(weight, m01, this.m01);
+        d.m11 = Math.fma(weight, m11, this.m11);
+        d.m21 = Math.fma(weight, m21, this.m21);
         return d;
     }
 

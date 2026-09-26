@@ -1920,6 +1920,170 @@ public class Float2x2Impl implements Float2x2 {
 
 
     /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float2x2 mul_identity(float scalar, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = scalar;
+        dd[1] = 0.0f;
+        dd[2] = 0.0f;
+        dd[3] = scalar;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Float2x2 mul_identity_self(float scalar, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = scalar;
+        dd[3] = scalar;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float2x2 mul_translation(float scalar, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = scalar;
+        dd[1] = 0.0f;
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Float2x2 mul_translation_self(float scalar, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = scalar;
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float2x2 mul_affine(float scalar, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = 0.0f;
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Float2x2 mul_affine_self(float scalar, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float2x2 mul_general(float scalar, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2x2 mul(float scalar, @Mutated Float2x2 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(scalar, dest);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return mul_translation(scalar, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_affine(scalar, dest);
+        return mul_general(scalar, dest);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Float2x2 mul(float scalar) {
+        if (Joml.RETURN_NEW) return mul(scalar, Joml.float2x2());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity_self(scalar, this);
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) return mul_translation_self(scalar, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_affine_self(scalar, this);
+        return mul_general(scalar, this);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x2 mul(float scalar, @Mutated Double2x2 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double2x2Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        ((Double2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
      * Private body of {@code negate}, specialized by runtime matrix properties; reached only
      * through the public {@code negate} dispatcher.
      */
@@ -3884,6 +4048,403 @@ public class Float2x2Impl implements Float2x2 {
         dd[3] = Math.fma(m10, sd[2], m11 * sd[3]);
         dd[0] = _buf0;
         dd[2] = _buf1;
+        ((Double2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_general(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], sd[0]);
+        dd[1] = Math.fma(weight, otherData[1], sd[1]);
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = Math.fma(weight, otherData[3], sd[3]);
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_identity(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], 1.0f);
+        dd[1] = weight * otherData[1];
+        dd[2] = weight * otherData[2];
+        dd[3] = Math.fma(weight, otherData[3], 1.0f);
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_identity_identity(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        float _t0 = 1.0f + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0f;
+        dd[2] = 0.0f;
+        dd[3] = _t0;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_identity_translation(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        float _t0 = 1.0f + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0f;
+        dd[2] = weight * otherData[2];
+        dd[3] = _t0;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_identity_affine(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], 1.0f);
+        dd[1] = 0.0f;
+        dd[2] = weight * otherData[2];
+        dd[3] = 1.0f + weight;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_translation_identity(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        float _t0 = 1.0f + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0f;
+        dd[2] = sd[2];
+        dd[3] = _t0;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_translation_translation(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        float _t0 = 1.0f + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0f;
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = _t0;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_translation_affine(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], 1.0f);
+        dd[1] = 0.0f;
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = 1.0f + weight;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_affine_identity(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = 0.0f;
+        dd[2] = sd[2];
+        dd[3] = 1.0f + weight;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_affine_translation(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = 0.0f;
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = 1.0f + weight;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_affine_affine(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], sd[0]);
+        dd[1] = 0.0f;
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = 1.0f + weight;
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_general_identity(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = sd[1];
+        dd[2] = sd[2];
+        dd[3] = weight + sd[3];
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_general_translation(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = sd[1];
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = weight + sd[3];
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float2x2 addScaled_general_affine(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float2x2Impl) other).data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], sd[0]);
+        dd[1] = sd[1];
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = weight + sd[3];
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2x2 addScaled(Float2x2R other, float weight, @Mutated Float2x2 dest) {
+        int p = this.properties;
+        int q = ((Float2x2Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_identity_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_identity_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_identity_affine(other, weight, dest);
+            return addScaled_identity(other, weight, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_translation_affine(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_translation_affine(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_affine_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_affine_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_affine_affine(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general_translation(other, weight, dest);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_general_affine(other, weight, dest);
+        return addScaled_general(other, weight, dest);
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Float2x2 addScaled(Float2x2R other, float weight) {
+        if (Joml.RETURN_NEW) return addScaled(other, weight, Joml.float2x2());
+        int p = this.properties;
+        int q = ((Float2x2Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_identity_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_identity_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_identity_affine(other, weight, this);
+            return addScaled_identity(other, weight, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_translation_affine(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_translation_affine(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_affine_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_affine_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_affine_affine(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general_translation(other, weight, this);
+        if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_general_affine(other, weight, this);
+        return addScaled_general(other, weight, this);
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x2 addScaled(Float2x2R other, float weight, @Mutated Double2x2 dest) {
+        return addScaled(other.m00(), other.m01(), other.m10(), other.m11(), weight, dest);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}) scaled by {@code weight} to this
+     * matrix and store the result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11}) by
+     *        before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2x2 addScaled(float m00, float m01, float m10, float m11, float weight, @Mutated Float2x2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m10, sd[1]);
+        dd[2] = Math.fma(weight, m01, sd[2]);
+        dd[3] = Math.fma(weight, m11, sd[3]);
+        ((Float2x2Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}) scaled by {@code weight} to this
+     * matrix and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11}) by
+     *        before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x2 addScaled(float m00, float m01, float m10, float m11, float weight, @Mutated Double2x2 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double2x2Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m10, sd[1]);
+        dd[2] = Math.fma(weight, m01, sd[2]);
+        dd[3] = Math.fma(weight, m11, sd[3]);
         ((Double2x2Impl) dest).properties = 0;
         return dest;
     }

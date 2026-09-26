@@ -3033,6 +3033,174 @@ public class Double3x3Impl implements Double3x3 {
 
 
     /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_identity(double scalar, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = scalar;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = 0.0;
+        dd[4] = scalar;
+        dd[5] = 0.0;
+        dd[6] = 0.0;
+        dd[7] = 0.0;
+        dd[8] = scalar;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_identity_self(double scalar, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = scalar;
+        dd[4] = scalar;
+        dd[8] = scalar;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation(double scalar, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = scalar;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = 0.0;
+        dd[4] = scalar;
+        dd[5] = 0.0;
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_translation_self(double scalar, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = scalar;
+        dd[4] = scalar;
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal(double scalar, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = 0.0;
+        dd[3] = scalar * sd[3];
+        dd[4] = scalar * sd[4];
+        dd[5] = 0.0;
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_orthogonal_self(double scalar, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[3] = scalar * sd[3];
+        dd[4] = scalar * sd[4];
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x3 mul_general(double scalar, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        dd[4] = scalar * sd[4];
+        dd[5] = scalar * sd[5];
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar * sd[8];
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 mul(double scalar, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(scalar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation(scalar, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_orthogonal(scalar, dest);
+        return mul_general(scalar, dest);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Double3x3 mul(double scalar) {
+        if (Joml.RETURN_NEW) return mul(scalar, Joml.double3x3());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity_self(scalar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_self(scalar, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_orthogonal_self(scalar, this);
+        return mul_general(scalar, this);
+    }
+
+
+    /**
      * Private body of {@code negate}, specialized by runtime matrix properties; reached only
      * through the public {@code negate} dispatcher.
      */
@@ -7769,6 +7937,413 @@ public class Double3x3Impl implements Double3x3 {
         }
         if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, this);
         return preMul_general(other, this);
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_general(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], sd[0]);
+        dd[1] = Math.fma(weight, otherData[1], sd[1]);
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = Math.fma(weight, otherData[3], sd[3]);
+        dd[4] = Math.fma(weight, otherData[4], sd[4]);
+        dd[5] = Math.fma(weight, otherData[5], sd[5]);
+        dd[6] = Math.fma(weight, otherData[6], sd[6]);
+        dd[7] = Math.fma(weight, otherData[7], sd[7]);
+        dd[8] = Math.fma(weight, otherData[8], sd[8]);
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_identity(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], 1.0);
+        dd[1] = weight * otherData[1];
+        dd[2] = weight * otherData[2];
+        dd[3] = weight * otherData[3];
+        dd[4] = Math.fma(weight, otherData[4], 1.0);
+        dd[5] = weight * otherData[5];
+        dd[6] = weight * otherData[6];
+        dd[7] = weight * otherData[7];
+        dd[8] = Math.fma(weight, otherData[8], 1.0);
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_identity_identity(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = 0.0;
+        dd[4] = _t0;
+        dd[5] = 0.0;
+        dd[6] = 0.0;
+        dd[7] = 0.0;
+        dd[8] = _t0;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_identity_translation(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = 0.0;
+        dd[4] = _t0;
+        dd[5] = 0.0;
+        dd[6] = weight * otherData[6];
+        dd[7] = weight * otherData[7];
+        dd[8] = _t0;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_identity_affine(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], 1.0);
+        dd[1] = weight * otherData[1];
+        dd[2] = 0.0;
+        dd[3] = weight * otherData[3];
+        dd[4] = Math.fma(weight, otherData[4], 1.0);
+        dd[5] = 0.0;
+        dd[6] = weight * otherData[6];
+        dd[7] = weight * otherData[7];
+        dd[8] = 1.0 + weight;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_translation_identity(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = 0.0;
+        dd[4] = _t0;
+        dd[5] = 0.0;
+        dd[6] = sd[6];
+        dd[7] = sd[7];
+        dd[8] = _t0;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_translation_translation(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        double _t0 = 1.0 + weight;
+        dd[0] = _t0;
+        dd[1] = 0.0;
+        dd[2] = 0.0;
+        dd[3] = 0.0;
+        dd[4] = _t0;
+        dd[5] = 0.0;
+        dd[6] = Math.fma(weight, otherData[6], sd[6]);
+        dd[7] = Math.fma(weight, otherData[7], sd[7]);
+        dd[8] = _t0;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_translation_affine(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], 1.0);
+        dd[1] = weight * otherData[1];
+        dd[2] = 0.0;
+        dd[3] = weight * otherData[3];
+        dd[4] = Math.fma(weight, otherData[4], 1.0);
+        dd[5] = 0.0;
+        dd[6] = Math.fma(weight, otherData[6], sd[6]);
+        dd[7] = Math.fma(weight, otherData[7], sd[7]);
+        dd[8] = 1.0 + weight;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_orthogonal_identity(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = sd[1];
+        dd[2] = 0.0;
+        dd[3] = sd[3];
+        dd[4] = weight + sd[4];
+        dd[5] = 0.0;
+        dd[6] = sd[6];
+        dd[7] = sd[7];
+        dd[8] = 1.0 + weight;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_orthogonal_translation(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = sd[1];
+        dd[2] = 0.0;
+        dd[3] = sd[3];
+        dd[4] = weight + sd[4];
+        dd[5] = 0.0;
+        dd[6] = Math.fma(weight, otherData[6], sd[6]);
+        dd[7] = Math.fma(weight, otherData[7], sd[7]);
+        dd[8] = 1.0 + weight;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_affine_affine(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], sd[0]);
+        dd[1] = Math.fma(weight, otherData[1], sd[1]);
+        dd[2] = 0.0;
+        dd[3] = Math.fma(weight, otherData[3], sd[3]);
+        dd[4] = Math.fma(weight, otherData[4], sd[4]);
+        dd[5] = 0.0;
+        dd[6] = Math.fma(weight, otherData[6], sd[6]);
+        dd[7] = Math.fma(weight, otherData[7], sd[7]);
+        dd[8] = 1.0 + weight;
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_general_identity(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = sd[1];
+        dd[2] = sd[2];
+        dd[3] = sd[3];
+        dd[4] = weight + sd[4];
+        dd[5] = sd[5];
+        dd[6] = sd[6];
+        dd[7] = sd[7];
+        dd[8] = weight + sd[8];
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x3 addScaled_general_translation(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x3Impl) other).data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = sd[1];
+        dd[2] = sd[2];
+        dd[3] = sd[3];
+        dd[4] = weight + sd[4];
+        dd[5] = sd[5];
+        dd[6] = Math.fma(weight, otherData[6], sd[6]);
+        dd[7] = Math.fma(weight, otherData[7], sd[7]);
+        dd[8] = weight + sd[8];
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 addScaled(Double3x3R other, double weight, @Mutated Double3x3 dest) {
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_identity_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_identity_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_identity_affine(other, weight, dest);
+            return addScaled_identity(other, weight, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_translation_affine(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_affine_affine(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general_translation(other, weight, dest);
+        return addScaled_general(other, weight, dest);
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Double3x3 addScaled(Double3x3R other, double weight) {
+        if (Joml.RETURN_NEW) return addScaled(other, weight, Joml.double3x3());
+        int p = this.properties;
+        int q = ((Double3x3Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_identity_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_identity_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_identity_affine(other, weight, this);
+            return addScaled_identity(other, weight, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_translation_affine(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_affine_affine(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general_translation(other, weight, this);
+        return addScaled_general(other, weight, this);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m20}, {@code m21}, {@code m22}) scaled by {@code weight} to this matrix and store the
+     * result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m10},
+     *        {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x3 addScaled(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, double weight, @Mutated Double3x3 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x3Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m10, sd[1]);
+        dd[2] = Math.fma(weight, m20, sd[2]);
+        dd[3] = Math.fma(weight, m01, sd[3]);
+        dd[4] = Math.fma(weight, m11, sd[4]);
+        dd[5] = Math.fma(weight, m21, sd[5]);
+        dd[6] = Math.fma(weight, m02, sd[6]);
+        dd[7] = Math.fma(weight, m12, sd[7]);
+        dd[8] = Math.fma(weight, m22, sd[8]);
+        ((Double3x3Impl) dest).properties = 0;
+        return dest;
     }
 
 

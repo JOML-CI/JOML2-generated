@@ -10,6 +10,10 @@ import org.joml2.*
 
 /** [Float2x4.add] as the `+` operator. */
 inline operator fun Float2x4.plus(other: Float2x4): Float2x4 = add(other)
+/** [Float2x4.mul] as the `*` operator. */
+inline operator fun Float2x4.times(scalar: Float): Float2x4 = mul(scalar)
+/** [Float2x4.mul] with the scalar on the left, so `s * v` reads like `v * s`. */
+inline operator fun Float.times(v: Float2x4): Float2x4 = v.mul(this)
 /** [Float2x4.negate] as the unary `-` operator. */
 inline operator fun Float2x4.unaryMinus(): Float2x4 = negate()
 /** [Float2x4.sub] as the `-` operator. */

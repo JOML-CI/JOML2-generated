@@ -167,6 +167,17 @@ public final class Double2x3OpsKernelsAddress {
         return dest;
     }
 
+    public static long mul_unsafe(long dest, long src, double scalar) {
+        for (int _l = 0; _l < 3; _l++) {
+            int _lo = _l * 2;
+            double _eself0 = UnsafeOpsHolder.U.getDouble(src + _lo * 8L);
+            double _eself1 = UnsafeOpsHolder.U.getDouble(src + (_lo + 1) * 8L);
+            UnsafeOpsHolder.U.putDouble(dest + _lo * 8L, scalar * _eself0);
+            UnsafeOpsHolder.U.putDouble(dest + (_lo + 1) * 8L, scalar * _eself1);
+        }
+        return dest;
+    }
+
     public static long negate_unsafe(long dest, long src) {
         for (int _l = 0; _l < 3; _l++) {
             int _lo = _l * 2;
@@ -435,6 +446,19 @@ public final class Double2x3OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 48L, Math.fma(_other00, _self02, Math.fma(_other01, _self12, _other02)));
         UnsafeOpsHolder.U.putDouble(dest + 56L, Math.fma(_other10, _self02, Math.fma(_other11, _self12, _other12)));
         UnsafeOpsHolder.U.putDouble(dest + 64L, Math.fma(_other20, _self02, Math.fma(_other21, _self12, _other22)));
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, long other, double weight) {
+        for (int _l = 0; _l < 3; _l++) {
+            int _lo = _l * 2;
+            double _eself0 = UnsafeOpsHolder.U.getDouble(src + _lo * 8L);
+            double _eself1 = UnsafeOpsHolder.U.getDouble(src + (_lo + 1) * 8L);
+            double _eother0 = UnsafeOpsHolder.U.getDouble(other + _lo * 8L);
+            double _eother1 = UnsafeOpsHolder.U.getDouble(other + (_lo + 1) * 8L);
+            UnsafeOpsHolder.U.putDouble(dest + _lo * 8L, Math.fma(weight, _eother0, _eself0));
+            UnsafeOpsHolder.U.putDouble(dest + (_lo + 1) * 8L, Math.fma(weight, _eother1, _eself1));
+        }
         return dest;
     }
 

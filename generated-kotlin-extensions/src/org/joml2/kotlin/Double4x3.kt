@@ -10,6 +10,10 @@ import org.joml2.*
 
 /** [Double4x3.add] as the `+` operator. */
 inline operator fun Double4x3.plus(other: Double4x3): Double4x3 = add(other)
+/** [Double4x3.mul] as the `*` operator. */
+inline operator fun Double4x3.times(scalar: Double): Double4x3 = mul(scalar)
+/** [Double4x3.mul] with the scalar on the left, so `s * v` reads like `v * s`. */
+inline operator fun Double.times(v: Double4x3): Double4x3 = v.mul(this)
 /** [Double4x3.negate] as the unary `-` operator. */
 inline operator fun Double4x3.unaryMinus(): Double4x3 = negate()
 /** [Double4x3.sub] as the `-` operator. */

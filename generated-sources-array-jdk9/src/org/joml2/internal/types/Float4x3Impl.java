@@ -375,6 +375,63 @@ public class Float4x3Impl implements Float4x3 {
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x3 mul(float scalar, @Mutated Float4x3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x3Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        dd[4] = scalar * sd[4];
+        dd[5] = scalar * sd[5];
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar * sd[8];
+        dd[9] = scalar * sd[9];
+        dd[10] = scalar * sd[10];
+        dd[11] = scalar * sd[11];
+        return dest;
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x3 mul(float scalar, @Mutated Double4x3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double4x3Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        dd[4] = scalar * sd[4];
+        dd[5] = scalar * sd[5];
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar * sd[8];
+        dd[9] = scalar * sd[9];
+        dd[10] = scalar * sd[10];
+        dd[11] = scalar * sd[11];
+        return dest;
+    }
+
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -973,6 +1030,139 @@ public class Float4x3Impl implements Float4x3 {
         dd[8] = _buf6;
         dd[9] = _buf7;
         dd[10] = _buf8;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x3 addScaled(Float4x3R other, float weight, @Mutated Float4x3 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x3Impl) other).data;
+        float[] dd = ((Float4x3Impl) dest).data;
+        dd[0] = Math.fma(weight, otherData[0], sd[0]);
+        dd[1] = Math.fma(weight, otherData[1], sd[1]);
+        dd[2] = Math.fma(weight, otherData[2], sd[2]);
+        dd[3] = Math.fma(weight, otherData[3], sd[3]);
+        dd[4] = Math.fma(weight, otherData[4], sd[4]);
+        dd[5] = Math.fma(weight, otherData[5], sd[5]);
+        dd[6] = Math.fma(weight, otherData[6], sd[6]);
+        dd[7] = Math.fma(weight, otherData[7], sd[7]);
+        dd[8] = Math.fma(weight, otherData[8], sd[8]);
+        dd[9] = Math.fma(weight, otherData[9], sd[9]);
+        dd[10] = Math.fma(weight, otherData[10], sd[10]);
+        dd[11] = Math.fma(weight, otherData[11], sd[11]);
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x3 addScaled(Float4x3R other, float weight, @Mutated Double4x3 dest) {
+        return addScaled(other.m00(), other.m01(), other.m02(), other.m10(), other.m11(), other.m12(), other.m20(), other.m21(), other.m22(), other.m30(), other.m31(), other.m32(), weight, dest);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m20}, {@code m21}, {@code m22}, {@code m30}, {@code m31}, {@code m32}) scaled by
+     * {@code weight} to this matrix and store the result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param m32 the element in row 3, column 2 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m10},
+     *        {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}, {@code m30},
+     *        {@code m31}, {@code m32}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x3 addScaled(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float m30, float m31, float m32, float weight, @Mutated Float4x3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x3Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m10, sd[1]);
+        dd[2] = Math.fma(weight, m20, sd[2]);
+        dd[3] = Math.fma(weight, m30, sd[3]);
+        dd[4] = Math.fma(weight, m01, sd[4]);
+        dd[5] = Math.fma(weight, m11, sd[5]);
+        dd[6] = Math.fma(weight, m21, sd[6]);
+        dd[7] = Math.fma(weight, m31, sd[7]);
+        dd[8] = Math.fma(weight, m02, sd[8]);
+        dd[9] = Math.fma(weight, m12, sd[9]);
+        dd[10] = Math.fma(weight, m22, sd[10]);
+        dd[11] = Math.fma(weight, m32, sd[11]);
+        return dest;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m20}, {@code m21}, {@code m22}, {@code m30}, {@code m31}, {@code m32}) scaled by
+     * {@code weight} to this matrix and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param m32 the element in row 3, column 2 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m10},
+     *        {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}, {@code m30},
+     *        {@code m31}, {@code m32}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x3 addScaled(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float m30, float m31, float m32, float weight, @Mutated Double4x3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double4x3Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m10, sd[1]);
+        dd[2] = Math.fma(weight, m20, sd[2]);
+        dd[3] = Math.fma(weight, m30, sd[3]);
+        dd[4] = Math.fma(weight, m01, sd[4]);
+        dd[5] = Math.fma(weight, m11, sd[5]);
+        dd[6] = Math.fma(weight, m21, sd[6]);
+        dd[7] = Math.fma(weight, m31, sd[7]);
+        dd[8] = Math.fma(weight, m02, sd[8]);
+        dd[9] = Math.fma(weight, m12, sd[9]);
+        dd[10] = Math.fma(weight, m22, sd[10]);
+        dd[11] = Math.fma(weight, m32, sd[11]);
         return dest;
     }
 

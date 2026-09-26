@@ -6031,6 +6031,204 @@ public class Double4x4Impl implements Double4x4 {
 
 
     /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double4x4 mul_identity(double scalar, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = scalar;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = scalar;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = scalar;
+        d.m32 = 0.0;
+        d.m03 = 0.0;
+        d.m13 = 0.0;
+        d.m23 = 0.0;
+        d.m33 = scalar;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double4x4 mul_identity_self(double scalar, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = scalar;
+        d.m11 = scalar;
+        d.m22 = scalar;
+        d.m33 = scalar;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double4x4 mul_translation(double scalar, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = scalar;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = scalar;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = scalar;
+        d.m32 = 0.0;
+        d.m03 = scalar * this.m03;
+        d.m13 = scalar * this.m13;
+        d.m23 = scalar * this.m23;
+        d.m33 = scalar;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double4x4 mul_translation_self(double scalar, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = scalar;
+        d.m11 = scalar;
+        d.m22 = scalar;
+        d.m03 = scalar * this.m03;
+        d.m13 = scalar * this.m13;
+        d.m23 = scalar * this.m23;
+        d.m33 = scalar;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double4x4 mul_orthogonal(double scalar, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m30 = 0.0;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        d.m31 = 0.0;
+        d.m02 = scalar * this.m02;
+        d.m12 = scalar * this.m12;
+        d.m22 = scalar * this.m22;
+        d.m32 = 0.0;
+        d.m03 = scalar * this.m03;
+        d.m13 = scalar * this.m13;
+        d.m23 = scalar * this.m23;
+        d.m33 = scalar;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private in-place self-form body of {@code mul}, specialized by runtime matrix properties;
+     * reached only through the public {@code mul} dispatcher.
+     */
+    private Double4x4 mul_orthogonal_self(double scalar, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        d.m02 = scalar * this.m02;
+        d.m12 = scalar * this.m12;
+        d.m22 = scalar * this.m22;
+        d.m03 = scalar * this.m03;
+        d.m13 = scalar * this.m13;
+        d.m23 = scalar * this.m23;
+        d.m33 = scalar;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double4x4 mul_general(double scalar, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m30 = scalar * this.m30;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        d.m31 = scalar * this.m31;
+        d.m02 = scalar * this.m02;
+        d.m12 = scalar * this.m12;
+        d.m22 = scalar * this.m22;
+        d.m32 = scalar * this.m32;
+        d.m03 = scalar * this.m03;
+        d.m13 = scalar * this.m13;
+        d.m23 = scalar * this.m23;
+        d.m33 = scalar * this.m33;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 mul(double scalar, @Mutated Double4x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(scalar, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation(scalar, dest);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_orthogonal(scalar, dest);
+        return mul_general(scalar, dest);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Double4x4 mul(double scalar) {
+        if (Joml.RETURN_NEW) return mul(scalar, Joml.double4x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity_self(scalar, this);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation_self(scalar, this);
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_orthogonal_self(scalar, this);
+        return mul_general(scalar, this);
+    }
+
+
+    /**
      * Private body of {@code negate}, specialized by runtime matrix properties; reached only
      * through the public {@code negate} dispatcher.
      */
@@ -16920,6 +17118,520 @@ public class Double4x4Impl implements Double4x4 {
         }
         if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_general_translation(other, this);
         return preMul_general(other, this);
+    }
+
+    /** Private column 0 of {@code addScaled_general}: computes and stores it; reached only through it. */
+    private void addScaled_general_s15b578e1_c0(Double4x4Impl _dst, double weight, double _r0, double _r1, double _r8, double _r9, double _r16, double _r17, double _r24, double _r25) {
+        _dst.m00 = Math.fma(weight, _r0, _r1);
+        _dst.m10 = Math.fma(weight, _r8, _r9);
+        _dst.m20 = Math.fma(weight, _r16, _r17);
+        _dst.m30 = Math.fma(weight, _r24, _r25);
+    }
+
+    /** Private column 1 of {@code addScaled_general}: computes and stores it; reached only through it. */
+    private void addScaled_general_s15b578e1_c1(Double4x4Impl _dst, double weight, double _r2, double _r3, double _r10, double _r11, double _r18, double _r19, double _r26, double _r27) {
+        _dst.m01 = Math.fma(weight, _r2, _r3);
+        _dst.m11 = Math.fma(weight, _r10, _r11);
+        _dst.m21 = Math.fma(weight, _r18, _r19);
+        _dst.m31 = Math.fma(weight, _r26, _r27);
+    }
+
+    /** Private column 2 of {@code addScaled_general}: computes and stores it; reached only through it. */
+    private void addScaled_general_s15b578e1_c2(Double4x4Impl _dst, double weight, double _r4, double _r5, double _r12, double _r13, double _r20, double _r21, double _r28, double _r29) {
+        _dst.m02 = Math.fma(weight, _r4, _r5);
+        _dst.m12 = Math.fma(weight, _r12, _r13);
+        _dst.m22 = Math.fma(weight, _r20, _r21);
+        _dst.m32 = Math.fma(weight, _r28, _r29);
+    }
+
+    /** Private column 3 of {@code addScaled_general}: computes and stores it; reached only through it. */
+    private void addScaled_general_s15b578e1_c3(Double4x4Impl _dst, double weight, double _r6, double _r7, double _r14, double _r15, double _r22, double _r23, double _r30, double _r31) {
+        _dst.m03 = Math.fma(weight, _r6, _r7);
+        _dst.m13 = Math.fma(weight, _r14, _r15);
+        _dst.m23 = Math.fma(weight, _r22, _r23);
+        _dst.m33 = Math.fma(weight, _r30, _r31);
+    }
+
+    /** Private tail of {@code addScaled_general}; reached only through it. */
+    private void addScaled_general_s15b578e1_tail(Double4x4Impl _dst, Double4x4R other, double weight, double _r0, double _r1, double _r2, double _r3, double _r4, double _r5, double _r6, double _r7, double _r8, double _r9, double _r10, double _r11, double _r12, double _r13, double _r14, double _r15, double _r16, double _r17, double _r18, double _r19) {
+        double _r20 = other.m22();
+        double _r21 = this.m22;
+        double _r22 = other.m23();
+        double _r23 = this.m23;
+        double _r24 = other.m30();
+        double _r25 = this.m30;
+        double _r26 = other.m31();
+        double _r27 = this.m31;
+        double _r28 = other.m32();
+        double _r29 = this.m32;
+        double _r30 = other.m33();
+        double _r31 = this.m33;
+        addScaled_general_s15b578e1_c0(_dst, weight, _r0, _r1, _r8, _r9, _r16, _r17, _r24, _r25);
+        addScaled_general_s15b578e1_c1(_dst, weight, _r2, _r3, _r10, _r11, _r18, _r19, _r26, _r27);
+        addScaled_general_s15b578e1_c2(_dst, weight, _r4, _r5, _r12, _r13, _r20, _r21, _r28, _r29);
+        addScaled_general_s15b578e1_c3(_dst, weight, _r6, _r7, _r14, _r15, _r22, _r23, _r30, _r31);
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_general(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        double _r0 = other.m00();
+        double _r1 = this.m00;
+        double _r2 = other.m01();
+        double _r3 = this.m01;
+        double _r4 = other.m02();
+        double _r5 = this.m02;
+        double _r6 = other.m03();
+        double _r7 = this.m03;
+        double _r8 = other.m10();
+        double _r9 = this.m10;
+        double _r10 = other.m11();
+        double _r11 = this.m11;
+        double _r12 = other.m12();
+        double _r13 = this.m12;
+        double _r14 = other.m13();
+        double _r15 = this.m13;
+        double _r16 = other.m20();
+        double _r17 = this.m20;
+        double _r18 = other.m21();
+        double _r19 = this.m21;
+        addScaled_general_s15b578e1_tail(d, other, weight, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_identity(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = Math.fma(weight, other.m00(), 1.0);
+        d.m10 = weight * other.m10();
+        d.m20 = weight * other.m20();
+        d.m30 = weight * other.m30();
+        d.m01 = weight * other.m01();
+        d.m11 = Math.fma(weight, other.m11(), 1.0);
+        d.m21 = weight * other.m21();
+        d.m31 = weight * other.m31();
+        d.m02 = weight * other.m02();
+        d.m12 = weight * other.m12();
+        d.m22 = Math.fma(weight, other.m22(), 1.0);
+        d.m32 = weight * other.m32();
+        d.m03 = weight * other.m03();
+        d.m13 = weight * other.m13();
+        d.m23 = weight * other.m23();
+        d.m33 = Math.fma(weight, other.m33(), 1.0);
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_translation(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = Math.fma(weight, other.m00(), 1.0);
+        d.m10 = weight * other.m10();
+        d.m20 = weight * other.m20();
+        d.m30 = weight * other.m30();
+        d.m01 = weight * other.m01();
+        d.m11 = Math.fma(weight, other.m11(), 1.0);
+        d.m21 = weight * other.m21();
+        d.m31 = weight * other.m31();
+        d.m02 = weight * other.m02();
+        d.m12 = weight * other.m12();
+        d.m22 = Math.fma(weight, other.m22(), 1.0);
+        d.m32 = weight * other.m32();
+        d.m03 = Math.fma(weight, other.m03(), this.m03);
+        d.m13 = Math.fma(weight, other.m13(), this.m13);
+        d.m23 = Math.fma(weight, other.m23(), this.m23);
+        d.m33 = Math.fma(weight, other.m33(), 1.0);
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_identity_identity(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        double _t0 = 1.0 + weight;
+        d.m00 = _t0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = _t0;
+        d.m32 = 0.0;
+        d.m03 = 0.0;
+        d.m13 = 0.0;
+        d.m23 = 0.0;
+        d.m33 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_identity_translation(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        double _t0 = 1.0 + weight;
+        d.m00 = _t0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = _t0;
+        d.m32 = 0.0;
+        d.m03 = weight * other.m03();
+        d.m13 = weight * other.m13();
+        d.m23 = weight * other.m23();
+        d.m33 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_identity_affine(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = Math.fma(weight, other.m00(), 1.0);
+        d.m10 = weight * other.m10();
+        d.m20 = weight * other.m20();
+        d.m30 = 0.0;
+        d.m01 = weight * other.m01();
+        d.m11 = Math.fma(weight, other.m11(), 1.0);
+        d.m21 = weight * other.m21();
+        d.m31 = 0.0;
+        d.m02 = weight * other.m02();
+        d.m12 = weight * other.m12();
+        d.m22 = Math.fma(weight, other.m22(), 1.0);
+        d.m32 = 0.0;
+        d.m03 = weight * other.m03();
+        d.m13 = weight * other.m13();
+        d.m23 = weight * other.m23();
+        d.m33 = 1.0 + weight;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_translation_identity(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        double _t0 = 1.0 + weight;
+        d.m00 = _t0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = _t0;
+        d.m32 = 0.0;
+        d.m03 = this.m03;
+        d.m13 = this.m13;
+        d.m23 = this.m23;
+        d.m33 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_translation_translation(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        double _t0 = 1.0 + weight;
+        d.m00 = _t0;
+        d.m10 = 0.0;
+        d.m20 = 0.0;
+        d.m30 = 0.0;
+        d.m01 = 0.0;
+        d.m11 = _t0;
+        d.m21 = 0.0;
+        d.m31 = 0.0;
+        d.m02 = 0.0;
+        d.m12 = 0.0;
+        d.m22 = _t0;
+        d.m32 = 0.0;
+        d.m03 = Math.fma(weight, other.m03(), this.m03);
+        d.m13 = Math.fma(weight, other.m13(), this.m13);
+        d.m23 = Math.fma(weight, other.m23(), this.m23);
+        d.m33 = _t0;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_orthogonal_identity(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = weight + this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m30 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = weight + this.m11;
+        d.m21 = this.m21;
+        d.m31 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = weight + this.m22;
+        d.m32 = 0.0;
+        d.m03 = this.m03;
+        d.m13 = this.m13;
+        d.m23 = this.m23;
+        d.m33 = 1.0 + weight;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_orthogonal_translation(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = weight + this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m30 = 0.0;
+        d.m01 = this.m01;
+        d.m11 = weight + this.m11;
+        d.m21 = this.m21;
+        d.m31 = 0.0;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = weight + this.m22;
+        d.m32 = 0.0;
+        d.m03 = Math.fma(weight, other.m03(), this.m03);
+        d.m13 = Math.fma(weight, other.m13(), this.m13);
+        d.m23 = Math.fma(weight, other.m23(), this.m23);
+        d.m33 = 1.0 + weight;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_general_identity(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = weight + this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m30 = this.m30;
+        d.m01 = this.m01;
+        d.m11 = weight + this.m11;
+        d.m21 = this.m21;
+        d.m31 = this.m31;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = weight + this.m22;
+        d.m32 = this.m32;
+        d.m03 = this.m03;
+        d.m13 = this.m13;
+        d.m23 = this.m23;
+        d.m33 = weight + this.m33;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double4x4 addScaled_general_translation(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = weight + this.m00;
+        d.m10 = this.m10;
+        d.m20 = this.m20;
+        d.m30 = this.m30;
+        d.m01 = this.m01;
+        d.m11 = weight + this.m11;
+        d.m21 = this.m21;
+        d.m31 = this.m31;
+        d.m02 = this.m02;
+        d.m12 = this.m12;
+        d.m22 = weight + this.m22;
+        d.m32 = this.m32;
+        d.m03 = Math.fma(weight, other.m03(), this.m03);
+        d.m13 = Math.fma(weight, other.m13(), this.m13);
+        d.m23 = Math.fma(weight, other.m23(), this.m23);
+        d.m33 = weight + this.m33;
+        d.properties = 0;
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 addScaled(Double4x4R other, double weight, @Mutated Double4x4 dest) {
+        int p = this.properties;
+        int q = ((Double4x4Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_identity_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_identity_translation(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_identity_affine(other, weight, dest);
+            return addScaled_identity(other, weight, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, dest);
+            return addScaled_translation(other, weight, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general_translation(other, weight, dest);
+        return addScaled_general(other, weight, dest);
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Double4x4 addScaled(Double4x4R other, double weight) {
+        if (Joml.RETURN_NEW) return addScaled(other, weight, Joml.double4x4());
+        int p = this.properties;
+        int q = ((Double4x4Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_identity_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_identity_translation(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_identity_affine(other, weight, this);
+            return addScaled_identity(other, weight, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_translation_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_translation_translation(other, weight, this);
+            return addScaled_translation(other, weight, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_orthogonal_translation(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general_translation(other, weight, this);
+        return addScaled_general(other, weight, this);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30},
+     * {@code m31}, {@code m32}, {@code m33}) scaled by {@code weight} to this matrix and store the
+     * result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m03 the element in row 0, column 3 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m13 the element in row 1, column 3 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m23 the element in row 2, column 3 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param m32 the element in row 3, column 2 of the matrix
+     * @param m33 the element in row 3, column 3 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m03},
+     *        {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
+     *        {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) by
+     *        before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 addScaled(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double m30, double m31, double m32, double m33, double weight, @Mutated Double4x4 dest) {
+        Double4x4Impl d = (Double4x4Impl) dest;
+        d.m00 = Math.fma(weight, m00, this.m00);
+        d.m10 = Math.fma(weight, m10, this.m10);
+        d.m20 = Math.fma(weight, m20, this.m20);
+        d.m30 = Math.fma(weight, m30, this.m30);
+        d.m01 = Math.fma(weight, m01, this.m01);
+        d.m11 = Math.fma(weight, m11, this.m11);
+        d.m21 = Math.fma(weight, m21, this.m21);
+        d.m31 = Math.fma(weight, m31, this.m31);
+        d.m02 = Math.fma(weight, m02, this.m02);
+        d.m12 = Math.fma(weight, m12, this.m12);
+        d.m22 = Math.fma(weight, m22, this.m22);
+        d.m32 = Math.fma(weight, m32, this.m32);
+        d.m03 = Math.fma(weight, m03, this.m03);
+        d.m13 = Math.fma(weight, m13, this.m13);
+        d.m23 = Math.fma(weight, m23, this.m23);
+        d.m33 = Math.fma(weight, m33, this.m33);
+        d.properties = 0;
+        return d;
     }
 
 

@@ -119,6 +119,17 @@ public interface Double3x4 extends Double3x4R {
     @Mutated default Double3x4 add(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23) { return add(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, Joml.RETURN_NEW ? Joml.double3x4() : this); }
 
     /**
+     * Multiply each component of this matrix by {@code scalar}.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Double3x4 mul(double scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.double3x4() : this); }
+
+    /**
      * Negate this matrix.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -516,6 +527,45 @@ public interface Double3x4 extends Double3x4R {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Double3x4 preMul(Double3x3R other) { return preMul(other, Joml.RETURN_NEW ? Joml.double3x4() : this); }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Double3x4 addScaled(Double3x4R other, double weight) { return addScaled(other, weight, Joml.RETURN_NEW ? Joml.double3x4() : this); }
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}) scaled by
+     * {@code weight} to this matrix.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m03 the element in row 0, column 3 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m13 the element in row 1, column 3 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m23 the element in row 2, column 3 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m03},
+     *        {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
+     *        {@code m22}, {@code m23}) by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Double3x4 addScaled(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double weight) { return addScaled(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, weight, Joml.RETURN_NEW ? Joml.double3x4() : this); }
 
     /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale,

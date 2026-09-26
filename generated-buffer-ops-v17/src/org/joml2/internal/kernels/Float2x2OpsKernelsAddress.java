@@ -168,6 +168,18 @@ public final class Float2x2OpsKernelsAddress {
         return dest;
     }
 
+    public static long mul_unsafe(long dest, long src, float scalar) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 12L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, scalar * _self00);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, scalar * _self10);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, scalar * _self01);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, scalar * _self11);
+        return dest;
+    }
+
     public static long negate_unsafe(long dest, long src) {
         float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
@@ -316,6 +328,22 @@ public final class Float2x2OpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_other10, _self00, _other11 * _self10));
         UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_other00, _self01, _other01 * _self11));
         UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_other10, _self01, _other11 * _self11));
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, long other, float weight) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _other00 = UnsafeOpsHolder.U.getFloat(other + 0L);
+        float _other10 = UnsafeOpsHolder.U.getFloat(other + 4L);
+        float _other01 = UnsafeOpsHolder.U.getFloat(other + 8L);
+        float _other11 = UnsafeOpsHolder.U.getFloat(other + 12L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(weight, _other00, _self00));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(weight, _other10, _self10));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(weight, _other01, _self01));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(weight, _other11, _self11));
         return dest;
     }
 

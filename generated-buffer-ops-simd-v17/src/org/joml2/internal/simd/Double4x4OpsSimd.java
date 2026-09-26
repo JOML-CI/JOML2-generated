@@ -29,6 +29,14 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
+    public static double[] mul(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, scalar).mul(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
     public static double[] negate(double[] dest, int destOffset, double[] src, int srcOffset) {
         for (int _li = 0; _li < 4; _li++) {
             var _c = DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).neg();
@@ -296,6 +304,27 @@ public final class Double4x4OpsSimd {
         var _sv3 = DoubleVector.fromArray(SIMD_SPECIES, other, otherOffset + 4);
         for (int _li = 0; _li < 4; _li++) {
             var _c = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3])).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 2])).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 0])).add(_sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 1])))));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
+    public static double[] addScaled(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        if (SimdSupport.USE_FMA) return addScaled_fma(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return addScaled_mulAdd(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    public static double[] addScaled_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, weight).fma(DoubleVector.fromArray(SIMD_SPECIES, other, (otherOffset + _li * 4)), DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
+    public static double[] addScaled_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, weight).mul(DoubleVector.fromArray(SIMD_SPECIES, other, (otherOffset + _li * 4))).add(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;

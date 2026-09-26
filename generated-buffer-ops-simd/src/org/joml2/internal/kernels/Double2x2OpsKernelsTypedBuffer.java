@@ -335,6 +335,33 @@ public final class Double2x2OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.DoubleBuffer mul_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double2x2OpsKernelsAddress.mul_unsafe(_destBase, _srcBase, scalar);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer mul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
+            Double2x2Ops.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, scalar);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double2x2OpsKernelsSegment.mul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, scalar);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self01 = src.get(srcOffset + 2);
+        double _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, scalar * _self00);
+        dest.put(destOffset + 1, scalar * _self10);
+        dest.put(destOffset + 2, scalar * _self01);
+        dest.put(destOffset + 3, scalar * _self11);
+        return dest;
+    }
+
     public static java.nio.DoubleBuffer negate_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
@@ -651,6 +678,38 @@ public final class Double2x2OpsKernelsTypedBuffer {
         dest.put(destOffset + 1, Math.fma(_other10, _self00, _other11 * _self10));
         dest.put(destOffset + 2, Math.fma(_other00, _self01, _other01 * _self11));
         dest.put(destOffset + 3, Math.fma(_other10, _self01, _other11 * _self11));
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 8L;
+        Double2x2OpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, _otherBase, weight);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double weight) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
+            Double2x2Ops.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, weight);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double2x2OpsKernelsSegment.addScaled_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 8L, weight);
+            return dest;
+        }
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self01 = src.get(srcOffset + 2);
+        double _self11 = src.get(srcOffset + 3);
+        double _other00 = other.get(otherOffset + 0);
+        double _other10 = other.get(otherOffset + 1);
+        double _other01 = other.get(otherOffset + 2);
+        double _other11 = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, Math.fma(weight, _other00, _self00));
+        dest.put(destOffset + 1, Math.fma(weight, _other10, _self10));
+        dest.put(destOffset + 2, Math.fma(weight, _other01, _self01));
+        dest.put(destOffset + 3, Math.fma(weight, _other11, _self11));
         return dest;
     }
 

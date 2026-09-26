@@ -1463,6 +1463,14 @@ public final class Float4x4OpsKernelsAddress {
         return dest;
     }
 
+    public static long mul_unsafe(long dest, long src, float scalar) {
+        for (int _i = 0; _i < 16; _i++) {
+            float _eself = UnsafeOpsHolder.U.getFloat(src + _i * 4L);
+            UnsafeOpsHolder.U.putFloat(dest + _i * 4L, scalar * _eself);
+        }
+        return dest;
+    }
+
     public static long negate_unsafe(long dest, long src) {
         for (int _i = 0; _i < 16; _i++) {
             float _eself = UnsafeOpsHolder.U.getFloat(src + _i * 4L);
@@ -3880,6 +3888,15 @@ public final class Float4x4OpsKernelsAddress {
             UnsafeOpsHolder.U.putFloat(dest + (_lo + 1) * 4L, Math.fma(_other13, _eself3, Math.fma(_other12, _eself2, Math.fma(_other10, _eself0, _other11 * _eself1))));
             UnsafeOpsHolder.U.putFloat(dest + (_lo + 2) * 4L, Math.fma(_other23, _eself3, Math.fma(_other22, _eself2, Math.fma(_other20, _eself0, _other21 * _eself1))));
             UnsafeOpsHolder.U.putFloat(dest + (_lo + 3) * 4L, _eself3);
+        }
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, long other, float weight) {
+        for (int _i = 0; _i < 16; _i++) {
+            float _eself = UnsafeOpsHolder.U.getFloat(src + _i * 4L);
+            float _eother = UnsafeOpsHolder.U.getFloat(other + _i * 4L);
+            UnsafeOpsHolder.U.putFloat(dest + _i * 4L, Math.fma(weight, _eother, _eself));
         }
         return dest;
     }

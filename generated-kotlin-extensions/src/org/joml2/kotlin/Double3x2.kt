@@ -10,6 +10,10 @@ import org.joml2.*
 
 /** [Double3x2.add] as the `+` operator. */
 inline operator fun Double3x2.plus(other: Double3x2): Double3x2 = add(other)
+/** [Double3x2.mul] as the `*` operator. */
+inline operator fun Double3x2.times(scalar: Double): Double3x2 = mul(scalar)
+/** [Double3x2.mul] with the scalar on the left, so `s * v` reads like `v * s`. */
+inline operator fun Double.times(v: Double3x2): Double3x2 = v.mul(this)
 /** [Double3x2.negate] as the unary `-` operator. */
 inline operator fun Double3x2.unaryMinus(): Double3x2 = negate()
 /** [Double3x2.sub] as the `-` operator. */

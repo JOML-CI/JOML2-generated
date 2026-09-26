@@ -197,6 +197,28 @@ public class Double4x2Impl implements Double4x2 {
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x2 mul(double scalar, @Mutated Double4x2 dest) {
+        Double4x2Impl d = (Double4x2Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m30 = scalar * this.m30;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        d.m31 = scalar * this.m31;
+        return d;
+    }
+
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -505,6 +527,61 @@ public class Double4x2Impl implements Double4x2 {
         double _r18 = other.m20();
         double _r19 = other.m21();
         preMul_s5c316050_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x2 addScaled(Double4x2R other, double weight, @Mutated Double4x2 dest) {
+        Double4x2Impl d = (Double4x2Impl) dest;
+        d.m00 = Math.fma(weight, other.m00(), this.m00);
+        d.m10 = Math.fma(weight, other.m10(), this.m10);
+        d.m20 = Math.fma(weight, other.m20(), this.m20);
+        d.m30 = Math.fma(weight, other.m30(), this.m30);
+        d.m01 = Math.fma(weight, other.m01(), this.m01);
+        d.m11 = Math.fma(weight, other.m11(), this.m11);
+        d.m21 = Math.fma(weight, other.m21(), this.m21);
+        d.m31 = Math.fma(weight, other.m31(), this.m31);
+        return d;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21},
+     * {@code m30}, {@code m31}) scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11},
+     *        {@code m20}, {@code m21}, {@code m30}, {@code m31}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x2 addScaled(double m00, double m01, double m10, double m11, double m20, double m21, double m30, double m31, double weight, @Mutated Double4x2 dest) {
+        Double4x2Impl d = (Double4x2Impl) dest;
+        d.m00 = Math.fma(weight, m00, this.m00);
+        d.m10 = Math.fma(weight, m10, this.m10);
+        d.m20 = Math.fma(weight, m20, this.m20);
+        d.m30 = Math.fma(weight, m30, this.m30);
+        d.m01 = Math.fma(weight, m01, this.m01);
+        d.m11 = Math.fma(weight, m11, this.m11);
+        d.m21 = Math.fma(weight, m21, this.m21);
+        d.m31 = Math.fma(weight, m31, this.m31);
         return d;
     }
 

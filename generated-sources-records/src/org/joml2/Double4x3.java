@@ -254,6 +254,17 @@ public record Double4x3(double m00, double m01, double m02, double m10, double m
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar}, returning the result as a value.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return the resulting matrix
+     */
+    public Double4x3 mul(double scalar) {
+        return new Double4x3(scalar * this.m00, scalar * this.m01, scalar * this.m02, scalar * this.m10, scalar * this.m11, scalar * this.m12, scalar * this.m20, scalar * this.m21, scalar * this.m22, scalar * this.m30, scalar * this.m31, scalar * this.m32);
+    }
+
+
+    /**
      * Negate this matrix, returning the result as a value.
      *
      * @return the resulting matrix
@@ -461,6 +472,45 @@ public record Double4x3(double m00, double m01, double m02, double m10, double m
      */
     public Double4x3 preMul(Double4x4 other) {
         return new Double4x3(preMul_s3df0280f_c0(other), preMul_s3df0280f_c1(other), preMul_s3df0280f_c2(other));
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix, returning the result as a value.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return the resulting matrix
+     */
+    public Double4x3 addScaled(Double4x3 other, double weight) {
+        return new Double4x3(Math.fma(weight, other.m00(), this.m00), Math.fma(weight, other.m01(), this.m01), Math.fma(weight, other.m02(), this.m02), Math.fma(weight, other.m10(), this.m10), Math.fma(weight, other.m11(), this.m11), Math.fma(weight, other.m12(), this.m12), Math.fma(weight, other.m20(), this.m20), Math.fma(weight, other.m21(), this.m21), Math.fma(weight, other.m22(), this.m22), Math.fma(weight, other.m30(), this.m30), Math.fma(weight, other.m31(), this.m31), Math.fma(weight, other.m32(), this.m32));
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m20}, {@code m21}, {@code m22}, {@code m30}, {@code m31}, {@code m32}) scaled by
+     * {@code weight} to this matrix, returning the result as a value.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param m32 the element in row 3, column 2 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m10},
+     *        {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}, {@code m30},
+     *        {@code m31}, {@code m32}) by before adding
+     * @return the resulting matrix
+     */
+    public Double4x3 addScaled(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22, double m30, double m31, double m32, double weight) {
+        return new Double4x3(Math.fma(weight, m00, this.m00), Math.fma(weight, m01, this.m01), Math.fma(weight, m02, this.m02), Math.fma(weight, m10, this.m10), Math.fma(weight, m11, this.m11), Math.fma(weight, m12, this.m12), Math.fma(weight, m20, this.m20), Math.fma(weight, m21, this.m21), Math.fma(weight, m22, this.m22), Math.fma(weight, m30, this.m30), Math.fma(weight, m31, this.m31), Math.fma(weight, m32, this.m32));
     }
 
 

@@ -335,6 +335,33 @@ public final class Float2x2OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.FloatBuffer mul_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float scalar) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        Float2x2OpsKernelsAddress.mul_unsafe(_destBase, _srcBase, scalar);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer mul_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float scalar) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
+            Float2x2Ops.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, scalar);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.mul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, scalar);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, scalar * _self00);
+        dest.put(destOffset + 1, scalar * _self10);
+        dest.put(destOffset + 2, scalar * _self01);
+        dest.put(destOffset + 3, scalar * _self11);
+        return dest;
+    }
+
     public static java.nio.FloatBuffer negate_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
@@ -651,6 +678,38 @@ public final class Float2x2OpsKernelsTypedBuffer {
         dest.put(destOffset + 1, Math.fma(_other10, _self00, _other11 * _self10));
         dest.put(destOffset + 2, Math.fma(_other00, _self01, _other01 * _self11));
         dest.put(destOffset + 3, Math.fma(_other10, _self01, _other11 * _self11));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer addScaled_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 4L;
+        Float2x2OpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, _otherBase, weight);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer addScaled_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float weight) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
+            Float2x2Ops.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, weight);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.addScaled_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L, weight);
+            return dest;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _other00 = other.get(otherOffset + 0);
+        float _other10 = other.get(otherOffset + 1);
+        float _other01 = other.get(otherOffset + 2);
+        float _other11 = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, Math.fma(weight, _other00, _self00));
+        dest.put(destOffset + 1, Math.fma(weight, _other10, _self10));
+        dest.put(destOffset + 2, Math.fma(weight, _other01, _self01));
+        dest.put(destOffset + 3, Math.fma(weight, _other11, _self11));
         return dest;
     }
 

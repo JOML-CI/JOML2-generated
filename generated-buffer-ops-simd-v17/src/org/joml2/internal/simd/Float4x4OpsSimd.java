@@ -29,6 +29,14 @@ public final class Float4x4OpsSimd {
         return dest;
     }
 
+    public static float[] mul(float[] dest, int destOffset, float[] src, int srcOffset, float scalar) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = FloatVector.broadcast(SIMD_SPECIES, scalar).mul(FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
     public static float[] negate(float[] dest, int destOffset, float[] src, int srcOffset) {
         for (int _li = 0; _li < 4; _li++) {
             var _c = FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).neg();
@@ -296,6 +304,27 @@ public final class Float4x4OpsSimd {
         var _sv3 = FloatVector.fromArray(SIMD_SPECIES, other, otherOffset + 4);
         for (int _li = 0; _li < 4; _li++) {
             var _c = _sv0.mul(FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 3])).add(_sv1.mul(FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 2])).add(_sv2.mul(FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 0])).add(_sv3.mul(FloatVector.broadcast(SIMD_SPECIES, src[(srcOffset + _li * 4) + 1])))));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
+    public static float[] addScaled(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float weight) {
+        if (SimdSupport.USE_FMA) return addScaled_fma(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return addScaled_mulAdd(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    public static float[] addScaled_fma(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = FloatVector.broadcast(SIMD_SPECIES, weight).fma(FloatVector.fromArray(SIMD_SPECIES, other, (otherOffset + _li * 4)), FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
+    public static float[] addScaled_mulAdd(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = FloatVector.broadcast(SIMD_SPECIES, weight).mul(FloatVector.fromArray(SIMD_SPECIES, other, (otherOffset + _li * 4))).add(FloatVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
             _c.intoArray(dest, destOffset + _li * 4);
         }
         return dest;

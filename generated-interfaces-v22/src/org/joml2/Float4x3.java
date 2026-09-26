@@ -58,6 +58,14 @@ public interface Float4x3 extends Float4x3R {
     @Mutated default Float4x3 add(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float m30, float m31, float m32) { return add(m00, m01, m02, m10, m11, m12, m20, m21, m22, m30, m31, m32, Joml.RETURN_NEW ? Joml.float4x3() : this); }
 
     /**
+     * Multiply each component of this matrix by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float4x3 mul(float scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.float4x3() : this); }
+
+    /**
      * Negate this matrix.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -200,6 +208,39 @@ public interface Float4x3 extends Float4x3R {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float4x3 preMul(Float4x4R other) { return preMul(other, Joml.RETURN_NEW ? Joml.float4x3() : this); }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float4x3 addScaled(Float4x3R other, float weight) { return addScaled(other, weight, Joml.RETURN_NEW ? Joml.float4x3() : this); }
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m10}, {@code m11}, {@code m12},
+     * {@code m20}, {@code m21}, {@code m22}, {@code m30}, {@code m31}, {@code m32}) scaled by
+     * {@code weight} to this matrix.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param m32 the element in row 3, column 2 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m10},
+     *        {@code m11}, {@code m12}, {@code m20}, {@code m21}, {@code m22}, {@code m30},
+     *        {@code m31}, {@code m32}) by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float4x3 addScaled(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float m30, float m31, float m32, float weight) { return addScaled(m00, m01, m02, m10, m11, m12, m20, m21, m22, m30, m31, m32, weight, Joml.RETURN_NEW ? Joml.float4x3() : this); }
 
     /**
      * Load the elements from the given array in column-major order.

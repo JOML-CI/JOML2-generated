@@ -570,6 +570,56 @@ public final class Double2x3Ops {
     }
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 1)} stays as it is,
+     * so the result is still affine.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param scalar the factor to multiply each component by
+     * @return {@code dest}
+     */
+    public static double[] mul(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
+        for (int _l = 0; _l < 3; _l++) {
+            int _lo = _l * 2;
+            double _eself0 = src[srcOffset + _lo];
+            double _eself1 = src[srcOffset + _lo + 1];
+            dest[destOffset + _lo] = scalar * _eself0;
+            dest[destOffset + _lo + 1] = scalar * _eself1;
+        }
+        return dest;
+    }
+
+    /** {@link #mul(double[], int, double[], int, double)} on {@link java.nio.DoubleBuffer} storage. */
+    public static java.nio.DoubleBuffer mul(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x3OpsKernelsTypedBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return Double2x3OpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x3OpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return Double2x3OpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double2x3OpsKernelsSegment.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return Double2x3OpsKernelsSegment.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long mul(long dest, long src, double scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double2x3OpsKernelsAddress.mul_unsafe(dest, src, scalar);
+        mul(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 48L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 48L), 0L, scalar);
+        return dest;
+    }
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -1443,6 +1493,60 @@ public final class Double2x3Ops {
     public static long preMulMat3x3(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double2x3OpsKernelsAddress.preMulMat3x3_unsafe(dest, src, other);
         preMulMat3x3(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 72L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 48L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(other, 72L), 0L);
+        return dest;
+    }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 1)} stays as it is,
+     * so the result is still affine.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @param other the storage holding the matrix to scale and add
+     * @param otherOffset the element index in {@code other} at which the matrix starts
+     * @param weight the factor to scale the given matrix by before adding
+     * @return {@code dest}
+     */
+    public static double[] addScaled(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        for (int _l = 0; _l < 3; _l++) {
+            int _lo = _l * 2;
+            double _eself0 = src[srcOffset + _lo];
+            double _eself1 = src[srcOffset + _lo + 1];
+            double _eother0 = other[otherOffset + _lo];
+            double _eother1 = other[otherOffset + _lo + 1];
+            dest[destOffset + _lo] = Math.fma(weight, _eother0, _eself0);
+            dest[destOffset + _lo + 1] = Math.fma(weight, _eother1, _eself1);
+        }
+        return dest;
+    }
+
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on {@link java.nio.DoubleBuffer} storage. */
+    public static java.nio.DoubleBuffer addScaled(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double2x3OpsKernelsTypedBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return Double2x3OpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, double weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Double2x3OpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return Double2x3OpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Double2x3OpsKernelsSegment.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return Double2x3OpsKernelsSegment.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(double[], int, double[], int, double[], int, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long addScaled(long dest, long src, long other, double weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double2x3OpsKernelsAddress.addScaled_unsafe(dest, src, other, weight);
+        addScaled(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 48L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 48L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(other, 48L), 0L, weight);
         return dest;
     }
 

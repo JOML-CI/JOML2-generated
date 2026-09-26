@@ -7707,6 +7707,100 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_identity(float scalar, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, scalar);
+        var _col0 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 8));
+        var _col3 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, sd, 12));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Float4x4 mul_general(float scalar, @Mutated Float4x4 dest) {
+        return mul_identity(scalar, dest);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x4 mul(float scalar, @Mutated Float4x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_identity(scalar, dest);
+        return mul_general(scalar, dest);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Float4x4 mul(float scalar) {
+        if (Joml.RETURN_NEW) return mul(scalar, Joml.float4x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return mul_identity(scalar, this);
+        return mul_general(scalar, this);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 mul(float scalar, @Mutated Double4x4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        dd[4] = scalar * sd[4];
+        dd[5] = scalar * sd[5];
+        dd[6] = scalar * sd[6];
+        dd[7] = scalar * sd[7];
+        dd[8] = scalar * sd[8];
+        dd[9] = scalar * sd[9];
+        dd[10] = scalar * sd[10];
+        dd[11] = scalar * sd[11];
+        dd[12] = scalar * sd[12];
+        dd[13] = scalar * sd[13];
+        dd[14] = scalar * sd[14];
+        dd[15] = scalar * sd[15];
+        ((Double4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
      * Private body of {@code negate}, specialized by runtime matrix properties; reached only
      * through the public {@code negate} dispatcher.
      */
@@ -18800,6 +18894,396 @@ public class Float4x4Impl implements Float4x4 {
         dd[9] = _buf5;
         dd[12] = _buf6;
         dd[13] = _buf7;
+        ((Double4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float4x4 addScaled_general(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return addScaled_general_fma(other, weight, dest);
+        return addScaled_general_mulAdd(other, weight, dest);
+    }
+
+    private Float4x4 addScaled_general_fma(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, weight);
+        var _col0 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 0), FloatVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 4), FloatVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 8), FloatVector.fromArray(COL_SPECIES, sd, 8));
+        var _col3 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 12), FloatVector.fromArray(COL_SPECIES, sd, 12));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+    private Float4x4 addScaled_general_mulAdd(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, weight);
+        var _col0 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 0)).add(FloatVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 4)).add(FloatVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 8)).add(FloatVector.fromArray(COL_SPECIES, sd, 8));
+        var _col3 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 12)).add(FloatVector.fromArray(COL_SPECIES, sd, 12));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float4x4 addScaled_identity(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return addScaled_identity_fma(other, weight, dest);
+        return addScaled_identity_mulAdd(other, weight, dest);
+    }
+
+    private Float4x4 addScaled_identity_fma(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, weight);
+        var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 0), _sv1.withLane(0, 1.0f));
+        var _col1 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 4), _sv1.withLane(1, 1.0f));
+        var _col2 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 8), _sv1.withLane(2, 1.0f));
+        var _col3 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 12), _sv1.withLane(3, 1.0f));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+    private Float4x4 addScaled_identity_mulAdd(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, weight);
+        var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 0)).add(_sv1.withLane(0, 1.0f));
+        var _col1 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 4)).add(_sv1.withLane(1, 1.0f));
+        var _col2 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 8)).add(_sv1.withLane(2, 1.0f));
+        var _col3 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 12)).add(_sv1.withLane(3, 1.0f));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float4x4 addScaled_translation(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        if (SimdMath.USE_FMA) return addScaled_translation_fma(other, weight, dest);
+        return addScaled_translation_mulAdd(other, weight, dest);
+    }
+
+    private Float4x4 addScaled_translation_fma(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, weight);
+        var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 0), _sv1.withLane(0, 1.0f));
+        var _col1 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 4), _sv1.withLane(1, 1.0f));
+        var _col2 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 8), _sv1.withLane(2, 1.0f));
+        var _col3 = _sv0.fma(FloatVector.fromArray(COL_SPECIES, otherData, 12), FloatVector.fromArray(COL_SPECIES, sd, 12).withLane(3, 1.0f));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+    private Float4x4 addScaled_translation_mulAdd(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, weight);
+        var _sv1 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 0)).add(_sv1.withLane(0, 1.0f));
+        var _col1 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 4)).add(_sv1.withLane(1, 1.0f));
+        var _col2 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 8)).add(_sv1.withLane(2, 1.0f));
+        var _col3 = _sv0.mul(FloatVector.fromArray(COL_SPECIES, otherData, 12)).add(FloatVector.fromArray(COL_SPECIES, sd, 12).withLane(3, 1.0f));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float4x4 addScaled_orthogonal_identity(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        dd[0] = weight + sd[0];
+        dd[1] = sd[1];
+        dd[2] = sd[2];
+        dd[3] = 0.0f;
+        dd[4] = sd[4];
+        dd[5] = weight + sd[5];
+        dd[6] = sd[6];
+        dd[7] = 0.0f;
+        dd[8] = sd[8];
+        dd[9] = sd[9];
+        dd[10] = weight + sd[10];
+        dd[11] = 0.0f;
+        dd[12] = sd[12];
+        dd[13] = sd[13];
+        dd[14] = sd[14];
+        dd[15] = 1.0f + weight;
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Float4x4 addScaled_general_identity(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] otherData = ((Float4x4Impl) other).data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        var _sv0 = FloatVector.broadcast(COL_SPECIES, 0.0f);
+        var _col0 = FloatVector.fromArray(COL_SPECIES, sd, 0).add(_sv0.withLane(0, weight));
+        var _col1 = FloatVector.fromArray(COL_SPECIES, sd, 4).add(_sv0.withLane(1, weight));
+        var _col2 = FloatVector.fromArray(COL_SPECIES, sd, 8).add(_sv0.withLane(2, weight));
+        var _col3 = FloatVector.fromArray(COL_SPECIES, sd, 12).add(_sv0.withLane(3, weight));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        _col3.intoArray(dd, 12);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x4 addScaled(Float4x4R other, float weight, @Mutated Float4x4 dest) {
+        int p = this.properties;
+        int q = ((Float4x4Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_general(other, weight, dest);
+            return addScaled_identity(other, weight, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+            return addScaled_translation(other, weight, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+        return addScaled_general(other, weight, dest);
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Float4x4 addScaled(Float4x4R other, float weight) {
+        if (Joml.RETURN_NEW) return addScaled(other, weight, Joml.float4x4());
+        int p = this.properties;
+        int q = ((Float4x4Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+            if ((q & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) return addScaled_general(other, weight, this);
+            return addScaled_identity(other, weight, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+            return addScaled_translation(other, weight, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((p & Joml.BIT_AFFINE) == Joml.BIT_AFFINE) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general_identity(other, weight, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+        return addScaled_general(other, weight, this);
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 addScaled(Float4x4R other, float weight, @Mutated Double4x4 dest) {
+        return addScaled(other.m00(), other.m01(), other.m02(), other.m03(), other.m10(), other.m11(), other.m12(), other.m13(), other.m20(), other.m21(), other.m22(), other.m23(), other.m30(), other.m31(), other.m32(), other.m33(), weight, dest);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30},
+     * {@code m31}, {@code m32}, {@code m33}) scaled by {@code weight} to this matrix and store the
+     * result in {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m03 the element in row 0, column 3 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m13 the element in row 1, column 3 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m23 the element in row 2, column 3 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param m32 the element in row 3, column 2 of the matrix
+     * @param m33 the element in row 3, column 3 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m03},
+     *        {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
+     *        {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) by
+     *        before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x4 addScaled(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33, float weight, @Mutated Float4x4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4x4Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m10, sd[1]);
+        dd[2] = Math.fma(weight, m20, sd[2]);
+        dd[3] = Math.fma(weight, m30, sd[3]);
+        dd[4] = Math.fma(weight, m01, sd[4]);
+        dd[5] = Math.fma(weight, m11, sd[5]);
+        dd[6] = Math.fma(weight, m21, sd[6]);
+        dd[7] = Math.fma(weight, m31, sd[7]);
+        dd[8] = Math.fma(weight, m02, sd[8]);
+        dd[9] = Math.fma(weight, m12, sd[9]);
+        dd[10] = Math.fma(weight, m22, sd[10]);
+        dd[11] = Math.fma(weight, m32, sd[11]);
+        dd[12] = Math.fma(weight, m03, sd[12]);
+        dd[13] = Math.fma(weight, m13, sd[13]);
+        dd[14] = Math.fma(weight, m23, sd[14]);
+        dd[15] = Math.fma(weight, m33, sd[15]);
+        ((Float4x4Impl) dest).properties = 0;
+        return dest;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}, {@code m30},
+     * {@code m31}, {@code m32}, {@code m33}) scaled by {@code weight} to this matrix and store the
+     * result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m03 the element in row 0, column 3 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m13 the element in row 1, column 3 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m23 the element in row 2, column 3 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param m32 the element in row 3, column 2 of the matrix
+     * @param m33 the element in row 3, column 3 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m03},
+     *        {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
+     *        {@code m22}, {@code m23}, {@code m30}, {@code m31}, {@code m32}, {@code m33}) by
+     *        before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x4 addScaled(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33, float weight, @Mutated Double4x4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double4x4Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m10, sd[1]);
+        dd[2] = Math.fma(weight, m20, sd[2]);
+        dd[3] = Math.fma(weight, m30, sd[3]);
+        dd[4] = Math.fma(weight, m01, sd[4]);
+        dd[5] = Math.fma(weight, m11, sd[5]);
+        dd[6] = Math.fma(weight, m21, sd[6]);
+        dd[7] = Math.fma(weight, m31, sd[7]);
+        dd[8] = Math.fma(weight, m02, sd[8]);
+        dd[9] = Math.fma(weight, m12, sd[9]);
+        dd[10] = Math.fma(weight, m22, sd[10]);
+        dd[11] = Math.fma(weight, m32, sd[11]);
+        dd[12] = Math.fma(weight, m03, sd[12]);
+        dd[13] = Math.fma(weight, m13, sd[13]);
+        dd[14] = Math.fma(weight, m23, sd[14]);
+        dd[15] = Math.fma(weight, m33, sd[15]);
         ((Double4x4Impl) dest).properties = 0;
         return dest;
     }

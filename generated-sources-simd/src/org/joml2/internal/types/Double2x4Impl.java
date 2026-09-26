@@ -197,6 +197,26 @@ public class Double2x4Impl implements Double2x4 {
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x4 mul(double scalar, @Mutated Double2x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double2x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, scalar);
+        var _col0 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, sd, 4));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        return dest;
+    }
+
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -596,6 +616,78 @@ public class Double2x4Impl implements Double2x4 {
         dd[1] = _buf1;
         dd[2] = _buf2;
         dd[3] = _buf3;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x4 addScaled(Double2x4R other, double weight, @Mutated Double2x4 dest) {
+        if (SimdMath.USE_FMA) return addScaled_fma(other, weight, dest);
+        return addScaled_mulAdd(other, weight, dest);
+    }
+
+    private Double2x4 addScaled_fma(Double2x4R other, double weight, @Mutated Double2x4 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double2x4Impl) other).data;
+        double[] dd = ((Double2x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, weight);
+        var _col0 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 0), DoubleVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 4), DoubleVector.fromArray(COL_SPECIES, sd, 4));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        return dest;
+    }
+
+    private Double2x4 addScaled_mulAdd(Double2x4R other, double weight, @Mutated Double2x4 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double2x4Impl) other).data;
+        double[] dd = ((Double2x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, weight);
+        var _col0 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 0)).add(DoubleVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 4)).add(DoubleVector.fromArray(COL_SPECIES, sd, 4));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        return dest;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m13}) scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m03 the element in row 0, column 3 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m13 the element in row 1, column 3 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m03},
+     *        {@code m10}, {@code m11}, {@code m12}, {@code m13}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2x4 addScaled(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double weight, @Mutated Double2x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double2x4Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m01, sd[1]);
+        dd[2] = Math.fma(weight, m02, sd[2]);
+        dd[3] = Math.fma(weight, m03, sd[3]);
+        dd[4] = Math.fma(weight, m10, sd[4]);
+        dd[5] = Math.fma(weight, m11, sd[5]);
+        dd[6] = Math.fma(weight, m12, sd[6]);
+        dd[7] = Math.fma(weight, m13, sd[7]);
         return dest;
     }
 

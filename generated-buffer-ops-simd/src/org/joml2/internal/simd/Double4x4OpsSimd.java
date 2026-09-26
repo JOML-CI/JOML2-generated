@@ -37,6 +37,22 @@ public final class Double4x4OpsSimd {
         return dest;
     }
 
+    public static double[] mul(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, scalar).mul(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double scalar) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, scalar).mul(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, (srcOffset + _li * 32L), java.nio.ByteOrder.nativeOrder()));
+            _c.intoMemorySegment(dest, destOffset + _li * 32L, java.nio.ByteOrder.nativeOrder());
+        }
+        return dest;
+    }
+
     public static double[] negate(double[] dest, int destOffset, double[] src, int srcOffset) {
         for (int _li = 0; _li < 4; _li++) {
             var _c = DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)).neg();
@@ -860,6 +876,48 @@ public final class Double4x4OpsSimd {
         var _sv3 = DoubleVector.fromMemorySegment(SIMD_SPECIES, other, otherOffset + 32L, java.nio.ByteOrder.nativeOrder());
         for (int _li = 0; _li < 4; _li++) {
             var _c = _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, (srcOffset + _li * 32L) + 24L))).add(_sv1.mul(DoubleVector.broadcast(SIMD_SPECIES, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, (srcOffset + _li * 32L) + 16L))).add(_sv2.mul(DoubleVector.broadcast(SIMD_SPECIES, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, (srcOffset + _li * 32L) + 0L))).add(_sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, (srcOffset + _li * 32L) + 8L))))));
+            _c.intoMemorySegment(dest, destOffset + _li * 32L, java.nio.ByteOrder.nativeOrder());
+        }
+        return dest;
+    }
+
+    public static double[] addScaled(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        if (SimdSupport.USE_FMA) return addScaled_fma(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return addScaled_mulAdd(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    public static double[] addScaled_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, weight).fma(DoubleVector.fromArray(SIMD_SPECIES, other, (otherOffset + _li * 4)), DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
+    public static double[] addScaled_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, weight).mul(DoubleVector.fromArray(SIMD_SPECIES, other, (otherOffset + _li * 4))).add(DoubleVector.fromArray(SIMD_SPECIES, src, (srcOffset + _li * 4)));
+            _c.intoArray(dest, destOffset + _li * 4);
+        }
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double weight) {
+        if (SimdSupport.USE_FMA) return addScaled_fma(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return addScaled_mulAdd(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    public static java.lang.foreign.MemorySegment addScaled_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, weight).fma(DoubleVector.fromMemorySegment(SIMD_SPECIES, other, (otherOffset + _li * 32L), java.nio.ByteOrder.nativeOrder()), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, (srcOffset + _li * 32L), java.nio.ByteOrder.nativeOrder()));
+            _c.intoMemorySegment(dest, destOffset + _li * 32L, java.nio.ByteOrder.nativeOrder());
+        }
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment addScaled_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double weight) {
+        for (int _li = 0; _li < 4; _li++) {
+            var _c = DoubleVector.broadcast(SIMD_SPECIES, weight).mul(DoubleVector.fromMemorySegment(SIMD_SPECIES, other, (otherOffset + _li * 32L), java.nio.ByteOrder.nativeOrder())).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, (srcOffset + _li * 32L), java.nio.ByteOrder.nativeOrder()));
             _c.intoMemorySegment(dest, destOffset + _li * 32L, java.nio.ByteOrder.nativeOrder());
         }
         return dest;

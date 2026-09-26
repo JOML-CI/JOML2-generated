@@ -226,6 +226,14 @@ public final class Float3x4OpsKernelsArray {
         return dest;
     }
 
+    public static float[] mul_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float scalar) {
+        for (int _i = 0; _i < 12; _i++) {
+            float _eself = src[srcOffset + _i];
+            dest[destOffset + _i] = scalar * _eself;
+        }
+        return dest;
+    }
+
     public static float[] negate_scalar(float[] dest, int destOffset, float[] src, int srcOffset) {
         for (int _i = 0; _i < 12; _i++) {
             float _eself = src[srcOffset + _i];
@@ -536,6 +544,15 @@ public final class Float3x4OpsKernelsArray {
         dest[destOffset + 13] = Math.fma(_other10, _self03, Math.fma(_other11, _self13, Math.fma(_other12, _self23, _other13)));
         dest[destOffset + 14] = Math.fma(_other20, _self03, Math.fma(_other21, _self13, Math.fma(_other22, _self23, _other23)));
         dest[destOffset + 15] = Math.fma(_other30, _self03, Math.fma(_other31, _self13, Math.fma(_other32, _self23, _other33)));
+        return dest;
+    }
+
+    public static float[] addScaled_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float weight) {
+        for (int _i = 0; _i < 12; _i++) {
+            float _eself = src[srcOffset + _i];
+            float _eother = other[otherOffset + _i];
+            dest[destOffset + _i] = Math.fma(weight, _eother, _eself);
+        }
         return dest;
     }
 

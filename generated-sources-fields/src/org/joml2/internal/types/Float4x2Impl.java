@@ -334,6 +334,53 @@ public class Float4x2Impl implements Float4x2 {
 
 
     /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x2 mul(float scalar, @Mutated Float4x2 dest) {
+        Float4x2Impl d = (Float4x2Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m30 = scalar * this.m30;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        d.m31 = scalar * this.m31;
+        return d;
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x2 mul(float scalar, @Mutated Double4x2 dest) {
+        Double4x2Impl d = (Double4x2Impl) dest;
+        d.m00 = scalar * this.m00;
+        d.m10 = scalar * this.m10;
+        d.m20 = scalar * this.m20;
+        d.m30 = scalar * this.m30;
+        d.m01 = scalar * this.m01;
+        d.m11 = scalar * this.m11;
+        d.m21 = scalar * this.m21;
+        d.m31 = scalar * this.m31;
+        return d;
+    }
+
+
+    /**
      * Negate this matrix and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -871,6 +918,113 @@ public class Float4x2Impl implements Float4x2 {
         float _r18 = other.m20();
         float _r19 = other.m21();
         preMul_s6581da25_tail(d, other, _r0, _r1, _r2, _r3, _r4, _r5, _r6, _r7, _r8, _r9, _r10, _r11, _r12, _r13, _r14, _r15, _r16, _r17, _r18, _r19);
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x2 addScaled(Float4x2R other, float weight, @Mutated Float4x2 dest) {
+        Float4x2Impl d = (Float4x2Impl) dest;
+        d.m00 = Math.fma(weight, other.m00(), this.m00);
+        d.m10 = Math.fma(weight, other.m10(), this.m10);
+        d.m20 = Math.fma(weight, other.m20(), this.m20);
+        d.m30 = Math.fma(weight, other.m30(), this.m30);
+        d.m01 = Math.fma(weight, other.m01(), this.m01);
+        d.m11 = Math.fma(weight, other.m11(), this.m11);
+        d.m21 = Math.fma(weight, other.m21(), this.m21);
+        d.m31 = Math.fma(weight, other.m31(), this.m31);
+        return d;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x2 addScaled(Float4x2R other, float weight, @Mutated Double4x2 dest) {
+        return addScaled(other.m00(), other.m01(), other.m10(), other.m11(), other.m20(), other.m21(), other.m30(), other.m31(), weight, dest);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21},
+     * {@code m30}, {@code m31}) scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11},
+     *        {@code m20}, {@code m21}, {@code m30}, {@code m31}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4x2 addScaled(float m00, float m01, float m10, float m11, float m20, float m21, float m30, float m31, float weight, @Mutated Float4x2 dest) {
+        Float4x2Impl d = (Float4x2Impl) dest;
+        d.m00 = Math.fma(weight, m00, this.m00);
+        d.m10 = Math.fma(weight, m10, this.m10);
+        d.m20 = Math.fma(weight, m20, this.m20);
+        d.m30 = Math.fma(weight, m30, this.m30);
+        d.m01 = Math.fma(weight, m01, this.m01);
+        d.m11 = Math.fma(weight, m11, this.m11);
+        d.m21 = Math.fma(weight, m21, this.m21);
+        d.m31 = Math.fma(weight, m31, this.m31);
+        return d;
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}, {@code m20}, {@code m21},
+     * {@code m30}, {@code m31}) scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m30 the element in row 3, column 0 of the matrix
+     * @param m31 the element in row 3, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11},
+     *        {@code m20}, {@code m21}, {@code m30}, {@code m31}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4x2 addScaled(float m00, float m01, float m10, float m11, float m20, float m21, float m30, float m31, float weight, @Mutated Double4x2 dest) {
+        Double4x2Impl d = (Double4x2Impl) dest;
+        d.m00 = Math.fma(weight, m00, this.m00);
+        d.m10 = Math.fma(weight, m10, this.m10);
+        d.m20 = Math.fma(weight, m20, this.m20);
+        d.m30 = Math.fma(weight, m30, this.m30);
+        d.m01 = Math.fma(weight, m01, this.m01);
+        d.m11 = Math.fma(weight, m11, this.m11);
+        d.m21 = Math.fma(weight, m21, this.m21);
+        d.m31 = Math.fma(weight, m31, this.m31);
         return d;
     }
 

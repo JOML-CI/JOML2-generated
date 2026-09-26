@@ -168,6 +168,18 @@ public final class Double2x2OpsKernelsAddress {
         return dest;
     }
 
+    public static long mul_unsafe(long dest, long src, double scalar) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, scalar * _self00);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, scalar * _self10);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, scalar * _self01);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, scalar * _self11);
+        return dest;
+    }
+
     public static long negate_unsafe(long dest, long src) {
         double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
@@ -316,6 +328,22 @@ public final class Double2x2OpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_other10, _self00, _other11 * _self10));
         UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_other00, _self01, _other01 * _self11));
         UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_other10, _self01, _other11 * _self11));
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, long other, double weight) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _other00 = UnsafeOpsHolder.U.getDouble(other + 0L);
+        double _other10 = UnsafeOpsHolder.U.getDouble(other + 8L);
+        double _other01 = UnsafeOpsHolder.U.getDouble(other + 16L);
+        double _other11 = UnsafeOpsHolder.U.getDouble(other + 24L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(weight, _other00, _self00));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(weight, _other10, _self10));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(weight, _other01, _self01));
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(weight, _other11, _self11));
         return dest;
     }
 

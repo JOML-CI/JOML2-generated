@@ -124,6 +124,14 @@ public interface Float2x2 extends Float2x2R {
     @Mutated default Float2x2 add(float m00, float m01, float m10, float m11) { return add(m00, m01, m10, m11, Joml.RETURN_NEW ? Joml.float2x2() : this); }
 
     /**
+     * Multiply each component of this matrix by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2x2 mul(float scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.float2x2() : this); }
+
+    /**
      * Negate this matrix.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -281,6 +289,29 @@ public interface Float2x2 extends Float2x2R {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float2x2 preMul(float m00, float m01, float m10, float m11) { return preMul(m00, m01, m10, m11, Joml.RETURN_NEW ? Joml.float2x2() : this); }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2x2 addScaled(Float2x2R other, float weight) { return addScaled(other, weight, Joml.RETURN_NEW ? Joml.float2x2() : this); }
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m10}, {@code m11}) scaled by {@code weight} to this
+     * matrix.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m10}, {@code m11}) by
+     *        before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2x2 addScaled(float m00, float m01, float m10, float m11, float weight) { return addScaled(m00, m01, m10, m11, weight, Joml.RETURN_NEW ? Joml.float2x2() : this); }
 
     /**
      * Set this matrix to the outer product of {@code col} and {@code row}.

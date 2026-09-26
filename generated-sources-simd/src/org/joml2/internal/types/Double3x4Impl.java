@@ -4144,6 +4144,69 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x4 mul_identity(double scalar, @Mutated Double3x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, scalar);
+        var _col0 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, sd, 8));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code mul}, specialized by runtime matrix properties; reached only through
+     * the public {@code mul} dispatcher.
+     */
+    private Double3x4 mul_general(double scalar, @Mutated Double3x4 dest) {
+        return mul_identity(scalar, dest);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x4 mul(double scalar, @Mutated Double3x4 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_identity(scalar, dest);
+        return mul_general(scalar, dest);
+    }
+
+
+    /**
+     * Multiply each component of this matrix by {@code scalar}.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Double3x4 mul(double scalar) {
+        if (Joml.RETURN_NEW) return mul(scalar, Joml.double3x4());
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_identity(scalar, this);
+        return mul_general(scalar, this);
+    }
+
+
+    /**
      * Private body of {@code negate}, specialized by runtime matrix properties; reached only
      * through the public {@code negate} dispatcher.
      */
@@ -8388,6 +8451,225 @@ public class Double3x4Impl implements Double3x4 {
         if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return preMul_orthogonal_identity(other, dest, Joml.BIT_AFFINE & q);
         if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return preMul_orthogonal_translation(other, dest, Joml.BIT_AFFINE & q);
         return preMul_general(other, dest, 0);
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x4 addScaled_general(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        if (SimdMath.USE_FMA) return addScaled_general_fma(other, weight, dest);
+        return addScaled_general_mulAdd(other, weight, dest);
+    }
+
+    private Double3x4 addScaled_general_fma(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x4Impl) other).data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, weight);
+        var _col0 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 0), DoubleVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 4), DoubleVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 8), DoubleVector.fromArray(COL_SPECIES, sd, 8));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double3x4Impl) other).properties;
+        return dest;
+    }
+
+    private Double3x4 addScaled_general_mulAdd(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x4Impl) other).data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, weight);
+        var _col0 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 0)).add(DoubleVector.fromArray(COL_SPECIES, sd, 0));
+        var _col1 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 4)).add(DoubleVector.fromArray(COL_SPECIES, sd, 4));
+        var _col2 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 8)).add(DoubleVector.fromArray(COL_SPECIES, sd, 8));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double3x4Impl) other).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x4 addScaled_identity(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        if (SimdMath.USE_FMA) return addScaled_identity_fma(other, weight, dest);
+        return addScaled_identity_mulAdd(other, weight, dest);
+    }
+
+    private Double3x4 addScaled_identity_fma(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x4Impl) other).data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, weight);
+        var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 0), _sv1.withLane(0, 1.0));
+        var _col1 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 4), _sv1.withLane(1, 1.0));
+        var _col2 = _sv0.fma(DoubleVector.fromArray(COL_SPECIES, otherData, 8), _sv1.withLane(2, 1.0));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double3x4Impl) other).properties;
+        return dest;
+    }
+
+    private Double3x4 addScaled_identity_mulAdd(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x4Impl) other).data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, weight);
+        var _sv1 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 0)).add(_sv1.withLane(0, 1.0));
+        var _col1 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 4)).add(_sv1.withLane(1, 1.0));
+        var _col2 = _sv0.mul(DoubleVector.fromArray(COL_SPECIES, otherData, 8)).add(_sv1.withLane(2, 1.0));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double3x4Impl) other).properties;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code addScaled}, specialized by runtime matrix properties; reached only
+     * through the public {@code addScaled} dispatcher.
+     */
+    private Double3x4 addScaled_orthogonal_identity(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        double[] sd = this.data;
+        double[] otherData = ((Double3x4Impl) other).data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        var _sv0 = DoubleVector.broadcast(COL_SPECIES, 0.0);
+        var _col0 = DoubleVector.fromArray(COL_SPECIES, sd, 0).add(_sv0.withLane(0, weight));
+        var _col1 = DoubleVector.fromArray(COL_SPECIES, sd, 4).add(_sv0.withLane(1, weight));
+        var _col2 = DoubleVector.fromArray(COL_SPECIES, sd, 8).add(_sv0.withLane(2, weight));
+        _col0.intoArray(dd, 0);
+        _col1.intoArray(dd, 4);
+        _col2.intoArray(dd, 8);
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE & ((Double3x4Impl) other).properties;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix and store the result in
+     * {@code dest}.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x4 addScaled(Double3x4R other, double weight, @Mutated Double3x4 dest) {
+        int p = this.properties;
+        int q = ((Double3x4Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+            return addScaled_identity(other, weight, dest);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+            return addScaled_general(other, weight, dest);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, dest);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, dest);
+        return addScaled_general(other, weight, dest);
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this matrix.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param other the matrix to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated public Double3x4 addScaled(Double3x4R other, double weight) {
+        if (Joml.RETURN_NEW) return addScaled(other, weight, Joml.double3x4());
+        int p = this.properties;
+        int q = ((Double3x4Impl) other).properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+            return addScaled_identity(other, weight, this);
+        }
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_general(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((p & Joml.BIT_ORTHOGONAL) == Joml.BIT_ORTHOGONAL) {
+            if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+            if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+            return addScaled_general(other, weight, this);
+        }
+        if ((q & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return addScaled_orthogonal_identity(other, weight, this);
+        if ((q & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return addScaled_general(other, weight, this);
+        return addScaled_general(other, weight, this);
+    }
+
+
+    /**
+     * Add ({@code m00}, {@code m01}, {@code m02}, {@code m03}, {@code m10}, {@code m11},
+     * {@code m12}, {@code m13}, {@code m20}, {@code m21}, {@code m22}, {@code m23}) scaled by
+     * {@code weight} to this matrix and store the result in {@code dest}.
+     * <p>
+     * Only the stored elements take part: the implicit last row {@code (0, 0, 0, 1)} stays as it
+     * is, so the result is still affine.
+     *
+     * @param m00 the element in row 0, column 0 of the matrix
+     * @param m01 the element in row 0, column 1 of the matrix
+     * @param m02 the element in row 0, column 2 of the matrix
+     * @param m03 the element in row 0, column 3 of the matrix
+     * @param m10 the element in row 1, column 0 of the matrix
+     * @param m11 the element in row 1, column 1 of the matrix
+     * @param m12 the element in row 1, column 2 of the matrix
+     * @param m13 the element in row 1, column 3 of the matrix
+     * @param m20 the element in row 2, column 0 of the matrix
+     * @param m21 the element in row 2, column 1 of the matrix
+     * @param m22 the element in row 2, column 2 of the matrix
+     * @param m23 the element in row 2, column 3 of the matrix
+     * @param weight the factor to scale ({@code m00}, {@code m01}, {@code m02}, {@code m03},
+     *        {@code m10}, {@code m11}, {@code m12}, {@code m13}, {@code m20}, {@code m21},
+     *        {@code m22}, {@code m23}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3x4 addScaled(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23, double weight, @Mutated Double3x4 dest) {
+        double[] sd = this.data;
+        double[] dd = ((Double3x4Impl) dest).data;
+        dd[0] = Math.fma(weight, m00, sd[0]);
+        dd[1] = Math.fma(weight, m01, sd[1]);
+        dd[2] = Math.fma(weight, m02, sd[2]);
+        dd[3] = Math.fma(weight, m03, sd[3]);
+        dd[4] = Math.fma(weight, m10, sd[4]);
+        dd[5] = Math.fma(weight, m11, sd[5]);
+        dd[6] = Math.fma(weight, m12, sd[6]);
+        dd[7] = Math.fma(weight, m13, sd[7]);
+        dd[8] = Math.fma(weight, m20, sd[8]);
+        dd[9] = Math.fma(weight, m21, sd[9]);
+        dd[10] = Math.fma(weight, m22, sd[10]);
+        dd[11] = Math.fma(weight, m23, sd[11]);
+        ((Double3x4Impl) dest).properties = Joml.BIT_AFFINE;
+        return dest;
     }
 
 

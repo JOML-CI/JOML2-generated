@@ -246,6 +246,25 @@ public final class Float2x2OpsKernelsByteBuffer {
         return dest;
     }
 
+    public static java.nio.ByteBuffer mul_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float2x2OpsKernelsAddress.mul_unsafe(_destBase, _srcBase, scalar);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer mul_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
+        float _self00 = src.getFloat(srcOffset + 0);
+        float _self10 = src.getFloat(srcOffset + 4);
+        float _self01 = src.getFloat(srcOffset + 8);
+        float _self11 = src.getFloat(srcOffset + 12);
+        dest.putFloat(destOffset + 0, scalar * _self00);
+        dest.putFloat(destOffset + 4, scalar * _self10);
+        dest.putFloat(destOffset + 8, scalar * _self01);
+        dest.putFloat(destOffset + 12, scalar * _self11);
+        return dest;
+    }
+
     public static java.nio.ByteBuffer negate_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
@@ -474,6 +493,30 @@ public final class Float2x2OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 4, Math.fma(_other10, _self00, _other11 * _self10));
         dest.putFloat(destOffset + 8, Math.fma(_other00, _self01, _other01 * _self11));
         dest.putFloat(destOffset + 12, Math.fma(_other10, _self01, _other11 * _self11));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer addScaled_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + otherOffset;
+        Float2x2OpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, _otherBase, weight);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer addScaled_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float weight) {
+        float _self00 = src.getFloat(srcOffset + 0);
+        float _self10 = src.getFloat(srcOffset + 4);
+        float _self01 = src.getFloat(srcOffset + 8);
+        float _self11 = src.getFloat(srcOffset + 12);
+        float _other00 = other.getFloat(otherOffset + 0);
+        float _other10 = other.getFloat(otherOffset + 4);
+        float _other01 = other.getFloat(otherOffset + 8);
+        float _other11 = other.getFloat(otherOffset + 12);
+        dest.putFloat(destOffset + 0, Math.fma(weight, _other00, _self00));
+        dest.putFloat(destOffset + 4, Math.fma(weight, _other10, _self10));
+        dest.putFloat(destOffset + 8, Math.fma(weight, _other01, _self01));
+        dest.putFloat(destOffset + 12, Math.fma(weight, _other11, _self11));
         return dest;
     }
 
