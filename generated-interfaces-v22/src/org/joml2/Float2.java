@@ -164,6 +164,17 @@ public interface Float2 extends Float2R {
     @Mutated default Float2 sub(float x, float y) { return sub(x, y, Joml.RETURN_NEW ? Joml.float2() : this); }
 
     /**
+     * Set this vector to the unit vector at the angle {@code 2 PI u} counter-clockwise from the x
+     * axis: samples uniformly distributed in {@code [0, 1)} give a direction uniformly distributed
+     * on the unit circle ({@code makeRandomDirection} draws them from a {@link java.util.Random}).
+     *
+     * @param u the fraction of a full turn counter-clockwise from the x axis, uniformly distributed
+     *        in {@code [0, 1)} for a uniformly distributed direction
+     * @return this
+     */
+    @Mutated Float2 makeUniformDirection(float u);
+
+    /**
      * Set this vector to the given values.
      *
      * @param v the vector to copy
@@ -632,6 +643,49 @@ public interface Float2 extends Float2R {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float2 lerp(float otherX, float otherY, float tX, float tY) { return lerp(otherX, otherY, tX, tY, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * counter-clockwise perpendicular {@code (-y, x)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2 slerp(Float2R other, float t) { return slerp(other, t, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
+     * Spherically interpolate between this vector and ({@code x}, {@code y}) using the
+     * interpolation factor {@code t}: the direction turns at a constant rate along the shorter arc
+     * between the two directions, and the length changes linearly between the two lengths.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * counter-clockwise perpendicular {@code (-y, x)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}) (interpolation factor {@code 1}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2 slerp(float x, float y, float t) { return slerp(x, y, t, Joml.RETURN_NEW ? Joml.float2() : this); }
 
     /**
      * Compute the absolute value of each component of this vector.
@@ -1341,7 +1395,7 @@ public interface Float2 extends Float2R {
 
     /**
      * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
-     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * - i.e. compute {@code (mat * (this, 0)).xy}, applying only rotation and scale and ignoring
      * translation.
      *
      * @param mat the matrix to apply
@@ -1350,8 +1404,28 @@ public interface Float2 extends Float2R {
     @Mutated default Float2 preMulDirection(Float2x3R mat) { return preMulDirection(mat, Joml.RETURN_NEW ? Joml.float2() : this); }
 
     /**
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xy}, applying only rotation and scale and ignoring
+     * translation.
+     *
+     * @param mat the matrix to apply
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2 preMulDirection(Float3x3R mat) { return preMulDirection(mat, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as the point {@code (x, y, 0, 1)} of the
+     * xy-plane - i.e. compute {@code (mat * (this, 0, 1)).xy}, applying the full affine transform
+     * including translation.
+     *
+     * @param mat the matrix to apply
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2 preMulPosition(Float4x4R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
      * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
-     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * - i.e. compute {@code (mat * (this, 1)).xy}, applying the full affine transform including
      * translation.
      *
      * @param mat the matrix to apply
@@ -1360,12 +1434,52 @@ public interface Float2 extends Float2R {
     @Mutated default Float2 preMulPosition(Float2x3R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.float2() : this); }
 
     /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xy}, applying the full affine transform including
+     * translation.
+     *
+     * @param mat the matrix to apply
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2 preMulPosition(Float3x3R mat) { return preMulPosition(mat, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
      * Rotate this vector counter-clockwise about the origin by {@code angle} radians.
      *
      * @param angle the angle in radians
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float2 rotate(float angle) { return rotate(angle, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
+     * Rotate this vector counter-clockwise by {@code angle} radians about the point {@code pivot}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2 rotateAround(float angle, Float2R pivot) { return rotateAround(angle, pivot, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
+     * Rotate this vector counter-clockwise by {@code angle} radians about the point ({@code x},
+     * {@code y}).
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float2 rotateAround(float angle, float x, float y) { return rotateAround(angle, x, y, Joml.RETURN_NEW ? Joml.float2() : this); }
+
+    /**
+     * Set this vector to a direction uniformly distributed on the unit circle, drawing the sample
+     * of {@code makeUniformDirection} from {@code rng}, each with {@code rng.nextFloat()}, in
+     * parameter order.
+     *
+     * @param rng the random number generator to draw the sample from
+     * @return this
+     */
+    @Mutated default Float2 makeRandomDirection(java.util.Random rng) { return makeUniformDirection(rng.nextFloat()); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}), in place.

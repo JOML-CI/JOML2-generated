@@ -171,6 +171,20 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 sub(float x, float y, float z) { return sub(x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
+     * Set this vector to the unit vector {@code (r cos(2 PI v), r sin(2 PI v), 2u - 1)} with
+     * {@code r = 2 sqrt(u (1 - u))}: samples uniformly distributed in {@code [0, 1)} give a
+     * direction uniformly distributed on the unit sphere ({@code makeRandomDirection} draws them
+     * from a {@link java.util.Random}).
+     *
+     * @param u the sample that sets the height {@code z = 2u - 1}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn about the z axis, counter-clockwise from the x axis,
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @return this
+     */
+    @Mutated Float3 makeUniformDirection(float u, float v);
+
+    /**
      * Set this vector to the given values.
      *
      * @param v the vector to copy
@@ -672,6 +686,50 @@ public interface Float3 extends Float3R {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 lerp(float otherX, float otherY, float otherZ, float tX, float tY, float tZ) { return lerp(otherX, otherY, otherZ, tX, tY, tZ, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 slerp(Float3R other, float t) { return slerp(other, t, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Spherically interpolate between this vector and ({@code x}, {@code y}, {@code z}) using the
+     * interpolation factor {@code t}: the direction turns at a constant rate along the shorter arc
+     * between the two directions, and the length changes linearly between the two lengths.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}) (interpolation factor {@code 1}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 slerp(float x, float y, float z, float t) { return slerp(x, y, z, t, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Compute the absolute value of each component of this vector.
@@ -1574,6 +1632,36 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 rotate(float x, float y, float z, float w) { return rotate(x, y, z, w, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p}.
+     *
+     * @param quat the rotation to apply (must be a unit quaternion)
+     * @param pivot the pivot point
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateAround(FloatQuatR quat, Float3R pivot) { return rotateAround(quat, pivot, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Rotate this vector by the quaternion ({@code quatX}, {@code quatY}, {@code quatZ},
+     * {@code quatW}) about the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}), i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p}.
+     *
+     * @param quatX the {@code x} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatY the {@code y} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatZ the {@code z} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatW the {@code w} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateAround(float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) { return rotateAround(quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
      * Rotate this vector by {@code angle} radians about the axis {@code axis}.
      *
      * @param angle the angle in radians
@@ -1595,6 +1683,35 @@ public interface Float3 extends Float3R {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateAxis(float angle, float x, float y, float z) { return rotateAxis(angle, x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot}.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param pivot the pivot point
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateAxisAround(float angle, Float3R axis, Float3R pivot) { return rotateAxisAround(angle, axis, pivot, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) through the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}).
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateAxisAround(float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) { return rotateAxisAround(angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
      * Rotate this vector by the inverse of the given rotation.
@@ -1628,6 +1745,27 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 rotateX(float angle) { return rotateX(angle, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateXAround(float angle, Float3R pivot) { return rotateXAround(angle, pivot, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point ({@code x},
+     * {@code y}, {@code z}).
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateXAround(float angle, float x, float y, float z) { return rotateXAround(angle, x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
      * Rotate this vector by {@code angle} radians about the Y axis.
      *
      * @param angle the angle in radians
@@ -1636,12 +1774,64 @@ public interface Float3 extends Float3R {
     @Mutated default Float3 rotateY(float angle) { return rotateY(angle, Joml.RETURN_NEW ? Joml.float3() : this); }
 
     /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateYAround(float angle, Float3R pivot) { return rotateYAround(angle, pivot, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point ({@code x},
+     * {@code y}, {@code z}).
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateYAround(float angle, float x, float y, float z) { return rotateYAround(angle, x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
      * Rotate this vector by {@code angle} radians about the Z axis.
      *
      * @param angle the angle in radians
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default Float3 rotateZ(float angle) { return rotateZ(angle, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateZAround(float angle, Float3R pivot) { return rotateZAround(angle, pivot, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point ({@code x},
+     * {@code y}, {@code z}).
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Float3 rotateZAround(float angle, float x, float y, float z) { return rotateZAround(angle, x, y, z, Joml.RETURN_NEW ? Joml.float3() : this); }
+
+    /**
+     * Set this vector to a direction uniformly distributed on the unit sphere, drawing the 2
+     * samples of {@code makeUniformDirection} from {@code rng}, each with {@code rng.nextFloat()},
+     * in parameter order.
+     *
+     * @param rng the random number generator to draw the 2 samples from
+     * @return this
+     */
+    @Mutated default Float3 makeRandomDirection(java.util.Random rng) { return makeUniformDirection(rng.nextFloat(), rng.nextFloat()); }
 
     /**
      * Swizzle: rearrange this vector's components to ({@code x}, {@code x}, {@code x}), in place.

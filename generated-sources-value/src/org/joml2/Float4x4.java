@@ -2652,7 +2652,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4x4(cofactor_affine_s0_c0(_t12, _t14, _t15), cofactor_affine_s0_c1(_t16, _t14, _t17), cofactor_affine_s0_c2(_t13, _t15, _t17), cofactor_affine_s0_c3(_t13, _t12, _t16), 0);
     }
 
-    /** Private tail of {@code cofactor_general}; reached only through it. */
     /** Private per-column body of {@code cofactor_general_s0_tail}; reached only through it. */
     private Float4 cofactor_general_s0_tail_s5c7a798d_c0(float _t36, float _t37, float _t38, float _t42, float _t43, float _t44, float _t48, float _t49, float _t50) {
         return new Float4(Math.fma(this.m13, _t36, Math.fma(this.m11, _t37, -(this.m12 * _t38))), -Math.fma(this.m03, _t36, Math.fma(this.m01, _t37, -(this.m02 * _t38))), Math.fma(this.m03, _t42, Math.fma(this.m01, _t43, -(this.m02 * _t44))), -Math.fma(this.m03, _t48, Math.fma(this.m01, _t49, -(this.m02 * _t50))));
@@ -2673,6 +2672,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(this.m12, _t41, Math.fma(this.m10, _t36, -(this.m11 * _t39))), Math.fma(this.m02, _t41, Math.fma(this.m00, _t36, -(this.m01 * _t39))), -Math.fma(this.m02, _t47, Math.fma(this.m00, _t42, -(this.m01 * _t45))), Math.fma(this.m02, _t53, Math.fma(this.m00, _t48, -(this.m01 * _t51))));
     }
 
+    /** Private tail of {@code cofactor_general}; reached only through it. */
     private Float4x4 cofactor_general_s0_tail(float _t36, float _t37, float _t38, float _t39, float _t40, float _t41, float _t42, float _t43, float _t44, float _t45, int _props) {
         float _t46 = Math.fma(this.m10, this.m33, -(this.m13 * this.m30));
         float _t47 = Math.fma(this.m10, this.m31, -(this.m11 * this.m30));
@@ -2823,7 +2823,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invert_general_s0_tail2(_t40, _t37, _t41, _t39, _t42, _t38, _t67, _t43, _t44, _t45, _t46, _t47, _t48, _t49, _t50, _t51, _t52, _t53, _t54, _props);
     }
 
-    /** Private tail of {@code invert_general}; reached only through it. */
     /** Private per-column body of {@code invert_general_s0_tail2}; reached only through it. */
     private Float4 invert_general_s0_tail2_s37883b5f_c0(float _t67, float _t75_inv, float _t70, float _t69, float _t68) {
         return new Float4(_t67 * _t75_inv, -(_t70 * _t75_inv), _t69 * _t75_inv, -(_t68 * _t75_inv));
@@ -2844,6 +2843,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(this.m03, _t46, Math.fma(this.m01, _t47, -(this.m02 * _t48))) * _t75_inv), Math.fma(this.m03, _t51, Math.fma(this.m00, _t47, -(this.m02 * _t52))) * _t75_inv, -(Math.fma(this.m03, _t54, Math.fma(this.m00, _t48, -(this.m01 * _t52))) * _t75_inv), Math.fma(this.m02, _t54, Math.fma(this.m00, _t46, -(this.m01 * _t51))) * _t75_inv);
     }
 
+    /** Private tail of {@code invert_general}; reached only through it. */
     private Float4x4 invert_general_s0_tail2(float _t40, float _t37, float _t41, float _t39, float _t42, float _t38, float _t67, float _t43, float _t44, float _t45, float _t46, float _t47, float _t48, float _t49, float _t50, float _t51, float _t52, float _t53, float _t54, int _props) {
         float _t68 = Math.fma(this.m12, _t40, Math.fma(this.m10, _t37, -(this.m11 * _t41)));
         float _t69 = Math.fma(this.m13, _t40, Math.fma(this.m10, _t39, -(this.m11 * _t42)));
@@ -2940,7 +2940,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_general_s1f06c224_tail5(_t57, _t132, _t61, _t133, _t62, _t131, _t63, _t134, _t101, _t102, _t103, _t107, _t108, _t109, _t110, _t111, _t112, _t105, _t106, _t113, _t114, _t115, _t116, _t104, _t117, _t118, _props);
     }
 
-    /** Private tail of {@code invertProduct_general}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_s1f06c224_tail5}; reached only through it. */
     private Float4 invertProduct_general_s1f06c224_tail5_s43da374_c0(float _t131, float _t139_inv, float _t134, float _t133, float _t132) {
         return new Float4(_t131 * _t139_inv, -(_t134 * _t139_inv), _t133 * _t139_inv, -(_t132 * _t139_inv));
@@ -2961,6 +2960,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t57, _t110, Math.fma(_t63, _t111, -(_t61 * _t112))) * _t139_inv), Math.fma(_t57, _t115, Math.fma(_t62, _t111, -(_t61 * _t116))) * _t139_inv, -(Math.fma(_t57, _t118, Math.fma(_t62, _t112, -(_t63 * _t116))) * _t139_inv), Math.fma(_t61, _t118, Math.fma(_t62, _t110, -(_t63 * _t115))) * _t139_inv);
     }
 
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
     private Float4x4 invertProduct_general_s1f06c224_tail5(float _t57, float _t132, float _t61, float _t133, float _t62, float _t131, float _t63, float _t134, float _t101, float _t102, float _t103, float _t107, float _t108, float _t109, float _t110, float _t111, float _t112, float _t105, float _t106, float _t113, float _t114, float _t115, float _t116, float _t104, float _t117, float _t118, int _props) {
         float _t139 = Math.fma(-_t57, _t132, Math.fma(_t61, _t133, Math.fma(_t62, _t131, -(_t63 * _t134))));
         float _t139_inv = 1.0f / _t139;
@@ -2995,7 +2995,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_identity_s1f06c224_tail2(other, _t40, _t37, _t41, _t39, _t42, _t38, _t67, _t43, _t44, _t45, _t46, _t47, _t48, _t49, _t50, _t51, _t52, _t53, _t54, _props);
     }
 
-    /** Private tail of {@code invertProduct_identity}; reached only through it. */
     /** Private per-column body of {@code invertProduct_identity_s1f06c224_tail2}; reached only through it. */
     private Float4 invertProduct_identity_s1f06c224_tail2_s3762fff7_c0(float _t67, float _t75_inv, float _t70, float _t69, float _t68) {
         return new Float4(_t67 * _t75_inv, -(_t70 * _t75_inv), _t69 * _t75_inv, -(_t68 * _t75_inv));
@@ -3016,6 +3015,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(other.m03(), _t46, Math.fma(other.m01(), _t47, -(other.m02() * _t48))) * _t75_inv), Math.fma(other.m03(), _t51, Math.fma(other.m00(), _t47, -(other.m02() * _t52))) * _t75_inv, -(Math.fma(other.m03(), _t54, Math.fma(other.m00(), _t48, -(other.m01() * _t52))) * _t75_inv), Math.fma(other.m02(), _t54, Math.fma(other.m00(), _t46, -(other.m01() * _t51))) * _t75_inv);
     }
 
+    /** Private tail of {@code invertProduct_identity}; reached only through it. */
     private Float4x4 invertProduct_identity_s1f06c224_tail2(Float4x4 other, float _t40, float _t37, float _t41, float _t39, float _t42, float _t38, float _t67, float _t43, float _t44, float _t45, float _t46, float _t47, float _t48, float _t49, float _t50, float _t51, float _t52, float _t53, float _t54, int _props) {
         float _t68 = Math.fma(other.m12(), _t40, Math.fma(other.m10(), _t37, -(other.m11() * _t41)));
         float _t69 = Math.fma(other.m13(), _t40, Math.fma(other.m10(), _t39, -(other.m11() * _t42)));
@@ -3075,7 +3075,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_translation_s1f06c224_tail3(_t87, _t79, _t6, _t49, _t11, _t50, _t9, _t51, _t55, _t56, _t57, _t69, _t70, _t71, _t82, _t53, _t10, _t54, _t58, _t59, _t72, _t73, _t81, _t52, _t60, _t74, _t80, _props);
     }
 
-    /** Private tail of {@code invertProduct_translation}; reached only through it. */
     /** Private per-column body of {@code invertProduct_translation_s1f06c224_tail3}; reached only through it. */
     private Float4 invertProduct_translation_s1f06c224_tail3_s201c9d2b_c0(float _t79, float _t87_inv, float _t82, float _t81, float _t80) {
         return new Float4(_t79 * _t87_inv, -(_t82 * _t87_inv), _t81 * _t87_inv, -(_t80 * _t87_inv));
@@ -3096,6 +3095,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t6, _t69, Math.fma(_t11, _t70, -(_t9 * _t71))) * _t87_inv), Math.fma(_t6, _t72, Math.fma(_t10, _t70, -(_t9 * _t73))) * _t87_inv, -(Math.fma(_t6, _t74, Math.fma(_t10, _t71, -(_t11 * _t73))) * _t87_inv), Math.fma(_t9, _t74, Math.fma(_t10, _t69, -(_t11 * _t72))) * _t87_inv);
     }
 
+    /** Private tail of {@code invertProduct_translation}; reached only through it. */
     private Float4x4 invertProduct_translation_s1f06c224_tail3(float _t87, float _t79, float _t6, float _t49, float _t11, float _t50, float _t9, float _t51, float _t55, float _t56, float _t57, float _t69, float _t70, float _t71, float _t82, float _t53, float _t10, float _t54, float _t58, float _t59, float _t72, float _t73, float _t81, float _t52, float _t60, float _t74, float _t80, int _props) {
         float _t87_inv = 1.0f / _t87;
         return new Float4x4(invertProduct_translation_s1f06c224_tail3_s201c9d2b_c0(_t79, _t87_inv, _t82, _t81, _t80), invertProduct_translation_s1f06c224_tail3_s201c9d2b_c1(_t6, _t49, _t11, _t50, _t9, _t51, _t87_inv, _t53, _t10, _t54, _t52), invertProduct_translation_s1f06c224_tail3_s201c9d2b_c2(_t6, _t55, _t11, _t56, _t9, _t57, _t87_inv, _t58, _t10, _t59, _t60), invertProduct_translation_s1f06c224_tail3_s201c9d2b_c3(_t6, _t69, _t11, _t70, _t9, _t71, _t87_inv, _t72, _t10, _t73, _t74), _props);
@@ -3165,7 +3165,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_orthogonal_s4952725a_tail4(_t41, _t88, _t44, _t85, _t39, _t89, _t36, _t87, _t90, _t86, _t42, _t45, _t46, _t115, _t47, _t91, _t92, _t93, _t105, _t106, _t107, _t94, _t95, _t108, _t109, _t96, _t110, _props);
     }
 
-    /** Private tail of {@code invertProduct_orthogonal}; reached only through it. */
     /** Private per-column body of {@code invertProduct_orthogonal_s4952725a_tail4}; reached only through it. */
     private Float4 invertProduct_orthogonal_s4952725a_tail4_s153fc84f_c0(float _t115, float _t123_inv, float _t118, float _t117, float _t116) {
         return new Float4(_t115 * _t123_inv, -(_t118 * _t123_inv), _t117 * _t123_inv, -(_t116 * _t123_inv));
@@ -3186,6 +3185,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t42, _t105, Math.fma(_t47, _t106, -(_t45 * _t107))) * _t123_inv), Math.fma(_t42, _t108, Math.fma(_t46, _t106, -(_t45 * _t109))) * _t123_inv, -(Math.fma(_t42, _t110, Math.fma(_t46, _t107, -(_t47 * _t109))) * _t123_inv), Math.fma(_t45, _t110, Math.fma(_t46, _t105, -(_t47 * _t108))) * _t123_inv);
     }
 
+    /** Private tail of {@code invertProduct_orthogonal}; reached only through it. */
     private Float4x4 invertProduct_orthogonal_s4952725a_tail4(float _t41, float _t88, float _t44, float _t85, float _t39, float _t89, float _t36, float _t87, float _t90, float _t86, float _t42, float _t45, float _t46, float _t115, float _t47, float _t91, float _t92, float _t93, float _t105, float _t106, float _t107, float _t94, float _t95, float _t108, float _t109, float _t96, float _t110, int _props) {
         float _t116 = Math.fma(_t41, _t88, Math.fma(_t44, _t85, -(_t39 * _t89)));
         float _t117 = Math.fma(_t36, _t88, Math.fma(_t44, _t87, -(_t39 * _t90)));
@@ -3354,7 +3354,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_orthogonal_affine_s4952725a_tail2(_t34, _t24, _t35, _t26, _t29, _t30, _t28, _t49, _t31, _t48, _t32, _t50, _t25, _t27, _t33, _t51, _props);
     }
 
-    /** Private tail of {@code invertProduct_orthogonal_affine}; reached only through it. */
     /** Private per-column body of {@code invertProduct_orthogonal_affine_s4952725a_tail2}; reached only through it. */
     private Float4 invertProduct_orthogonal_affine_s4952725a_tail2_scba85aa_c0(float _t48, float _t57_inv, float _t30, float _t27, float _t29, float _t25, float _t49) {
         return new Float4(_t48 * _t57_inv, Math.fma(_t30, _t27, -(_t29 * _t25)) * _t57_inv, _t49 * _t57_inv, 0.0f);
@@ -3375,6 +3374,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t33, _t48, Math.fma(_t32, _t51, -(_t28 * _t52))) * _t57_inv), Math.fma(_t33, _t50, Math.fma(_t31, _t51, -(_t28 * _t53))) * _t57_inv, -(Math.fma(_t33, _t49, Math.fma(_t31, _t52, -(_t32 * _t53))) * _t57_inv), 1.0f);
     }
 
+    /** Private tail of {@code invertProduct_orthogonal_affine}; reached only through it. */
     private Float4x4 invertProduct_orthogonal_affine_s4952725a_tail2(float _t34, float _t24, float _t35, float _t26, float _t29, float _t30, float _t28, float _t49, float _t31, float _t48, float _t32, float _t50, float _t25, float _t27, float _t33, float _t51, int _props) {
         float _t52 = Math.fma(_t34, _t24, -(_t35 * _t26));
         float _t53 = Math.fma(_t34, _t29, -(_t35 * _t30));
@@ -3436,7 +3436,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4x4(invertProduct_affine_identity_s1f06c224_c0(_t12, _t21_inv, _t13), invertProduct_affine_identity_s1f06c224_c1(_t21_inv), invertProduct_affine_identity_s1f06c224_c2(_t21_inv), invertProduct_affine_identity_s1f06c224_c3(_t12, _t15, _t16, _t21_inv, _t14, _t17, _t13), Joml.BIT_AFFINE & other.properties());
     }
 
-    /** Private tail of {@code invertProduct_affine_translation}; reached only through it. */
     /** Private per-column body of {@code invertProduct_affine_translation_s1f06c224_tail}; reached only through it. */
     private Float4 invertProduct_affine_translation_s1f06c224_tail_s45602703_c0(float _t9, float _t30_inv, float _t10) {
         return new Float4(_t9 * _t30_inv, Math.fma(this.m12, this.m20, -(this.m10 * this.m22)) * _t30_inv, _t10 * _t30_inv, 0.0f);
@@ -3457,6 +3456,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t17, _t9, Math.fma(this.m01, _t27, -(this.m02 * _t28))) * _t30_inv), Math.fma(_t17, _t11, Math.fma(this.m00, _t27, -(this.m02 * _t29))) * _t30_inv, -(Math.fma(_t17, _t10, Math.fma(this.m00, _t28, -(this.m01 * _t29))) * _t30_inv), 1.0f);
     }
 
+    /** Private tail of {@code invertProduct_affine_translation}; reached only through it. */
     private Float4x4 invertProduct_affine_translation_s1f06c224_tail(float _t10, float _t9, float _t11, float _t17, float _t27, float _t28, float _t29, int _props) {
         float _t30 = Math.fma(this.m02, _t10, Math.fma(this.m00, _t9, -(this.m01 * _t11)));
         float _t30_inv = 1.0f / _t30;
@@ -3495,7 +3495,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_general_identity_s1f06c224_tail2(_t40, _t37, _t41, _t39, _t42, _t38, _t67, _t43, _t44, _t45, _t46, _t47, _t48, _t49, _t50, _t51, _t52, _t53, _t54, _props);
     }
 
-    /** Private tail of {@code invertProduct_general_identity}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_identity_s1f06c224_tail2}; reached only through it. */
     private Float4 invertProduct_general_identity_s1f06c224_tail2_s37883b5f_c0(float _t67, float _t75_inv, float _t70, float _t69, float _t68) {
         return new Float4(_t67 * _t75_inv, -(_t70 * _t75_inv), _t69 * _t75_inv, -(_t68 * _t75_inv));
@@ -3516,6 +3515,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(this.m03, _t46, Math.fma(this.m01, _t47, -(this.m02 * _t48))) * _t75_inv), Math.fma(this.m03, _t51, Math.fma(this.m00, _t47, -(this.m02 * _t52))) * _t75_inv, -(Math.fma(this.m03, _t54, Math.fma(this.m00, _t48, -(this.m01 * _t52))) * _t75_inv), Math.fma(this.m02, _t54, Math.fma(this.m00, _t46, -(this.m01 * _t51))) * _t75_inv);
     }
 
+    /** Private tail of {@code invertProduct_general_identity}; reached only through it. */
     private Float4x4 invertProduct_general_identity_s1f06c224_tail2(float _t40, float _t37, float _t41, float _t39, float _t42, float _t38, float _t67, float _t43, float _t44, float _t45, float _t46, float _t47, float _t48, float _t49, float _t50, float _t51, float _t52, float _t53, float _t54, int _props) {
         float _t68 = Math.fma(this.m12, _t40, Math.fma(this.m10, _t37, -(this.m11 * _t41)));
         float _t69 = Math.fma(this.m13, _t40, Math.fma(this.m10, _t39, -(this.m11 * _t42)));
@@ -3571,7 +3571,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_general_translation_s1f06c224_tail3(_t40, _t70, _t81, _t80, _t82, _t22, _t61, _t62, _t25, _t64, _t65, _t26, _t66, _t67, _t24, _t63, _t27, _t68, _t28, _t69, _t23, _t29, _t30, _props);
     }
 
-    /** Private tail of {@code invertProduct_general_translation}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_translation_s1f06c224_tail3}; reached only through it. */
     private Float4 invertProduct_general_translation_s1f06c224_tail3_s1679a27d_c0(float _t80, float _t87_inv, float _t82, float _t81, float _t70) {
         return new Float4(_t80 * _t87_inv, -(_t82 * _t87_inv), _t81 * _t87_inv, -(_t70 * _t87_inv));
@@ -3592,6 +3591,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t40, _t26, Math.fma(this.m01, _t66, -(this.m02 * _t67))) * _t87_inv), Math.fma(_t40, _t28, Math.fma(this.m00, _t66, -(this.m02 * _t69))) * _t87_inv, -(Math.fma(_t40, _t30, Math.fma(this.m00, _t67, -(this.m01 * _t69))) * _t87_inv), Math.fma(this.m02, _t30, Math.fma(this.m00, _t26, -(this.m01 * _t28))) * _t87_inv);
     }
 
+    /** Private tail of {@code invertProduct_general_translation}; reached only through it. */
     private Float4x4 invertProduct_general_translation_s1f06c224_tail3(float _t40, float _t70, float _t81, float _t80, float _t82, float _t22, float _t61, float _t62, float _t25, float _t64, float _t65, float _t26, float _t66, float _t67, float _t24, float _t63, float _t27, float _t68, float _t28, float _t69, float _t23, float _t29, float _t30, int _props) {
         float _t87 = Math.fma(-_t40, _t70, Math.fma(this.m02, _t81, Math.fma(this.m00, _t80, -(this.m01 * _t82))));
         float _t87_inv = 1.0f / _t87;
@@ -3661,7 +3661,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_general_affine_s1f06c224_tail4(_t44, _t87, _t40, _t94, _t37, _t96, _t47, _t115, _t41, _t117, _t42, _t116, _t43, _t85, _t95, _t88, _t97, _t98, _t89, _t99, _t100, _t90, _t101, _t91, _t102, _t86, _t92, _t93, _props);
     }
 
-    /** Private tail of {@code invertProduct_general_affine}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_affine_s1f06c224_tail4}; reached only through it. */
     private Float4 invertProduct_general_affine_s1f06c224_tail4_s597d5faf_c0(float _t116, float _t123_inv, float _t118, float _t117, float _t115) {
         return new Float4(_t116 * _t123_inv, -(_t118 * _t123_inv), _t117 * _t123_inv, -(_t115 * _t123_inv));
@@ -3682,6 +3681,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t47, _t89, Math.fma(_t43, _t99, -(_t41 * _t100))) * _t123_inv), Math.fma(_t47, _t91, Math.fma(_t42, _t99, -(_t41 * _t102))) * _t123_inv, -(Math.fma(_t47, _t93, Math.fma(_t42, _t100, -(_t43 * _t102))) * _t123_inv), Math.fma(_t41, _t93, Math.fma(_t42, _t89, -(_t43 * _t91))) * _t123_inv);
     }
 
+    /** Private tail of {@code invertProduct_general_affine}; reached only through it. */
     private Float4x4 invertProduct_general_affine_s1f06c224_tail4(float _t44, float _t87, float _t40, float _t94, float _t37, float _t96, float _t47, float _t115, float _t41, float _t117, float _t42, float _t116, float _t43, float _t85, float _t95, float _t88, float _t97, float _t98, float _t89, float _t99, float _t100, float _t90, float _t101, float _t91, float _t102, float _t86, float _t92, float _t93, int _props) {
         float _t118 = Math.fma(_t44, _t87, Math.fma(_t40, _t94, -(_t37 * _t96)));
         float _t123 = Math.fma(-_t47, _t115, Math.fma(_t41, _t117, Math.fma(_t42, _t116, -(_t43 * _t118))));
@@ -3799,7 +3799,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return invertProduct_s56711a14_tail4(_t48, _t101, _t53, _t102, _t56, _t103, _t104, _t60, _t105, _t106, _t57, _t61, _t62, _t63, _t107, _t108, _t109, _t110, _t111, _t112, _t113, _t114, _t115, _t116, _t117, _t118, _props);
     }
 
-    /** Private tail of {@code invertProduct}; reached only through it. */
     /** Private per-column body of {@code invertProduct_s56711a14_tail4}; reached only through it. */
     private Float4 invertProduct_s56711a14_tail4_s5aa22f85_c0(float _t131, float _t139_inv, float _t134, float _t133, float _t132) {
         return new Float4(_t131 * _t139_inv, -(_t134 * _t139_inv), _t133 * _t139_inv, -(_t132 * _t139_inv));
@@ -3820,6 +3819,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(Math.fma(_t57, _t110, Math.fma(_t63, _t111, -(_t61 * _t112))) * _t139_inv), Math.fma(_t57, _t115, Math.fma(_t62, _t111, -(_t61 * _t116))) * _t139_inv, -(Math.fma(_t57, _t118, Math.fma(_t62, _t112, -(_t63 * _t116))) * _t139_inv), Math.fma(_t61, _t118, Math.fma(_t62, _t110, -(_t63 * _t115))) * _t139_inv);
     }
 
+    /** Private tail of {@code invertProduct}; reached only through it. */
     private Float4x4 invertProduct_s56711a14_tail4(float _t48, float _t101, float _t53, float _t102, float _t56, float _t103, float _t104, float _t60, float _t105, float _t106, float _t57, float _t61, float _t62, float _t63, float _t107, float _t108, float _t109, float _t110, float _t111, float _t112, float _t113, float _t114, float _t115, float _t116, float _t117, float _t118, int _props) {
         float _t131 = Math.fma(_t48, _t101, Math.fma(_t53, _t102, -(_t56 * _t103)));
         float _t132 = Math.fma(_t56, _t104, Math.fma(_t60, _t101, -(_t53 * _t105)));
@@ -3949,7 +3949,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return normal_general_s0_tail2(_t40, _t37, _t41, _t39, _t42, _t38, _t67, _t43, _t44, _t45, _t46, _t47, _t48, _t49, _t50, _t51, _t52, _t53, _t54, _props);
     }
 
-    /** Private tail of {@code normal_general}; reached only through it. */
     /** Private per-column body of {@code normal_general_s0_tail2}; reached only through it. */
     private Float4 normal_general_s0_tail2_s37883b5f_c0(float _t67, float _t75_inv, float _t37, float _t38, float _t39, float _t43, float _t44, float _t45, float _t49, float _t50, float _t51) {
         return new Float4(_t67 * _t75_inv, -(Math.fma(this.m03, _t37, Math.fma(this.m01, _t38, -(this.m02 * _t39))) * _t75_inv), Math.fma(this.m03, _t43, Math.fma(this.m01, _t44, -(this.m02 * _t45))) * _t75_inv, -(Math.fma(this.m03, _t49, Math.fma(this.m01, _t50, -(this.m02 * _t51))) * _t75_inv));
@@ -3970,6 +3969,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-(_t68 * _t75_inv), Math.fma(this.m02, _t40, Math.fma(this.m00, _t37, -(this.m01 * _t41))) * _t75_inv, -(Math.fma(this.m02, _t48, Math.fma(this.m00, _t43, -(this.m01 * _t46))) * _t75_inv), Math.fma(this.m02, _t54, Math.fma(this.m00, _t49, -(this.m01 * _t52))) * _t75_inv);
     }
 
+    /** Private tail of {@code normal_general}; reached only through it. */
     private Float4x4 normal_general_s0_tail2(float _t40, float _t37, float _t41, float _t39, float _t42, float _t38, float _t67, float _t43, float _t44, float _t45, float _t46, float _t47, float _t48, float _t49, float _t50, float _t51, float _t52, float _t53, float _t54, int _props) {
         float _t68 = Math.fma(this.m12, _t40, Math.fma(this.m10, _t37, -(this.m11 * _t41)));
         float _t69 = Math.fma(this.m13, _t40, Math.fma(this.m10, _t39, -(this.m11 * _t42)));
@@ -6737,7 +6737,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_orthogonal_s6f0685e_tail(_t82, corner, _t24, _t26, _t25);
     }
 
-    /** Private {@code NXNYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm0}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm0_s4befa327_tail(float _t9, float _t12, float _t1, float _t13, float _t14, float _t3, float _t6, float _t7, float _t10, float _t8, float _t75, float _t11, float _t72, float _t5, float _t76, float _t0, float _t73, float _t74) {
         float _t77 = Math.fma(_t9, _t12, -(_t1 * _t13));
@@ -6753,6 +6752,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t72, Math.fma(_t5, _t73, -(_t8 * _t74))) * _t152_inv), Math.fma(_t0, _t76, Math.fma(_t11, _t73, -(_t8 * _t92))) * _t152_inv, -(Math.fma(_t0, _t75, Math.fma(_t11, _t74, -(_t5 * _t92))) * _t152_inv));
     }
 
+    /** Private {@code NXNYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm0(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t0 = this.m03 + this.m33;
         float _t1 = this.m11 + this.m31;
@@ -6771,7 +6771,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_general_s6f0685e_arm0_s4befa327_tail(_t9, _t12, _t1, _t13, _t14, _t3, _t6, _t7, _t10, _t8, _t75, _t11, _t72, _t5, _t76, _t0, _t73, _t74);
     }
 
-    /** Private {@code PXNYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm1}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm1_s4befa327_tail(float _t9, float _t12, float _t1, float _t13, float _t14, float _t3, float _t6, float _t7, float _t10, float _t17, float _t75, float _t18, float _t72, float _t16, float _t76, float _t15, float _t73, float _t74) {
         float _t77 = Math.fma(_t9, _t12, -(_t1 * _t13));
@@ -6787,6 +6786,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t15, _t72, Math.fma(_t16, _t73, -(_t17 * _t74))) * _t153_inv), Math.fma(_t15, _t76, Math.fma(_t18, _t73, -(_t17 * _t92))) * _t153_inv, -(Math.fma(_t15, _t75, Math.fma(_t18, _t74, -(_t16 * _t92))) * _t153_inv));
     }
 
+    /** Private {@code PXNYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm1(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t1 = this.m11 + this.m31;
         float _t3 = this.m12 + this.m32;
@@ -6805,7 +6805,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_general_s6f0685e_arm1_s4befa327_tail(_t9, _t12, _t1, _t13, _t14, _t3, _t6, _t7, _t10, _t17, _t75, _t18, _t72, _t16, _t76, _t15, _t73, _t74);
     }
 
-    /** Private {@code PXPYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm2}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm2_s4befa327_tail(float _t22, float _t12, float _t19, float _t13, float _t14, float _t20, float _t6, float _t10, float _t21, float _t17, float _t83, float _t18, float _t80, float _t16, float _t84, float _t15, float _t81, float _t82) {
         float _t85 = Math.fma(_t22, _t12, -(_t19 * _t13));
@@ -6821,6 +6820,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t15, _t80, Math.fma(_t16, _t81, -(_t17 * _t82))) * _t154_inv), Math.fma(_t15, _t84, Math.fma(_t18, _t81, -(_t17 * _t93))) * _t154_inv, -(Math.fma(_t15, _t83, Math.fma(_t18, _t82, -(_t16 * _t93))) * _t154_inv));
     }
 
+    /** Private {@code PXPYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm2(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t6 = this.m23 + this.m33;
         float _t15 = this.m03 - this.m33;
@@ -6839,7 +6839,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_general_s6f0685e_arm2_s4befa327_tail(_t22, _t12, _t19, _t13, _t14, _t20, _t6, _t10, _t21, _t17, _t83, _t18, _t80, _t16, _t84, _t15, _t81, _t82);
     }
 
-    /** Private {@code NXPYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm3}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm3_s4befa327_tail(float _t22, float _t12, float _t19, float _t13, float _t14, float _t20, float _t6, float _t10, float _t21, float _t8, float _t83, float _t11, float _t80, float _t5, float _t84, float _t0, float _t81, float _t82) {
         float _t85 = Math.fma(_t22, _t12, -(_t19 * _t13));
@@ -6855,6 +6854,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t80, Math.fma(_t5, _t81, -(_t8 * _t82))) * _t155_inv), Math.fma(_t0, _t84, Math.fma(_t11, _t81, -(_t8 * _t93))) * _t155_inv, -(Math.fma(_t0, _t83, Math.fma(_t11, _t82, -(_t5 * _t93))) * _t155_inv));
     }
 
+    /** Private {@code NXPYNZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm3(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t0 = this.m03 + this.m33;
         float _t5 = this.m01 + this.m31;
@@ -6873,7 +6873,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_general_s6f0685e_arm3_s4befa327_tail(_t22, _t12, _t19, _t13, _t14, _t20, _t6, _t10, _t21, _t8, _t83, _t11, _t80, _t5, _t84, _t0, _t81, _t82);
     }
 
-    /** Private {@code NXNYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm4}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm4_s4befa327_tail(float _t3, float _t23, float _t7, float _t14, float _t1, float _t12, float _t9, float _t13, float _t8, float _t75, float _t11, float _t72, float _t5, float _t76, float _t77, float _t78, float _t79, float _t0) {
         float _t88 = Math.fma(_t3, _t23, -(_t7 * _t14));
@@ -6888,6 +6887,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t78, Math.fma(_t5, _t88, -(_t8 * _t89))) * _t156_inv), Math.fma(_t0, _t79, Math.fma(_t11, _t88, -(_t8 * _t94))) * _t156_inv, -(Math.fma(_t0, _t77, Math.fma(_t11, _t89, -(_t5 * _t94))) * _t156_inv));
     }
 
+    /** Private {@code NXNYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm4(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t0 = this.m03 + this.m33;
         float _t1 = this.m11 + this.m31;
@@ -6907,7 +6907,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_general_s6f0685e_arm4_s4befa327_tail(_t3, _t23, _t7, _t14, _t1, _t12, _t9, _t13, _t8, _t75, _t11, _t72, _t5, _t76, _t77, _t78, _t79, _t0);
     }
 
-    /** Private {@code PXNYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm5}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm5_s4befa327_tail(float _t3, float _t23, float _t7, float _t14, float _t1, float _t12, float _t9, float _t13, float _t17, float _t75, float _t18, float _t72, float _t16, float _t76, float _t77, float _t78, float _t79, float _t15) {
         float _t88 = Math.fma(_t3, _t23, -(_t7 * _t14));
@@ -6922,6 +6921,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t15, _t78, Math.fma(_t16, _t88, -(_t17 * _t89))) * _t157_inv), Math.fma(_t15, _t79, Math.fma(_t18, _t88, -(_t17 * _t94))) * _t157_inv, -(Math.fma(_t15, _t77, Math.fma(_t18, _t89, -(_t16 * _t94))) * _t157_inv));
     }
 
+    /** Private {@code PXNYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm5(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t1 = this.m11 + this.m31;
         float _t3 = this.m12 + this.m32;
@@ -6941,7 +6941,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_general_s6f0685e_arm5_s4befa327_tail(_t3, _t23, _t7, _t14, _t1, _t12, _t9, _t13, _t17, _t75, _t18, _t72, _t16, _t76, _t77, _t78, _t79, _t15);
     }
 
-    /** Private {@code PXPYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm6}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm6_s4befa327_tail(float _t20, float _t23, float _t21, float _t14, float _t19, float _t12, float _t22, float _t13, float _t17, float _t83, float _t18, float _t80, float _t16, float _t84, float _t85, float _t86, float _t87, float _t15) {
         float _t90 = Math.fma(_t20, _t23, -(_t21 * _t14));
@@ -6956,6 +6955,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t15, _t86, Math.fma(_t16, _t90, -(_t17 * _t91))) * _t158_inv), Math.fma(_t15, _t87, Math.fma(_t18, _t90, -(_t17 * _t95))) * _t158_inv, -(Math.fma(_t15, _t85, Math.fma(_t18, _t91, -(_t16 * _t95))) * _t158_inv));
     }
 
+    /** Private {@code PXPYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm6(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t15 = this.m03 - this.m33;
         float _t16 = this.m01 - this.m31;
@@ -6975,7 +6975,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_no_general_s6f0685e_arm6_s4befa327_tail(_t20, _t23, _t21, _t14, _t19, _t12, _t22, _t13, _t17, _t83, _t18, _t80, _t16, _t84, _t85, _t86, _t87, _t15);
     }
 
-    /** Private {@code NXPYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_no_general_s6f0685e_arm7}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm7_s4befa327_tail(float _t20, float _t23, float _t21, float _t14, float _t19, float _t12, float _t22, float _t13, float _t8, float _t83, float _t11, float _t80, float _t5, float _t84, float _t85, float _t86, float _t87, float _t0) {
         float _t90 = Math.fma(_t20, _t23, -(_t21 * _t14));
@@ -6990,6 +6989,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t86, Math.fma(_t5, _t90, -(_t8 * _t91))) * _t159_inv), Math.fma(_t0, _t87, Math.fma(_t11, _t90, -(_t8 * _t95))) * _t159_inv, -(Math.fma(_t0, _t85, Math.fma(_t11, _t91, -(_t5 * _t95))) * _t159_inv));
     }
 
+    /** Private {@code NXPYPZ} arm of {@code frustumCorner_no_general}; reached only through it. */
     private Float3 frustumCorner_no_general_s6f0685e_arm7(float _t2, float _t4, float _t10, float _t12, float _t13, float _t14) {
         float _t0 = this.m03 + this.m33;
         float _t5 = this.m01 + this.m31;
@@ -7358,7 +7358,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_orthogonal_s6f0685e_tail(_t81, corner, _t23, _t25, _t24);
     }
 
-    /** Private {@code NXNYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm0}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm0_s37367cb9_tail(float _t6, float _t4, float _t8, float _t1, float _t9, float _t10, float _t2, float _t5, float _t71, float _t7, float _t68, float _t3, float _t72, float _t0, float _t69, float _t70) {
         float _t78 = Math.fma(this.m23, _t6, -(this.m20 * _t4));
@@ -7374,6 +7373,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t68, Math.fma(_t3, _t69, -(_t5 * _t70))) * _t148_inv), Math.fma(_t0, _t72, Math.fma(_t7, _t69, -(_t5 * _t78))) * _t148_inv, -(Math.fma(_t0, _t71, Math.fma(_t7, _t70, -(_t3 * _t78))) * _t148_inv));
     }
 
+    /** Private {@code NXNYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm0(float _t8, float _t9, float _t10) {
         float _t0 = this.m03 + this.m33;
         float _t1 = this.m11 + this.m31;
@@ -7391,7 +7391,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_general_s6f0685e_arm0_s37367cb9_tail(_t6, _t4, _t8, _t1, _t9, _t10, _t2, _t5, _t71, _t7, _t68, _t3, _t72, _t0, _t69, _t70);
     }
 
-    /** Private {@code PXNYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm1}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm1_s37367cb9_tail(float _t6, float _t4, float _t8, float _t1, float _t9, float _t10, float _t2, float _t13, float _t71, float _t14, float _t68, float _t12, float _t72, float _t11, float _t69, float _t70) {
         float _t78 = Math.fma(this.m23, _t6, -(this.m20 * _t4));
@@ -7407,6 +7406,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t11, _t68, Math.fma(_t12, _t69, -(_t13 * _t70))) * _t149_inv), Math.fma(_t11, _t72, Math.fma(_t14, _t69, -(_t13 * _t78))) * _t149_inv, -(Math.fma(_t11, _t71, Math.fma(_t14, _t70, -(_t12 * _t78))) * _t149_inv));
     }
 
+    /** Private {@code PXNYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm1(float _t8, float _t9, float _t10) {
         float _t1 = this.m11 + this.m31;
         float _t2 = this.m12 + this.m32;
@@ -7424,7 +7424,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_general_s6f0685e_arm1_s37367cb9_tail(_t6, _t4, _t8, _t1, _t9, _t10, _t2, _t13, _t71, _t14, _t68, _t12, _t72, _t11, _t69, _t70);
     }
 
-    /** Private {@code PXPYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm2}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm2_s37367cb9_tail(float _t18, float _t17, float _t8, float _t15, float _t9, float _t10, float _t16, float _t13, float _t76, float _t14, float _t73, float _t12, float _t77, float _t11, float _t74, float _t75) {
         float _t79 = Math.fma(this.m23, _t18, -(this.m20 * _t17));
@@ -7440,6 +7439,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t11, _t73, Math.fma(_t12, _t74, -(_t13 * _t75))) * _t150_inv), Math.fma(_t11, _t77, Math.fma(_t14, _t74, -(_t13 * _t79))) * _t150_inv, -(Math.fma(_t11, _t76, Math.fma(_t14, _t75, -(_t12 * _t79))) * _t150_inv));
     }
 
+    /** Private {@code PXPYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm2(float _t8, float _t9, float _t10) {
         float _t11 = this.m03 - this.m33;
         float _t12 = this.m01 - this.m31;
@@ -7457,7 +7457,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_general_s6f0685e_arm2_s37367cb9_tail(_t18, _t17, _t8, _t15, _t9, _t10, _t16, _t13, _t76, _t14, _t73, _t12, _t77, _t11, _t74, _t75);
     }
 
-    /** Private {@code NXPYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm3}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm3_s37367cb9_tail(float _t18, float _t17, float _t8, float _t15, float _t9, float _t10, float _t16, float _t5, float _t76, float _t7, float _t73, float _t3, float _t77, float _t0, float _t74, float _t75) {
         float _t79 = Math.fma(this.m23, _t18, -(this.m20 * _t17));
@@ -7473,6 +7472,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t73, Math.fma(_t3, _t74, -(_t5 * _t75))) * _t151_inv), Math.fma(_t0, _t77, Math.fma(_t7, _t74, -(_t5 * _t79))) * _t151_inv, -(Math.fma(_t0, _t76, Math.fma(_t7, _t75, -(_t3 * _t79))) * _t151_inv));
     }
 
+    /** Private {@code NXPYNZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm3(float _t8, float _t9, float _t10) {
         float _t0 = this.m03 + this.m33;
         float _t3 = this.m01 + this.m31;
@@ -7490,7 +7490,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_general_s6f0685e_arm3_s37367cb9_tail(_t18, _t17, _t8, _t15, _t9, _t10, _t16, _t5, _t76, _t7, _t73, _t3, _t77, _t0, _t74, _t75);
     }
 
-    /** Private {@code NXNYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm4}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm4_s37367cb9_tail(float _t6, float _t10, float _t2, float _t9, float _t19, float _t4, float _t1, float _t8, float _t5, float _t71, float _t7, float _t68, float _t3, float _t72, float _t81, float _t82, float _t0) {
         float _t83 = Math.fma(_t6, _t10, -(_t2 * _t9));
@@ -7506,6 +7505,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t82, Math.fma(_t3, _t90, -(_t5 * _t91))) * _t152_inv), Math.fma(_t0, _t83, Math.fma(_t7, _t90, -(_t5 * _t94))) * _t152_inv, -(Math.fma(_t0, _t81, Math.fma(_t7, _t91, -(_t3 * _t94))) * _t152_inv));
     }
 
+    /** Private {@code NXNYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm4(float _t8, float _t9, float _t10) {
         float _t0 = this.m03 + this.m33;
         float _t1 = this.m11 + this.m31;
@@ -7524,7 +7524,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_general_s6f0685e_arm4_s37367cb9_tail(_t6, _t10, _t2, _t9, _t19, _t4, _t1, _t8, _t5, _t71, _t7, _t68, _t3, _t72, _t81, _t82, _t0);
     }
 
-    /** Private {@code PXNYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm5}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm5_s37367cb9_tail(float _t6, float _t10, float _t2, float _t9, float _t19, float _t4, float _t1, float _t8, float _t13, float _t71, float _t14, float _t68, float _t12, float _t72, float _t81, float _t82, float _t11) {
         float _t83 = Math.fma(_t6, _t10, -(_t2 * _t9));
@@ -7540,6 +7539,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t11, _t82, Math.fma(_t12, _t90, -(_t13 * _t91))) * _t153_inv), Math.fma(_t11, _t83, Math.fma(_t14, _t90, -(_t13 * _t94))) * _t153_inv, -(Math.fma(_t11, _t81, Math.fma(_t14, _t91, -(_t12 * _t94))) * _t153_inv));
     }
 
+    /** Private {@code PXNYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm5(float _t8, float _t9, float _t10) {
         float _t1 = this.m11 + this.m31;
         float _t2 = this.m12 + this.m32;
@@ -7558,7 +7558,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_general_s6f0685e_arm5_s37367cb9_tail(_t6, _t10, _t2, _t9, _t19, _t4, _t1, _t8, _t13, _t71, _t14, _t68, _t12, _t72, _t81, _t82, _t11);
     }
 
-    /** Private {@code PXPYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm6}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm6_s37367cb9_tail(float _t18, float _t10, float _t16, float _t9, float _t19, float _t17, float _t15, float _t8, float _t13, float _t76, float _t14, float _t73, float _t12, float _t77, float _t86, float _t87, float _t11) {
         float _t88 = Math.fma(_t18, _t10, -(_t16 * _t9));
@@ -7574,6 +7573,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t11, _t87, Math.fma(_t12, _t92, -(_t13 * _t93))) * _t154_inv), Math.fma(_t11, _t88, Math.fma(_t14, _t92, -(_t13 * _t95))) * _t154_inv, -(Math.fma(_t11, _t86, Math.fma(_t14, _t93, -(_t12 * _t95))) * _t154_inv));
     }
 
+    /** Private {@code PXPYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm6(float _t8, float _t9, float _t10) {
         float _t11 = this.m03 - this.m33;
         float _t12 = this.m01 - this.m31;
@@ -7592,7 +7592,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return frustumCorner_zo_general_s6f0685e_arm6_s37367cb9_tail(_t18, _t10, _t16, _t9, _t19, _t17, _t15, _t8, _t13, _t76, _t14, _t73, _t12, _t77, _t86, _t87, _t11);
     }
 
-    /** Private {@code NXPYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     /** Private tail of {@code frustumCorner_zo_general_s6f0685e_arm7}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm7_s37367cb9_tail(float _t18, float _t10, float _t16, float _t9, float _t19, float _t17, float _t15, float _t8, float _t5, float _t76, float _t7, float _t73, float _t3, float _t77, float _t86, float _t87, float _t0) {
         float _t88 = Math.fma(_t18, _t10, -(_t16 * _t9));
@@ -7608,6 +7607,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float3(-(Math.fma(_t0, _t87, Math.fma(_t3, _t92, -(_t5 * _t93))) * _t155_inv), Math.fma(_t0, _t88, Math.fma(_t7, _t92, -(_t5 * _t95))) * _t155_inv, -(Math.fma(_t0, _t86, Math.fma(_t7, _t93, -(_t3 * _t95))) * _t155_inv));
     }
 
+    /** Private {@code NXPYPZ} arm of {@code frustumCorner_zo_general}; reached only through it. */
     private Float3 frustumCorner_zo_general_s6f0685e_arm7(float _t8, float _t9, float _t10) {
         float _t0 = this.m03 + this.m33;
         float _t3 = this.m01 + this.m31;
@@ -11551,6 +11551,104 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
 
 
     /**
+     * Create a transformation that scales and rotates about the pivot point {@code pivot} and then
+     * translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param pivot the pivot point
+     * @return the resulting matrix
+     */
+    public static Float4x4 composeTRSAround(Float3 translation, FloatQuat rotation, Float3 scale, Float3 pivot) {
+        return composeTRSAround(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), pivot.x(), pivot.y(), pivot.z());
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s15e02e0c_tail}; reached only through it. */
+    private static Float4 composeTRSAround_s15e02e0c_tail_s45539607_c0(float _t33, float _t28, float _t32) {
+        return new Float4(_t33, _t28, _t32, 0.0f);
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s15e02e0c_tail}; reached only through it. */
+    private static Float4 composeTRSAround_s15e02e0c_tail_s45539607_c1(float _t30, float _t34, float _t29) {
+        return new Float4(_t30, _t34, _t29, 0.0f);
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s15e02e0c_tail}; reached only through it. */
+    private static Float4 composeTRSAround_s15e02e0c_tail_s45539607_c2(float _t27, float _t31, float _t35) {
+        return new Float4(_t27, _t31, _t35, 0.0f);
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s15e02e0c_tail}; reached only through it. */
+    private static Float4 composeTRSAround_s15e02e0c_tail_s45539607_c3(float _t0, float _t33, float _t1, float _t30, float _t2, float _t27, float pivotX, float translationX, float _t28, float _t34, float _t31, float pivotY, float translationY, float _t32, float _t29, float _t35, float pivotZ, float translationZ) {
+        return new Float4(Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX))), Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY))), Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ))), 1.0f);
+    }
+
+    /** Private tail of {@code composeTRSAround}; reached only through it. */
+    private static Float4x4 composeTRSAround_s15e02e0c_tail(float rotationX, float rotationY, float _t5, float scaleZ, float _t33, float _t30, float _t27, float _t0, float _t1, float _t2, float pivotX, float translationX, float _t28, float _t34, float _t31, float pivotY, float translationY, float _t32, float _t29, float pivotZ, float translationZ, int _props) {
+        float _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        return new Float4x4(composeTRSAround_s15e02e0c_tail_s45539607_c0(_t33, _t28, _t32), composeTRSAround_s15e02e0c_tail_s45539607_c1(_t30, _t34, _t29), composeTRSAround_s15e02e0c_tail_s45539607_c2(_t27, _t31, _t35), composeTRSAround_s15e02e0c_tail_s45539607_c3(_t0, _t33, _t1, _t30, _t2, _t27, pivotX, translationX, _t28, _t34, _t31, pivotY, translationY, _t32, _t29, _t35, pivotZ, translationZ), _props);
+    }
+
+
+    /**
+     * Create a transformation that scales and rotates about the pivot point ({@code pivotX},
+     * {@code pivotY}, {@code pivotZ}) and then translates by ({@code translationX},
+     * {@code translationY}, {@code translationZ}), i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return the resulting matrix
+     */
+    public static Float4x4 composeTRSAround(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        float _t0 = -pivotX;
+        float _t1 = -pivotY;
+        float _t2 = -pivotZ;
+        float _t3 = scaleX + scaleX;
+        float _t4 = scaleY + scaleY;
+        float _t5 = scaleZ + scaleZ;
+        float _t6 = rotationZ * rotationZ;
+        float _t7 = rotationZ * rotationW;
+        float _t8 = rotationY * rotationW;
+        float _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        float _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        float _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        float _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        float _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        float _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        float _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        return composeTRSAround_s15e02e0c_tail(rotationX, rotationY, _t5, scaleZ, _t33, _t30, _t27, _t0, _t1, _t2, pivotX, translationX, _t28, _t34, _t31, pivotY, translationY, _t32, _t29, pivotZ, translationZ, Joml.BIT_AFFINE);
+    }
+
+
+    /**
      * Create a transformation composed of the given translation, rotation and scale (applied in
      * scale-rotation-translation order), post-multiplied by the given matrix.
      *
@@ -11564,7 +11662,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
-    /** Private tail of {@code composeTRSMul}; reached only through it. */
     /** Private per-column body of {@code composeTRSMul_s30bb8954_tail}; reached only through it. */
     private static Float4 composeTRSMul_s30bb8954_tail_s21d21aa7_c0(Float4x4 m, float translationX, float _t24, float _t30, float _t27, float translationY, float _t28, float _t25, float _t31, float translationZ, float _t32, float _t29, float _t26) {
         return new Float4(Math.fma(m.m30(), translationX, Math.fma(m.m20(), _t24, Math.fma(m.m00(), _t30, m.m10() * _t27))), Math.fma(m.m30(), translationY, Math.fma(m.m20(), _t28, Math.fma(m.m00(), _t25, m.m10() * _t31))), Math.fma(m.m30(), translationZ, Math.fma(m.m20(), _t32, Math.fma(m.m00(), _t29, m.m10() * _t26))), m.m30());
@@ -11585,6 +11682,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(m.m33(), translationX, Math.fma(m.m23(), _t24, Math.fma(m.m03(), _t30, m.m13() * _t27))), Math.fma(m.m33(), translationY, Math.fma(m.m23(), _t28, Math.fma(m.m03(), _t25, m.m13() * _t31))), Math.fma(m.m33(), translationZ, Math.fma(m.m23(), _t32, Math.fma(m.m03(), _t29, m.m13() * _t26))), m.m33());
     }
 
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
     private static Float4x4 composeTRSMul_s30bb8954_tail(float rotationX, float rotationY, float _t0, float scaleZ, Float4x4 m, float translationX, float _t24, float _t30, float _t27, float translationY, float _t28, float _t25, float _t31, float translationZ, float _t29, float _t26, int _props) {
         float _t32 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t0, scaleZ);
         return new Float4x4(composeTRSMul_s30bb8954_tail_s21d21aa7_c0(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), composeTRSMul_s30bb8954_tail_s21d21aa7_c1(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), composeTRSMul_s30bb8954_tail_s21d21aa7_c2(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), composeTRSMul_s30bb8954_tail_s21d21aa7_c3(m, translationX, _t24, _t30, _t27, translationY, _t28, _t25, _t31, translationZ, _t32, _t29, _t26), _props);
@@ -12700,7 +12798,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAlong_degenerate_identity}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_identity_s524747ee_tail}; reached only through it. */
     private Float4 lookAlong_degenerate_identity_s524747ee_tail_s1d11648c_c0(float _t41, float _t42, float _t40) {
         return new Float4(_t41, _t42, _t40, 0.0f);
@@ -12721,6 +12818,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(0.0f, 0.0f, 0.0f, 1.0f);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_identity}; reached only through it. */
     private Float4x4 lookAlong_degenerate_identity_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t10, float _t12, float _t11, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -12781,7 +12879,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAlong_degenerate_identity_s524747ee_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAlong_degenerate_translation}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_translation_s524747ee_tail}; reached only through it. */
     private Float4 lookAlong_degenerate_translation_s524747ee_tail_s1d11648c_c0(float _t41, float _t42, float _t40) {
         return new Float4(_t41, _t42, _t40, 0.0f);
@@ -12802,6 +12899,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(this.m03, this.m13, this.m23, 1.0f);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_translation}; reached only through it. */
     private Float4x4 lookAlong_degenerate_translation_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t10, float _t12, float _t11, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -12862,7 +12960,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAlong_degenerate_translation_s524747ee_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAlong_degenerate_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_orthogonal_s524747ee_tail}; reached only through it. */
     private Float4 lookAlong_degenerate_orthogonal_s524747ee_tail_s51adb80c_c0(float _t40, float _t41, float _t42) {
         return new Float4(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)), 0.0f);
@@ -12883,6 +12980,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(this.m03, this.m13, this.m23, 1.0f);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_orthogonal}; reached only through it. */
     private Float4x4 lookAlong_degenerate_orthogonal_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t12, float _t11, float _t10, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -12946,7 +13044,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAlong_degenerate_orthogonal_s524747ee_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t12, _t11, _t10, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAlong_degenerate_affine}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_affine_s524747ee_tail}; reached only through it. */
     private Float4 lookAlong_degenerate_affine_s524747ee_tail_s51adb80c_c0(float _t40, float _t41, float _t42) {
         return new Float4(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)), 0.0f);
@@ -12967,6 +13064,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(this.m03, this.m13, this.m23, 1.0f);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_affine}; reached only through it. */
     private Float4x4 lookAlong_degenerate_affine_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t12, float _t11, float _t10, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -13030,7 +13128,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAlong_degenerate_affine_s524747ee_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t12, _t11, _t10, Joml.BIT_AFFINE);
     }
 
-    /** Private tail of {@code lookAlong_degenerate_general}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_general_s524747ee_tail}; reached only through it. */
     private Float4 lookAlong_degenerate_general_s524747ee_tail_s51adb80c_c0(float _t40, float _t41, float _t42) {
         return new Float4(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)), Math.fma(this.m32, _t40, Math.fma(this.m30, _t41, this.m31 * _t42)));
@@ -13051,6 +13148,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(this.m03, this.m13, this.m23, this.m33);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_general}; reached only through it. */
     private Float4x4 lookAlong_degenerate_general_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t12, float _t11, float _t10, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -13186,7 +13284,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4x4(lookAt_lh_identity_s185c1ac6_c0(_t24, _t33, _t9), lookAt_lh_identity_s185c1ac6_c1(_t25, _t34, _t8), lookAt_lh_identity_s185c1ac6_c2(_t26, _t35, _t7), lookAt_lh_identity_s185c1ac6_c3(eyeZ, _t26, eyeX, _t24, eyeY, _t25, _t35, _t33, _t34, _t7, _t9, _t8), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_translation_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_lh_translation_s185c1ac6_tail_s62036587_c0(float _t27, float _t36, float _t12) {
         return new Float4(_t27, _t36, _t12, 0.0f);
@@ -13207,6 +13304,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(_t0, _t27, Math.fma(_t1, _t28, Math.fma(_t2, _t29, this.m03))), Math.fma(_t0, _t36, Math.fma(_t1, _t37, Math.fma(_t2, _t38, this.m13))), Math.fma(_t0, _t12, Math.fma(_t1, _t11, Math.fma(_t2, _t10, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_lh_translation}; reached only through it. */
     private Float4x4 lookAt_lh_translation_s185c1ac6_tail(float _t12, float _t28, float _t11, float _t27, float _t29, float _t0, float _t1, float _t2, float _t36, float _t37, float _t10, int _props) {
         float _t38 = Math.fma(_t12, _t28, -(_t11 * _t27));
         return new Float4x4(lookAt_lh_translation_s185c1ac6_tail_s62036587_c0(_t27, _t36, _t12), lookAt_lh_translation_s185c1ac6_tail_s62036587_c1(_t28, _t37, _t11), lookAt_lh_translation_s185c1ac6_tail_s62036587_c2(_t29, _t38, _t10), lookAt_lh_translation_s185c1ac6_tail_s62036587_c3(_t0, _t27, _t1, _t28, _t2, _t29, _t36, _t37, _t38, _t12, _t11, _t10), _props);
@@ -13242,7 +13340,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_translation_s185c1ac6_tail(_t12, _t28, _t11, _t27, _t29, _t0, _t1, _t2, _t36, _t37, _t10, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_orthogonal_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_lh_orthogonal_s185c1ac6_tail_s5ed3064d_c0(float _t7, float _t27, float _t38) {
         return new Float4(Math.fma(this.m02, _t7, Math.fma(this.m00, _t27, this.m01 * _t38)), Math.fma(this.m12, _t7, Math.fma(this.m10, _t27, this.m11 * _t38)), Math.fma(this.m22, _t7, Math.fma(this.m20, _t27, this.m21 * _t38)), 0.0f);
@@ -13263,6 +13360,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t42, Math.fma(-this.m01, _t44, Math.fma(-this.m02, _t21, this.m03))), Math.fma(-this.m10, _t42, Math.fma(-this.m11, _t44, Math.fma(-this.m12, _t21, this.m13))), Math.fma(-this.m20, _t42, Math.fma(-this.m21, _t44, Math.fma(-this.m22, _t21, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
     private Float4x4 lookAt_lh_orthogonal_s185c1ac6_tail(float eyeZ, float _t40, float eyeX, float _t38, float eyeY, float _t39, float _t7, float _t27, float _t9, float _t29, float _t8, float _t28, float _t42, float _t21, int _props) {
         float _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
         return new Float4x4(lookAt_lh_orthogonal_s185c1ac6_tail_s5ed3064d_c0(_t7, _t27, _t38), lookAt_lh_orthogonal_s185c1ac6_tail_s5ed3064d_c1(_t9, _t29, _t39), lookAt_lh_orthogonal_s185c1ac6_tail_s5ed3064d_c2(_t8, _t28, _t40), lookAt_lh_orthogonal_s185c1ac6_tail_s5ed3064d_c3(_t42, _t44, _t21), _props);
@@ -13298,7 +13396,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_orthogonal_s185c1ac6_tail(eyeZ, _t40, eyeX, _t38, eyeY, _t39, _t7, _t27, _t9, _t29, _t8, _t28, _t42, _t21, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_affine}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_affine_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_lh_affine_s185c1ac6_tail_s5ed3064d_c0(float _t7, float _t27, float _t38) {
         return new Float4(Math.fma(this.m02, _t7, Math.fma(this.m00, _t27, this.m01 * _t38)), Math.fma(this.m12, _t7, Math.fma(this.m10, _t27, this.m11 * _t38)), Math.fma(this.m22, _t7, Math.fma(this.m20, _t27, this.m21 * _t38)), 0.0f);
@@ -13319,6 +13416,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t42, Math.fma(-this.m01, _t44, Math.fma(-this.m02, _t21, this.m03))), Math.fma(-this.m10, _t42, Math.fma(-this.m11, _t44, Math.fma(-this.m12, _t21, this.m13))), Math.fma(-this.m20, _t42, Math.fma(-this.m21, _t44, Math.fma(-this.m22, _t21, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_lh_affine}; reached only through it. */
     private Float4x4 lookAt_lh_affine_s185c1ac6_tail(float eyeZ, float _t40, float eyeX, float _t38, float eyeY, float _t39, float _t7, float _t27, float _t9, float _t29, float _t8, float _t28, float _t42, float _t21, int _props) {
         float _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
         return new Float4x4(lookAt_lh_affine_s185c1ac6_tail_s5ed3064d_c0(_t7, _t27, _t38), lookAt_lh_affine_s185c1ac6_tail_s5ed3064d_c1(_t9, _t29, _t39), lookAt_lh_affine_s185c1ac6_tail_s5ed3064d_c2(_t8, _t28, _t40), lookAt_lh_affine_s185c1ac6_tail_s5ed3064d_c3(_t42, _t44, _t21), _props);
@@ -13354,7 +13452,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_affine_s185c1ac6_tail(eyeZ, _t40, eyeX, _t38, eyeY, _t39, _t7, _t27, _t9, _t29, _t8, _t28, _t42, _t21, Joml.BIT_AFFINE);
     }
 
-    /** Private tail of {@code lookAt_lh_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_general_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_lh_general_s185c1ac6_tail_s5ed3064d_c0(float _t7, float _t27, float _t38) {
         return new Float4(Math.fma(this.m02, _t7, Math.fma(this.m00, _t27, this.m01 * _t38)), Math.fma(this.m12, _t7, Math.fma(this.m10, _t27, this.m11 * _t38)), Math.fma(this.m22, _t7, Math.fma(this.m20, _t27, this.m21 * _t38)), Math.fma(this.m32, _t7, Math.fma(this.m30, _t27, this.m31 * _t38)));
@@ -13375,6 +13472,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t42, Math.fma(-this.m01, _t44, Math.fma(-this.m02, _t21, this.m03))), Math.fma(-this.m10, _t42, Math.fma(-this.m11, _t44, Math.fma(-this.m12, _t21, this.m13))), Math.fma(-this.m20, _t42, Math.fma(-this.m21, _t44, Math.fma(-this.m22, _t21, this.m23))), Math.fma(-this.m30, _t42, Math.fma(-this.m31, _t44, Math.fma(-this.m32, _t21, this.m33))));
     }
 
+    /** Private tail of {@code lookAt_lh_general}; reached only through it. */
     private Float4x4 lookAt_lh_general_s185c1ac6_tail(float eyeZ, float _t40, float eyeX, float _t38, float eyeY, float _t39, float _t7, float _t27, float _t9, float _t29, float _t8, float _t28, float _t42, float _t21, int _props) {
         float _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
         return new Float4x4(lookAt_lh_general_s185c1ac6_tail_s5ed3064d_c0(_t7, _t27, _t38), lookAt_lh_general_s185c1ac6_tail_s5ed3064d_c1(_t9, _t29, _t39), lookAt_lh_general_s185c1ac6_tail_s5ed3064d_c2(_t8, _t28, _t40), lookAt_lh_general_s185c1ac6_tail_s5ed3064d_c3(_t42, _t44, _t21), _props);
@@ -13434,7 +13532,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_identity}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_identity_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_lh_degenerate_identity_s185c1ac6_tail_s370f4a2d_c0(float _t44, float _t53, float _t14) {
         return new Float4(_t44, _t53, _t14, 0.0f);
@@ -13455,6 +13552,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), -Math.fma(eyeZ, _t15, Math.fma(eyeX, _t14, eyeY * _t13)), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_identity}; reached only through it. */
     private Float4x4 lookAt_lh_degenerate_identity_s185c1ac6_tail(float _t16, float _t17, float _t13, float _t14, float _t15, float _t26, float _t27, float _t28, float eyeZ, float eyeX, float eyeY, int _props) {
         float _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -13521,7 +13619,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_degenerate_identity_s185c1ac6_tail(_t16, _t17, _t13, _t14, _t15, _t26, _t27, _t28, eyeZ, eyeX, eyeY, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_translation_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_lh_degenerate_translation_s185c1ac6_tail_s65c6ef0c_c0(float _t47, float _t56, float _t17) {
         return new Float4(_t47, _t56, _t17, 0.0f);
@@ -13542,6 +13639,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(_t0, _t47, Math.fma(_t1, _t48, Math.fma(_t2, _t46, this.m03))), Math.fma(_t0, _t56, Math.fma(_t1, _t55, Math.fma(_t2, _t57, this.m13))), Math.fma(_t0, _t17, Math.fma(_t1, _t16, Math.fma(_t2, _t18, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_translation}; reached only through it. */
     private Float4x4 lookAt_lh_degenerate_translation_s185c1ac6_tail(float _t19, float _t20, float _t16, float _t17, float _t18, float _t29, float _t30, float _t31, float _t0, float _t1, float _t2, int _props) {
         float _t32, _t33, _t34;
         if (_t19 > _t20) {
@@ -13643,7 +13741,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_degenerate_orthogonal_s185c1ac6_tail2(eyeZ, _t46, eyeX, _t47, eyeY, _t48, _t60, _t59, _t57, _t13, _t14, _t15, _t33, _props);
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_orthogonal_s185c1ac6_tail2}; reached only through it. */
     private Float4 lookAt_lh_degenerate_orthogonal_s185c1ac6_tail2_s44dcffd6_c0(float _t13, float _t47, float _t59) {
         return new Float4(Math.fma(this.m02, _t13, Math.fma(this.m00, _t47, this.m01 * _t59)), Math.fma(this.m12, _t13, Math.fma(this.m10, _t47, this.m11 * _t59)), Math.fma(this.m22, _t13, Math.fma(this.m20, _t47, this.m21 * _t59)), 0.0f);
@@ -13664,6 +13761,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t61, Math.fma(-this.m01, _t63, Math.fma(-this.m02, _t33, this.m03))), Math.fma(-this.m10, _t61, Math.fma(-this.m11, _t63, Math.fma(-this.m12, _t33, this.m13))), Math.fma(-this.m20, _t61, Math.fma(-this.m21, _t63, Math.fma(-this.m22, _t33, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_orthogonal}; reached only through it. */
     private Float4x4 lookAt_lh_degenerate_orthogonal_s185c1ac6_tail2(float eyeZ, float _t46, float eyeX, float _t47, float eyeY, float _t48, float _t60, float _t59, float _t57, float _t13, float _t14, float _t15, float _t33, int _props) {
         float _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
         float _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
@@ -13738,7 +13836,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_degenerate_affine_s185c1ac6_tail2(eyeZ, _t46, eyeX, _t47, eyeY, _t48, _t60, _t59, _t57, _t13, _t14, _t15, _t33, _props);
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_affine}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_affine_s185c1ac6_tail2}; reached only through it. */
     private Float4 lookAt_lh_degenerate_affine_s185c1ac6_tail2_s44dcffd6_c0(float _t13, float _t47, float _t59) {
         return new Float4(Math.fma(this.m02, _t13, Math.fma(this.m00, _t47, this.m01 * _t59)), Math.fma(this.m12, _t13, Math.fma(this.m10, _t47, this.m11 * _t59)), Math.fma(this.m22, _t13, Math.fma(this.m20, _t47, this.m21 * _t59)), 0.0f);
@@ -13759,6 +13856,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t61, Math.fma(-this.m01, _t63, Math.fma(-this.m02, _t33, this.m03))), Math.fma(-this.m10, _t61, Math.fma(-this.m11, _t63, Math.fma(-this.m12, _t33, this.m13))), Math.fma(-this.m20, _t61, Math.fma(-this.m21, _t63, Math.fma(-this.m22, _t33, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_affine}; reached only through it. */
     private Float4x4 lookAt_lh_degenerate_affine_s185c1ac6_tail2(float eyeZ, float _t46, float eyeX, float _t47, float eyeY, float _t48, float _t60, float _t59, float _t57, float _t13, float _t14, float _t15, float _t33, int _props) {
         float _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
         float _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
@@ -13833,7 +13931,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_lh_degenerate_general_s185c1ac6_tail2(eyeZ, _t46, eyeX, _t47, eyeY, _t48, _t60, _t59, _t57, _t13, _t14, _t15, _t33, _props);
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_general_s185c1ac6_tail2}; reached only through it. */
     private Float4 lookAt_lh_degenerate_general_s185c1ac6_tail2_s44dcffd6_c0(float _t13, float _t47, float _t59) {
         return new Float4(Math.fma(this.m02, _t13, Math.fma(this.m00, _t47, this.m01 * _t59)), Math.fma(this.m12, _t13, Math.fma(this.m10, _t47, this.m11 * _t59)), Math.fma(this.m22, _t13, Math.fma(this.m20, _t47, this.m21 * _t59)), Math.fma(this.m32, _t13, Math.fma(this.m30, _t47, this.m31 * _t59)));
@@ -13854,6 +13951,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t61, Math.fma(-this.m01, _t63, Math.fma(-this.m02, _t33, this.m03))), Math.fma(-this.m10, _t61, Math.fma(-this.m11, _t63, Math.fma(-this.m12, _t33, this.m13))), Math.fma(-this.m20, _t61, Math.fma(-this.m21, _t63, Math.fma(-this.m22, _t33, this.m23))), Math.fma(-this.m30, _t61, Math.fma(-this.m31, _t63, Math.fma(-this.m32, _t33, this.m33))));
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_general}; reached only through it. */
     private Float4x4 lookAt_lh_degenerate_general_s185c1ac6_tail2(float eyeZ, float _t46, float eyeX, float _t47, float eyeY, float _t48, float _t60, float _t59, float _t57, float _t13, float _t14, float _t15, float _t33, int _props) {
         float _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
         float _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
@@ -13968,7 +14066,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4x4(lookAt_rh_identity_s185c1ac6_c0(_t24, _t33, _t9), lookAt_rh_identity_s185c1ac6_c1(_t25, _t34, _t7), lookAt_rh_identity_s185c1ac6_c2(_t26, _t35, _t8), lookAt_rh_identity_s185c1ac6_c3(eyeZ, _t26, eyeX, _t24, eyeY, _t25, _t35, _t33, _t34, _t8, _t9, _t7), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_translation_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_rh_translation_s185c1ac6_tail_s652c0369_c0(float _t27, float _t36, float _t12) {
         return new Float4(_t27, _t36, -_t12, 0.0f);
@@ -13989,6 +14086,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(_t0, _t27, Math.fma(_t1, _t28, Math.fma(_t2, _t29, this.m03))), Math.fma(_t0, _t36, Math.fma(_t1, _t37, Math.fma(_t2, _t38, this.m13))), Math.fma(eyeX, _t12, Math.fma(eyeY, _t10, Math.fma(eyeZ, _t11, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_rh_translation}; reached only through it. */
     private Float4x4 lookAt_rh_translation_s185c1ac6_tail(float _t10, float _t27, float _t12, float _t28, float _t29, float _t0, float _t1, float _t2, float _t36, float _t37, float _t11, float eyeX, float eyeY, float eyeZ, int _props) {
         float _t38 = Math.fma(_t10, _t27, -(_t12 * _t28));
         return new Float4x4(lookAt_rh_translation_s185c1ac6_tail_s652c0369_c0(_t27, _t36, _t12), lookAt_rh_translation_s185c1ac6_tail_s652c0369_c1(_t28, _t37, _t10), lookAt_rh_translation_s185c1ac6_tail_s652c0369_c2(_t29, _t38, _t11), lookAt_rh_translation_s185c1ac6_tail_s652c0369_c3(_t0, _t27, _t1, _t28, _t2, _t29, _t36, _t37, _t38, eyeX, _t12, eyeY, _t10, eyeZ, _t11), _props);
@@ -14024,7 +14122,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_translation_s185c1ac6_tail(_t10, _t27, _t12, _t28, _t29, _t0, _t1, _t2, _t36, _t37, _t11, eyeX, eyeY, eyeZ, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_orthogonal_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_rh_orthogonal_s185c1ac6_tail_scc67d02_c0(float _t0, float _t10, float _t30, float _t41, float _t1, float _t2) {
         return new Float4(Math.fma(_t0, _t10, Math.fma(this.m00, _t30, this.m01 * _t41)), Math.fma(_t1, _t10, Math.fma(this.m10, _t30, this.m11 * _t41)), Math.fma(_t2, _t10, Math.fma(this.m20, _t30, this.m21 * _t41)), 0.0f);
@@ -14045,6 +14142,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t45, Math.fma(-this.m01, _t47, Math.fma(this.m02, _t24, this.m03))), Math.fma(-this.m10, _t45, Math.fma(-this.m11, _t47, Math.fma(this.m12, _t24, this.m13))), Math.fma(-this.m20, _t45, Math.fma(-this.m21, _t47, Math.fma(this.m22, _t24, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
     private Float4x4 lookAt_rh_orthogonal_s185c1ac6_tail(float eyeZ, float _t32, float eyeX, float _t30, float eyeY, float _t31, float _t43, float _t41, float _t42, float _t0, float _t10, float _t11, float _t12, float _t24, float _t1, float _t2, int _props) {
         float _t45 = Math.fma(eyeZ, _t32, Math.fma(eyeX, _t30, eyeY * _t31));
         float _t47 = Math.fma(eyeZ, _t43, Math.fma(eyeX, _t41, eyeY * _t42));
@@ -14083,7 +14181,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_orthogonal_s185c1ac6_tail(eyeZ, _t32, eyeX, _t30, eyeY, _t31, _t43, _t41, _t42, _t0, _t10, _t11, _t12, _t24, _t1, _t2, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_affine}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_affine_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_rh_affine_s185c1ac6_tail_scc67d02_c0(float _t0, float _t10, float _t30, float _t41, float _t1, float _t2) {
         return new Float4(Math.fma(_t0, _t10, Math.fma(this.m00, _t30, this.m01 * _t41)), Math.fma(_t1, _t10, Math.fma(this.m10, _t30, this.m11 * _t41)), Math.fma(_t2, _t10, Math.fma(this.m20, _t30, this.m21 * _t41)), 0.0f);
@@ -14104,6 +14201,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t45, Math.fma(-this.m01, _t47, Math.fma(this.m02, _t24, this.m03))), Math.fma(-this.m10, _t45, Math.fma(-this.m11, _t47, Math.fma(this.m12, _t24, this.m13))), Math.fma(-this.m20, _t45, Math.fma(-this.m21, _t47, Math.fma(this.m22, _t24, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_rh_affine}; reached only through it. */
     private Float4x4 lookAt_rh_affine_s185c1ac6_tail(float eyeZ, float _t32, float eyeX, float _t30, float eyeY, float _t31, float _t43, float _t41, float _t42, float _t0, float _t10, float _t11, float _t12, float _t24, float _t1, float _t2, int _props) {
         float _t45 = Math.fma(eyeZ, _t32, Math.fma(eyeX, _t30, eyeY * _t31));
         float _t47 = Math.fma(eyeZ, _t43, Math.fma(eyeX, _t41, eyeY * _t42));
@@ -14142,7 +14240,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_affine_s185c1ac6_tail(eyeZ, _t32, eyeX, _t30, eyeY, _t31, _t43, _t41, _t42, _t0, _t10, _t11, _t12, _t24, _t1, _t2, Joml.BIT_AFFINE);
     }
 
-    /** Private tail of {@code lookAt_rh_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_general_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_rh_general_s185c1ac6_tail_sf92c7fb_c0(float _t0, float _t11, float _t31, float _t42, float _t1, float _t2, float _t3) {
         return new Float4(Math.fma(_t0, _t11, Math.fma(this.m00, _t31, this.m01 * _t42)), Math.fma(_t1, _t11, Math.fma(this.m10, _t31, this.m11 * _t42)), Math.fma(_t2, _t11, Math.fma(this.m20, _t31, this.m21 * _t42)), Math.fma(_t3, _t11, Math.fma(this.m30, _t31, this.m31 * _t42)));
@@ -14163,6 +14260,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t46, Math.fma(-this.m01, _t48, Math.fma(this.m02, _t25, this.m03))), Math.fma(-this.m10, _t46, Math.fma(-this.m11, _t48, Math.fma(this.m12, _t25, this.m13))), Math.fma(-this.m20, _t46, Math.fma(-this.m21, _t48, Math.fma(this.m22, _t25, this.m23))), Math.fma(-this.m30, _t46, Math.fma(-this.m31, _t48, Math.fma(this.m32, _t25, this.m33))));
     }
 
+    /** Private tail of {@code lookAt_rh_general}; reached only through it. */
     private Float4x4 lookAt_rh_general_s185c1ac6_tail(float _t12, float _t31, float _t11, float _t32, float eyeZ, float _t33, float eyeX, float eyeY, float _t42, float _t43, float _t0, float _t13, float _t25, float _t1, float _t2, float _t3, int _props) {
         float _t44 = Math.fma(_t12, _t31, -(_t11 * _t32));
         float _t46 = Math.fma(eyeZ, _t33, Math.fma(eyeX, _t31, eyeY * _t32));
@@ -14226,7 +14324,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_identity}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_identity_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_rh_degenerate_identity_s185c1ac6_tail_s243143d6_c0(float _t44, float _t53, float _t13) {
         return new Float4(_t44, _t53, -_t13, 0.0f);
@@ -14247,6 +14344,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14)), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_identity}; reached only through it. */
     private Float4x4 lookAt_rh_degenerate_identity_s185c1ac6_tail(float _t16, float _t17, float _t14, float _t18, float _t13, float _t19, float _t26, float _t27, float _t28, float _t15, float eyeZ, float eyeX, float eyeY, int _props) {
         float _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -14315,7 +14413,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_degenerate_identity_s185c1ac6_tail(_t16, _t17, _t14, _t18, _t13, _t19, _t26, _t27, _t28, _t15, eyeZ, eyeX, eyeY, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_translation_s185c1ac6_tail}; reached only through it. */
     private Float4 lookAt_rh_degenerate_translation_s185c1ac6_tail_s708379d3_c0(float _t47, float _t56, float _t16) {
         return new Float4(_t47, _t56, -_t16, 0.0f);
@@ -14336,6 +14433,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(_t0, _t47, Math.fma(_t1, _t48, Math.fma(_t2, _t46, this.m03))), Math.fma(_t0, _t56, Math.fma(_t1, _t55, Math.fma(_t2, _t57, this.m13))), Math.fma(eyeX, _t16, Math.fma(eyeY, _t17, Math.fma(eyeZ, _t18, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_translation}; reached only through it. */
     private Float4x4 lookAt_rh_degenerate_translation_s185c1ac6_tail(float _t19, float _t20, float _t17, float _t21, float _t16, float _t22, float _t29, float _t30, float _t31, float _t18, float _t0, float _t1, float _t2, float eyeX, float eyeY, float eyeZ, int _props) {
         float _t32, _t33, _t34;
         if (_t19 > _t20) {
@@ -14438,7 +14536,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_degenerate_orthogonal_s185c1ac6_tail2(_t50, _t17, _t51, _t16, eyeZ, _t49, eyeX, eyeY, _t62, _t60, _t0, _t18, _t36, _t1, _t2, _props);
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_orthogonal_s185c1ac6_tail2}; reached only through it. */
     private Float4 lookAt_rh_degenerate_orthogonal_s185c1ac6_tail2_sdbafa7a_c0(float _t0, float _t16, float _t50, float _t62, float _t1, float _t2) {
         return new Float4(Math.fma(_t0, _t16, Math.fma(this.m00, _t50, this.m01 * _t62)), Math.fma(_t1, _t16, Math.fma(this.m10, _t50, this.m11 * _t62)), Math.fma(_t2, _t16, Math.fma(this.m20, _t50, this.m21 * _t62)), 0.0f);
@@ -14459,6 +14556,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t64, Math.fma(-this.m01, _t66, Math.fma(this.m02, _t36, this.m03))), Math.fma(-this.m10, _t64, Math.fma(-this.m11, _t66, Math.fma(this.m12, _t36, this.m13))), Math.fma(-this.m20, _t64, Math.fma(-this.m21, _t66, Math.fma(this.m22, _t36, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_orthogonal}; reached only through it. */
     private Float4x4 lookAt_rh_degenerate_orthogonal_s185c1ac6_tail2(float _t50, float _t17, float _t51, float _t16, float eyeZ, float _t49, float eyeX, float eyeY, float _t62, float _t60, float _t0, float _t18, float _t36, float _t1, float _t2, int _props) {
         float _t63 = Math.fma(_t50, _t17, -(_t51 * _t16));
         float _t64 = Math.fma(eyeZ, _t49, Math.fma(eyeX, _t50, eyeY * _t51));
@@ -14536,7 +14634,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_degenerate_affine_s185c1ac6_tail2(_t50, _t17, _t51, _t16, eyeZ, _t49, eyeX, eyeY, _t62, _t60, _t0, _t18, _t36, _t1, _t2, _props);
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_affine}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_affine_s185c1ac6_tail2}; reached only through it. */
     private Float4 lookAt_rh_degenerate_affine_s185c1ac6_tail2_sdbafa7a_c0(float _t0, float _t16, float _t50, float _t62, float _t1, float _t2) {
         return new Float4(Math.fma(_t0, _t16, Math.fma(this.m00, _t50, this.m01 * _t62)), Math.fma(_t1, _t16, Math.fma(this.m10, _t50, this.m11 * _t62)), Math.fma(_t2, _t16, Math.fma(this.m20, _t50, this.m21 * _t62)), 0.0f);
@@ -14557,6 +14654,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t64, Math.fma(-this.m01, _t66, Math.fma(this.m02, _t36, this.m03))), Math.fma(-this.m10, _t64, Math.fma(-this.m11, _t66, Math.fma(this.m12, _t36, this.m13))), Math.fma(-this.m20, _t64, Math.fma(-this.m21, _t66, Math.fma(this.m22, _t36, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_affine}; reached only through it. */
     private Float4x4 lookAt_rh_degenerate_affine_s185c1ac6_tail2(float _t50, float _t17, float _t51, float _t16, float eyeZ, float _t49, float eyeX, float eyeY, float _t62, float _t60, float _t0, float _t18, float _t36, float _t1, float _t2, int _props) {
         float _t63 = Math.fma(_t50, _t17, -(_t51 * _t16));
         float _t64 = Math.fma(eyeZ, _t49, Math.fma(eyeX, _t50, eyeY * _t51));
@@ -14634,7 +14732,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return lookAt_rh_degenerate_general_s185c1ac6_tail2(_t52, _t19, _t50, _t18, _t51, _t17, eyeZ, eyeX, eyeY, _t61, _t0, _t37, _t1, _t2, _t3, _props);
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_general_s185c1ac6_tail2}; reached only through it. */
     private Float4 lookAt_rh_degenerate_general_s185c1ac6_tail2_s5bd31ad2_c0(float _t0, float _t17, float _t51, float _t63, float _t1, float _t2, float _t3) {
         return new Float4(Math.fma(_t0, _t17, Math.fma(this.m00, _t51, this.m01 * _t63)), Math.fma(_t1, _t17, Math.fma(this.m10, _t51, this.m11 * _t63)), Math.fma(_t2, _t17, Math.fma(this.m20, _t51, this.m21 * _t63)), Math.fma(_t3, _t17, Math.fma(this.m30, _t51, this.m31 * _t63)));
@@ -14655,6 +14752,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(-this.m00, _t65, Math.fma(-this.m01, _t67, Math.fma(this.m02, _t37, this.m03))), Math.fma(-this.m10, _t65, Math.fma(-this.m11, _t67, Math.fma(this.m12, _t37, this.m13))), Math.fma(-this.m20, _t65, Math.fma(-this.m21, _t67, Math.fma(this.m22, _t37, this.m23))), Math.fma(-this.m30, _t65, Math.fma(-this.m31, _t67, Math.fma(this.m32, _t37, this.m33))));
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_general}; reached only through it. */
     private Float4x4 lookAt_rh_degenerate_general_s185c1ac6_tail2(float _t52, float _t19, float _t50, float _t18, float _t51, float _t17, float eyeZ, float eyeX, float eyeY, float _t61, float _t0, float _t37, float _t1, float _t2, float _t3, int _props) {
         float _t63 = Math.fma(_t52, _t19, -(_t50 * _t18));
         float _t64 = Math.fma(_t51, _t18, -(_t52 * _t17));
@@ -14997,7 +15095,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makeBillboardCylindrical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeBillboardCylindrical_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeBillboardCylindrical_degenerate_s27606544_tail}; reached only through it. */
     private static Float4 makeBillboardCylindrical_degenerate_s27606544_tail_s3fa789af_c0(float _t31, float _t32, float _t30) {
         return new Float4(_t31, _t32, _t30, 0.0f);
@@ -15018,6 +15115,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(objPosX, objPosY, objPosZ, 1.0f);
     }
 
+    /** Private tail of {@code makeBillboardCylindrical_degenerate}; reached only through it. */
     private static Float4x4 makeBillboardCylindrical_degenerate_s27606544_tail(float upX, float _t30, float upZ, float _t31, float _t32, float upY, float objPosX, float objPosY, float objPosZ, int _props) {
         float _t39 = Math.fma(upX, _t30, -(upZ * _t31));
         float _t40 = Math.fma(upZ, _t32, -(upY * _t30));
@@ -15203,7 +15301,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makeBillboardSpherical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeBillboardSpherical_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeBillboardSpherical_degenerate_s27606544_tail}; reached only through it. */
     private static Float4 makeBillboardSpherical_degenerate_s27606544_tail_s6ec15c43_c0(float _t44, float _t45, float _t43) {
         return new Float4(_t44, _t45, _t43, 0.0f);
@@ -15224,6 +15321,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(objPosX, objPosY, objPosZ, 1.0f);
     }
 
+    /** Private tail of {@code makeBillboardSpherical_degenerate}; reached only through it. */
     private static Float4x4 makeBillboardSpherical_degenerate_s27606544_tail(float _t16, float _t17, float _t13, float _t14, float _t15, float _t26, float _t27, float _t28, float objPosX, float objPosY, float objPosZ, int _props) {
         float _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -15656,7 +15754,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makeLookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeLookAt_lh_degenerate_s185c1ac6_tail}; reached only through it. */
     private static Float4 makeLookAt_lh_degenerate_s185c1ac6_tail_s370f4a2d_c0(float _t44, float _t53, float _t14) {
         return new Float4(_t44, _t53, _t14, 0.0f);
@@ -15677,6 +15774,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), -Math.fma(eyeZ, _t15, Math.fma(eyeX, _t14, eyeY * _t13)), 1.0f);
     }
 
+    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
     private static Float4x4 makeLookAt_lh_degenerate_s185c1ac6_tail(float _t16, float _t17, float _t13, float _t14, float _t15, float _t26, float _t27, float _t28, float eyeZ, float eyeX, float eyeY, int _props) {
         float _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -15810,7 +15908,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makeLookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeLookAt_rh_degenerate_s185c1ac6_tail}; reached only through it. */
     private static Float4 makeLookAt_rh_degenerate_s185c1ac6_tail_s243143d6_c0(float _t44, float _t53, float _t13) {
         return new Float4(_t44, _t53, -_t13, 0.0f);
@@ -15831,6 +15928,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14)), 1.0f);
     }
 
+    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
     private static Float4x4 makeLookAt_rh_degenerate_s185c1ac6_tail(float _t16, float _t17, float _t14, float _t18, float _t13, float _t19, float _t26, float _t27, float _t28, float _t15, float eyeZ, float eyeX, float eyeY, int _props) {
         float _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -17472,7 +17570,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3(_t116, _t108, _t1, _t86, pX, _t85, eyeX, pZ, _t87, eyeY, eyeZ, _t48, _t117_inv, _t111, _t83, _t79, _t81, _t104, _t106, _t47, _t46, _t27, _t34, _t53_inv, _props);
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3_s479b7b62_c0(float _t48, float _t117_inv) {
         return new Float4(_t48 * _t117_inv, 0.0f, 0.0f, 0.0f);
@@ -17493,6 +17590,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(0.0f, 0.0f, _t47 == Float.POSITIVE_INFINITY ? -_t48 : _t46 == Float.POSITIVE_INFINITY ? _t47 + _t47 : _t48 * _t47 * _t53_inv, 0.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_lh}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3(float _t116, float _t108, float _t1, float _t86, float pX, float _t85, float eyeX, float pZ, float _t87, float eyeY, float eyeZ, float _t48, float _t117_inv, float _t111, float _t83, float _t79, float _t81, float _t104, float _t106, float _t47, float _t46, float _t27, float _t34, float _t53_inv, int _props) {
         float _t119_inv = 1.0f / (_t116 + (_t108 + Math.fma(_t1, _t86, -(pX * _t85)) + (Math.fma(eyeX, _t85, -(pZ * _t87)) + Math.fma(eyeY, _t86, eyeZ * _t87))));
         return new Float4x4(makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3_s479b7b62_c0(_t48, _t117_inv), makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3_s479b7b62_c1(_t48, _t119_inv), makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3_s479b7b62_c2(_t111, _t83, _t79, _t81, _t117_inv, _t116, _t108, _t104, _t106, _t119_inv, _t47, _t46, _t27, _t34, _t53_inv), makePerspectiveOffCenterRectangleProj_no_lh_s6da6ab7b_tail3_s479b7b62_c3(_t47, _t48, _t46, _t53_inv), _props);
@@ -17570,7 +17668,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3(_t116, _t108, _t1, _t86, pX, _t85, eyeX, pZ, _t87, eyeY, eyeZ, _t48, _t117_inv, _t111, _t83, _t79, _t81, _t104, _t106, _t47, _t46, _t27, _t34, _t53_inv, _props);
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3_s479b7b62_c0(float _t48, float _t117_inv) {
         return new Float4(_t48 * _t117_inv, 0.0f, 0.0f, 0.0f);
@@ -17591,6 +17688,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(0.0f, 0.0f, _t47 == Float.POSITIVE_INFINITY ? -_t48 : _t46 == Float.POSITIVE_INFINITY ? _t47 + _t47 : _t48 * _t47 * _t53_inv, 0.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_no_rh}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3(float _t116, float _t108, float _t1, float _t86, float pX, float _t85, float eyeX, float pZ, float _t87, float eyeY, float eyeZ, float _t48, float _t117_inv, float _t111, float _t83, float _t79, float _t81, float _t104, float _t106, float _t47, float _t46, float _t27, float _t34, float _t53_inv, int _props) {
         float _t119_inv = 1.0f / (_t116 + (_t108 + Math.fma(_t1, _t86, -(pX * _t85)) + (Math.fma(eyeX, _t85, -(pZ * _t87)) + Math.fma(eyeY, _t86, eyeZ * _t87))));
         return new Float4x4(makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3_s479b7b62_c0(_t48, _t117_inv), makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3_s479b7b62_c1(_t48, _t119_inv), makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3_s479b7b62_c2(_t111, _t83, _t79, _t81, _t117_inv, _t116, _t108, _t104, _t106, _t119_inv, _t47, _t46, _t27, _t34, _t53_inv), makePerspectiveOffCenterRectangleProj_no_rh_s6da6ab7b_tail3_s479b7b62_c3(_t47, _t48, _t46, _t53_inv), _props);
@@ -17694,7 +17792,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3(_t116, _t108, _t1, _t86, pX, _t85, eyeX, pZ, _t87, eyeY, eyeZ, _t48, _t117_inv, _t111, _t83, _t79, _t81, _t104, _t106, _t47, _t46, _sp0, _props);
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3_s4f536491_c0(float _t48, float _t117_inv) {
         return new Float4(_t48 * _t117_inv, 0.0f, 0.0f, 0.0f);
@@ -17715,6 +17812,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(0.0f, 0.0f, _t47 == Float.POSITIVE_INFINITY ? -_t46 : _t46 == Float.POSITIVE_INFINITY ? _t47 : _sp0 * _t46, 0.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_lh}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3(float _t116, float _t108, float _t1, float _t86, float pX, float _t85, float eyeX, float pZ, float _t87, float eyeY, float eyeZ, float _t48, float _t117_inv, float _t111, float _t83, float _t79, float _t81, float _t104, float _t106, float _t47, float _t46, float _sp0, int _props) {
         float _t119_inv = 1.0f / (_t116 + (_t108 + Math.fma(_t1, _t86, -(pX * _t85)) + (Math.fma(eyeX, _t85, -(pZ * _t87)) + Math.fma(eyeY, _t86, eyeZ * _t87))));
         return new Float4x4(makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3_s4f536491_c0(_t48, _t117_inv), makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3_s4f536491_c1(_t48, _t119_inv), makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3_s4f536491_c2(_t111, _t83, _t79, _t81, _t117_inv, _t116, _t108, _t104, _t106, _t119_inv, _t47, _t46, _sp0), makePerspectiveOffCenterRectangleProj_zo_lh_s6da6ab7b_tail3_s4f536491_c3(_t47, _t46, _sp0), _props);
@@ -17792,7 +17890,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3(_t116, _t108, _t1, _t86, pX, _t85, eyeX, pZ, _t87, eyeY, eyeZ, _t48, _t117_inv, _t111, _t83, _t79, _t81, _t104, _t106, _t47, _t46, _sp0, _props);
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3_s4f536491_c0(float _t48, float _t117_inv) {
         return new Float4(_t48 * _t117_inv, 0.0f, 0.0f, 0.0f);
@@ -17813,6 +17910,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(0.0f, 0.0f, _t47 == Float.POSITIVE_INFINITY ? -_t46 : _t46 == Float.POSITIVE_INFINITY ? _t47 : _sp0 * _t46, 0.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleProj_zo_rh}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3(float _t116, float _t108, float _t1, float _t86, float pX, float _t85, float eyeX, float pZ, float _t87, float eyeY, float eyeZ, float _t48, float _t117_inv, float _t111, float _t83, float _t79, float _t81, float _t104, float _t106, float _t47, float _t46, float _sp0, int _props) {
         float _t119_inv = 1.0f / (_t116 + (_t108 + Math.fma(_t1, _t86, -(pX * _t85)) + (Math.fma(eyeX, _t85, -(pZ * _t87)) + Math.fma(eyeY, _t86, eyeZ * _t87))));
         return new Float4x4(makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3_s4f536491_c0(_t48, _t117_inv), makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3_s4f536491_c1(_t48, _t119_inv), makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3_s4f536491_c2(_t111, _t83, _t79, _t81, _t117_inv, _t116, _t108, _t104, _t106, _t119_inv, _t47, _t46, _sp0), makePerspectiveOffCenterRectangleProj_zo_rh_s6da6ab7b_tail3_s4f536491_c3(_t47, _t46, _sp0), _props);
@@ -18094,7 +18192,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleView_lh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z());
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleView_lh_sa792ea2_tail}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleView_lh_sa792ea2_tail_s52202050_c0(float _t43, float _t52, float _t28) {
         return new Float4(_t43, _t52, _t28, 0.0f);
@@ -18115,6 +18212,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t52, eyeY * _t53)), -Math.fma(eyeZ, _t26, Math.fma(eyeX, _t28, eyeY * _t27)), 1.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleView_lh_sa792ea2_tail(float _t37, float _t42, float _t36, float _t27, float _t26, float _t43, float _t28, float eyeZ, float eyeX, float eyeY, int _props) {
         float _t44 = _t37 * _t42;
         float _t45 = _t36 * _t42;
@@ -18198,7 +18296,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail2(_t45, _t46, _t47, _t48, _t49, _t50, _t34, _t33, _t32, eyeZ, eyeX, eyeY, _props);
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail2}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail2_sae25fe1_c0(float _t63, float _t72, float _t33) {
         return new Float4(_t63, _t72, _t33, 0.0f);
@@ -18219,6 +18316,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t62, Math.fma(eyeX, _t63, eyeY * _t64)), -Math.fma(eyeZ, _t73, Math.fma(eyeX, _t72, eyeY * _t71)), -Math.fma(eyeZ, _t34, Math.fma(eyeX, _t33, eyeY * _t32)), 1.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_lh_degenerate}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleView_lh_degenerate_sa792ea2_tail2(float _t45, float _t46, float _t47, float _t48, float _t49, float _t50, float _t34, float _t33, float _t32, float eyeZ, float eyeX, float eyeY, int _props) {
         float _t55 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
         float _t61, _t62, _t63, _t64;
@@ -18268,7 +18366,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleView_rh(eye.x(), eye.y(), eye.z(), p.x(), p.y(), p.z(), x.x(), x.y(), x.z(), y.x(), y.y(), y.z());
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleView_rh_sa792ea2_tail}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleView_rh_sa792ea2_tail_s3392add0_c0(float _t43, float _t52, float _t28) {
         return new Float4(_t43, _t52, -_t28, 0.0f);
@@ -18289,6 +18386,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t45, Math.fma(eyeX, _t43, eyeY * _t44)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t52, eyeY * _t53)), Math.fma(eyeZ, _t27, Math.fma(eyeX, _t28, eyeY * _t26)), 1.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleView_rh_sa792ea2_tail(float _t37, float _t42, float _t36, float _t27, float _t26, float _t28, float _t43, float eyeZ, float eyeX, float eyeY, int _props) {
         float _t44 = _t37 * _t42;
         float _t45 = _t36 * _t42;
@@ -18374,7 +18472,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail2(_t45, _t46, _t47, _t48, _t49, _t50, _t32, _t34, _t33, eyeZ, eyeX, eyeY, _t37, _t38, _props);
     }
 
-    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}; reached only through it. */
     /** Private per-column body of {@code makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail2}; reached only through it. */
     private static Float4 makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail2_s75681704_c0(float _t63, float _t72, float _t32) {
         return new Float4(_t63, _t72, -_t32, 0.0f);
@@ -18395,6 +18492,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-Math.fma(eyeZ, _t62, Math.fma(eyeX, _t63, eyeY * _t64)), -Math.fma(eyeZ, _t73, Math.fma(eyeX, _t72, eyeY * _t71)), Math.fma(eyeZ, _t34, Math.fma(eyeX, _t32, eyeY * _t33)), 1.0f);
     }
 
+    /** Private tail of {@code makePerspectiveOffCenterRectangleView_rh_degenerate}; reached only through it. */
     private static Float4x4 makePerspectiveOffCenterRectangleView_rh_degenerate_sa792ea2_tail2(float _t45, float _t46, float _t47, float _t48, float _t49, float _t50, float _t32, float _t34, float _t33, float eyeZ, float eyeX, float eyeY, float _t37, float _t38, int _props) {
         float _t55 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, _t47 * _t47));
         float _t61, _t62, _t63, _t64;
@@ -18707,7 +18805,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeRotationLookAlong_degenerate_s524747ee_tail}; reached only through it. */
     private static Float4 makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c0(float _t41, float _t42, float _t40) {
         return new Float4(_t41, _t42, _t40, 0.0f);
@@ -18728,6 +18825,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(0.0f, 0.0f, 0.0f, 1.0f);
     }
 
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     private static Float4x4 makeRotationLookAlong_degenerate_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t10, float _t12, float _t11, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -19138,7 +19236,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return makeTrapezoidCrop(p0.x(), p0.y(), p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
     }
 
-    /** Private tail of {@code makeTrapezoidCrop}; reached only through it. */
     /** Private per-column body of {@code makeTrapezoidCrop_s7d5258d0_tail}; reached only through it. */
     private static Float4 makeTrapezoidCrop_s7d5258d0_tail_s4e444cbf_c0(float _sp1, float _t25, float _t53, float _t61) {
         return new Float4(_sp1 * _t25 - _t53, _t61 * _t53, 0.0f, _t53);
@@ -19159,6 +19256,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(_sp1 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) - _t58, _t61 * _t58 - _t60, 0.0f, _t58);
     }
 
+    /** Private tail of {@code makeTrapezoidCrop}; reached only through it. */
     private static Float4x4 makeTrapezoidCrop_s7d5258d0_tail(float _t16, float _t30, float p2X, float _t25, float p2Y, float _t26, float p0X, float _t3, float p0Y, float _t5, float p1Y, float p1X, float _t0, float _t45, float p3X, float p3Y, float _sp1, int _props) {
         float _t47 = _t16 + (_t30 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t3, -(p0Y * _t5)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t30));
         float _t50 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t45 / _t47));
@@ -24289,7 +24387,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_general_s5244511_tail9(_t202, _t186, _t187, _t188, _t203, _t189, _t190, _t191, _t240, _t241, _t242, _t243, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_general_s5244511_tail9}; reached only through it. */
     private Float4 orthoCrop_no_lh_general_s5244511_tail9_s36d9a39e_c0(float _t246_inv) {
         return new Float4(_t246_inv + _t246_inv, 0.0f, 0.0f, 0.0f);
@@ -24310,6 +24407,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t241 + _t240) * _t246_inv), -((_t243 + _t242) * _t247_inv), -((_t245 + _t244) * _t248_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_general}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_general_s5244511_tail9(float _t202, float _t186, float _t187, float _t188, float _t203, float _t189, float _t190, float _t191, float _t240, float _t241, float _t242, float _t243, int _props) {
         float _t244 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
         float _t245 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
@@ -24385,7 +24483,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_identity_s5244511_tail3(_t99, _t100, _t101, _t102, _t103, _t104, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_identity_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_s5244511_tail3_s644f5c23_c0(float _t105_inv) {
         return new Float4(_t105_inv + _t105_inv, 0.0f, 0.0f, 0.0f);
@@ -24406,6 +24503,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t100 + _t99) * _t105_inv), -((_t102 + _t101) * _t106_inv), -((_t104 + _t103) * _t107_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_identity_s5244511_tail3(float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, int _props) {
         float _t105 = _t99 - _t100;
         float _t105_inv = 1.0f / _t105;
@@ -24486,7 +24584,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_translation_s5244511_tail3(_t40, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t84, _t85, _t86, _t87, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_s5244511_tail3_s61b0d7bd_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -24507,6 +24604,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -((_t89 + _t88) * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_translation_s5244511_tail3(float _t40, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, float _t84, float _t85, float _t86, float _t87, float _t88, int _props) {
         float _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         float _t90 = _t84 - _t85;
@@ -24616,7 +24714,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_orthogonal_s5244511_tail6(_t129, _t111, _t112, _t113, _t130, _t114, _t115, _t116, _t131, _t117, _t118, _t119, _t132, _t120, _t121, _t122, _t133, _t123, _t124, _t125, _t134, _t126, _t127, _t128, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_orthogonal_s5244511_tail6}; reached only through it. */
     private Float4 orthoCrop_no_lh_orthogonal_s5244511_tail6_s33e4bb52_c0(float _t177_inv) {
         return new Float4(_t177_inv + _t177_inv, 0.0f, 0.0f, 0.0f);
@@ -24637,6 +24734,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t172 + _t171) * _t177_inv), -((_t174 + _t173) * _t178_inv), -((_t176 + _t175) * _t179_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_orthogonal_s5244511_tail6(float _t129, float _t111, float _t112, float _t113, float _t130, float _t114, float _t115, float _t116, float _t131, float _t117, float _t118, float _t119, float _t132, float _t120, float _t121, float _t122, float _t133, float _t123, float _t124, float _t125, float _t134, float _t126, float _t127, float _t128, int _props) {
         float _t171 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t129, _t111), _t112), _t113), _t130), _t114), _t115), _t116);
         float _t172 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t129, _t111), _t112), _t113), _t130), _t114), _t115), _t116);
@@ -24809,7 +24907,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_orthogonal_identity_s5244511_tail3(_t99, _t100, _t101, _t102, _t103, _t104, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_orthogonal_identity_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_lh_orthogonal_identity_s5244511_tail3_s644f5c23_c0(float _t105_inv) {
         return new Float4(_t105_inv + _t105_inv, 0.0f, 0.0f, 0.0f);
@@ -24830,6 +24927,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t100 + _t99) * _t105_inv), -((_t102 + _t101) * _t106_inv), -((_t104 + _t103) * _t107_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_orthogonal_identity_s5244511_tail3(float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, int _props) {
         float _t105 = _t99 - _t100;
         float _t105_inv = 1.0f / _t105;
@@ -24898,7 +24996,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_orthogonal_translation_s5244511_tail3(_t81, _t63, _t64, _t65, _t82, _t66, _t67, _t68, _t83, _t69, _t70, _t71, _t84, _t72, _t73, _t74, _t85, _t75, _t76, _t77, _t86, _t78, _t79, _t80, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_orthogonal_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_lh_orthogonal_translation_s5244511_tail3_s14f40cbe_c0(float _t129_inv) {
         return new Float4(_t129_inv + _t129_inv, 0.0f, 0.0f, 0.0f);
@@ -24919,6 +25016,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t124 + _t123) * _t129_inv), -((_t126 + _t125) * _t130_inv), -((_t128 + _t127) * _t131_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_orthogonal_translation_s5244511_tail3(float _t81, float _t63, float _t64, float _t65, float _t82, float _t66, float _t67, float _t68, float _t83, float _t69, float _t70, float _t71, float _t84, float _t72, float _t73, float _t74, float _t85, float _t75, float _t76, float _t77, float _t86, float _t78, float _t79, float _t80, int _props) {
         float _t123 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t81, _t63), _t64), _t65), _t82), _t66), _t67), _t68);
         float _t124 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t81, _t63), _t64), _t65), _t82), _t66), _t67), _t68);
@@ -25013,7 +25111,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_general_identity_s5244511_tail4(_t102, _t84, _t85, _t86, _t103, _t87, _t88, _t89, _t104, _t90, _t91, _t92, _t105, _t93, _t94, _t95, _t106, _t96, _t97, _t98, _t107, _t99, _t100, _t101, _t144, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_general_identity_s5244511_tail4}; reached only through it. */
     private Float4 orthoCrop_no_lh_general_identity_s5244511_tail4_s2bb7a48c_c0(float _t150_inv) {
         return new Float4(_t150_inv + _t150_inv, 0.0f, 0.0f, 0.0f);
@@ -25034,6 +25131,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t145 + _t144) * _t150_inv), -((_t147 + _t146) * _t151_inv), -((_t149 + _t148) * _t152_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_general_identity_s5244511_tail4(float _t102, float _t84, float _t85, float _t86, float _t103, float _t87, float _t88, float _t89, float _t104, float _t90, float _t91, float _t92, float _t105, float _t93, float _t94, float _t95, float _t106, float _t96, float _t97, float _t98, float _t107, float _t99, float _t100, float _t101, float _t144, int _props) {
         float _t145 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t102, _t84), _t85), _t86), _t103), _t87), _t88), _t89);
         float _t146 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t104, _t90), _t91), _t92), _t105), _t93), _t94), _t95);
@@ -25138,7 +25236,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_general_translation_s5244511_tail5(_t128, _t114, _t115, _t116, _t129, _t117, _t118, _t119, _t130, _t120, _t121, _t122, _t131, _t123, _t124, _t125, _t168, _t169, _t170, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_general_translation_s5244511_tail5}; reached only through it. */
     private Float4 orthoCrop_no_lh_general_translation_s5244511_tail5_s7ab48882_c0(float _t174_inv) {
         return new Float4(_t174_inv + _t174_inv, 0.0f, 0.0f, 0.0f);
@@ -25159,6 +25256,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t169 + _t168) * _t174_inv), -((_t171 + _t170) * _t175_inv), -((_t173 + _t172) * _t176_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_general_translation_s5244511_tail5(float _t128, float _t114, float _t115, float _t116, float _t129, float _t117, float _t118, float _t119, float _t130, float _t120, float _t121, float _t122, float _t131, float _t123, float _t124, float _t125, float _t168, float _t169, float _t170, int _props) {
         float _t171 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t128, _t114), _t115), _t116), _t129), _t117), _t118), _t119);
         float _t172 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t130, _t120), _t121), _t122), _t131), _t123), _t124), _t125);
@@ -25345,7 +25443,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_general_s5244511_tail9(_t202, _t186, _t187, _t188, _t203, _t189, _t190, _t191, _t240, _t241, _t242, _t243, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_general_s5244511_tail9}; reached only through it. */
     private Float4 orthoCrop_no_rh_general_s5244511_tail9_s36d9a39e_c0(float _t246_inv) {
         return new Float4(_t246_inv + _t246_inv, 0.0f, 0.0f, 0.0f);
@@ -25366,6 +25463,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t241 + _t240) * _t246_inv), -((_t243 + _t242) * _t247_inv), -((-_t245 - _t244) * _t248_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_general}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_general_s5244511_tail9(float _t202, float _t186, float _t187, float _t188, float _t203, float _t189, float _t190, float _t191, float _t240, float _t241, float _t242, float _t243, int _props) {
         float _t244 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
         float _t245 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t202, _t186), _t187), _t188), _t203), _t189), _t190), _t191);
@@ -25441,7 +25539,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_identity_s5244511_tail3(_t99, _t100, _t101, _t102, _t103, _t104, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_identity_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_rh_identity_s5244511_tail3_s644f5c23_c0(float _t105_inv) {
         return new Float4(_t105_inv + _t105_inv, 0.0f, 0.0f, 0.0f);
@@ -25462,6 +25559,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t100 + _t99) * _t105_inv), -((_t102 + _t101) * _t106_inv), -((-_t104 - _t103) * _t107_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_identity_s5244511_tail3(float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, int _props) {
         float _t105 = _t99 - _t100;
         float _t105_inv = 1.0f / _t105;
@@ -25542,7 +25640,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_translation_s5244511_tail3(_t40, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t84, _t85, _t86, _t87, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_s5244511_tail3_s61b0d7bd_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -25563,6 +25660,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -((-_t89 - _t88) * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_translation_s5244511_tail3(float _t40, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, float _t84, float _t85, float _t86, float _t87, float _t88, int _props) {
         float _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         float _t90 = _t84 - _t85;
@@ -25672,7 +25770,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_orthogonal_s5244511_tail6(_t129, _t111, _t112, _t113, _t130, _t114, _t115, _t116, _t131, _t117, _t118, _t119, _t132, _t120, _t121, _t122, _t133, _t123, _t124, _t125, _t134, _t126, _t127, _t128, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_orthogonal_s5244511_tail6}; reached only through it. */
     private Float4 orthoCrop_no_rh_orthogonal_s5244511_tail6_s33e4bb52_c0(float _t177_inv) {
         return new Float4(_t177_inv + _t177_inv, 0.0f, 0.0f, 0.0f);
@@ -25693,6 +25790,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t172 + _t171) * _t177_inv), -((_t174 + _t173) * _t178_inv), -((-_t176 - _t175) * _t179_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_orthogonal_s5244511_tail6(float _t129, float _t111, float _t112, float _t113, float _t130, float _t114, float _t115, float _t116, float _t131, float _t117, float _t118, float _t119, float _t132, float _t120, float _t121, float _t122, float _t133, float _t123, float _t124, float _t125, float _t134, float _t126, float _t127, float _t128, int _props) {
         float _t171 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t129, _t111), _t112), _t113), _t130), _t114), _t115), _t116);
         float _t172 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t129, _t111), _t112), _t113), _t130), _t114), _t115), _t116);
@@ -25865,7 +25963,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_orthogonal_identity_s5244511_tail3(_t99, _t100, _t101, _t102, _t103, _t104, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_orthogonal_identity_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_rh_orthogonal_identity_s5244511_tail3_s644f5c23_c0(float _t105_inv) {
         return new Float4(_t105_inv + _t105_inv, 0.0f, 0.0f, 0.0f);
@@ -25886,6 +25983,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t100 + _t99) * _t105_inv), -((_t102 + _t101) * _t106_inv), -((-_t104 - _t103) * _t107_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_orthogonal_identity_s5244511_tail3(float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, int _props) {
         float _t105 = _t99 - _t100;
         float _t105_inv = 1.0f / _t105;
@@ -25954,7 +26052,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_orthogonal_translation_s5244511_tail3(_t81, _t63, _t64, _t65, _t82, _t66, _t67, _t68, _t83, _t69, _t70, _t71, _t84, _t72, _t73, _t74, _t85, _t75, _t76, _t77, _t86, _t78, _t79, _t80, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_orthogonal_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_no_rh_orthogonal_translation_s5244511_tail3_s14f40cbe_c0(float _t129_inv) {
         return new Float4(_t129_inv + _t129_inv, 0.0f, 0.0f, 0.0f);
@@ -25975,6 +26072,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t124 + _t123) * _t129_inv), -((_t126 + _t125) * _t130_inv), -((-_t128 - _t127) * _t131_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_orthogonal_translation_s5244511_tail3(float _t81, float _t63, float _t64, float _t65, float _t82, float _t66, float _t67, float _t68, float _t83, float _t69, float _t70, float _t71, float _t84, float _t72, float _t73, float _t74, float _t85, float _t75, float _t76, float _t77, float _t86, float _t78, float _t79, float _t80, int _props) {
         float _t123 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t81, _t63), _t64), _t65), _t82), _t66), _t67), _t68);
         float _t124 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t81, _t63), _t64), _t65), _t82), _t66), _t67), _t68);
@@ -26069,7 +26167,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_general_identity_s5244511_tail4(_t102, _t84, _t85, _t86, _t103, _t87, _t88, _t89, _t104, _t90, _t91, _t92, _t105, _t93, _t94, _t95, _t106, _t96, _t97, _t98, _t107, _t99, _t100, _t101, _t144, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_general_identity_s5244511_tail4}; reached only through it. */
     private Float4 orthoCrop_no_rh_general_identity_s5244511_tail4_s2bb7a48c_c0(float _t150_inv) {
         return new Float4(_t150_inv + _t150_inv, 0.0f, 0.0f, 0.0f);
@@ -26090,6 +26187,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t145 + _t144) * _t150_inv), -((_t147 + _t146) * _t151_inv), -((-_t149 - _t148) * _t152_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_general_identity_s5244511_tail4(float _t102, float _t84, float _t85, float _t86, float _t103, float _t87, float _t88, float _t89, float _t104, float _t90, float _t91, float _t92, float _t105, float _t93, float _t94, float _t95, float _t106, float _t96, float _t97, float _t98, float _t107, float _t99, float _t100, float _t101, float _t144, int _props) {
         float _t145 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t102, _t84), _t85), _t86), _t103), _t87), _t88), _t89);
         float _t146 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t104, _t90), _t91), _t92), _t105), _t93), _t94), _t95);
@@ -26194,7 +26292,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_general_translation_s5244511_tail5(_t128, _t114, _t115, _t116, _t129, _t117, _t118, _t119, _t130, _t120, _t121, _t122, _t131, _t123, _t124, _t125, _t168, _t169, _t170, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_general_translation_s5244511_tail5}; reached only through it. */
     private Float4 orthoCrop_no_rh_general_translation_s5244511_tail5_s7ab48882_c0(float _t174_inv) {
         return new Float4(_t174_inv + _t174_inv, 0.0f, 0.0f, 0.0f);
@@ -26215,6 +26312,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t169 + _t168) * _t174_inv), -((_t171 + _t170) * _t175_inv), -((-_t173 - _t172) * _t176_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_general_translation_s5244511_tail5(float _t128, float _t114, float _t115, float _t116, float _t129, float _t117, float _t118, float _t119, float _t130, float _t120, float _t121, float _t122, float _t131, float _t123, float _t124, float _t125, float _t168, float _t169, float _t170, int _props) {
         float _t171 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t128, _t114), _t115), _t116), _t129), _t117), _t118), _t119);
         float _t172 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t130, _t120), _t121), _t122), _t131), _t123), _t124), _t125);
@@ -26404,7 +26502,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_general_s5244511_tail8(_t161, _t146, _t147, _t148, _t185, _t173, _t174, _t175, _t162, _t150, _t151, _t152, _t186, _t176, _t177, _t178, _t163, _t154, _t155, _t156, _t187, _t179, _t180, _t181, _t224, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_general_s5244511_tail8}; reached only through it. */
     private Float4 orthoCrop_zo_lh_general_s5244511_tail8_s564ccec0_c0(float _t230_inv) {
         return new Float4(_t230_inv + _t230_inv, 0.0f, 0.0f, 0.0f);
@@ -26425,6 +26522,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t225 + _t224) * _t230_inv), -((_t227 + _t226) * _t231_inv), -(_t229 * _t232_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_general}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_general_s5244511_tail8(float _t161, float _t146, float _t147, float _t148, float _t185, float _t173, float _t174, float _t175, float _t162, float _t150, float _t151, float _t152, float _t186, float _t176, float _t177, float _t178, float _t163, float _t154, float _t155, float _t156, float _t187, float _t179, float _t180, float _t181, float _t224, int _props) {
         float _t225 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
         float _t226 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
@@ -26490,7 +26588,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_identity_s5244511_tail2(_t33, _t15, _t16, _t17, _t48, _t39, _t40, _t41, _t35, _t21, _t22, _t23, _t49, _t42, _t43, _t44, _t37, _t27, _t28, _t29, _t50, _t45, _t46, _t47, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_s5244511_tail2}; reached only through it. */
     private Float4 orthoCrop_zo_lh_identity_s5244511_tail2_s69c215a7_c0(float _t93_inv) {
         return new Float4(_t93_inv + _t93_inv, 0.0f, 0.0f, 0.0f);
@@ -26511,6 +26608,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t88 + _t87) * _t93_inv), -((_t90 + _t89) * _t94_inv), -(_t92 * _t95_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_identity_s5244511_tail2(float _t33, float _t15, float _t16, float _t17, float _t48, float _t39, float _t40, float _t41, float _t35, float _t21, float _t22, float _t23, float _t49, float _t42, float _t43, float _t44, float _t37, float _t27, float _t28, float _t29, float _t50, float _t45, float _t46, float _t47, int _props) {
         float _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
         float _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
@@ -26600,7 +26698,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_translation_s5244511_tail3(_t85, _t86, _t31, _t32, _t33, _t34, _t43, _t44, _t45, _t46, _t88, _t89_inv, _t84, _t83, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_s5244511_tail3_s2f58d9dd_c0(float _t89_inv) {
         return new Float4(_t89_inv + _t89_inv, 0.0f, 0.0f, 0.0f);
@@ -26621,6 +26718,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t84 + _t83) * _t89_inv), -((_t86 + _t85) * _t90_inv), -(_t88 * _t91_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_translation_s5244511_tail3(float _t85, float _t86, float _t31, float _t32, float _t33, float _t34, float _t43, float _t44, float _t45, float _t46, float _t88, float _t89_inv, float _t84, float _t83, int _props) {
         float _t90 = _t85 - _t86;
         float _t90_inv = 1.0f / _t90;
@@ -26727,7 +26825,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_orthogonal_s5244511_tail6(_t109, _t102, _t103, _t104, _t121, _t114, _t115, _t116, _t110, _t105, _t106, _t107, _t122, _t117, _t118, _t119, _t159, _t160, _t161, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_orthogonal_s5244511_tail6}; reached only through it. */
     private Float4 orthoCrop_zo_lh_orthogonal_s5244511_tail6_s1ef57a46_c0(float _t165_inv) {
         return new Float4(_t165_inv + _t165_inv, 0.0f, 0.0f, 0.0f);
@@ -26748,6 +26845,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t160 + _t159) * _t165_inv), -((_t162 + _t161) * _t166_inv), -(_t164 * _t167_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_orthogonal_s5244511_tail6(float _t109, float _t102, float _t103, float _t104, float _t121, float _t114, float _t115, float _t116, float _t110, float _t105, float _t106, float _t107, float _t122, float _t117, float _t118, float _t119, float _t159, float _t160, float _t161, int _props) {
         float _t162 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t102), _t103), _t104), _t121), _t114), _t115), _t116);
         float _t164 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119);
@@ -26899,7 +26997,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_orthogonal_identity_s5244511_tail2(_t33, _t15, _t16, _t17, _t48, _t39, _t40, _t41, _t35, _t21, _t22, _t23, _t49, _t42, _t43, _t44, _t37, _t27, _t28, _t29, _t50, _t45, _t46, _t47, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_orthogonal_identity_s5244511_tail2}; reached only through it. */
     private Float4 orthoCrop_zo_lh_orthogonal_identity_s5244511_tail2_s69c215a7_c0(float _t93_inv) {
         return new Float4(_t93_inv + _t93_inv, 0.0f, 0.0f, 0.0f);
@@ -26920,6 +27017,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t88 + _t87) * _t93_inv), -((_t90 + _t89) * _t94_inv), -(_t92 * _t95_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_orthogonal_identity_s5244511_tail2(float _t33, float _t15, float _t16, float _t17, float _t48, float _t39, float _t40, float _t41, float _t35, float _t21, float _t22, float _t23, float _t49, float _t42, float _t43, float _t44, float _t37, float _t27, float _t28, float _t29, float _t50, float _t45, float _t46, float _t47, int _props) {
         float _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
         float _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
@@ -26997,7 +27095,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_orthogonal_translation_s5244511_tail3(_t59, _t45, _t46, _t47, _t73, _t66, _t67, _t68, _t61, _t51, _t52, _t53, _t74, _t69, _t70, _t71, _t111, _t112, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_orthogonal_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_lh_orthogonal_translation_s5244511_tail3_s56da71c1_c0(float _t117_inv) {
         return new Float4(_t117_inv + _t117_inv, 0.0f, 0.0f, 0.0f);
@@ -27018,6 +27115,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t112 + _t111) * _t117_inv), -((_t114 + _t113) * _t118_inv), -(_t116 * _t119_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_orthogonal_translation_s5244511_tail3(float _t59, float _t45, float _t46, float _t47, float _t73, float _t66, float _t67, float _t68, float _t61, float _t51, float _t52, float _t53, float _t74, float _t69, float _t70, float _t71, float _t111, float _t112, int _props) {
         float _t113 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
         float _t114 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
@@ -27113,7 +27211,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_general_identity_s5244511_tail4(_t128, _t129, _t130, _t131, _t79, _t74, _t75, _t76, _t91, _t86, _t87, _t88, _t133, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_general_identity_s5244511_tail4}; reached only through it. */
     private Float4 orthoCrop_zo_lh_general_identity_s5244511_tail4_sd9b01f3_c0(float _t134_inv) {
         return new Float4(_t134_inv + _t134_inv, 0.0f, 0.0f, 0.0f);
@@ -27134,6 +27231,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t129 + _t128) * _t134_inv), -((_t131 + _t130) * _t135_inv), -(_t133 * _t136_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_general_identity_s5244511_tail4(float _t128, float _t129, float _t130, float _t131, float _t79, float _t74, float _t75, float _t76, float _t91, float _t86, float _t87, float _t88, float _t133, int _props) {
         float _t134 = _t128 - _t129;
         float _t134_inv = 1.0f / _t134;
@@ -27238,7 +27336,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_general_translation_s5244511_tail5(_t159, _t91, _t86, _t87, _t88, _t115, _t110, _t111, _t112, _t157, _t158_inv, _t153, _t152, _t155, _t154, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_general_translation_s5244511_tail5}; reached only through it. */
     private Float4 orthoCrop_zo_lh_general_translation_s5244511_tail5_s84e228_c0(float _t158_inv) {
         return new Float4(_t158_inv + _t158_inv, 0.0f, 0.0f, 0.0f);
@@ -27259,6 +27356,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t153 + _t152) * _t158_inv), -((_t155 + _t154) * _t159_inv), -(_t157 * _t160_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_general_translation_s5244511_tail5(float _t159, float _t91, float _t86, float _t87, float _t88, float _t115, float _t110, float _t111, float _t112, float _t157, float _t158_inv, float _t153, float _t152, float _t155, float _t154, int _props) {
         float _t159_inv = 1.0f / _t159;
         float _t160 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112) - _t157;
@@ -27431,7 +27529,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_general_s5244511_tail8(_t161, _t146, _t147, _t148, _t185, _t173, _t174, _t175, _t162, _t150, _t151, _t152, _t186, _t176, _t177, _t178, _t163, _t154, _t155, _t156, _t187, _t179, _t180, _t181, _t224, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_general_s5244511_tail8}; reached only through it. */
     private Float4 orthoCrop_zo_rh_general_s5244511_tail8_s564ccec0_c0(float _t230_inv) {
         return new Float4(_t230_inv + _t230_inv, 0.0f, 0.0f, 0.0f);
@@ -27452,6 +27549,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t225 + _t224) * _t230_inv), -((_t227 + _t226) * _t231_inv), _t228 * _t232_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_general}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_general_s5244511_tail8(float _t161, float _t146, float _t147, float _t148, float _t185, float _t173, float _t174, float _t175, float _t162, float _t150, float _t151, float _t152, float _t186, float _t176, float _t177, float _t178, float _t163, float _t154, float _t155, float _t156, float _t187, float _t179, float _t180, float _t181, float _t224, int _props) {
         float _t225 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t161, _t146), _t147), _t148), _t185), _t173), _t174), _t175);
         float _t226 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t162, _t150), _t151), _t152), _t186), _t176), _t177), _t178);
@@ -27517,7 +27615,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_identity_s5244511_tail2(_t33, _t15, _t16, _t17, _t48, _t39, _t40, _t41, _t35, _t21, _t22, _t23, _t49, _t42, _t43, _t44, _t37, _t27, _t28, _t29, _t50, _t45, _t46, _t47, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_s5244511_tail2}; reached only through it. */
     private Float4 orthoCrop_zo_rh_identity_s5244511_tail2_s69c215a7_c0(float _t93_inv) {
         return new Float4(_t93_inv + _t93_inv, 0.0f, 0.0f, 0.0f);
@@ -27538,6 +27635,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t88 + _t87) * _t93_inv), -((_t90 + _t89) * _t94_inv), _t91 * _t95_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_identity_s5244511_tail2(float _t33, float _t15, float _t16, float _t17, float _t48, float _t39, float _t40, float _t41, float _t35, float _t21, float _t22, float _t23, float _t49, float _t42, float _t43, float _t44, float _t37, float _t27, float _t28, float _t29, float _t50, float _t45, float _t46, float _t47, int _props) {
         float _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
         float _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
@@ -27627,7 +27725,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_translation_s5244511_tail3(_t85, _t86, _t87, _t31, _t32, _t33, _t34, _t43, _t44, _t45, _t46, _t89_inv, _t84, _t83, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_s5244511_tail3_s207eb45c_c0(float _t89_inv) {
         return new Float4(_t89_inv + _t89_inv, 0.0f, 0.0f, 0.0f);
@@ -27648,6 +27745,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t84 + _t83) * _t89_inv), -((_t86 + _t85) * _t90_inv), _t87 * _t91_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_translation_s5244511_tail3(float _t85, float _t86, float _t87, float _t31, float _t32, float _t33, float _t34, float _t43, float _t44, float _t45, float _t46, float _t89_inv, float _t84, float _t83, int _props) {
         float _t90 = _t85 - _t86;
         float _t90_inv = 1.0f / _t90;
@@ -27754,7 +27852,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_orthogonal_s5244511_tail6(_t109, _t102, _t103, _t104, _t121, _t114, _t115, _t116, _t110, _t105, _t106, _t107, _t122, _t117, _t118, _t119, _t159, _t160, _t161, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_orthogonal_s5244511_tail6}; reached only through it. */
     private Float4 orthoCrop_zo_rh_orthogonal_s5244511_tail6_s1ef57a46_c0(float _t165_inv) {
         return new Float4(_t165_inv + _t165_inv, 0.0f, 0.0f, 0.0f);
@@ -27775,6 +27872,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t160 + _t159) * _t165_inv), -((_t162 + _t161) * _t166_inv), _t163 * _t167_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_orthogonal_s5244511_tail6(float _t109, float _t102, float _t103, float _t104, float _t121, float _t114, float _t115, float _t116, float _t110, float _t105, float _t106, float _t107, float _t122, float _t117, float _t118, float _t119, float _t159, float _t160, float _t161, int _props) {
         float _t162 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t109, _t102), _t103), _t104), _t121), _t114), _t115), _t116);
         float _t163 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t110, _t105), _t106), _t107), _t122), _t117), _t118), _t119);
@@ -27926,7 +28024,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_orthogonal_identity_s5244511_tail2(_t33, _t15, _t16, _t17, _t48, _t39, _t40, _t41, _t35, _t21, _t22, _t23, _t49, _t42, _t43, _t44, _t37, _t27, _t28, _t29, _t50, _t45, _t46, _t47, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_orthogonal_identity_s5244511_tail2}; reached only through it. */
     private Float4 orthoCrop_zo_rh_orthogonal_identity_s5244511_tail2_s69c215a7_c0(float _t93_inv) {
         return new Float4(_t93_inv + _t93_inv, 0.0f, 0.0f, 0.0f);
@@ -27947,6 +28044,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t88 + _t87) * _t93_inv), -((_t90 + _t89) * _t94_inv), _t91 * _t95_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_orthogonal_identity_s5244511_tail2(float _t33, float _t15, float _t16, float _t17, float _t48, float _t39, float _t40, float _t41, float _t35, float _t21, float _t22, float _t23, float _t49, float _t42, float _t43, float _t44, float _t37, float _t27, float _t28, float _t29, float _t50, float _t45, float _t46, float _t47, int _props) {
         float _t87 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
         float _t88 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t33, _t15), _t16), _t17), _t48), _t39), _t40), _t41);
@@ -28024,7 +28122,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_orthogonal_translation_s5244511_tail3(_t59, _t45, _t46, _t47, _t73, _t66, _t67, _t68, _t61, _t51, _t52, _t53, _t74, _t69, _t70, _t71, _t111, _t112, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_orthogonal_translation_s5244511_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_rh_orthogonal_translation_s5244511_tail3_s56da71c1_c0(float _t117_inv) {
         return new Float4(_t117_inv + _t117_inv, 0.0f, 0.0f, 0.0f);
@@ -28045,6 +28142,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t112 + _t111) * _t117_inv), -((_t114 + _t113) * _t118_inv), _t115 * _t119_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_orthogonal_translation_s5244511_tail3(float _t59, float _t45, float _t46, float _t47, float _t73, float _t66, float _t67, float _t68, float _t61, float _t51, float _t52, float _t53, float _t74, float _t69, float _t70, float _t71, float _t111, float _t112, int _props) {
         float _t113 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
         float _t114 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t59, _t45), _t46), _t47), _t73), _t66), _t67), _t68);
@@ -28140,7 +28238,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_general_identity_s5244511_tail4(_t128, _t129, _t130, _t131, _t132, _t79, _t74, _t75, _t76, _t91, _t86, _t87, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_general_identity_s5244511_tail4}; reached only through it. */
     private Float4 orthoCrop_zo_rh_general_identity_s5244511_tail4_s64088ec4_c0(float _t134_inv) {
         return new Float4(_t134_inv + _t134_inv, 0.0f, 0.0f, 0.0f);
@@ -28161,6 +28258,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t129 + _t128) * _t134_inv), -((_t131 + _t130) * _t135_inv), _t132 * _t136_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_general_identity_s5244511_tail4(float _t128, float _t129, float _t130, float _t131, float _t132, float _t79, float _t74, float _t75, float _t76, float _t91, float _t86, float _t87, float _t88, int _props) {
         float _t134 = _t128 - _t129;
         float _t134_inv = 1.0f / _t134;
@@ -28265,7 +28363,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_general_translation_s5244511_tail5(_t159, _t156, _t91, _t86, _t87, _t88, _t115, _t110, _t111, _t112, _t158_inv, _t153, _t152, _t155, _t154, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_general_translation_s5244511_tail5}; reached only through it. */
     private Float4 orthoCrop_zo_rh_general_translation_s5244511_tail5_s2d4a4cdf_c0(float _t158_inv) {
         return new Float4(_t158_inv + _t158_inv, 0.0f, 0.0f, 0.0f);
@@ -28286,6 +28383,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t153 + _t152) * _t158_inv), -((_t155 + _t154) * _t159_inv), _t156 * _t160_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_general_translation_s5244511_tail5(float _t159, float _t156, float _t91, float _t86, float _t87, float _t88, float _t115, float _t110, float _t111, float _t112, float _t158_inv, float _t153, float _t152, float _t155, float _t154, int _props) {
         float _t159_inv = 1.0f / _t159;
         float _t160 = _t156 - Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t91, _t86), _t87), _t88), _t115), _t110), _t111), _t112);
@@ -28599,7 +28697,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_general_s25f1e53f_tail9(_t172, _t173, _t174, _t175, _t176, _t177, _t178, _t179, _t216, _t217, _t218, _t219, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_general_s25f1e53f_tail9}; reached only through it. */
     private Float4 orthoCrop_no_lh_general_s25f1e53f_tail9_s10c21ac8_c0(float _t222_inv) {
         return new Float4(_t222_inv + _t222_inv, 0.0f, 0.0f, 0.0f);
@@ -28620,6 +28717,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t217 + _t216) * _t222_inv), -((_t219 + _t218) * _t223_inv), -((_t221 + _t220) * _t224_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_general}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_general_s25f1e53f_tail9(float _t172, float _t173, float _t174, float _t175, float _t176, float _t177, float _t178, float _t179, float _t216, float _t217, float _t218, float _t219, int _props) {
         float _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         float _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
@@ -28701,7 +28799,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_identity_s25f1e53f_tail3(_t89, _t87_inv, _t82, _t81, _t88_inv, _t84, _t83, _t86, _t85, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_identity_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_no_lh_identity_s25f1e53f_tail3_s59b36be0_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -28722,6 +28819,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), -((_t86 + _t85) * _t89_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_identity_s25f1e53f_tail3(float _t89, float _t87_inv, float _t82, float _t81, float _t88_inv, float _t84, float _t83, float _t86, float _t85, int _props) {
         float _t89_inv = 1.0f / _t89;
         return new Float4x4(orthoCrop_no_lh_identity_s25f1e53f_tail3_s59b36be0_c0(_t87_inv), orthoCrop_no_lh_identity_s25f1e53f_tail3_s59b36be0_c1(_t88_inv), orthoCrop_no_lh_identity_s25f1e53f_tail3_s59b36be0_c2(_t89_inv), orthoCrop_no_lh_identity_s25f1e53f_tail3_s59b36be0_c3(_t82, _t81, _t87_inv, _t84, _t83, _t88_inv, _t86, _t85, _t89_inv), _props);
@@ -28797,7 +28895,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_translation_s25f1e53f_tail3(_t40, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t84, _t85, _t86, _t87, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_no_lh_translation_s25f1e53f_tail3_s61b0d7bd_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -28818,6 +28915,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -((_t89 + _t88) * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_translation_s25f1e53f_tail3(float _t40, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, float _t84, float _t85, float _t86, float _t87, float _t88, int _props) {
         float _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         float _t90 = _t84 - _t85;
@@ -28931,7 +29029,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_orthogonal_s25f1e53f_tail6(_t93, _t94, _t95, _t96, _t97, _t98, _t99, _t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t108, _t109, _t110, _t111, _t112, _t113, _t114, _t115, _t116, _t153, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_orthogonal_s25f1e53f_tail6}; reached only through it. */
     private Float4 orthoCrop_no_lh_orthogonal_s25f1e53f_tail6_s34290809_c0(float _t159_inv) {
         return new Float4(_t159_inv + _t159_inv, 0.0f, 0.0f, 0.0f);
@@ -28952,6 +29049,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t154 + _t153) * _t159_inv), -((_t156 + _t155) * _t160_inv), -((_t158 + _t157) * _t161_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_orthogonal_s25f1e53f_tail6(float _t93, float _t94, float _t95, float _t96, float _t97, float _t98, float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t108, float _t109, float _t110, float _t111, float _t112, float _t113, float _t114, float _t115, float _t116, float _t153, int _props) {
         float _t154 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
         float _t155 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
@@ -29118,7 +29216,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_orthogonal_identity_s25f1e53f_tail2(_t21, _t22, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t36, _t37, _t38, _t39, _t40, _t41, _t42, _t43, _t44, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_orthogonal_identity_s25f1e53f_tail2}; reached only through it. */
     private Float4 orthoCrop_no_lh_orthogonal_identity_s25f1e53f_tail2_s19134e1a_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -29139,6 +29236,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), -((_t86 + _t85) * _t89_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_orthogonal_identity_s25f1e53f_tail2(float _t21, float _t22, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t36, float _t37, float _t38, float _t39, float _t40, float _t41, float _t42, float _t43, float _t44, int _props) {
         float _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
         float _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
@@ -29226,7 +29324,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3(_t92, _t90_inv, _t85, _t84, _t91_inv, _t87, _t86, _t89, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -29247,6 +29344,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -((_t89 + _t88) * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3(float _t92, float _t90_inv, float _t85, float _t84, float _t91_inv, float _t87, float _t86, float _t89, float _t88, int _props) {
         float _t92_inv = 1.0f / _t92;
         return new Float4x4(orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c0(_t90_inv), orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c1(_t91_inv), orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c2(_t92_inv), orthoCrop_no_lh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c3(_t85, _t84, _t90_inv, _t87, _t86, _t91_inv, _t89, _t88, _t92_inv), _props);
@@ -29343,7 +29441,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_general_identity_s25f1e53f_tail4(_t68, _t69, _t70, _t71, _t72, _t73, _t74, _t75, _t76, _t77, _t78, _t79, _t80, _t81, _t82, _t83, _t120, _t121, _t122, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_general_identity_s25f1e53f_tail4}; reached only through it. */
     private Float4 orthoCrop_no_lh_general_identity_s25f1e53f_tail4_sb4bb7cb_c0(float _t126_inv) {
         return new Float4(_t126_inv + _t126_inv, 0.0f, 0.0f, 0.0f);
@@ -29364,6 +29461,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t121 + _t120) * _t126_inv), -((_t123 + _t122) * _t127_inv), -((_t125 + _t124) * _t128_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_general_identity_s25f1e53f_tail4(float _t68, float _t69, float _t70, float _t71, float _t72, float _t73, float _t74, float _t75, float _t76, float _t77, float _t78, float _t79, float _t80, float _t81, float _t82, float _t83, float _t120, float _t121, float _t122, int _props) {
         float _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
         float _t124 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
@@ -29471,7 +29569,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_lh_general_translation_s25f1e53f_tail5(_t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t144, _t145, _t146, _t147, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_lh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_lh_general_translation_s25f1e53f_tail5}; reached only through it. */
     private Float4 orthoCrop_no_lh_general_translation_s25f1e53f_tail5_s44b93fc8_c0(float _t150_inv) {
         return new Float4(_t150_inv + _t150_inv, 0.0f, 0.0f, 0.0f);
@@ -29492,6 +29589,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t145 + _t144) * _t150_inv), -((_t147 + _t146) * _t151_inv), -((_t149 + _t148) * _t152_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_lh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_lh_general_translation_s25f1e53f_tail5(float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t144, float _t145, float _t146, float _t147, int _props) {
         float _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
         float _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
@@ -29681,7 +29779,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_general_s25f1e53f_tail9(_t172, _t173, _t174, _t175, _t176, _t177, _t178, _t179, _t216, _t217, _t218, _t219, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_general_s25f1e53f_tail9}; reached only through it. */
     private Float4 orthoCrop_no_rh_general_s25f1e53f_tail9_s10c21ac8_c0(float _t222_inv) {
         return new Float4(_t222_inv + _t222_inv, 0.0f, 0.0f, 0.0f);
@@ -29702,6 +29799,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t217 + _t216) * _t222_inv), -((_t219 + _t218) * _t223_inv), -((-_t221 - _t220) * _t224_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_general}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_general_s25f1e53f_tail9(float _t172, float _t173, float _t174, float _t175, float _t176, float _t177, float _t178, float _t179, float _t216, float _t217, float _t218, float _t219, int _props) {
         float _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         float _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
@@ -29783,7 +29881,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_identity_s25f1e53f_tail3(_t89, _t87_inv, _t82, _t81, _t88_inv, _t84, _t83, _t86, _t85, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_identity_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_no_rh_identity_s25f1e53f_tail3_s59b36be0_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -29804,6 +29901,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), -((-_t86 - _t85) * _t89_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_identity_s25f1e53f_tail3(float _t89, float _t87_inv, float _t82, float _t81, float _t88_inv, float _t84, float _t83, float _t86, float _t85, int _props) {
         float _t89_inv = 1.0f / _t89;
         return new Float4x4(orthoCrop_no_rh_identity_s25f1e53f_tail3_s59b36be0_c0(_t87_inv), orthoCrop_no_rh_identity_s25f1e53f_tail3_s59b36be0_c1(_t88_inv), orthoCrop_no_rh_identity_s25f1e53f_tail3_s59b36be0_c2(_t89_inv), orthoCrop_no_rh_identity_s25f1e53f_tail3_s59b36be0_c3(_t82, _t81, _t87_inv, _t84, _t83, _t88_inv, _t86, _t85, _t89_inv), _props);
@@ -29879,7 +29977,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_translation_s25f1e53f_tail3(_t40, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t84, _t85, _t86, _t87, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_no_rh_translation_s25f1e53f_tail3_s61b0d7bd_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -29900,6 +29997,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -((-_t89 - _t88) * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_translation_s25f1e53f_tail3(float _t40, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, float _t84, float _t85, float _t86, float _t87, float _t88, int _props) {
         float _t89 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t40, _t41), _t42), _t43), _t44), _t45), _t46), _t47);
         float _t90 = _t84 - _t85;
@@ -30013,7 +30111,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_orthogonal_s25f1e53f_tail6(_t93, _t94, _t95, _t96, _t97, _t98, _t99, _t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t108, _t109, _t110, _t111, _t112, _t113, _t114, _t115, _t116, _t153, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_orthogonal_s25f1e53f_tail6}; reached only through it. */
     private Float4 orthoCrop_no_rh_orthogonal_s25f1e53f_tail6_s34290809_c0(float _t159_inv) {
         return new Float4(_t159_inv + _t159_inv, 0.0f, 0.0f, 0.0f);
@@ -30034,6 +30131,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t154 + _t153) * _t159_inv), -((_t156 + _t155) * _t160_inv), -((-_t158 - _t157) * _t161_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_orthogonal_s25f1e53f_tail6(float _t93, float _t94, float _t95, float _t96, float _t97, float _t98, float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t108, float _t109, float _t110, float _t111, float _t112, float _t113, float _t114, float _t115, float _t116, float _t153, int _props) {
         float _t154 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
         float _t155 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
@@ -30200,7 +30298,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_orthogonal_identity_s25f1e53f_tail2(_t21, _t22, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t36, _t37, _t38, _t39, _t40, _t41, _t42, _t43, _t44, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_orthogonal_identity_s25f1e53f_tail2}; reached only through it. */
     private Float4 orthoCrop_no_rh_orthogonal_identity_s25f1e53f_tail2_s19134e1a_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -30221,6 +30318,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), -((-_t86 - _t85) * _t89_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_orthogonal_identity_s25f1e53f_tail2(float _t21, float _t22, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t36, float _t37, float _t38, float _t39, float _t40, float _t41, float _t42, float _t43, float _t44, int _props) {
         float _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
         float _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
@@ -30308,7 +30406,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3(_t92, _t90_inv, _t85, _t84, _t91_inv, _t87, _t86, _t89, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -30329,6 +30426,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -((-_t89 - _t88) * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3(float _t92, float _t90_inv, float _t85, float _t84, float _t91_inv, float _t87, float _t86, float _t89, float _t88, int _props) {
         float _t92_inv = 1.0f / _t92;
         return new Float4x4(orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c0(_t90_inv), orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c1(_t91_inv), orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c2(_t92_inv), orthoCrop_no_rh_orthogonal_translation_s25f1e53f_tail3_s77e2e5ba_c3(_t85, _t84, _t90_inv, _t87, _t86, _t91_inv, _t89, _t88, _t92_inv), _props);
@@ -30425,7 +30523,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_general_identity_s25f1e53f_tail4(_t68, _t69, _t70, _t71, _t72, _t73, _t74, _t75, _t76, _t77, _t78, _t79, _t80, _t81, _t82, _t83, _t120, _t121, _t122, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_general_identity_s25f1e53f_tail4}; reached only through it. */
     private Float4 orthoCrop_no_rh_general_identity_s25f1e53f_tail4_sb4bb7cb_c0(float _t126_inv) {
         return new Float4(_t126_inv + _t126_inv, 0.0f, 0.0f, 0.0f);
@@ -30446,6 +30543,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t121 + _t120) * _t126_inv), -((_t123 + _t122) * _t127_inv), -((-_t125 - _t124) * _t128_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_general_identity_s25f1e53f_tail4(float _t68, float _t69, float _t70, float _t71, float _t72, float _t73, float _t74, float _t75, float _t76, float _t77, float _t78, float _t79, float _t80, float _t81, float _t82, float _t83, float _t120, float _t121, float _t122, int _props) {
         float _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
         float _t124 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
@@ -30553,7 +30651,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_no_rh_general_translation_s25f1e53f_tail5(_t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t144, _t145, _t146, _t147, _props);
     }
 
-    /** Private tail of {@code orthoCrop_no_rh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_no_rh_general_translation_s25f1e53f_tail5}; reached only through it. */
     private Float4 orthoCrop_no_rh_general_translation_s25f1e53f_tail5_s44b93fc8_c0(float _t150_inv) {
         return new Float4(_t150_inv + _t150_inv, 0.0f, 0.0f, 0.0f);
@@ -30574,6 +30671,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t145 + _t144) * _t150_inv), -((_t147 + _t146) * _t151_inv), -((-_t149 - _t148) * _t152_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_no_rh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_no_rh_general_translation_s25f1e53f_tail5(float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t144, float _t145, float _t146, float _t147, int _props) {
         float _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
         float _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
@@ -30776,7 +30874,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_general_s25f1e53f_tail9(_t172, _t173, _t174, _t175, _t176, _t177, _t178, _t179, _t216, _t217, _t218, _t219, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_general_s25f1e53f_tail9}; reached only through it. */
     private Float4 orthoCrop_zo_lh_general_s25f1e53f_tail9_s10c21ac8_c0(float _t222_inv) {
         return new Float4(_t222_inv + _t222_inv, 0.0f, 0.0f, 0.0f);
@@ -30797,6 +30894,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t217 + _t216) * _t222_inv), -((_t219 + _t218) * _t223_inv), -(_t221 * _t224_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_general}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_general_s25f1e53f_tail9(float _t172, float _t173, float _t174, float _t175, float _t176, float _t177, float _t178, float _t179, float _t216, float _t217, float _t218, float _t219, int _props) {
         float _t221 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         float _t222 = _t216 - _t217;
@@ -30876,7 +30974,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_identity_s25f1e53f_tail3(_t89, _t87_inv, _t82, _t81, _t88_inv, _t84, _t83, _t86, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_identity_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_lh_identity_s25f1e53f_tail3_sd0d8576_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -30897,6 +30994,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), -(_t86 * _t89_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_identity_s25f1e53f_tail3(float _t89, float _t87_inv, float _t82, float _t81, float _t88_inv, float _t84, float _t83, float _t86, int _props) {
         float _t89_inv = 1.0f / _t89;
         return new Float4x4(orthoCrop_zo_lh_identity_s25f1e53f_tail3_sd0d8576_c0(_t87_inv), orthoCrop_zo_lh_identity_s25f1e53f_tail3_sd0d8576_c1(_t88_inv), orthoCrop_zo_lh_identity_s25f1e53f_tail3_sd0d8576_c2(_t89_inv), orthoCrop_zo_lh_identity_s25f1e53f_tail3_sd0d8576_c3(_t82, _t81, _t87_inv, _t84, _t83, _t88_inv, _t86, _t89_inv), _props);
@@ -30972,7 +31070,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_translation_s25f1e53f_tail3(_t84, _t85, _t86, _t87, _t40, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _t89, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_lh_translation_s25f1e53f_tail3_s50a3e3e_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -30993,6 +31090,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -(_t89 * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_translation_s25f1e53f_tail3(float _t84, float _t85, float _t86, float _t87, float _t40, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, float _t89, int _props) {
         float _t90 = _t84 - _t85;
         float _t90_inv = 1.0f / _t90;
@@ -31105,7 +31203,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_orthogonal_s25f1e53f_tail6(_t93, _t94, _t95, _t96, _t97, _t98, _t99, _t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t108, _t109, _t110, _t111, _t112, _t113, _t114, _t115, _t116, _t153, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_orthogonal_s25f1e53f_tail6}; reached only through it. */
     private Float4 orthoCrop_zo_lh_orthogonal_s25f1e53f_tail6_s34290809_c0(float _t159_inv) {
         return new Float4(_t159_inv + _t159_inv, 0.0f, 0.0f, 0.0f);
@@ -31126,6 +31223,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t154 + _t153) * _t159_inv), -((_t156 + _t155) * _t160_inv), -(_t158 * _t161_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_orthogonal_s25f1e53f_tail6(float _t93, float _t94, float _t95, float _t96, float _t97, float _t98, float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t108, float _t109, float _t110, float _t111, float _t112, float _t113, float _t114, float _t115, float _t116, float _t153, int _props) {
         float _t154 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
         float _t155 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
@@ -31287,7 +31385,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_orthogonal_identity_s25f1e53f_tail2(_t21, _t22, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t36, _t37, _t38, _t39, _t40, _t41, _t42, _t43, _t44, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_orthogonal_identity_s25f1e53f_tail2}; reached only through it. */
     private Float4 orthoCrop_zo_lh_orthogonal_identity_s25f1e53f_tail2_s19134e1a_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -31308,6 +31405,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), -(_t86 * _t89_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_orthogonal_identity_s25f1e53f_tail2(float _t21, float _t22, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t36, float _t37, float _t38, float _t39, float _t40, float _t41, float _t42, float _t43, float _t44, int _props) {
         float _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
         float _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
@@ -31393,7 +31491,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3(_t92, _t90_inv, _t85, _t84, _t91_inv, _t87, _t86, _t89, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3_s2611764d_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -31414,6 +31511,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), -(_t89 * _t92_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3(float _t92, float _t90_inv, float _t85, float _t84, float _t91_inv, float _t87, float _t86, float _t89, int _props) {
         float _t92_inv = 1.0f / _t92;
         return new Float4x4(orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3_s2611764d_c0(_t90_inv), orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3_s2611764d_c1(_t91_inv), orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3_s2611764d_c2(_t92_inv), orthoCrop_zo_lh_orthogonal_translation_s25f1e53f_tail3_s2611764d_c3(_t85, _t84, _t90_inv, _t87, _t86, _t91_inv, _t89, _t92_inv), _props);
@@ -31510,7 +31608,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_general_identity_s25f1e53f_tail4(_t68, _t69, _t70, _t71, _t72, _t73, _t74, _t75, _t76, _t77, _t78, _t79, _t80, _t81, _t82, _t83, _t120, _t121, _t122, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_general_identity_s25f1e53f_tail4}; reached only through it. */
     private Float4 orthoCrop_zo_lh_general_identity_s25f1e53f_tail4_sb4bb7cb_c0(float _t126_inv) {
         return new Float4(_t126_inv + _t126_inv, 0.0f, 0.0f, 0.0f);
@@ -31531,6 +31628,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t121 + _t120) * _t126_inv), -((_t123 + _t122) * _t127_inv), -(_t125 * _t128_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_general_identity_s25f1e53f_tail4(float _t68, float _t69, float _t70, float _t71, float _t72, float _t73, float _t74, float _t75, float _t76, float _t77, float _t78, float _t79, float _t80, float _t81, float _t82, float _t83, float _t120, float _t121, float _t122, int _props) {
         float _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
         float _t125 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
@@ -31637,7 +31735,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_lh_general_translation_s25f1e53f_tail5(_t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t144, _t145, _t146, _t147, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_lh_general_translation_s25f1e53f_tail5}; reached only through it. */
     private Float4 orthoCrop_zo_lh_general_translation_s25f1e53f_tail5_s44b93fc8_c0(float _t150_inv) {
         return new Float4(_t150_inv + _t150_inv, 0.0f, 0.0f, 0.0f);
@@ -31658,6 +31755,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t145 + _t144) * _t150_inv), -((_t147 + _t146) * _t151_inv), -(_t149 * _t152_inv), 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_lh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_lh_general_translation_s25f1e53f_tail5(float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t144, float _t145, float _t146, float _t147, int _props) {
         float _t149 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
         float _t150 = _t144 - _t145;
@@ -31846,7 +31944,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_general_s25f1e53f_tail9(_t172, _t173, _t174, _t175, _t176, _t177, _t178, _t179, _t216, _t217, _t218, _t219, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_general}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_general_s25f1e53f_tail9}; reached only through it. */
     private Float4 orthoCrop_zo_rh_general_s25f1e53f_tail9_s10c21ac8_c0(float _t222_inv) {
         return new Float4(_t222_inv + _t222_inv, 0.0f, 0.0f, 0.0f);
@@ -31867,6 +31964,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t217 + _t216) * _t222_inv), -((_t219 + _t218) * _t223_inv), _t220 * _t224_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_general}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_general_s25f1e53f_tail9(float _t172, float _t173, float _t174, float _t175, float _t176, float _t177, float _t178, float _t179, float _t216, float _t217, float _t218, float _t219, int _props) {
         float _t220 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t172, _t173), _t174), _t175), _t176), _t177), _t178), _t179);
         float _t222 = _t216 - _t217;
@@ -31946,7 +32044,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_identity_s25f1e53f_tail3(_t89, _t87_inv, _t82, _t81, _t88_inv, _t84, _t83, _t85, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_identity_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_rh_identity_s25f1e53f_tail3_s1e8a7ef5_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -31967,6 +32064,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), _t85 * _t89_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_identity_s25f1e53f_tail3(float _t89, float _t87_inv, float _t82, float _t81, float _t88_inv, float _t84, float _t83, float _t85, int _props) {
         float _t89_inv = 1.0f / _t89;
         return new Float4x4(orthoCrop_zo_rh_identity_s25f1e53f_tail3_s1e8a7ef5_c0(_t87_inv), orthoCrop_zo_rh_identity_s25f1e53f_tail3_s1e8a7ef5_c1(_t88_inv), orthoCrop_zo_rh_identity_s25f1e53f_tail3_s1e8a7ef5_c2(_t89_inv), orthoCrop_zo_rh_identity_s25f1e53f_tail3_s1e8a7ef5_c3(_t82, _t81, _t87_inv, _t84, _t83, _t88_inv, _t85, _t89_inv), _props);
@@ -32042,7 +32140,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_translation_s25f1e53f_tail3(_t84, _t85, _t86, _t87, _t88, _t40, _t41, _t42, _t43, _t44, _t45, _t46, _t47, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_rh_translation_s25f1e53f_tail3_s2a5451bd_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -32063,6 +32160,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), _t88 * _t92_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_translation_s25f1e53f_tail3(float _t84, float _t85, float _t86, float _t87, float _t88, float _t40, float _t41, float _t42, float _t43, float _t44, float _t45, float _t46, float _t47, int _props) {
         float _t90 = _t84 - _t85;
         float _t90_inv = 1.0f / _t90;
@@ -32175,7 +32273,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_orthogonal_s25f1e53f_tail6(_t93, _t94, _t95, _t96, _t97, _t98, _t99, _t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t108, _t109, _t110, _t111, _t112, _t113, _t114, _t115, _t116, _t153, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_orthogonal_s25f1e53f_tail6}; reached only through it. */
     private Float4 orthoCrop_zo_rh_orthogonal_s25f1e53f_tail6_s34290809_c0(float _t159_inv) {
         return new Float4(_t159_inv + _t159_inv, 0.0f, 0.0f, 0.0f);
@@ -32196,6 +32293,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t154 + _t153) * _t159_inv), -((_t156 + _t155) * _t160_inv), _t157 * _t161_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_orthogonal}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_orthogonal_s25f1e53f_tail6(float _t93, float _t94, float _t95, float _t96, float _t97, float _t98, float _t99, float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t108, float _t109, float _t110, float _t111, float _t112, float _t113, float _t114, float _t115, float _t116, float _t153, int _props) {
         float _t154 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t93, _t94), _t95), _t96), _t97), _t98), _t99), _t100);
         float _t155 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t101, _t102), _t103), _t104), _t105), _t106), _t107), _t108);
@@ -32357,7 +32455,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_orthogonal_identity_s25f1e53f_tail2(_t21, _t22, _t23, _t24, _t25, _t26, _t27, _t28, _t29, _t30, _t31, _t32, _t33, _t34, _t35, _t36, _t37, _t38, _t39, _t40, _t41, _t42, _t43, _t44, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_orthogonal_identity_s25f1e53f_tail2}; reached only through it. */
     private Float4 orthoCrop_zo_rh_orthogonal_identity_s25f1e53f_tail2_s19134e1a_c0(float _t87_inv) {
         return new Float4(_t87_inv + _t87_inv, 0.0f, 0.0f, 0.0f);
@@ -32378,6 +32475,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t82 + _t81) * _t87_inv), -((_t84 + _t83) * _t88_inv), _t85 * _t89_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_orthogonal_identity_s25f1e53f_tail2(float _t21, float _t22, float _t23, float _t24, float _t25, float _t26, float _t27, float _t28, float _t29, float _t30, float _t31, float _t32, float _t33, float _t34, float _t35, float _t36, float _t37, float _t38, float _t39, float _t40, float _t41, float _t42, float _t43, float _t44, int _props) {
         float _t81 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
         float _t82 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t21, _t22), _t23), _t24), _t25), _t26), _t27), _t28);
@@ -32463,7 +32561,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3(_t92, _t90_inv, _t85, _t84, _t91_inv, _t87, _t86, _t88, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3}; reached only through it. */
     private Float4 orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3_s378e6fcc_c0(float _t90_inv) {
         return new Float4(_t90_inv + _t90_inv, 0.0f, 0.0f, 0.0f);
@@ -32484,6 +32581,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t85 + _t84) * _t90_inv), -((_t87 + _t86) * _t91_inv), _t88 * _t92_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_orthogonal_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3(float _t92, float _t90_inv, float _t85, float _t84, float _t91_inv, float _t87, float _t86, float _t88, int _props) {
         float _t92_inv = 1.0f / _t92;
         return new Float4x4(orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3_s378e6fcc_c0(_t90_inv), orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3_s378e6fcc_c1(_t91_inv), orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3_s378e6fcc_c2(_t92_inv), orthoCrop_zo_rh_orthogonal_translation_s25f1e53f_tail3_s378e6fcc_c3(_t85, _t84, _t90_inv, _t87, _t86, _t91_inv, _t88, _t92_inv), _props);
@@ -32580,7 +32678,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_general_identity_s25f1e53f_tail4(_t68, _t69, _t70, _t71, _t72, _t73, _t74, _t75, _t76, _t77, _t78, _t79, _t80, _t81, _t82, _t83, _t120, _t121, _t122, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_general_identity_s25f1e53f_tail4}; reached only through it. */
     private Float4 orthoCrop_zo_rh_general_identity_s25f1e53f_tail4_sb4bb7cb_c0(float _t126_inv) {
         return new Float4(_t126_inv + _t126_inv, 0.0f, 0.0f, 0.0f);
@@ -32601,6 +32698,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t121 + _t120) * _t126_inv), -((_t123 + _t122) * _t127_inv), _t124 * _t128_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_general_identity}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_general_identity_s25f1e53f_tail4(float _t68, float _t69, float _t70, float _t71, float _t72, float _t73, float _t74, float _t75, float _t76, float _t77, float _t78, float _t79, float _t80, float _t81, float _t82, float _t83, float _t120, float _t121, float _t122, int _props) {
         float _t123 = Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(Math.min(_t68, _t69), _t70), _t71), _t72), _t73), _t74), _t75);
         float _t124 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t76, _t77), _t78), _t79), _t80), _t81), _t82), _t83);
@@ -32707,7 +32805,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return orthoCrop_zo_rh_general_translation_s25f1e53f_tail5(_t100, _t101, _t102, _t103, _t104, _t105, _t106, _t107, _t144, _t145, _t146, _t147, _props);
     }
 
-    /** Private tail of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
     /** Private per-column body of {@code orthoCrop_zo_rh_general_translation_s25f1e53f_tail5}; reached only through it. */
     private Float4 orthoCrop_zo_rh_general_translation_s25f1e53f_tail5_s44b93fc8_c0(float _t150_inv) {
         return new Float4(_t150_inv + _t150_inv, 0.0f, 0.0f, 0.0f);
@@ -32728,6 +32825,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(-((_t145 + _t144) * _t150_inv), -((_t147 + _t146) * _t151_inv), _t148 * _t152_inv, 1.0f);
     }
 
+    /** Private tail of {@code orthoCrop_zo_rh_general_translation}; reached only through it. */
     private Float4x4 orthoCrop_zo_rh_general_translation_s25f1e53f_tail5(float _t100, float _t101, float _t102, float _t103, float _t104, float _t105, float _t106, float _t107, float _t144, float _t145, float _t146, float _t147, int _props) {
         float _t148 = Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(Math.max(_t100, _t101), _t102), _t103), _t104), _t105), _t106), _t107);
         float _t150 = _t144 - _t145;
@@ -35592,7 +35690,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4x4(preRotateAround_translation_s373cbb5f_c0(_t22, _t17, _t21), preRotateAround_translation_s373cbb5f_c1(_t19, _t23, _t18), preRotateAround_translation_s373cbb5f_c2(_t16, _t20, _t24), preRotateAround_translation_s373cbb5f_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t4, _t9, pivotY, _t20, _t17, _t23, rotX, _t6, _t24, _t21, _t18, pivotZ), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code preRotateAround_orthogonal}; reached only through it. */
     /** Private per-column body of {@code preRotateAround_orthogonal_s373cbb5f_tail}; reached only through it. */
     private Float4 preRotateAround_orthogonal_s373cbb5f_tail_s7fb76c9f_c0(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
         return new Float4(Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19)), Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23)), Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18)), 0.0f);
@@ -35613,6 +35710,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19))), Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17))), Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21))), 1.0f);
     }
 
+    /** Private tail of {@code preRotateAround_orthogonal}; reached only through it. */
     private Float4x4 preRotateAround_orthogonal_s373cbb5f_tail(float _t3, float _t4, float _t0, float _t5, float _t16, float _t22, float _t19, float _t2, float pivotX, float rotY, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t21, float _t18, float pivotZ, int _props) {
         float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
         return new Float4x4(preRotateAround_orthogonal_s373cbb5f_tail_s7fb76c9f_c0(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s373cbb5f_tail_s7fb76c9f_c1(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s373cbb5f_tail_s7fb76c9f_c2(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s373cbb5f_tail_s7fb76c9f_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ), _props);
@@ -35646,7 +35744,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return preRotateAround_orthogonal_s373cbb5f_tail(_t3, _t4, _t0, _t5, _t16, _t22, _t19, _t2, pivotX, rotY, _t9, pivotY, _t20, _t17, _t23, rotX, _t21, _t18, pivotZ, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code preRotateAround_affine}; reached only through it. */
     /** Private per-column body of {@code preRotateAround_affine_s373cbb5f_tail}; reached only through it. */
     private Float4 preRotateAround_affine_s373cbb5f_tail_s7fb76c9f_c0(float _t16, float _t22, float _t19, float _t20, float _t17, float _t23, float _t24, float _t21, float _t18) {
         return new Float4(Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19)), Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23)), Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18)), 0.0f);
@@ -35667,6 +35764,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19))), Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17))), Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21))), 1.0f);
     }
 
+    /** Private tail of {@code preRotateAround_affine}; reached only through it. */
     private Float4x4 preRotateAround_affine_s373cbb5f_tail(float _t3, float _t4, float _t0, float _t5, float _t16, float _t22, float _t19, float _t2, float pivotX, float rotY, float _t9, float pivotY, float _t20, float _t17, float _t23, float rotX, float _t21, float _t18, float pivotZ, int _props) {
         float _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0f));
         return new Float4x4(preRotateAround_affine_s373cbb5f_tail_s7fb76c9f_c0(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_affine_s373cbb5f_tail_s7fb76c9f_c1(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_affine_s373cbb5f_tail_s7fb76c9f_c2(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_affine_s373cbb5f_tail_s7fb76c9f_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ), _props);
@@ -35700,7 +35798,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return preRotateAround_affine_s373cbb5f_tail(_t3, _t4, _t0, _t5, _t16, _t22, _t19, _t2, pivotX, rotY, _t9, pivotY, _t20, _t17, _t23, rotX, _t21, _t18, pivotZ, Joml.BIT_AFFINE);
     }
 
-    /** Private tail of {@code preRotateAround_general}; reached only through it. */
     /** Private per-column body of {@code preRotateAround_general_s373cbb5f_tail}; reached only through it. */
     private Float4 preRotateAround_general_s373cbb5f_tail_s335d8bd8_c0(float _t39, float _t18, float _t27, float _t24, float _t40, float _t25, float _t21, float _t29, float _t41, float _t30, float _t26, float _t22) {
         return new Float4(Math.fma(this.m30, _t39, Math.fma(this.m20, _t18, Math.fma(this.m00, _t27, this.m10 * _t24))), Math.fma(this.m30, _t40, Math.fma(this.m20, _t25, Math.fma(this.m00, _t21, this.m10 * _t29))), Math.fma(this.m30, _t41, Math.fma(this.m20, _t30, Math.fma(this.m00, _t26, this.m10 * _t22))), this.m30);
@@ -35721,6 +35818,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m33, _t39, Math.fma(this.m23, _t18, Math.fma(this.m03, _t27, this.m13 * _t24))), Math.fma(this.m33, _t40, Math.fma(this.m23, _t25, Math.fma(this.m03, _t21, this.m13 * _t29))), Math.fma(this.m33, _t41, Math.fma(this.m23, _t30, Math.fma(this.m03, _t26, this.m13 * _t22))), this.m33);
     }
 
+    /** Private tail of {@code preRotateAround_general}; reached only through it. */
     private Float4x4 preRotateAround_general_s373cbb5f_tail(float pivotY, float _t22, float pivotZ, float rotX, float _t5, float rotY, float _t6, float pivotX, float _t26, float _t39, float _t18, float _t27, float _t24, float _t40, float _t25, float _t21, float _t29, float _t30, int _props) {
         float _t41 = Math.fma(-pivotY, _t22, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t26)));
         return new Float4x4(preRotateAround_general_s373cbb5f_tail_s335d8bd8_c0(_t39, _t18, _t27, _t24, _t40, _t25, _t21, _t29, _t41, _t30, _t26, _t22), preRotateAround_general_s373cbb5f_tail_s335d8bd8_c1(_t39, _t18, _t27, _t24, _t40, _t25, _t21, _t29, _t41, _t30, _t26, _t22), preRotateAround_general_s373cbb5f_tail_s335d8bd8_c2(_t39, _t18, _t27, _t24, _t40, _t25, _t21, _t29, _t41, _t30, _t26, _t22), preRotateAround_general_s373cbb5f_tail_s335d8bd8_c3(_t39, _t18, _t27, _t24, _t40, _t25, _t21, _t29, _t41, _t30, _t26, _t22), _props);
@@ -37310,7 +37408,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4x4(rotateAround_translation_s373cbb5f_c0(_t0, _t6, _t16, _t18, _t22), rotateAround_translation_s373cbb5f_c1(_t20, _t4, _t8, _t16, _t19), rotateAround_translation_s373cbb5f_c2(_t17, _t21, _t4, _t8, _t0, _t6), rotateAround_translation_s373cbb5f_c3(pivotX, rotY, _t6, _t11, _t2, _t20, _t3, _t17, pivotY, rotX, _t8, _t5, _t18, _t21, pivotZ, _t22, _t19), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code rotateAround_orthogonal}; reached only through it. */
     /** Private per-column body of {@code rotateAround_orthogonal_s373cbb5f_tail}; reached only through it. */
     private Float4 rotateAround_orthogonal_s373cbb5f_tail_s71a20ba8_c0(float _t24, float _t27, float _t18) {
         return new Float4(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)), 0.0f);
@@ -37331,6 +37428,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code rotateAround_orthogonal}; reached only through it. */
     private Float4x4 rotateAround_orthogonal_s373cbb5f_tail(float pivotY, float _t19, float pivotZ, float rotX, float _t5, float rotY, float _t6, float pivotX, float _t24, float _t27, float _t18, float _t25, float _t28, float _t29, float _t20, float _t26, float _t39, float _t40, int _props) {
         float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
         return new Float4x4(rotateAround_orthogonal_s373cbb5f_tail_s71a20ba8_c0(_t24, _t27, _t18), rotateAround_orthogonal_s373cbb5f_tail_s71a20ba8_c1(_t19, _t25, _t28), rotateAround_orthogonal_s373cbb5f_tail_s71a20ba8_c2(_t29, _t20, _t26), rotateAround_orthogonal_s373cbb5f_tail_s71a20ba8_c3(_t39, _t40, _t41), _props);
@@ -37367,7 +37465,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return rotateAround_orthogonal_s373cbb5f_tail(pivotY, _t19, pivotZ, rotX, _t5, rotY, _t6, pivotX, _t24, _t27, _t18, _t25, _t28, _t29, _t20, _t26, _t39, _t40, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code rotateAround_affine}; reached only through it. */
     /** Private per-column body of {@code rotateAround_affine_s373cbb5f_tail}; reached only through it. */
     private Float4 rotateAround_affine_s373cbb5f_tail_s71a20ba8_c0(float _t24, float _t27, float _t18) {
         return new Float4(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)), 0.0f);
@@ -37388,6 +37485,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))), 1.0f);
     }
 
+    /** Private tail of {@code rotateAround_affine}; reached only through it. */
     private Float4x4 rotateAround_affine_s373cbb5f_tail(float pivotY, float _t19, float pivotZ, float rotX, float _t5, float rotY, float _t6, float pivotX, float _t24, float _t27, float _t18, float _t25, float _t28, float _t29, float _t20, float _t26, float _t39, float _t40, int _props) {
         float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
         return new Float4x4(rotateAround_affine_s373cbb5f_tail_s71a20ba8_c0(_t24, _t27, _t18), rotateAround_affine_s373cbb5f_tail_s71a20ba8_c1(_t19, _t25, _t28), rotateAround_affine_s373cbb5f_tail_s71a20ba8_c2(_t29, _t20, _t26), rotateAround_affine_s373cbb5f_tail_s71a20ba8_c3(_t39, _t40, _t41), _props);
@@ -37424,7 +37522,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return rotateAround_affine_s373cbb5f_tail(pivotY, _t19, pivotZ, rotX, _t5, rotY, _t6, pivotX, _t24, _t27, _t18, _t25, _t28, _t29, _t20, _t26, _t39, _t40, Joml.BIT_AFFINE);
     }
 
-    /** Private tail of {@code rotateAround_general}; reached only through it. */
     /** Private per-column body of {@code rotateAround_general_s373cbb5f_tail}; reached only through it. */
     private Float4 rotateAround_general_s373cbb5f_tail_s71a20ba8_c0(float _t24, float _t27, float _t18) {
         return new Float4(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)), Math.fma(this.m32, _t24, Math.fma(this.m30, _t27, this.m31 * _t18)));
@@ -37445,6 +37542,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))), Math.fma(this.m30, _t39, Math.fma(this.m31, _t40, Math.fma(this.m32, _t41, this.m33))));
     }
 
+    /** Private tail of {@code rotateAround_general}; reached only through it. */
     private Float4x4 rotateAround_general_s373cbb5f_tail(float pivotY, float _t19, float pivotZ, float rotX, float _t5, float rotY, float _t6, float pivotX, float _t24, float _t27, float _t18, float _t25, float _t28, float _t29, float _t20, float _t26, float _t39, float _t40, int _props) {
         float _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
         return new Float4x4(rotateAround_general_s373cbb5f_tail_s71a20ba8_c0(_t24, _t27, _t18), rotateAround_general_s373cbb5f_tail_s71a20ba8_c1(_t19, _t25, _t28), rotateAround_general_s373cbb5f_tail_s71a20ba8_c2(_t29, _t20, _t26), rotateAround_general_s373cbb5f_tail_s71a20ba8_c3(_t39, _t40, _t41), _props);
@@ -39946,7 +40044,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4x4(shadow_translation_s5bbc4a48_c0(_t0, _t4, lightX, planeX, _t11, _t2, lightY, _t3, lightZ), shadow_translation_s5bbc4a48_c1(_t0, _t7, lightX, planeY, _t2, lightY, _t11, _t3, lightZ), shadow_translation_s5bbc4a48_c2(_t0, _t8, lightX, planeZ, _t2, lightY, _t3, lightZ, _t11), shadow_translation_s5bbc4a48_c3(_t12, lightX, planeW, lightY, lightZ), 0);
     }
 
-    /** Private tail of {@code shadow_orthogonal}; reached only through it. */
     /** Private per-column body of {@code shadow_orthogonal_s5bbc4a48_tail}; reached only through it. */
     private Float4 shadow_orthogonal_s5bbc4a48_tail_sdd5beb5_c0(float _t0, float _t7, float _t1, float _t8, float _t9, float planeW, float lightW, float planeY, float lightY, float _t13, float _t5, float _t16, float _t17, float _t6, float _t19, float _t20) {
         return new Float4(Math.fma(_t0, _t7, Math.fma(_t1, _t8, Math.fma(_t1, _t9, Math.fma(planeW, lightW * this.m00, Math.fma(planeY, lightY * this.m00, _t13 * this.m00))))), Math.fma(_t5, _t7, Math.fma(_t1, _t16, Math.fma(_t1, _t17, Math.fma(planeW, lightW * this.m10, Math.fma(planeY, lightY * this.m10, _t13 * this.m10))))), Math.fma(_t6, _t7, Math.fma(_t1, _t19, Math.fma(_t1, _t20, Math.fma(planeW, lightW * this.m20, Math.fma(planeY, lightY * this.m20, _t13 * this.m20))))), -_t7);
@@ -39967,6 +40064,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m03, _t13, Math.fma(this.m03, _t14, Math.fma(this.m03, _t15, Math.fma(_t4, _t8, Math.fma(_t4, _t9, -(planeW * _t11)))))), Math.fma(this.m13, _t13, Math.fma(this.m13, _t14, Math.fma(this.m13, _t15, Math.fma(_t4, _t16, Math.fma(_t4, _t17, -(planeW * _t18)))))), Math.fma(this.m23, _t13, Math.fma(this.m23, _t14, Math.fma(this.m23, _t15, Math.fma(_t4, _t19, Math.fma(_t4, _t20, -(planeW * _t21)))))), Math.fma(lightZ, planeZ, Math.fma(lightX, planeX, _t14)));
     }
 
+    /** Private tail of {@code shadow_orthogonal}; reached only through it. */
     private Float4x4 shadow_orthogonal_s5bbc4a48_tail(float lightX, float _t0, float _t7, float _t1, float _t8, float _t9, float planeW, float lightW, float planeY, float lightY, float _t13, float _t10, float _t2, float planeZ, float lightZ, float planeX, float _t11, float _t12, float _t3, float _t14, float _t15, float _t4, float _t5, float _t16, float _t17, float _t18, float _t6, float _t19, float _t20, int _props) {
         float _t21 = lightX * this.m20;
         return new Float4x4(shadow_orthogonal_s5bbc4a48_tail_sdd5beb5_c0(_t0, _t7, _t1, _t8, _t9, planeW, lightW, planeY, lightY, _t13, _t5, _t16, _t17, _t6, _t19, _t20), shadow_orthogonal_s5bbc4a48_tail_sdd5beb5_c1(_t0, _t10, _t2, _t8, planeW, lightW, planeZ, lightZ, planeX, lightX, planeY, _t11, _t5, _t16, _t18, _t6, _t19, _t21), shadow_orthogonal_s5bbc4a48_tail_sdd5beb5_c2(_t0, _t12, planeW, lightW, planeY, lightY, planeX, lightX, _t3, _t9, planeZ, _t11, _t5, _t17, _t18, _t6, _t20, _t21), shadow_orthogonal_s5bbc4a48_tail_sdd5beb5_c3(_t13, _t14, _t15, _t4, _t8, _t9, planeW, _t11, _t16, _t17, _t18, _t19, _t20, _t21, lightZ, planeZ, lightX, planeX), _props);
@@ -40002,7 +40100,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return shadow_orthogonal_s5bbc4a48_tail(lightX, _t0, _t7, _t1, _t8, _t9, planeW, lightW, planeY, lightY, _t13, _t10, _t2, planeZ, lightZ, planeX, _t11, _t12, _t3, _t14, _t15, _t4, _t5, _t16, _t17, _t18, _t6, _t19, _t20, 0);
     }
 
-    /** Private tail of {@code shadow_affine}; reached only through it. */
     /** Private per-column body of {@code shadow_affine_s5bbc4a48_tail}; reached only through it. */
     private Float4 shadow_affine_s5bbc4a48_tail_s6e064e17_c0(float _t0, float _t13, float _t1, float _t14, float _t30, float _t17, float _t7, float _t8, float _t10, float _t11) {
         return new Float4(Math.fma(_t0, _t13, Math.fma(_t1, _t14, Math.fma(this.m00, _t30, -(this.m01 * _t17)))), Math.fma(_t7, _t13, Math.fma(_t8, _t14, Math.fma(this.m10, _t30, -(this.m11 * _t17)))), Math.fma(_t10, _t13, Math.fma(_t11, _t14, Math.fma(this.m20, _t30, -(this.m21 * _t17)))), -_t13);
@@ -40023,6 +40120,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m03, _t33, Math.fma(_t1, _t24, Math.fma(_t5, _t25, -(this.m00 * _t26)))), Math.fma(this.m13, _t33, Math.fma(_t8, _t24, Math.fma(_t9, _t25, -(this.m10 * _t26)))), Math.fma(this.m23, _t33, Math.fma(_t11, _t24, Math.fma(_t12, _t25, -(this.m20 * _t26)))), _t33);
     }
 
+    /** Private tail of {@code shadow_affine}; reached only through it. */
     private Float4x4 shadow_affine_s5bbc4a48_tail(float lightW, float planeW, float _t29, float _t0, float _t13, float _t1, float _t14, float _t30, float _t17, float _t18, float _t19, float _t31, float _t20, float _t21, float _t32, float _t5, float _t22, float _t23, float _t24, float _t25, float _t26, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, int _props) {
         float _t33 = Math.fma(-lightW, planeW, _t29);
         return new Float4x4(shadow_affine_s5bbc4a48_tail_s6e064e17_c0(_t0, _t13, _t1, _t14, _t30, _t17, _t7, _t8, _t10, _t11), shadow_affine_s5bbc4a48_tail_s6e064e17_c1(_t0, _t18, _t1, _t19, _t31, _t20, _t7, _t8, _t10, _t11), shadow_affine_s5bbc4a48_tail_s6e064e17_c2(_t0, _t21, _t32, _t5, _t22, _t23, _t7, _t9, _t10, _t12), shadow_affine_s5bbc4a48_tail_s6e064e17_c3(_t33, _t1, _t24, _t5, _t25, _t26, _t8, _t9, _t11, _t12), _props);
@@ -40062,7 +40160,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return shadow_affine_s5bbc4a48_tail(lightW, planeW, _t29, _t0, _t13, _t1, _t14, _t30, _t17, _t18, _t19, _t31, _t20, _t21, _t32, _t5, _t22, _t23, _t24, _t25, _t26, _t7, _t8, _t9, _t10, _t11, _t12, 0);
     }
 
-    /** Private tail of {@code shadow_general}; reached only through it. */
     /** Private per-column body of {@code shadow_general_s5bbc4a48_tail}; reached only through it. */
     private Float4 shadow_general_s5bbc4a48_tail_s2cb2be2c_c0(float _t0, float _t16, float _t1, float _t17, float _t33, float _t20, float _t7, float _t8, float _t10, float _t11, float _t13, float _t14) {
         return new Float4(Math.fma(_t0, _t16, Math.fma(_t1, _t17, Math.fma(this.m00, _t33, -(this.m01 * _t20)))), Math.fma(_t7, _t16, Math.fma(_t8, _t17, Math.fma(this.m10, _t33, -(this.m11 * _t20)))), Math.fma(_t10, _t16, Math.fma(_t11, _t17, Math.fma(this.m20, _t33, -(this.m21 * _t20)))), Math.fma(_t13, _t16, Math.fma(_t14, _t17, Math.fma(this.m30, _t33, -(this.m31 * _t20)))));
@@ -40083,6 +40180,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m03, _t36, Math.fma(_t1, _t27, Math.fma(_t5, _t28, -(this.m00 * _t29)))), Math.fma(this.m13, _t36, Math.fma(_t8, _t27, Math.fma(_t9, _t28, -(this.m10 * _t29)))), Math.fma(this.m23, _t36, Math.fma(_t11, _t27, Math.fma(_t12, _t28, -(this.m20 * _t29)))), Math.fma(this.m33, _t36, Math.fma(_t14, _t27, Math.fma(_t15, _t28, -(this.m30 * _t29)))));
     }
 
+    /** Private tail of {@code shadow_general}; reached only through it. */
     private Float4x4 shadow_general_s5bbc4a48_tail(float lightY, float planeY, float _t32, float lightZ, float planeZ, float lightW, float planeW, float _t0, float _t16, float _t1, float _t17, float _t33, float _t20, float _t21, float _t22, float _t23, float _t24, float _t5, float _t25, float _t26, float _t27, float _t28, float _t29, float _t7, float _t8, float _t9, float _t10, float _t11, float _t12, float _t13, float _t14, float _t15, int _props) {
         float _t34 = Math.fma(-lightY, planeY, _t32);
         float _t35 = Math.fma(-lightZ, planeZ, _t32);
@@ -40379,7 +40477,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return trapezoidCrop(p0.x(), p0.y(), p1.x(), p1.y(), p2.x(), p2.y(), p3.x(), p3.y());
     }
 
-    /** Private tail of {@code trapezoidCrop_identity}; reached only through it. */
     /** Private per-column body of {@code trapezoidCrop_identity_s7d5258d0_tail}; reached only through it. */
     private Float4 trapezoidCrop_identity_s7d5258d0_tail_s4e444cbf_c0(float _sp1, float _t25, float _t53, float _t61) {
         return new Float4(_sp1 * _t25 - _t53, _t61 * _t53, 0.0f, _t53);
@@ -40400,6 +40497,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(_sp1 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t30)) - _t58, _t61 * _t58 - _t60, 0.0f, _t58);
     }
 
+    /** Private tail of {@code trapezoidCrop_identity}; reached only through it. */
     private Float4x4 trapezoidCrop_identity_s7d5258d0_tail(float _t16, float _t30, float p2X, float _t25, float p2Y, float _t26, float p0X, float _t3, float p0Y, float _t5, float p1Y, float p1X, float _t0, float _t45, float p3X, float p3Y, float _sp1, int _props) {
         float _t47 = _t16 + (_t30 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t3, -(p0Y * _t5)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t30));
         float _t50 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t45 / _t47));
@@ -40436,7 +40534,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return trapezoidCrop_identity_s7d5258d0_tail(_t16, _t30, p2X, _t25, p2Y, _t26, p0X, _t3, p0Y, _t5, p1Y, p1X, _t0, _t45, p3X, p3Y, _sp1, 0);
     }
 
-    /** Private tail of {@code trapezoidCrop_translation}; reached only through it. */
     /** Private per-column body of {@code trapezoidCrop_translation_s7d5258d0_tail}; reached only through it. */
     private Float4 trapezoidCrop_translation_s7d5258d0_tail_s68ddb67f_c0(float _t59, float _t67, float _t56_inv, float _t57) {
         return new Float4(_t59, _t67 * _t56_inv, 0.0f, _t57);
@@ -40457,6 +40554,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m03, _t59, Math.fma(this.m13, _t60, _sp1 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t32)) - _sp2)), _t66 * _sp2 - _t65 + Math.fma(this.m03, _t67, this.m13 * _t68) * _t56_inv, this.m23, Math.fma(this.m03, _t5, Math.fma(this.m13, _t3, _t54)) * _t56_inv);
     }
 
+    /** Private tail of {@code trapezoidCrop_translation}; reached only through it. */
     private Float4x4 trapezoidCrop_translation_s7d5258d0_tail(float _t16, float _t32, float p2X, float _t25, float p2Y, float _t26, float p0X, float _t3, float p0Y, float _t5, float p1Y, float p1X, float _t0, float _t47, float p3X, float p3Y, float _sp1, int _props) {
         float _t51 = _t16 + (_t32 + Math.fma(p2X, _t25, p2Y * _t26)) + (Math.fma(p0X, _t3, -(p0Y * _t5)) + (Math.fma(-p1Y, _t26, -(p1X * _t25)) - _t32));
         float _t54 = Math.fma(_t0, _t5, Math.fma(-p0Y, _t3, _t47 / _t51));
@@ -40513,7 +40611,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return trapezoidCrop_orthogonal_s7d5258d0_tail2(_t66, _t3, _t59, _t60, _sp1, p0Y, _t5, _t0, _t32, _sp2, _t67, _t56_inv, _t65, _t54, _props);
     }
 
-    /** Private tail of {@code trapezoidCrop_orthogonal}; reached only through it. */
     /** Private per-column body of {@code trapezoidCrop_orthogonal_s7d5258d0_tail2}; reached only through it. */
     private Float4 trapezoidCrop_orthogonal_s7d5258d0_tail2_s35038100_c0(float _t59, float _t60, float _t67, float _t68, float _t56_inv, float _t5, float _t3) {
         return new Float4(Math.fma(this.m00, _t59, this.m10 * _t60), Math.fma(this.m00, _t67, this.m10 * _t68) * _t56_inv, this.m20, Math.fma(this.m00, _t5, this.m10 * _t3) * _t56_inv);
@@ -40534,6 +40631,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m03, _t59, Math.fma(this.m13, _t60, _sp1 * Math.fma(p0Y, _t5, Math.fma(_t0, _t3, _t32)) - _sp2)), _t66 * _sp2 - _t65 + Math.fma(this.m03, _t67, this.m13 * _t68) * _t56_inv, this.m23, Math.fma(this.m03, _t5, Math.fma(this.m13, _t3, _t54)) * _t56_inv);
     }
 
+    /** Private tail of {@code trapezoidCrop_orthogonal}; reached only through it. */
     private Float4x4 trapezoidCrop_orthogonal_s7d5258d0_tail2(float _t66, float _t3, float _t59, float _t60, float _sp1, float p0Y, float _t5, float _t0, float _t32, float _sp2, float _t67, float _t56_inv, float _t65, float _t54, int _props) {
         float _t68 = _t66 * _t3;
         return new Float4x4(trapezoidCrop_orthogonal_s7d5258d0_tail2_s35038100_c0(_t59, _t60, _t67, _t68, _t56_inv, _t5, _t3), trapezoidCrop_orthogonal_s7d5258d0_tail2_s35038100_c1(_t59, _t60, _t67, _t68, _t56_inv, _t5, _t3), trapezoidCrop_orthogonal_s7d5258d0_tail2_s35038100_c2(_t59, _t60, _t67, _t68, _t56_inv, _t5, _t3), trapezoidCrop_orthogonal_s7d5258d0_tail2_s35038100_c3(_t59, _t60, _sp1, p0Y, _t5, _t0, _t3, _t32, _sp2, _t66, _t65, _t67, _t68, _t56_inv, _t54), _props);
@@ -40579,7 +40677,6 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return trapezoidCrop_general_s7d5258d0_tail2(_t72, _sp2, _t71, _t69, _t63, _t64, _t73, _t74, _t60_inv, _t58, _t3, _t4, _props);
     }
 
-    /** Private tail of {@code trapezoidCrop_general}; reached only through it. */
     /** Private per-column body of {@code trapezoidCrop_general_s7d5258d0_tail2}; reached only through it. */
     private Float4 trapezoidCrop_general_s7d5258d0_tail2_s1ec18c01_c0(float _t69, float _t63, float _t64, float _t77, float _t73, float _t74, float _t60_inv, float _t58, float _t3, float _t4) {
         return new Float4(Math.fma(this.m30, _t69, Math.fma(this.m00, _t63, this.m10 * _t64)), Math.fma(this.m30, _t77, Math.fma(this.m00, _t73, this.m10 * _t74) * _t60_inv), this.m20, Math.fma(this.m30, _t58, Math.fma(this.m00, _t3, this.m10 * _t4)) * _t60_inv);
@@ -40600,6 +40697,7 @@ public value record Float4x4(float m00, float m01, float m02, float m03, float m
         return new Float4(Math.fma(this.m33, _t69, Math.fma(this.m03, _t63, this.m13 * _t64)), Math.fma(this.m33, _t77, Math.fma(this.m03, _t73, this.m13 * _t74) * _t60_inv), this.m23, Math.fma(this.m33, _t58, Math.fma(this.m03, _t3, this.m13 * _t4)) * _t60_inv);
     }
 
+    /** Private tail of {@code trapezoidCrop_general}; reached only through it. */
     private Float4x4 trapezoidCrop_general_s7d5258d0_tail2(float _t72, float _sp2, float _t71, float _t69, float _t63, float _t64, float _t73, float _t74, float _t60_inv, float _t58, float _t3, float _t4, int _props) {
         float _t77 = _t72 * _sp2 - _t71;
         return new Float4x4(trapezoidCrop_general_s7d5258d0_tail2_s1ec18c01_c0(_t69, _t63, _t64, _t77, _t73, _t74, _t60_inv, _t58, _t3, _t4), trapezoidCrop_general_s7d5258d0_tail2_s1ec18c01_c1(_t69, _t63, _t64, _t77, _t73, _t74, _t60_inv, _t58, _t3, _t4), trapezoidCrop_general_s7d5258d0_tail2_s1ec18c01_c2(_t69, _t63, _t64, _t77, _t73, _t74, _t60_inv, _t58, _t3, _t4), trapezoidCrop_general_s7d5258d0_tail2_s1ec18c01_c3(_t69, _t63, _t64, _t77, _t73, _t74, _t60_inv, _t58, _t3, _t4), _props);

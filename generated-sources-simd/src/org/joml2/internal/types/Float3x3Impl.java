@@ -20443,6 +20443,200 @@ public class Float3x3Impl implements Float3x3 {
         return dest;
     }
 
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param v the direction to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2 transformDirection(Float2R v, @Mutated Float2 dest) {
+        return transformDirection(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the direction to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformDirection(Float2R v, @Mutated Double2 dest) {
+        return transformDirection(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Float2 transformDirection_identity(float vX, float vY, @Mutated Float2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2Impl) dest).data;
+        dd[0] = vX;
+        dd[1] = vY;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Float2 transformDirection_general(float vX, float vY, @Mutated Float2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2Impl) dest).data;
+        dd[0] = Math.fma(sd[0], vX, sd[3] * vY);
+        dd[1] = Math.fma(sd[1], vX, sd[4] * vY);
+        return dest;
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2 transformDirection(float vX, float vY, @Mutated Float2 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformDirection_identity(vX, vY, dest);
+        return transformDirection_general(vX, vY, dest);
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformDirection(float vX, float vY, @Mutated Double2 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double2Impl) dest).data;
+        dd[0] = Math.fma(sd[0], vX, sd[3] * vY);
+        dd[1] = Math.fma(sd[1], vX, sd[4] * vY);
+        return dest;
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param v the position to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2 transformPosition(Float2R v, @Mutated Float2 dest) {
+        return transformPosition(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the position to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformPosition(Float2R v, @Mutated Double2 dest) {
+        return transformPosition(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Float2 transformPosition_identity(float vX, float vY, @Mutated Float2 dest) {
+        return transformDirection_identity(vX, vY, dest);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Float2 transformPosition_translation(float vX, float vY, @Mutated Float2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2Impl) dest).data;
+        dd[0] = sd[6] + vX;
+        dd[1] = sd[7] + vY;
+        return dest;
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Float2 transformPosition_general(float vX, float vY, @Mutated Float2 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float2Impl) dest).data;
+        dd[0] = Math.fma(sd[0], vX, Math.fma(sd[3], vY, sd[6]));
+        dd[1] = Math.fma(sd[1], vX, Math.fma(sd[4], vY, sd[7]));
+        return dest;
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float2 transformPosition(float vX, float vY, @Mutated Float2 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transformPosition_identity(vX, vY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformPosition_translation(vX, vY, dest);
+        return transformPosition_general(vX, vY, dest);
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformPosition(float vX, float vY, @Mutated Double2 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double2Impl) dest).data;
+        dd[0] = Math.fma(sd[0], vX, Math.fma(sd[3], vY, sd[6]));
+        dd[1] = Math.fma(sd[1], vX, Math.fma(sd[4], vY, sd[7]));
+        return dest;
+    }
+
     public float m00() { return data[0]; }
     public float m01() { return data[3]; }
     public float m02() { return data[6]; }

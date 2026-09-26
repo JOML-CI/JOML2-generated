@@ -1490,6 +1490,110 @@ public interface Float4R {
     Double4 lerp(float otherX, float otherY, float otherZ, float otherW, float tX, float tY, float tZ, float tW, @Mutated Double4 dest);
 
     /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 slerp(Float4R other, float t, @Mutated Float4 dest);
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 slerp(Float4R other, float t, @Mutated Double4 dest);
+
+    /**
+     * Spherically interpolate between this vector and ({@code x}, {@code y}, {@code z}, {@code w})
+     * using the interpolation factor {@code t}: the direction turns at a constant rate along the
+     * shorter arc between the two directions, and the length changes linearly between the two
+     * lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 slerp(float x, float y, float z, float w, float t, @Mutated Float4 dest);
+
+    /**
+     * Spherically interpolate between this vector and ({@code x}, {@code y}, {@code z}, {@code w})
+     * using the interpolation factor {@code t}: the direction turns at a constant rate along the
+     * shorter arc between the two directions, and the length changes linearly between the two
+     * lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}, {@code w}) (interpolation factor {@code 1}).
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z, w)}
+     * @param y the {@code y} component of the vector {@code (x, y, z, w)}
+     * @param z the {@code z} component of the vector {@code (x, y, z, w)}
+     * @param w the {@code w} component of the vector {@code (x, y, z, w)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 slerp(float x, float y, float z, float w, float t, @Mutated Double4 dest);
+
+    /**
      * Compute the absolute value of each component of this vector and store the result in
      * {@code dest}.
      *
@@ -2066,6 +2170,96 @@ public interface Float4R {
      * @return dest
      */
     Double4 cosh(@Mutated Double4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 cross(Float4R v, Float4R w, @Mutated Float4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 cross(Float4R v, Float4R w, @Mutated Double4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float4 cross(float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW, @Mutated Float4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 cross(float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW, @Mutated Double4 dest);
 
     /**
      * Compute the value converted from radians to degrees of each component of this vector and

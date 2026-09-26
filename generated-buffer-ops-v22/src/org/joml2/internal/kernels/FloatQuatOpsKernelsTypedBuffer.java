@@ -175,6 +175,33 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.FloatBuffer mul_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float scalar) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        FloatQuatOpsKernelsAddress.mul_unsafe(_destBase, _srcBase, scalar);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer mul_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float scalar) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
+            FloatQuatOps.mul(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, scalar);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            FloatQuatOpsKernelsSegment.mul_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, scalar);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _selfz = src.get(srcOffset + 2);
+        float _selfw = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, scalar * _selfx);
+        dest.put(destOffset + 1, scalar * _selfy);
+        dest.put(destOffset + 2, scalar * _selfz);
+        dest.put(destOffset + 3, scalar * _selfw);
+        return dest;
+    }
+
     public static java.nio.FloatBuffer negate_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
@@ -258,6 +285,34 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         dest.put(destOffset + 1, _selfy - _othery);
         dest.put(destOffset + 2, _selfz - _otherz);
         dest.put(destOffset + 3, _selfw - _otherw);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer makeUniformRotation_unsafe(java.nio.FloatBuffer dest, int destOffset, float u1, float u2, float u3) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        FloatQuatOpsKernelsAddress.makeUniformRotation_unsafe(_destBase, u1, u2, u3);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer makeUniformRotation_api(java.nio.FloatBuffer dest, int destOffset, float u1, float u2, float u3) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4) {
+            FloatQuatOps.makeUniformRotation(dest.array(), dest.arrayOffset() + destOffset, u1, u2, u3);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            FloatQuatOpsKernelsSegment.makeUniformRotation_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, u1, u2, u3);
+            return dest;
+        }
+        float _t0 = (float) Math.sqrt(u1);
+        float _t1 = u2 * 6.2831855f;
+        float _t3 = u3 * 6.2831855f;
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sqrt(1.0f - u1);
+        float _t6 = (float) Math.sin(_t3);
+        dest.put(destOffset + 0, _t4 * _t5);
+        dest.put(destOffset + 1, (float) Math.cosFromSin(_t4, _t1) * _t5);
+        dest.put(destOffset + 2, _t6 * _t0);
+        dest.put(destOffset + 3, (float) Math.cosFromSin(_t6, _t3) * _t0);
         return dest;
     }
 
@@ -1851,6 +1906,65 @@ public final class FloatQuatOpsKernelsTypedBuffer {
         dest.put(destOffset + 1, Math.fma(_othery, _selfw, _otherz * _selfx) + Math.fma(_otherw, _selfy, -(_otherx * _selfz)));
         dest.put(destOffset + 2, Math.fma(_otherx, _selfy, _otherw * _selfz) + Math.fma(_otherz, _selfw, -(_othery * _selfx)));
         dest.put(destOffset + 3, Math.fma(_otherw, _selfw, -(_otherx * _selfx)) - Math.fma(_othery, _selfy, _otherz * _selfz));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer addScaled_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        FloatQuatOpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, otherX, otherY, otherZ, otherW, weight);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer addScaled_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
+            FloatQuatOps.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, otherZ, otherW, weight);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            FloatQuatOpsKernelsSegment.addScaled_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, otherX, otherY, otherZ, otherW, weight);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _selfz = src.get(srcOffset + 2);
+        float _selfw = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, Math.fma(weight, otherX, _selfx));
+        dest.put(destOffset + 1, Math.fma(weight, otherY, _selfy));
+        dest.put(destOffset + 2, Math.fma(weight, otherZ, _selfz));
+        dest.put(destOffset + 3, Math.fma(weight, otherW, _selfw));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer addScaled_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 4L;
+        FloatQuatOpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, _otherBase, weight);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer addScaled_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float weight) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 4) {
+            FloatQuatOps.addScaled(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, weight);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            FloatQuatOpsKernelsSegment.addScaled_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L, weight);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _selfz = src.get(srcOffset + 2);
+        float _selfw = src.get(srcOffset + 3);
+        float _otherx = other.get(otherOffset + 0);
+        float _othery = other.get(otherOffset + 1);
+        float _otherz = other.get(otherOffset + 2);
+        float _otherw = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, Math.fma(weight, _otherx, _selfx));
+        dest.put(destOffset + 1, Math.fma(weight, _othery, _selfy));
+        dest.put(destOffset + 2, Math.fma(weight, _otherz, _selfz));
+        dest.put(destOffset + 3, Math.fma(weight, _otherw, _selfw));
         return dest;
     }
 

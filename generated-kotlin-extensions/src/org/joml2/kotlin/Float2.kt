@@ -26,6 +26,8 @@ inline operator fun Float2.unaryMinus(): Float2 = negate()
 inline operator fun Float2.minus(other: Float2): Float2 = sub(other)
 /** [Float2.angleBetween] as an infix function, so `a angleBetween b` parses. */
 inline infix fun Float2.angleBetween(other: Float2): Float = angleBetween(other)
+/** [Float2.cross] as an infix function, so `a cross b` parses. */
+inline infix fun Float2.cross(other: Float2): Float = cross(other)
 /** [Float2.distance] as an infix function, so `a distance b` parses. */
 inline infix fun Float2.distance(other: Float2): Float = distance(other)
 /** [Float2.dot] as an infix function, so `a dot b` parses. */
@@ -36,6 +38,8 @@ inline infix fun Float2.mod(y: Float): Float2 = mod(y)
 inline infix fun Float2.mod(y: Float2): Float2 = mod(y)
 /** [Float2.rotate] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float2.rotate(angle: Angle): Float2 = rotate(angle.radians.toFloat())
+/** [Float2.rotateAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Float2.rotateAround(angle: Angle, pivot: Float2): Float2 = rotateAround(angle.radians.toFloat(), pivot)
 /** Component 1 of this Float2 (`x()`), for destructuring declarations. */
 inline operator fun Float2.component1(): Float = x()
 /** Component 2 of this Float2 (`y()`), for destructuring declarations. */

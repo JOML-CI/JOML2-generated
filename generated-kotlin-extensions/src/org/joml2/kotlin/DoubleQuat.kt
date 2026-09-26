@@ -10,6 +10,10 @@ import org.joml2.*
 
 /** [DoubleQuat.add] as the `+` operator. */
 inline operator fun DoubleQuat.plus(other: DoubleQuat): DoubleQuat = add(other)
+/** [DoubleQuat.mul] as the `*` operator. */
+inline operator fun DoubleQuat.times(scalar: Double): DoubleQuat = mul(scalar)
+/** [DoubleQuat.mul] with the scalar on the left, so `s * v` reads like `v * s`. */
+inline operator fun Double.times(v: DoubleQuat): DoubleQuat = v.mul(this)
 /** [DoubleQuat.negate] as the unary `-` operator. */
 inline operator fun DoubleQuat.unaryMinus(): DoubleQuat = negate()
 /** [DoubleQuat.sub] as the `-` operator. */

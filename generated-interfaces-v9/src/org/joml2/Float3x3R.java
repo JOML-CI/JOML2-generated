@@ -3745,6 +3745,120 @@ public interface Float3x3R {
      * @return {@code v}
      */
     default Float3 mul(@Mutated Float3 v) { return mul(v, v); }
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param v the direction to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 transformDirection(Float2R v, @Mutated Float2 dest);
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the direction to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformDirection(Float2R v, @Mutated Double2 dest);
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 transformDirection(float x, float y, @Mutated Float2 dest);
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformDirection(float x, float y, @Mutated Double2 dest);
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * back into {@code v}.
+     *
+     * @param v the direction to transform (also receives the result)
+     * @return {@code v}
+     */
+    default Float2 transformDirection(@Mutated Float2 v) { return transformDirection(v, v); }
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param v the position to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 transformPosition(Float2R v, @Mutated Float2 dest);
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the position to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformPosition(Float2R v, @Mutated Double2 dest);
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Float2 transformPosition(float x, float y, @Mutated Float2 dest);
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformPosition(float x, float y, @Mutated Double2 dest);
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result back into {@code v}.
+     *
+     * @param v the position to transform (also receives the result)
+     * @return {@code v}
+     */
+    default Float2 transformPosition(@Mutated Float2 v) { return transformPosition(v, v); }
     /** {@return the value of the {@code m00} element} */
     float m00();
     /** {@return the value of the {@code m01} element} */

@@ -383,6 +383,28 @@ public final class Float2OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.FloatBuffer makeUniformDirection_unsafe(java.nio.FloatBuffer dest, int destOffset, float u) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        Float2OpsKernelsAddress.makeUniformDirection_unsafe(_destBase, u);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer makeUniformDirection_api(java.nio.FloatBuffer dest, int destOffset, float u) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2) {
+            Float2Ops.makeUniformDirection(dest.array(), dest.arrayOffset() + destOffset, u);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.makeUniformDirection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, u);
+            return dest;
+        }
+        float _t0 = u * 6.2831855f;
+        float _t1 = (float) Math.sin(_t0);
+        dest.put(destOffset + 0, (float) Math.cosFromSin(_t1, _t0));
+        dest.put(destOffset + 1, _t1);
+        return dest;
+    }
+
     public static java.nio.FloatBuffer set_unsafe(java.nio.FloatBuffer dest, int destOffset, float vX, float vY) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
         Float2OpsKernelsAddress.set_unsafe(_destBase, vX, vY);
@@ -1063,6 +1085,244 @@ public final class Float2OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.FloatBuffer slerp_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        Float2OpsKernelsAddress.slerp_unsafe(_destBase, _srcBase, otherX, otherY, t);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer slerp_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float t) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2) {
+            Float2Ops.slerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, t);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.slerp_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, otherX, otherY, t);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _ct0 = Math.fma(_selfx, _selfx, _selfy * _selfy);
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsTypedBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        float _t4 = _ct0;
+        float _ct1 = Math.fma(otherX, otherX, otherY * otherY);
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsTypedBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        float _t5 = _ct1;
+        float _t8 = (float) Math.sqrt(_t4);
+        float _t6 = 1.0f / _t8;
+        float _t9 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10 = _selfx * _t6;
+        float _t13 = _selfy * _t6;
+        float _t16 = Math.fma(t, (float) Math.sqrt(_t5) - _t8, _t8);
+        float _t17 = Math.fma(otherX * _t9, _t10, otherY * _t9 * _t13);
+        float _t22 = Math.fma(otherX, _t9, -(_t17 * _t10));
+        float _t23 = Math.fma(otherY, _t9, -(_t17 * _t13));
+        float _t26 = -Math.fma(_t22, _t10, _t23 * _t13);
+        float _t27 = Math.fma(_t26, _t10, _t22);
+        float _t28 = Math.fma(_t26, _t13, _t23);
+        float _ct2 = Math.fma(_t27, _t27, _t28 * _t28);
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsTypedBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        float _t31 = _ct2;
+        float _t35 = t * (float) Math.atan2((float) Math.sqrt(_t31), _t17);
+        float _t36 = (float) Math.sin(_t35);
+        float _sp0 = _t16 * _t36 * (1.0f / (float) Math.sqrt(_t31));
+        float _t39 = _t16 * (float) Math.cosFromSin(_t36, _t35);
+        dest.put(destOffset + 0, Math.fma(_t10, _t39, _sp0 * _t27));
+        dest.put(destOffset + 1, Math.fma(_t13, _t39, _sp0 * _t28));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer slerp_degenerate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.slerp_degenerate_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        return Float2OpsKernelsTypedBuffer.slerp_degenerate_api(dest, destOffset, src, srcOffset, otherX, otherY, t);
+    }
+
+    public static java.nio.FloatBuffer slerp_degenerate_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        Float2OpsKernelsAddress.slerp_degenerate_unsafe(_destBase, _srcBase, otherX, otherY, t);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer slerp_degenerate_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float t) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2) {
+            Float2OpsKernelsArray.slerp_degenerate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, otherX, otherY, t);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.slerp_degenerate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, otherX, otherY, t);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _t0 = unitScale(otherX, otherY, otherX);
+        float _t1 = unitScale(_selfx, _selfy, _selfx);
+        float _t6 = otherX * _t0;
+        float _t7 = otherY * _t0;
+        float _t8 = _selfx * _t1;
+        float _t9 = _selfy * _t1;
+        float _t12 = Math.fma(_t6, _t6, _t7 * _t7);
+        float _t13 = Math.fma(_t8, _t8, _t9 * _t9);
+        float _t16 = (1.0f / (float) Math.sqrt(_t12));
+        float _t17 = (1.0f / (float) Math.sqrt(_t13));
+        float _t19 = (float) Math.sqrt(_t13) / _t1;
+        float _t21 = _t17 * _t8;
+        float _t23 = _t17 * _t9;
+        float _t24 = _t12 * _t13;
+        float _t27 = Math.fma(t, (float) Math.sqrt(_t12) / _t0 - _t19, _t19);
+        float _t28 = Math.fma(_t16 * _t6, _t21, _t16 * _t7 * _t23);
+        float _t33 = Math.fma(_t16, _t6, -(_t28 * _t21));
+        float _t34 = Math.fma(_t16, _t7, -(_t28 * _t23));
+        float _t37 = -Math.fma(_t33, _t21, _t34 * _t23);
+        float _t38 = Math.fma(_t37, _t21, _t33);
+        float _t39 = Math.fma(_t37, _t23, _t34);
+        float _t40 = unitScale(_t38, _t39, _t38);
+        float _t45 = _t38 * _t40;
+        float _t46 = _t39 * _t40;
+        float _t48 = Math.fma(_t45, _t45, _t46 * _t46);
+        float _t50 = (1.0f / (float) Math.sqrt(_t48));
+        float _t52 = t * (float) Math.atan2((float) Math.sqrt(_t48), _t28 * _t40);
+        float _t53 = (float) Math.sin(_t52);
+        float _t54 = _t27 * _t53;
+        float _t56 = _t27 * (float) Math.cosFromSin(_t53, _t52);
+        if (_t24 > 0.0f) {
+            if (_t48 > 0.0f) {
+                dest.put(destOffset + 0, Math.fma(_t54, _t50 * _t45, _t56 * _t21));
+                dest.put(destOffset + 1, Math.fma(_t54, _t50 * _t46, _t56 * _t23));
+            } else {
+                dest.put(destOffset + 0, Math.fma(_t54, -_t23, _t56 * _t21));
+                dest.put(destOffset + 1, Math.fma(_t54, _t21, _t56 * _t23));
+            }
+        } else {
+            dest.put(destOffset + 0, Math.fma(t, otherX - _selfx, _selfx));
+            dest.put(destOffset + 1, Math.fma(t, otherY - _selfy, _selfy));
+        }
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer slerp_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 4L;
+        Float2OpsKernelsAddress.slerp_unsafe(_destBase, _srcBase, _otherBase, t);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer slerp_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 2) {
+            Float2Ops.slerp(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, t);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.slerp_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L, t);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _otherx = other.get(otherOffset + 0);
+        float _othery = other.get(otherOffset + 1);
+        float _ct0 = Math.fma(_selfx, _selfx, _selfy * _selfy);
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsTypedBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t4 = _ct0;
+        float _ct1 = Math.fma(_otherx, _otherx, _othery * _othery);
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsTypedBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t5 = _ct1;
+        float _t8 = (float) Math.sqrt(_t4);
+        float _t6 = 1.0f / _t8;
+        float _t9 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10 = _selfx * _t6;
+        float _t13 = _selfy * _t6;
+        float _t16 = Math.fma(t, (float) Math.sqrt(_t5) - _t8, _t8);
+        float _t17 = Math.fma(_otherx * _t9, _t10, _othery * _t9 * _t13);
+        float _t22 = Math.fma(_otherx, _t9, -(_t17 * _t10));
+        float _t23 = Math.fma(_othery, _t9, -(_t17 * _t13));
+        float _t26 = -Math.fma(_t22, _t10, _t23 * _t13);
+        float _t27 = Math.fma(_t26, _t10, _t22);
+        float _t28 = Math.fma(_t26, _t13, _t23);
+        float _ct2 = Math.fma(_t27, _t27, _t28 * _t28);
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsTypedBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t31 = _ct2;
+        float _t35 = t * (float) Math.atan2((float) Math.sqrt(_t31), _t17);
+        float _t36 = (float) Math.sin(_t35);
+        float _sp0 = _t16 * _t36 * (1.0f / (float) Math.sqrt(_t31));
+        float _t39 = _t16 * (float) Math.cosFromSin(_t36, _t35);
+        dest.put(destOffset + 0, Math.fma(_t10, _t39, _sp0 * _t27));
+        dest.put(destOffset + 1, Math.fma(_t13, _t39, _sp0 * _t28));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer slerp_degenerate(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.slerp_degenerate_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float2OpsKernelsTypedBuffer.slerp_degenerate_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    public static java.nio.FloatBuffer slerp_degenerate_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 4L;
+        Float2OpsKernelsAddress.slerp_degenerate_unsafe(_destBase, _srcBase, _otherBase, t);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer slerp_degenerate_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 2) {
+            Float2OpsKernelsArray.slerp_degenerate(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset, t);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.slerp_degenerate_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L, t);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _otherx = other.get(otherOffset + 0);
+        float _othery = other.get(otherOffset + 1);
+        float _t0 = unitScale(_otherx, _othery, _otherx);
+        float _t1 = unitScale(_selfx, _selfy, _selfx);
+        float _t6 = _otherx * _t0;
+        float _t7 = _othery * _t0;
+        float _t8 = _selfx * _t1;
+        float _t9 = _selfy * _t1;
+        float _t12 = Math.fma(_t6, _t6, _t7 * _t7);
+        float _t13 = Math.fma(_t8, _t8, _t9 * _t9);
+        float _t16 = (1.0f / (float) Math.sqrt(_t12));
+        float _t17 = (1.0f / (float) Math.sqrt(_t13));
+        float _t19 = (float) Math.sqrt(_t13) / _t1;
+        float _t21 = _t17 * _t8;
+        float _t23 = _t17 * _t9;
+        float _t24 = _t12 * _t13;
+        float _t27 = Math.fma(t, (float) Math.sqrt(_t12) / _t0 - _t19, _t19);
+        float _t28 = Math.fma(_t16 * _t6, _t21, _t16 * _t7 * _t23);
+        float _t33 = Math.fma(_t16, _t6, -(_t28 * _t21));
+        float _t34 = Math.fma(_t16, _t7, -(_t28 * _t23));
+        float _t37 = -Math.fma(_t33, _t21, _t34 * _t23);
+        float _t38 = Math.fma(_t37, _t21, _t33);
+        float _t39 = Math.fma(_t37, _t23, _t34);
+        float _t40 = unitScale(_t38, _t39, _t38);
+        float _t45 = _t38 * _t40;
+        float _t46 = _t39 * _t40;
+        float _t48 = Math.fma(_t45, _t45, _t46 * _t46);
+        float _t50 = (1.0f / (float) Math.sqrt(_t48));
+        float _t52 = t * (float) Math.atan2((float) Math.sqrt(_t48), _t28 * _t40);
+        float _t53 = (float) Math.sin(_t52);
+        float _t54 = _t27 * _t53;
+        float _t56 = _t27 * (float) Math.cosFromSin(_t53, _t52);
+        if (_t24 > 0.0f) {
+            if (_t48 > 0.0f) {
+                dest.put(destOffset + 0, Math.fma(_t54, _t50 * _t45, _t56 * _t21));
+                dest.put(destOffset + 1, Math.fma(_t54, _t50 * _t46, _t56 * _t23));
+            } else {
+                dest.put(destOffset + 0, Math.fma(_t54, -_t23, _t56 * _t21));
+                dest.put(destOffset + 1, Math.fma(_t54, _t21, _t56 * _t23));
+            }
+        } else {
+            dest.put(destOffset + 0, Math.fma(t, _otherx - _selfx, _selfx));
+            dest.put(destOffset + 1, Math.fma(t, _othery - _selfy, _selfy));
+        }
+        return dest;
+    }
+
     public static java.nio.FloatBuffer absolute_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
@@ -1670,6 +1930,43 @@ public final class Float2OpsKernelsTypedBuffer {
         dest.put(destOffset + 0, (float) Math.cosh(_selfx));
         dest.put(destOffset + 1, (float) Math.cosh(_selfy));
         return dest;
+    }
+
+    public static float cross_unsafe(java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        return Float2OpsKernelsAddress.cross_unsafe(_srcBase, otherX, otherY);
+    }
+
+    public static float cross_api(java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2) {
+            return Float2Ops.cross(src.array(), src.arrayOffset() + srcOffset, otherX, otherY);
+        }
+        if (src.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Float2OpsKernelsSegment.cross_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, otherX, otherY);
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        return Math.fma(otherY, _selfx, -(otherX * _selfy));
+    }
+
+    public static float cross_unsafe(java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 4L;
+        return Float2OpsKernelsAddress.cross_unsafe(_srcBase, _otherBase);
+    }
+
+    public static float cross_api(java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
+        if (src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && other.hasArray() && otherOffset >= 0 && otherOffset <= other.limit() - 2) {
+            return Float2Ops.cross(src.array(), src.arrayOffset() + srcOffset, other.array(), other.arrayOffset() + otherOffset);
+        }
+        if (src.order() == java.nio.ByteOrder.nativeOrder() && other.order() == java.nio.ByteOrder.nativeOrder()) {
+            return Float2OpsKernelsSegment.cross_api(java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(other.duplicate().position(0)), (long) otherOffset * 4L);
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _otherx = other.get(otherOffset + 0);
+        float _othery = other.get(otherOffset + 1);
+        return Math.fma(_othery, _selfx, -(_otherx * _selfy));
     }
 
     public static java.nio.FloatBuffer degrees_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset) {
@@ -3408,21 +3705,21 @@ public final class Float2OpsKernelsTypedBuffer {
         return dest;
     }
 
-    public static java.nio.FloatBuffer preMulDirection_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+    public static java.nio.FloatBuffer preMulDirectionMat2x3_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
         long _matBase = UnsafeOpsHolder.U.getLong(mat, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matOffset * 4L;
-        Float2OpsKernelsAddress.preMulDirection_unsafe(_destBase, _srcBase, _matBase);
+        Float2OpsKernelsAddress.preMulDirectionMat2x3_unsafe(_destBase, _srcBase, _matBase);
         return dest;
     }
 
-    public static java.nio.FloatBuffer preMulDirection_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+    public static java.nio.FloatBuffer preMulDirectionMat2x3_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
         if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && mat.hasArray() && matOffset >= 0 && matOffset <= mat.limit() - 6) {
-            Float2Ops.preMulDirection(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
+            Float2Ops.preMulDirectionMat2x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
             return dest;
         }
         if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.order() == java.nio.ByteOrder.nativeOrder()) {
-            Float2OpsKernelsSegment.preMulDirection_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(mat.duplicate().position(0)), (long) matOffset * 4L);
+            Float2OpsKernelsSegment.preMulDirectionMat2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(mat.duplicate().position(0)), (long) matOffset * 4L);
             return dest;
         }
         float _selfx = src.get(srcOffset + 0);
@@ -3436,21 +3733,79 @@ public final class Float2OpsKernelsTypedBuffer {
         return dest;
     }
 
-    public static java.nio.FloatBuffer preMulPosition_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+    public static java.nio.FloatBuffer preMulDirectionMat3x3_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
         long _matBase = UnsafeOpsHolder.U.getLong(mat, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matOffset * 4L;
-        Float2OpsKernelsAddress.preMulPosition_unsafe(_destBase, _srcBase, _matBase);
+        Float2OpsKernelsAddress.preMulDirectionMat3x3_unsafe(_destBase, _srcBase, _matBase);
         return dest;
     }
 
-    public static java.nio.FloatBuffer preMulPosition_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
-        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && mat.hasArray() && matOffset >= 0 && matOffset <= mat.limit() - 6) {
-            Float2Ops.preMulPosition(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
+    public static java.nio.FloatBuffer preMulDirectionMat3x3_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && mat.hasArray() && matOffset >= 0 && matOffset <= mat.limit() - 9) {
+            Float2Ops.preMulDirectionMat3x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
             return dest;
         }
         if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.order() == java.nio.ByteOrder.nativeOrder()) {
-            Float2OpsKernelsSegment.preMulPosition_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(mat.duplicate().position(0)), (long) matOffset * 4L);
+            Float2OpsKernelsSegment.preMulDirectionMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(mat.duplicate().position(0)), (long) matOffset * 4L);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _mat00 = mat.get(matOffset + 0);
+        float _mat10 = mat.get(matOffset + 1);
+        float _mat01 = mat.get(matOffset + 3);
+        float _mat11 = mat.get(matOffset + 4);
+        dest.put(destOffset + 0, Math.fma(_mat00, _selfx, _mat01 * _selfy));
+        dest.put(destOffset + 1, Math.fma(_mat10, _selfx, _mat11 * _selfy));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer preMulPositionMat4x4_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _matBase = UnsafeOpsHolder.U.getLong(mat, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matOffset * 4L;
+        Float2OpsKernelsAddress.preMulPositionMat4x4_unsafe(_destBase, _srcBase, _matBase);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer preMulPositionMat4x4_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && mat.hasArray() && matOffset >= 0 && matOffset <= mat.limit() - 16) {
+            Float2Ops.preMulPositionMat4x4(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.preMulPositionMat4x4_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(mat.duplicate().position(0)), (long) matOffset * 4L);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _mat00 = mat.get(matOffset + 0);
+        float _mat10 = mat.get(matOffset + 1);
+        float _mat01 = mat.get(matOffset + 4);
+        float _mat11 = mat.get(matOffset + 5);
+        float _mat03 = mat.get(matOffset + 12);
+        float _mat13 = mat.get(matOffset + 13);
+        dest.put(destOffset + 0, Math.fma(_mat00, _selfx, Math.fma(_mat01, _selfy, _mat03)));
+        dest.put(destOffset + 1, Math.fma(_mat10, _selfx, Math.fma(_mat11, _selfy, _mat13)));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer preMulPositionMat2x3_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _matBase = UnsafeOpsHolder.U.getLong(mat, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matOffset * 4L;
+        Float2OpsKernelsAddress.preMulPositionMat2x3_unsafe(_destBase, _srcBase, _matBase);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer preMulPositionMat2x3_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && mat.hasArray() && matOffset >= 0 && matOffset <= mat.limit() - 6) {
+            Float2Ops.preMulPositionMat2x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.preMulPositionMat2x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(mat.duplicate().position(0)), (long) matOffset * 4L);
             return dest;
         }
         float _selfx = src.get(srcOffset + 0);
@@ -3461,6 +3816,36 @@ public final class Float2OpsKernelsTypedBuffer {
         float _mat11 = mat.get(matOffset + 3);
         float _mat02 = mat.get(matOffset + 4);
         float _mat12 = mat.get(matOffset + 5);
+        dest.put(destOffset + 0, Math.fma(_mat00, _selfx, Math.fma(_mat01, _selfy, _mat02)));
+        dest.put(destOffset + 1, Math.fma(_mat10, _selfx, Math.fma(_mat11, _selfy, _mat12)));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer preMulPositionMat3x3_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _matBase = UnsafeOpsHolder.U.getLong(mat, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matOffset * 4L;
+        Float2OpsKernelsAddress.preMulPositionMat3x3_unsafe(_destBase, _srcBase, _matBase);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer preMulPositionMat3x3_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && mat.hasArray() && matOffset >= 0 && matOffset <= mat.limit() - 9) {
+            Float2Ops.preMulPositionMat3x3(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, mat.array(), mat.arrayOffset() + matOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.preMulPositionMat3x3_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(mat.duplicate().position(0)), (long) matOffset * 4L);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _mat00 = mat.get(matOffset + 0);
+        float _mat10 = mat.get(matOffset + 1);
+        float _mat01 = mat.get(matOffset + 3);
+        float _mat11 = mat.get(matOffset + 4);
+        float _mat02 = mat.get(matOffset + 6);
+        float _mat12 = mat.get(matOffset + 7);
         dest.put(destOffset + 0, Math.fma(_mat00, _selfx, Math.fma(_mat01, _selfy, _mat02)));
         dest.put(destOffset + 1, Math.fma(_mat10, _selfx, Math.fma(_mat11, _selfy, _mat12)));
         return dest;
@@ -3489,6 +3874,82 @@ public final class Float2OpsKernelsTypedBuffer {
         dest.put(destOffset + 0, Math.fma(_selfx, _t1, -(_selfy * _t0)));
         dest.put(destOffset + 1, Math.fma(_selfx, _t0, _selfy * _t1));
         return dest;
+    }
+
+    public static java.nio.FloatBuffer rotateAround_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float pivotX, float pivotY) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        Float2OpsKernelsAddress.rotateAround_unsafe(_destBase, _srcBase, angle, pivotX, pivotY);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer rotateAround_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float pivotX, float pivotY) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2) {
+            Float2Ops.rotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, angle, pivotX, pivotY);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.rotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, angle, pivotX, pivotY);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfy - pivotY;
+        dest.put(destOffset + 0, Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotX)));
+        dest.put(destOffset + 1, Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotY)));
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer rotateAround_unsafe(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float angle) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        long _pivotBase = UnsafeOpsHolder.U.getLong(pivot, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) pivotOffset * 4L;
+        Float2OpsKernelsAddress.rotateAround_unsafe(_destBase, _srcBase, _pivotBase, angle);
+        return dest;
+    }
+
+    public static java.nio.FloatBuffer rotateAround_api(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float angle) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 2 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 2 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 2) {
+            Float2Ops.rotateAround(dest.array(), dest.arrayOffset() + destOffset, src.array(), src.arrayOffset() + srcOffset, pivot.array(), pivot.arrayOffset() + pivotOffset, angle);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2OpsKernelsSegment.rotateAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 4L, angle);
+            return dest;
+        }
+        float _selfx = src.get(srcOffset + 0);
+        float _selfy = src.get(srcOffset + 1);
+        float _pivotx = pivot.get(pivotOffset + 0);
+        float _pivoty = pivot.get(pivotOffset + 1);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfy - _pivoty;
+        dest.put(destOffset + 0, Math.fma(_t2, _t1, Math.fma(-_t3, _t0, _pivotx)));
+        dest.put(destOffset + 1, Math.fma(_t2, _t0, Math.fma(_t3, _t1, _pivoty)));
+        return dest;
+    }
+
+    /**
+     * The power of two that brings max(|a|, |b|, |c|) into [1, 2), from the largest exponent
+     * field: multiplying by it is exact. Clamped to [2^-126, 2^126], so zero and subnormal
+     * values scale up without overflow and the largest floats land in [2, 4).
+     */
+    private static float unitScale(float a, float b, float c) {
+        int e = java.lang.Math.max(java.lang.Math.max(Float.floatToRawIntBits(a) & 0x7F800000,
+                Float.floatToRawIntBits(b) & 0x7F800000), Float.floatToRawIntBits(c) & 0x7F800000);
+        return Float.intBitsToFloat(0x7F000000 - java.lang.Math.min(java.lang.Math.max(e, 0x00800000), 0x7E800000));
+    }
+
+    /** Double-precision twin of {@link #unitScale(float, float, float)}. */
+    private static double unitScale(double a, double b, double c) {
+        long e = java.lang.Math.max(java.lang.Math.max(Double.doubleToRawLongBits(a) & 0x7FF0000000000000L,
+                Double.doubleToRawLongBits(b) & 0x7FF0000000000000L), Double.doubleToRawLongBits(c) & 0x7FF0000000000000L);
+        return Double.longBitsToDouble(0x7FE0000000000000L
+                - java.lang.Math.min(java.lang.Math.max(e, 0x0010000000000000L), 0x7FD0000000000000L));
     }
 
     /**

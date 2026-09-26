@@ -38,12 +38,20 @@ inline infix fun Double3.mod(y: Double): Double3 = mod(y)
 inline infix fun Double3.mod(y: Double3): Double3 = mod(y)
 /** [Double3.rotateAxis] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3.rotateAxis(angle: Angle, axis: Double3): Double3 = rotateAxis(angle.radians, axis)
+/** [Double3.rotateAxisAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Double3.rotateAxisAround(angle: Angle, axis: Double3, pivot: Double3): Double3 = rotateAxisAround(angle.radians, axis, pivot)
 /** [Double3.rotateX] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3.rotateX(angle: Angle): Double3 = rotateX(angle.radians)
+/** [Double3.rotateXAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Double3.rotateXAround(angle: Angle, pivot: Double3): Double3 = rotateXAround(angle.radians, pivot)
 /** [Double3.rotateY] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3.rotateY(angle: Angle): Double3 = rotateY(angle.radians)
+/** [Double3.rotateYAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Double3.rotateYAround(angle: Angle, pivot: Double3): Double3 = rotateYAround(angle.radians, pivot)
 /** [Double3.rotateZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double3.rotateZ(angle: Angle): Double3 = rotateZ(angle.radians)
+/** [Double3.rotateZAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Double3.rotateZAround(angle: Angle, pivot: Double3): Double3 = rotateZAround(angle.radians, pivot)
 /** Component 1 of this Double3 (`x()`), for destructuring declarations. */
 inline operator fun Double3.component1(): Double = x()
 /** Component 2 of this Double3 (`y()`), for destructuring declarations. */

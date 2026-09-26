@@ -1952,6 +1952,144 @@ public interface Int4R {
     long compMul();
 
     /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    Int4 cross(Int4R v, Int4R w, @Mutated Int4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code long} only when stored.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    Long4 cross(Int4R v, Int4R w, @Mutated Long4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 cross(Int4R v, Int4R w, @Mutated Double4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Int4 cross(int vX, int vY, int vZ, int vW, int wX, int wY, int wZ, int wW, @Mutated Int4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code long} only when stored.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Long4 cross(int vX, int vY, int vZ, int vW, int wX, int wY, int wZ, int wW, @Mutated Long4 dest);
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double4 cross(int vX, int vY, int vZ, int vW, int wX, int wY, int wZ, int wW, @Mutated Double4 dest);
+
+    /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
      * The value is computed and returned as a {@code long}, so it does not wrap at the {@code int}

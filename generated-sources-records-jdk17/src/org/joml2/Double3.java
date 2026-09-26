@@ -90,6 +90,18 @@ public record Double3(double x, double y, double z) {
     /** {@return the {@code z} component} */
     public double z() { return z; }
 
+    /**
+     * Create a direction uniformly distributed on the unit sphere, drawing the 2 samples of
+     * {@code makeUniformDirection} from {@code rng}, each with {@code rng.nextDouble()}, in
+     * parameter order.
+     *
+     * @param rng the random number generator to draw the 2 samples from
+     * @return the resulting vector
+     */
+    public static Double3 makeRandomDirection(java.util.Random rng) {
+        return makeUniformDirection(rng.nextDouble(), rng.nextDouble());
+    }
+
 
     /**
      * Add {@code other} to this vector, returning the result as a value.
@@ -280,6 +292,26 @@ public record Double3(double x, double y, double z) {
      */
     public Double3 sub(double otherX, double otherY, double otherZ) {
         return new Double3(this.x - otherX, this.y - otherY, this.z - otherZ);
+    }
+
+
+    /**
+     * Create the unit vector {@code (r cos(2 PI v), r sin(2 PI v), 2u - 1)} with
+     * {@code r = 2 sqrt(u (1 - u))}: samples uniformly distributed in {@code [0, 1)} give a
+     * direction uniformly distributed on the unit sphere ({@code makeRandomDirection} draws them
+     * from a {@link java.util.Random}).
+     *
+     * @param u the sample that sets the height {@code z = 2u - 1}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn about the z axis, counter-clockwise from the x axis,
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @return the resulting vector
+     */
+    public static Double3 makeUniformDirection(double u, double v) {
+        double _t1 = v * 6.283185307179586;
+        double _t2 = Math.sin(_t1);
+        double _t5 = 2.0 * Math.sqrt(u * (1.0 - u));
+        return new Double3(_t5 * Math.cosFromSin(_t2, _t1), _t5 * _t2, Math.fma(2.0, u, -1.0));
     }
 
 
@@ -1050,6 +1082,186 @@ public record Double3(double x, double y, double z) {
      */
     public Double3 lerp(double otherX, double otherY, double otherZ, double tX, double tY, double tZ) {
         return new Double3(Math.fma(tX, otherX - this.x, this.x), Math.fma(tY, otherY - this.y, this.y), Math.fma(tZ, otherZ - this.z, this.z));
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths, returning the result as
+     * a value.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code double} range, they
+     * are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return the resulting vector
+     */
+    public Double3 slerp(Double3 other, double t) {
+        return slerp(other.x(), other.y(), other.z(), t);
+    }
+
+    /** Private tail of {@code slerp}; reached only through it. */
+    private Double3 slerp_s3f564b11_tail(double t, double _t42, double _t22, double _t20, double _t12, double _t37, double _t17, double _t38, double _t14, double _t36) {
+        double _t46 = t * Math.atan2(Math.sqrt(_t42), _t22);
+        double _t47 = Math.sin(_t46);
+        double _sp0 = _t20 * _t47 * (1.0 / Math.sqrt(_t42));
+        double _t50 = _t20 * Math.cosFromSin(_t47, _t46);
+        return new Double3(Math.fma(_t12, _t50, _sp0 * _t37), Math.fma(_t17, _t50, _sp0 * _t38), Math.fma(_t14, _t50, _sp0 * _t36));
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}) using the interpolation factor {@code t}: the direction turns at a constant
+     * rate along the shorter arc between the two directions, and the length changes linearly
+     * between the two lengths, returning the result as a value.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code double} range, they
+     * are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return the resulting vector
+     */
+    public Double3 slerp(double otherX, double otherY, double otherZ, double t) {
+        double _ct0 = Math.fma(this.z, this.z, Math.fma(this.x, this.x, this.y * this.y));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t);
+        double _t6 = _ct0;
+        double _ct1 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
+        if (!(_ct1 > 2.2250738585072014E-308 && _ct1 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t);
+        double _t7 = _ct1;
+        double _t10 = Math.sqrt(_t6);
+        double _t8 = 1.0 / _t10;
+        double _t11 = (1.0 / Math.sqrt(_t7));
+        double _t12 = this.x * _t8;
+        double _t14 = this.z * _t8;
+        double _t17 = this.y * _t8;
+        double _t20 = Math.fma(t, Math.sqrt(_t7) - _t10, _t10);
+        double _t22 = Math.fma(otherZ * _t11, _t14, Math.fma(otherX * _t11, _t12, otherY * _t11 * _t17));
+        double _t29 = Math.fma(otherZ, _t11, -(_t22 * _t14));
+        double _t30 = Math.fma(otherX, _t11, -(_t22 * _t12));
+        double _t31 = Math.fma(otherY, _t11, -(_t22 * _t17));
+        double _t35 = -Math.fma(_t29, _t14, Math.fma(_t30, _t12, _t31 * _t17));
+        double _t36 = Math.fma(_t35, _t14, _t29);
+        double _t37 = Math.fma(_t35, _t12, _t30);
+        double _t38 = Math.fma(_t35, _t17, _t31);
+        double _ct2 = Math.fma(_t36, _t36, Math.fma(_t37, _t37, _t38 * _t38));
+        if (!(_ct2 > 2.2250738585072014E-308 && _ct2 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t);
+        double _t42 = _ct2;
+        return slerp_s3f564b11_tail(t, _t42, _t22, _t20, _t12, _t37, _t17, _t38, _t14, _t36);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3 slerp_degenerate(Double3 other, double t) {
+        return slerp_degenerate(other.x(), other.y(), other.z(), t);
+    }
+
+    /** Private tail of {@code slerp_degenerate}; reached only through it. */
+    private Double3 slerp_degenerate_s3f564b11_tail(double _t32, double _t33, double _t31, double _t29, double _t27, double _t22, double _t8, double _t9, double _t10, double t, double _t39, double _t36, double otherX, double otherY, double otherZ) {
+        double _t40, _t41, _t43;
+        if (_t32 < _t33) {
+            _t40 = _t31;
+            _t41 = 0.0;
+            _t43 = -_t29;
+        } else {
+            _t40 = 0.0;
+            _t41 = -_t31;
+            _t43 = _t27;
+        }
+        double _t44 = Math.fma(_t22 * _t8, _t27, Math.fma(_t22 * _t9, _t29, _t22 * _t10 * _t31));
+        double _t52 = Math.fma(_t22, _t8, -(_t44 * _t27));
+        double _t53 = Math.fma(_t22, _t9, -(_t44 * _t29));
+        double _t54 = Math.fma(_t22, _t10, -(_t44 * _t31));
+        double _t59 = (1.0 / Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t43, _t43, _t40 * _t40))));
+        double _t61 = -Math.fma(_t52, _t27, Math.fma(_t53, _t29, _t54 * _t31));
+        double _t62 = Math.fma(_t61, _t27, _t52);
+        double _t63 = Math.fma(_t61, _t29, _t53);
+        double _t64 = Math.fma(_t61, _t31, _t54);
+        double _t65 = unitScale(_t63, _t64, _t62);
+        double _t71 = _t62 * _t65;
+        double _t72 = _t63 * _t65;
+        return slerp_degenerate_s3f564b11_tail2(_t64, _t65, _t71, _t72, t, _t44, _t39, _t36, _t59, _t40, _t29, otherX, _t43, _t31, otherY, _t41, _t27, otherZ);
+    }
+
+    /** Private tail of {@code slerp_degenerate}; reached only through it. */
+    private Double3 slerp_degenerate_s3f564b11_tail2(double _t64, double _t65, double _t71, double _t72, double t, double _t44, double _t39, double _t36, double _t59, double _t40, double _t29, double otherX, double _t43, double _t31, double otherY, double _t41, double _t27, double otherZ) {
+        double _t73 = _t64 * _t65;
+        double _t76 = Math.fma(_t71, _t71, Math.fma(_t72, _t72, _t73 * _t73));
+        double _t78 = (1.0 / Math.sqrt(_t76));
+        double _t80 = t * Math.atan2(Math.sqrt(_t76), _t44 * _t65);
+        double _t81 = Math.sin(_t80);
+        double _t82 = _t39 * _t81;
+        double _t84 = _t39 * Math.cosFromSin(_t81, _t80);
+        double _sfx0, _sfx1, _sfx2;
+        if (_t36 > 0.0) {
+            if (_t76 > 0.0) {
+                _sfx0 = Math.fma(_t82, _t78 * _t72, _t84 * _t29);
+                _sfx1 = Math.fma(_t82, _t78 * _t73, _t84 * _t31);
+                _sfx2 = Math.fma(_t82, _t78 * _t71, _t84 * _t27);
+            } else {
+                _sfx0 = Math.fma(_t82, _t59 * _t40, _t84 * _t29);
+                _sfx1 = Math.fma(_t82, _t59 * _t43, _t84 * _t31);
+                _sfx2 = Math.fma(_t82, _t59 * _t41, _t84 * _t27);
+            }
+        } else {
+            _sfx0 = Math.fma(t, otherX - this.x, this.x);
+            _sfx1 = Math.fma(t, otherY - this.y, this.y);
+            _sfx2 = Math.fma(t, otherZ - this.z, this.z);
+        }
+        return new Double3(_sfx0, _sfx1, _sfx2);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3 slerp_degenerate(double otherX, double otherY, double otherZ, double t) {
+        double _t0 = unitScale(otherX, otherY, otherZ);
+        double _t1 = unitScale(this.x, this.y, this.z);
+        double _t8 = otherZ * _t0;
+        double _t9 = otherX * _t0;
+        double _t10 = otherY * _t0;
+        double _t11 = this.z * _t1;
+        double _t12 = this.x * _t1;
+        double _t13 = this.y * _t1;
+        double _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t19 = Math.fma(_t11, _t11, Math.fma(_t12, _t12, _t13 * _t13));
+        double _t22 = (1.0 / Math.sqrt(_t18));
+        double _t23 = (1.0 / Math.sqrt(_t19));
+        double _t25 = Math.sqrt(_t19) / _t1;
+        double _t27 = _t23 * _t11;
+        double _t29 = _t23 * _t12;
+        double _t31 = _t23 * _t13;
+        double _t32 = Math.abs(_t27);
+        double _t33 = Math.abs(_t29);
+        double _t36 = _t18 * _t19;
+        double _t39 = Math.fma(t, Math.sqrt(_t18) / _t0 - _t25, _t25);
+        return slerp_degenerate_s3f564b11_tail(_t32, _t33, _t31, _t29, _t27, _t22, _t8, _t9, _t10, t, _t39, _t36, otherX, otherY, otherZ);
     }
 
 
@@ -2797,6 +3009,48 @@ public record Double3(double x, double y, double z) {
 
 
     /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p}, returning the result as a value.
+     *
+     * @param quat the rotation to apply (must be a unit quaternion)
+     * @param pivot the pivot point
+     * @return the resulting vector
+     */
+    public Double3 rotateAround(DoubleQuat quat, Double3 pivot) {
+        return rotateAround(quat.x(), quat.y(), quat.z(), quat.w(), pivot.x(), pivot.y(), pivot.z());
+    }
+
+
+    /**
+     * Rotate this vector by the quaternion ({@code quatX}, {@code quatY}, {@code quatZ},
+     * {@code quatW}) about the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}), i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p}, returning the result as a value.
+     *
+     * @param quatX the {@code x} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatY the {@code y} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatZ the {@code z} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatW the {@code w} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return the resulting vector
+     */
+    public Double3 rotateAround(double quatX, double quatY, double quatZ, double quatW, double pivotX, double pivotY, double pivotZ) {
+        double _t0 = this.y - pivotY;
+        double _t1 = this.x - pivotX;
+        double _t2 = this.z - pivotZ;
+        double _t12 = 2.0 * Math.fma(quatX, _t0, -(quatY * _t1));
+        double _t13 = 2.0 * Math.fma(quatZ, _t1, -(quatX * _t2));
+        double _t14 = 2.0 * Math.fma(quatY, _t2, -(quatZ * _t0));
+        return new Double3(Math.fma(quatY, _t12, Math.fma(-quatZ, _t13, Math.fma(quatW, _t14, pivotX + this.x - pivotX))), Math.fma(quatZ, _t14, Math.fma(-quatX, _t12, Math.fma(quatW, _t13, pivotY + this.y - pivotY))), Math.fma(quatX, _t13, Math.fma(-quatY, _t14, Math.fma(quatW, _t12, pivotZ + this.z - pivotZ))));
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the axis {@code axis}, returning the result
      * as a value.
      *
@@ -2831,6 +3085,49 @@ public record Double3(double x, double y, double z) {
         double _t3 = 1.0 - _t1;
         double _t5 = Math.fma(axisZ, this.z, Math.fma(axisX, this.x, axisY * this.y));
         return new Double3(Math.fma(_t3, axisX * _t5, Math.fma(this.x, _t1, Math.fma(axisY, this.z, -(axisZ * this.y)) * _t0)), Math.fma(_t3, axisY * _t5, Math.fma(this.y, _t1, Math.fma(axisZ, this.x, -(axisX * this.z)) * _t0)), Math.fma(_t3, axisZ * _t5, Math.fma(this.z, _t1, Math.fma(axisX, this.y, -(axisY * this.x)) * _t0)));
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot}, returning the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param pivot the pivot point
+     * @return the resulting vector
+     */
+    public Double3 rotateAxisAround(double angle, Double3 axis, Double3 pivot) {
+        return rotateAxisAround(angle, axis.x(), axis.y(), axis.z(), pivot.x(), pivot.y(), pivot.z());
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) through the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}), returning
+     * the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return the resulting vector
+     */
+    public Double3 rotateAxisAround(double angle, double axisX, double axisY, double axisZ, double pivotX, double pivotY, double pivotZ) {
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.x - pivotX;
+        double _t3 = this.z - pivotZ;
+        double _t4 = this.y - pivotY;
+        double _t5 = 1.0 - _t1;
+        double _t8 = Math.fma(axisZ, _t3, Math.fma(axisX, _t2, axisY * _t4));
+        return new Double3(Math.fma(_t2, _t1, Math.fma(Math.fma(axisY, _t3, -(axisZ * _t4)), _t0, Math.fma(_t5, axisX * _t8, pivotX))), Math.fma(_t4, _t1, Math.fma(Math.fma(axisZ, _t2, -(axisX * _t3)), _t0, Math.fma(_t5, axisY * _t8, pivotY))), Math.fma(_t3, _t1, Math.fma(Math.fma(axisX, _t4, -(axisY * _t2)), _t0, Math.fma(_t5, axisZ * _t8, pivotZ))));
     }
 
 
@@ -2881,6 +3178,38 @@ public record Double3(double x, double y, double z) {
 
 
     /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot},
+     * returning the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return the resulting vector
+     */
+    public Double3 rotateXAround(double angle, Double3 pivot) {
+        return rotateXAround(angle, pivot.x(), pivot.y(), pivot.z());
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}), returning the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return the resulting vector
+     */
+    public Double3 rotateXAround(double angle, double pivotX, double pivotY, double pivotZ) {
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.y - pivotY;
+        double _t3 = this.z - pivotZ;
+        return new Double3(pivotX + (this.x - pivotX), Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotY)), Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotZ)));
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the Y axis, returning the result as a
      * value.
      *
@@ -2895,6 +3224,38 @@ public record Double3(double x, double y, double z) {
 
 
     /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot},
+     * returning the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return the resulting vector
+     */
+    public Double3 rotateYAround(double angle, Double3 pivot) {
+        return rotateYAround(angle, pivot.x(), pivot.y(), pivot.z());
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}), returning the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return the resulting vector
+     */
+    public Double3 rotateYAround(double angle, double pivotX, double pivotY, double pivotZ) {
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.x - pivotX;
+        double _t3 = this.z - pivotZ;
+        return new Double3(Math.fma(_t2, _t1, Math.fma(_t3, _t0, pivotX)), pivotY + (this.y - pivotY), Math.fma(_t3, _t1, Math.fma(-_t2, _t0, pivotZ)));
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the Z axis, returning the result as a
      * value.
      *
@@ -2905,6 +3266,38 @@ public record Double3(double x, double y, double z) {
         double _t0 = Math.sin(angle);
         double _t1 = Math.cosFromSin(_t0, angle);
         return new Double3(Math.fma(this.x, _t1, -(this.y * _t0)), Math.fma(this.x, _t0, this.y * _t1), this.z);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot},
+     * returning the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @return the resulting vector
+     */
+    public Double3 rotateZAround(double angle, Double3 pivot) {
+        return rotateZAround(angle, pivot.x(), pivot.y(), pivot.z());
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}), returning the result as a value.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return the resulting vector
+     */
+    public Double3 rotateZAround(double angle, double pivotX, double pivotY, double pivotZ) {
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.x - pivotX;
+        double _t3 = this.y - pivotY;
+        return new Double3(Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotX)), Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotY)), pivotZ + (this.z - pivotZ));
     }
 
     /**

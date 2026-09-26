@@ -17,6 +17,151 @@ import org.joml2.internal.simd.*;
 public final class Double3OpsKernelsArray {
     private Double3OpsKernelsArray() {}
 
+    public static double[] slerp_degenerate(double[] dest, int destOffset, double[] src, int srcOffset, double otherX, double otherY, double otherZ, double t) {
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _t0 = unitScale(otherX, otherY, otherZ);
+        double _t1 = unitScale(_selfx, _selfy, _selfz);
+        double _t8 = otherZ * _t0;
+        double _t9 = otherX * _t0;
+        double _t10 = otherY * _t0;
+        double _t11 = _selfz * _t1;
+        double _t12 = _selfx * _t1;
+        double _t13 = _selfy * _t1;
+        double _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t19 = Math.fma(_t11, _t11, Math.fma(_t12, _t12, _t13 * _t13));
+        double _t22 = (1.0 / Math.sqrt(_t18));
+        double _t23 = (1.0 / Math.sqrt(_t19));
+        double _t25 = Math.sqrt(_t19) / _t1;
+        double _t27 = _t23 * _t11;
+        double _t29 = _t23 * _t12;
+        double _t31 = _t23 * _t13;
+        double _t32 = Math.abs(_t27);
+        double _t33 = Math.abs(_t29);
+        double _t36 = _t18 * _t19;
+        double _t39 = Math.fma(t, Math.sqrt(_t18) / _t0 - _t25, _t25);
+        double _t40, _t41, _t43;
+        if (_t32 < _t33) {
+            _t40 = _t31;
+            _t41 = 0.0;
+            _t43 = -_t29;
+        } else {
+            _t40 = 0.0;
+            _t41 = -_t31;
+            _t43 = _t27;
+        }
+        double _t44 = Math.fma(_t22 * _t8, _t27, Math.fma(_t22 * _t9, _t29, _t22 * _t10 * _t31));
+        double _t52 = Math.fma(_t22, _t8, -(_t44 * _t27));
+        double _t53 = Math.fma(_t22, _t9, -(_t44 * _t29));
+        double _t54 = Math.fma(_t22, _t10, -(_t44 * _t31));
+        double _t59 = (1.0 / Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t43, _t43, _t40 * _t40))));
+        double _t61 = -Math.fma(_t52, _t27, Math.fma(_t53, _t29, _t54 * _t31));
+        double _t62 = Math.fma(_t61, _t27, _t52);
+        double _t63 = Math.fma(_t61, _t29, _t53);
+        double _t64 = Math.fma(_t61, _t31, _t54);
+        double _t65 = unitScale(_t63, _t64, _t62);
+        double _t71 = _t62 * _t65;
+        double _t72 = _t63 * _t65;
+        double _t73 = _t64 * _t65;
+        double _t76 = Math.fma(_t71, _t71, Math.fma(_t72, _t72, _t73 * _t73));
+        double _t78 = (1.0 / Math.sqrt(_t76));
+        double _t80 = t * Math.atan2(Math.sqrt(_t76), _t44 * _t65);
+        double _t81 = Math.sin(_t80);
+        double _t82 = _t39 * _t81;
+        double _t84 = _t39 * Math.cosFromSin(_t81, _t80);
+        if (_t36 > 0.0) {
+            if (_t76 > 0.0) {
+                dest[destOffset + 0] = Math.fma(_t82, _t78 * _t72, _t84 * _t29);
+                dest[destOffset + 1] = Math.fma(_t82, _t78 * _t73, _t84 * _t31);
+                dest[destOffset + 2] = Math.fma(_t82, _t78 * _t71, _t84 * _t27);
+            } else {
+                dest[destOffset + 0] = Math.fma(_t82, _t59 * _t40, _t84 * _t29);
+                dest[destOffset + 1] = Math.fma(_t82, _t59 * _t43, _t84 * _t31);
+                dest[destOffset + 2] = Math.fma(_t82, _t59 * _t41, _t84 * _t27);
+            }
+        } else {
+            dest[destOffset + 0] = Math.fma(t, otherX - _selfx, _selfx);
+            dest[destOffset + 1] = Math.fma(t, otherY - _selfy, _selfy);
+            dest[destOffset + 2] = Math.fma(t, otherZ - _selfz, _selfz);
+        }
+        return dest;
+    }
+
+    public static double[] slerp_degenerate(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double t) {
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _otherx = other[otherOffset + 0];
+        double _othery = other[otherOffset + 1];
+        double _otherz = other[otherOffset + 2];
+        double _t0 = unitScale(_otherx, _othery, _otherz);
+        double _t1 = unitScale(_selfx, _selfy, _selfz);
+        double _t8 = _otherz * _t0;
+        double _t9 = _otherx * _t0;
+        double _t10 = _othery * _t0;
+        double _t11 = _selfz * _t1;
+        double _t12 = _selfx * _t1;
+        double _t13 = _selfy * _t1;
+        double _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        double _t19 = Math.fma(_t11, _t11, Math.fma(_t12, _t12, _t13 * _t13));
+        double _t22 = (1.0 / Math.sqrt(_t18));
+        double _t23 = (1.0 / Math.sqrt(_t19));
+        double _t25 = Math.sqrt(_t19) / _t1;
+        double _t27 = _t23 * _t11;
+        double _t29 = _t23 * _t12;
+        double _t31 = _t23 * _t13;
+        double _t32 = Math.abs(_t27);
+        double _t33 = Math.abs(_t29);
+        double _t36 = _t18 * _t19;
+        double _t39 = Math.fma(t, Math.sqrt(_t18) / _t0 - _t25, _t25);
+        double _t40, _t41, _t43;
+        if (_t32 < _t33) {
+            _t40 = _t31;
+            _t41 = 0.0;
+            _t43 = -_t29;
+        } else {
+            _t40 = 0.0;
+            _t41 = -_t31;
+            _t43 = _t27;
+        }
+        double _t44 = Math.fma(_t22 * _t8, _t27, Math.fma(_t22 * _t9, _t29, _t22 * _t10 * _t31));
+        double _t52 = Math.fma(_t22, _t8, -(_t44 * _t27));
+        double _t53 = Math.fma(_t22, _t9, -(_t44 * _t29));
+        double _t54 = Math.fma(_t22, _t10, -(_t44 * _t31));
+        double _t59 = (1.0 / Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t43, _t43, _t40 * _t40))));
+        double _t61 = -Math.fma(_t52, _t27, Math.fma(_t53, _t29, _t54 * _t31));
+        double _t62 = Math.fma(_t61, _t27, _t52);
+        double _t63 = Math.fma(_t61, _t29, _t53);
+        double _t64 = Math.fma(_t61, _t31, _t54);
+        double _t65 = unitScale(_t63, _t64, _t62);
+        double _t71 = _t62 * _t65;
+        double _t72 = _t63 * _t65;
+        double _t73 = _t64 * _t65;
+        double _t76 = Math.fma(_t71, _t71, Math.fma(_t72, _t72, _t73 * _t73));
+        double _t78 = (1.0 / Math.sqrt(_t76));
+        double _t80 = t * Math.atan2(Math.sqrt(_t76), _t44 * _t65);
+        double _t81 = Math.sin(_t80);
+        double _t82 = _t39 * _t81;
+        double _t84 = _t39 * Math.cosFromSin(_t81, _t80);
+        if (_t36 > 0.0) {
+            if (_t76 > 0.0) {
+                dest[destOffset + 0] = Math.fma(_t82, _t78 * _t72, _t84 * _t29);
+                dest[destOffset + 1] = Math.fma(_t82, _t78 * _t73, _t84 * _t31);
+                dest[destOffset + 2] = Math.fma(_t82, _t78 * _t71, _t84 * _t27);
+            } else {
+                dest[destOffset + 0] = Math.fma(_t82, _t59 * _t40, _t84 * _t29);
+                dest[destOffset + 1] = Math.fma(_t82, _t59 * _t43, _t84 * _t31);
+                dest[destOffset + 2] = Math.fma(_t82, _t59 * _t41, _t84 * _t27);
+            }
+        } else {
+            dest[destOffset + 0] = Math.fma(t, _otherx - _selfx, _selfx);
+            dest[destOffset + 1] = Math.fma(t, _othery - _selfy, _selfy);
+            dest[destOffset + 2] = Math.fma(t, _otherz - _selfz, _selfz);
+        }
+        return dest;
+    }
+
     public static double angleBetween_degenerate(double[] src, int srcOffset, double otherX, double otherY, double otherZ) {
         double _selfx = src[srcOffset + 0];
         double _selfy = src[srcOffset + 1];

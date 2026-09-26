@@ -17094,6 +17094,122 @@ public class Double3x3Impl implements Double3x3 {
         return mul_general(vX, vY, vZ, dest);
     }
 
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param v the direction to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformDirection(Double2R v, @Mutated Double2 dest) {
+        return transformDirection(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Double2 transformDirection_identity(double vX, double vY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = vX;
+        d.y = vY;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Double2 transformDirection_general(double vX, double vY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.m00 * vX + this.m01 * vY;
+        d.y = this.m10 * vX + this.m11 * vY;
+        return d;
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformDirection(double vX, double vY, @Mutated Double2 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformDirection_identity(vX, vY, dest);
+        return transformDirection_general(vX, vY, dest);
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param v the position to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformPosition(Double2R v, @Mutated Double2 dest) {
+        return transformPosition(v.x(), v.y(), dest);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Double2 transformPosition_identity(double vX, double vY, @Mutated Double2 dest) {
+        return transformDirection_identity(vX, vY, dest);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Double2 transformPosition_translation(double vX, double vY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.m02 + vX;
+        d.y = this.m12 + vY;
+        return d;
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Double2 transformPosition_general(double vX, double vY, @Mutated Double2 dest) {
+        Double2Impl d = (Double2Impl) dest;
+        d.x = this.m00 * vX + (this.m01 * vY + this.m02);
+        d.y = this.m10 * vX + (this.m11 * vY + this.m12);
+        return d;
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double2 transformPosition(double vX, double vY, @Mutated Double2 dest) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transformPosition_identity(vX, vY, dest);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformPosition_translation(vX, vY, dest);
+        return transformPosition_general(vX, vY, dest);
+    }
+
     public double m00() { return this.m00; }
     public double m01() { return this.m01; }
     public double m02() { return this.m02; }

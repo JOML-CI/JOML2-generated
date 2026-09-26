@@ -98,6 +98,16 @@ public interface DoubleQuatR {
     DoubleQuat add(double x, double y, double z, double w, @Mutated DoubleQuat dest);
 
     /**
+     * Multiply each component of this quaternion by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleQuat mul(double scalar, @Mutated DoubleQuat dest);
+
+    /**
      * Negate this quaternion and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -576,6 +586,32 @@ public interface DoubleQuatR {
      * @return dest
      */
     DoubleQuat preMul(double x, double y, double z, double w, @Mutated DoubleQuat dest);
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion and store the result in
+     * {@code dest}.
+     *
+     * @param other the quaternion to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleQuat addScaled(DoubleQuatR other, double weight, @Mutated DoubleQuat dest);
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}, {@code w}) scaled by {@code weight} to this quaternion
+     * and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
+     * @param weight the factor to scale ({@code x}, {@code y}, {@code z}, {@code w}) by before
+     *        adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    DoubleQuat addScaled(double x, double y, double z, double w, double weight, @Mutated DoubleQuat dest);
 
     /**
      * Compute the rotation angle in radians of this quaternion, within {@code [0, 2*PI]} (assumes

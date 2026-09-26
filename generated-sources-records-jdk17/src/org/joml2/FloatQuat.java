@@ -74,6 +74,18 @@ public record FloatQuat(float x, float y, float z, float w) {
     /** {@return the {@code w} component} */
     public float w() { return w; }
 
+    /**
+     * Create a rotation uniformly distributed over all rotations, drawing the 3 samples of
+     * {@code makeUniformRotation} from {@code rng}, each with {@code rng.nextFloat()}, in parameter
+     * order.
+     *
+     * @param rng the random number generator to draw the 3 samples from
+     * @return the resulting quaternion
+     */
+    public static FloatQuat makeRandomRotation(java.util.Random rng) {
+        return makeUniformRotation(rng.nextFloat(), rng.nextFloat(), rng.nextFloat());
+    }
+
 
     /**
      * Invert this quaternion, returning the result as a value.
@@ -155,6 +167,18 @@ public record FloatQuat(float x, float y, float z, float w) {
 
 
     /**
+     * Multiply each component of this quaternion by {@code scalar}, returning the result as a
+     * value.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return the resulting quaternion
+     */
+    public FloatQuat mul(float scalar) {
+        return new FloatQuat(scalar * this.x, scalar * this.y, scalar * this.z, scalar * this.w);
+    }
+
+
+    /**
      * Negate this quaternion, returning the result as a value.
      *
      * @return the resulting quaternion
@@ -191,6 +215,32 @@ public record FloatQuat(float x, float y, float z, float w) {
      */
     public FloatQuat sub(float otherX, float otherY, float otherZ, float otherW) {
         return new FloatQuat(this.x - otherX, this.y - otherY, this.z - otherZ, this.w - otherW);
+    }
+
+
+    /**
+     * Create the unit quaternion
+     * {@code (sqrt(1 - u1) sin(2 PI u2), sqrt(1 - u1) cos(2 PI u2), sqrt(u1) sin(2 PI u3), sqrt(u1) cos(2 PI u3))},
+     * Shoemake's construction: samples uniformly distributed in {@code [0, 1)} give a rotation
+     * uniformly distributed over all rotations ({@code makeRandomRotation} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param u1 the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed rotation
+     * @param u2 the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @param u3 the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @return the resulting quaternion
+     */
+    public static FloatQuat makeUniformRotation(float u1, float u2, float u3) {
+        float _t0 = (float) Math.sqrt(u1);
+        float _t1 = u2 * 6.2831855f;
+        float _t3 = u3 * 6.2831855f;
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sqrt(1.0f - u1);
+        float _t6 = (float) Math.sin(_t3);
+        return new FloatQuat(_t4 * _t5, (float) Math.cosFromSin(_t4, _t1) * _t5, _t6 * _t0, (float) Math.cosFromSin(_t6, _t3) * _t0);
     }
 
 
@@ -1255,6 +1305,40 @@ public record FloatQuat(float x, float y, float z, float w) {
      */
     public FloatQuat preMul(float otherX, float otherY, float otherZ, float otherW) {
         return new FloatQuat(Math.fma(otherX, this.w, otherW * this.x) + Math.fma(otherY, this.z, -(otherZ * this.y)), Math.fma(otherY, this.w, otherZ * this.x) + Math.fma(otherW, this.y, -(otherX * this.z)), Math.fma(otherX, this.y, otherW * this.z) + Math.fma(otherZ, this.w, -(otherY * this.x)), Math.fma(otherW, this.w, -(otherX * this.x)) - Math.fma(otherY, this.y, otherZ * this.z));
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion, returning the result as a
+     * value.
+     *
+     * @param other the quaternion to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return the resulting quaternion
+     */
+    public FloatQuat addScaled(FloatQuat other, float weight) {
+        return addScaled(other.x(), other.y(), other.z(), other.w(), weight);
+    }
+
+
+    /**
+     * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) scaled by {@code weight}
+     * to this quaternion, returning the result as a value.
+     *
+     * @param otherX the {@code x} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param weight the factor to scale ({@code otherX}, {@code otherY}, {@code otherZ},
+     *        {@code otherW}) by before adding
+     * @return the resulting quaternion
+     */
+    public FloatQuat addScaled(float otherX, float otherY, float otherZ, float otherW, float weight) {
+        return new FloatQuat(Math.fma(weight, otherX, this.x), Math.fma(weight, otherY, this.y), Math.fma(weight, otherZ, this.z), Math.fma(weight, otherW, this.w));
     }
 
 

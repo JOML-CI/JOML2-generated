@@ -798,6 +798,55 @@ public final class Float3Ops {
     }
 
     /**
+     * Set this vector to the unit vector {@code (r cos(2 PI v), r sin(2 PI v), 2u - 1)} with
+     * {@code r = 2 sqrt(u (1 - u))}: samples uniformly distributed in {@code [0, 1)} give a
+     * direction uniformly distributed on the unit sphere ({@code makeRandomDirection} draws them
+     * from a {@link java.util.Random}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param u the sample that sets the height {@code z = 2u - 1}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn about the z axis, counter-clockwise from the x axis,
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @return {@code dest}
+     */
+    public static float[] makeUniformDirection(float[] dest, int destOffset, float u, float v) {
+        float _t1 = v * 6.2831855f;
+        float _t2 = (float) Math.sin(_t1);
+        float _t5 = 2.0f * (float) Math.sqrt(u * (1.0f - u));
+        dest[destOffset + 0] = _t5 * (float) Math.cosFromSin(_t2, _t1);
+        dest[destOffset + 1] = _t5 * _t2;
+        dest[destOffset + 2] = Math.fma(2.0f, u, -1.0f);
+        return dest;
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer makeUniformDirection(java.nio.FloatBuffer dest, int destOffset, float u, float v) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.makeUniformDirection_unsafe(dest, destOffset, u, v);
+        return Float3OpsKernelsTypedBuffer.makeUniformDirection_api(dest, destOffset, u, v);
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer makeUniformDirection(java.nio.ByteBuffer dest, int destOffset, float u, float v) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.makeUniformDirection_unsafe(dest, destOffset, u, v);
+        return Float3OpsKernelsByteBuffer.makeUniformDirection_api(dest, destOffset, u, v);
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment makeUniformDirection(java.lang.foreign.MemorySegment dest, long destOffset, float u, float v) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Float3OpsKernelsSegment.makeUniformDirection_unsafe(dest, destOffset, u, v);
+        return Float3OpsKernelsSegment.makeUniformDirection_api(dest, destOffset, u, v);
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long makeUniformDirection(long dest, float u, float v) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.makeUniformDirection_unsafe(dest, u, v);
+        makeUniformDirection(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, u, v);
+        return dest;
+    }
+
+    /**
      * Set this vector to the given values.
      *
      * @param dest will hold the result
@@ -2244,6 +2293,186 @@ public final class Float3Ops {
     public static long lerp(long dest, long src, long other, long t) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.lerp_unsafe(dest, src, other, t);
         lerp(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(other, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(t, 12L), 0L);
+        return dest;
+    }
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return {@code dest}
+     */
+    public static float[] slerp(float[] dest, int destOffset, float[] src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _ct0 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        float _t6 = _ct0;
+        float _ct1 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        float _t7 = _ct1;
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t7));
+        float _t12 = _selfx * _t8;
+        float _t14 = _selfz * _t8;
+        float _t17 = _selfy * _t8;
+        float _t20 = Math.fma(t, (float) Math.sqrt(_t7) - _t10, _t10);
+        float _t22 = Math.fma(otherZ * _t11, _t14, Math.fma(otherX * _t11, _t12, otherY * _t11 * _t17));
+        float _t29 = Math.fma(otherZ, _t11, -(_t22 * _t14));
+        float _t30 = Math.fma(otherX, _t11, -(_t22 * _t12));
+        float _t31 = Math.fma(otherY, _t11, -(_t22 * _t17));
+        float _t35 = -Math.fma(_t29, _t14, Math.fma(_t30, _t12, _t31 * _t17));
+        float _t36 = Math.fma(_t35, _t14, _t29);
+        float _t37 = Math.fma(_t35, _t12, _t30);
+        float _t38 = Math.fma(_t35, _t17, _t31);
+        float _ct2 = Math.fma(_t36, _t36, Math.fma(_t37, _t37, _t38 * _t38));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        float _t42 = _ct2;
+        float _t46 = t * (float) Math.atan2((float) Math.sqrt(_t42), _t22);
+        float _t47 = (float) Math.sin(_t46);
+        float _sp0 = _t20 * _t47 * (1.0f / (float) Math.sqrt(_t42));
+        float _t50 = _t20 * (float) Math.cosFromSin(_t47, _t46);
+        dest[destOffset + 0] = Math.fma(_t12, _t50, _sp0 * _t37);
+        dest[destOffset + 1] = Math.fma(_t17, _t50, _sp0 * _t38);
+        dest[destOffset + 2] = Math.fma(_t14, _t50, _sp0 * _t36);
+        return dest;
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer slerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        return Float3OpsKernelsTypedBuffer.slerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer slerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        return Float3OpsKernelsByteBuffer.slerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment slerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3OpsKernelsSegment.slerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        return Float3OpsKernelsSegment.slerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long slerp(long dest, long src, float otherX, float otherY, float otherZ, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.slerp_unsafe(dest, src, otherX, otherY, otherZ, t);
+        slerp(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, otherX, otherY, otherZ, t);
+        return dest;
+    }
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param other the storage holding the vector to interpolate towards
+     * @param otherOffset the element index in {@code other} at which the vector starts
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return {@code dest}
+     */
+    public static float[] slerp(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float t) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _otherx = other[otherOffset + 0];
+        float _othery = other[otherOffset + 1];
+        float _otherz = other[otherOffset + 2];
+        float _ct0 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t6 = _ct0;
+        float _ct1 = Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t7 = _ct1;
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t7));
+        float _t12 = _selfx * _t8;
+        float _t14 = _selfz * _t8;
+        float _t17 = _selfy * _t8;
+        float _t20 = Math.fma(t, (float) Math.sqrt(_t7) - _t10, _t10);
+        float _t22 = Math.fma(_otherz * _t11, _t14, Math.fma(_otherx * _t11, _t12, _othery * _t11 * _t17));
+        float _t29 = Math.fma(_otherz, _t11, -(_t22 * _t14));
+        float _t30 = Math.fma(_otherx, _t11, -(_t22 * _t12));
+        float _t31 = Math.fma(_othery, _t11, -(_t22 * _t17));
+        float _t35 = -Math.fma(_t29, _t14, Math.fma(_t30, _t12, _t31 * _t17));
+        float _t36 = Math.fma(_t35, _t14, _t29);
+        float _t37 = Math.fma(_t35, _t12, _t30);
+        float _t38 = Math.fma(_t35, _t17, _t31);
+        float _ct2 = Math.fma(_t36, _t36, Math.fma(_t37, _t37, _t38 * _t38));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t42 = _ct2;
+        float _t46 = t * (float) Math.atan2((float) Math.sqrt(_t42), _t22);
+        float _t47 = (float) Math.sin(_t46);
+        float _sp0 = _t20 * _t47 * (1.0f / (float) Math.sqrt(_t42));
+        float _t50 = _t20 * (float) Math.cosFromSin(_t47, _t46);
+        dest[destOffset + 0] = Math.fma(_t12, _t50, _sp0 * _t37);
+        dest[destOffset + 1] = Math.fma(_t17, _t50, _sp0 * _t38);
+        dest[destOffset + 2] = Math.fma(_t14, _t50, _sp0 * _t36);
+        return dest;
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer slerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float3OpsKernelsTypedBuffer.slerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer slerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float3OpsKernelsByteBuffer.slerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment slerp(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Float3OpsKernelsSegment.slerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float3OpsKernelsSegment.slerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long slerp(long dest, long src, long other, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.slerp_unsafe(dest, src, other, t);
+        slerp(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(other, 12L), 0L, t);
         return dest;
     }
 
@@ -7990,6 +8219,132 @@ public final class Float3Ops {
     }
 
     /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param quatX the {@code x} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatY the {@code y} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatZ the {@code z} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatW the {@code w} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return {@code dest}
+     */
+    public static float[] rotateAround(float[] dest, int destOffset, float[] src, int srcOffset, float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _t0 = _selfy - pivotY;
+        float _t1 = _selfx - pivotX;
+        float _t2 = _selfz - pivotZ;
+        float _t12 = 2.0f * Math.fma(quatX, _t0, -(quatY * _t1));
+        float _t13 = 2.0f * Math.fma(quatZ, _t1, -(quatX * _t2));
+        float _t14 = 2.0f * Math.fma(quatY, _t2, -(quatZ * _t0));
+        dest[destOffset + 0] = Math.fma(quatY, _t12, Math.fma(-quatZ, _t13, Math.fma(quatW, _t14, pivotX + _selfx - pivotX)));
+        dest[destOffset + 1] = Math.fma(quatZ, _t14, Math.fma(-quatX, _t12, Math.fma(quatW, _t13, pivotY + _selfy - pivotY)));
+        dest[destOffset + 2] = Math.fma(quatX, _t13, Math.fma(-quatY, _t14, Math.fma(quatW, _t12, pivotZ + _selfz - pivotZ)));
+        return dest;
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3OpsKernelsSegment.rotateAround_unsafe(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsSegment.rotateAround_api(dest, destOffset, src, srcOffset, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateAround(long dest, long src, float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateAround_unsafe(dest, src, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+        rotateAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param quat the storage holding the rotation to apply (must be a unit quaternion)
+     * @param quatOffset the element index in {@code quat} at which the quaternion starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @return {@code dest}
+     */
+    public static float[] rotateAround(float[] dest, int destOffset, float[] src, int srcOffset, float[] quat, int quatOffset, float[] pivot, int pivotOffset) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _quatx = quat[quatOffset + 0];
+        float _quaty = quat[quatOffset + 1];
+        float _quatz = quat[quatOffset + 2];
+        float _quatw = quat[quatOffset + 3];
+        float _pivotx = pivot[pivotOffset + 0];
+        float _pivoty = pivot[pivotOffset + 1];
+        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = _selfy - _pivoty;
+        float _t1 = _selfx - _pivotx;
+        float _t2 = _selfz - _pivotz;
+        float _t12 = 2.0f * Math.fma(_quatx, _t0, -(_quaty * _t1));
+        float _t13 = 2.0f * Math.fma(_quatz, _t1, -(_quatx * _t2));
+        float _t14 = 2.0f * Math.fma(_quaty, _t2, -(_quatz * _t0));
+        dest[destOffset + 0] = Math.fma(_quaty, _t12, Math.fma(-_quatz, _t13, Math.fma(_quatw, _t14, _pivotx + _selfx - _pivotx)));
+        dest[destOffset + 1] = Math.fma(_quatz, _t14, Math.fma(-_quatx, _t12, Math.fma(_quatw, _t13, _pivoty + _selfy - _pivoty)));
+        dest[destOffset + 2] = Math.fma(_quatx, _t13, Math.fma(-_quaty, _t14, Math.fma(_quatw, _t12, _pivotz + _selfz - _pivotz)));
+        return dest;
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer quat, int quatOffset, java.nio.FloatBuffer pivot, int pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && quat.isDirect() && quat.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset, pivot, pivotOffset);
+        return Float3OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, quat, quatOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer quat, int quatOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && quat.isDirect() && quat.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset, pivot, pivotOffset);
+        return Float3OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, quat, quatOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float[], int, float[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment quat, long quatOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && quat.isNative() && pivot.isNative()) return Float3OpsKernelsSegment.rotateAround_unsafe(dest, destOffset, src, srcOffset, quat, quatOffset, pivot, pivotOffset);
+        return Float3OpsKernelsSegment.rotateAround_api(dest, destOffset, src, srcOffset, quat, quatOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateAround(long dest, long src, long quat, long pivot) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateAround_unsafe(dest, src, quat, pivot);
+        rotateAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(quat, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(pivot, 12L), 0L);
+        return dest;
+    }
+
+    /**
      * Rotate this vector by {@code angle} radians about the axis {@code axis} and store the result
      * in {@code dest}.
      *
@@ -8097,6 +8452,131 @@ public final class Float3Ops {
     public static long rotateAxis(long dest, long src, long axis, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateAxis_unsafe(dest, src, axis, angle);
         rotateAxis(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(axis, 12L), 0L, angle);
+        return dest;
+    }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot} and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return {@code dest}
+     */
+    public static float[] rotateAxisAround(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfz - pivotZ;
+        float _t4 = _selfy - pivotY;
+        float _t5 = 1.0f - _t1;
+        float _t8 = Math.fma(axisZ, _t3, Math.fma(axisX, _t2, axisY * _t4));
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(Math.fma(axisY, _t3, -(axisZ * _t4)), _t0, Math.fma(_t5, axisX * _t8, pivotX)));
+        dest[destOffset + 1] = Math.fma(_t4, _t1, Math.fma(Math.fma(axisZ, _t2, -(axisX * _t3)), _t0, Math.fma(_t5, axisY * _t8, pivotY)));
+        dest[destOffset + 2] = Math.fma(_t3, _t1, Math.fma(Math.fma(axisX, _t4, -(axisY * _t2)), _t0, Math.fma(_t5, axisZ * _t8, pivotZ)));
+        return dest;
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateAxisAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateAxisAround_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsTypedBuffer.rotateAxisAround_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateAxisAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateAxisAround_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsByteBuffer.rotateAxisAround_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float, float, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateAxisAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3OpsKernelsSegment.rotateAxisAround_unsafe(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsSegment.rotateAxisAround_api(dest, destOffset, src, srcOffset, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateAxisAround(long dest, long src, float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateAxisAround_unsafe(dest, src, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+        rotateAxisAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot} and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param axis the storage holding the rotation axis (must be a unit vector)
+     * @param axisOffset the element index in {@code axis} at which the vector starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @param angle the angle in radians
+     * @return {@code dest}
+     */
+    public static float[] rotateAxisAround(float[] dest, int destOffset, float[] src, int srcOffset, float[] axis, int axisOffset, float[] pivot, int pivotOffset, float angle) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _axisx = axis[axisOffset + 0];
+        float _axisy = axis[axisOffset + 1];
+        float _axisz = axis[axisOffset + 2];
+        float _pivotx = pivot[pivotOffset + 0];
+        float _pivoty = pivot[pivotOffset + 1];
+        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfz - _pivotz;
+        float _t4 = _selfy - _pivoty;
+        float _t5 = 1.0f - _t1;
+        float _t8 = Math.fma(_axisz, _t3, Math.fma(_axisx, _t2, _axisy * _t4));
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(Math.fma(_axisy, _t3, -(_axisz * _t4)), _t0, Math.fma(_t5, _axisx * _t8, _pivotx)));
+        dest[destOffset + 1] = Math.fma(_t4, _t1, Math.fma(Math.fma(_axisz, _t2, -(_axisx * _t3)), _t0, Math.fma(_t5, _axisy * _t8, _pivoty)));
+        dest[destOffset + 2] = Math.fma(_t3, _t1, Math.fma(Math.fma(_axisx, _t4, -(_axisy * _t2)), _t0, Math.fma(_t5, _axisz * _t8, _pivotz)));
+        return dest;
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateAxisAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer axis, int axisOffset, java.nio.FloatBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateAxisAround_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsTypedBuffer.rotateAxisAround_api(dest, destOffset, src, srcOffset, axis, axisOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateAxisAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && axis.isDirect() && axis.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateAxisAround_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsByteBuffer.rotateAxisAround_api(dest, destOffset, src, srcOffset, axis, axisOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateAxisAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment axis, long axisOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && axis.isNative() && pivot.isNative()) return Float3OpsKernelsSegment.rotateAxisAround_unsafe(dest, destOffset, src, srcOffset, axis, axisOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsSegment.rotateAxisAround_api(dest, destOffset, src, srcOffset, axis, axisOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateAxisAround(float[], int, float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateAxisAround(long dest, long src, long axis, long pivot, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateAxisAround_unsafe(dest, src, axis, pivot, angle);
+        rotateAxisAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(axis, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(pivot, 12L), 0L, angle);
         return dest;
     }
 
@@ -8258,6 +8738,114 @@ public final class Float3Ops {
     }
 
     /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return {@code dest}
+     */
+    public static float[] rotateXAround(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfy - pivotY;
+        float _t3 = _selfz - pivotZ;
+        dest[destOffset + 0] = pivotX + (_selfx - pivotX);
+        dest[destOffset + 1] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotY));
+        dest[destOffset + 2] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotZ));
+        return dest;
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateXAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateXAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsTypedBuffer.rotateXAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateXAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateXAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsByteBuffer.rotateXAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateXAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3OpsKernelsSegment.rotateXAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsSegment.rotateXAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateXAround(long dest, long src, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateXAround_unsafe(dest, src, angle, pivotX, pivotY, pivotZ);
+        rotateXAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, angle, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @param angle the angle in radians
+     * @return {@code dest}
+     */
+    public static float[] rotateXAround(float[] dest, int destOffset, float[] src, int srcOffset, float[] pivot, int pivotOffset, float angle) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _pivotx = pivot[pivotOffset + 0];
+        float _pivoty = pivot[pivotOffset + 1];
+        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfy - _pivoty;
+        float _t3 = _selfz - _pivotz;
+        dest[destOffset + 0] = _pivotx + (_selfx - _pivotx);
+        dest[destOffset + 1] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, _pivoty));
+        dest[destOffset + 2] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, _pivotz));
+        return dest;
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateXAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateXAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsTypedBuffer.rotateXAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateXAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateXAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsByteBuffer.rotateXAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateXAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && pivot.isNative()) return Float3OpsKernelsSegment.rotateXAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsSegment.rotateXAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateXAround(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateXAround(long dest, long src, long pivot, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateXAround_unsafe(dest, src, pivot, angle);
+        rotateXAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(pivot, 12L), 0L, angle);
+        return dest;
+    }
+
+    /**
      * Rotate this vector by {@code angle} radians about the Y axis and store the result in
      * {@code dest}.
      *
@@ -8306,6 +8894,114 @@ public final class Float3Ops {
     }
 
     /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return {@code dest}
+     */
+    public static float[] rotateYAround(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfz - pivotZ;
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(_t3, _t0, pivotX));
+        dest[destOffset + 1] = pivotY + (_selfy - pivotY);
+        dest[destOffset + 2] = Math.fma(_t3, _t1, Math.fma(-_t2, _t0, pivotZ));
+        return dest;
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateYAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateYAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsTypedBuffer.rotateYAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateYAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateYAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsByteBuffer.rotateYAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateYAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3OpsKernelsSegment.rotateYAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsSegment.rotateYAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateYAround(long dest, long src, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateYAround_unsafe(dest, src, angle, pivotX, pivotY, pivotZ);
+        rotateYAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, angle, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @param angle the angle in radians
+     * @return {@code dest}
+     */
+    public static float[] rotateYAround(float[] dest, int destOffset, float[] src, int srcOffset, float[] pivot, int pivotOffset, float angle) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _pivotx = pivot[pivotOffset + 0];
+        float _pivoty = pivot[pivotOffset + 1];
+        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfz - _pivotz;
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(_t3, _t0, _pivotx));
+        dest[destOffset + 1] = _pivoty + (_selfy - _pivoty);
+        dest[destOffset + 2] = Math.fma(_t3, _t1, Math.fma(-_t2, _t0, _pivotz));
+        return dest;
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateYAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateYAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsTypedBuffer.rotateYAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateYAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateYAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsByteBuffer.rotateYAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateYAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && pivot.isNative()) return Float3OpsKernelsSegment.rotateYAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsSegment.rotateYAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateYAround(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateYAround(long dest, long src, long pivot, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateYAround_unsafe(dest, src, pivot, angle);
+        rotateYAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(pivot, 12L), 0L, angle);
+        return dest;
+    }
+
+    /**
      * Rotate this vector by {@code angle} radians about the Z axis and store the result in
      * {@code dest}.
      *
@@ -8350,6 +9046,114 @@ public final class Float3Ops {
     public static long rotateZ(long dest, long src, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateZ_unsafe(dest, src, angle);
         rotateZ(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, angle);
+        return dest;
+    }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return {@code dest}
+     */
+    public static float[] rotateZAround(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfy - pivotY;
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotX));
+        dest[destOffset + 1] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotY));
+        dest[destOffset + 2] = pivotZ + (_selfz - pivotZ);
+        return dest;
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateZAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateZAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsTypedBuffer.rotateZAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateZAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateZAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsByteBuffer.rotateZAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateZAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Float3OpsKernelsSegment.rotateZAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+        return Float3OpsKernelsSegment.rotateZAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateZAround(long dest, long src, float angle, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateZAround_unsafe(dest, src, angle, pivotX, pivotY, pivotZ);
+        rotateZAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, angle, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @param angle the angle in radians
+     * @return {@code dest}
+     */
+    public static float[] rotateZAround(float[] dest, int destOffset, float[] src, int srcOffset, float[] pivot, int pivotOffset, float angle) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _pivotx = pivot[pivotOffset + 0];
+        float _pivoty = pivot[pivotOffset + 1];
+        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfy - _pivoty;
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, _pivotx));
+        dest[destOffset + 1] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, _pivoty));
+        dest[destOffset + 2] = _pivotz + (_selfz - _pivotz);
+        return dest;
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateZAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsTypedBuffer.rotateZAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsTypedBuffer.rotateZAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateZAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.rotateZAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsByteBuffer.rotateZAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment rotateZAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && pivot.isNative()) return Float3OpsKernelsSegment.rotateZAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float3OpsKernelsSegment.rotateZAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateZAround(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long rotateZAround(long dest, long src, long pivot, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3OpsKernelsAddress.rotateZAround_unsafe(dest, src, pivot, angle);
+        rotateZAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 12L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(pivot, 12L), 0L, angle);
         return dest;
     }
 

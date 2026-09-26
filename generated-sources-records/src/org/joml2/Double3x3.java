@@ -1410,7 +1410,6 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return invert_general();
     }
 
-    /** Private tail of {@code invertProduct_general}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_s74c57dcd_tail}; reached only through it. */
     private Double3 invertProduct_general_s74c57dcd_tail_s4181cd16_c0(double _t33, double _t39_inv, double _t24, double _t21, double _t23, double _t19, double _t34) {
         return new Double3(_t33 * _t39_inv, Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv, _t34 * _t39_inv);
@@ -1426,6 +1425,7 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3(Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv, Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv, Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv);
     }
 
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
     private Double3x3 invertProduct_general_s74c57dcd_tail(Double3x3 other, double _t18, double _t19, double _t20, double _t21, double _t23, double _t24, double _t22, int _props) {
         double _t25 = Math.fma(other.m20(), this.m02, Math.fma(other.m00(), this.m00, other.m10() * this.m01));
         double _t26 = Math.fma(other.m21(), this.m02, Math.fma(other.m01(), this.m00, other.m11() * this.m01));
@@ -1514,7 +1514,6 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3x3(invertProduct_translation_s74c57dcd_c0(_t12, _t18_inv, other, _t1, _t3, _t13), invertProduct_translation_s74c57dcd_c1(other, _t2, _t5, _t18_inv, _t4), invertProduct_translation_s74c57dcd_c2(_t5, _t1, _t2, _t0, _t18_inv, _t3, _t4), Joml.BIT_TRANSLATION & other.properties());
     }
 
-    /** Private tail of {@code invertProduct_orthogonal}; reached only through it. */
     /** Private per-column body of {@code invertProduct_orthogonal_s1c4ff883_tail}; reached only through it. */
     private Double3 invertProduct_orthogonal_s1c4ff883_tail_s63211a7d_c0(double _t24, double _t30_inv, Double3x3 other, double _t13, double _t15, double _t25) {
         return new Double3(_t24 * _t30_inv, Math.fma(other.m20(), _t13, -(other.m22() * _t15)) * _t30_inv, _t25 * _t30_inv);
@@ -1530,6 +1529,7 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3(Math.fma(_t17, _t13, -(_t12 * _t14)) * _t30_inv, Math.fma(_t15, _t14, -(_t16 * _t13)) * _t30_inv, Math.fma(_t16, _t12, -(_t15 * _t17)) * _t30_inv);
     }
 
+    /** Private tail of {@code invertProduct_orthogonal}; reached only through it. */
     private Double3x3 invertProduct_orthogonal_s1c4ff883_tail(double _t14, double _t25, double _t16, double _t24, double _t17, Double3x3 other, double _t15, double _t13, double _t12, int _props) {
         double _t30 = Math.fma(_t14, _t25, Math.fma(_t16, _t24, -(_t17 * Math.fma(other.m22(), _t15, -(other.m20() * _t13)))));
         double _t30_inv = 1.0 / _t30;
@@ -1732,7 +1732,6 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3x3(invertProduct_general_translation_s74c57dcd_c0(_t13, _t18_inv, _t7, _t6, _t5), invertProduct_general_translation_s74c57dcd_c1(_t8, _t6, _t18_inv), invertProduct_general_translation_s74c57dcd_c2(_t7, _t8, _t18_inv), 0);
     }
 
-    /** Private tail of {@code invertProduct_general_affine}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_affine_s74c57dcd_tail}; reached only through it. */
     private Double3 invertProduct_general_affine_s74c57dcd_tail_s37b9a40c_c0(double _t25, double _t30_inv, double _t16, double _t12, double _t15, double _t11, double _t24) {
         return new Double3(_t25 * _t30_inv, Math.fma(_t16, _t12, -(_t15 * _t11)) * _t30_inv, _t24 * _t30_inv);
@@ -1748,6 +1747,7 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3(Math.fma(_t16, _t14, -(_t17 * _t9)) * _t30_inv, Math.fma(_t17, _t11, -(_t16 * _t13)) * _t30_inv, Math.fma(_t13, _t9, -(_t11 * _t14)) * _t30_inv);
     }
 
+    /** Private tail of {@code invertProduct_general_affine}; reached only through it. */
     private Double3x3 invertProduct_general_affine_s74c57dcd_tail(double _t17, double _t24, double _t13, double _t25, double _t14, double _t15, double _t11, double _t16, double _t12, double _t10, double _t9, int _props) {
         double _t30 = Math.fma(_t17, _t24, Math.fma(_t13, _t25, -(_t14 * Math.fma(_t15, _t11, -(_t16 * _t12)))));
         double _t30_inv = 1.0 / _t30;
@@ -1825,7 +1825,6 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return invertProduct_general(other);
     }
 
-    /** Private tail of {@code invertProduct}; reached only through it. */
     /** Private per-column body of {@code invertProduct_s7500000e_tail}; reached only through it. */
     private Double3 invertProduct_s7500000e_tail_sa37e042_c0(double _t33, double _t39_inv, double _t24, double _t21, double _t23, double _t19, double _t34) {
         return new Double3(_t33 * _t39_inv, Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv, _t34 * _t39_inv);
@@ -1841,6 +1840,7 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3(Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv, Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv, Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv);
     }
 
+    /** Private tail of {@code invertProduct}; reached only through it. */
     private Double3x3 invertProduct_s7500000e_tail(double _t23, double _t20, double _t24, double _t18, double _t22, double _t25, double _t33, double _t26, double _t19, double _t21, int _props) {
         double _t34 = Math.fma(_t23, _t20, -(_t24 * _t18));
         double _t39 = Math.fma(_t22, _t34, Math.fma(_t25, _t33, -(_t26 * Math.fma(_t23, _t19, -(_t24 * _t21)))));
@@ -5294,7 +5294,6 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_s6a304d84_tail}; reached only through it. */
     private Double3 lookAlong_degenerate_s6a304d84_tail_s16d1ac59_c0(double _t40, double _t41, double _t42) {
         return new Double3(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)));
@@ -5310,6 +5309,7 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t11, this.m01 * _t10)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t11, this.m11 * _t10)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t11, this.m21 * _t10)));
     }
 
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
     private Double3x3 lookAlong_degenerate_s6a304d84_tail(double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t12, double _t11, double _t10, int _props) {
         double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         double _t39, _t40, _t41, _t42;
@@ -5539,7 +5539,6 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeRotationLookAlong_degenerate_s6a304d84_tail}; reached only through it. */
     private static Double3 makeRotationLookAlong_degenerate_s6a304d84_tail_s752c1777_c0(double _t41, double _t42, double _t40) {
         return new Double3(_t41, _t42, _t40);
@@ -5555,6 +5554,7 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         return new Double3(_t11, _t10, _t12);
     }
 
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     private static Double3x3 makeRotationLookAlong_degenerate_s6a304d84_tail(double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t10, double _t12, double _t11, int _props) {
         double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         double _t39, _t40, _t41, _t42;
@@ -9106,6 +9106,106 @@ public record Double3x3(double m00, double m01, double m02, double m10, double m
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(vX, vY, vZ);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation(vX, vY, vZ);
         return mul_general(vX, vY, vZ);
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation, returning the result
+     * as a value.
+     *
+     * @param v the direction to transform
+     * @return the resulting vector
+     */
+    public Double2 transformDirection(Double2 v) {
+        return transformDirection(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Double2 transformDirection_identity(double vX, double vY) {
+        return new Double2(vX, vY);
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Double2 transformDirection_general(double vX, double vY) {
+        return new Double2(Math.fma(this.m00, vX, this.m01 * vY), Math.fma(this.m10, vX, this.m11 * vY));
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation, returning the result
+     * as a value.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return the resulting vector
+     */
+    public Double2 transformDirection(double vX, double vY) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformDirection_identity(vX, vY);
+        return transformDirection_general(vX, vY);
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1}, returning the result as a value.
+     *
+     * @param v the position to transform
+     * @return the resulting vector
+     */
+    public Double2 transformPosition(Double2 v) {
+        return transformPosition(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Double2 transformPosition_identity(double vX, double vY) {
+        return transformDirection_identity(vX, vY);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Double2 transformPosition_translation(double vX, double vY) {
+        return new Double2(this.m02 + vX, this.m12 + vY);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Double2 transformPosition_general(double vX, double vY) {
+        return new Double2(Math.fma(this.m00, vX, Math.fma(this.m01, vY, this.m02)), Math.fma(this.m10, vX, Math.fma(this.m11, vY, this.m12)));
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1}, returning the result as a value.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return the resulting vector
+     */
+    public Double2 transformPosition(double vX, double vY) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transformPosition_identity(vX, vY);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformPosition_translation(vX, vY);
+        return transformPosition_general(vX, vY);
     }
 
     /**

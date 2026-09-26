@@ -536,6 +536,46 @@ public interface Short4 extends Short4R {
     @Mutated default Short4 clamp(short minX, short minY, short minZ, short minW, short maxX, short maxY, short maxZ, short maxW) { return clamp(minX, minY, minZ, minW, maxX, maxY, maxZ, maxW, Joml.RETURN_NEW ? Joml.short4() : this); }
 
     /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent).
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Short4 cross(Short4R v, Short4R w) { return cross(v, w, Joml.RETURN_NEW ? Joml.short4() : this); }
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent).
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default Short4 cross(short vX, short vY, short vZ, short vW, short wX, short wY, short wZ, short wW) { return cross(vX, vY, vZ, vW, wX, wY, wZ, wW, Joml.RETURN_NEW ? Joml.short4() : this); }
+
+    /**
      * Set each component of this vector to the larger of itself and {@code scalar}.
      *
      * @param scalar the value to take the component-wise maximum with

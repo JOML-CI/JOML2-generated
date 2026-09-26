@@ -2922,6 +2922,89 @@ public class Float2x2Impl implements Float2x2 {
 
 
     /**
+     * Decompose this matrix into a unit lower-triangular matrix, a diagonal matrix and a unit
+     * upper-triangular matrix whose product, in that order, is this matrix, storing them in
+     * {@code lower}, {@code diagonal} and {@code upper} respectively.
+     * <p>
+     * This is Doolittle elimination without pivoting: {@code m00} is the first pivot, and a matrix
+     * whose {@code m00} is zero has no such decomposition (the factors are then not finite).
+     *
+     * @param lower will hold the unit lower-triangular factor
+     * @param diagonal will hold the diagonal factor
+     * @param upper will hold the unit upper-triangular factor
+     * @return this
+     */
+    public Float2x2 decomposeLDU(@Mutated Float2x2 lower, @Mutated Float2x2 diagonal, @Mutated Float2x2 upper) {
+        float[] sd = this.data;
+        float[] lowerData = ((Float2x2Impl) lower).data;
+        float[] diagonalData = ((Float2x2Impl) diagonal).data;
+        float[] upperData = ((Float2x2Impl) upper).data;
+        float _rcp0 = 1.0f / sd[0];
+        float _sp0 = sd[1] * _rcp0;
+        lowerData[0] = 1.0f;
+        lowerData[1] = _sp0;
+        lowerData[2] = 0.0f;
+        lowerData[3] = 1.0f;
+        diagonalData[0] = sd[0];
+        diagonalData[1] = 0.0f;
+        float _d1buf0 = 0.0f;
+        diagonalData[3] = sd[3] - sd[2] * _sp0;
+        diagonalData[2] = _d1buf0;
+        upperData[0] = 1.0f;
+        upperData[1] = 0.0f;
+        upperData[2] = sd[2] * _rcp0;
+        upperData[3] = 1.0f;
+        ((Float2x2Impl) lower).properties = 0;
+        ((Float2x2Impl) diagonal).properties = 0;
+        ((Float2x2Impl) upper).properties = Joml.BIT_TRANSLATION;
+        return this;
+    }
+
+
+    /**
+     * Decompose this matrix into a unit lower-triangular matrix, a diagonal matrix and a unit
+     * upper-triangular matrix whose product, in that order, is this matrix, storing them in
+     * {@code lower}, {@code diagonal} and {@code upper} respectively.
+     * <p>
+     * This is Doolittle elimination without pivoting: {@code m00} is the first pivot, and a matrix
+     * whose {@code m00} is zero has no such decomposition (the factors are then not finite).
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param lower will hold the unit lower-triangular factor
+     * @param diagonal will hold the diagonal factor
+     * @param upper will hold the unit upper-triangular factor
+     * @return this
+     */
+    public Float2x2 decomposeLDU(@Mutated Double2x2 lower, @Mutated Double2x2 diagonal, @Mutated Double2x2 upper) {
+        float[] sd = this.data;
+        double[] lowerData = ((Double2x2Impl) lower).data;
+        double[] diagonalData = ((Double2x2Impl) diagonal).data;
+        double[] upperData = ((Double2x2Impl) upper).data;
+        float _rcp0 = 1.0f / sd[0];
+        float _sp0 = sd[1] * _rcp0;
+        lowerData[0] = 1.0f;
+        lowerData[1] = _sp0;
+        lowerData[2] = 0.0f;
+        lowerData[3] = 1.0f;
+        diagonalData[0] = sd[0];
+        diagonalData[1] = 0.0f;
+        float _d1buf0 = 0.0f;
+        diagonalData[3] = sd[3] - sd[2] * _sp0;
+        diagonalData[2] = _d1buf0;
+        upperData[0] = 1.0f;
+        upperData[1] = 0.0f;
+        upperData[2] = sd[2] * _rcp0;
+        upperData[3] = 1.0f;
+        ((Double2x2Impl) lower).properties = 0;
+        ((Double2x2Impl) diagonal).properties = 0;
+        ((Double2x2Impl) upper).properties = Joml.BIT_TRANSLATION;
+        return this;
+    }
+
+
+    /**
      * Set this matrix to the identity.
      *
      * @return this

@@ -5815,6 +5815,127 @@ public final class Double4x4OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.DoubleBuffer composeTRSAround_unsafe(java.nio.DoubleBuffer dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        Double4x4OpsKernelsAddress.composeTRSAround_unsafe(_destBase, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer composeTRSAround_api(java.nio.DoubleBuffer dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16) {
+            Double4x4Ops.composeTRSAround(dest.array(), dest.arrayOffset() + destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.composeTRSAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+            return dest;
+        }
+        double _t0 = -pivotX;
+        double _t1 = -pivotY;
+        double _t2 = -pivotZ;
+        double _t3 = scaleX + scaleX;
+        double _t4 = scaleY + scaleY;
+        double _t5 = scaleZ + scaleZ;
+        double _t6 = rotationZ * rotationZ;
+        double _t7 = rotationZ * rotationW;
+        double _t8 = rotationY * rotationW;
+        double _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        double _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        double _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        double _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        double _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        double _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        double _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        double _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        double _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        dest.put(destOffset + 0, _t33);
+        dest.put(destOffset + 1, _t28);
+        dest.put(destOffset + 2, _t32);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t30);
+        dest.put(destOffset + 5, _t34);
+        dest.put(destOffset + 6, _t29);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t27);
+        dest.put(destOffset + 9, _t31);
+        dest.put(destOffset + 10, _t35);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX))));
+        dest.put(destOffset + 13, Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY))));
+        dest.put(destOffset + 14, Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ))));
+        dest.put(destOffset + 15, 1.0);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer composeTRSAround_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer translation, int translationOffset, java.nio.DoubleBuffer rotation, int rotationOffset, java.nio.DoubleBuffer scale, int scaleOffset, java.nio.DoubleBuffer pivot, int pivotOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _translationBase = UnsafeOpsHolder.U.getLong(translation, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) translationOffset * 8L;
+        long _rotationBase = UnsafeOpsHolder.U.getLong(rotation, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) rotationOffset * 8L;
+        long _scaleBase = UnsafeOpsHolder.U.getLong(scale, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) scaleOffset * 8L;
+        long _pivotBase = UnsafeOpsHolder.U.getLong(pivot, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) pivotOffset * 8L;
+        Double4x4OpsKernelsAddress.composeTRSAround_unsafe(_destBase, _translationBase, _rotationBase, _scaleBase, _pivotBase);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer composeTRSAround_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer translation, int translationOffset, java.nio.DoubleBuffer rotation, int rotationOffset, java.nio.DoubleBuffer scale, int scaleOffset, java.nio.DoubleBuffer pivot, int pivotOffset) {
+        if (dest.hasArray() && destOffset >= 0 && destOffset <= dest.limit() - 16 && translation.hasArray() && translationOffset >= 0 && translationOffset <= translation.limit() - 3 && rotation.hasArray() && rotationOffset >= 0 && rotationOffset <= rotation.limit() - 4 && scale.hasArray() && scaleOffset >= 0 && scaleOffset <= scale.limit() - 3 && pivot.hasArray() && pivotOffset >= 0 && pivotOffset <= pivot.limit() - 3) {
+            Double4x4Ops.composeTRSAround(dest.array(), dest.arrayOffset() + destOffset, translation.array(), translation.arrayOffset() + translationOffset, rotation.array(), rotation.arrayOffset() + rotationOffset, scale.array(), scale.arrayOffset() + scaleOffset, pivot.array(), pivot.arrayOffset() + pivotOffset);
+            return dest;
+        }
+        if (dest.order() == java.nio.ByteOrder.nativeOrder() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.order() == java.nio.ByteOrder.nativeOrder() && pivot.order() == java.nio.ByteOrder.nativeOrder()) {
+            Double4x4OpsKernelsSegment.composeTRSAround_api(java.lang.foreign.MemorySegment.ofBuffer(dest.duplicate().position(0)), (long) destOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(translation.duplicate().position(0)), (long) translationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(rotation.duplicate().position(0)), (long) rotationOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(scale.duplicate().position(0)), (long) scaleOffset * 8L, java.lang.foreign.MemorySegment.ofBuffer(pivot.duplicate().position(0)), (long) pivotOffset * 8L);
+            return dest;
+        }
+        double _translationx = translation.get(translationOffset + 0);
+        double _translationy = translation.get(translationOffset + 1);
+        double _translationz = translation.get(translationOffset + 2);
+        double _rotationx = rotation.get(rotationOffset + 0);
+        double _rotationy = rotation.get(rotationOffset + 1);
+        double _rotationz = rotation.get(rotationOffset + 2);
+        double _rotationw = rotation.get(rotationOffset + 3);
+        double _scalex = scale.get(scaleOffset + 0);
+        double _scaley = scale.get(scaleOffset + 1);
+        double _scalez = scale.get(scaleOffset + 2);
+        double _pivotx = pivot.get(pivotOffset + 0);
+        double _pivoty = pivot.get(pivotOffset + 1);
+        double _pivotz = pivot.get(pivotOffset + 2);
+        double _t0 = -_pivotx;
+        double _t1 = -_pivoty;
+        double _t2 = -_pivotz;
+        double _t3 = _scalex + _scalex;
+        double _t4 = _scaley + _scaley;
+        double _t5 = _scalez + _scalez;
+        double _t6 = _rotationz * _rotationz;
+        double _t7 = _rotationz * _rotationw;
+        double _t8 = _rotationy * _rotationw;
+        double _t27 = Math.fma(_rotationx, _rotationz, _t8) * _t5;
+        double _t28 = Math.fma(_rotationx, _rotationy, _t7) * _t3;
+        double _t29 = Math.fma(_rotationx, _rotationw, _rotationy * _rotationz) * _t4;
+        double _t30 = Math.fma(_rotationx, _rotationy, -_t7) * _t4;
+        double _t31 = Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)) * _t5;
+        double _t32 = Math.fma(_rotationx, _rotationz, -_t8) * _t3;
+        double _t33 = Math.fma(-Math.fma(_rotationy, _rotationy, _t6), _t3, _scalex);
+        double _t34 = Math.fma(-Math.fma(_rotationx, _rotationx, _t6), _t4, _scaley);
+        double _t35 = Math.fma(-Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), _t5, _scalez);
+        dest.put(destOffset + 0, _t33);
+        dest.put(destOffset + 1, _t28);
+        dest.put(destOffset + 2, _t32);
+        dest.put(destOffset + 3, 0.0);
+        dest.put(destOffset + 4, _t30);
+        dest.put(destOffset + 5, _t34);
+        dest.put(destOffset + 6, _t29);
+        dest.put(destOffset + 7, 0.0);
+        dest.put(destOffset + 8, _t27);
+        dest.put(destOffset + 9, _t31);
+        dest.put(destOffset + 10, _t35);
+        dest.put(destOffset + 11, 0.0);
+        dest.put(destOffset + 12, Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, _pivotx + _translationx))));
+        dest.put(destOffset + 13, Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, _pivoty + _translationy))));
+        dest.put(destOffset + 14, Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, _pivotz + _translationz))));
+        dest.put(destOffset + 15, 1.0);
+        return dest;
+    }
+
     public static java.nio.DoubleBuffer composeTRSMul_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer m, int mOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _mBase = UnsafeOpsHolder.U.getLong(m, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) mOffset * 8L;
@@ -23197,6 +23318,38 @@ public final class Double4x4OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.DoubleBuffer transformPosition_unsafe(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _matrixBase = UnsafeOpsHolder.U.getLong(matrix, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matrixOffset * 8L;
+        long _pointsBase = UnsafeOpsHolder.U.getLong(points, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) pointsOffset * 8L;
+        Double4x4OpsKernelsAddress.transformPosition_unsafe(_destBase, (long) destStride * 8L, _matrixBase, _pointsBase, (long) pointsStride * 8L, count);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer transformPosition_api(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        double _m00 = matrix.get(matrixOffset + 0);
+        double _m01 = matrix.get(matrixOffset + 4);
+        double _m02 = matrix.get(matrixOffset + 8);
+        double _m03 = matrix.get(matrixOffset + 12);
+        double _m10 = matrix.get(matrixOffset + 1);
+        double _m11 = matrix.get(matrixOffset + 5);
+        double _m12 = matrix.get(matrixOffset + 9);
+        double _m13 = matrix.get(matrixOffset + 13);
+        double _m20 = matrix.get(matrixOffset + 2);
+        double _m21 = matrix.get(matrixOffset + 6);
+        double _m22 = matrix.get(matrixOffset + 10);
+        double _m23 = matrix.get(matrixOffset + 14);
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
+            double px = points.get(_po + 0), py = points.get(_po + 1), pz = points.get(_po + 2);
+            dest.put(_do + 0, Math.fma(_m00, px, Math.fma(_m01, py, Math.fma(_m02, pz, _m03))));
+            dest.put(_do + 1, Math.fma(_m10, px, Math.fma(_m11, py, Math.fma(_m12, pz, _m13))));
+            dest.put(_do + 2, Math.fma(_m20, px, Math.fma(_m21, py, Math.fma(_m22, pz, _m23))));
+        }
+        return dest;
+    }
+
     public static java.nio.DoubleBuffer transformDirection_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int count) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _matrixBase = UnsafeOpsHolder.U.getLong(matrix, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matrixOffset * 8L;
@@ -23218,6 +23371,35 @@ public final class Double4x4OpsKernelsTypedBuffer {
         for (int _i = 0; _i < count; _i++) {
             int _po = pointsOffset + _i * 3;
             int _do = destOffset + _i * 3;
+            double px = points.get(_po + 0), py = points.get(_po + 1), pz = points.get(_po + 2);
+            dest.put(_do + 0, Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py)));
+            dest.put(_do + 1, Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py)));
+            dest.put(_do + 2, Math.fma(_m22, pz, Math.fma(_m20, px, _m21 * py)));
+        }
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer transformDirection_unsafe(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _matrixBase = UnsafeOpsHolder.U.getLong(matrix, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matrixOffset * 8L;
+        long _pointsBase = UnsafeOpsHolder.U.getLong(points, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) pointsOffset * 8L;
+        Double4x4OpsKernelsAddress.transformDirection_unsafe(_destBase, (long) destStride * 8L, _matrixBase, _pointsBase, (long) pointsStride * 8L, count);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer transformDirection_api(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        double _m00 = matrix.get(matrixOffset + 0);
+        double _m01 = matrix.get(matrixOffset + 4);
+        double _m02 = matrix.get(matrixOffset + 8);
+        double _m10 = matrix.get(matrixOffset + 1);
+        double _m11 = matrix.get(matrixOffset + 5);
+        double _m12 = matrix.get(matrixOffset + 9);
+        double _m20 = matrix.get(matrixOffset + 2);
+        double _m21 = matrix.get(matrixOffset + 6);
+        double _m22 = matrix.get(matrixOffset + 10);
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
             double px = points.get(_po + 0), py = points.get(_po + 1), pz = points.get(_po + 2);
             dest.put(_do + 0, Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py)));
             dest.put(_do + 1, Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py)));
@@ -23254,6 +23436,44 @@ public final class Double4x4OpsKernelsTypedBuffer {
         for (int _i = 0; _i < count; _i++) {
             int _po = pointsOffset + _i * 3;
             int _do = destOffset + _i * 3;
+            double px = points.get(_po + 0), py = points.get(_po + 1), pz = points.get(_po + 2);
+            double _w = Math.fma(_m30, px, Math.fma(_m31, py, Math.fma(_m32, pz, _m33)));
+            double _inv = 1.0 / _w;
+            dest.put(_do + 0, (Math.fma(_m00, px, Math.fma(_m01, py, Math.fma(_m02, pz, _m03)))) * _inv);
+            dest.put(_do + 1, (Math.fma(_m10, px, Math.fma(_m11, py, Math.fma(_m12, pz, _m13)))) * _inv);
+            dest.put(_do + 2, (Math.fma(_m20, px, Math.fma(_m21, py, Math.fma(_m22, pz, _m23)))) * _inv);
+        }
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer transformProject_unsafe(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _matrixBase = UnsafeOpsHolder.U.getLong(matrix, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) matrixOffset * 8L;
+        long _pointsBase = UnsafeOpsHolder.U.getLong(points, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) pointsOffset * 8L;
+        Double4x4OpsKernelsAddress.transformProject_unsafe(_destBase, (long) destStride * 8L, _matrixBase, _pointsBase, (long) pointsStride * 8L, count);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer transformProject_api(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        double _m00 = matrix.get(matrixOffset + 0);
+        double _m01 = matrix.get(matrixOffset + 4);
+        double _m02 = matrix.get(matrixOffset + 8);
+        double _m03 = matrix.get(matrixOffset + 12);
+        double _m10 = matrix.get(matrixOffset + 1);
+        double _m11 = matrix.get(matrixOffset + 5);
+        double _m12 = matrix.get(matrixOffset + 9);
+        double _m13 = matrix.get(matrixOffset + 13);
+        double _m20 = matrix.get(matrixOffset + 2);
+        double _m21 = matrix.get(matrixOffset + 6);
+        double _m22 = matrix.get(matrixOffset + 10);
+        double _m23 = matrix.get(matrixOffset + 14);
+        double _m30 = matrix.get(matrixOffset + 3);
+        double _m31 = matrix.get(matrixOffset + 7);
+        double _m32 = matrix.get(matrixOffset + 11);
+        double _m33 = matrix.get(matrixOffset + 15);
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
             double px = points.get(_po + 0), py = points.get(_po + 1), pz = points.get(_po + 2);
             double _w = Math.fma(_m30, px, Math.fma(_m31, py, Math.fma(_m32, pz, _m33)));
             double _inv = 1.0 / _w;

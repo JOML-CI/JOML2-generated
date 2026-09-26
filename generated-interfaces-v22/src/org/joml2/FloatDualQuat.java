@@ -803,6 +803,60 @@ public interface FloatDualQuat extends FloatDualQuatR {
     @Mutated default FloatDualQuat pow(float t) { return pow(t, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
+     * Set the dual half of this dual quaternion to {@code dual}, keeping the real (rotation) half
+     * as it is.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param dual the new dual half
+     * @return this
+     */
+    @Mutated default FloatDualQuat setDual(FloatQuatR dual) { return setDual(dual, this); }
+
+    /**
+     * Set the dual half of this dual quaternion to ({@code x}, {@code y}, {@code z}, {@code w}),
+     * keeping the real (rotation) half as it is.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param x the {@code x} component of the new dual half {@code (x, y, z, w)}
+     * @param y the {@code y} component of the new dual half {@code (x, y, z, w)}
+     * @param z the {@code z} component of the new dual half {@code (x, y, z, w)}
+     * @param w the {@code w} component of the new dual half {@code (x, y, z, w)}
+     * @return this
+     */
+    @Mutated default FloatDualQuat setDual(float x, float y, float z, float w) { return setDual(x, y, z, w, this); }
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to {@code real}, keeping the dual half
+     * as it is.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param real the new real (rotation) half
+     * @return this
+     */
+    @Mutated default FloatDualQuat setReal(FloatQuatR real) { return setReal(real, this); }
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to ({@code x}, {@code y}, {@code z},
+     * {@code w}), keeping the dual half as it is.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param x the {@code x} component of the new real (rotation) half {@code (x, y, z, w)}
+     * @param y the {@code y} component of the new real (rotation) half {@code (x, y, z, w)}
+     * @param z the {@code z} component of the new real (rotation) half {@code (x, y, z, w)}
+     * @param w the {@code w} component of the new real (rotation) half {@code (x, y, z, w)}
+     * @return this
+     */
+    @Mutated default FloatDualQuat setReal(float x, float y, float z, float w) { return setReal(x, y, z, w, this); }
+
+    /**
      * Set the rotation of this dual quaternion to {@code rotation}.
      *
      * @param rotation the new rotation
@@ -1037,6 +1091,39 @@ public interface FloatDualQuat extends FloatDualQuatR {
      * @return this
      */
     @Mutated FloatDualQuat makeRotationZYX(float angleZ, float angleY, float angleX);
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion {@code rotation} onto this dual
+     * quaternion.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param rotation the rotation (must be a unit quaternion)
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default FloatDualQuat preRotate(FloatQuatR rotation) { return preRotate(rotation, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion ({@code x}, {@code y}, {@code z},
+     * {@code w}) onto this dual quaternion.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)} (the quaternion must
+     *        have unit length)
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default FloatDualQuat preRotate(float x, float y, float z, float w) { return preRotate(x, y, z, w, Joml.RETURN_NEW ? Joml.floatDualQuat() : this); }
 
     /**
      * Apply the rotation represented by the quaternion {@code rotation} to this dual quaternion.

@@ -410,6 +410,37 @@ public final class Double2x2OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.DoubleBuffer decomposeLDU_unsafe(java.nio.DoubleBuffer lower, int lowerOffset, java.nio.DoubleBuffer diagonal, int diagonalOffset, java.nio.DoubleBuffer upper, int upperOffset, java.nio.DoubleBuffer src, int srcOffset) {
+        long _lowerBase = UnsafeOpsHolder.U.getLong(lower, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) lowerOffset * 8L;
+        long _diagonalBase = UnsafeOpsHolder.U.getLong(diagonal, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) diagonalOffset * 8L;
+        long _upperBase = UnsafeOpsHolder.U.getLong(upper, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) upperOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        Double2x2OpsKernelsAddress.decomposeLDU_unsafe(_lowerBase, _diagonalBase, _upperBase, _srcBase);
+        return lower;
+    }
+
+    public static java.nio.DoubleBuffer decomposeLDU_api(java.nio.DoubleBuffer lower, int lowerOffset, java.nio.DoubleBuffer diagonal, int diagonalOffset, java.nio.DoubleBuffer upper, int upperOffset, java.nio.DoubleBuffer src, int srcOffset) {
+        double _self00 = src.get(srcOffset + 0);
+        double _self10 = src.get(srcOffset + 1);
+        double _self01 = src.get(srcOffset + 2);
+        double _self11 = src.get(srcOffset + 3);
+        double _rcp0 = 1.0 / _self00;
+        double _sp0 = _self10 * _rcp0;
+        lower.put(lowerOffset + 0, 1.0);
+        lower.put(lowerOffset + 1, _sp0);
+        lower.put(lowerOffset + 2, 0.0);
+        lower.put(lowerOffset + 3, 1.0);
+        diagonal.put(diagonalOffset + 0, _self00);
+        diagonal.put(diagonalOffset + 1, 0.0);
+        diagonal.put(diagonalOffset + 2, 0.0);
+        diagonal.put(diagonalOffset + 3, _self11 - _self01 * _sp0);
+        upper.put(upperOffset + 0, 1.0);
+        upper.put(upperOffset + 1, 0.0);
+        upper.put(upperOffset + 2, _self01 * _rcp0);
+        upper.put(upperOffset + 3, 1.0);
+        return lower;
+    }
+
     public static java.nio.DoubleBuffer makeIdentity_unsafe(java.nio.DoubleBuffer dest, int destOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         Double2x2OpsKernelsAddress.makeIdentity_unsafe(_destBase);

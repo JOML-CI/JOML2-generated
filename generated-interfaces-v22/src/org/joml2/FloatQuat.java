@@ -82,6 +82,14 @@ public interface FloatQuat extends FloatQuatR {
     @Mutated default FloatQuat add(float x, float y, float z, float w) { return add(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
+     * Multiply each component of this quaternion by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default FloatQuat mul(float scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
+
+    /**
      * Negate this quaternion.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -106,6 +114,23 @@ public interface FloatQuat extends FloatQuatR {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat sub(float x, float y, float z, float w) { return sub(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
+
+    /**
+     * Set this quaternion to the unit quaternion
+     * {@code (sqrt(1 - u1) sin(2 PI u2), sqrt(1 - u1) cos(2 PI u2), sqrt(u1) sin(2 PI u3), sqrt(u1) cos(2 PI u3))},
+     * Shoemake's construction: samples uniformly distributed in {@code [0, 1)} give a rotation
+     * uniformly distributed over all rotations ({@code makeRandomRotation} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param u1 the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed rotation
+     * @param u2 the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @param u3 the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @return this
+     */
+    @Mutated FloatQuat makeUniformRotation(float u1, float u2, float u3);
 
     /**
      * Set this quaternion to the given values.
@@ -486,6 +511,28 @@ public interface FloatQuat extends FloatQuatR {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat preMul(float x, float y, float z, float w) { return preMul(x, y, z, w, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion.
+     *
+     * @param other the quaternion to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default FloatQuat addScaled(FloatQuatR other, float weight) { return addScaled(other, weight, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}, {@code w}) scaled by {@code weight} to this quaternion.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
+     * @param weight the factor to scale ({@code x}, {@code y}, {@code z}, {@code w}) by before
+     *        adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default FloatQuat addScaled(float x, float y, float z, float w, float weight) { return addScaled(x, y, z, w, weight, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
 
     /**
      * Recompute the {@code w} component of this quaternion from {@code x}, {@code y} and {@code z},
@@ -1136,6 +1183,16 @@ public interface FloatQuat extends FloatQuatR {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default FloatQuat rotateZYX(float angleZ, float angleY, float angleX) { return rotateZYX(angleZ, angleY, angleX, Joml.RETURN_NEW ? Joml.floatQuat() : this); }
+
+    /**
+     * Set this quaternion to a rotation uniformly distributed over all rotations, drawing the 3
+     * samples of {@code makeUniformRotation} from {@code rng}, each with {@code rng.nextFloat()},
+     * in parameter order.
+     *
+     * @param rng the random number generator to draw the 3 samples from
+     * @return this
+     */
+    @Mutated default FloatQuat makeRandomRotation(java.util.Random rng) { return makeUniformRotation(rng.nextFloat(), rng.nextFloat(), rng.nextFloat()); }
 
     /**
      * Load the elements from the given array.

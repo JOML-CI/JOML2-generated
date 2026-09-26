@@ -1910,6 +1910,81 @@ public value record DoubleDualQuat(double rX, double rY, double rZ, double rW, d
 
 
     /**
+     * Set the dual half of this dual quaternion to {@code dual}, keeping the real (rotation) half
+     * as it is, returning the result as a value.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param dual the new dual half
+     * @return the resulting dual quaternion
+     */
+    public DoubleDualQuat setDual(DoubleQuat dual) {
+        return setDual(dual.x(), dual.y(), dual.z(), dual.w());
+    }
+
+
+    /**
+     * Set the dual half of this dual quaternion to ({@code dualX}, {@code dualY}, {@code dualZ},
+     * {@code dualW}), keeping the real (rotation) half as it is, returning the result as a value.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param dualX the {@code x} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualY the {@code y} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualZ the {@code z} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualW the {@code w} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @return the resulting dual quaternion
+     */
+    public DoubleDualQuat setDual(double dualX, double dualY, double dualZ, double dualW) {
+        return new DoubleDualQuat(this.rX, this.rY, this.rZ, this.rW, dualX, dualY, dualZ, dualW);
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to {@code real}, keeping the dual half
+     * as it is, returning the result as a value.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param real the new real (rotation) half
+     * @return the resulting dual quaternion
+     */
+    public DoubleDualQuat setReal(DoubleQuat real) {
+        return setReal(real.x(), real.y(), real.z(), real.w());
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to ({@code realX}, {@code realY},
+     * {@code realZ}, {@code realW}), keeping the dual half as it is, returning the result as a
+     * value.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param realX the {@code x} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realY the {@code y} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realZ the {@code z} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realW the {@code w} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @return the resulting dual quaternion
+     */
+    public DoubleDualQuat setReal(double realX, double realY, double realZ, double realW) {
+        return new DoubleDualQuat(realX, realY, realZ, realW, this.dX, this.dY, this.dZ, this.dW);
+    }
+
+
+    /**
      * Set the rotation of this dual quaternion to {@code rotation}, returning the result as a
      * value.
      *
@@ -2848,6 +2923,63 @@ public value record DoubleDualQuat(double rX, double rY, double rZ, double rW, d
         double _t11 = _t4 * _t6;
         double _t12 = _t6 * _t7;
         return new DoubleDualQuat(Math.fma(_t12, _t5, -(_t9 * _t8)), Math.fma(_t10, _t8, _t11 * _t5), Math.fma(_t11, _t8, -(_t10 * _t5)), Math.fma(_t9, _t5, _t12 * _t8), 0.0, 0.0, 0.0, 0.0);
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion {@code rotation} onto this dual
+     * quaternion, returning the result as a value.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param rotation the rotation (must be a unit quaternion)
+     * @return the resulting dual quaternion
+     */
+    public DoubleDualQuat preRotate(DoubleQuat rotation) {
+        return preRotate(rotation.x(), rotation.y(), rotation.z(), rotation.w());
+    }
+
+    /** Private tail of {@code preRotate}; reached only through it. */
+    private DoubleDualQuat preRotate_s3241000a_tail(double rotationX, double rotationW, double rotationY, double rotationZ, double _sfx0, double _sfx1, double _sfx2, double _sfx3) {
+        double _sfx4 = Math.fma(rotationX, this.dW, rotationW * this.dX) + Math.fma(rotationY, this.dZ, -(rotationZ * this.dY));
+        double _sfx5 = Math.fma(rotationY, this.dW, rotationZ * this.dX) + Math.fma(rotationW, this.dY, -(rotationX * this.dZ));
+        double _sfx6 = Math.fma(rotationX, this.dY, rotationW * this.dZ) + Math.fma(rotationZ, this.dW, -(rotationY * this.dX));
+        double _sfx7 = Math.fma(rotationW, this.dW, -(rotationX * this.dX)) - Math.fma(rotationY, this.dY, rotationZ * this.dZ);
+        return new DoubleDualQuat(_sfx0, _sfx1, _sfx2, _sfx3, _sfx4, _sfx5, _sfx6, _sfx7);
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion ({@code rotationX},
+     * {@code rotationY}, {@code rotationZ}, {@code rotationW}) onto this dual quaternion, returning
+     * the result as a value.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @return the resulting dual quaternion
+     */
+    public DoubleDualQuat preRotate(double rotationX, double rotationY, double rotationZ, double rotationW) {
+        double _sfx0 = Math.fma(rotationX, this.rW, rotationW * this.rX) + Math.fma(rotationY, this.rZ, -(rotationZ * this.rY));
+        double _sfx1 = Math.fma(rotationY, this.rW, rotationZ * this.rX) + Math.fma(rotationW, this.rY, -(rotationX * this.rZ));
+        double _sfx2 = Math.fma(rotationX, this.rY, rotationW * this.rZ) + Math.fma(rotationZ, this.rW, -(rotationY * this.rX));
+        double _sfx3 = Math.fma(rotationW, this.rW, -(rotationX * this.rX)) - Math.fma(rotationY, this.rY, rotationZ * this.rZ);
+        return preRotate_s3241000a_tail(rotationX, rotationW, rotationY, rotationZ, _sfx0, _sfx1, _sfx2, _sfx3);
     }
 
 

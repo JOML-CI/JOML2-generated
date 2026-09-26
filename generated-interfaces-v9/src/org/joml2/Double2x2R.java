@@ -268,6 +268,21 @@ public interface Double2x2R {
     Double3x3 to3x3(@Mutated Double3x3 dest);
 
     /**
+     * Decompose this matrix into a unit lower-triangular matrix, a diagonal matrix and a unit
+     * upper-triangular matrix whose product, in that order, is this matrix, storing them in
+     * {@code lower}, {@code diagonal} and {@code upper} respectively.
+     * <p>
+     * This is Doolittle elimination without pivoting: {@code m00} is the first pivot, and a matrix
+     * whose {@code m00} is zero has no such decomposition (the factors are then not finite).
+     *
+     * @param lower will hold the unit lower-triangular factor
+     * @param diagonal will hold the diagonal factor
+     * @param upper will hold the unit upper-triangular factor
+     * @return this
+     */
+    Double2x2 decomposeLDU(@Mutated Double2x2 lower, @Mutated Double2x2 diagonal, @Mutated Double2x2 upper);
+
+    /**
      * Linearly interpolate between this matrix and {@code other} using the interpolation factor
      * {@code t} and store the result in {@code dest}.
      * <p>

@@ -99,6 +99,18 @@ public final class FloatQuatOpsKernelsAddress {
         return dest;
     }
 
+    public static long mul_unsafe(long dest, long src, float scalar) {
+        float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, scalar * _selfx);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, scalar * _selfy);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, scalar * _selfz);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, scalar * _selfw);
+        return dest;
+    }
+
     public static long negate_unsafe(long dest, long src) {
         float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
         float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
@@ -136,6 +148,20 @@ public final class FloatQuatOpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 4L, _selfy - _othery);
         UnsafeOpsHolder.U.putFloat(dest + 8L, _selfz - _otherz);
         UnsafeOpsHolder.U.putFloat(dest + 12L, _selfw - _otherw);
+        return dest;
+    }
+
+    public static long makeUniformRotation_unsafe(long dest, float u1, float u2, float u3) {
+        float _t0 = (float) Math.sqrt(u1);
+        float _t1 = u2 * 6.2831855f;
+        float _t3 = u3 * 6.2831855f;
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sqrt(1.0f - u1);
+        float _t6 = (float) Math.sin(_t3);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, _t4 * _t5);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, (float) Math.cosFromSin(_t4, _t1) * _t5);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, _t6 * _t0);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, (float) Math.cosFromSin(_t6, _t3) * _t0);
         return dest;
     }
 
@@ -1208,6 +1234,34 @@ public final class FloatQuatOpsKernelsAddress {
         UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_othery, _selfw, _otherz * _selfx) + Math.fma(_otherw, _selfy, -(_otherx * _selfz)));
         UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(_otherx, _selfy, _otherw * _selfz) + Math.fma(_otherz, _selfw, -(_othery * _selfx)));
         UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_otherw, _selfw, -(_otherx * _selfx)) - Math.fma(_othery, _selfy, _otherz * _selfz));
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(weight, otherX, _selfx));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(weight, otherY, _selfy));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(weight, otherZ, _selfz));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(weight, otherW, _selfw));
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, long other, float weight) {
+        float _selfx = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _selfy = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _selfz = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _selfw = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _otherx = UnsafeOpsHolder.U.getFloat(other + 0L);
+        float _othery = UnsafeOpsHolder.U.getFloat(other + 4L);
+        float _otherz = UnsafeOpsHolder.U.getFloat(other + 8L);
+        float _otherw = UnsafeOpsHolder.U.getFloat(other + 12L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(weight, _otherx, _selfx));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(weight, _othery, _selfy));
+        UnsafeOpsHolder.U.putFloat(dest + 8L, Math.fma(weight, _otherz, _selfz));
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(weight, _otherw, _selfw));
         return dest;
     }
 

@@ -151,6 +151,25 @@ public final class DoubleQuatImpl implements DoubleQuat {
 
 
     /**
+     * Multiply each component of this quaternion by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat mul(double scalar, @Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        return dest;
+    }
+
+
+    /**
      * Negate this quaternion and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -202,6 +221,37 @@ public final class DoubleQuatImpl implements DoubleQuat {
         dd[2] = sd[2] - otherZ;
         dd[3] = sd[3] - otherW;
         return dest;
+    }
+
+
+    /**
+     * Set this quaternion to the unit quaternion
+     * {@code (sqrt(1 - u1) sin(2 PI u2), sqrt(1 - u1) cos(2 PI u2), sqrt(u1) sin(2 PI u3), sqrt(u1) cos(2 PI u3))},
+     * Shoemake's construction: samples uniformly distributed in {@code [0, 1)} give a rotation
+     * uniformly distributed over all rotations ({@code makeRandomRotation} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param u1 the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed rotation
+     * @param u2 the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @param u3 the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @return this
+     */
+    @Mutated public DoubleQuat makeUniformRotation(double u1, double u2, double u3) {
+        double[] dd = this.data;
+        double _t0 = Math.sqrt(u1);
+        double _t1 = u2 * 6.283185307179586;
+        double _t3 = u3 * 6.283185307179586;
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sqrt(1.0 - u1);
+        double _t6 = Math.sin(_t3);
+        dd[0] = _t4 * _t5;
+        dd[1] = Math.cosFromSin(_t4, _t1) * _t5;
+        dd[2] = _t6 * _t0;
+        dd[3] = Math.cosFromSin(_t6, _t3) * _t0;
+        return this;
     }
 
 
@@ -1428,6 +1478,48 @@ public final class DoubleQuatImpl implements DoubleQuat {
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion and store the result in
+     * {@code dest}.
+     *
+     * @param other the quaternion to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat addScaled(DoubleQuatR other, double weight, @Mutated DoubleQuat dest) {
+        return addScaled(other.x(), other.y(), other.z(), other.w(), weight, dest);
+    }
+
+
+    /**
+     * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) scaled by {@code weight}
+     * to this quaternion and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param weight the factor to scale ({@code otherX}, {@code otherY}, {@code otherZ},
+     *        {@code otherW}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat addScaled(double otherX, double otherY, double otherZ, double otherW, double weight, @Mutated DoubleQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        dd[0] = Math.fma(weight, otherX, sd[0]);
+        dd[1] = Math.fma(weight, otherY, sd[1]);
+        dd[2] = Math.fma(weight, otherZ, sd[2]);
+        dd[3] = Math.fma(weight, otherW, sd[3]);
         return dest;
     }
 

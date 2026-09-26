@@ -654,6 +654,56 @@ public final class Float4Ops {
     }
 
     /**
+     * Set this vector to the unit vector
+     * {@code (sqrt(1 - u) cos(2 PI v), sqrt(1 - u) sin(2 PI v), sqrt(u) cos(2 PI w), sqrt(u) sin(2 PI w))}:
+     * samples uniformly distributed in {@code [0, 1)} give a direction uniformly distributed on the
+     * unit sphere of four dimensions ({@code makeRandomDirection} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param u the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param w the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @return {@code dest}
+     */
+    public static float[] makeUniformDirection(float[] dest, int destOffset, float u, float v, float w) {
+        float _t0 = (float) Math.sqrt(u);
+        float _t1 = v * 6.2831855f;
+        float _t3 = w * 6.2831855f;
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sqrt(1.0f - u);
+        float _t6 = (float) Math.sin(_t3);
+        dest[destOffset + 0] = (float) Math.cosFromSin(_t4, _t1) * _t5;
+        dest[destOffset + 1] = _t4 * _t5;
+        dest[destOffset + 2] = (float) Math.cosFromSin(_t6, _t3) * _t0;
+        dest[destOffset + 3] = _t6 * _t0;
+        return dest;
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer makeUniformDirection(java.nio.FloatBuffer dest, int destOffset, float u, float v, float w) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsTypedBuffer.makeUniformDirection_unsafe(dest, destOffset, u, v, w);
+        return Float4OpsKernelsTypedBuffer.makeUniformDirection_api(dest, destOffset, u, v, w);
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer makeUniformDirection(java.nio.ByteBuffer dest, int destOffset, float u, float v, float w) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.makeUniformDirection_unsafe(dest, destOffset, u, v, w);
+        return Float4OpsKernelsByteBuffer.makeUniformDirection_api(dest, destOffset, u, v, w);
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long makeUniformDirection(long dest, float u, float v, float w) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.makeUniformDirection_unsafe(dest, u, v, w);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
      * Set this vector to the given values.
      *
      * @param dest will hold the result
@@ -1835,6 +1885,186 @@ public final class Float4Ops {
     }
 
     /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return {@code dest}
+     */
+    public static float[] slerp(float[] dest, int destOffset, float[] src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float t) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _ct0 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        float _t8 = _ct0;
+        float _ct1 = Math.fma(otherW, otherW, Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        float _t9 = _ct1;
+        float _t12 = (float) Math.sqrt(_t8);
+        float _t10 = 1.0f / _t12;
+        float _t13 = (1.0f / (float) Math.sqrt(_t9));
+        float _t14 = _selfx * _t10;
+        float _t16 = _selfw * _t10;
+        float _t18 = _selfz * _t10;
+        float _t21 = _selfy * _t10;
+        float _t24 = Math.fma(t, (float) Math.sqrt(_t9) - _t12, _t12);
+        float _t27 = Math.fma(otherW * _t13, _t16, Math.fma(otherZ * _t13, _t18, Math.fma(otherX * _t13, _t14, otherY * _t13 * _t21)));
+        float _t36 = Math.fma(otherW, _t13, -(_t27 * _t16));
+        float _t37 = Math.fma(otherZ, _t13, -(_t27 * _t18));
+        float _t38 = Math.fma(otherX, _t13, -(_t27 * _t14));
+        float _t39 = Math.fma(otherY, _t13, -(_t27 * _t21));
+        float _t44 = -Math.fma(_t36, _t16, Math.fma(_t37, _t18, Math.fma(_t38, _t14, _t39 * _t21)));
+        float _t45 = Math.fma(_t44, _t16, _t36);
+        float _t46 = Math.fma(_t44, _t18, _t37);
+        float _t47 = Math.fma(_t44, _t14, _t38);
+        float _t48 = Math.fma(_t44, _t21, _t39);
+        float _ct2 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, Math.fma(_t47, _t47, _t48 * _t48)));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        float _t53 = _ct2;
+        float _t57 = t * (float) Math.atan2((float) Math.sqrt(_t53), _t27);
+        float _t58 = (float) Math.sin(_t57);
+        float _sp0 = _t24 * _t58 * (1.0f / (float) Math.sqrt(_t53));
+        float _t61 = _t24 * (float) Math.cosFromSin(_t58, _t57);
+        dest[destOffset + 0] = Math.fma(_t14, _t61, _sp0 * _t47);
+        dest[destOffset + 1] = Math.fma(_t21, _t61, _sp0 * _t48);
+        dest[destOffset + 2] = Math.fma(_t18, _t61, _sp0 * _t46);
+        dest[destOffset + 3] = Math.fma(_t16, _t61, _sp0 * _t45);
+        return dest;
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer slerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsTypedBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        return Float4OpsKernelsTypedBuffer.slerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer slerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        return Float4OpsKernelsByteBuffer.slerp_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long slerp(long dest, long src, float otherX, float otherY, float otherZ, float otherW, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.slerp_unsafe(dest, src, otherX, otherY, otherZ, otherW, t);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param other the storage holding the vector to interpolate towards
+     * @param otherOffset the element index in {@code other} at which the vector starts
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return {@code dest}
+     */
+    public static float[] slerp(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float t) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _otherx = other[otherOffset + 0];
+        float _othery = other[otherOffset + 1];
+        float _otherz = other[otherOffset + 2];
+        float _otherw = other[otherOffset + 3];
+        float _ct0 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t8 = _ct0;
+        float _ct1 = Math.fma(_otherw, _otherw, Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery)));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t9 = _ct1;
+        float _t12 = (float) Math.sqrt(_t8);
+        float _t10 = 1.0f / _t12;
+        float _t13 = (1.0f / (float) Math.sqrt(_t9));
+        float _t14 = _selfx * _t10;
+        float _t16 = _selfw * _t10;
+        float _t18 = _selfz * _t10;
+        float _t21 = _selfy * _t10;
+        float _t24 = Math.fma(t, (float) Math.sqrt(_t9) - _t12, _t12);
+        float _t27 = Math.fma(_otherw * _t13, _t16, Math.fma(_otherz * _t13, _t18, Math.fma(_otherx * _t13, _t14, _othery * _t13 * _t21)));
+        float _t36 = Math.fma(_otherw, _t13, -(_t27 * _t16));
+        float _t37 = Math.fma(_otherz, _t13, -(_t27 * _t18));
+        float _t38 = Math.fma(_otherx, _t13, -(_t27 * _t14));
+        float _t39 = Math.fma(_othery, _t13, -(_t27 * _t21));
+        float _t44 = -Math.fma(_t36, _t16, Math.fma(_t37, _t18, Math.fma(_t38, _t14, _t39 * _t21)));
+        float _t45 = Math.fma(_t44, _t16, _t36);
+        float _t46 = Math.fma(_t44, _t18, _t37);
+        float _t47 = Math.fma(_t44, _t14, _t38);
+        float _t48 = Math.fma(_t44, _t21, _t39);
+        float _ct2 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, Math.fma(_t47, _t47, _t48 * _t48)));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float4OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t53 = _ct2;
+        float _t57 = t * (float) Math.atan2((float) Math.sqrt(_t53), _t27);
+        float _t58 = (float) Math.sin(_t57);
+        float _sp0 = _t24 * _t58 * (1.0f / (float) Math.sqrt(_t53));
+        float _t61 = _t24 * (float) Math.cosFromSin(_t58, _t57);
+        dest[destOffset + 0] = Math.fma(_t14, _t61, _sp0 * _t47);
+        dest[destOffset + 1] = Math.fma(_t21, _t61, _sp0 * _t48);
+        dest[destOffset + 2] = Math.fma(_t18, _t61, _sp0 * _t46);
+        dest[destOffset + 3] = Math.fma(_t16, _t61, _sp0 * _t45);
+        return dest;
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer slerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsTypedBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float4OpsKernelsTypedBuffer.slerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer slerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float4OpsKernelsByteBuffer.slerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long slerp(long dest, long src, long other, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.slerp_unsafe(dest, src, other, t);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
      * Compute the absolute value of each component of this vector and store the result in
      * {@code dest}.
      *
@@ -2949,6 +3179,132 @@ public final class Float4Ops {
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cosh(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.cosh_unsafe(dest, src);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @return {@code dest}
+     */
+    public static float[] cross(float[] dest, int destOffset, float[] src, int srcOffset, float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _t12 = Math.fma(vY, wZ, -(vZ * wY));
+        float _t13 = Math.fma(vZ, wW, -(vW * wZ));
+        float _t14 = Math.fma(vY, wW, -(vW * wY));
+        float _t15 = Math.fma(vX, wZ, -(vZ * wX));
+        float _t16 = Math.fma(vX, wW, -(vW * wX));
+        float _t17 = Math.fma(vX, wY, -(vY * wX));
+        dest[destOffset + 0] = Math.fma(_selfw, _t12, Math.fma(_selfy, _t13, -(_selfz * _t14)));
+        dest[destOffset + 1] = Math.fma(-_selfw, _t15, Math.fma(_selfz, _t16, -(_selfx * _t13)));
+        dest[destOffset + 2] = Math.fma(_selfw, _t17, Math.fma(_selfx, _t14, -(_selfy * _t16)));
+        dest[destOffset + 3] = Math.fma(-_selfz, _t17, Math.fma(_selfy, _t15, -(_selfx * _t12)));
+        return dest;
+    }
+
+    /** {@link #cross(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer cross(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsTypedBuffer.cross_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ, vW, wX, wY, wZ, wW);
+        return Float4OpsKernelsTypedBuffer.cross_api(dest, destOffset, src, srcOffset, vX, vY, vZ, vW, wX, wY, wZ, wW);
+    }
+
+    /** {@link #cross(float[], int, float[], int, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer cross(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.cross_unsafe(dest, destOffset, src, srcOffset, vX, vY, vZ, vW, wX, wY, wZ, wW);
+        return Float4OpsKernelsByteBuffer.cross_api(dest, destOffset, src, srcOffset, vX, vY, vZ, vW, wX, wY, wZ, wW);
+    }
+
+    /** {@link #cross(float[], int, float[], int, float, float, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long cross(long dest, long src, float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.cross_unsafe(dest, src, vX, vY, vZ, vW, wX, wY, wZ, wW);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param v the storage holding the second operand of the cross product
+     * @param vOffset the element index in {@code v} at which the vector starts
+     * @param w the storage holding the third operand of the cross product
+     * @param wOffset the element index in {@code w} at which the vector starts
+     * @return {@code dest}
+     */
+    public static float[] cross(float[] dest, int destOffset, float[] src, int srcOffset, float[] v, int vOffset, float[] w, int wOffset) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _vx = v[vOffset + 0];
+        float _vy = v[vOffset + 1];
+        float _vz = v[vOffset + 2];
+        float _vw = v[vOffset + 3];
+        float _wx = w[wOffset + 0];
+        float _wy = w[wOffset + 1];
+        float _wz = w[wOffset + 2];
+        float _ww = w[wOffset + 3];
+        float _t12 = Math.fma(_vy, _wz, -(_vz * _wy));
+        float _t13 = Math.fma(_vz, _ww, -(_vw * _wz));
+        float _t14 = Math.fma(_vy, _ww, -(_vw * _wy));
+        float _t15 = Math.fma(_vx, _wz, -(_vz * _wx));
+        float _t16 = Math.fma(_vx, _ww, -(_vw * _wx));
+        float _t17 = Math.fma(_vx, _wy, -(_vy * _wx));
+        dest[destOffset + 0] = Math.fma(_selfw, _t12, Math.fma(_selfy, _t13, -(_selfz * _t14)));
+        dest[destOffset + 1] = Math.fma(-_selfw, _t15, Math.fma(_selfz, _t16, -(_selfx * _t13)));
+        dest[destOffset + 2] = Math.fma(_selfw, _t17, Math.fma(_selfx, _t14, -(_selfy * _t16)));
+        dest[destOffset + 3] = Math.fma(-_selfz, _t17, Math.fma(_selfy, _t15, -(_selfx * _t12)));
+        return dest;
+    }
+
+    /** {@link #cross(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer cross(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer v, int vOffset, java.nio.FloatBuffer w, int wOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder() && w.isDirect() && w.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsTypedBuffer.cross_unsafe(dest, destOffset, src, srcOffset, v, vOffset, w, wOffset);
+        return Float4OpsKernelsTypedBuffer.cross_api(dest, destOffset, src, srcOffset, v, vOffset, w, wOffset);
+    }
+
+    /** {@link #cross(float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer cross(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset, java.nio.ByteBuffer w, int wOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && v.isDirect() && v.order() == java.nio.ByteOrder.nativeOrder() && w.isDirect() && w.order() == java.nio.ByteOrder.nativeOrder()) return Float4OpsKernelsByteBuffer.cross_unsafe(dest, destOffset, src, srcOffset, v, vOffset, w, wOffset);
+        return Float4OpsKernelsByteBuffer.cross_api(dest, destOffset, src, srcOffset, v, vOffset, w, wOffset);
+    }
+
+    /** {@link #cross(float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long cross(long dest, long src, long v, long w) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float4OpsKernelsAddress.cross_unsafe(dest, src, v, w);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 

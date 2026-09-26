@@ -38,12 +38,20 @@ inline infix fun Float3.mod(y: Float): Float3 = mod(y)
 inline infix fun Float3.mod(y: Float3): Float3 = mod(y)
 /** [Float3.rotateAxis] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float3.rotateAxis(angle: Angle, axis: Float3): Float3 = rotateAxis(angle.radians.toFloat(), axis)
+/** [Float3.rotateAxisAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Float3.rotateAxisAround(angle: Angle, axis: Float3, pivot: Float3): Float3 = rotateAxisAround(angle.radians.toFloat(), axis, pivot)
 /** [Float3.rotateX] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float3.rotateX(angle: Angle): Float3 = rotateX(angle.radians.toFloat())
+/** [Float3.rotateXAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Float3.rotateXAround(angle: Angle, pivot: Float3): Float3 = rotateXAround(angle.radians.toFloat(), pivot)
 /** [Float3.rotateY] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float3.rotateY(angle: Angle): Float3 = rotateY(angle.radians.toFloat())
+/** [Float3.rotateYAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Float3.rotateYAround(angle: Angle, pivot: Float3): Float3 = rotateYAround(angle.radians.toFloat(), pivot)
 /** [Float3.rotateZ] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Float3.rotateZ(angle: Angle): Float3 = rotateZ(angle.radians.toFloat())
+/** [Float3.rotateZAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Float3.rotateZAround(angle: Angle, pivot: Float3): Float3 = rotateZAround(angle.radians.toFloat(), pivot)
 /** Component 1 of this Float3 (`x()`), for destructuring declarations. */
 inline operator fun Float3.component1(): Float = x()
 /** Component 2 of this Float3 (`y()`), for destructuring declarations. */

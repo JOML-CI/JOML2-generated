@@ -678,6 +678,53 @@ public interface Double2R {
     Double2 lerp(double otherX, double otherY, double tX, double tY, @Mutated Double2 dest);
 
     /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * counter-clockwise perpendicular {@code (-y, x)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code double} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 slerp(Double2R other, double t, @Mutated Double2 dest);
+
+    /**
+     * Spherically interpolate between this vector and ({@code x}, {@code y}) using the
+     * interpolation factor {@code t}: the direction turns at a constant rate along the shorter arc
+     * between the two directions, and the length changes linearly between the two lengths and store
+     * the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * counter-clockwise perpendicular {@code (-y, x)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code double} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}) (interpolation factor {@code 1}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 slerp(double x, double y, double t, @Mutated Double2 dest);
+
+    /**
      * Compute the absolute value of each component of this vector and store the result in
      * {@code dest}.
      *
@@ -939,6 +986,31 @@ public interface Double2R {
      * @return dest
      */
     Double2 cosh(@Mutated Double2 dest);
+
+    /**
+     * Compute the 2D cross product of this vector and {@code other}, in that order.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when {@code other} points
+     * counter-clockwise of this vector (with the x axis pointing right and the y axis pointing up).
+     *
+     * @param other the right operand of the cross product
+     * @return the 2D cross product of this vector and {@code other}, in that order
+     */
+    double cross(Double2R other);
+
+    /**
+     * Compute the 2D cross product of this vector and ({@code x}, {@code y}), in that order.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when ({@code x}, {@code y}) points
+     * counter-clockwise of this vector (with the x axis pointing right and the y axis pointing up).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @return the 2D cross product of this vector and ({@code x}, {@code y}), in that order
+     */
+    double cross(double x, double y);
 
     /**
      * Compute the value converted from radians to degrees of each component of this vector and
@@ -1707,7 +1779,7 @@ public interface Double2R {
 
     /**
      * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
-     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * - i.e. compute {@code (mat * (this, 0)).xy}, applying only rotation and scale and ignoring
      * translation and store the result in {@code dest}.
      *
      * @param mat the matrix to apply
@@ -1717,8 +1789,30 @@ public interface Double2R {
     Double2 preMulDirection(Double2x3R mat, @Mutated Double2 dest);
 
     /**
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xy}, applying only rotation and scale and ignoring
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix to apply
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 preMulDirection(Double3x3R mat, @Mutated Double2 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as the point {@code (x, y, 0, 1)} of the
+     * xy-plane - i.e. compute {@code (mat * (this, 0, 1)).xy}, applying the full affine transform
+     * including translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix to apply
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 preMulPosition(Double4x4R mat, @Mutated Double2 dest);
+
+    /**
      * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
-     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * - i.e. compute {@code (mat * (this, 1)).xy}, applying the full affine transform including
      * translation and store the result in {@code dest}.
      *
      * @param mat the matrix to apply
@@ -1726,6 +1820,17 @@ public interface Double2R {
      * @return dest
      */
     Double2 preMulPosition(Double2x3R mat, @Mutated Double2 dest);
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xy}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     *
+     * @param mat the matrix to apply
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 preMulPosition(Double3x3R mat, @Mutated Double2 dest);
 
     /**
      * Rotate this vector counter-clockwise about the origin by {@code angle} radians and store the
@@ -1736,6 +1841,29 @@ public interface Double2R {
      * @return dest
      */
     Double2 rotate(double angle, @Mutated Double2 dest);
+
+    /**
+     * Rotate this vector counter-clockwise by {@code angle} radians about the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 rotateAround(double angle, Double2R pivot, @Mutated Double2 dest);
+
+    /**
+     * Rotate this vector counter-clockwise by {@code angle} radians about the point ({@code x},
+     * {@code y}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 rotateAround(double angle, double x, double y, @Mutated Double2 dest);
     /** {@return the value of the {@code x} component} */
     double x();
     /** {@return the value of the {@code y} component} */

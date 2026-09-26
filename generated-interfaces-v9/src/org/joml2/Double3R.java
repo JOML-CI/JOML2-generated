@@ -717,6 +717,54 @@ public interface Double3R {
     Double3 lerp(double otherX, double otherY, double otherZ, double tX, double tY, double tZ, @Mutated Double3 dest);
 
     /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code double} range, they
+     * are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 slerp(Double3R other, double t, @Mutated Double3 dest);
+
+    /**
+     * Spherically interpolate between this vector and ({@code x}, {@code y}, {@code z}) using the
+     * interpolation factor {@code t}: the direction turns at a constant rate along the shorter arc
+     * between the two directions, and the length changes linearly between the two lengths and store
+     * the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code double} range, they
+     * are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code x}, {@code y}, {@code z}) (interpolation factor {@code 1}).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 slerp(double x, double y, double z, double t, @Mutated Double3 dest);
+
+    /**
      * Compute the absolute value of each component of this vector and store the result in
      * {@code dest}.
      *
@@ -1991,6 +2039,40 @@ public interface Double3R {
     Double3 rotate(double x, double y, double z, double w, @Mutated Double3 dest);
 
     /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param quat the rotation to apply (must be a unit quaternion)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateAround(DoubleQuatR quat, Double3R pivot, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by the quaternion ({@code quatX}, {@code quatY}, {@code quatZ},
+     * {@code quatW}) about the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}), i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param quatX the {@code x} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatY the {@code y} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatZ the {@code z} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatW the {@code w} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateAround(double quatX, double quatY, double quatZ, double quatW, double pivotX, double pivotY, double pivotZ, @Mutated Double3 dest);
+
+    /**
      * Rotate this vector by {@code angle} radians about the axis {@code axis} and store the result
      * in {@code dest}.
      *
@@ -2016,6 +2098,38 @@ public interface Double3R {
      * @return dest
      */
     Double3 rotateAxis(double angle, double x, double y, double z, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot} and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateAxisAround(double angle, Double3R axis, Double3R pivot, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) through the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store
+     * the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateAxisAround(double angle, double axisX, double axisY, double axisZ, double pivotX, double pivotY, double pivotZ, @Mutated Double3 dest);
 
     /**
      * Rotate this vector by the inverse of the given rotation and store the result in {@code dest}.
@@ -2053,6 +2167,30 @@ public interface Double3R {
     Double3 rotateX(double angle, @Mutated Double3 dest);
 
     /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateXAround(double angle, Double3R pivot, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point ({@code x},
+     * {@code y}, {@code z}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateXAround(double angle, double x, double y, double z, @Mutated Double3 dest);
+
+    /**
      * Rotate this vector by {@code angle} radians about the Y axis and store the result in
      * {@code dest}.
      *
@@ -2063,6 +2201,30 @@ public interface Double3R {
     Double3 rotateY(double angle, @Mutated Double3 dest);
 
     /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateYAround(double angle, Double3R pivot, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point ({@code x},
+     * {@code y}, {@code z}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateYAround(double angle, double x, double y, double z, @Mutated Double3 dest);
+
+    /**
      * Rotate this vector by {@code angle} radians about the Z axis and store the result in
      * {@code dest}.
      *
@@ -2071,6 +2233,30 @@ public interface Double3R {
      * @return dest
      */
     Double3 rotateZ(double angle, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateZAround(double angle, Double3R pivot, @Mutated Double3 dest);
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point ({@code x},
+     * {@code y}, {@code z}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param x the {@code x} component of the vector {@code (x, y, z)}
+     * @param y the {@code y} component of the vector {@code (x, y, z)}
+     * @param z the {@code z} component of the vector {@code (x, y, z)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double3 rotateZAround(double angle, double x, double y, double z, @Mutated Double3 dest);
     /** {@return the value of the {@code x} component} */
     double x();
     /** {@return the value of the {@code y} component} */

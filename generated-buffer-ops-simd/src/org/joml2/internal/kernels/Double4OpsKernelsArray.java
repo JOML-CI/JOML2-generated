@@ -445,6 +445,146 @@ public final class Double4OpsKernelsArray {
         return dest;
     }
 
+    public static double[] slerp_degenerate(double[] dest, int destOffset, double[] src, int srcOffset, double otherX, double otherY, double otherZ, double otherW, double t) {
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
+        double _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        double _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        double _t16 = otherW * _t6;
+        double _t17 = otherZ * _t6;
+        double _t18 = otherX * _t6;
+        double _t19 = otherY * _t6;
+        double _t20 = _selfw * _t7;
+        double _t21 = _selfz * _t7;
+        double _t22 = _selfx * _t7;
+        double _t23 = _selfy * _t7;
+        double _t30 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t19 * _t19)));
+        double _t31 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23)));
+        double _t34 = (1.0 / Math.sqrt(_t30));
+        double _t35 = (1.0 / Math.sqrt(_t31));
+        double _t37 = Math.sqrt(_t31) / _t7;
+        double _t39 = _t35 * _t20;
+        double _t41 = _t35 * _t21;
+        double _t43 = _t35 * _t22;
+        double _t45 = _t35 * _t23;
+        double _t46 = _t30 * _t31;
+        double _t49 = Math.fma(t, Math.sqrt(_t30) / _t6 - _t37, _t37);
+        double _t52 = Math.fma(_t34 * _t16, _t39, Math.fma(_t34 * _t17, _t41, Math.fma(_t34 * _t18, _t43, _t34 * _t19 * _t45)));
+        double _t61 = Math.fma(_t34, _t16, -(_t52 * _t39));
+        double _t62 = Math.fma(_t34, _t17, -(_t52 * _t41));
+        double _t63 = Math.fma(_t34, _t18, -(_t52 * _t43));
+        double _t64 = Math.fma(_t34, _t19, -(_t52 * _t45));
+        double _t69 = -Math.fma(_t61, _t39, Math.fma(_t62, _t41, Math.fma(_t63, _t43, _t64 * _t45)));
+        double _t70 = Math.fma(_t69, _t39, _t61);
+        double _t71 = Math.fma(_t69, _t41, _t62);
+        double _t72 = Math.fma(_t69, _t43, _t63);
+        double _t73 = Math.fma(_t69, _t45, _t64);
+        double _t77 = unitScale(_t71, _t70, Math.max(Math.abs(_t72), Math.abs(_t73)));
+        double _t84 = _t70 * _t77;
+        double _t85 = _t71 * _t77;
+        double _t86 = _t72 * _t77;
+        double _t87 = _t73 * _t77;
+        double _t91 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, Math.fma(_t86, _t86, _t87 * _t87)));
+        double _t93 = (1.0 / Math.sqrt(_t91));
+        double _t95 = t * Math.atan2(Math.sqrt(_t91), _t52 * _t77);
+        double _t96 = Math.sin(_t95);
+        double _t97 = _t49 * _t96;
+        double _t99 = _t49 * Math.cosFromSin(_t96, _t95);
+        if (_t46 > 0.0) {
+            if (_t91 > 0.0) {
+                dest[destOffset + 0] = Math.fma(_t97, _t93 * _t86, _t99 * _t43);
+                dest[destOffset + 1] = Math.fma(_t97, _t93 * _t87, _t99 * _t45);
+                dest[destOffset + 2] = Math.fma(_t97, _t93 * _t85, _t99 * _t41);
+                dest[destOffset + 3] = Math.fma(_t97, _t93 * _t84, _t99 * _t39);
+            } else {
+                dest[destOffset + 0] = Math.fma(_t97, -_t45, _t99 * _t43);
+                dest[destOffset + 1] = Math.fma(_t97, _t43, _t99 * _t45);
+                dest[destOffset + 2] = Math.fma(_t97, -_t39, _t99 * _t41);
+                dest[destOffset + 3] = Math.fma(_t97, _t41, _t99 * _t39);
+            }
+        } else {
+            dest[destOffset + 0] = Math.fma(t, otherX - _selfx, _selfx);
+            dest[destOffset + 1] = Math.fma(t, otherY - _selfy, _selfy);
+            dest[destOffset + 2] = Math.fma(t, otherZ - _selfz, _selfz);
+            dest[destOffset + 3] = Math.fma(t, otherW - _selfw, _selfw);
+        }
+        return dest;
+    }
+
+    public static double[] slerp_degenerate(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double t) {
+        double _selfx = src[srcOffset + 0];
+        double _selfy = src[srcOffset + 1];
+        double _selfz = src[srcOffset + 2];
+        double _selfw = src[srcOffset + 3];
+        double _otherx = other[otherOffset + 0];
+        double _othery = other[otherOffset + 1];
+        double _otherz = other[otherOffset + 2];
+        double _otherw = other[otherOffset + 3];
+        double _t6 = unitScale(_otherz, _otherw, Math.max(Math.abs(_otherx), Math.abs(_othery)));
+        double _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        double _t16 = _otherw * _t6;
+        double _t17 = _otherz * _t6;
+        double _t18 = _otherx * _t6;
+        double _t19 = _othery * _t6;
+        double _t20 = _selfw * _t7;
+        double _t21 = _selfz * _t7;
+        double _t22 = _selfx * _t7;
+        double _t23 = _selfy * _t7;
+        double _t30 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t19 * _t19)));
+        double _t31 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23)));
+        double _t34 = (1.0 / Math.sqrt(_t30));
+        double _t35 = (1.0 / Math.sqrt(_t31));
+        double _t37 = Math.sqrt(_t31) / _t7;
+        double _t39 = _t35 * _t20;
+        double _t41 = _t35 * _t21;
+        double _t43 = _t35 * _t22;
+        double _t45 = _t35 * _t23;
+        double _t46 = _t30 * _t31;
+        double _t49 = Math.fma(t, Math.sqrt(_t30) / _t6 - _t37, _t37);
+        double _t52 = Math.fma(_t34 * _t16, _t39, Math.fma(_t34 * _t17, _t41, Math.fma(_t34 * _t18, _t43, _t34 * _t19 * _t45)));
+        double _t61 = Math.fma(_t34, _t16, -(_t52 * _t39));
+        double _t62 = Math.fma(_t34, _t17, -(_t52 * _t41));
+        double _t63 = Math.fma(_t34, _t18, -(_t52 * _t43));
+        double _t64 = Math.fma(_t34, _t19, -(_t52 * _t45));
+        double _t69 = -Math.fma(_t61, _t39, Math.fma(_t62, _t41, Math.fma(_t63, _t43, _t64 * _t45)));
+        double _t70 = Math.fma(_t69, _t39, _t61);
+        double _t71 = Math.fma(_t69, _t41, _t62);
+        double _t72 = Math.fma(_t69, _t43, _t63);
+        double _t73 = Math.fma(_t69, _t45, _t64);
+        double _t77 = unitScale(_t71, _t70, Math.max(Math.abs(_t72), Math.abs(_t73)));
+        double _t84 = _t70 * _t77;
+        double _t85 = _t71 * _t77;
+        double _t86 = _t72 * _t77;
+        double _t87 = _t73 * _t77;
+        double _t91 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, Math.fma(_t86, _t86, _t87 * _t87)));
+        double _t93 = (1.0 / Math.sqrt(_t91));
+        double _t95 = t * Math.atan2(Math.sqrt(_t91), _t52 * _t77);
+        double _t96 = Math.sin(_t95);
+        double _t97 = _t49 * _t96;
+        double _t99 = _t49 * Math.cosFromSin(_t96, _t95);
+        if (_t46 > 0.0) {
+            if (_t91 > 0.0) {
+                dest[destOffset + 0] = Math.fma(_t97, _t93 * _t86, _t99 * _t43);
+                dest[destOffset + 1] = Math.fma(_t97, _t93 * _t87, _t99 * _t45);
+                dest[destOffset + 2] = Math.fma(_t97, _t93 * _t85, _t99 * _t41);
+                dest[destOffset + 3] = Math.fma(_t97, _t93 * _t84, _t99 * _t39);
+            } else {
+                dest[destOffset + 0] = Math.fma(_t97, -_t45, _t99 * _t43);
+                dest[destOffset + 1] = Math.fma(_t97, _t43, _t99 * _t45);
+                dest[destOffset + 2] = Math.fma(_t97, -_t39, _t99 * _t41);
+                dest[destOffset + 3] = Math.fma(_t97, _t41, _t99 * _t39);
+            }
+        } else {
+            dest[destOffset + 0] = Math.fma(t, _otherx - _selfx, _selfx);
+            dest[destOffset + 1] = Math.fma(t, _othery - _selfy, _selfy);
+            dest[destOffset + 2] = Math.fma(t, _otherz - _selfz, _selfz);
+            dest[destOffset + 3] = Math.fma(t, _otherw - _selfw, _selfw);
+        }
+        return dest;
+    }
+
     public static double[] absolute_scalar(double[] dest, int destOffset, double[] src, int srcOffset) {
         double _selfx = src[srcOffset + 0];
         double _selfy = src[srcOffset + 1];

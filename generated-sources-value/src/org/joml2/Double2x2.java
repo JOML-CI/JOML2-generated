@@ -1584,6 +1584,52 @@ public value record Double2x2(double m00, double m01, double m10, double m11, in
         return to3x3_general();
     }
 
+    /**
+     * Result value of {@code decomposeLDU}.
+     *
+     * @param lower the unit lower-triangular factor
+     * @param diagonal the diagonal factor
+     * @param upper the unit upper-triangular factor
+     */
+    @jdk.internal.vm.annotation.LooselyConsistentValue
+    public value record DecomposeLDUResult(Double2x2 lower, Double2x2 diagonal, Double2x2 upper) {
+        /**
+         * Canonical constructor.
+         *
+         * @param lower the unit lower-triangular factor
+         * @param diagonal the diagonal factor
+         * @param upper the unit upper-triangular factor
+         */
+        public DecomposeLDUResult(Double2x2 lower, Double2x2 diagonal, Double2x2 upper) {
+            this.lower = lower;
+            this.diagonal = diagonal;
+            this.upper = upper;
+        }
+        /** {@return the {@code lower} component} */
+        public Double2x2 lower() { return lower; }
+        /** {@return the {@code diagonal} component} */
+        public Double2x2 diagonal() { return diagonal; }
+        /** {@return the {@code upper} component} */
+        public Double2x2 upper() { return upper; }
+    }
+
+
+    /**
+     * Decompose this matrix into a unit lower-triangular matrix, a diagonal matrix and a unit
+     * upper-triangular matrix whose product, in that order, is this matrix.
+     * <p>
+     * This is Doolittle elimination without pivoting: {@code m00} is the first pivot, and a matrix
+     * whose {@code m00} is zero has no such decomposition (the factors are then not finite).
+     *
+     * @return a new result value holding the lower-triangular, diagonal and upper-triangular
+     *        factors
+     */
+    public DecomposeLDUResult decomposeLDU() {
+        double _rcp0 = 1.0 / this.m00;
+        double _sp0 = this.m10 * _rcp0;
+        return new DecomposeLDUResult(new Double2x2(1.0, 0.0, _sp0, 1.0), new Double2x2(this.m00, 0.0, 0.0, this.m11 - this.m01 * _sp0), new Double2x2(1.0, this.m01 * _rcp0, 0.0, 1.0));
+    }
+
 
     /**
      * Create an identity matrix.

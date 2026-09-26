@@ -1757,6 +1757,66 @@ public interface Double3x3R {
      * @return {@code v}
      */
     default Double3 mul(@Mutated Double3 v) { return mul(v, v); }
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param v the direction to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformDirection(Double2R v, @Mutated Double2 dest);
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformDirection(double x, double y, @Mutated Double2 dest);
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation and store the result
+     * back into {@code v}.
+     *
+     * @param v the direction to transform (also receives the result)
+     * @return {@code v}
+     */
+    default Double2 transformDirection(@Mutated Double2 v) { return transformDirection(v, v); }
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param v the position to transform
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformPosition(Double2R v, @Mutated Double2 dest);
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result in {@code dest}.
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    Double2 transformPosition(double x, double y, @Mutated Double2 dest);
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1} and store the result back into {@code v}.
+     *
+     * @param v the position to transform (also receives the result)
+     * @return {@code v}
+     */
+    default Double2 transformPosition(@Mutated Double2 v) { return transformPosition(v, v); }
     /** {@return the value of the {@code m00} element} */
     double m00();
     /** {@return the value of the {@code m01} element} */

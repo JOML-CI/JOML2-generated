@@ -10,6 +10,10 @@ import org.joml2.*
 
 /** [FloatQuat.add] as the `+` operator. */
 inline operator fun FloatQuat.plus(other: FloatQuat): FloatQuat = add(other)
+/** [FloatQuat.mul] as the `*` operator. */
+inline operator fun FloatQuat.times(scalar: Float): FloatQuat = mul(scalar)
+/** [FloatQuat.mul] with the scalar on the left, so `s * v` reads like `v * s`. */
+inline operator fun Float.times(v: FloatQuat): FloatQuat = v.mul(this)
 /** [FloatQuat.negate] as the unary `-` operator. */
 inline operator fun FloatQuat.unaryMinus(): FloatQuat = negate()
 /** [FloatQuat.sub] as the `-` operator. */

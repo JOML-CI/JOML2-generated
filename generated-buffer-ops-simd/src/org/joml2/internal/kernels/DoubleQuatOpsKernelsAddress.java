@@ -99,6 +99,18 @@ public final class DoubleQuatOpsKernelsAddress {
         return dest;
     }
 
+    public static long mul_unsafe(long dest, long src, double scalar) {
+        double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _selfw = UnsafeOpsHolder.U.getDouble(src + 24L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, scalar * _selfx);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, scalar * _selfy);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, scalar * _selfz);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, scalar * _selfw);
+        return dest;
+    }
+
     public static long negate_unsafe(long dest, long src) {
         double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
         double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
@@ -136,6 +148,20 @@ public final class DoubleQuatOpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 8L, _selfy - _othery);
         UnsafeOpsHolder.U.putDouble(dest + 16L, _selfz - _otherz);
         UnsafeOpsHolder.U.putDouble(dest + 24L, _selfw - _otherw);
+        return dest;
+    }
+
+    public static long makeUniformRotation_unsafe(long dest, double u1, double u2, double u3) {
+        double _t0 = Math.sqrt(u1);
+        double _t1 = u2 * 6.283185307179586;
+        double _t3 = u3 * 6.283185307179586;
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sqrt(1.0 - u1);
+        double _t6 = Math.sin(_t3);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, _t4 * _t5);
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.cosFromSin(_t4, _t1) * _t5);
+        UnsafeOpsHolder.U.putDouble(dest + 16L, _t6 * _t0);
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.cosFromSin(_t6, _t3) * _t0);
         return dest;
     }
 
@@ -1208,6 +1234,34 @@ public final class DoubleQuatOpsKernelsAddress {
         UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_othery, _selfw, _otherz * _selfx) + Math.fma(_otherw, _selfy, -(_otherx * _selfz)));
         UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(_otherx, _selfy, _otherw * _selfz) + Math.fma(_otherz, _selfw, -(_othery * _selfx)));
         UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(_otherw, _selfw, -(_otherx * _selfx)) - Math.fma(_othery, _selfy, _otherz * _selfz));
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, double otherX, double otherY, double otherZ, double otherW, double weight) {
+        double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _selfw = UnsafeOpsHolder.U.getDouble(src + 24L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(weight, otherX, _selfx));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(weight, otherY, _selfy));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(weight, otherZ, _selfz));
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(weight, otherW, _selfw));
+        return dest;
+    }
+
+    public static long addScaled_unsafe(long dest, long src, long other, double weight) {
+        double _selfx = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _selfy = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _selfz = UnsafeOpsHolder.U.getDouble(src + 16L);
+        double _selfw = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _otherx = UnsafeOpsHolder.U.getDouble(other + 0L);
+        double _othery = UnsafeOpsHolder.U.getDouble(other + 8L);
+        double _otherz = UnsafeOpsHolder.U.getDouble(other + 16L);
+        double _otherw = UnsafeOpsHolder.U.getDouble(other + 24L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(weight, _otherx, _selfx));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(weight, _othery, _selfy));
+        UnsafeOpsHolder.U.putDouble(dest + 16L, Math.fma(weight, _otherz, _selfz));
+        UnsafeOpsHolder.U.putDouble(dest + 24L, Math.fma(weight, _otherw, _selfw));
         return dest;
     }
 

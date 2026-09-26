@@ -658,6 +658,44 @@ public final class Float2Ops {
     }
 
     /**
+     * Set this vector to the unit vector at the angle {@code 2 PI u} counter-clockwise from the x
+     * axis: samples uniformly distributed in {@code [0, 1)} give a direction uniformly distributed
+     * on the unit circle ({@code makeRandomDirection} draws them from a {@link java.util.Random}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param u the fraction of a full turn counter-clockwise from the x axis, uniformly distributed
+     *        in {@code [0, 1)} for a uniformly distributed direction
+     * @return {@code dest}
+     */
+    public static float[] makeUniformDirection(float[] dest, int destOffset, float u) {
+        float _t0 = u * 6.2831855f;
+        float _t1 = (float) Math.sin(_t0);
+        dest[destOffset + 0] = (float) Math.cosFromSin(_t1, _t0);
+        dest[destOffset + 1] = _t1;
+        return dest;
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer makeUniformDirection(java.nio.FloatBuffer dest, int destOffset, float u) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.makeUniformDirection_unsafe(dest, destOffset, u);
+        return Float2OpsKernelsTypedBuffer.makeUniformDirection_api(dest, destOffset, u);
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer makeUniformDirection(java.nio.ByteBuffer dest, int destOffset, float u) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.makeUniformDirection_unsafe(dest, destOffset, u);
+        return Float2OpsKernelsByteBuffer.makeUniformDirection_api(dest, destOffset, u);
+    }
+
+    /** {@link #makeUniformDirection(float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long makeUniformDirection(long dest, float u) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.makeUniformDirection_unsafe(dest, u);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
      * Set this vector to the given values.
      *
      * @param dest will hold the result
@@ -1868,6 +1906,162 @@ public final class Float2Ops {
     }
 
     /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * counter-clockwise perpendicular {@code (-y, x)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return {@code dest}
+     */
+    public static float[] slerp(float[] dest, int destOffset, float[] src, int srcOffset, float otherX, float otherY, float t) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _ct0 = Math.fma(_selfx, _selfx, _selfy * _selfy);
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        float _t4 = _ct0;
+        float _ct1 = Math.fma(otherX, otherX, otherY * otherY);
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        float _t5 = _ct1;
+        float _t8 = (float) Math.sqrt(_t4);
+        float _t6 = 1.0f / _t8;
+        float _t9 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10 = _selfx * _t6;
+        float _t13 = _selfy * _t6;
+        float _t16 = Math.fma(t, (float) Math.sqrt(_t5) - _t8, _t8);
+        float _t17 = Math.fma(otherX * _t9, _t10, otherY * _t9 * _t13);
+        float _t22 = Math.fma(otherX, _t9, -(_t17 * _t10));
+        float _t23 = Math.fma(otherY, _t9, -(_t17 * _t13));
+        float _t26 = -Math.fma(_t22, _t10, _t23 * _t13);
+        float _t27 = Math.fma(_t26, _t10, _t22);
+        float _t28 = Math.fma(_t26, _t13, _t23);
+        float _ct2 = Math.fma(_t27, _t27, _t28 * _t28);
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        float _t31 = _ct2;
+        float _t35 = t * (float) Math.atan2((float) Math.sqrt(_t31), _t17);
+        float _t36 = (float) Math.sin(_t35);
+        float _sp0 = _t16 * _t36 * (1.0f / (float) Math.sqrt(_t31));
+        float _t39 = _t16 * (float) Math.cosFromSin(_t36, _t35);
+        dest[destOffset + 0] = Math.fma(_t10, _t39, _sp0 * _t27);
+        dest[destOffset + 1] = Math.fma(_t13, _t39, _sp0 * _t28);
+        return dest;
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer slerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        return Float2OpsKernelsTypedBuffer.slerp_api(dest, destOffset, src, srcOffset, otherX, otherY, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer slerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, t);
+        return Float2OpsKernelsByteBuffer.slerp_api(dest, destOffset, src, srcOffset, otherX, otherY, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long slerp(long dest, long src, float otherX, float otherY, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.slerp_unsafe(dest, src, otherX, otherY, t);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * counter-clockwise perpendicular {@code (-y, x)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param other the storage holding the vector to interpolate towards
+     * @param otherOffset the element index in {@code other} at which the vector starts
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @return {@code dest}
+     */
+    public static float[] slerp(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float t) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _otherx = other[otherOffset + 0];
+        float _othery = other[otherOffset + 1];
+        float _ct0 = Math.fma(_selfx, _selfx, _selfy * _selfy);
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t4 = _ct0;
+        float _ct1 = Math.fma(_otherx, _otherx, _othery * _othery);
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t5 = _ct1;
+        float _t8 = (float) Math.sqrt(_t4);
+        float _t6 = 1.0f / _t8;
+        float _t9 = (1.0f / (float) Math.sqrt(_t5));
+        float _t10 = _selfx * _t6;
+        float _t13 = _selfy * _t6;
+        float _t16 = Math.fma(t, (float) Math.sqrt(_t5) - _t8, _t8);
+        float _t17 = Math.fma(_otherx * _t9, _t10, _othery * _t9 * _t13);
+        float _t22 = Math.fma(_otherx, _t9, -(_t17 * _t10));
+        float _t23 = Math.fma(_othery, _t9, -(_t17 * _t13));
+        float _t26 = -Math.fma(_t22, _t10, _t23 * _t13);
+        float _t27 = Math.fma(_t26, _t10, _t22);
+        float _t28 = Math.fma(_t26, _t13, _t23);
+        float _ct2 = Math.fma(_t27, _t27, _t28 * _t28);
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float2OpsKernelsArray.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t31 = _ct2;
+        float _t35 = t * (float) Math.atan2((float) Math.sqrt(_t31), _t17);
+        float _t36 = (float) Math.sin(_t35);
+        float _sp0 = _t16 * _t36 * (1.0f / (float) Math.sqrt(_t31));
+        float _t39 = _t16 * (float) Math.cosFromSin(_t36, _t35);
+        dest[destOffset + 0] = Math.fma(_t10, _t39, _sp0 * _t27);
+        dest[destOffset + 1] = Math.fma(_t13, _t39, _sp0 * _t28);
+        return dest;
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer slerp(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float2OpsKernelsTypedBuffer.slerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer slerp(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.slerp_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float2OpsKernelsByteBuffer.slerp_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    /** {@link #slerp(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long slerp(long dest, long src, long other, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.slerp_unsafe(dest, src, other, t);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
      * Compute the absolute value of each component of this vector and store the result in
      * {@code dest}.
      *
@@ -2888,6 +3082,84 @@ public final class Float2Ops {
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long cosh(long dest, long src) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.cosh_unsafe(dest, src);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Compute the 2D cross product of this vector and {@code other}, in that order.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when {@code other} points
+     * counter-clockwise of this vector (with the x axis pointing right and the y axis pointing up).
+     *
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the 2D cross product of this vector and {@code other}, in that order
+     */
+    public static float cross(float[] src, int srcOffset, float otherX, float otherY) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        return Math.fma(otherY, _selfx, -(otherX * _selfy));
+    }
+
+    /** {@link #cross(float[], int, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static float cross(java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.cross_unsafe(src, srcOffset, otherX, otherY);
+        return Float2OpsKernelsTypedBuffer.cross_api(src, srcOffset, otherX, otherY);
+    }
+
+    /** {@link #cross(float[], int, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static float cross(java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.cross_unsafe(src, srcOffset, otherX, otherY);
+        return Float2OpsKernelsByteBuffer.cross_api(src, srcOffset, otherX, otherY);
+    }
+
+    /** {@link #cross(float[], int, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static float cross(long src, float otherX, float otherY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.cross_unsafe(src, otherX, otherY);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Compute the 2D cross product of this vector and {@code other}, in that order.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when {@code other} points
+     * counter-clockwise of this vector (with the x axis pointing right and the y axis pointing up).
+     *
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param other the storage holding the right operand of the cross product
+     * @param otherOffset the element index in {@code other} at which the vector starts
+     * @return the 2D cross product of this vector and {@code other}, in that order
+     */
+    public static float cross(float[] src, int srcOffset, float[] other, int otherOffset) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _otherx = other[otherOffset + 0];
+        float _othery = other[otherOffset + 1];
+        return Math.fma(_othery, _selfx, -(_otherx * _selfy));
+    }
+
+    /** {@link #cross(float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static float cross(java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.cross_unsafe(src, srcOffset, other, otherOffset);
+        return Float2OpsKernelsTypedBuffer.cross_api(src, srcOffset, other, otherOffset);
+    }
+
+    /** {@link #cross(float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static float cross(java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.cross_unsafe(src, srcOffset, other, otherOffset);
+        return Float2OpsKernelsByteBuffer.cross_api(src, srcOffset, other, otherOffset);
+    }
+
+    /** {@link #cross(float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static float cross(long src, long other) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.cross_unsafe(src, other);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 
@@ -5799,7 +6071,7 @@ public final class Float2Ops {
 
     /**
      * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
-     * - i.e. compute {@code (mat * (this, 0)).xyz}, applying only rotation and scale and ignoring
+     * - i.e. compute {@code (mat * (this, 0)).xy}, applying only rotation and scale and ignoring
      * translation and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -5810,7 +6082,7 @@ public final class Float2Ops {
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
-    public static float[] preMulDirection(float[] dest, int destOffset, float[] src, int srcOffset, float[] mat, int matOffset) {
+    public static float[] preMulDirectionMat2x3(float[] dest, int destOffset, float[] src, int srcOffset, float[] mat, int matOffset) {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
         float _mat00 = mat[matOffset + 0];
@@ -5822,28 +6094,28 @@ public final class Float2Ops {
         return dest;
     }
 
-    /** {@link #preMulDirection(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer preMulDirection(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.preMulDirection_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
-        return Float2OpsKernelsTypedBuffer.preMulDirection_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    /** {@link #preMulDirectionMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer preMulDirectionMat2x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.preMulDirectionMat2x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsTypedBuffer.preMulDirectionMat2x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulDirection(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer preMulDirection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.preMulDirection_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
-        return Float2OpsKernelsByteBuffer.preMulDirection_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    /** {@link #preMulDirectionMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer preMulDirectionMat2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.preMulDirectionMat2x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsByteBuffer.preMulDirectionMat2x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulDirection(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+    /** {@link #preMulDirectionMat2x3(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
-    public static long preMulDirection(long dest, long src, long mat) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.preMulDirection_unsafe(dest, src, mat);
+    public static long preMulDirectionMat2x3(long dest, long src, long mat) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.preMulDirectionMat2x3_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 
     /**
-     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
-     * - i.e. compute {@code (mat * (this, 1)).xyz}, applying the full affine transform including
+     * Pre-multiply {@code mat} onto this vector, treated as a direction with implicit {@code w = 0}
+     * - i.e. compute {@code (mat * (this, 0)).xy}, applying only rotation and scale and ignoring
      * translation and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -5854,7 +6126,97 @@ public final class Float2Ops {
      * @param matOffset the element index in {@code mat} at which the matrix starts
      * @return {@code dest}
      */
-    public static float[] preMulPosition(float[] dest, int destOffset, float[] src, int srcOffset, float[] mat, int matOffset) {
+    public static float[] preMulDirectionMat3x3(float[] dest, int destOffset, float[] src, int srcOffset, float[] mat, int matOffset) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _mat00 = mat[matOffset + 0];
+        float _mat10 = mat[matOffset + 1];
+        float _mat01 = mat[matOffset + 3];
+        float _mat11 = mat[matOffset + 4];
+        dest[destOffset + 0] = Math.fma(_mat00, _selfx, _mat01 * _selfy);
+        dest[destOffset + 1] = Math.fma(_mat10, _selfx, _mat11 * _selfy);
+        return dest;
+    }
+
+    /** {@link #preMulDirectionMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer preMulDirectionMat3x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.preMulDirectionMat3x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsTypedBuffer.preMulDirectionMat3x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    }
+
+    /** {@link #preMulDirectionMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer preMulDirectionMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.preMulDirectionMat3x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsByteBuffer.preMulDirectionMat3x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    }
+
+    /** {@link #preMulDirectionMat3x3(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long preMulDirectionMat3x3(long dest, long src, long mat) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.preMulDirectionMat3x3_unsafe(dest, src, mat);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as the point {@code (x, y, 0, 1)} of the
+     * xy-plane - i.e. compute {@code (mat * (this, 0, 1)).xy}, applying the full affine transform
+     * including translation and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param mat the storage holding the matrix to apply
+     * @param matOffset the element index in {@code mat} at which the matrix starts
+     * @return {@code dest}
+     */
+    public static float[] preMulPositionMat4x4(float[] dest, int destOffset, float[] src, int srcOffset, float[] mat, int matOffset) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _mat00 = mat[matOffset + 0];
+        float _mat10 = mat[matOffset + 1];
+        float _mat01 = mat[matOffset + 4];
+        float _mat11 = mat[matOffset + 5];
+        float _mat03 = mat[matOffset + 12];
+        float _mat13 = mat[matOffset + 13];
+        dest[destOffset + 0] = Math.fma(_mat00, _selfx, Math.fma(_mat01, _selfy, _mat03));
+        dest[destOffset + 1] = Math.fma(_mat10, _selfx, Math.fma(_mat11, _selfy, _mat13));
+        return dest;
+    }
+
+    /** {@link #preMulPositionMat4x4(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer preMulPositionMat4x4(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.preMulPositionMat4x4_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsTypedBuffer.preMulPositionMat4x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    }
+
+    /** {@link #preMulPositionMat4x4(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer preMulPositionMat4x4(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.preMulPositionMat4x4_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsByteBuffer.preMulPositionMat4x4_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    }
+
+    /** {@link #preMulPositionMat4x4(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long preMulPositionMat4x4(long dest, long src, long mat) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.preMulPositionMat4x4_unsafe(dest, src, mat);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xy}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param mat the storage holding the matrix to apply
+     * @param matOffset the element index in {@code mat} at which the matrix starts
+     * @return {@code dest}
+     */
+    public static float[] preMulPositionMat2x3(float[] dest, int destOffset, float[] src, int srcOffset, float[] mat, int matOffset) {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
         float _mat00 = mat[matOffset + 0];
@@ -5868,22 +6230,68 @@ public final class Float2Ops {
         return dest;
     }
 
-    /** {@link #preMulPosition(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
-    public static java.nio.FloatBuffer preMulPosition(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.preMulPosition_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
-        return Float2OpsKernelsTypedBuffer.preMulPosition_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    /** {@link #preMulPositionMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer preMulPositionMat2x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.preMulPositionMat2x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsTypedBuffer.preMulPositionMat2x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulPosition(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
-    public static java.nio.ByteBuffer preMulPosition(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.preMulPosition_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
-        return Float2OpsKernelsByteBuffer.preMulPosition_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    /** {@link #preMulPositionMat2x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer preMulPositionMat2x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.preMulPositionMat2x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsByteBuffer.preMulPositionMat2x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
     }
 
-    /** {@link #preMulPosition(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+    /** {@link #preMulPositionMat2x3(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
-    public static long preMulPosition(long dest, long src, long mat) {
-        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.preMulPosition_unsafe(dest, src, mat);
+    public static long preMulPositionMat2x3(long dest, long src, long mat) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.preMulPositionMat2x3_unsafe(dest, src, mat);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Pre-multiply {@code mat} onto this vector, treated as a position with implicit {@code w = 1}
+     * - i.e. compute {@code (mat * (this, 1)).xy}, applying the full affine transform including
+     * translation and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param mat the storage holding the matrix to apply
+     * @param matOffset the element index in {@code mat} at which the matrix starts
+     * @return {@code dest}
+     */
+    public static float[] preMulPositionMat3x3(float[] dest, int destOffset, float[] src, int srcOffset, float[] mat, int matOffset) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _mat00 = mat[matOffset + 0];
+        float _mat10 = mat[matOffset + 1];
+        float _mat01 = mat[matOffset + 3];
+        float _mat11 = mat[matOffset + 4];
+        float _mat02 = mat[matOffset + 6];
+        float _mat12 = mat[matOffset + 7];
+        dest[destOffset + 0] = Math.fma(_mat00, _selfx, Math.fma(_mat01, _selfy, _mat02));
+        dest[destOffset + 1] = Math.fma(_mat10, _selfx, Math.fma(_mat11, _selfy, _mat12));
+        return dest;
+    }
+
+    /** {@link #preMulPositionMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer preMulPositionMat3x3(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.preMulPositionMat3x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsTypedBuffer.preMulPositionMat3x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    }
+
+    /** {@link #preMulPositionMat3x3(float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer preMulPositionMat3x3(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer mat, int matOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && mat.isDirect() && mat.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.preMulPositionMat3x3_unsafe(dest, destOffset, src, srcOffset, mat, matOffset);
+        return Float2OpsKernelsByteBuffer.preMulPositionMat3x3_api(dest, destOffset, src, srcOffset, mat, matOffset);
+    }
+
+    /** {@link #preMulPositionMat3x3(float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long preMulPositionMat3x3(long dest, long src, long mat) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.preMulPositionMat3x3_unsafe(dest, src, mat);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 
@@ -5924,6 +6332,96 @@ public final class Float2Ops {
      * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
     public static long rotate(long dest, long src, float angle) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.rotate_unsafe(dest, src, angle);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Rotate this vector counter-clockwise by {@code angle} radians about the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY)}
+     * @return {@code dest}
+     */
+    public static float[] rotateAround(float[] dest, int destOffset, float[] src, int srcOffset, float angle, float pivotX, float pivotY) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfy - pivotY;
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotX));
+        dest[destOffset + 1] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotY));
+        return dest;
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float angle, float pivotX, float pivotY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY);
+        return Float2OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, angle, pivotX, pivotY);
+        return Float2OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, angle, pivotX, pivotY);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long rotateAround(long dest, long src, float angle, float pivotX, float pivotY) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.rotateAround_unsafe(dest, src, angle, pivotX, pivotY);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Rotate this vector counter-clockwise by {@code angle} radians about the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the vector starts
+     * @param src the storage holding the vector
+     * @param srcOffset the element index in {@code src} at which the vector starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @param angle the angle in radians
+     * @return {@code dest}
+     */
+    public static float[] rotateAround(float[] dest, int destOffset, float[] src, int srcOffset, float[] pivot, int pivotOffset, float angle) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _pivotx = pivot[pivotOffset + 0];
+        float _pivoty = pivot[pivotOffset + 1];
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfy - _pivoty;
+        dest[destOffset + 0] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, _pivotx));
+        dest[destOffset + 1] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, _pivoty));
+        return dest;
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer rotateAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsTypedBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float2OpsKernelsTypedBuffer.rotateAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer rotateAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float2OpsKernelsByteBuffer.rotateAround_unsafe(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+        return Float2OpsKernelsByteBuffer.rotateAround_api(dest, destOffset, src, srcOffset, pivot, pivotOffset, angle);
+    }
+
+    /** {@link #rotateAround(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long rotateAround(long dest, long src, long pivot, float angle) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float2OpsKernelsAddress.rotateAround_unsafe(dest, src, pivot, angle);
         throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
     }
 

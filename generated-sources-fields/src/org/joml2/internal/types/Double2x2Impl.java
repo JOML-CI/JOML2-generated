@@ -2421,6 +2421,45 @@ public class Double2x2Impl implements Double2x2 {
 
 
     /**
+     * Decompose this matrix into a unit lower-triangular matrix, a diagonal matrix and a unit
+     * upper-triangular matrix whose product, in that order, is this matrix, storing them in
+     * {@code lower}, {@code diagonal} and {@code upper} respectively.
+     * <p>
+     * This is Doolittle elimination without pivoting: {@code m00} is the first pivot, and a matrix
+     * whose {@code m00} is zero has no such decomposition (the factors are then not finite).
+     *
+     * @param lower will hold the unit lower-triangular factor
+     * @param diagonal will hold the diagonal factor
+     * @param upper will hold the unit upper-triangular factor
+     * @return this
+     */
+    public Double2x2 decomposeLDU(@Mutated Double2x2 lower, @Mutated Double2x2 diagonal, @Mutated Double2x2 upper) {
+        Double2x2Impl d0 = (Double2x2Impl) lower;
+        Double2x2Impl d1 = (Double2x2Impl) diagonal;
+        Double2x2Impl d2 = (Double2x2Impl) upper;
+        double _rcp0 = 1.0 / this.m00;
+        double _sp0 = this.m10 * _rcp0;
+        d0.m00 = 1.0;
+        d0.m10 = _sp0;
+        d0.m01 = 0.0;
+        d0.m11 = 1.0;
+        d1.m00 = this.m00;
+        d1.m10 = 0.0;
+        double _d1buf0 = 0.0;
+        d1.m11 = this.m11 - this.m01 * _sp0;
+        d1.m01 = _d1buf0;
+        d2.m00 = 1.0;
+        d2.m10 = 0.0;
+        d2.m01 = this.m01 * _rcp0;
+        d2.m11 = 1.0;
+        d0.properties = 0;
+        d1.properties = 0;
+        d2.properties = Joml.BIT_TRANSLATION;
+        return this;
+    }
+
+
+    /**
      * Set this matrix to the identity.
      *
      * @return this

@@ -3697,6 +3697,47 @@ public final class Short2Impl implements Short2 {
 
 
     /**
+     * Compute the 2D cross product of this vector and {@code other}, in that order.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when {@code other} points
+     * counter-clockwise of this vector (with the x axis pointing right and the y axis pointing up).
+     *
+     * @param other the right operand of the cross product
+     * @return the 2D cross product of this vector and {@code other}, in that order
+     */
+    public long cross(Short2R other) {
+        return cross(other.x(), other.y());
+    }
+
+
+    /**
+     * Compute the 2D cross product of this vector and ({@code otherX}, {@code otherY}), in that
+     * order.
+     * <p>
+     * The value is computed and returned as {@code long}, so it is exact: a result beyond the
+     * {@code short} range does not wrap.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when ({@code otherX},
+     * {@code otherY}) points counter-clockwise of this vector (with the x axis pointing right and
+     * the y axis pointing up).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY)}
+     * @return the 2D cross product of this vector and ({@code otherX}, {@code otherY}), in that
+     *        order
+     */
+    public long cross(short otherX, short otherY) {
+        short[] sd = this.data;
+        return (long) otherY * (long) sd[0] - (long) otherX * (long) sd[1];
+    }
+
+
+    /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
      * The value is computed and returned as {@code long}, so it is exact: a result beyond the

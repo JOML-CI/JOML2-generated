@@ -3310,4 +3310,52 @@ public final class Double3x3OpsKernelsAddress {
         return dest;
     }
 
+    public static long transformDirection_unsafe(long dest, long src, double vX, double vY) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, vX, _self01 * vY));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, vX, _self11 * vY));
+        return dest;
+    }
+
+    public static long transformDirection_unsafe(long dest, long src, long v) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _vx = UnsafeOpsHolder.U.getDouble(v + 0L);
+        double _vy = UnsafeOpsHolder.U.getDouble(v + 8L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _vx, _self01 * _vy));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _vx, _self11 * _vy));
+        return dest;
+    }
+
+    public static long transformPosition_unsafe(long dest, long src, double vX, double vY) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, vX, Math.fma(_self01, vY, _self02)));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, vX, Math.fma(_self11, vY, _self12)));
+        return dest;
+    }
+
+    public static long transformPosition_unsafe(long dest, long src, long v) {
+        double _self00 = UnsafeOpsHolder.U.getDouble(src + 0L);
+        double _self10 = UnsafeOpsHolder.U.getDouble(src + 8L);
+        double _self01 = UnsafeOpsHolder.U.getDouble(src + 24L);
+        double _self11 = UnsafeOpsHolder.U.getDouble(src + 32L);
+        double _self02 = UnsafeOpsHolder.U.getDouble(src + 48L);
+        double _self12 = UnsafeOpsHolder.U.getDouble(src + 56L);
+        double _vx = UnsafeOpsHolder.U.getDouble(v + 0L);
+        double _vy = UnsafeOpsHolder.U.getDouble(v + 8L);
+        UnsafeOpsHolder.U.putDouble(dest + 0L, Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02)));
+        UnsafeOpsHolder.U.putDouble(dest + 8L, Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12)));
+        return dest;
+    }
+
 }

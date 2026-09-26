@@ -21285,6 +21285,97 @@ public class Float4x4Impl implements Float4x4 {
 
 
     /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Float4x4 composeTRSAround(Float3R translation, FloatQuatR rotation, Float3R scale, Float3R pivot) {
+        return composeTRSAround(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), pivot.x(), pivot.y(), pivot.z());
+    }
+
+
+    /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and then translates by
+     * ({@code translationX}, {@code translationY}, {@code translationZ}), i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return this
+     */
+    @Mutated public Float4x4 composeTRSAround(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        float[] dd = this.data;
+        float _t0 = -pivotX;
+        float _t1 = -pivotY;
+        float _t2 = -pivotZ;
+        float _t3 = scaleX + scaleX;
+        float _t4 = scaleY + scaleY;
+        float _t5 = scaleZ + scaleZ;
+        float _t6 = rotationZ * rotationZ;
+        float _t7 = rotationZ * rotationW;
+        float _t8 = rotationY * rotationW;
+        float _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        float _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        float _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        float _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        float _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        float _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        float _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        float _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        dd[0] = _t33;
+        dd[1] = _t28;
+        dd[2] = _t32;
+        dd[3] = 0.0f;
+        dd[4] = _t30;
+        dd[5] = _t34;
+        dd[6] = _t29;
+        dd[7] = 0.0f;
+        dd[8] = _t27;
+        dd[9] = _t31;
+        dd[10] = _t35;
+        dd[11] = 0.0f;
+        dd[12] = Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX)));
+        dd[13] = Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY)));
+        dd[14] = Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ)));
+        dd[15] = 1.0f;
+        ((Float4x4Impl) this).properties = Joml.BIT_AFFINE;
+        return this;
+    }
+
+
+    /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *

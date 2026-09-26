@@ -33,6 +33,18 @@ public final class DoubleQuatOpsSimd {
         return dest;
     }
 
+    public static double[] mul(double[] dest, int destOffset, double[] src, int srcOffset, double scalar) {
+        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, scalar).mul(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset));
+        _c0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double scalar) {
+        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, scalar).mul(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
     public static double[] negate(double[] dest, int destOffset, double[] src, int srcOffset) {
         var _c0 = DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset).neg();
         _c0.intoArray(dest, destOffset);
@@ -875,6 +887,40 @@ public final class DoubleQuatOpsSimd {
         var _sv3 = (Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))  >  0.0 ? _sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, Math.sin((1.0 - alpha) * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))).add(DoubleVector.broadcast(SIMD_SPECIES, Math.sin(alpha * Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety)))))))).mul(_sv2)).mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 / Math.sin(Math.acos(Math.min(1.0, Math.abs(Math.fma(_selfw, _targetw, Math.fma(_selfz, _targetz, Math.fma(_selfx, _targetx, _selfy * _targety))))))))) : DoubleVector.broadcast(SIMD_SPECIES, alpha).mul(_sv2).add(_sv0.mul(DoubleVector.broadcast(SIMD_SPECIES, 1.0 - alpha))));
         double _t49 = _sv3.mul(_sv3).reduceLanes(jdk.incubator.vector.VectorOperators.ADD);
         var _c0 = (_t49  !=  0.0 ? _sv3.mul(DoubleVector.broadcast(SIMD_SPECIES, (1.0 / Math.sqrt(_t49)))) : DoubleVector.broadcast(SIMD_SPECIES, 0.0));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static double[] addScaled(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        if (SimdSupport.USE_FMA) return addScaled_fma(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return addScaled_mulAdd(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    public static double[] addScaled_fma(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, weight).fma(DoubleVector.fromArray(SIMD_SPECIES, other, otherOffset), DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset));
+        _c0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static double[] addScaled_mulAdd(double[] dest, int destOffset, double[] src, int srcOffset, double[] other, int otherOffset, double weight) {
+        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, weight).mul(DoubleVector.fromArray(SIMD_SPECIES, other, otherOffset)).add(DoubleVector.fromArray(SIMD_SPECIES, src, srcOffset));
+        _c0.intoArray(dest, destOffset);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double weight) {
+        if (SimdSupport.USE_FMA) return addScaled_fma(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return addScaled_mulAdd(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    public static java.lang.foreign.MemorySegment addScaled_fma(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double weight) {
+        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, weight).fma(DoubleVector.fromMemorySegment(SIMD_SPECIES, other, otherOffset, java.nio.ByteOrder.nativeOrder()), DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()));
+        _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment addScaled_mulAdd(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double weight) {
+        var _c0 = DoubleVector.broadcast(SIMD_SPECIES, weight).mul(DoubleVector.fromMemorySegment(SIMD_SPECIES, other, otherOffset, java.nio.ByteOrder.nativeOrder())).add(DoubleVector.fromMemorySegment(SIMD_SPECIES, src, srcOffset, java.nio.ByteOrder.nativeOrder()));
         _c0.intoMemorySegment(dest, destOffset, java.nio.ByteOrder.nativeOrder());
         return dest;
     }

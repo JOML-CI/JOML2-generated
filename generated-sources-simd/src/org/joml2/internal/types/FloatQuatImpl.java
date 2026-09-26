@@ -294,6 +294,45 @@ public final class FloatQuatImpl implements FloatQuat {
 
 
     /**
+     * Multiply each component of this quaternion by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatQuat mul(float scalar, @Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        var _col0 = FloatVector.broadcast(COL_SPECIES, scalar).mul(FloatVector.fromArray(COL_SPECIES, sd, 0));
+        _col0.intoArray(dd, 0);
+        return dest;
+    }
+
+
+    /**
+     * Multiply each component of this quaternion by {@code scalar} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param scalar the factor to multiply each component by
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat mul(float scalar, @Mutated DoubleQuat dest) {
+        float[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        dd[0] = scalar * sd[0];
+        dd[1] = scalar * sd[1];
+        dd[2] = scalar * sd[2];
+        dd[3] = scalar * sd[3];
+        return dest;
+    }
+
+
+    /**
      * Negate this quaternion and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -412,6 +451,33 @@ public final class FloatQuatImpl implements FloatQuat {
         dd[2] = sd[2] - otherZ;
         dd[3] = sd[3] - otherW;
         return dest;
+    }
+
+
+    /**
+     * Set this quaternion to the unit quaternion
+     * {@code (sqrt(1 - u1) sin(2 PI u2), sqrt(1 - u1) cos(2 PI u2), sqrt(u1) sin(2 PI u3), sqrt(u1) cos(2 PI u3))},
+     * Shoemake's construction: samples uniformly distributed in {@code [0, 1)} give a rotation
+     * uniformly distributed over all rotations ({@code makeRandomRotation} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param u1 the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed rotation
+     * @param u2 the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @param u3 the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @return this
+     */
+    @Mutated public FloatQuat makeUniformRotation(float u1, float u2, float u3) {
+        float[] dd = this.data;
+        float _t1 = u2 * 6.2831855f;
+        float _t3 = u3 * 6.2831855f;
+        float _t4 = (float) Math.sin(_t1);
+        float _t6 = (float) Math.sin(_t3);
+        var _col0 = FloatVector.zero(COL_SPECIES).withLane(0, _t4).withLane(1, (float) Math.cosFromSin(_t4, _t1)).withLane(2, _t6).withLane(3, (float) Math.cosFromSin(_t6, _t3)).mul(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(1.0f - u1)).blend(FloatVector.broadcast(COL_SPECIES, (float) Math.sqrt(u1)), MASK_1));
+        _col0.intoArray(dd, 0);
+        return this;
     }
 
 
@@ -782,7 +848,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float[] sd = this.data;
         float[] dd = ((FloatDualQuatImpl) dest).data;
         FloatVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
-        VEC_1.intoArray(dd, 4);
+        VEC_2.intoArray(dd, 4);
         return dest;
     }
 
@@ -836,7 +902,7 @@ public final class FloatQuatImpl implements FloatQuat {
         float _buf2 = 2.0f * Math.fma(sd[0], sd[2], _t2);
         dd[9] = 2.0f * Math.fma(sd[1], sd[2], -(sd[0] * sd[3]));
         dd[10] = Math.fma(-2.0f, Math.fma(sd[0], sd[0], sd[1] * sd[1]), 1.0f);
-        VEC_1.intoArray(dd, 11);
+        VEC_2.intoArray(dd, 11);
         dd[15] = 1.0f;
         dd[0] = _buf0;
         dd[4] = _buf1;
@@ -1431,7 +1497,7 @@ public final class FloatQuatImpl implements FloatQuat {
      */
     @Mutated public FloatQuat makeIdentity() {
         float[] dd = this.data;
-        VEC_2.intoArray(dd, 0);
+        VEC_3.intoArray(dd, 0);
         return this;
     }
 
@@ -3056,6 +3122,115 @@ public final class FloatQuatImpl implements FloatQuat {
         dd[0] = _buf0;
         dd[1] = _buf1;
         dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion and store the result in
+     * {@code dest}.
+     *
+     * @param other the quaternion to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatQuat addScaled(FloatQuatR other, float weight, @Mutated FloatQuat dest) {
+        if (SimdMath.USE_FMA) return addScaled_fma(other, weight, dest);
+        return addScaled_mulAdd(other, weight, dest);
+    }
+
+    private FloatQuat addScaled_fma(FloatQuatR other, float weight, @Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] otherData = ((FloatQuatImpl) other).data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        var _col0 = FloatVector.broadcast(COL_SPECIES, weight).fma(FloatVector.fromArray(COL_SPECIES, otherData, 0), FloatVector.fromArray(COL_SPECIES, sd, 0));
+        _col0.intoArray(dd, 0);
+        return dest;
+    }
+
+    private FloatQuat addScaled_mulAdd(FloatQuatR other, float weight, @Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] otherData = ((FloatQuatImpl) other).data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        var _col0 = FloatVector.broadcast(COL_SPECIES, weight).mul(FloatVector.fromArray(COL_SPECIES, otherData, 0)).add(FloatVector.fromArray(COL_SPECIES, sd, 0));
+        _col0.intoArray(dd, 0);
+        return dest;
+    }
+
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the quaternion to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat addScaled(FloatQuatR other, float weight, @Mutated DoubleQuat dest) {
+        return addScaled(other.x(), other.y(), other.z(), other.w(), weight, dest);
+    }
+
+
+    /**
+     * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) scaled by {@code weight}
+     * to this quaternion and store the result in {@code dest}.
+     *
+     * @param otherX the {@code x} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param weight the factor to scale ({@code otherX}, {@code otherY}, {@code otherZ},
+     *        {@code otherW}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatQuat addScaled(float otherX, float otherY, float otherZ, float otherW, float weight, @Mutated FloatQuat dest) {
+        float[] sd = this.data;
+        float[] dd = ((FloatQuatImpl) dest).data;
+        dd[0] = Math.fma(weight, otherX, sd[0]);
+        dd[1] = Math.fma(weight, otherY, sd[1]);
+        dd[2] = Math.fma(weight, otherZ, sd[2]);
+        dd[3] = Math.fma(weight, otherW, sd[3]);
+        return dest;
+    }
+
+
+    /**
+     * Add ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) scaled by {@code weight}
+     * to this quaternion and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param otherX the {@code x} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param weight the factor to scale ({@code otherX}, {@code otherY}, {@code otherZ},
+     *        {@code otherW}) by before adding
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleQuat addScaled(float otherX, float otherY, float otherZ, float otherW, float weight, @Mutated DoubleQuat dest) {
+        float[] sd = this.data;
+        double[] dd = ((DoubleQuatImpl) dest).data;
+        dd[0] = Math.fma(weight, otherX, sd[0]);
+        dd[1] = Math.fma(weight, otherY, sd[1]);
+        dd[2] = Math.fma(weight, otherZ, sd[2]);
+        dd[3] = Math.fma(weight, otherW, sd[3]);
         return dest;
     }
 
@@ -9623,8 +9798,9 @@ public final class FloatQuatImpl implements FloatQuat {
 
     private static final VectorSpecies<Float> COL_SPECIES = FloatVector.SPECIES_128;
     private static final VectorMask<Float> MASK_0 = VectorMask.fromValues(COL_SPECIES, true, true, true, false);
-    private static final FloatVector VEC_1 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
-    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
+    private static final VectorMask<Float> MASK_1 = VectorMask.fromValues(COL_SPECIES, false, false, true, true);
+    private static final FloatVector VEC_2 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 0.0f}, 0);
+    private static final FloatVector VEC_3 = FloatVector.fromArray(COL_SPECIES, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
 
     /**
      * The angle between two unit quaternions a and b from s = |a+b|^2, clamped to [0, 4]:

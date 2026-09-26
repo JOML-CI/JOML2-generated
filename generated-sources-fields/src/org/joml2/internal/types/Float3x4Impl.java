@@ -12571,6 +12571,118 @@ public class Float3x4Impl implements Float3x4 {
 
 
     /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Float3x4 composeTRSAround(Float3R translation, FloatQuatR rotation, Float3R scale, Float3R pivot) {
+        return composeTRSAround(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), pivot.x(), pivot.y(), pivot.z());
+    }
+
+    /** Private column 0 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s15e02e0c_c0(Float3x4Impl _dst, float _t33, float _t28, float _t32) {
+        _dst.m00 = _t33;
+        _dst.m10 = _t28;
+        _dst.m20 = _t32;
+    }
+
+    /** Private column 1 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s15e02e0c_c1(Float3x4Impl _dst, float _t30, float _t34, float _t29) {
+        _dst.m01 = _t30;
+        _dst.m11 = _t34;
+        _dst.m21 = _t29;
+    }
+
+    /** Private column 2 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s15e02e0c_c2(Float3x4Impl _dst, float _t27, float _t31, float _t35) {
+        _dst.m02 = _t27;
+        _dst.m12 = _t31;
+        _dst.m22 = _t35;
+    }
+
+    /** Private column 3 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s15e02e0c_c3(Float3x4Impl _dst, float _t0, float _t33, float _t1, float _t30, float _t2, float _t27, float pivotX, float translationX, float _t28, float _t34, float _t31, float pivotY, float translationY, float _t32, float _t29, float _t35, float pivotZ, float translationZ) {
+        _dst.m03 = Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX)));
+        _dst.m13 = Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY)));
+        _dst.m23 = Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ)));
+    }
+
+    /** Private tail of {@code composeTRSAround}; reached only through it. */
+    private void composeTRSAround_s15e02e0c_tail(Float3x4Impl _dst, float rotationX, float rotationY, float _t5, float scaleZ, float _t33, float _t30, float _t27, float _t0, float _t1, float _t2, float pivotX, float translationX, float _t28, float _t34, float _t31, float pivotY, float translationY, float _t32, float _t29, float pivotZ, float translationZ) {
+        float _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        composeTRSAround_s15e02e0c_c0(_dst, _t33, _t28, _t32);
+        composeTRSAround_s15e02e0c_c1(_dst, _t30, _t34, _t29);
+        composeTRSAround_s15e02e0c_c2(_dst, _t27, _t31, _t35);
+        composeTRSAround_s15e02e0c_c3(_dst, _t0, _t33, _t1, _t30, _t2, _t27, pivotX, translationX, _t28, _t34, _t31, pivotY, translationY, _t32, _t29, _t35, pivotZ, translationZ);
+    }
+
+
+    /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and then translates by
+     * ({@code translationX}, {@code translationY}, {@code translationZ}), i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return this
+     */
+    @Mutated public Float3x4 composeTRSAround(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        Float3x4Impl d = this;
+        float _t0 = -pivotX;
+        float _t1 = -pivotY;
+        float _t2 = -pivotZ;
+        float _t3 = scaleX + scaleX;
+        float _t4 = scaleY + scaleY;
+        float _t5 = scaleZ + scaleZ;
+        float _t6 = rotationZ * rotationZ;
+        float _t7 = rotationZ * rotationW;
+        float _t8 = rotationY * rotationW;
+        float _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        float _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        float _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        float _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        float _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        float _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        float _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        composeTRSAround_s15e02e0c_tail(d, rotationX, rotationY, _t5, scaleZ, _t33, _t30, _t27, _t0, _t1, _t2, pivotX, translationX, _t28, _t34, _t31, pivotY, translationY, _t32, _t29, pivotZ, translationZ);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *

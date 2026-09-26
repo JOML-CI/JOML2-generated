@@ -4211,4 +4211,82 @@ public final class Double3x3OpsKernelsByteBuffer {
         return dest;
     }
 
+    public static java.nio.ByteBuffer transformDirection_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double3x3OpsKernelsAddress.transformDirection_unsafe(_destBase, _srcBase, vX, vY);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer transformDirection_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self01 = src.getDouble(srcOffset + 24);
+        double _self11 = src.getDouble(srcOffset + 32);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, vX, _self01 * vY));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, vX, _self11 * vY));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer transformDirection_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _vBase = UnsafeOpsHolder.U.getLong(v, UnsafeCopy.BB_ADDRESS_OFFSET) + vOffset;
+        Double3x3OpsKernelsAddress.transformDirection_unsafe(_destBase, _srcBase, _vBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer transformDirection_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self01 = src.getDouble(srcOffset + 24);
+        double _self11 = src.getDouble(srcOffset + 32);
+        double _vx = v.getDouble(vOffset + 0);
+        double _vy = v.getDouble(vOffset + 8);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _vx, _self01 * _vy));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _vx, _self11 * _vy));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer transformPosition_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Double3x3OpsKernelsAddress.transformPosition_unsafe(_destBase, _srcBase, vX, vY);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer transformPosition_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, double vX, double vY) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self01 = src.getDouble(srcOffset + 24);
+        double _self11 = src.getDouble(srcOffset + 32);
+        double _self02 = src.getDouble(srcOffset + 48);
+        double _self12 = src.getDouble(srcOffset + 56);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, vX, Math.fma(_self01, vY, _self02)));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, vX, Math.fma(_self11, vY, _self12)));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer transformPosition_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _vBase = UnsafeOpsHolder.U.getLong(v, UnsafeCopy.BB_ADDRESS_OFFSET) + vOffset;
+        Double3x3OpsKernelsAddress.transformPosition_unsafe(_destBase, _srcBase, _vBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer transformPosition_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer v, int vOffset) {
+        double _self00 = src.getDouble(srcOffset + 0);
+        double _self10 = src.getDouble(srcOffset + 8);
+        double _self01 = src.getDouble(srcOffset + 24);
+        double _self11 = src.getDouble(srcOffset + 32);
+        double _self02 = src.getDouble(srcOffset + 48);
+        double _self12 = src.getDouble(srcOffset + 56);
+        double _vx = v.getDouble(vOffset + 0);
+        double _vy = v.getDouble(vOffset + 8);
+        dest.putDouble(destOffset + 0, Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02)));
+        dest.putDouble(destOffset + 8, Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12)));
+        return dest;
+    }
+
 }

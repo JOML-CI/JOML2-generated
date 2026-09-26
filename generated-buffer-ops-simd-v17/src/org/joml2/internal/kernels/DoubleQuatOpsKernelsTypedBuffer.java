@@ -136,6 +136,25 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.DoubleBuffer mul_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        DoubleQuatOpsKernelsAddress.mul_unsafe(_destBase, _srcBase, scalar);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer mul_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double scalar) {
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, scalar * _selfx);
+        dest.put(destOffset + 1, scalar * _selfy);
+        dest.put(destOffset + 2, scalar * _selfz);
+        dest.put(destOffset + 3, scalar * _selfw);
+        return dest;
+    }
+
     public static java.nio.DoubleBuffer negate_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
@@ -195,6 +214,26 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
         dest.put(destOffset + 1, _selfy - _othery);
         dest.put(destOffset + 2, _selfz - _otherz);
         dest.put(destOffset + 3, _selfw - _otherw);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer makeUniformRotation_unsafe(java.nio.DoubleBuffer dest, int destOffset, double u1, double u2, double u3) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        DoubleQuatOpsKernelsAddress.makeUniformRotation_unsafe(_destBase, u1, u2, u3);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer makeUniformRotation_api(java.nio.DoubleBuffer dest, int destOffset, double u1, double u2, double u3) {
+        double _t0 = Math.sqrt(u1);
+        double _t1 = u2 * 6.283185307179586;
+        double _t3 = u3 * 6.283185307179586;
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sqrt(1.0 - u1);
+        double _t6 = Math.sin(_t3);
+        dest.put(destOffset + 0, _t4 * _t5);
+        dest.put(destOffset + 1, Math.cosFromSin(_t4, _t1) * _t5);
+        dest.put(destOffset + 2, _t6 * _t0);
+        dest.put(destOffset + 3, Math.cosFromSin(_t6, _t3) * _t0);
         return dest;
     }
 
@@ -1516,6 +1555,49 @@ public final class DoubleQuatOpsKernelsTypedBuffer {
         dest.put(destOffset + 1, Math.fma(_othery, _selfw, _otherz * _selfx) + Math.fma(_otherw, _selfy, -(_otherx * _selfz)));
         dest.put(destOffset + 2, Math.fma(_otherx, _selfy, _otherw * _selfz) + Math.fma(_otherz, _selfw, -(_othery * _selfx)));
         dest.put(destOffset + 3, Math.fma(_otherw, _selfw, -(_otherx * _selfx)) - Math.fma(_othery, _selfy, _otherz * _selfz));
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW, double weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        DoubleQuatOpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, otherX, otherY, otherZ, otherW, weight);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, double otherX, double otherY, double otherZ, double otherW, double weight) {
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
+        dest.put(destOffset + 0, Math.fma(weight, otherX, _selfx));
+        dest.put(destOffset + 1, Math.fma(weight, otherY, _selfy));
+        dest.put(destOffset + 2, Math.fma(weight, otherZ, _selfz));
+        dest.put(destOffset + 3, Math.fma(weight, otherW, _selfw));
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_unsafe(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double weight) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 8L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 8L;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) otherOffset * 8L;
+        DoubleQuatOpsKernelsAddress.addScaled_unsafe(_destBase, _srcBase, _otherBase, weight);
+        return dest;
+    }
+
+    public static java.nio.DoubleBuffer addScaled_api(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer src, int srcOffset, java.nio.DoubleBuffer other, int otherOffset, double weight) {
+        double _selfx = src.get(srcOffset + 0);
+        double _selfy = src.get(srcOffset + 1);
+        double _selfz = src.get(srcOffset + 2);
+        double _selfw = src.get(srcOffset + 3);
+        double _otherx = other.get(otherOffset + 0);
+        double _othery = other.get(otherOffset + 1);
+        double _otherz = other.get(otherOffset + 2);
+        double _otherw = other.get(otherOffset + 3);
+        dest.put(destOffset + 0, Math.fma(weight, _otherx, _selfx));
+        dest.put(destOffset + 1, Math.fma(weight, _othery, _selfy));
+        dest.put(destOffset + 2, Math.fma(weight, _otherz, _selfz));
+        dest.put(destOffset + 3, Math.fma(weight, _otherw, _selfw));
         return dest;
     }
 

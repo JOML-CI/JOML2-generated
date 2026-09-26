@@ -3310,4 +3310,52 @@ public final class Float3x3OpsKernelsAddress {
         return dest;
     }
 
+    public static long transformDirection_unsafe(long dest, long src, float vX, float vY) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 16L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, vX, _self01 * vY));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, vX, _self11 * vY));
+        return dest;
+    }
+
+    public static long transformDirection_unsafe(long dest, long src, long v) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 16L);
+        float _vx = UnsafeOpsHolder.U.getFloat(v + 0L);
+        float _vy = UnsafeOpsHolder.U.getFloat(v + 4L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _vx, _self01 * _vy));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _vx, _self11 * _vy));
+        return dest;
+    }
+
+    public static long transformPosition_unsafe(long dest, long src, float vX, float vY) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 16L);
+        float _self02 = UnsafeOpsHolder.U.getFloat(src + 24L);
+        float _self12 = UnsafeOpsHolder.U.getFloat(src + 28L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, vX, Math.fma(_self01, vY, _self02)));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, vX, Math.fma(_self11, vY, _self12)));
+        return dest;
+    }
+
+    public static long transformPosition_unsafe(long dest, long src, long v) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 16L);
+        float _self02 = UnsafeOpsHolder.U.getFloat(src + 24L);
+        float _self12 = UnsafeOpsHolder.U.getFloat(src + 28L);
+        float _vx = UnsafeOpsHolder.U.getFloat(v + 0L);
+        float _vy = UnsafeOpsHolder.U.getFloat(v + 4L);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, Math.fma(_self00, _vx, Math.fma(_self01, _vy, _self02)));
+        UnsafeOpsHolder.U.putFloat(dest + 4L, Math.fma(_self10, _vx, Math.fma(_self11, _vy, _self12)));
+        return dest;
+    }
+
 }

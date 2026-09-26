@@ -82,6 +82,14 @@ public interface DoubleQuat extends DoubleQuatR {
     @Mutated default DoubleQuat add(double x, double y, double z, double w) { return add(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
+     * Multiply each component of this quaternion by {@code scalar}.
+     *
+     * @param scalar the factor to multiply each component by
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default DoubleQuat mul(double scalar) { return mul(scalar, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+
+    /**
      * Negate this quaternion.
      *
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
@@ -106,6 +114,23 @@ public interface DoubleQuat extends DoubleQuatR {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat sub(double x, double y, double z, double w) { return sub(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+
+    /**
+     * Set this quaternion to the unit quaternion
+     * {@code (sqrt(1 - u1) sin(2 PI u2), sqrt(1 - u1) cos(2 PI u2), sqrt(u1) sin(2 PI u3), sqrt(u1) cos(2 PI u3))},
+     * Shoemake's construction: samples uniformly distributed in {@code [0, 1)} give a rotation
+     * uniformly distributed over all rotations ({@code makeRandomRotation} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param u1 the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed rotation
+     * @param u2 the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @param u3 the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @return this
+     */
+    @Mutated DoubleQuat makeUniformRotation(double u1, double u2, double u3);
 
     /**
      * Set this quaternion to the given values.
@@ -488,6 +513,28 @@ public interface DoubleQuat extends DoubleQuatR {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat preMul(double x, double y, double z, double w) { return preMul(x, y, z, w, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion.
+     *
+     * @param other the quaternion to scale and add
+     * @param weight the factor to scale {@code other} by before adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default DoubleQuat addScaled(DoubleQuatR other, double weight) { return addScaled(other, weight, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+
+    /**
+     * Add ({@code x}, {@code y}, {@code z}, {@code w}) scaled by {@code weight} to this quaternion.
+     *
+     * @param x the {@code x} component of the quaternion {@code (x, y, z, w)}
+     * @param y the {@code y} component of the quaternion {@code (x, y, z, w)}
+     * @param z the {@code z} component of the quaternion {@code (x, y, z, w)}
+     * @param w the {@code w} component of the quaternion {@code (x, y, z, w)}
+     * @param weight the factor to scale ({@code x}, {@code y}, {@code z}, {@code w}) by before
+     *        adding
+     * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
+     */
+    @Mutated default DoubleQuat addScaled(double x, double y, double z, double w, double weight) { return addScaled(x, y, z, w, weight, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
 
     /**
      * Recompute the {@code w} component of this quaternion from {@code x}, {@code y} and {@code z},
@@ -1142,6 +1189,16 @@ public interface DoubleQuat extends DoubleQuatR {
      * @return this (a new instance when {@code Joml.RETURN_NEW} is enabled)
      */
     @Mutated default DoubleQuat rotateZYX(double angleZ, double angleY, double angleX) { return rotateZYX(angleZ, angleY, angleX, Joml.RETURN_NEW ? Joml.doubleQuat() : this); }
+
+    /**
+     * Set this quaternion to a rotation uniformly distributed over all rotations, drawing the 3
+     * samples of {@code makeUniformRotation} from {@code rng}, each with {@code rng.nextDouble()},
+     * in parameter order.
+     *
+     * @param rng the random number generator to draw the 3 samples from
+     * @return this
+     */
+    @Mutated default DoubleQuat makeRandomRotation(java.util.Random rng) { return makeUniformRotation(rng.nextDouble(), rng.nextDouble(), rng.nextDouble()); }
 
     /**
      * Load the elements from the given array.

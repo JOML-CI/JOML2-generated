@@ -899,6 +899,65 @@ public final class Double2x2Ops {
     }
 
     /**
+     * Decompose this matrix into a unit lower-triangular matrix, a diagonal matrix and a unit
+     * upper-triangular matrix whose product, in that order, is this matrix, storing them in
+     * {@code lower}, {@code diagonal} and {@code upper} respectively.
+     * <p>
+     * This is Doolittle elimination without pivoting: {@code m00} is the first pivot, and a matrix
+     * whose {@code m00} is zero has no such decomposition (the factors are then not finite).
+     *
+     * @param lower will hold the unit lower-triangular factor
+     * @param lowerOffset the element index in {@code lower} at which the matrix starts
+     * @param diagonal will hold the diagonal factor
+     * @param diagonalOffset the element index in {@code diagonal} at which the matrix starts
+     * @param upper will hold the unit upper-triangular factor
+     * @param upperOffset the element index in {@code upper} at which the matrix starts
+     * @param src the storage holding the matrix
+     * @param srcOffset the element index in {@code src} at which the matrix starts
+     * @return {@code lower}
+     */
+    public static double[] decomposeLDU(double[] lower, int lowerOffset, double[] diagonal, int diagonalOffset, double[] upper, int upperOffset, double[] src, int srcOffset) {
+        double _self00 = src[srcOffset + 0];
+        double _self10 = src[srcOffset + 1];
+        double _self01 = src[srcOffset + 2];
+        double _self11 = src[srcOffset + 3];
+        double _rcp0 = 1.0 / _self00;
+        double _sp0 = _self10 * _rcp0;
+        lower[lowerOffset + 0] = 1.0;
+        lower[lowerOffset + 1] = _sp0;
+        lower[lowerOffset + 2] = 0.0;
+        lower[lowerOffset + 3] = 1.0;
+        diagonal[diagonalOffset + 0] = _self00;
+        diagonal[diagonalOffset + 1] = 0.0;
+        diagonal[diagonalOffset + 2] = 0.0;
+        diagonal[diagonalOffset + 3] = _self11 - _self01 * _sp0;
+        upper[upperOffset + 0] = 1.0;
+        upper[upperOffset + 1] = 0.0;
+        upper[upperOffset + 2] = _self01 * _rcp0;
+        upper[upperOffset + 3] = 1.0;
+        return lower;
+    }
+
+    /** {@link #decomposeLDU(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
+    public static java.nio.DoubleBuffer decomposeLDU(java.nio.DoubleBuffer lower, int lowerOffset, java.nio.DoubleBuffer diagonal, int diagonalOffset, java.nio.DoubleBuffer upper, int upperOffset, java.nio.DoubleBuffer src, int srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && lower.isDirect() && !lower.isReadOnly() && lower.order() == java.nio.ByteOrder.nativeOrder() && diagonal.isDirect() && !diagonal.isReadOnly() && diagonal.order() == java.nio.ByteOrder.nativeOrder() && upper.isDirect() && !upper.isReadOnly() && upper.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsTypedBuffer.decomposeLDU_unsafe(lower, lowerOffset, diagonal, diagonalOffset, upper, upperOffset, src, srcOffset);
+        return Double2x2OpsKernelsTypedBuffer.decomposeLDU_api(lower, lowerOffset, diagonal, diagonalOffset, upper, upperOffset, src, srcOffset);
+    }
+
+    /** {@link #decomposeLDU(double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer decomposeLDU(java.nio.ByteBuffer lower, int lowerOffset, java.nio.ByteBuffer diagonal, int diagonalOffset, java.nio.ByteBuffer upper, int upperOffset, java.nio.ByteBuffer src, int srcOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && lower.isDirect() && !lower.isReadOnly() && lower.order() == java.nio.ByteOrder.nativeOrder() && diagonal.isDirect() && !diagonal.isReadOnly() && diagonal.order() == java.nio.ByteOrder.nativeOrder() && upper.isDirect() && !upper.isReadOnly() && upper.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Double2x2OpsKernelsByteBuffer.decomposeLDU_unsafe(lower, lowerOffset, diagonal, diagonalOffset, upper, upperOffset, src, srcOffset);
+        return Double2x2OpsKernelsByteBuffer.decomposeLDU_api(lower, lowerOffset, diagonal, diagonalOffset, upper, upperOffset, src, srcOffset);
+    }
+
+    /** {@link #decomposeLDU(double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long decomposeLDU(long lower, long diagonal, long upper, long src) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double2x2OpsKernelsAddress.decomposeLDU_unsafe(lower, diagonal, upper, src);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
      * Set this matrix to the identity.
      *
      * @param dest will hold the result

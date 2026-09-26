@@ -287,6 +287,29 @@ public final class Double3Impl implements Double3 {
 
 
     /**
+     * Set this vector to the unit vector {@code (r cos(2 PI v), r sin(2 PI v), 2u - 1)} with
+     * {@code r = 2 sqrt(u (1 - u))}: samples uniformly distributed in {@code [0, 1)} give a
+     * direction uniformly distributed on the unit sphere ({@code makeRandomDirection} draws them
+     * from a {@link java.util.Random}).
+     *
+     * @param u the sample that sets the height {@code z = 2u - 1}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn about the z axis, counter-clockwise from the x axis,
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @return this
+     */
+    @Mutated public Double3 makeUniformDirection(double u, double v) {
+        double _t1 = v * 6.283185307179586;
+        double _t2 = Math.sin(_t1);
+        double _t5 = 2.0 * Math.sqrt(u * (1.0 - u));
+        this.x = _t5 * Math.cosFromSin(_t2, _t1);
+        this.y = _t5 * _t2;
+        this.z = u + u - 1.0;
+        return this;
+    }
+
+
+    /**
      * Set this vector to the given values.
      *
      * @param v the vector to copy
@@ -1145,6 +1168,199 @@ public final class Double3Impl implements Double3 {
         d.y = tY * (otherY - this.y) + this.y;
         d.z = tZ * (otherZ - this.z) + this.z;
         return d;
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code double} range, they
+     * are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 slerp(Double3R other, double t, @Mutated Double3 dest) {
+        return slerp(other.x(), other.y(), other.z(), t, dest);
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}) using the interpolation factor {@code t}: the direction turns at a constant
+     * rate along the shorter arc between the two directions, and the length changes linearly
+     * between the two lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code double} range, they
+     * are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 slerp(double otherX, double otherY, double otherZ, double t, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _ct0 = this.x * this.x + this.y * this.y + this.z * this.z;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        double _t10 = _ct0;
+        double _ct1 = otherX * otherX + otherY * otherY + otherZ * otherZ;
+        if (!(_ct1 > 2.2250738585072014E-308 && _ct1 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        double _t11 = _ct1;
+        double _t14 = Math.sqrt(_t10);
+        double _t12 = 1.0 / _t14;
+        double _t15 = (1.0 / Math.sqrt(_t11));
+        double _t16 = this.x * _t12;
+        double _t17 = otherX * _t15;
+        double _t18 = otherY * _t15;
+        double _t19 = this.y * _t12;
+        double _t20 = otherZ * _t15;
+        double _t21 = this.z * _t12;
+        double _t27 = t * (Math.sqrt(_t11) - _t14) + _t14;
+        double _t29 = _t17 * _t16 + _t18 * _t19 + _t20 * _t21;
+        double _t33 = _t17 - _t29 * _t16;
+        double _t34 = _t18 - _t29 * _t19;
+        double _t35 = _t20 - _t29 * _t21;
+        double _t40 = _t33 * _t16 + _t34 * _t19 + _t35 * _t21;
+        double _t44 = _t33 - _t40 * _t16;
+        double _t45 = _t34 - _t40 * _t19;
+        double _t46 = _t35 - _t40 * _t21;
+        double _ct2 = _t44 * _t44 + _t45 * _t45 + _t46 * _t46;
+        if (!(_ct2 > 2.2250738585072014E-308 && _ct2 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        double _t52 = _ct2;
+        double _t56 = t * Math.atan2(Math.sqrt(_t52), _t29);
+        double _t57 = Math.sin(_t56);
+        double _sp0 = _t27 * _t57 * (1.0 / Math.sqrt(_t52));
+        double _t60 = _t27 * Math.cosFromSin(_t57, _t56);
+        d.x = _t16 * _t60 + _sp0 * _t44;
+        d.y = _t19 * _t60 + _sp0 * _t45;
+        d.z = _t21 * _t60 + _sp0 * _t46;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3 slerp_degenerate(Double3R other, double t, @Mutated Double3 dest) {
+        return slerp_degenerate(other.x(), other.y(), other.z(), t, dest);
+    }
+
+    /** Private store group 0 of {@code slerp_degenerate}: computes and stores it; reached only through it. */
+    private void slerp_degenerate_s56f5a5dd_c0(Double3Impl _dst, double _t40, double _t94, double _t88, double _t90, double _t81, double _t67, double _t47, double _t96, double _t31, double t, double otherX, double _r0, double _t82, double _t50, double _t33, double otherY, double _r1, double _t83, double _t48, double _t35, double otherZ, double _r2) {
+        _dst.x = _t40 > 0.0 ? _t94 * (_t88 > 0.0 ? _t90 * _t81 : _t67 * _t47) + _t96 * _t31 : t * (otherX - _r0) + _r0;
+        _dst.y = _t40 > 0.0 ? _t94 * (_t88 > 0.0 ? _t90 * _t82 : _t67 * _t50) + _t96 * _t33 : t * (otherY - _r1) + _r1;
+        _dst.z = _t40 > 0.0 ? _t94 * (_t88 > 0.0 ? _t90 * _t83 : _t67 * _t48) + _t96 * _t35 : t * (otherZ - _r2) + _r2;
+    }
+
+    /** Private tail of {@code slerp_degenerate}; reached only through it. */
+    private void slerp_degenerate_s56f5a5dd_tail(Double3Impl _dst, double t, double _t22, double _t0, double _t29, double _t36, double _t37, double _t33, double _t31, double _t35, double _t30, double _t32, double _t34, double _t40, double otherX, double _r0, double otherY, double _r1, double otherZ, double _r2) {
+        double _t46 = t * (Math.sqrt(_t22) / _t0 - _t29) + _t29;
+        double _t47, _t48, _t50;
+        if (_t36 < _t37) {
+            _t47 = _t33;
+            _t48 = 0.0;
+            _t50 = -_t31;
+        } else {
+            _t47 = 0.0;
+            _t48 = -_t33;
+            _t50 = _t35;
+        }
+        double _t51 = _t30 * _t31 + _t32 * _t33 + _t34 * _t35;
+        double _t57 = _t30 - _t51 * _t31;
+        double _t58 = _t32 - _t51 * _t33;
+        double _t59 = _t34 - _t51 * _t35;
+        double _t67 = (1.0 / Math.sqrt(_t50 * _t50 + _t47 * _t47 + _t48 * _t48));
+        double _t68 = _t57 * _t31 + _t58 * _t33 + _t59 * _t35;
+        double _t72 = _t57 - _t68 * _t31;
+        double _t73 = _t58 - _t68 * _t33;
+        double _t74 = _t59 - _t68 * _t35;
+        double _t75 = unitScale(_t72, _t73, _t74);
+        slerp_degenerate_s56f5a5dd_tail2(_dst, _t72, _t75, _t73, _t74, t, _t51, _t46, _t40, _t67, _t47, _t31, otherX, _r0, _t50, _t33, otherY, _r1, _t48, _t35, otherZ, _r2);
+    }
+
+    /** Private tail of {@code slerp_degenerate}; reached only through it. */
+    private void slerp_degenerate_s56f5a5dd_tail2(Double3Impl _dst, double _t72, double _t75, double _t73, double _t74, double t, double _t51, double _t46, double _t40, double _t67, double _t47, double _t31, double otherX, double _r0, double _t50, double _t33, double otherY, double _r1, double _t48, double _t35, double otherZ, double _r2) {
+        double _t81 = _t72 * _t75;
+        double _t82 = _t73 * _t75;
+        double _t83 = _t74 * _t75;
+        double _t88 = _t81 * _t81 + _t82 * _t82 + _t83 * _t83;
+        double _t90 = (1.0 / Math.sqrt(_t88));
+        double _t92 = t * Math.atan2(Math.sqrt(_t88), _t51 * _t75);
+        double _t93 = Math.sin(_t92);
+        double _t94 = _t46 * _t93;
+        double _t96 = _t46 * Math.cosFromSin(_t93, _t92);
+        slerp_degenerate_s56f5a5dd_c0(_dst, _t40, _t94, _t88, _t90, _t81, _t67, _t47, _t96, _t31, t, otherX, _r0, _t82, _t50, _t33, otherY, _r1, _t83, _t48, _t35, otherZ, _r2);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3 slerp_degenerate(double otherX, double otherY, double otherZ, double t, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _r0 = this.x;
+        double _r1 = this.y;
+        double _r2 = this.z;
+        double _t0 = unitScale(otherX, otherY, otherZ);
+        double _t1 = unitScale(_r0, _r1, _r2);
+        double _t8 = otherX * _t0;
+        double _t9 = otherY * _t0;
+        double _t10 = otherZ * _t0;
+        double _t11 = _r0 * _t1;
+        double _t12 = _r1 * _t1;
+        double _t13 = _r2 * _t1;
+        double _t22 = _t8 * _t8 + _t9 * _t9 + _t10 * _t10;
+        double _t23 = _t11 * _t11 + _t12 * _t12 + _t13 * _t13;
+        double _t26 = (1.0 / Math.sqrt(_t22));
+        double _t27 = (1.0 / Math.sqrt(_t23));
+        double _t29 = Math.sqrt(_t23) / _t1;
+        double _t30 = _t26 * _t8;
+        double _t31 = _t27 * _t11;
+        double _t32 = _t26 * _t9;
+        double _t33 = _t27 * _t12;
+        double _t34 = _t26 * _t10;
+        double _t35 = _t27 * _t13;
+        double _t36 = Math.abs(_t35);
+        double _t37 = Math.abs(_t31);
+        double _t40 = _t22 * _t23;
+        slerp_degenerate_s56f5a5dd_tail(d, t, _t22, _t0, _t29, _t36, _t37, _t33, _t31, _t35, _t30, _t32, _t34, _t40, otherX, _r0, otherY, _r1, otherZ, _r2);
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double3 slerp_degenerate(double otherX, double otherY, double otherZ, double t) {
+        return slerp_degenerate(otherX, otherY, otherZ, t, Joml.RETURN_NEW ? Joml.double3() : this);
     }
 
 
@@ -3317,6 +3533,56 @@ public final class Double3Impl implements Double3 {
 
 
     /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param quat the rotation to apply (must be a unit quaternion)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAround(DoubleQuatR quat, Double3R pivot, @Mutated Double3 dest) {
+        return rotateAround(quat.x(), quat.y(), quat.z(), quat.w(), pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by the quaternion ({@code quatX}, {@code quatY}, {@code quatZ},
+     * {@code quatW}) about the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}), i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param quatX the {@code x} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatY the {@code y} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatZ the {@code z} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatW the {@code w} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAround(double quatX, double quatY, double quatZ, double quatW, double pivotX, double pivotY, double pivotZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = this.y - pivotY;
+        double _t1 = this.x - pivotX;
+        double _t2 = this.z - pivotZ;
+        double _t12 = 2.0 * (quatX * _t0 - quatY * _t1);
+        double _t13 = 2.0 * (quatY * _t2 - quatZ * _t0);
+        double _t14 = 2.0 * (quatZ * _t1 - quatX * _t2);
+        d.x = quatY * _t12 + (quatW * _t13 + (pivotX + this.x - pivotX) - quatZ * _t14);
+        d.y = quatZ * _t13 + (quatW * _t14 + (pivotY + this.y - pivotY) - quatX * _t12);
+        d.z = quatX * _t14 + (quatW * _t12 + (pivotZ + this.z - pivotZ) - quatY * _t13);
+        return d;
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the axis {@code axis} and store the result
      * in {@code dest}.
      *
@@ -3357,6 +3623,54 @@ public final class Double3Impl implements Double3 {
         d.z = this.z * _t1 + (axisX * this.y - axisY * this.x) * _t0 + _sp0 * axisZ;
         d.x = _buf0;
         d.y = _buf1;
+        return d;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot} and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAxisAround(double angle, Double3R axis, Double3R pivot, @Mutated Double3 dest) {
+        return rotateAxisAround(angle, axis.x(), axis.y(), axis.z(), pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) through the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store
+     * the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAxisAround(double angle, double axisX, double axisY, double axisZ, double pivotX, double pivotY, double pivotZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.x - pivotX;
+        double _t3 = this.z - pivotZ;
+        double _t4 = this.y - pivotY;
+        double _sp0 = (1.0 - _t1) * (axisX * _t2 + axisY * _t4 + axisZ * _t3);
+        d.x = _t2 * _t1 + ((axisY * _t3 - axisZ * _t4) * _t0 + (_sp0 * axisX + pivotX));
+        d.y = _t4 * _t1 + ((axisZ * _t2 - axisX * _t3) * _t0 + (_sp0 * axisY + pivotY));
+        d.z = _t3 * _t1 + ((axisX * _t4 - axisY * _t2) * _t0 + (_sp0 * axisZ + pivotZ));
         return d;
     }
 
@@ -3420,6 +3734,44 @@ public final class Double3Impl implements Double3 {
 
 
     /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateXAround(double angle, Double3R pivot, @Mutated Double3 dest) {
+        return rotateXAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateXAround(double angle, double pivotX, double pivotY, double pivotZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.y - pivotY;
+        double _t3 = this.z - pivotZ;
+        d.x = pivotX + (this.x - pivotX);
+        d.y = _t2 * _t1 + (pivotY - _t3 * _t0);
+        d.z = _t2 * _t0 + (_t3 * _t1 + pivotZ);
+        return d;
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the Y axis and store the result in
      * {@code dest}.
      *
@@ -3440,6 +3792,44 @@ public final class Double3Impl implements Double3 {
 
 
     /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateYAround(double angle, Double3R pivot, @Mutated Double3 dest) {
+        return rotateYAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateYAround(double angle, double pivotX, double pivotY, double pivotZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.x - pivotX;
+        double _t3 = this.z - pivotZ;
+        d.x = _t2 * _t1 + (_t3 * _t0 + pivotX);
+        d.y = pivotY + (this.y - pivotY);
+        d.z = _t3 * _t1 + (pivotZ - _t2 * _t0);
+        return d;
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the Z axis and store the result in
      * {@code dest}.
      *
@@ -3455,6 +3845,44 @@ public final class Double3Impl implements Double3 {
         d.y = this.x * _t0 + this.y * _t1;
         d.z = this.z;
         d.x = _buf0;
+        return d;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateZAround(double angle, Double3R pivot, @Mutated Double3 dest) {
+        return rotateZAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateZAround(double angle, double pivotX, double pivotY, double pivotZ, @Mutated Double3 dest) {
+        Double3Impl d = (Double3Impl) dest;
+        double _t0 = Math.sin(angle);
+        double _t1 = Math.cosFromSin(_t0, angle);
+        double _t2 = this.x - pivotX;
+        double _t3 = this.y - pivotY;
+        d.x = _t2 * _t1 + (pivotX - _t3 * _t0);
+        d.y = _t2 * _t0 + (_t3 * _t1 + pivotY);
+        d.z = pivotZ + (this.z - pivotZ);
         return d;
     }
 

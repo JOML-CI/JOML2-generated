@@ -34,6 +34,8 @@ inline operator fun Long2.rem(scalar: Long): Long2 = rem(scalar)
 inline operator fun Long2.rem(other: Long2): Long2 = rem(other)
 /** [Long2.sub] as the `-` operator. */
 inline operator fun Long2.minus(other: Long2): Long2 = sub(other)
+/** [Long2.cross] as an infix function, so `a cross b` parses. */
+inline infix fun Long2.cross(other: Long2): Long = cross(other)
 /** [Long2.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Long2.dot(other: Long2): Long = dot(other)
 /** Component 1 of this Long2 (`x()`), for destructuring declarations. */

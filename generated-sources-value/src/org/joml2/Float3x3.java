@@ -1411,7 +1411,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return invert_general();
     }
 
-    /** Private tail of {@code invertProduct_general}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_s55dc17e2_tail}; reached only through it. */
     private Float3 invertProduct_general_s55dc17e2_tail_s6cbd0da2_c0(float _t33, float _t39_inv, float _t24, float _t21, float _t23, float _t19, float _t34) {
         return new Float3(_t33 * _t39_inv, Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv, _t34 * _t39_inv);
@@ -1427,6 +1426,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3(Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv, Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv, Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv);
     }
 
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
     private Float3x3 invertProduct_general_s55dc17e2_tail(Float3x3 other, float _t18, float _t19, float _t20, float _t21, float _t23, float _t24, float _t22, int _props) {
         float _t25 = Math.fma(other.m20(), this.m02, Math.fma(other.m00(), this.m00, other.m10() * this.m01));
         float _t26 = Math.fma(other.m21(), this.m02, Math.fma(other.m01(), this.m00, other.m11() * this.m01));
@@ -1515,7 +1515,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3x3(invertProduct_translation_s55dc17e2_c0(_t12, _t18_inv, other, _t1, _t3, _t13), invertProduct_translation_s55dc17e2_c1(other, _t2, _t5, _t18_inv, _t4), invertProduct_translation_s55dc17e2_c2(_t5, _t1, _t2, _t0, _t18_inv, _t3, _t4), Joml.BIT_TRANSLATION & other.properties());
     }
 
-    /** Private tail of {@code invertProduct_orthogonal}; reached only through it. */
     /** Private per-column body of {@code invertProduct_orthogonal_s6f0f1b18_tail}; reached only through it. */
     private Float3 invertProduct_orthogonal_s6f0f1b18_tail_s7622e9da_c0(float _t24, float _t30_inv, Float3x3 other, float _t13, float _t15, float _t25) {
         return new Float3(_t24 * _t30_inv, Math.fma(other.m20(), _t13, -(other.m22() * _t15)) * _t30_inv, _t25 * _t30_inv);
@@ -1531,6 +1530,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3(Math.fma(_t17, _t13, -(_t12 * _t14)) * _t30_inv, Math.fma(_t15, _t14, -(_t16 * _t13)) * _t30_inv, Math.fma(_t16, _t12, -(_t15 * _t17)) * _t30_inv);
     }
 
+    /** Private tail of {@code invertProduct_orthogonal}; reached only through it. */
     private Float3x3 invertProduct_orthogonal_s6f0f1b18_tail(float _t14, float _t25, float _t16, float _t24, float _t17, Float3x3 other, float _t15, float _t13, float _t12, int _props) {
         float _t30 = Math.fma(_t14, _t25, Math.fma(_t16, _t24, -(_t17 * Math.fma(other.m22(), _t15, -(other.m20() * _t13)))));
         float _t30_inv = 1.0f / _t30;
@@ -1733,7 +1733,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3x3(invertProduct_general_translation_s55dc17e2_c0(_t13, _t18_inv, _t7, _t6, _t5), invertProduct_general_translation_s55dc17e2_c1(_t8, _t6, _t18_inv), invertProduct_general_translation_s55dc17e2_c2(_t7, _t8, _t18_inv), 0);
     }
 
-    /** Private tail of {@code invertProduct_general_affine}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_affine_s55dc17e2_tail}; reached only through it. */
     private Float3 invertProduct_general_affine_s55dc17e2_tail_s7228f69b_c0(float _t25, float _t30_inv, float _t16, float _t12, float _t15, float _t11, float _t24) {
         return new Float3(_t25 * _t30_inv, Math.fma(_t16, _t12, -(_t15 * _t11)) * _t30_inv, _t24 * _t30_inv);
@@ -1749,6 +1748,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3(Math.fma(_t16, _t14, -(_t17 * _t9)) * _t30_inv, Math.fma(_t17, _t11, -(_t16 * _t13)) * _t30_inv, Math.fma(_t13, _t9, -(_t11 * _t14)) * _t30_inv);
     }
 
+    /** Private tail of {@code invertProduct_general_affine}; reached only through it. */
     private Float3x3 invertProduct_general_affine_s55dc17e2_tail(float _t17, float _t24, float _t13, float _t25, float _t14, float _t15, float _t11, float _t16, float _t12, float _t10, float _t9, int _props) {
         float _t30 = Math.fma(_t17, _t24, Math.fma(_t13, _t25, -(_t14 * Math.fma(_t15, _t11, -(_t16 * _t12)))));
         float _t30_inv = 1.0f / _t30;
@@ -1826,7 +1826,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return invertProduct_general(other);
     }
 
-    /** Private tail of {@code invertProduct}; reached only through it. */
     /** Private per-column body of {@code invertProduct_s5cd2a89_tail}; reached only through it. */
     private Float3 invertProduct_s5cd2a89_tail_s6f47277a_c0(float _t33, float _t39_inv, float _t24, float _t21, float _t23, float _t19, float _t34) {
         return new Float3(_t33 * _t39_inv, Math.fma(_t24, _t21, -(_t23 * _t19)) * _t39_inv, _t34 * _t39_inv);
@@ -1842,6 +1841,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3(Math.fma(_t26, _t21, -(_t18 * _t22)) * _t39_inv, Math.fma(_t23, _t22, -(_t25 * _t21)) * _t39_inv, Math.fma(_t25, _t18, -(_t23 * _t26)) * _t39_inv);
     }
 
+    /** Private tail of {@code invertProduct}; reached only through it. */
     private Float3x3 invertProduct_s5cd2a89_tail(float _t23, float _t20, float _t24, float _t18, float _t22, float _t25, float _t33, float _t26, float _t19, float _t21, int _props) {
         float _t34 = Math.fma(_t23, _t20, -(_t24 * _t18));
         float _t39 = Math.fma(_t22, _t34, Math.fma(_t25, _t33, -(_t26 * Math.fma(_t23, _t19, -(_t24 * _t21)))));
@@ -5293,7 +5293,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_s524747ee_tail}; reached only through it. */
     private Float3 lookAlong_degenerate_s524747ee_tail_s51adb80c_c0(float _t40, float _t41, float _t42) {
         return new Float3(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)));
@@ -5309,6 +5308,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3(Math.fma(this.m02, _t12, Math.fma(this.m00, _t11, this.m01 * _t10)), Math.fma(this.m12, _t12, Math.fma(this.m10, _t11, this.m11 * _t10)), Math.fma(this.m22, _t12, Math.fma(this.m20, _t11, this.m21 * _t10)));
     }
 
+    /** Private tail of {@code lookAlong_degenerate}; reached only through it. */
     private Float3x3 lookAlong_degenerate_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t12, float _t11, float _t10, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -5538,7 +5538,6 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeRotationLookAlong_degenerate_s524747ee_tail}; reached only through it. */
     private static Float3 makeRotationLookAlong_degenerate_s524747ee_tail_s1d11648c_c0(float _t41, float _t42, float _t40) {
         return new Float3(_t41, _t42, _t40);
@@ -5554,6 +5553,7 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         return new Float3(_t11, _t10, _t12);
     }
 
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     private static Float3x3 makeRotationLookAlong_degenerate_s524747ee_tail(float _t25, float _t26, float _t27, float _t23, float _t24, float _t28, float _t10, float _t12, float _t11, int _props) {
         float _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         float _t39, _t40, _t41, _t42;
@@ -9105,6 +9105,106 @@ public value record Float3x3(float m00, float m01, float m02, float m10, float m
         if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return mul_identity(vX, vY, vZ);
         if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return mul_translation(vX, vY, vZ);
         return mul_general(vX, vY, vZ);
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation, returning the result
+     * as a value.
+     *
+     * @param v the direction to transform
+     * @return the resulting vector
+     */
+    public Float2 transformDirection(Float2 v) {
+        return transformDirection(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Float2 transformDirection_identity(float vX, float vY) {
+        return new Float2(vX, vY);
+    }
+
+
+    /**
+     * Private body of {@code transformDirection}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformDirection} dispatcher.
+     */
+    private Float2 transformDirection_general(float vX, float vY) {
+        return new Float2(Math.fma(this.m00, vX, this.m01 * vY), Math.fma(this.m10, vX, this.m11 * vY));
+    }
+
+
+    /**
+     * Transform the given direction by this matrix, ignoring any translation, returning the result
+     * as a value.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return the resulting vector
+     */
+    public Float2 transformDirection(float vX, float vY) {
+        int p = this.properties;
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformDirection_identity(vX, vY);
+        return transformDirection_general(vX, vY);
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1}, returning the result as a value.
+     *
+     * @param v the position to transform
+     * @return the resulting vector
+     */
+    public Float2 transformPosition(Float2 v) {
+        return transformPosition(v.x(), v.y());
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Float2 transformPosition_identity(float vX, float vY) {
+        return transformDirection_identity(vX, vY);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Float2 transformPosition_translation(float vX, float vY) {
+        return new Float2(this.m02 + vX, this.m12 + vY);
+    }
+
+
+    /**
+     * Private body of {@code transformPosition}, specialized by runtime matrix properties; reached
+     * only through the public {@code transformPosition} dispatcher.
+     */
+    private Float2 transformPosition_general(float vX, float vY) {
+        return new Float2(Math.fma(this.m00, vX, Math.fma(this.m01, vY, this.m02)), Math.fma(this.m10, vX, Math.fma(this.m11, vY, this.m12)));
+    }
+
+
+    /**
+     * Transform the given position by this matrix, treating it as a point with an implicit
+     * {@code w = 1}, returning the result as a value.
+     *
+     * @param vX the {@code x} component of the vector {@code (vX, vY)}
+     * @param vY the {@code y} component of the vector {@code (vX, vY)}
+     * @return the resulting vector
+     */
+    public Float2 transformPosition(float vX, float vY) {
+        int p = this.properties;
+        if ((p & Joml.BIT_IDENTITY) == Joml.BIT_IDENTITY) return transformPosition_identity(vX, vY);
+        if ((p & Joml.BIT_TRANSLATION) == Joml.BIT_TRANSLATION) return transformPosition_translation(vX, vY);
+        return transformPosition_general(vX, vY);
     }
 
     /**

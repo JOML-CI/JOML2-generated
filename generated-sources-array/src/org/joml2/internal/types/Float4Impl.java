@@ -616,6 +616,37 @@ public final class Float4Impl implements Float4 {
 
 
     /**
+     * Set this vector to the unit vector
+     * {@code (sqrt(1 - u) cos(2 PI v), sqrt(1 - u) sin(2 PI v), sqrt(u) cos(2 PI w), sqrt(u) sin(2 PI w))}:
+     * samples uniformly distributed in {@code [0, 1)} give a direction uniformly distributed on the
+     * unit sphere of four dimensions ({@code makeRandomDirection} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param u the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param w the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @return this
+     */
+    @Mutated public Float4 makeUniformDirection(float u, float v, float w) {
+        float[] dd = this.data;
+        float _t0 = (float) Math.sqrt(u);
+        float _t1 = v * 6.2831855f;
+        float _t3 = w * 6.2831855f;
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sqrt(1.0f - u);
+        float _t6 = (float) Math.sin(_t3);
+        dd[0] = (float) Math.cosFromSin(_t4, _t1) * _t5;
+        dd[1] = _t4 * _t5;
+        dd[2] = (float) Math.cosFromSin(_t6, _t3) * _t0;
+        dd[3] = _t6 * _t0;
+        return this;
+    }
+
+
+    /**
      * Set this vector to the given values.
      *
      * @param v the vector to copy
@@ -2247,6 +2278,372 @@ public final class Float4Impl implements Float4 {
 
 
     /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4 slerp(Float4R other, float t, @Mutated Float4 dest) {
+        return slerp(other.x(), other.y(), other.z(), other.w(), t, dest);
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 slerp(Float4R other, float t, @Mutated Double4 dest) {
+        return slerp(other.x(), other.y(), other.z(), other.w(), t, dest);
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}, {@code otherW}) using the interpolation factor {@code t}: the direction turns
+     * at a constant rate along the shorter arc between the two directions, and the length changes
+     * linearly between the two lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) (interpolation factor
+     * {@code 1}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4 slerp(float otherX, float otherY, float otherZ, float otherW, float t, @Mutated Float4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4Impl) dest).data;
+        float _ct0 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        float _t8 = _ct0;
+        float _ct1 = Math.fma(otherW, otherW, Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        float _t9 = _ct1;
+        float _t12 = (float) Math.sqrt(_t8);
+        float _t10 = 1.0f / _t12;
+        float _t13 = (1.0f / (float) Math.sqrt(_t9));
+        float _t14 = sd[0] * _t10;
+        float _t16 = sd[3] * _t10;
+        float _t18 = sd[2] * _t10;
+        float _t21 = sd[1] * _t10;
+        float _t24 = Math.fma(t, (float) Math.sqrt(_t9) - _t12, _t12);
+        float _t27 = Math.fma(otherW * _t13, _t16, Math.fma(otherZ * _t13, _t18, Math.fma(otherX * _t13, _t14, otherY * _t13 * _t21)));
+        float _t36 = Math.fma(otherW, _t13, -(_t27 * _t16));
+        float _t37 = Math.fma(otherZ, _t13, -(_t27 * _t18));
+        float _t38 = Math.fma(otherX, _t13, -(_t27 * _t14));
+        float _t39 = Math.fma(otherY, _t13, -(_t27 * _t21));
+        float _t44 = -Math.fma(_t36, _t16, Math.fma(_t37, _t18, Math.fma(_t38, _t14, _t39 * _t21)));
+        float _t45 = Math.fma(_t44, _t16, _t36);
+        float _t46 = Math.fma(_t44, _t18, _t37);
+        float _t47 = Math.fma(_t44, _t14, _t38);
+        float _t48 = Math.fma(_t44, _t21, _t39);
+        float _ct2 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, Math.fma(_t47, _t47, _t48 * _t48)));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        float _t53 = _ct2;
+        float _t57 = t * (float) Math.atan2((float) Math.sqrt(_t53), _t27);
+        float _t58 = (float) Math.sin(_t57);
+        float _sp0 = _t24 * _t58 * (1.0f / (float) Math.sqrt(_t53));
+        float _t61 = _t24 * (float) Math.cosFromSin(_t58, _t57);
+        dd[0] = Math.fma(_t14, _t61, _sp0 * _t47);
+        dd[1] = Math.fma(_t21, _t61, _sp0 * _t48);
+        dd[2] = Math.fma(_t18, _t61, _sp0 * _t46);
+        dd[3] = Math.fma(_t16, _t61, _sp0 * _t45);
+        return dest;
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}, {@code otherW}) using the interpolation factor {@code t}: the direction turns
+     * at a constant rate along the shorter arc between the two directions, and the length changes
+     * linearly between the two lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code float} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) (interpolation factor
+     * {@code 1}).
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 slerp(float otherX, float otherY, float otherZ, float otherW, float t, @Mutated Double4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double4Impl) dest).data;
+        float _ct0 = Math.fma(sd[3], sd[3], Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1])));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        float _t8 = _ct0;
+        float _ct1 = Math.fma(otherW, otherW, Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        float _t9 = _ct1;
+        float _t12 = (float) Math.sqrt(_t8);
+        float _t10 = 1.0f / _t12;
+        float _t13 = (1.0f / (float) Math.sqrt(_t9));
+        float _t14 = sd[0] * _t10;
+        float _t16 = sd[3] * _t10;
+        float _t18 = sd[2] * _t10;
+        float _t21 = sd[1] * _t10;
+        float _t24 = Math.fma(t, (float) Math.sqrt(_t9) - _t12, _t12);
+        float _t27 = Math.fma(otherW * _t13, _t16, Math.fma(otherZ * _t13, _t18, Math.fma(otherX * _t13, _t14, otherY * _t13 * _t21)));
+        float _t36 = Math.fma(otherW, _t13, -(_t27 * _t16));
+        float _t37 = Math.fma(otherZ, _t13, -(_t27 * _t18));
+        float _t38 = Math.fma(otherX, _t13, -(_t27 * _t14));
+        float _t39 = Math.fma(otherY, _t13, -(_t27 * _t21));
+        float _t44 = -Math.fma(_t36, _t16, Math.fma(_t37, _t18, Math.fma(_t38, _t14, _t39 * _t21)));
+        float _t45 = Math.fma(_t44, _t16, _t36);
+        float _t46 = Math.fma(_t44, _t18, _t37);
+        float _t47 = Math.fma(_t44, _t14, _t38);
+        float _t48 = Math.fma(_t44, _t21, _t39);
+        float _ct2 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, Math.fma(_t47, _t47, _t48 * _t48)));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        float _t53 = _ct2;
+        float _t57 = t * (float) Math.atan2((float) Math.sqrt(_t53), _t27);
+        float _t58 = (float) Math.sin(_t57);
+        float _sp0 = _t24 * _t58 * (1.0f / (float) Math.sqrt(_t53));
+        float _t61 = _t24 * (float) Math.cosFromSin(_t58, _t57);
+        dd[0] = Math.fma(_t14, _t61, _sp0 * _t47);
+        dd[1] = Math.fma(_t21, _t61, _sp0 * _t48);
+        dd[2] = Math.fma(_t18, _t61, _sp0 * _t46);
+        dd[3] = Math.fma(_t16, _t61, _sp0 * _t45);
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float4 slerp_degenerate(Float4R other, float t, @Mutated Float4 dest) {
+        return slerp_degenerate(other.x(), other.y(), other.z(), other.w(), t, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double4 slerp_degenerate(Float4R other, float t, @Mutated Double4 dest) {
+        return slerp_degenerate(other.x(), other.y(), other.z(), other.w(), t, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float4 slerp_degenerate(float otherX, float otherY, float otherZ, float otherW, float t, @Mutated Float4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4Impl) dest).data;
+        float _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        float _t7 = unitScale(sd[2], sd[3], Math.max(Math.abs(sd[0]), Math.abs(sd[1])));
+        float _t16 = otherW * _t6;
+        float _t17 = otherZ * _t6;
+        float _t18 = otherX * _t6;
+        float _t19 = otherY * _t6;
+        float _t20 = sd[3] * _t7;
+        float _t21 = sd[2] * _t7;
+        float _t22 = sd[0] * _t7;
+        float _t23 = sd[1] * _t7;
+        float _t30 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t19 * _t19)));
+        float _t31 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23)));
+        float _t34 = (1.0f / (float) Math.sqrt(_t30));
+        float _t35 = (1.0f / (float) Math.sqrt(_t31));
+        float _t37 = (float) Math.sqrt(_t31) / _t7;
+        float _t39 = _t35 * _t20;
+        float _t41 = _t35 * _t21;
+        float _t43 = _t35 * _t22;
+        float _t45 = _t35 * _t23;
+        float _t46 = _t30 * _t31;
+        float _t49 = Math.fma(t, (float) Math.sqrt(_t30) / _t6 - _t37, _t37);
+        float _t52 = Math.fma(_t34 * _t16, _t39, Math.fma(_t34 * _t17, _t41, Math.fma(_t34 * _t18, _t43, _t34 * _t19 * _t45)));
+        float _t61 = Math.fma(_t34, _t16, -(_t52 * _t39));
+        float _t62 = Math.fma(_t34, _t17, -(_t52 * _t41));
+        float _t63 = Math.fma(_t34, _t18, -(_t52 * _t43));
+        float _t64 = Math.fma(_t34, _t19, -(_t52 * _t45));
+        float _t69 = -Math.fma(_t61, _t39, Math.fma(_t62, _t41, Math.fma(_t63, _t43, _t64 * _t45)));
+        float _t70 = Math.fma(_t69, _t39, _t61);
+        float _t71 = Math.fma(_t69, _t41, _t62);
+        float _t72 = Math.fma(_t69, _t43, _t63);
+        float _t73 = Math.fma(_t69, _t45, _t64);
+        float _t77 = unitScale(_t71, _t70, Math.max(Math.abs(_t72), Math.abs(_t73)));
+        float _t84 = _t70 * _t77;
+        float _t85 = _t71 * _t77;
+        float _t86 = _t72 * _t77;
+        float _t87 = _t73 * _t77;
+        float _t91 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, Math.fma(_t86, _t86, _t87 * _t87)));
+        float _t93 = (1.0f / (float) Math.sqrt(_t91));
+        float _t95 = t * (float) Math.atan2((float) Math.sqrt(_t91), _t52 * _t77);
+        float _t96 = (float) Math.sin(_t95);
+        float _t97 = _t49 * _t96;
+        float _t99 = _t49 * (float) Math.cosFromSin(_t96, _t95);
+        if (_t46 > 0.0f) {
+            if (_t91 > 0.0f) {
+                dd[0] = Math.fma(_t97, _t93 * _t86, _t99 * _t43);
+                dd[1] = Math.fma(_t97, _t93 * _t87, _t99 * _t45);
+                dd[2] = Math.fma(_t97, _t93 * _t85, _t99 * _t41);
+                dd[3] = Math.fma(_t97, _t93 * _t84, _t99 * _t39);
+            } else {
+                dd[0] = Math.fma(_t97, -_t45, _t99 * _t43);
+                dd[1] = Math.fma(_t97, _t43, _t99 * _t45);
+                dd[2] = Math.fma(_t97, -_t39, _t99 * _t41);
+                dd[3] = Math.fma(_t97, _t41, _t99 * _t39);
+            }
+        } else {
+            dd[0] = Math.fma(t, otherX - sd[0], sd[0]);
+            dd[1] = Math.fma(t, otherY - sd[1], sd[1]);
+            dd[2] = Math.fma(t, otherZ - sd[2], sd[2]);
+            dd[3] = Math.fma(t, otherW - sd[3], sd[3]);
+        }
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float4 slerp_degenerate(float otherX, float otherY, float otherZ, float otherW, float t) {
+        return slerp_degenerate(otherX, otherY, otherZ, otherW, t, Joml.RETURN_NEW ? Joml.float4() : this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double4 slerp_degenerate(float otherX, float otherY, float otherZ, float otherW, float t, @Mutated Double4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double4Impl) dest).data;
+        float _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        float _t7 = unitScale(sd[2], sd[3], Math.max(Math.abs(sd[0]), Math.abs(sd[1])));
+        float _t16 = otherW * _t6;
+        float _t17 = otherZ * _t6;
+        float _t18 = otherX * _t6;
+        float _t19 = otherY * _t6;
+        float _t20 = sd[3] * _t7;
+        float _t21 = sd[2] * _t7;
+        float _t22 = sd[0] * _t7;
+        float _t23 = sd[1] * _t7;
+        float _t30 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t19 * _t19)));
+        float _t31 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23)));
+        float _t34 = (1.0f / (float) Math.sqrt(_t30));
+        float _t35 = (1.0f / (float) Math.sqrt(_t31));
+        float _t37 = (float) Math.sqrt(_t31) / _t7;
+        float _t39 = _t35 * _t20;
+        float _t41 = _t35 * _t21;
+        float _t43 = _t35 * _t22;
+        float _t45 = _t35 * _t23;
+        float _t46 = _t30 * _t31;
+        float _t49 = Math.fma(t, (float) Math.sqrt(_t30) / _t6 - _t37, _t37);
+        float _t52 = Math.fma(_t34 * _t16, _t39, Math.fma(_t34 * _t17, _t41, Math.fma(_t34 * _t18, _t43, _t34 * _t19 * _t45)));
+        float _t61 = Math.fma(_t34, _t16, -(_t52 * _t39));
+        float _t62 = Math.fma(_t34, _t17, -(_t52 * _t41));
+        float _t63 = Math.fma(_t34, _t18, -(_t52 * _t43));
+        float _t64 = Math.fma(_t34, _t19, -(_t52 * _t45));
+        float _t69 = -Math.fma(_t61, _t39, Math.fma(_t62, _t41, Math.fma(_t63, _t43, _t64 * _t45)));
+        float _t70 = Math.fma(_t69, _t39, _t61);
+        float _t71 = Math.fma(_t69, _t41, _t62);
+        float _t72 = Math.fma(_t69, _t43, _t63);
+        float _t73 = Math.fma(_t69, _t45, _t64);
+        float _t77 = unitScale(_t71, _t70, Math.max(Math.abs(_t72), Math.abs(_t73)));
+        float _t84 = _t70 * _t77;
+        float _t85 = _t71 * _t77;
+        float _t86 = _t72 * _t77;
+        float _t87 = _t73 * _t77;
+        float _t91 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, Math.fma(_t86, _t86, _t87 * _t87)));
+        float _t93 = (1.0f / (float) Math.sqrt(_t91));
+        float _t95 = t * (float) Math.atan2((float) Math.sqrt(_t91), _t52 * _t77);
+        float _t96 = (float) Math.sin(_t95);
+        float _t97 = _t49 * _t96;
+        float _t99 = _t49 * (float) Math.cosFromSin(_t96, _t95);
+        if (_t46 > 0.0f) {
+            if (_t91 > 0.0f) {
+                dd[0] = Math.fma(_t97, _t93 * _t86, _t99 * _t43);
+                dd[1] = Math.fma(_t97, _t93 * _t87, _t99 * _t45);
+                dd[2] = Math.fma(_t97, _t93 * _t85, _t99 * _t41);
+                dd[3] = Math.fma(_t97, _t93 * _t84, _t99 * _t39);
+            } else {
+                dd[0] = Math.fma(_t97, -_t45, _t99 * _t43);
+                dd[1] = Math.fma(_t97, _t43, _t99 * _t45);
+                dd[2] = Math.fma(_t97, -_t39, _t99 * _t41);
+                dd[3] = Math.fma(_t97, _t41, _t99 * _t39);
+            }
+        } else {
+            dd[0] = Math.fma(t, otherX - sd[0], sd[0]);
+            dd[1] = Math.fma(t, otherY - sd[1], sd[1]);
+            dd[2] = Math.fma(t, otherZ - sd[2], sd[2]);
+            dd[3] = Math.fma(t, otherW - sd[3], sd[3]);
+        }
+        return dest;
+    }
+
+
+    /**
      * Compute the absolute value of each component of this vector and store the result in
      * {@code dest}.
      *
@@ -3191,6 +3588,138 @@ public final class Float4Impl implements Float4 {
         dd[1] = (float) Math.cosh(sd[1]);
         dd[2] = (float) Math.cosh(sd[2]);
         dd[3] = (float) Math.cosh(sd[3]);
+        return dest;
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4 cross(Float4R v, Float4R w, @Mutated Float4 dest) {
+        return cross(v.x(), v.y(), v.z(), v.w(), w.x(), w.y(), w.z(), w.w(), dest);
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 cross(Float4R v, Float4R w, @Mutated Double4 dest) {
+        return cross(v.x(), v.y(), v.z(), v.w(), w.x(), w.y(), w.z(), w.w(), dest);
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float4 cross(float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW, @Mutated Float4 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float4Impl) dest).data;
+        float _t12 = Math.fma(vY, wZ, -(vZ * wY));
+        float _t13 = Math.fma(vZ, wW, -(vW * wZ));
+        float _t14 = Math.fma(vY, wW, -(vW * wY));
+        float _t15 = Math.fma(vX, wZ, -(vZ * wX));
+        float _t16 = Math.fma(vX, wW, -(vW * wX));
+        float _t17 = Math.fma(vX, wY, -(vY * wX));
+        float _buf0 = Math.fma(sd[3], _t12, Math.fma(sd[1], _t13, -(sd[2] * _t14)));
+        float _buf1 = Math.fma(-sd[3], _t15, Math.fma(sd[2], _t16, -(sd[0] * _t13)));
+        float _buf2 = Math.fma(sd[3], _t17, Math.fma(sd[0], _t14, -(sd[1] * _t16)));
+        dd[3] = Math.fma(-sd[2], _t17, Math.fma(sd[1], _t15, -(sd[0] * _t12)));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 cross(float vX, float vY, float vZ, float vW, float wX, float wY, float wZ, float wW, @Mutated Double4 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double4Impl) dest).data;
+        float _t12 = Math.fma(vY, wZ, -(vZ * wY));
+        float _t13 = Math.fma(vZ, wW, -(vW * wZ));
+        float _t14 = Math.fma(vY, wW, -(vW * wY));
+        float _t15 = Math.fma(vX, wZ, -(vZ * wX));
+        float _t16 = Math.fma(vX, wW, -(vW * wX));
+        float _t17 = Math.fma(vX, wY, -(vY * wX));
+        float _buf0 = Math.fma(sd[3], _t12, Math.fma(sd[1], _t13, -(sd[2] * _t14)));
+        float _buf1 = Math.fma(-sd[3], _t15, Math.fma(sd[2], _t16, -(sd[0] * _t13)));
+        float _buf2 = Math.fma(sd[3], _t17, Math.fma(sd[0], _t14, -(sd[1] * _t16)));
+        dd[3] = Math.fma(-sd[2], _t17, Math.fma(sd[1], _t15, -(sd[0] * _t12)));
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
         return dest;
     }
 

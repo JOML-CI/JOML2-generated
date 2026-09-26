@@ -345,6 +345,54 @@ public final class FloatQuatOps {
     }
 
     /**
+     * Multiply each component of this quaternion by {@code scalar} and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the quaternion starts
+     * @param src the storage holding the quaternion
+     * @param srcOffset the element index in {@code src} at which the quaternion starts
+     * @param scalar the factor to multiply each component by
+     * @return {@code dest}
+     */
+    public static float[] mul(float[] dest, int destOffset, float[] src, int srcOffset, float scalar) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        dest[destOffset + 0] = scalar * _selfx;
+        dest[destOffset + 1] = scalar * _selfy;
+        dest[destOffset + 2] = scalar * _selfz;
+        dest[destOffset + 3] = scalar * _selfw;
+        return dest;
+    }
+
+    /** {@link #mul(float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer mul(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsTypedBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return FloatQuatOpsKernelsTypedBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer mul(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsByteBuffer.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return FloatQuatOpsKernelsByteBuffer.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment mul(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return FloatQuatOpsKernelsSegment.mul_unsafe(dest, destOffset, src, srcOffset, scalar);
+        return FloatQuatOpsKernelsSegment.mul_api(dest, destOffset, src, srcOffset, scalar);
+    }
+
+    /** {@link #mul(float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long mul(long dest, long src, float scalar) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return FloatQuatOpsKernelsAddress.mul_unsafe(dest, src, scalar);
+        mul(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 16L), 0L, scalar);
+        return dest;
+    }
+
+    /**
      * Negate this quaternion and store the result in {@code dest}.
      *
      * @param dest will hold the result
@@ -493,6 +541,62 @@ public final class FloatQuatOps {
     public static long sub(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return FloatQuatOpsKernelsAddress.sub_unsafe(dest, src, other);
         sub(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(other, 16L), 0L);
+        return dest;
+    }
+
+    /**
+     * Set this quaternion to the unit quaternion
+     * {@code (sqrt(1 - u1) sin(2 PI u2), sqrt(1 - u1) cos(2 PI u2), sqrt(u1) sin(2 PI u3), sqrt(u1) cos(2 PI u3))},
+     * Shoemake's construction: samples uniformly distributed in {@code [0, 1)} give a rotation
+     * uniformly distributed over all rotations ({@code makeRandomRotation} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the quaternion starts
+     * @param u1 the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed rotation
+     * @param u2 the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @param u3 the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed rotation
+     * @return {@code dest}
+     */
+    public static float[] makeUniformRotation(float[] dest, int destOffset, float u1, float u2, float u3) {
+        float _t0 = (float) Math.sqrt(u1);
+        float _t1 = u2 * 6.2831855f;
+        float _t3 = u3 * 6.2831855f;
+        float _t4 = (float) Math.sin(_t1);
+        float _t5 = (float) Math.sqrt(1.0f - u1);
+        float _t6 = (float) Math.sin(_t3);
+        dest[destOffset + 0] = _t4 * _t5;
+        dest[destOffset + 1] = (float) Math.cosFromSin(_t4, _t1) * _t5;
+        dest[destOffset + 2] = _t6 * _t0;
+        dest[destOffset + 3] = (float) Math.cosFromSin(_t6, _t3) * _t0;
+        return dest;
+    }
+
+    /** {@link #makeUniformRotation(float[], int, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer makeUniformRotation(java.nio.FloatBuffer dest, int destOffset, float u1, float u2, float u3) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsTypedBuffer.makeUniformRotation_unsafe(dest, destOffset, u1, u2, u3);
+        return FloatQuatOpsKernelsTypedBuffer.makeUniformRotation_api(dest, destOffset, u1, u2, u3);
+    }
+
+    /** {@link #makeUniformRotation(float[], int, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer makeUniformRotation(java.nio.ByteBuffer dest, int destOffset, float u1, float u2, float u3) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsByteBuffer.makeUniformRotation_unsafe(dest, destOffset, u1, u2, u3);
+        return FloatQuatOpsKernelsByteBuffer.makeUniformRotation_api(dest, destOffset, u1, u2, u3);
+    }
+
+    /** {@link #makeUniformRotation(float[], int, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment makeUniformRotation(java.lang.foreign.MemorySegment dest, long destOffset, float u1, float u2, float u3) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return FloatQuatOpsKernelsSegment.makeUniformRotation_unsafe(dest, destOffset, u1, u2, u3);
+        return FloatQuatOpsKernelsSegment.makeUniformRotation_api(dest, destOffset, u1, u2, u3);
+    }
+
+    /** {@link #makeUniformRotation(float[], int, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long makeUniformRotation(long dest, float u1, float u2, float u3) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return FloatQuatOpsKernelsAddress.makeUniformRotation_unsafe(dest, u1, u2, u3);
+        makeUniformRotation(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, u1, u2, u3);
         return dest;
     }
 
@@ -3005,6 +3109,117 @@ public final class FloatQuatOps {
     public static long preMul(long dest, long src, long other) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return FloatQuatOpsKernelsAddress.preMul_unsafe(dest, src, other);
         preMul(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(other, 16L), 0L);
+        return dest;
+    }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the quaternion starts
+     * @param src the storage holding the quaternion
+     * @param srcOffset the element index in {@code src} at which the quaternion starts
+     * @param otherX the {@code x} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the quaternion
+     *        {@code (otherX, otherY, otherZ, otherW)}
+     * @param weight the factor to scale ({@code otherX}, {@code otherY}, {@code otherZ},
+     *        {@code otherW}) by before adding
+     * @return {@code dest}
+     */
+    public static float[] addScaled(float[] dest, int destOffset, float[] src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        dest[destOffset + 0] = Math.fma(weight, otherX, _selfx);
+        dest[destOffset + 1] = Math.fma(weight, otherY, _selfy);
+        dest[destOffset + 2] = Math.fma(weight, otherZ, _selfz);
+        dest[destOffset + 3] = Math.fma(weight, otherW, _selfw);
+        return dest;
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer addScaled(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsTypedBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, weight);
+        return FloatQuatOpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, weight);
+        return FloatQuatOpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return FloatQuatOpsKernelsSegment.addScaled_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, weight);
+        return FloatQuatOpsKernelsSegment.addScaled_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long addScaled(long dest, long src, float otherX, float otherY, float otherZ, float otherW, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return FloatQuatOpsKernelsAddress.addScaled_unsafe(dest, src, otherX, otherY, otherZ, otherW, weight);
+        addScaled(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 16L), 0L, otherX, otherY, otherZ, otherW, weight);
+        return dest;
+    }
+
+    /**
+     * Add {@code other} scaled by {@code weight} to this quaternion and store the result in
+     * {@code dest}.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the quaternion starts
+     * @param src the storage holding the quaternion
+     * @param srcOffset the element index in {@code src} at which the quaternion starts
+     * @param other the storage holding the quaternion to scale and add
+     * @param otherOffset the element index in {@code other} at which the quaternion starts
+     * @param weight the factor to scale the given quaternion by before adding
+     * @return {@code dest}
+     */
+    public static float[] addScaled(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float weight) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _otherx = other[otherOffset + 0];
+        float _othery = other[otherOffset + 1];
+        float _otherz = other[otherOffset + 2];
+        float _otherw = other[otherOffset + 3];
+        dest[destOffset + 0] = Math.fma(weight, _otherx, _selfx);
+        dest[destOffset + 1] = Math.fma(weight, _othery, _selfy);
+        dest[destOffset + 2] = Math.fma(weight, _otherz, _selfz);
+        dest[destOffset + 3] = Math.fma(weight, _otherw, _selfw);
+        return dest;
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer addScaled(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer src, int srcOffset, java.nio.FloatBuffer other, int otherOffset, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsTypedBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return FloatQuatOpsKernelsTypedBuffer.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer addScaled(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return FloatQuatOpsKernelsByteBuffer.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return FloatQuatOpsKernelsByteBuffer.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment addScaled(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return FloatQuatOpsKernelsSegment.addScaled_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+        return FloatQuatOpsKernelsSegment.addScaled_api(dest, destOffset, src, srcOffset, other, otherOffset, weight);
+    }
+
+    /** {@link #addScaled(float[], int, float[], int, float[], int, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long addScaled(long dest, long src, long other, float weight) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return FloatQuatOpsKernelsAddress.addScaled_unsafe(dest, src, other, weight);
+        addScaled(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(src, 16L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(other, 16L), 0L, weight);
         return dest;
     }
 

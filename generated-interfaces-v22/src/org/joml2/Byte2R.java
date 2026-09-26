@@ -3175,6 +3175,37 @@ public interface Byte2R {
     int compMul();
 
     /**
+     * Compute the 2D cross product of this vector and {@code other}, in that order.
+     * <p>
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when {@code other} points
+     * counter-clockwise of this vector (with the x axis pointing right and the y axis pointing up).
+     *
+     * @param other the right operand of the cross product
+     * @return the 2D cross product of this vector and {@code other}, in that order
+     */
+    int cross(Byte2R other);
+
+    /**
+     * Compute the 2D cross product of this vector and ({@code x}, {@code y}), in that order.
+     * <p>
+     * The value is computed and returned as {@code int}, so it is exact: a result beyond the
+     * {@code byte} range does not wrap.
+     * <p>
+     * It is the z component of the cross product of the two vectors extended by {@code z = 0}, i.e.
+     * the signed area of the parallelogram they span: positive when ({@code x}, {@code y}) points
+     * counter-clockwise of this vector (with the x axis pointing right and the y axis pointing up).
+     *
+     * @param x the {@code x} component of the vector {@code (x, y)}
+     * @param y the {@code y} component of the vector {@code (x, y)}
+     * @return the 2D cross product of this vector and ({@code x}, {@code y}), in that order
+     */
+    int cross(byte x, byte y);
+
+    /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
      * The value is computed and returned as {@code int}, so it is exact: a result beyond the

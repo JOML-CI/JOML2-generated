@@ -4500,6 +4500,177 @@ public final class Float3x4Ops {
     }
 
     /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return {@code dest}
+     */
+    public static float[] composeTRSAround(float[] dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        float _t0 = -pivotX;
+        float _t1 = -pivotY;
+        float _t2 = -pivotZ;
+        float _t3 = scaleX + scaleX;
+        float _t4 = scaleY + scaleY;
+        float _t5 = scaleZ + scaleZ;
+        float _t6 = rotationZ * rotationZ;
+        float _t7 = rotationZ * rotationW;
+        float _t8 = rotationY * rotationW;
+        float _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        float _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        float _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        float _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        float _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        float _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        float _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        float _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        dest[destOffset + 0] = _t33;
+        dest[destOffset + 1] = _t30;
+        dest[destOffset + 2] = _t27;
+        dest[destOffset + 3] = Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX)));
+        dest[destOffset + 4] = _t28;
+        dest[destOffset + 5] = _t34;
+        dest[destOffset + 6] = _t31;
+        dest[destOffset + 7] = Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY)));
+        dest[destOffset + 8] = _t32;
+        dest[destOffset + 9] = _t29;
+        dest[destOffset + 10] = _t35;
+        dest[destOffset + 11] = Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ)));
+        return dest;
+    }
+
+    /** {@link #composeTRSAround(float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer composeTRSAround(java.nio.FloatBuffer dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsTypedBuffer.composeTRSAround_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return Float3x4OpsKernelsTypedBuffer.composeTRSAround_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #composeTRSAround(float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer composeTRSAround(java.nio.ByteBuffer dest, int destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.composeTRSAround_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return Float3x4OpsKernelsByteBuffer.composeTRSAround_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #composeTRSAround(float[], int, float, float, float, float, float, float, float, float, float, float, float, float, float)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long composeTRSAround(long dest, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x4OpsKernelsAddress.composeTRSAround_unsafe(dest, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param translation the storage holding the translation
+     * @param translationOffset the element index in {@code translation} at which the vector starts
+     * @param rotation the storage holding the rotation (must be a unit quaternion)
+     * @param rotationOffset the element index in {@code rotation} at which the quaternion starts
+     * @param scale the storage holding the scale factors
+     * @param scaleOffset the element index in {@code scale} at which the vector starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @return {@code dest}
+     */
+    public static float[] composeTRSAround(float[] dest, int destOffset, float[] translation, int translationOffset, float[] rotation, int rotationOffset, float[] scale, int scaleOffset, float[] pivot, int pivotOffset) {
+        float _translationx = translation[translationOffset + 0];
+        float _translationy = translation[translationOffset + 1];
+        float _translationz = translation[translationOffset + 2];
+        float _rotationx = rotation[rotationOffset + 0];
+        float _rotationy = rotation[rotationOffset + 1];
+        float _rotationz = rotation[rotationOffset + 2];
+        float _rotationw = rotation[rotationOffset + 3];
+        float _scalex = scale[scaleOffset + 0];
+        float _scaley = scale[scaleOffset + 1];
+        float _scalez = scale[scaleOffset + 2];
+        float _pivotx = pivot[pivotOffset + 0];
+        float _pivoty = pivot[pivotOffset + 1];
+        float _pivotz = pivot[pivotOffset + 2];
+        float _t0 = -_pivotx;
+        float _t1 = -_pivoty;
+        float _t2 = -_pivotz;
+        float _t3 = _scalex + _scalex;
+        float _t4 = _scaley + _scaley;
+        float _t5 = _scalez + _scalez;
+        float _t6 = _rotationz * _rotationz;
+        float _t7 = _rotationz * _rotationw;
+        float _t8 = _rotationy * _rotationw;
+        float _t27 = Math.fma(_rotationx, _rotationz, _t8) * _t5;
+        float _t28 = Math.fma(_rotationx, _rotationy, _t7) * _t3;
+        float _t29 = Math.fma(_rotationx, _rotationw, _rotationy * _rotationz) * _t4;
+        float _t30 = Math.fma(_rotationx, _rotationy, -_t7) * _t4;
+        float _t31 = Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)) * _t5;
+        float _t32 = Math.fma(_rotationx, _rotationz, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(_rotationy, _rotationy, _t6), _t3, _scalex);
+        float _t34 = Math.fma(-Math.fma(_rotationx, _rotationx, _t6), _t4, _scaley);
+        float _t35 = Math.fma(-Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), _t5, _scalez);
+        dest[destOffset + 0] = _t33;
+        dest[destOffset + 1] = _t30;
+        dest[destOffset + 2] = _t27;
+        dest[destOffset + 3] = Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, _pivotx + _translationx)));
+        dest[destOffset + 4] = _t28;
+        dest[destOffset + 5] = _t34;
+        dest[destOffset + 6] = _t31;
+        dest[destOffset + 7] = Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, _pivoty + _translationy)));
+        dest[destOffset + 8] = _t32;
+        dest[destOffset + 9] = _t29;
+        dest[destOffset + 10] = _t35;
+        dest[destOffset + 11] = Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, _pivotz + _translationz)));
+        return dest;
+    }
+
+    /** {@link #composeTRSAround(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.FloatBuffer} storage. */
+    public static java.nio.FloatBuffer composeTRSAround(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer translation, int translationOffset, java.nio.FloatBuffer rotation, int rotationOffset, java.nio.FloatBuffer scale, int scaleOffset, java.nio.FloatBuffer pivot, int pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsTypedBuffer.composeTRSAround_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+        return Float3x4OpsKernelsTypedBuffer.composeTRSAround_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #composeTRSAround(float[], int, float[], int, float[], int, float[], int, float[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer composeTRSAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.composeTRSAround_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+        return Float3x4OpsKernelsByteBuffer.composeTRSAround_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #composeTRSAround(float[], int, float[], int, float[], int, float[], int, float[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets.
+     * @throws UnsupportedOperationException if the API store/load backend is active (JDK 9 / JDK 17 variants only) */
+    public static long composeTRSAround(long dest, long translation, long rotation, long scale, long pivot) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Float3x4OpsKernelsAddress.composeTRSAround_unsafe(dest, translation, rotation, scale, pivot);
+        throw new UnsupportedOperationException("raw long address transform requires storeLoadBackend=UNSAFE");
+    }
+
+    /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *
@@ -14589,6 +14760,36 @@ public final class Float3x4Ops {
         return dest;
     }
 
+    /** Bulk, strided: transform {@code count} 3D points in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static float[] transformPosition(float[] dest, int destOffset, int destStride, float[] matrix, int matrixOffset, float[] points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformPosition(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        float _m00 = matrix[matrixOffset + 0];
+        float _m01 = matrix[matrixOffset + 1];
+        float _m02 = matrix[matrixOffset + 2];
+        float _m03 = matrix[matrixOffset + 3];
+        float _m10 = matrix[matrixOffset + 4];
+        float _m11 = matrix[matrixOffset + 5];
+        float _m12 = matrix[matrixOffset + 6];
+        float _m13 = matrix[matrixOffset + 7];
+        float _m20 = matrix[matrixOffset + 8];
+        float _m21 = matrix[matrixOffset + 9];
+        float _m22 = matrix[matrixOffset + 10];
+        float _m23 = matrix[matrixOffset + 11];
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
+            float px = points[_po + 0], py = points[_po + 1], pz = points[_po + 2];
+            dest[_do + 0] = Math.fma(_m00, px, Math.fma(_m01, py, Math.fma(_m02, pz, _m03)));
+            dest[_do + 1] = Math.fma(_m10, px, Math.fma(_m11, py, Math.fma(_m12, pz, _m13)));
+            dest[_do + 2] = Math.fma(_m20, px, Math.fma(_m21, py, Math.fma(_m22, pz, _m23)));
+        }
+        return dest;
+    }
+
     /** Bulk: transform {@code count} consecutive 3D points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-point overload of the same name. */
     public static java.nio.FloatBuffer transformPosition(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer matrix, int matrixOffset, java.nio.FloatBuffer points, int pointsOffset, int count) {
@@ -14596,11 +14797,33 @@ public final class Float3x4Ops {
         return Float3x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
+    /** Bulk, strided: transform {@code count} 3D points in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static java.nio.FloatBuffer transformPosition(java.nio.FloatBuffer dest, int destOffset, int destStride, java.nio.FloatBuffer matrix, int matrixOffset, java.nio.FloatBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformPosition(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Float3x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+    }
+
     /** Bulk: transform {@code count} consecutive 3D points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-point overload of the same name. */
     public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float3x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D points in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 12 bytes
+     *  take the packed overload. */
+    public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, int destStride, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 12 && pointsStride == 12) return transformPosition(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Float3x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
@@ -14627,6 +14850,33 @@ public final class Float3x4Ops {
         return dest;
     }
 
+    /** Bulk, strided: transform {@code count} 3D direction vectors in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static float[] transformDirection(float[] dest, int destOffset, int destStride, float[] matrix, int matrixOffset, float[] points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformDirection(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        float _m00 = matrix[matrixOffset + 0];
+        float _m01 = matrix[matrixOffset + 1];
+        float _m02 = matrix[matrixOffset + 2];
+        float _m10 = matrix[matrixOffset + 4];
+        float _m11 = matrix[matrixOffset + 5];
+        float _m12 = matrix[matrixOffset + 6];
+        float _m20 = matrix[matrixOffset + 8];
+        float _m21 = matrix[matrixOffset + 9];
+        float _m22 = matrix[matrixOffset + 10];
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
+            float px = points[_po + 0], py = points[_po + 1], pz = points[_po + 2];
+            dest[_do + 0] = Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py));
+            dest[_do + 1] = Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py));
+            dest[_do + 2] = Math.fma(_m22, pz, Math.fma(_m20, px, _m21 * py));
+        }
+        return dest;
+    }
+
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-direction vector overload of the same name. */
     public static java.nio.FloatBuffer transformDirection(java.nio.FloatBuffer dest, int destOffset, java.nio.FloatBuffer matrix, int matrixOffset, java.nio.FloatBuffer points, int pointsOffset, int count) {
@@ -14634,11 +14884,33 @@ public final class Float3x4Ops {
         return Float3x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
+    /** Bulk, strided: transform {@code count} 3D direction vectors in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static java.nio.FloatBuffer transformDirection(java.nio.FloatBuffer dest, int destOffset, int destStride, java.nio.FloatBuffer matrix, int matrixOffset, java.nio.FloatBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformDirection(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Float3x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+    }
+
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-direction vector overload of the same name. */
     public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Float3x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D direction vectors in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 12 bytes
+     *  take the packed overload. */
+    public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, int destStride, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 12 && pointsStride == 12) return transformDirection(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Float3x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Float3x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
     /** Fused skeleton-bone batch: for each bone {@code i} of {@code count}, computes

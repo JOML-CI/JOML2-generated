@@ -300,6 +300,22 @@ public final class Float3OpsKernelsByteBuffer {
         return dest;
     }
 
+    public static java.nio.ByteBuffer makeUniformDirection_unsafe(java.nio.ByteBuffer dest, int destOffset, float u, float v) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        Float3OpsKernelsAddress.makeUniformDirection_unsafe(_destBase, u, v);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer makeUniformDirection_api(java.nio.ByteBuffer dest, int destOffset, float u, float v) {
+        float _t1 = v * 6.2831855f;
+        float _t2 = (float) Math.sin(_t1);
+        float _t5 = 2.0f * (float) Math.sqrt(u * (1.0f - u));
+        dest.putFloat(destOffset + 0, _t5 * (float) Math.cosFromSin(_t2, _t1));
+        dest.putFloat(destOffset + 4, _t5 * _t2);
+        dest.putFloat(destOffset + 8, Math.fma(2.0f, u, -1.0f));
+        return dest;
+    }
+
     public static java.nio.ByteBuffer set_unsafe(java.nio.ByteBuffer dest, int destOffset, float vX, float vY, float vZ) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         Float3OpsKernelsAddress.set_unsafe(_destBase, vX, vY, vZ);
@@ -855,6 +871,270 @@ public final class Float3OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 0, Math.fma(_tx, _otherx - _selfx, _selfx));
         dest.putFloat(destOffset + 4, Math.fma(_ty, _othery - _selfy, _selfy));
         dest.putFloat(destOffset + 8, Math.fma(_tz, _otherz - _selfz, _selfz));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float3OpsKernelsAddress.slerp_unsafe(_destBase, _srcBase, otherX, otherY, otherZ, t);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _ct0 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsByteBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        float _t6 = _ct0;
+        float _ct1 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsByteBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        float _t7 = _ct1;
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t7));
+        float _t12 = _selfx * _t8;
+        float _t14 = _selfz * _t8;
+        float _t17 = _selfy * _t8;
+        float _t20 = Math.fma(t, (float) Math.sqrt(_t7) - _t10, _t10);
+        float _t22 = Math.fma(otherZ * _t11, _t14, Math.fma(otherX * _t11, _t12, otherY * _t11 * _t17));
+        float _t29 = Math.fma(otherZ, _t11, -(_t22 * _t14));
+        float _t30 = Math.fma(otherX, _t11, -(_t22 * _t12));
+        float _t31 = Math.fma(otherY, _t11, -(_t22 * _t17));
+        float _t35 = -Math.fma(_t29, _t14, Math.fma(_t30, _t12, _t31 * _t17));
+        float _t36 = Math.fma(_t35, _t14, _t29);
+        float _t37 = Math.fma(_t35, _t12, _t30);
+        float _t38 = Math.fma(_t35, _t17, _t31);
+        float _ct2 = Math.fma(_t36, _t36, Math.fma(_t37, _t37, _t38 * _t38));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsByteBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        float _t42 = _ct2;
+        float _t46 = t * (float) Math.atan2((float) Math.sqrt(_t42), _t22);
+        float _t47 = (float) Math.sin(_t46);
+        float _sp0 = _t20 * _t47 * (1.0f / (float) Math.sqrt(_t42));
+        float _t50 = _t20 * (float) Math.cosFromSin(_t47, _t46);
+        dest.putFloat(destOffset + 0, Math.fma(_t12, _t50, _sp0 * _t37));
+        dest.putFloat(destOffset + 4, Math.fma(_t17, _t50, _sp0 * _t38));
+        dest.putFloat(destOffset + 8, Math.fma(_t14, _t50, _sp0 * _t36));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_degenerate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.slerp_degenerate_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+        return Float3OpsKernelsByteBuffer.slerp_degenerate_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, t);
+    }
+
+    public static java.nio.ByteBuffer slerp_degenerate_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float3OpsKernelsAddress.slerp_degenerate_unsafe(_destBase, _srcBase, otherX, otherY, otherZ, t);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_degenerate_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float otherX, float otherY, float otherZ, float t) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _t0 = unitScale(otherX, otherY, otherZ);
+        float _t1 = unitScale(_selfx, _selfy, _selfz);
+        float _t8 = otherZ * _t0;
+        float _t9 = otherX * _t0;
+        float _t10 = otherY * _t0;
+        float _t11 = _selfz * _t1;
+        float _t12 = _selfx * _t1;
+        float _t13 = _selfy * _t1;
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = Math.fma(_t11, _t11, Math.fma(_t12, _t12, _t13 * _t13));
+        float _t22 = (1.0f / (float) Math.sqrt(_t18));
+        float _t23 = (1.0f / (float) Math.sqrt(_t19));
+        float _t25 = (float) Math.sqrt(_t19) / _t1;
+        float _t27 = _t23 * _t11;
+        float _t29 = _t23 * _t12;
+        float _t31 = _t23 * _t13;
+        float _t32 = Math.abs(_t27);
+        float _t33 = Math.abs(_t29);
+        float _t36 = _t18 * _t19;
+        float _t39 = Math.fma(t, (float) Math.sqrt(_t18) / _t0 - _t25, _t25);
+        float _t40, _t41, _t43;
+        if (_t32 < _t33) {
+            _t40 = _t31;
+            _t41 = 0.0f;
+            _t43 = -_t29;
+        } else {
+            _t40 = 0.0f;
+            _t41 = -_t31;
+            _t43 = _t27;
+        }
+        float _t44 = Math.fma(_t22 * _t8, _t27, Math.fma(_t22 * _t9, _t29, _t22 * _t10 * _t31));
+        float _t52 = Math.fma(_t22, _t8, -(_t44 * _t27));
+        float _t53 = Math.fma(_t22, _t9, -(_t44 * _t29));
+        float _t54 = Math.fma(_t22, _t10, -(_t44 * _t31));
+        float _t59 = (1.0f / (float) Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t43, _t43, _t40 * _t40))));
+        float _t61 = -Math.fma(_t52, _t27, Math.fma(_t53, _t29, _t54 * _t31));
+        float _t62 = Math.fma(_t61, _t27, _t52);
+        float _t63 = Math.fma(_t61, _t29, _t53);
+        float _t64 = Math.fma(_t61, _t31, _t54);
+        float _t65 = unitScale(_t63, _t64, _t62);
+        float _t71 = _t62 * _t65;
+        float _t72 = _t63 * _t65;
+        float _t73 = _t64 * _t65;
+        float _t76 = Math.fma(_t71, _t71, Math.fma(_t72, _t72, _t73 * _t73));
+        float _t78 = (1.0f / (float) Math.sqrt(_t76));
+        float _t80 = t * (float) Math.atan2((float) Math.sqrt(_t76), _t44 * _t65);
+        float _t81 = (float) Math.sin(_t80);
+        float _t82 = _t39 * _t81;
+        float _t84 = _t39 * (float) Math.cosFromSin(_t81, _t80);
+        if (_t36 > 0.0f) {
+            if (_t76 > 0.0f) {
+                dest.putFloat(destOffset + 0, Math.fma(_t82, _t78 * _t72, _t84 * _t29));
+                dest.putFloat(destOffset + 4, Math.fma(_t82, _t78 * _t73, _t84 * _t31));
+                dest.putFloat(destOffset + 8, Math.fma(_t82, _t78 * _t71, _t84 * _t27));
+            } else {
+                dest.putFloat(destOffset + 0, Math.fma(_t82, _t59 * _t40, _t84 * _t29));
+                dest.putFloat(destOffset + 4, Math.fma(_t82, _t59 * _t43, _t84 * _t31));
+                dest.putFloat(destOffset + 8, Math.fma(_t82, _t59 * _t41, _t84 * _t27));
+            }
+        } else {
+            dest.putFloat(destOffset + 0, Math.fma(t, otherX - _selfx, _selfx));
+            dest.putFloat(destOffset + 4, Math.fma(t, otherY - _selfy, _selfy));
+            dest.putFloat(destOffset + 8, Math.fma(t, otherZ - _selfz, _selfz));
+        }
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + otherOffset;
+        Float3OpsKernelsAddress.slerp_unsafe(_destBase, _srcBase, _otherBase, t);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _otherx = other.getFloat(otherOffset + 0);
+        float _othery = other.getFloat(otherOffset + 4);
+        float _otherz = other.getFloat(otherOffset + 8);
+        float _ct0 = Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsByteBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t6 = _ct0;
+        float _ct1 = Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsByteBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t7 = _ct1;
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t7));
+        float _t12 = _selfx * _t8;
+        float _t14 = _selfz * _t8;
+        float _t17 = _selfy * _t8;
+        float _t20 = Math.fma(t, (float) Math.sqrt(_t7) - _t10, _t10);
+        float _t22 = Math.fma(_otherz * _t11, _t14, Math.fma(_otherx * _t11, _t12, _othery * _t11 * _t17));
+        float _t29 = Math.fma(_otherz, _t11, -(_t22 * _t14));
+        float _t30 = Math.fma(_otherx, _t11, -(_t22 * _t12));
+        float _t31 = Math.fma(_othery, _t11, -(_t22 * _t17));
+        float _t35 = -Math.fma(_t29, _t14, Math.fma(_t30, _t12, _t31 * _t17));
+        float _t36 = Math.fma(_t35, _t14, _t29);
+        float _t37 = Math.fma(_t35, _t12, _t30);
+        float _t38 = Math.fma(_t35, _t17, _t31);
+        float _ct2 = Math.fma(_t36, _t36, Math.fma(_t37, _t37, _t38 * _t38));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return Float3OpsKernelsByteBuffer.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        float _t42 = _ct2;
+        float _t46 = t * (float) Math.atan2((float) Math.sqrt(_t42), _t22);
+        float _t47 = (float) Math.sin(_t46);
+        float _sp0 = _t20 * _t47 * (1.0f / (float) Math.sqrt(_t42));
+        float _t50 = _t20 * (float) Math.cosFromSin(_t47, _t46);
+        dest.putFloat(destOffset + 0, Math.fma(_t12, _t50, _sp0 * _t37));
+        dest.putFloat(destOffset + 4, Math.fma(_t17, _t50, _sp0 * _t38));
+        dest.putFloat(destOffset + 8, Math.fma(_t14, _t50, _sp0 * _t36));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_degenerate(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && src.isDirect() && src.order() == java.nio.ByteOrder.nativeOrder() && other.isDirect() && other.order() == java.nio.ByteOrder.nativeOrder()) return Float3OpsKernelsByteBuffer.slerp_degenerate_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Float3OpsKernelsByteBuffer.slerp_degenerate_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    public static java.nio.ByteBuffer slerp_degenerate_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _otherBase = UnsafeOpsHolder.U.getLong(other, UnsafeCopy.BB_ADDRESS_OFFSET) + otherOffset;
+        Float3OpsKernelsAddress.slerp_degenerate_unsafe(_destBase, _srcBase, _otherBase, t);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer slerp_degenerate_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer other, int otherOffset, float t) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _otherx = other.getFloat(otherOffset + 0);
+        float _othery = other.getFloat(otherOffset + 4);
+        float _otherz = other.getFloat(otherOffset + 8);
+        float _t0 = unitScale(_otherx, _othery, _otherz);
+        float _t1 = unitScale(_selfx, _selfy, _selfz);
+        float _t8 = _otherz * _t0;
+        float _t9 = _otherx * _t0;
+        float _t10 = _othery * _t0;
+        float _t11 = _selfz * _t1;
+        float _t12 = _selfx * _t1;
+        float _t13 = _selfy * _t1;
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = Math.fma(_t11, _t11, Math.fma(_t12, _t12, _t13 * _t13));
+        float _t22 = (1.0f / (float) Math.sqrt(_t18));
+        float _t23 = (1.0f / (float) Math.sqrt(_t19));
+        float _t25 = (float) Math.sqrt(_t19) / _t1;
+        float _t27 = _t23 * _t11;
+        float _t29 = _t23 * _t12;
+        float _t31 = _t23 * _t13;
+        float _t32 = Math.abs(_t27);
+        float _t33 = Math.abs(_t29);
+        float _t36 = _t18 * _t19;
+        float _t39 = Math.fma(t, (float) Math.sqrt(_t18) / _t0 - _t25, _t25);
+        float _t40, _t41, _t43;
+        if (_t32 < _t33) {
+            _t40 = _t31;
+            _t41 = 0.0f;
+            _t43 = -_t29;
+        } else {
+            _t40 = 0.0f;
+            _t41 = -_t31;
+            _t43 = _t27;
+        }
+        float _t44 = Math.fma(_t22 * _t8, _t27, Math.fma(_t22 * _t9, _t29, _t22 * _t10 * _t31));
+        float _t52 = Math.fma(_t22, _t8, -(_t44 * _t27));
+        float _t53 = Math.fma(_t22, _t9, -(_t44 * _t29));
+        float _t54 = Math.fma(_t22, _t10, -(_t44 * _t31));
+        float _t59 = (1.0f / (float) Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t43, _t43, _t40 * _t40))));
+        float _t61 = -Math.fma(_t52, _t27, Math.fma(_t53, _t29, _t54 * _t31));
+        float _t62 = Math.fma(_t61, _t27, _t52);
+        float _t63 = Math.fma(_t61, _t29, _t53);
+        float _t64 = Math.fma(_t61, _t31, _t54);
+        float _t65 = unitScale(_t63, _t64, _t62);
+        float _t71 = _t62 * _t65;
+        float _t72 = _t63 * _t65;
+        float _t73 = _t64 * _t65;
+        float _t76 = Math.fma(_t71, _t71, Math.fma(_t72, _t72, _t73 * _t73));
+        float _t78 = (1.0f / (float) Math.sqrt(_t76));
+        float _t80 = t * (float) Math.atan2((float) Math.sqrt(_t76), _t44 * _t65);
+        float _t81 = (float) Math.sin(_t80);
+        float _t82 = _t39 * _t81;
+        float _t84 = _t39 * (float) Math.cosFromSin(_t81, _t80);
+        if (_t36 > 0.0f) {
+            if (_t76 > 0.0f) {
+                dest.putFloat(destOffset + 0, Math.fma(_t82, _t78 * _t72, _t84 * _t29));
+                dest.putFloat(destOffset + 4, Math.fma(_t82, _t78 * _t73, _t84 * _t31));
+                dest.putFloat(destOffset + 8, Math.fma(_t82, _t78 * _t71, _t84 * _t27));
+            } else {
+                dest.putFloat(destOffset + 0, Math.fma(_t82, _t59 * _t40, _t84 * _t29));
+                dest.putFloat(destOffset + 4, Math.fma(_t82, _t59 * _t43, _t84 * _t31));
+                dest.putFloat(destOffset + 8, Math.fma(_t82, _t59 * _t41, _t84 * _t27));
+            }
+        } else {
+            dest.putFloat(destOffset + 0, Math.fma(t, _otherx - _selfx, _selfx));
+            dest.putFloat(destOffset + 4, Math.fma(t, _othery - _selfy, _selfy));
+            dest.putFloat(destOffset + 8, Math.fma(t, _otherz - _selfz, _selfz));
+        }
         return dest;
     }
 
@@ -3379,6 +3659,61 @@ public final class Float3OpsKernelsByteBuffer {
         return dest;
     }
 
+    public static java.nio.ByteBuffer rotateAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float3OpsKernelsAddress.rotateAround_unsafe(_destBase, _srcBase, quatX, quatY, quatZ, quatW, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _t0 = _selfy - pivotY;
+        float _t1 = _selfx - pivotX;
+        float _t2 = _selfz - pivotZ;
+        float _t12 = 2.0f * Math.fma(quatX, _t0, -(quatY * _t1));
+        float _t13 = 2.0f * Math.fma(quatZ, _t1, -(quatX * _t2));
+        float _t14 = 2.0f * Math.fma(quatY, _t2, -(quatZ * _t0));
+        dest.putFloat(destOffset + 0, Math.fma(quatY, _t12, Math.fma(-quatZ, _t13, Math.fma(quatW, _t14, pivotX + _selfx - pivotX))));
+        dest.putFloat(destOffset + 4, Math.fma(quatZ, _t14, Math.fma(-quatX, _t12, Math.fma(quatW, _t13, pivotY + _selfy - pivotY))));
+        dest.putFloat(destOffset + 8, Math.fma(quatX, _t13, Math.fma(-quatY, _t14, Math.fma(quatW, _t12, pivotZ + _selfz - pivotZ))));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer quat, int quatOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _quatBase = UnsafeOpsHolder.U.getLong(quat, UnsafeCopy.BB_ADDRESS_OFFSET) + quatOffset;
+        long _pivotBase = UnsafeOpsHolder.U.getLong(pivot, UnsafeCopy.BB_ADDRESS_OFFSET) + pivotOffset;
+        Float3OpsKernelsAddress.rotateAround_unsafe(_destBase, _srcBase, _quatBase, _pivotBase);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer quat, int quatOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _quatx = quat.getFloat(quatOffset + 0);
+        float _quaty = quat.getFloat(quatOffset + 4);
+        float _quatz = quat.getFloat(quatOffset + 8);
+        float _quatw = quat.getFloat(quatOffset + 12);
+        float _pivotx = pivot.getFloat(pivotOffset + 0);
+        float _pivoty = pivot.getFloat(pivotOffset + 4);
+        float _pivotz = pivot.getFloat(pivotOffset + 8);
+        float _t0 = _selfy - _pivoty;
+        float _t1 = _selfx - _pivotx;
+        float _t2 = _selfz - _pivotz;
+        float _t12 = 2.0f * Math.fma(_quatx, _t0, -(_quaty * _t1));
+        float _t13 = 2.0f * Math.fma(_quatz, _t1, -(_quatx * _t2));
+        float _t14 = 2.0f * Math.fma(_quaty, _t2, -(_quatz * _t0));
+        dest.putFloat(destOffset + 0, Math.fma(_quaty, _t12, Math.fma(-_quatz, _t13, Math.fma(_quatw, _t14, _pivotx + _selfx - _pivotx))));
+        dest.putFloat(destOffset + 4, Math.fma(_quatz, _t14, Math.fma(-_quatx, _t12, Math.fma(_quatw, _t13, _pivoty + _selfy - _pivoty))));
+        dest.putFloat(destOffset + 8, Math.fma(_quatx, _t13, Math.fma(-_quaty, _t14, Math.fma(_quatw, _t12, _pivotz + _selfz - _pivotz))));
+        return dest;
+    }
+
     public static java.nio.ByteBuffer rotateAxis_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
@@ -3422,6 +3757,62 @@ public final class Float3OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 0, Math.fma(_t3, _axisx * _t5, Math.fma(_selfx, _t1, Math.fma(_axisy, _selfz, -(_axisz * _selfy)) * _t0)));
         dest.putFloat(destOffset + 4, Math.fma(_t3, _axisy * _t5, Math.fma(_selfy, _t1, Math.fma(_axisz, _selfx, -(_axisx * _selfz)) * _t0)));
         dest.putFloat(destOffset + 8, Math.fma(_t3, _axisz * _t5, Math.fma(_selfz, _t1, Math.fma(_axisx, _selfy, -(_axisy * _selfx)) * _t0)));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateAxisAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float3OpsKernelsAddress.rotateAxisAround_unsafe(_destBase, _srcBase, angle, axisX, axisY, axisZ, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateAxisAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfz - pivotZ;
+        float _t4 = _selfy - pivotY;
+        float _t5 = 1.0f - _t1;
+        float _t8 = Math.fma(axisZ, _t3, Math.fma(axisX, _t2, axisY * _t4));
+        dest.putFloat(destOffset + 0, Math.fma(_t2, _t1, Math.fma(Math.fma(axisY, _t3, -(axisZ * _t4)), _t0, Math.fma(_t5, axisX * _t8, pivotX))));
+        dest.putFloat(destOffset + 4, Math.fma(_t4, _t1, Math.fma(Math.fma(axisZ, _t2, -(axisX * _t3)), _t0, Math.fma(_t5, axisY * _t8, pivotY))));
+        dest.putFloat(destOffset + 8, Math.fma(_t3, _t1, Math.fma(Math.fma(axisX, _t4, -(axisY * _t2)), _t0, Math.fma(_t5, axisZ * _t8, pivotZ))));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateAxisAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _axisBase = UnsafeOpsHolder.U.getLong(axis, UnsafeCopy.BB_ADDRESS_OFFSET) + axisOffset;
+        long _pivotBase = UnsafeOpsHolder.U.getLong(pivot, UnsafeCopy.BB_ADDRESS_OFFSET) + pivotOffset;
+        Float3OpsKernelsAddress.rotateAxisAround_unsafe(_destBase, _srcBase, _axisBase, _pivotBase, angle);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateAxisAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer axis, int axisOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _axisx = axis.getFloat(axisOffset + 0);
+        float _axisy = axis.getFloat(axisOffset + 4);
+        float _axisz = axis.getFloat(axisOffset + 8);
+        float _pivotx = pivot.getFloat(pivotOffset + 0);
+        float _pivoty = pivot.getFloat(pivotOffset + 4);
+        float _pivotz = pivot.getFloat(pivotOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfz - _pivotz;
+        float _t4 = _selfy - _pivoty;
+        float _t5 = 1.0f - _t1;
+        float _t8 = Math.fma(_axisz, _t3, Math.fma(_axisx, _t2, _axisy * _t4));
+        dest.putFloat(destOffset + 0, Math.fma(_t2, _t1, Math.fma(Math.fma(_axisy, _t3, -(_axisz * _t4)), _t0, Math.fma(_t5, _axisx * _t8, _pivotx))));
+        dest.putFloat(destOffset + 4, Math.fma(_t4, _t1, Math.fma(Math.fma(_axisz, _t2, -(_axisx * _t3)), _t0, Math.fma(_t5, _axisy * _t8, _pivoty))));
+        dest.putFloat(destOffset + 8, Math.fma(_t3, _t1, Math.fma(Math.fma(_axisx, _t4, -(_axisy * _t2)), _t0, Math.fma(_t5, _axisz * _t8, _pivotz))));
         return dest;
     }
 
@@ -3489,6 +3880,52 @@ public final class Float3OpsKernelsByteBuffer {
         return dest;
     }
 
+    public static java.nio.ByteBuffer rotateXAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float3OpsKernelsAddress.rotateXAround_unsafe(_destBase, _srcBase, angle, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateXAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfy - pivotY;
+        float _t3 = _selfz - pivotZ;
+        dest.putFloat(destOffset + 0, pivotX + (_selfx - pivotX));
+        dest.putFloat(destOffset + 4, Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotY)));
+        dest.putFloat(destOffset + 8, Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotZ)));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateXAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _pivotBase = UnsafeOpsHolder.U.getLong(pivot, UnsafeCopy.BB_ADDRESS_OFFSET) + pivotOffset;
+        Float3OpsKernelsAddress.rotateXAround_unsafe(_destBase, _srcBase, _pivotBase, angle);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateXAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _pivotx = pivot.getFloat(pivotOffset + 0);
+        float _pivoty = pivot.getFloat(pivotOffset + 4);
+        float _pivotz = pivot.getFloat(pivotOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfy - _pivoty;
+        float _t3 = _selfz - _pivotz;
+        dest.putFloat(destOffset + 0, _pivotx + (_selfx - _pivotx));
+        dest.putFloat(destOffset + 4, Math.fma(_t2, _t1, Math.fma(-_t3, _t0, _pivoty)));
+        dest.putFloat(destOffset + 8, Math.fma(_t2, _t0, Math.fma(_t3, _t1, _pivotz)));
+        return dest;
+    }
+
     public static java.nio.ByteBuffer rotateY_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
@@ -3508,6 +3945,52 @@ public final class Float3OpsKernelsByteBuffer {
         return dest;
     }
 
+    public static java.nio.ByteBuffer rotateYAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float3OpsKernelsAddress.rotateYAround_unsafe(_destBase, _srcBase, angle, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateYAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfz - pivotZ;
+        dest.putFloat(destOffset + 0, Math.fma(_t2, _t1, Math.fma(_t3, _t0, pivotX)));
+        dest.putFloat(destOffset + 4, pivotY + (_selfy - pivotY));
+        dest.putFloat(destOffset + 8, Math.fma(_t3, _t1, Math.fma(-_t2, _t0, pivotZ)));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateYAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _pivotBase = UnsafeOpsHolder.U.getLong(pivot, UnsafeCopy.BB_ADDRESS_OFFSET) + pivotOffset;
+        Float3OpsKernelsAddress.rotateYAround_unsafe(_destBase, _srcBase, _pivotBase, angle);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateYAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _pivotx = pivot.getFloat(pivotOffset + 0);
+        float _pivoty = pivot.getFloat(pivotOffset + 4);
+        float _pivotz = pivot.getFloat(pivotOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfz - _pivotz;
+        dest.putFloat(destOffset + 0, Math.fma(_t2, _t1, Math.fma(_t3, _t0, _pivotx)));
+        dest.putFloat(destOffset + 4, _pivoty + (_selfy - _pivoty));
+        dest.putFloat(destOffset + 8, Math.fma(_t3, _t1, Math.fma(-_t2, _t0, _pivotz)));
+        return dest;
+    }
+
     public static java.nio.ByteBuffer rotateZ_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
@@ -3524,6 +4007,52 @@ public final class Float3OpsKernelsByteBuffer {
         dest.putFloat(destOffset + 0, Math.fma(_selfx, _t1, -(_selfy * _t0)));
         dest.putFloat(destOffset + 4, Math.fma(_selfx, _t0, _selfy * _t1));
         dest.putFloat(destOffset + 8, _selfz);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateZAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float3OpsKernelsAddress.rotateZAround_unsafe(_destBase, _srcBase, angle, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateZAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, float angle, float pivotX, float pivotY, float pivotZ) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - pivotX;
+        float _t3 = _selfy - pivotY;
+        dest.putFloat(destOffset + 0, Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotX)));
+        dest.putFloat(destOffset + 4, Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotY)));
+        dest.putFloat(destOffset + 8, pivotZ + (_selfz - pivotZ));
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateZAround_unsafe(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        long _pivotBase = UnsafeOpsHolder.U.getLong(pivot, UnsafeCopy.BB_ADDRESS_OFFSET) + pivotOffset;
+        Float3OpsKernelsAddress.rotateZAround_unsafe(_destBase, _srcBase, _pivotBase, angle);
+        return dest;
+    }
+
+    public static java.nio.ByteBuffer rotateZAround_api(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer src, int srcOffset, java.nio.ByteBuffer pivot, int pivotOffset, float angle) {
+        float _selfx = src.getFloat(srcOffset + 0);
+        float _selfy = src.getFloat(srcOffset + 4);
+        float _selfz = src.getFloat(srcOffset + 8);
+        float _pivotx = pivot.getFloat(pivotOffset + 0);
+        float _pivoty = pivot.getFloat(pivotOffset + 4);
+        float _pivotz = pivot.getFloat(pivotOffset + 8);
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = _selfx - _pivotx;
+        float _t3 = _selfy - _pivoty;
+        dest.putFloat(destOffset + 0, Math.fma(_t2, _t1, Math.fma(-_t3, _t0, _pivotx)));
+        dest.putFloat(destOffset + 4, Math.fma(_t2, _t0, Math.fma(_t3, _t1, _pivoty)));
+        dest.putFloat(destOffset + 8, _pivotz + (_selfz - _pivotz));
         return dest;
     }
 

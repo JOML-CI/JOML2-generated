@@ -2330,6 +2330,87 @@ public final class Float3x4OpsKernelsAddress {
         return dest;
     }
 
+    public static long composeTRSAround_unsafe(long dest, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        float _t0 = -pivotX;
+        float _t1 = -pivotY;
+        float _t2 = -pivotZ;
+        float _t3 = scaleX + scaleX;
+        float _t4 = scaleY + scaleY;
+        float _t5 = scaleZ + scaleZ;
+        float _t6 = rotationZ * rotationZ;
+        float _t7 = rotationZ * rotationW;
+        float _t8 = rotationY * rotationW;
+        float _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        float _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        float _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        float _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        float _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        float _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        float _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        float _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, _t33);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, _t30);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, _t27);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX))));
+        UnsafeOpsHolder.U.putFloat(dest + 16L, _t28);
+        UnsafeOpsHolder.U.putFloat(dest + 20L, _t34);
+        UnsafeOpsHolder.U.putFloat(dest + 24L, _t31);
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY))));
+        UnsafeOpsHolder.U.putFloat(dest + 32L, _t32);
+        UnsafeOpsHolder.U.putFloat(dest + 36L, _t29);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, _t35);
+        UnsafeOpsHolder.U.putFloat(dest + 44L, Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ))));
+        return dest;
+    }
+
+    public static long composeTRSAround_unsafe(long dest, long translation, long rotation, long scale, long pivot) {
+        float _translationx = UnsafeOpsHolder.U.getFloat(translation + 0L);
+        float _translationy = UnsafeOpsHolder.U.getFloat(translation + 4L);
+        float _translationz = UnsafeOpsHolder.U.getFloat(translation + 8L);
+        float _rotationx = UnsafeOpsHolder.U.getFloat(rotation + 0L);
+        float _rotationy = UnsafeOpsHolder.U.getFloat(rotation + 4L);
+        float _rotationz = UnsafeOpsHolder.U.getFloat(rotation + 8L);
+        float _rotationw = UnsafeOpsHolder.U.getFloat(rotation + 12L);
+        float _scalex = UnsafeOpsHolder.U.getFloat(scale + 0L);
+        float _scaley = UnsafeOpsHolder.U.getFloat(scale + 4L);
+        float _scalez = UnsafeOpsHolder.U.getFloat(scale + 8L);
+        float _pivotx = UnsafeOpsHolder.U.getFloat(pivot + 0L);
+        float _pivoty = UnsafeOpsHolder.U.getFloat(pivot + 4L);
+        float _pivotz = UnsafeOpsHolder.U.getFloat(pivot + 8L);
+        float _t0 = -_pivotx;
+        float _t1 = -_pivoty;
+        float _t2 = -_pivotz;
+        float _t3 = _scalex + _scalex;
+        float _t4 = _scaley + _scaley;
+        float _t5 = _scalez + _scalez;
+        float _t6 = _rotationz * _rotationz;
+        float _t7 = _rotationz * _rotationw;
+        float _t8 = _rotationy * _rotationw;
+        float _t27 = Math.fma(_rotationx, _rotationz, _t8) * _t5;
+        float _t28 = Math.fma(_rotationx, _rotationy, _t7) * _t3;
+        float _t29 = Math.fma(_rotationx, _rotationw, _rotationy * _rotationz) * _t4;
+        float _t30 = Math.fma(_rotationx, _rotationy, -_t7) * _t4;
+        float _t31 = Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)) * _t5;
+        float _t32 = Math.fma(_rotationx, _rotationz, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(_rotationy, _rotationy, _t6), _t3, _scalex);
+        float _t34 = Math.fma(-Math.fma(_rotationx, _rotationx, _t6), _t4, _scaley);
+        float _t35 = Math.fma(-Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), _t5, _scalez);
+        UnsafeOpsHolder.U.putFloat(dest + 0L, _t33);
+        UnsafeOpsHolder.U.putFloat(dest + 4L, _t30);
+        UnsafeOpsHolder.U.putFloat(dest + 8L, _t27);
+        UnsafeOpsHolder.U.putFloat(dest + 12L, Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, _pivotx + _translationx))));
+        UnsafeOpsHolder.U.putFloat(dest + 16L, _t28);
+        UnsafeOpsHolder.U.putFloat(dest + 20L, _t34);
+        UnsafeOpsHolder.U.putFloat(dest + 24L, _t31);
+        UnsafeOpsHolder.U.putFloat(dest + 28L, Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, _pivoty + _translationy))));
+        UnsafeOpsHolder.U.putFloat(dest + 32L, _t32);
+        UnsafeOpsHolder.U.putFloat(dest + 36L, _t29);
+        UnsafeOpsHolder.U.putFloat(dest + 40L, _t35);
+        UnsafeOpsHolder.U.putFloat(dest + 44L, Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, _pivotz + _translationz))));
+        return dest;
+    }
+
     public static long composeTRSMul_unsafe(long dest, long m, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
         float _m00 = UnsafeOpsHolder.U.getFloat(m + 0L);
         float _m01 = UnsafeOpsHolder.U.getFloat(m + 4L);
@@ -7139,6 +7220,29 @@ public final class Float3x4OpsKernelsAddress {
         }
     }
 
+    public static void transformPosition_unsafe(long _destBase, long _destStride, long _matrixBase, long _pointsBase, long _pointsStride, int count) {
+        float _m00 = UnsafeOpsHolder.U.getFloat(_matrixBase + 0L);
+        float _m01 = UnsafeOpsHolder.U.getFloat(_matrixBase + 4L);
+        float _m02 = UnsafeOpsHolder.U.getFloat(_matrixBase + 8L);
+        float _m03 = UnsafeOpsHolder.U.getFloat(_matrixBase + 12L);
+        float _m10 = UnsafeOpsHolder.U.getFloat(_matrixBase + 16L);
+        float _m11 = UnsafeOpsHolder.U.getFloat(_matrixBase + 20L);
+        float _m12 = UnsafeOpsHolder.U.getFloat(_matrixBase + 24L);
+        float _m13 = UnsafeOpsHolder.U.getFloat(_matrixBase + 28L);
+        float _m20 = UnsafeOpsHolder.U.getFloat(_matrixBase + 32L);
+        float _m21 = UnsafeOpsHolder.U.getFloat(_matrixBase + 36L);
+        float _m22 = UnsafeOpsHolder.U.getFloat(_matrixBase + 40L);
+        float _m23 = UnsafeOpsHolder.U.getFloat(_matrixBase + 44L);
+        for (int _i = 0; _i < count; _i++) {
+            long _pb = _pointsBase + _i * _pointsStride;
+            long _db = _destBase + _i * _destStride;
+            float px = UnsafeOpsHolder.U.getFloat(_pb + 0L), py = UnsafeOpsHolder.U.getFloat(_pb + 4L), pz = UnsafeOpsHolder.U.getFloat(_pb + 8L);
+            UnsafeOpsHolder.U.putFloat(_db + 0L, Math.fma(_m00, px, Math.fma(_m01, py, Math.fma(_m02, pz, _m03))));
+            UnsafeOpsHolder.U.putFloat(_db + 4L, Math.fma(_m10, px, Math.fma(_m11, py, Math.fma(_m12, pz, _m13))));
+            UnsafeOpsHolder.U.putFloat(_db + 8L, Math.fma(_m20, px, Math.fma(_m21, py, Math.fma(_m22, pz, _m23))));
+        }
+    }
+
     public static void transformDirection_unsafe(long _destBase, long _matrixBase, long _pointsBase, int count) {
         float _m00 = UnsafeOpsHolder.U.getFloat(_matrixBase + 0L);
         float _m01 = UnsafeOpsHolder.U.getFloat(_matrixBase + 4L);
@@ -7152,6 +7256,26 @@ public final class Float3x4OpsKernelsAddress {
         for (int _i = 0; _i < count; _i++) {
             long _pb = _pointsBase + _i * 12L;
             long _db = _destBase + _i * 12L;
+            float px = UnsafeOpsHolder.U.getFloat(_pb + 0L), py = UnsafeOpsHolder.U.getFloat(_pb + 4L), pz = UnsafeOpsHolder.U.getFloat(_pb + 8L);
+            UnsafeOpsHolder.U.putFloat(_db + 0L, Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py)));
+            UnsafeOpsHolder.U.putFloat(_db + 4L, Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py)));
+            UnsafeOpsHolder.U.putFloat(_db + 8L, Math.fma(_m22, pz, Math.fma(_m20, px, _m21 * py)));
+        }
+    }
+
+    public static void transformDirection_unsafe(long _destBase, long _destStride, long _matrixBase, long _pointsBase, long _pointsStride, int count) {
+        float _m00 = UnsafeOpsHolder.U.getFloat(_matrixBase + 0L);
+        float _m01 = UnsafeOpsHolder.U.getFloat(_matrixBase + 4L);
+        float _m02 = UnsafeOpsHolder.U.getFloat(_matrixBase + 8L);
+        float _m10 = UnsafeOpsHolder.U.getFloat(_matrixBase + 16L);
+        float _m11 = UnsafeOpsHolder.U.getFloat(_matrixBase + 20L);
+        float _m12 = UnsafeOpsHolder.U.getFloat(_matrixBase + 24L);
+        float _m20 = UnsafeOpsHolder.U.getFloat(_matrixBase + 32L);
+        float _m21 = UnsafeOpsHolder.U.getFloat(_matrixBase + 36L);
+        float _m22 = UnsafeOpsHolder.U.getFloat(_matrixBase + 40L);
+        for (int _i = 0; _i < count; _i++) {
+            long _pb = _pointsBase + _i * _pointsStride;
+            long _db = _destBase + _i * _destStride;
             float px = UnsafeOpsHolder.U.getFloat(_pb + 0L), py = UnsafeOpsHolder.U.getFloat(_pb + 4L), pz = UnsafeOpsHolder.U.getFloat(_pb + 8L);
             UnsafeOpsHolder.U.putFloat(_db + 0L, Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py)));
             UnsafeOpsHolder.U.putFloat(_db + 4L, Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py)));

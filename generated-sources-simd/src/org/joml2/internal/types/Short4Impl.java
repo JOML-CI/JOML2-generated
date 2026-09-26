@@ -4376,6 +4376,293 @@ public final class Short4Impl implements Short4 {
 
 
     /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Short4 cross(Short4R v, Short4R w, @Mutated Short4 dest) {
+        short[] sd = this.data;
+        short[] vData = ((Short4Impl) v).data;
+        short[] wData = ((Short4Impl) w).data;
+        short[] dd = ((Short4Impl) dest).data;
+        short _t12 = (short) (vData[2] * wData[3] - vData[3] * wData[2]);
+        short _t13 = (short) (vData[1] * wData[3] - vData[3] * wData[1]);
+        short _t14 = (short) (vData[1] * wData[2] - vData[2] * wData[1]);
+        short _t15 = (short) (vData[0] * wData[3] - vData[3] * wData[0]);
+        short _t16 = (short) (vData[0] * wData[2] - vData[2] * wData[0]);
+        short _t17 = (short) (vData[0] * wData[1] - vData[1] * wData[0]);
+        int _buf0 = sd[1] * _t12 - sd[2] * _t13 + sd[3] * _t14;
+        int _buf1 = sd[2] * _t15 - sd[0] * _t12 - sd[3] * _t16;
+        int _buf2 = sd[0] * _t13 - sd[1] * _t15 + sd[3] * _t17;
+        dd[3] = (short) (sd[1] * _t16 - sd[0] * _t14 - sd[2] * _t17);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
+        return dest;
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
+     * before evaluating - and each result component is then stored as {@code int}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Int4 cross(Short4R v, Short4R w, @Mutated Int4 dest) {
+        return cross(v.x(), v.y(), v.z(), v.w(), w.x(), w.y(), w.z(), w.w(), dest);
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
+     * before evaluating - and each result component is then stored as {@code long}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Long4 cross(Short4R v, Short4R w, @Mutated Long4 dest) {
+        return cross(v.x(), v.y(), v.z(), v.w(), w.x(), w.y(), w.z(), w.w(), dest);
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
+     * before evaluating - and each result component is then stored as {@code double}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 cross(Short4R v, Short4R w, @Mutated Double4 dest) {
+        return cross(v.x(), v.y(), v.z(), v.w(), w.x(), w.y(), w.z(), w.w(), dest);
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Short4 cross(short vX, short vY, short vZ, short vW, short wX, short wY, short wZ, short wW, @Mutated Short4 dest) {
+        short[] sd = this.data;
+        short[] dd = ((Short4Impl) dest).data;
+        short _t12 = (short) (vZ * wW - vW * wZ);
+        short _t13 = (short) (vY * wW - vW * wY);
+        short _t14 = (short) (vY * wZ - vZ * wY);
+        short _t15 = (short) (vX * wW - vW * wX);
+        short _t16 = (short) (vX * wZ - vZ * wX);
+        short _t17 = (short) (vX * wY - vY * wX);
+        int _buf0 = sd[1] * _t12 - sd[2] * _t13 + sd[3] * _t14;
+        int _buf1 = sd[2] * _t15 - sd[0] * _t12 - sd[3] * _t16;
+        int _buf2 = sd[0] * _t13 - sd[1] * _t15 + sd[3] * _t17;
+        dd[3] = (short) (sd[1] * _t16 - sd[0] * _t14 - sd[2] * _t17);
+        dd[0] = (short) (_buf0);
+        dd[1] = (short) (_buf1);
+        dd[2] = (short) (_buf2);
+        return dest;
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
+     * before evaluating - and each result component is then stored as {@code int}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Int4 cross(short vX, short vY, short vZ, short vW, short wX, short wY, short wZ, short wW, @Mutated Int4 dest) {
+        short[] sd = this.data;
+        int[] dd = ((Int4Impl) dest).data;
+        short _t12 = (short) (vZ * wW - vW * wZ);
+        short _t13 = (short) (vY * wW - vW * wY);
+        short _t14 = (short) (vY * wZ - vZ * wY);
+        short _t15 = (short) (vX * wW - vW * wX);
+        short _t16 = (short) (vX * wZ - vZ * wX);
+        short _t17 = (short) (vX * wY - vY * wX);
+        int _buf0 = sd[1] * _t12 - sd[2] * _t13 + sd[3] * _t14;
+        int _buf1 = sd[2] * _t15 - sd[0] * _t12 - sd[3] * _t16;
+        int _buf2 = sd[0] * _t13 - sd[1] * _t15 + sd[3] * _t17;
+        dd[3] = sd[1] * _t16 - sd[0] * _t14 - sd[2] * _t17;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
+     * before evaluating - and each result component is then stored as {@code long}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Long4 cross(short vX, short vY, short vZ, short vW, short wX, short wY, short wZ, short wW, @Mutated Long4 dest) {
+        short[] sd = this.data;
+        long[] dd = ((Long4Impl) dest).data;
+        short _t12 = (short) (vZ * wW - vW * wZ);
+        short _t13 = (short) (vY * wW - vW * wY);
+        short _t14 = (short) (vY * wZ - vZ * wY);
+        short _t15 = (short) (vX * wW - vW * wX);
+        short _t16 = (short) (vX * wZ - vZ * wX);
+        short _t17 = (short) (vX * wY - vY * wX);
+        int _buf0 = sd[1] * _t12 - sd[2] * _t13 + sd[3] * _t14;
+        int _buf1 = sd[2] * _t15 - sd[0] * _t12 - sd[3] * _t16;
+        int _buf2 = sd[0] * _t13 - sd[1] * _t15 + sd[3] * _t17;
+        dd[3] = sd[1] * _t16 - sd[0] * _t14 - sd[2] * _t17;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code int} precision - Java promotes {@code short} operands
+     * before evaluating - and each result component is then stored as {@code double}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 cross(short vX, short vY, short vZ, short vW, short wX, short wY, short wZ, short wW, @Mutated Double4 dest) {
+        short[] sd = this.data;
+        double[] dd = ((Double4Impl) dest).data;
+        short _t12 = (short) (vZ * wW - vW * wZ);
+        short _t13 = (short) (vY * wW - vW * wY);
+        short _t14 = (short) (vY * wZ - vZ * wY);
+        short _t15 = (short) (vX * wW - vW * wX);
+        short _t16 = (short) (vX * wZ - vZ * wX);
+        short _t17 = (short) (vX * wY - vY * wX);
+        int _buf0 = sd[1] * _t12 - sd[2] * _t13 + sd[3] * _t14;
+        int _buf1 = sd[2] * _t15 - sd[0] * _t12 - sd[3] * _t16;
+        int _buf2 = sd[0] * _t13 - sd[1] * _t15 + sd[3] * _t17;
+        dd[3] = sd[1] * _t16 - sd[0] * _t14 - sd[2] * _t17;
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        return dest;
+    }
+
+
+    /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
      * The value is computed and returned as {@code long}, so it is exact: a result beyond the

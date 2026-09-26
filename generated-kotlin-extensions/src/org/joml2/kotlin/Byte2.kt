@@ -34,6 +34,8 @@ inline operator fun Byte2.rem(scalar: Byte): Byte2 = rem(scalar)
 inline operator fun Byte2.rem(other: Byte2): Byte2 = rem(other)
 /** [Byte2.sub] as the `-` operator. */
 inline operator fun Byte2.minus(other: Byte2): Byte2 = sub(other)
+/** [Byte2.cross] as an infix function, so `a cross b` parses. */
+inline infix fun Byte2.cross(other: Byte2): Int = cross(other)
 /** [Byte2.dot] as an infix function, so `a dot b` parses. */
 inline infix fun Byte2.dot(other: Byte2): Int = dot(other)
 /** Component 1 of this Byte2 (`x()`), for destructuring declarations. */

@@ -2097,6 +2097,100 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
 
 
     /**
+     * Set the dual half of this dual quaternion to {@code dual}, keeping the real (rotation) half
+     * as it is and store the result in {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param dual the new dual half
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setDual(DoubleQuatR dual, @Mutated DoubleDualQuat dest) {
+        return setDual(dual.x(), dual.y(), dual.z(), dual.w(), dest);
+    }
+
+
+    /**
+     * Set the dual half of this dual quaternion to ({@code dualX}, {@code dualY}, {@code dualZ},
+     * {@code dualW}), keeping the real (rotation) half as it is and store the result in
+     * {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param dualX the {@code x} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualY the {@code y} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualZ the {@code z} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualW the {@code w} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setDual(double dualX, double dualY, double dualZ, double dualW, @Mutated DoubleDualQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleDualQuatImpl) dest).data;
+        DoubleVector.fromArray(COL_SPECIES, sd, 0).intoArray(dd, 0);
+        dd[4] = dualX;
+        dd[5] = dualY;
+        dd[6] = dualZ;
+        dd[7] = dualW;
+        return dest;
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to {@code real}, keeping the dual half
+     * as it is and store the result in {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param real the new real (rotation) half
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setReal(DoubleQuatR real, @Mutated DoubleDualQuat dest) {
+        return setReal(real.x(), real.y(), real.z(), real.w(), dest);
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to ({@code realX}, {@code realY},
+     * {@code realZ}, {@code realW}), keeping the dual half as it is and store the result in
+     * {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param realX the {@code x} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realY the {@code y} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realZ the {@code z} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realW the {@code w} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setReal(double realX, double realY, double realZ, double realW, @Mutated DoubleDualQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleDualQuatImpl) dest).data;
+        dd[0] = realX;
+        dd[1] = realY;
+        dd[2] = realZ;
+        dd[3] = realW;
+        DoubleVector.fromArray(COL_SPECIES, sd, 4).intoArray(dd, 4);
+        return dest;
+    }
+
+
+    /**
      * Set the rotation of this dual quaternion to {@code rotation} and store the result in
      * {@code dest}.
      *
@@ -3102,6 +3196,68 @@ public final class DoubleDualQuatImpl implements DoubleDualQuat {
         dd[3] = Math.fma(_t9, _t5, _t12 * _t8);
         VEC_2.intoArray(dd, 4);
         return this;
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion {@code rotation} onto this dual
+     * quaternion and store the result in {@code dest}.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat preRotate(DoubleQuatR rotation, @Mutated DoubleDualQuat dest) {
+        return preRotate(rotation.x(), rotation.y(), rotation.z(), rotation.w(), dest);
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion ({@code rotationX},
+     * {@code rotationY}, {@code rotationZ}, {@code rotationW}) onto this dual quaternion and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat preRotate(double rotationX, double rotationY, double rotationZ, double rotationW, @Mutated DoubleDualQuat dest) {
+        double[] sd = this.data;
+        double[] dd = ((DoubleDualQuatImpl) dest).data;
+        double _buf0 = Math.fma(rotationX, sd[3], rotationW * sd[0]) + Math.fma(rotationY, sd[2], -(rotationZ * sd[1]));
+        double _buf1 = Math.fma(rotationY, sd[3], rotationZ * sd[0]) + Math.fma(rotationW, sd[1], -(rotationX * sd[2]));
+        double _buf2 = Math.fma(rotationX, sd[1], rotationW * sd[2]) + Math.fma(rotationZ, sd[3], -(rotationY * sd[0]));
+        dd[3] = Math.fma(rotationW, sd[3], -(rotationX * sd[0])) - Math.fma(rotationY, sd[1], rotationZ * sd[2]);
+        double _buf3 = Math.fma(rotationX, sd[7], rotationW * sd[4]) + Math.fma(rotationY, sd[6], -(rotationZ * sd[5]));
+        double _buf4 = Math.fma(rotationY, sd[7], rotationZ * sd[4]) + Math.fma(rotationW, sd[5], -(rotationX * sd[6]));
+        double _buf5 = Math.fma(rotationX, sd[5], rotationW * sd[6]) + Math.fma(rotationZ, sd[7], -(rotationY * sd[4]));
+        dd[7] = Math.fma(rotationW, sd[7], -(rotationX * sd[4])) - Math.fma(rotationY, sd[5], rotationZ * sd[6]);
+        dd[0] = _buf0;
+        dd[1] = _buf1;
+        dd[2] = _buf2;
+        dd[4] = _buf3;
+        dd[5] = _buf4;
+        dd[6] = _buf5;
+        return dest;
     }
 
 

@@ -6638,6 +6638,197 @@ public final class Double4x4Ops {
     }
 
     /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return {@code dest}
+     */
+    public static double[] composeTRSAround(double[] dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        double _t0 = -pivotX;
+        double _t1 = -pivotY;
+        double _t2 = -pivotZ;
+        double _t3 = scaleX + scaleX;
+        double _t4 = scaleY + scaleY;
+        double _t5 = scaleZ + scaleZ;
+        double _t6 = rotationZ * rotationZ;
+        double _t7 = rotationZ * rotationW;
+        double _t8 = rotationY * rotationW;
+        double _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        double _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        double _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        double _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        double _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        double _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        double _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        double _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        double _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        dest[destOffset + 0] = _t33;
+        dest[destOffset + 1] = _t28;
+        dest[destOffset + 2] = _t32;
+        dest[destOffset + 3] = 0.0;
+        dest[destOffset + 4] = _t30;
+        dest[destOffset + 5] = _t34;
+        dest[destOffset + 6] = _t29;
+        dest[destOffset + 7] = 0.0;
+        dest[destOffset + 8] = _t27;
+        dest[destOffset + 9] = _t31;
+        dest[destOffset + 10] = _t35;
+        dest[destOffset + 11] = 0.0;
+        dest[destOffset + 12] = Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX)));
+        dest[destOffset + 13] = Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY)));
+        dest[destOffset + 14] = Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ)));
+        dest[destOffset + 15] = 1.0;
+        return dest;
+    }
+
+    /** {@link #composeTRSAround(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.DoubleBuffer} storage. */
+    public static java.nio.DoubleBuffer composeTRSAround(java.nio.DoubleBuffer dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.composeTRSAround_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return Double4x4OpsKernelsTypedBuffer.composeTRSAround_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #composeTRSAround(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer composeTRSAround(java.nio.ByteBuffer dest, int destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.composeTRSAround_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return Double4x4OpsKernelsByteBuffer.composeTRSAround_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #composeTRSAround(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment composeTRSAround(java.lang.foreign.MemorySegment dest, long destOffset, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly()) return Double4x4OpsKernelsSegment.composeTRSAround_unsafe(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return Double4x4OpsKernelsSegment.composeTRSAround_api(dest, destOffset, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+    }
+
+    /** {@link #composeTRSAround(double[], int, double, double, double, double, double, double, double, double, double, double, double, double, double)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long composeTRSAround(long dest, double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.composeTRSAround_unsafe(dest, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        composeTRSAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param dest will hold the result
+     * @param destOffset the element index in {@code dest} at which the matrix starts
+     * @param translation the storage holding the translation
+     * @param translationOffset the element index in {@code translation} at which the vector starts
+     * @param rotation the storage holding the rotation (must be a unit quaternion)
+     * @param rotationOffset the element index in {@code rotation} at which the quaternion starts
+     * @param scale the storage holding the scale factors
+     * @param scaleOffset the element index in {@code scale} at which the vector starts
+     * @param pivot the storage holding the pivot point
+     * @param pivotOffset the element index in {@code pivot} at which the vector starts
+     * @return {@code dest}
+     */
+    public static double[] composeTRSAround(double[] dest, int destOffset, double[] translation, int translationOffset, double[] rotation, int rotationOffset, double[] scale, int scaleOffset, double[] pivot, int pivotOffset) {
+        double _translationx = translation[translationOffset + 0];
+        double _translationy = translation[translationOffset + 1];
+        double _translationz = translation[translationOffset + 2];
+        double _rotationx = rotation[rotationOffset + 0];
+        double _rotationy = rotation[rotationOffset + 1];
+        double _rotationz = rotation[rotationOffset + 2];
+        double _rotationw = rotation[rotationOffset + 3];
+        double _scalex = scale[scaleOffset + 0];
+        double _scaley = scale[scaleOffset + 1];
+        double _scalez = scale[scaleOffset + 2];
+        double _pivotx = pivot[pivotOffset + 0];
+        double _pivoty = pivot[pivotOffset + 1];
+        double _pivotz = pivot[pivotOffset + 2];
+        double _t0 = -_pivotx;
+        double _t1 = -_pivoty;
+        double _t2 = -_pivotz;
+        double _t3 = _scalex + _scalex;
+        double _t4 = _scaley + _scaley;
+        double _t5 = _scalez + _scalez;
+        double _t6 = _rotationz * _rotationz;
+        double _t7 = _rotationz * _rotationw;
+        double _t8 = _rotationy * _rotationw;
+        double _t27 = Math.fma(_rotationx, _rotationz, _t8) * _t5;
+        double _t28 = Math.fma(_rotationx, _rotationy, _t7) * _t3;
+        double _t29 = Math.fma(_rotationx, _rotationw, _rotationy * _rotationz) * _t4;
+        double _t30 = Math.fma(_rotationx, _rotationy, -_t7) * _t4;
+        double _t31 = Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)) * _t5;
+        double _t32 = Math.fma(_rotationx, _rotationz, -_t8) * _t3;
+        double _t33 = Math.fma(-Math.fma(_rotationy, _rotationy, _t6), _t3, _scalex);
+        double _t34 = Math.fma(-Math.fma(_rotationx, _rotationx, _t6), _t4, _scaley);
+        double _t35 = Math.fma(-Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), _t5, _scalez);
+        dest[destOffset + 0] = _t33;
+        dest[destOffset + 1] = _t28;
+        dest[destOffset + 2] = _t32;
+        dest[destOffset + 3] = 0.0;
+        dest[destOffset + 4] = _t30;
+        dest[destOffset + 5] = _t34;
+        dest[destOffset + 6] = _t29;
+        dest[destOffset + 7] = 0.0;
+        dest[destOffset + 8] = _t27;
+        dest[destOffset + 9] = _t31;
+        dest[destOffset + 10] = _t35;
+        dest[destOffset + 11] = 0.0;
+        dest[destOffset + 12] = Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, _pivotx + _translationx)));
+        dest[destOffset + 13] = Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, _pivoty + _translationy)));
+        dest[destOffset + 14] = Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, _pivotz + _translationz)));
+        dest[destOffset + 15] = 1.0;
+        return dest;
+    }
+
+    /** {@link #composeTRSAround(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.DoubleBuffer} storage. */
+    public static java.nio.DoubleBuffer composeTRSAround(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer translation, int translationOffset, java.nio.DoubleBuffer rotation, int rotationOffset, java.nio.DoubleBuffer scale, int scaleOffset, java.nio.DoubleBuffer pivot, int pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.composeTRSAround_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+        return Double4x4OpsKernelsTypedBuffer.composeTRSAround_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #composeTRSAround(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.nio.ByteBuffer} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.nio.ByteBuffer composeTRSAround(java.nio.ByteBuffer dest, int destOffset, java.nio.ByteBuffer translation, int translationOffset, java.nio.ByteBuffer rotation, int rotationOffset, java.nio.ByteBuffer scale, int scaleOffset, java.nio.ByteBuffer pivot, int pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && translation.isDirect() && translation.order() == java.nio.ByteOrder.nativeOrder() && rotation.isDirect() && rotation.order() == java.nio.ByteOrder.nativeOrder() && scale.isDirect() && scale.order() == java.nio.ByteOrder.nativeOrder() && pivot.isDirect() && pivot.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.composeTRSAround_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+        return Double4x4OpsKernelsByteBuffer.composeTRSAround_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #composeTRSAround(double[], int, double[], int, double[], int, double[], int, double[], int)} on {@link java.lang.foreign.MemorySegment} storage; the {@code *Offset} parameters are byte offsets, not element indices. */
+    public static java.lang.foreign.MemorySegment composeTRSAround(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && translation.isNative() && rotation.isNative() && scale.isNative() && pivot.isNative()) return Double4x4OpsKernelsSegment.composeTRSAround_unsafe(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+        return Double4x4OpsKernelsSegment.composeTRSAround_api(dest, destOffset, translation, translationOffset, rotation, rotationOffset, scale, scaleOffset, pivot, pivotOffset);
+    }
+
+    /** {@link #composeTRSAround(double[], int, double[], int, double[], int, double[], int, double[], int)} on storage addressed by a raw native address - each address points at the first element, so there are no offsets. */
+    public static long composeTRSAround(long dest, long translation, long rotation, long scale, long pivot) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE) return Double4x4OpsKernelsAddress.composeTRSAround_unsafe(dest, translation, rotation, scale, pivot);
+        composeTRSAround(VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(dest, 128L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(translation, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(rotation, 32L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(scale, 24L), 0L, VirtualMemoryHolder.VIRTUAL_MEMORY.asSlice(pivot, 24L), 0L);
+        return dest;
+    }
+
+    /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *
@@ -24378,11 +24569,52 @@ public final class Double4x4Ops {
         return dest;
     }
 
+    /** Bulk, strided: transform {@code count} 3D points in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static double[] transformPosition(double[] dest, int destOffset, int destStride, double[] matrix, int matrixOffset, double[] points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformPosition(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        double _m00 = matrix[matrixOffset + 0];
+        double _m01 = matrix[matrixOffset + 4];
+        double _m02 = matrix[matrixOffset + 8];
+        double _m03 = matrix[matrixOffset + 12];
+        double _m10 = matrix[matrixOffset + 1];
+        double _m11 = matrix[matrixOffset + 5];
+        double _m12 = matrix[matrixOffset + 9];
+        double _m13 = matrix[matrixOffset + 13];
+        double _m20 = matrix[matrixOffset + 2];
+        double _m21 = matrix[matrixOffset + 6];
+        double _m22 = matrix[matrixOffset + 10];
+        double _m23 = matrix[matrixOffset + 14];
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
+            double px = points[_po + 0], py = points[_po + 1], pz = points[_po + 2];
+            dest[_do + 0] = Math.fma(_m00, px, Math.fma(_m01, py, Math.fma(_m02, pz, _m03)));
+            dest[_do + 1] = Math.fma(_m10, px, Math.fma(_m11, py, Math.fma(_m12, pz, _m13)));
+            dest[_do + 2] = Math.fma(_m20, px, Math.fma(_m21, py, Math.fma(_m22, pz, _m23)));
+        }
+        return dest;
+    }
+
     /** Bulk: transform {@code count} consecutive 3D points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-point overload of the same name. */
     public static java.nio.DoubleBuffer transformPosition(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Double4x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D points in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static java.nio.DoubleBuffer transformPosition(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformPosition(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.transformPosition_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsTypedBuffer.transformPosition_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
@@ -24392,11 +24624,33 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
+    /** Bulk, strided: transform {@code count} 3D points in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 24 bytes
+     *  take the packed overload. */
+    public static java.nio.ByteBuffer transformPosition(java.nio.ByteBuffer dest, int destOffset, int destStride, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 24 && pointsStride == 24) return transformPosition(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformPosition_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsByteBuffer.transformPosition_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+    }
+
     /** Bulk: transform {@code count} consecutive 3D points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-point overload of the same name. */
     public static java.lang.foreign.MemorySegment transformPosition(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && matrix.isNative() && points.isNative()) return Double4x4OpsKernelsSegment.transformPosition_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Double4x4OpsKernelsSegment.transformPosition_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D points in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 24L bytes
+     *  take the packed overload. */
+    public static java.lang.foreign.MemorySegment transformPosition(java.lang.foreign.MemorySegment dest, long destOffset, long destStride, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, long pointsStride, int count) {
+        if (destStride == 24L && pointsStride == 24L) return transformPosition(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && matrix.isNative() && points.isNative()) return Double4x4OpsKernelsSegment.transformPosition_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsSegment.transformPosition_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
@@ -24422,11 +24676,49 @@ public final class Double4x4Ops {
         return dest;
     }
 
+    /** Bulk, strided: transform {@code count} 3D direction vectors in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static double[] transformDirection(double[] dest, int destOffset, int destStride, double[] matrix, int matrixOffset, double[] points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformDirection(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        double _m00 = matrix[matrixOffset + 0];
+        double _m01 = matrix[matrixOffset + 4];
+        double _m02 = matrix[matrixOffset + 8];
+        double _m10 = matrix[matrixOffset + 1];
+        double _m11 = matrix[matrixOffset + 5];
+        double _m12 = matrix[matrixOffset + 9];
+        double _m20 = matrix[matrixOffset + 2];
+        double _m21 = matrix[matrixOffset + 6];
+        double _m22 = matrix[matrixOffset + 10];
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
+            double px = points[_po + 0], py = points[_po + 1], pz = points[_po + 2];
+            dest[_do + 0] = Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py));
+            dest[_do + 1] = Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py));
+            dest[_do + 2] = Math.fma(_m22, pz, Math.fma(_m20, px, _m21 * py));
+        }
+        return dest;
+    }
+
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-direction vector overload of the same name. */
     public static java.nio.DoubleBuffer transformDirection(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Double4x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D direction vectors in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static java.nio.DoubleBuffer transformDirection(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformDirection(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.transformDirection_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsTypedBuffer.transformDirection_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
@@ -24436,11 +24728,33 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
+    /** Bulk, strided: transform {@code count} 3D direction vectors in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 24 bytes
+     *  take the packed overload. */
+    public static java.nio.ByteBuffer transformDirection(java.nio.ByteBuffer dest, int destOffset, int destStride, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 24 && pointsStride == 24) return transformDirection(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformDirection_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsByteBuffer.transformDirection_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+    }
+
     /** Bulk: transform {@code count} consecutive 3D direction vectors in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-direction vector overload of the same name. */
     public static java.lang.foreign.MemorySegment transformDirection(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && matrix.isNative() && points.isNative()) return Double4x4OpsKernelsSegment.transformDirection_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Double4x4OpsKernelsSegment.transformDirection_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D direction vectors in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 24L bytes
+     *  take the packed overload. */
+    public static java.lang.foreign.MemorySegment transformDirection(java.lang.foreign.MemorySegment dest, long destOffset, long destStride, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, long pointsStride, int count) {
+        if (destStride == 24L && pointsStride == 24L) return transformDirection(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && matrix.isNative() && points.isNative()) return Double4x4OpsKernelsSegment.transformDirection_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsSegment.transformDirection_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D projected points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
@@ -24475,11 +24789,58 @@ public final class Double4x4Ops {
         return dest;
     }
 
+    /** Bulk, strided: transform {@code count} 3D projected points in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static double[] transformProject(double[] dest, int destOffset, int destStride, double[] matrix, int matrixOffset, double[] points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformProject(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        double _m00 = matrix[matrixOffset + 0];
+        double _m01 = matrix[matrixOffset + 4];
+        double _m02 = matrix[matrixOffset + 8];
+        double _m03 = matrix[matrixOffset + 12];
+        double _m10 = matrix[matrixOffset + 1];
+        double _m11 = matrix[matrixOffset + 5];
+        double _m12 = matrix[matrixOffset + 9];
+        double _m13 = matrix[matrixOffset + 13];
+        double _m20 = matrix[matrixOffset + 2];
+        double _m21 = matrix[matrixOffset + 6];
+        double _m22 = matrix[matrixOffset + 10];
+        double _m23 = matrix[matrixOffset + 14];
+        double _m30 = matrix[matrixOffset + 3];
+        double _m31 = matrix[matrixOffset + 7];
+        double _m32 = matrix[matrixOffset + 11];
+        double _m33 = matrix[matrixOffset + 15];
+        for (int _i = 0; _i < count; _i++) {
+            int _po = pointsOffset + _i * pointsStride;
+            int _do = destOffset + _i * destStride;
+            double px = points[_po + 0], py = points[_po + 1], pz = points[_po + 2];
+            double _w = Math.fma(_m30, px, Math.fma(_m31, py, Math.fma(_m32, pz, _m33)));
+            double _inv = 1.0 / _w;
+            dest[_do + 0] = (Math.fma(_m00, px, Math.fma(_m01, py, Math.fma(_m02, pz, _m03)))) * _inv;
+            dest[_do + 1] = (Math.fma(_m10, px, Math.fma(_m11, py, Math.fma(_m12, pz, _m13)))) * _inv;
+            dest[_do + 2] = (Math.fma(_m20, px, Math.fma(_m21, py, Math.fma(_m22, pz, _m23)))) * _inv;
+        }
+        return dest;
+    }
+
     /** Bulk: transform {@code count} consecutive 3D projected points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-projected point overload of the same name. */
     public static java.nio.DoubleBuffer transformProject(java.nio.DoubleBuffer dest, int destOffset, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Double4x4OpsKernelsTypedBuffer.transformProject_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D projected points in {@code points}, {@code pointsStride} elements apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} elements apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 3 elements
+     *  take the packed overload. */
+    public static java.nio.DoubleBuffer transformProject(java.nio.DoubleBuffer dest, int destOffset, int destStride, java.nio.DoubleBuffer matrix, int matrixOffset, java.nio.DoubleBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 3 && pointsStride == 3) return transformProject(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsTypedBuffer.transformProject_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsTypedBuffer.transformProject_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
     /** Bulk: transform {@code count} consecutive 3D projected points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
@@ -24489,11 +24850,33 @@ public final class Double4x4Ops {
         return Double4x4OpsKernelsByteBuffer.transformProject_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
     }
 
+    /** Bulk, strided: transform {@code count} 3D projected points in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 24 bytes
+     *  take the packed overload. */
+    public static java.nio.ByteBuffer transformProject(java.nio.ByteBuffer dest, int destOffset, int destStride, java.nio.ByteBuffer matrix, int matrixOffset, java.nio.ByteBuffer points, int pointsOffset, int pointsStride, int count) {
+        if (destStride == 24 && pointsStride == 24) return transformProject(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isDirect() && !dest.isReadOnly() && dest.order() == java.nio.ByteOrder.nativeOrder() && matrix.isDirect() && matrix.order() == java.nio.ByteOrder.nativeOrder() && points.isDirect() && points.order() == java.nio.ByteOrder.nativeOrder()) return Double4x4OpsKernelsByteBuffer.transformProject_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsByteBuffer.transformProject_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+    }
+
     /** Bulk: transform {@code count} consecutive 3D projected points in {@code points} by the single matrix in {@code matrix}, into {@code dest}.
      *  Reads the matrix ONCE (hoisted); distinct from the single-projected point overload of the same name. */
     public static java.lang.foreign.MemorySegment transformProject(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, int count) {
         if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && matrix.isNative() && points.isNative()) return Double4x4OpsKernelsSegment.transformProject_unsafe(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
         return Double4x4OpsKernelsSegment.transformProject_api(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+    }
+
+    /** Bulk, strided: transform {@code count} 3D projected points in {@code points}, {@code pointsStride} bytes apart, by the single
+     *  matrix in {@code matrix}, into {@code dest}, {@code destStride} bytes apart - for interleaved data such
+     *  as vertex attributes. What lies between the results in {@code dest} is not written, and
+     *  {@code dest} may be {@code points} at the same offset and stride. Strides of 24L bytes
+     *  take the packed overload. */
+    public static java.lang.foreign.MemorySegment transformProject(java.lang.foreign.MemorySegment dest, long destOffset, long destStride, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, long pointsStride, int count) {
+        if (destStride == 24L && pointsStride == 24L) return transformProject(dest, destOffset, matrix, matrixOffset, points, pointsOffset, count);
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && matrix.isNative() && points.isNative()) return Double4x4OpsKernelsSegment.transformProject_unsafe(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
+        return Double4x4OpsKernelsSegment.transformProject_api(dest, destOffset, destStride, matrix, matrixOffset, points, pointsOffset, pointsStride, count);
     }
 
 

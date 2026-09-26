@@ -411,6 +411,37 @@ public final class Float2x2OpsKernelsByteBuffer {
         return dest;
     }
 
+    public static java.nio.ByteBuffer decomposeLDU_unsafe(java.nio.ByteBuffer lower, int lowerOffset, java.nio.ByteBuffer diagonal, int diagonalOffset, java.nio.ByteBuffer upper, int upperOffset, java.nio.ByteBuffer src, int srcOffset) {
+        long _lowerBase = UnsafeOpsHolder.U.getLong(lower, UnsafeCopy.BB_ADDRESS_OFFSET) + lowerOffset;
+        long _diagonalBase = UnsafeOpsHolder.U.getLong(diagonal, UnsafeCopy.BB_ADDRESS_OFFSET) + diagonalOffset;
+        long _upperBase = UnsafeOpsHolder.U.getLong(upper, UnsafeCopy.BB_ADDRESS_OFFSET) + upperOffset;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + srcOffset;
+        Float2x2OpsKernelsAddress.decomposeLDU_unsafe(_lowerBase, _diagonalBase, _upperBase, _srcBase);
+        return lower;
+    }
+
+    public static java.nio.ByteBuffer decomposeLDU_api(java.nio.ByteBuffer lower, int lowerOffset, java.nio.ByteBuffer diagonal, int diagonalOffset, java.nio.ByteBuffer upper, int upperOffset, java.nio.ByteBuffer src, int srcOffset) {
+        float _self00 = src.getFloat(srcOffset + 0);
+        float _self10 = src.getFloat(srcOffset + 4);
+        float _self01 = src.getFloat(srcOffset + 8);
+        float _self11 = src.getFloat(srcOffset + 12);
+        float _rcp0 = 1.0f / _self00;
+        float _sp0 = _self10 * _rcp0;
+        lower.putFloat(lowerOffset + 0, 1.0f);
+        lower.putFloat(lowerOffset + 4, _sp0);
+        lower.putFloat(lowerOffset + 8, 0.0f);
+        lower.putFloat(lowerOffset + 12, 1.0f);
+        diagonal.putFloat(diagonalOffset + 0, _self00);
+        diagonal.putFloat(diagonalOffset + 4, 0.0f);
+        diagonal.putFloat(diagonalOffset + 8, 0.0f);
+        diagonal.putFloat(diagonalOffset + 12, _self11 - _self01 * _sp0);
+        upper.putFloat(upperOffset + 0, 1.0f);
+        upper.putFloat(upperOffset + 4, 0.0f);
+        upper.putFloat(upperOffset + 8, _self01 * _rcp0);
+        upper.putFloat(upperOffset + 12, 1.0f);
+        return lower;
+    }
+
     public static java.nio.ByteBuffer makeIdentity_unsafe(java.nio.ByteBuffer dest, int destOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + destOffset;
         Float2x2OpsKernelsAddress.makeIdentity_unsafe(_destBase);

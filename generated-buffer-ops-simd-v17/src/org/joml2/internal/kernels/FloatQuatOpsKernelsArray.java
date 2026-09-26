@@ -33,6 +33,18 @@ public final class FloatQuatOpsKernelsArray {
         return dest;
     }
 
+    public static float[] mul_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float scalar) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        dest[destOffset + 0] = scalar * _selfx;
+        dest[destOffset + 1] = scalar * _selfy;
+        dest[destOffset + 2] = scalar * _selfz;
+        dest[destOffset + 3] = scalar * _selfw;
+        return dest;
+    }
+
     public static float[] negate_scalar(float[] dest, int destOffset, float[] src, int srcOffset) {
         float _selfx = src[srcOffset + 0];
         float _selfy = src[srcOffset + 1];
@@ -324,6 +336,22 @@ public final class FloatQuatOpsKernelsArray {
             dest[destOffset + 2] = 0.0f;
             dest[destOffset + 3] = 0.0f;
         }
+        return dest;
+    }
+
+    public static float[] addScaled_scalar(float[] dest, int destOffset, float[] src, int srcOffset, float[] other, int otherOffset, float weight) {
+        float _selfx = src[srcOffset + 0];
+        float _selfy = src[srcOffset + 1];
+        float _selfz = src[srcOffset + 2];
+        float _selfw = src[srcOffset + 3];
+        float _otherx = other[otherOffset + 0];
+        float _othery = other[otherOffset + 1];
+        float _otherz = other[otherOffset + 2];
+        float _otherw = other[otherOffset + 3];
+        dest[destOffset + 0] = Math.fma(weight, _otherx, _selfx);
+        dest[destOffset + 1] = Math.fma(weight, _othery, _selfy);
+        dest[destOffset + 2] = Math.fma(weight, _otherz, _selfz);
+        dest[destOffset + 3] = Math.fma(weight, _otherw, _selfw);
         return dest;
     }
 

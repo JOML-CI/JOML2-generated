@@ -889,6 +889,58 @@ public record Short4(short x, short y, short z, short w) {
 
 
     /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent), returning the result as a value.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @return the resulting vector
+     */
+    public Short4 cross(Short4 v, Short4 w) {
+        return cross(v.x(), v.y(), v.z(), v.w(), w.x(), w.y(), w.z(), w.w());
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent), returning the result as a value.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @return the resulting vector
+     */
+    public Short4 cross(short vX, short vY, short vZ, short vW, short wX, short wY, short wZ, short wW) {
+        short _t12 = (short) (vZ * wW - vW * wZ);
+        short _t13 = (short) (vY * wW - vW * wY);
+        short _t14 = (short) (vY * wZ - vZ * wY);
+        short _t15 = (short) (vX * wW - vW * wX);
+        short _t16 = (short) (vX * wZ - vZ * wX);
+        short _t17 = (short) (vX * wY - vY * wX);
+        return new Short4((short) (this.y * _t12 - this.z * _t13 + this.w * _t14), (short) (this.z * _t15 - this.x * _t12 - this.w * _t16), (short) (this.x * _t13 - this.y * _t15 + this.w * _t17), (short) (this.y * _t16 - this.x * _t14 - this.z * _t17));
+    }
+
+
+    /**
      * Compute the squared distance between this vector and {@code other}.
      * <p>
      * The value is computed and returned as {@code long}, so it is exact: a result beyond the

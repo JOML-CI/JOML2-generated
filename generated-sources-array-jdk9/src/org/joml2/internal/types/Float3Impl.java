@@ -577,6 +577,30 @@ public final class Float3Impl implements Float3 {
 
 
     /**
+     * Set this vector to the unit vector {@code (r cos(2 PI v), r sin(2 PI v), 2u - 1)} with
+     * {@code r = 2 sqrt(u (1 - u))}: samples uniformly distributed in {@code [0, 1)} give a
+     * direction uniformly distributed on the unit sphere ({@code makeRandomDirection} draws them
+     * from a {@link java.util.Random}).
+     *
+     * @param u the sample that sets the height {@code z = 2u - 1}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn about the z axis, counter-clockwise from the x axis,
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @return this
+     */
+    @Mutated public Float3 makeUniformDirection(float u, float v) {
+        float[] dd = this.data;
+        float _t1 = v * 6.2831855f;
+        float _t2 = (float) Math.sin(_t1);
+        float _t5 = 2.0f * (float) Math.sqrt(u * (1.0f - u));
+        dd[0] = _t5 * (float) Math.cosFromSin(_t2, _t1);
+        dd[1] = _t5 * _t2;
+        dd[2] = Math.fma(2.0f, u, -1.0f);
+        return this;
+    }
+
+
+    /**
      * Set this vector to the given values.
      *
      * @param v the vector to copy
@@ -2087,6 +2111,368 @@ public final class Float3Impl implements Float3 {
         dd[0] = Math.fma(tX, otherX - sd[0], sd[0]);
         dd[1] = Math.fma(tY, otherY - sd[1], sd[1]);
         dd[2] = Math.fma(tZ, otherZ - sd[2], sd[2]);
+        return dest;
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 slerp(Float3R other, float t, @Mutated Float3 dest) {
+        return slerp(other.x(), other.y(), other.z(), t, dest);
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 slerp(Float3R other, float t, @Mutated Double3 dest) {
+        return slerp(other.x(), other.y(), other.z(), t, dest);
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}) using the interpolation factor {@code t}: the direction turns at a constant
+     * rate along the shorter arc between the two directions, and the length changes linearly
+     * between the two lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 slerp(float otherX, float otherY, float otherZ, float t, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _ct0 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        float _t6 = _ct0;
+        float _ct1 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        float _t7 = _ct1;
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t7));
+        float _t12 = sd[0] * _t8;
+        float _t14 = sd[2] * _t8;
+        float _t17 = sd[1] * _t8;
+        float _t20 = Math.fma(t, (float) Math.sqrt(_t7) - _t10, _t10);
+        float _t22 = Math.fma(otherZ * _t11, _t14, Math.fma(otherX * _t11, _t12, otherY * _t11 * _t17));
+        float _t29 = Math.fma(otherZ, _t11, -(_t22 * _t14));
+        float _t30 = Math.fma(otherX, _t11, -(_t22 * _t12));
+        float _t31 = Math.fma(otherY, _t11, -(_t22 * _t17));
+        float _t35 = -Math.fma(_t29, _t14, Math.fma(_t30, _t12, _t31 * _t17));
+        float _t36 = Math.fma(_t35, _t14, _t29);
+        float _t37 = Math.fma(_t35, _t12, _t30);
+        float _t38 = Math.fma(_t35, _t17, _t31);
+        float _ct2 = Math.fma(_t36, _t36, Math.fma(_t37, _t37, _t38 * _t38));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        float _t42 = _ct2;
+        float _t46 = t * (float) Math.atan2((float) Math.sqrt(_t42), _t22);
+        float _t47 = (float) Math.sin(_t46);
+        float _sp0 = _t20 * _t47 * (1.0f / (float) Math.sqrt(_t42));
+        float _t50 = _t20 * (float) Math.cosFromSin(_t47, _t46);
+        dd[0] = Math.fma(_t12, _t50, _sp0 * _t37);
+        dd[1] = Math.fma(_t17, _t50, _sp0 * _t38);
+        dd[2] = Math.fma(_t14, _t50, _sp0 * _t36);
+        return dest;
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}) using the interpolation factor {@code t}: the direction turns at a constant
+     * rate along the shorter arc between the two directions, and the length changes linearly
+     * between the two lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through a
+     * perpendicular of this vector. The angle is computed with {@code atan2}, and vectors of any
+     * finite length are handled: when their squared lengths leave the {@code float} range, they are
+     * first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}) (interpolation factor {@code 1}).
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 slerp(float otherX, float otherY, float otherZ, float t, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _ct0 = Math.fma(sd[2], sd[2], Math.fma(sd[0], sd[0], sd[1] * sd[1]));
+        if (!(_ct0 > 1.1754944E-38f && _ct0 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        float _t6 = _ct0;
+        float _ct1 = Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY));
+        if (!(_ct1 > 1.1754944E-38f && _ct1 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        float _t7 = _ct1;
+        float _t10 = (float) Math.sqrt(_t6);
+        float _t8 = 1.0f / _t10;
+        float _t11 = (1.0f / (float) Math.sqrt(_t7));
+        float _t12 = sd[0] * _t8;
+        float _t14 = sd[2] * _t8;
+        float _t17 = sd[1] * _t8;
+        float _t20 = Math.fma(t, (float) Math.sqrt(_t7) - _t10, _t10);
+        float _t22 = Math.fma(otherZ * _t11, _t14, Math.fma(otherX * _t11, _t12, otherY * _t11 * _t17));
+        float _t29 = Math.fma(otherZ, _t11, -(_t22 * _t14));
+        float _t30 = Math.fma(otherX, _t11, -(_t22 * _t12));
+        float _t31 = Math.fma(otherY, _t11, -(_t22 * _t17));
+        float _t35 = -Math.fma(_t29, _t14, Math.fma(_t30, _t12, _t31 * _t17));
+        float _t36 = Math.fma(_t35, _t14, _t29);
+        float _t37 = Math.fma(_t35, _t12, _t30);
+        float _t38 = Math.fma(_t35, _t17, _t31);
+        float _ct2 = Math.fma(_t36, _t36, Math.fma(_t37, _t37, _t38 * _t38));
+        if (!(_ct2 > 1.1754944E-38f && _ct2 < Float.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, t, dest);
+        float _t42 = _ct2;
+        float _t46 = t * (float) Math.atan2((float) Math.sqrt(_t42), _t22);
+        float _t47 = (float) Math.sin(_t46);
+        float _sp0 = _t20 * _t47 * (1.0f / (float) Math.sqrt(_t42));
+        float _t50 = _t20 * (float) Math.cosFromSin(_t47, _t46);
+        dd[0] = Math.fma(_t12, _t50, _sp0 * _t37);
+        dd[1] = Math.fma(_t17, _t50, _sp0 * _t38);
+        dd[2] = Math.fma(_t14, _t50, _sp0 * _t36);
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3 slerp_degenerate(Float3R other, float t, @Mutated Float3 dest) {
+        return slerp_degenerate(other.x(), other.y(), other.z(), t, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3 slerp_degenerate(Float3R other, float t, @Mutated Double3 dest) {
+        return slerp_degenerate(other.x(), other.y(), other.z(), t, dest);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Float3 slerp_degenerate(float otherX, float otherY, float otherZ, float t, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = unitScale(otherX, otherY, otherZ);
+        float _t1 = unitScale(sd[0], sd[1], sd[2]);
+        float _t8 = otherZ * _t0;
+        float _t9 = otherX * _t0;
+        float _t10 = otherY * _t0;
+        float _t11 = sd[2] * _t1;
+        float _t12 = sd[0] * _t1;
+        float _t13 = sd[1] * _t1;
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = Math.fma(_t11, _t11, Math.fma(_t12, _t12, _t13 * _t13));
+        float _t22 = (1.0f / (float) Math.sqrt(_t18));
+        float _t23 = (1.0f / (float) Math.sqrt(_t19));
+        float _t25 = (float) Math.sqrt(_t19) / _t1;
+        float _t27 = _t23 * _t11;
+        float _t29 = _t23 * _t12;
+        float _t31 = _t23 * _t13;
+        float _t32 = Math.abs(_t27);
+        float _t33 = Math.abs(_t29);
+        float _t36 = _t18 * _t19;
+        float _t39 = Math.fma(t, (float) Math.sqrt(_t18) / _t0 - _t25, _t25);
+        float _t40, _t41, _t43;
+        if (_t32 < _t33) {
+            _t40 = _t31;
+            _t41 = 0.0f;
+            _t43 = -_t29;
+        } else {
+            _t40 = 0.0f;
+            _t41 = -_t31;
+            _t43 = _t27;
+        }
+        float _t44 = Math.fma(_t22 * _t8, _t27, Math.fma(_t22 * _t9, _t29, _t22 * _t10 * _t31));
+        float _t52 = Math.fma(_t22, _t8, -(_t44 * _t27));
+        float _t53 = Math.fma(_t22, _t9, -(_t44 * _t29));
+        float _t54 = Math.fma(_t22, _t10, -(_t44 * _t31));
+        float _t59 = (1.0f / (float) Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t43, _t43, _t40 * _t40))));
+        float _t61 = -Math.fma(_t52, _t27, Math.fma(_t53, _t29, _t54 * _t31));
+        float _t62 = Math.fma(_t61, _t27, _t52);
+        float _t63 = Math.fma(_t61, _t29, _t53);
+        float _t64 = Math.fma(_t61, _t31, _t54);
+        float _t65 = unitScale(_t63, _t64, _t62);
+        float _t71 = _t62 * _t65;
+        float _t72 = _t63 * _t65;
+        float _t73 = _t64 * _t65;
+        float _t76 = Math.fma(_t71, _t71, Math.fma(_t72, _t72, _t73 * _t73));
+        float _t78 = (1.0f / (float) Math.sqrt(_t76));
+        float _t80 = t * (float) Math.atan2((float) Math.sqrt(_t76), _t44 * _t65);
+        float _t81 = (float) Math.sin(_t80);
+        float _t82 = _t39 * _t81;
+        float _t84 = _t39 * (float) Math.cosFromSin(_t81, _t80);
+        if (_t36 > 0.0f) {
+            if (_t76 > 0.0f) {
+                dd[0] = Math.fma(_t82, _t78 * _t72, _t84 * _t29);
+                dd[1] = Math.fma(_t82, _t78 * _t73, _t84 * _t31);
+                dd[2] = Math.fma(_t82, _t78 * _t71, _t84 * _t27);
+            } else {
+                dd[0] = Math.fma(_t82, _t59 * _t40, _t84 * _t29);
+                dd[1] = Math.fma(_t82, _t59 * _t43, _t84 * _t31);
+                dd[2] = Math.fma(_t82, _t59 * _t41, _t84 * _t27);
+            }
+        } else {
+            dd[0] = Math.fma(t, otherX - sd[0], sd[0]);
+            dd[1] = Math.fma(t, otherY - sd[1], sd[1]);
+            dd[2] = Math.fma(t, otherZ - sd[2], sd[2]);
+        }
+        return dest;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Float3 slerp_degenerate(float otherX, float otherY, float otherZ, float t) {
+        return slerp_degenerate(otherX, otherY, otherZ, t, Joml.RETURN_NEW ? Joml.float3() : this);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double3 slerp_degenerate(float otherX, float otherY, float otherZ, float t, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = unitScale(otherX, otherY, otherZ);
+        float _t1 = unitScale(sd[0], sd[1], sd[2]);
+        float _t8 = otherZ * _t0;
+        float _t9 = otherX * _t0;
+        float _t10 = otherY * _t0;
+        float _t11 = sd[2] * _t1;
+        float _t12 = sd[0] * _t1;
+        float _t13 = sd[1] * _t1;
+        float _t18 = Math.fma(_t8, _t8, Math.fma(_t9, _t9, _t10 * _t10));
+        float _t19 = Math.fma(_t11, _t11, Math.fma(_t12, _t12, _t13 * _t13));
+        float _t22 = (1.0f / (float) Math.sqrt(_t18));
+        float _t23 = (1.0f / (float) Math.sqrt(_t19));
+        float _t25 = (float) Math.sqrt(_t19) / _t1;
+        float _t27 = _t23 * _t11;
+        float _t29 = _t23 * _t12;
+        float _t31 = _t23 * _t13;
+        float _t32 = Math.abs(_t27);
+        float _t33 = Math.abs(_t29);
+        float _t36 = _t18 * _t19;
+        float _t39 = Math.fma(t, (float) Math.sqrt(_t18) / _t0 - _t25, _t25);
+        float _t40, _t41, _t43;
+        if (_t32 < _t33) {
+            _t40 = _t31;
+            _t41 = 0.0f;
+            _t43 = -_t29;
+        } else {
+            _t40 = 0.0f;
+            _t41 = -_t31;
+            _t43 = _t27;
+        }
+        float _t44 = Math.fma(_t22 * _t8, _t27, Math.fma(_t22 * _t9, _t29, _t22 * _t10 * _t31));
+        float _t52 = Math.fma(_t22, _t8, -(_t44 * _t27));
+        float _t53 = Math.fma(_t22, _t9, -(_t44 * _t29));
+        float _t54 = Math.fma(_t22, _t10, -(_t44 * _t31));
+        float _t59 = (1.0f / (float) Math.sqrt(Math.fma(_t41, _t41, Math.fma(_t43, _t43, _t40 * _t40))));
+        float _t61 = -Math.fma(_t52, _t27, Math.fma(_t53, _t29, _t54 * _t31));
+        float _t62 = Math.fma(_t61, _t27, _t52);
+        float _t63 = Math.fma(_t61, _t29, _t53);
+        float _t64 = Math.fma(_t61, _t31, _t54);
+        float _t65 = unitScale(_t63, _t64, _t62);
+        float _t71 = _t62 * _t65;
+        float _t72 = _t63 * _t65;
+        float _t73 = _t64 * _t65;
+        float _t76 = Math.fma(_t71, _t71, Math.fma(_t72, _t72, _t73 * _t73));
+        float _t78 = (1.0f / (float) Math.sqrt(_t76));
+        float _t80 = t * (float) Math.atan2((float) Math.sqrt(_t76), _t44 * _t65);
+        float _t81 = (float) Math.sin(_t80);
+        float _t82 = _t39 * _t81;
+        float _t84 = _t39 * (float) Math.cosFromSin(_t81, _t80);
+        if (_t36 > 0.0f) {
+            if (_t76 > 0.0f) {
+                dd[0] = Math.fma(_t82, _t78 * _t72, _t84 * _t29);
+                dd[1] = Math.fma(_t82, _t78 * _t73, _t84 * _t31);
+                dd[2] = Math.fma(_t82, _t78 * _t71, _t84 * _t27);
+            } else {
+                dd[0] = Math.fma(_t82, _t59 * _t40, _t84 * _t29);
+                dd[1] = Math.fma(_t82, _t59 * _t43, _t84 * _t31);
+                dd[2] = Math.fma(_t82, _t59 * _t41, _t84 * _t27);
+            }
+        } else {
+            dd[0] = Math.fma(t, otherX - sd[0], sd[0]);
+            dd[1] = Math.fma(t, otherY - sd[1], sd[1]);
+            dd[2] = Math.fma(t, otherZ - sd[2], sd[2]);
+        }
         return dest;
     }
 
@@ -6506,6 +6892,114 @@ public final class Float3Impl implements Float3 {
 
 
     /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param quat the rotation to apply (must be a unit quaternion)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateAround(FloatQuatR quat, Float3R pivot, @Mutated Float3 dest) {
+        return rotateAround(quat.x(), quat.y(), quat.z(), quat.w(), pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by the quaternion {@code quat} about the point {@code pivot}, i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param quat the rotation to apply (must be a unit quaternion)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAround(FloatQuatR quat, Float3R pivot, @Mutated Double3 dest) {
+        return rotateAround(quat.x(), quat.y(), quat.z(), quat.w(), pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by the quaternion ({@code quatX}, {@code quatY}, {@code quatZ},
+     * {@code quatW}) about the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}), i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     *
+     * @param quatX the {@code x} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatY the {@code y} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatZ the {@code z} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatW the {@code w} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateAround(float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = sd[1] - pivotY;
+        float _t1 = sd[0] - pivotX;
+        float _t2 = sd[2] - pivotZ;
+        float _t12 = 2.0f * Math.fma(quatX, _t0, -(quatY * _t1));
+        float _t13 = 2.0f * Math.fma(quatZ, _t1, -(quatX * _t2));
+        float _t14 = 2.0f * Math.fma(quatY, _t2, -(quatZ * _t0));
+        dd[0] = Math.fma(quatY, _t12, Math.fma(-quatZ, _t13, Math.fma(quatW, _t14, pivotX + sd[0] - pivotX)));
+        dd[1] = Math.fma(quatZ, _t14, Math.fma(-quatX, _t12, Math.fma(quatW, _t13, pivotY + sd[1] - pivotY)));
+        dd[2] = Math.fma(quatX, _t13, Math.fma(-quatY, _t14, Math.fma(quatW, _t12, pivotZ + sd[2] - pivotZ)));
+        return dest;
+    }
+
+
+    /**
+     * Rotate this vector by the quaternion ({@code quatX}, {@code quatY}, {@code quatZ},
+     * {@code quatW}) about the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}), i.e. compute
+     * {@code p + q * (this - p) * q^-1} for the point {@code p} and store the result in
+     * {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param quatX the {@code x} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatY the {@code y} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatZ the {@code z} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param quatW the {@code w} component of the quaternion {@code (quatX, quatY, quatZ, quatW)}
+     *        (the quaternion must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAround(float quatX, float quatY, float quatZ, float quatW, float pivotX, float pivotY, float pivotZ, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = sd[1] - pivotY;
+        float _t1 = sd[0] - pivotX;
+        float _t2 = sd[2] - pivotZ;
+        float _t12 = 2.0f * Math.fma(quatX, _t0, -(quatY * _t1));
+        float _t13 = 2.0f * Math.fma(quatZ, _t1, -(quatX * _t2));
+        float _t14 = 2.0f * Math.fma(quatY, _t2, -(quatZ * _t0));
+        dd[0] = Math.fma(quatY, _t12, Math.fma(-quatZ, _t13, Math.fma(quatW, _t14, pivotX + sd[0] - pivotX)));
+        dd[1] = Math.fma(quatZ, _t14, Math.fma(-quatX, _t12, Math.fma(quatW, _t13, pivotY + sd[1] - pivotY)));
+        dd[2] = Math.fma(quatX, _t13, Math.fma(-quatY, _t14, Math.fma(quatW, _t12, pivotZ + sd[2] - pivotZ)));
+        return dest;
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the axis {@code axis} and store the result
      * in {@code dest}.
      *
@@ -6601,6 +7095,112 @@ public final class Float3Impl implements Float3 {
         dd[2] = Math.fma(_t3, axisZ * _t5, Math.fma(sd[2], _t1, Math.fma(axisX, sd[1], -(axisY * sd[0])) * _t0));
         dd[0] = _buf0;
         dd[1] = _buf1;
+        return dest;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot} and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateAxisAround(float angle, Float3R axis, Float3R pivot, @Mutated Float3 dest) {
+        return rotateAxisAround(angle, axis.x(), axis.y(), axis.z(), pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis {@code axis} through the point
+     * {@code pivot} and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param axis the rotation axis (must be a unit vector)
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAxisAround(float angle, Float3R axis, Float3R pivot, @Mutated Double3 dest) {
+        return rotateAxisAround(angle, axis.x(), axis.y(), axis.z(), pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) through the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store
+     * the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateAxisAround(float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[0] - pivotX;
+        float _t3 = sd[2] - pivotZ;
+        float _t4 = sd[1] - pivotY;
+        float _t5 = 1.0f - _t1;
+        float _t8 = Math.fma(axisZ, _t3, Math.fma(axisX, _t2, axisY * _t4));
+        dd[0] = Math.fma(_t2, _t1, Math.fma(Math.fma(axisY, _t3, -(axisZ * _t4)), _t0, Math.fma(_t5, axisX * _t8, pivotX)));
+        dd[1] = Math.fma(_t4, _t1, Math.fma(Math.fma(axisZ, _t2, -(axisX * _t3)), _t0, Math.fma(_t5, axisY * _t8, pivotY)));
+        dd[2] = Math.fma(_t3, _t1, Math.fma(Math.fma(axisX, _t4, -(axisY * _t2)), _t0, Math.fma(_t5, axisZ * _t8, pivotZ)));
+        return dest;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the axis ({@code axisX}, {@code axisY},
+     * {@code axisZ}) through the point ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store
+     * the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param axisX the {@code x} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisY the {@code y} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param axisZ the {@code z} component of the rotation axis {@code (axisX, axisY, axisZ)} (the
+     *        vector must have unit length)
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateAxisAround(float angle, float axisX, float axisY, float axisZ, float pivotX, float pivotY, float pivotZ, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[0] - pivotX;
+        float _t3 = sd[2] - pivotZ;
+        float _t4 = sd[1] - pivotY;
+        float _t5 = 1.0f - _t1;
+        float _t8 = Math.fma(axisZ, _t3, Math.fma(axisX, _t2, axisY * _t4));
+        dd[0] = Math.fma(_t2, _t1, Math.fma(Math.fma(axisY, _t3, -(axisZ * _t4)), _t0, Math.fma(_t5, axisX * _t8, pivotX)));
+        dd[1] = Math.fma(_t4, _t1, Math.fma(Math.fma(axisZ, _t2, -(axisX * _t3)), _t0, Math.fma(_t5, axisY * _t8, pivotY)));
+        dd[2] = Math.fma(_t3, _t1, Math.fma(Math.fma(axisX, _t4, -(axisY * _t2)), _t0, Math.fma(_t5, axisZ * _t8, pivotZ)));
         return dest;
     }
 
@@ -6735,6 +7335,90 @@ public final class Float3Impl implements Float3 {
 
 
     /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateXAround(float angle, Float3R pivot, @Mutated Float3 dest) {
+        return rotateXAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateXAround(float angle, Float3R pivot, @Mutated Double3 dest) {
+        return rotateXAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateXAround(float angle, float pivotX, float pivotY, float pivotZ, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[1] - pivotY;
+        float _t3 = sd[2] - pivotZ;
+        dd[0] = pivotX + (sd[0] - pivotX);
+        dd[1] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotY));
+        dd[2] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotZ));
+        return dest;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the X axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateXAround(float angle, float pivotX, float pivotY, float pivotZ, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[1] - pivotY;
+        float _t3 = sd[2] - pivotZ;
+        dd[0] = pivotX + (sd[0] - pivotX);
+        dd[1] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotY));
+        dd[2] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotZ));
+        return dest;
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the Y axis and store the result in
      * {@code dest}.
      *
@@ -6780,6 +7464,90 @@ public final class Float3Impl implements Float3 {
 
 
     /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateYAround(float angle, Float3R pivot, @Mutated Float3 dest) {
+        return rotateYAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateYAround(float angle, Float3R pivot, @Mutated Double3 dest) {
+        return rotateYAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateYAround(float angle, float pivotX, float pivotY, float pivotZ, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[0] - pivotX;
+        float _t3 = sd[2] - pivotZ;
+        dd[0] = Math.fma(_t2, _t1, Math.fma(_t3, _t0, pivotX));
+        dd[1] = pivotY + (sd[1] - pivotY);
+        dd[2] = Math.fma(_t3, _t1, Math.fma(-_t2, _t0, pivotZ));
+        return dest;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Y axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateYAround(float angle, float pivotX, float pivotY, float pivotZ, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[0] - pivotX;
+        float _t3 = sd[2] - pivotZ;
+        dd[0] = Math.fma(_t2, _t1, Math.fma(_t3, _t0, pivotX));
+        dd[1] = pivotY + (sd[1] - pivotY);
+        dd[2] = Math.fma(_t3, _t1, Math.fma(-_t2, _t0, pivotZ));
+        return dest;
+    }
+
+
+    /**
      * Rotate this vector by {@code angle} radians about the Z axis and store the result in
      * {@code dest}.
      *
@@ -6820,6 +7588,90 @@ public final class Float3Impl implements Float3 {
         dd[1] = Math.fma(sd[0], _t0, sd[1] * _t1);
         dd[2] = sd[2];
         dd[0] = _buf0;
+        return dest;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateZAround(float angle, Float3R pivot, @Mutated Float3 dest) {
+        return rotateZAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point {@code pivot}
+     * and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param pivot the pivot point
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateZAround(float angle, Float3R pivot, @Mutated Double3 dest) {
+        return rotateZAround(angle, pivot.x(), pivot.y(), pivot.z(), dest);
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Float3 rotateZAround(float angle, float pivotX, float pivotY, float pivotZ, @Mutated Float3 dest) {
+        float[] sd = this.data;
+        float[] dd = ((Float3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[0] - pivotX;
+        float _t3 = sd[1] - pivotY;
+        dd[0] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotX));
+        dd[1] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotY));
+        dd[2] = pivotZ + (sd[2] - pivotZ);
+        return dest;
+    }
+
+
+    /**
+     * Rotate this vector by {@code angle} radians about the Z axis through the point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and store the result in {@code dest}.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param angle the angle in radians
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double3 rotateZAround(float angle, float pivotX, float pivotY, float pivotZ, @Mutated Double3 dest) {
+        float[] sd = this.data;
+        double[] dd = ((Double3Impl) dest).data;
+        float _t0 = (float) Math.sin(angle);
+        float _t1 = (float) Math.cosFromSin(_t0, angle);
+        float _t2 = sd[0] - pivotX;
+        float _t3 = sd[1] - pivotY;
+        dd[0] = Math.fma(_t2, _t1, Math.fma(-_t3, _t0, pivotX));
+        dd[1] = Math.fma(_t2, _t0, Math.fma(_t3, _t1, pivotY));
+        dd[2] = pivotZ + (sd[2] - pivotZ);
         return dest;
     }
 

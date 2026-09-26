@@ -605,6 +605,55 @@ public interface Float3x4 extends Float3x4R {
     @Mutated Float3x4 composeTRS(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ);
 
     /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param pivot the pivot point
+     * @return this
+     */
+    @Mutated Float3x4 composeTRSAround(Float3R translation, FloatQuatR rotation, Float3R scale, Float3R pivot);
+
+    /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and then translates by
+     * ({@code translationX}, {@code translationY}, {@code translationZ}), i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return this
+     */
+    @Mutated Float3x4 composeTRSAround(float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ);
+
+    /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *

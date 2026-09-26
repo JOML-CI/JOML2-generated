@@ -306,6 +306,36 @@ public final class Double4Impl implements Double4 {
 
 
     /**
+     * Set this vector to the unit vector
+     * {@code (sqrt(1 - u) cos(2 PI v), sqrt(1 - u) sin(2 PI v), sqrt(u) cos(2 PI w), sqrt(u) sin(2 PI w))}:
+     * samples uniformly distributed in {@code [0, 1)} give a direction uniformly distributed on the
+     * unit sphere of four dimensions ({@code makeRandomDirection} draws them from a
+     * {@link java.util.Random}).
+     *
+     * @param u the sample that splits the unit length between {@code (x, y)} and {@code (z, w)},
+     *        uniformly distributed in {@code [0, 1)} for a uniformly distributed direction
+     * @param v the fraction of a full turn of {@code (x, y)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @param w the fraction of a full turn of {@code (z, w)}, uniformly distributed in
+     *        {@code [0, 1)} for a uniformly distributed direction
+     * @return this
+     */
+    @Mutated public Double4 makeUniformDirection(double u, double v, double w) {
+        double _t0 = Math.sqrt(u);
+        double _t1 = v * 6.283185307179586;
+        double _t3 = w * 6.283185307179586;
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sqrt(1.0 - u);
+        double _t6 = Math.sin(_t3);
+        this.x = Math.cosFromSin(_t4, _t1) * _t5;
+        this.y = _t4 * _t5;
+        this.z = Math.cosFromSin(_t6, _t3) * _t0;
+        this.w = _t6 * _t0;
+        return this;
+    }
+
+
+    /**
      * Set this vector to the given values.
      *
      * @param v the vector to copy
@@ -1249,6 +1279,202 @@ public final class Double4Impl implements Double4 {
 
 
     /**
+     * Spherically interpolate between this vector and {@code other} using the interpolation factor
+     * {@code t}: the direction turns at a constant rate along the shorter arc between the two
+     * directions, and the length changes linearly between the two lengths and store the result in
+     * {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code double} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * {@code other} (interpolation factor {@code 1}).
+     *
+     * @param other the vector to interpolate towards
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 slerp(Double4R other, double t, @Mutated Double4 dest) {
+        return slerp(other.x(), other.y(), other.z(), other.w(), t, dest);
+    }
+
+
+    /**
+     * Spherically interpolate between this vector and ({@code otherX}, {@code otherY},
+     * {@code otherZ}, {@code otherW}) using the interpolation factor {@code t}: the direction turns
+     * at a constant rate along the shorter arc between the two directions, and the length changes
+     * linearly between the two lengths and store the result in {@code dest}.
+     * <p>
+     * For unit vectors this is the usual {@code slerp} of directions. A zero vector has no
+     * direction, so the result is then the linear interpolation; for two vectors pointing in
+     * opposite directions, whose arc lies in no particular plane, the direction turns through the
+     * perpendicular {@code (-y, x, -w, z)} of this vector. The angle is computed with
+     * {@code atan2}, and vectors of any finite length are handled: when their squared lengths leave
+     * the {@code double} range, they are first scaled exactly by powers of two.
+     * <p>
+     * The interpolation starts at this vector (interpolation factor {@code 0}) and ends at
+     * ({@code otherX}, {@code otherY}, {@code otherZ}, {@code otherW}) (interpolation factor
+     * {@code 1}).
+     *
+     * @param otherX the {@code x} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherY the {@code y} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherZ the {@code z} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param otherW the {@code w} component of the vector {@code (otherX, otherY, otherZ, otherW)}
+     * @param t the interpolation factor, typically within {@code [0, 1]}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 slerp(double otherX, double otherY, double otherZ, double otherW, double t, @Mutated Double4 dest) {
+        Double4Impl d = (Double4Impl) dest;
+        double _ct0 = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        double _t14 = _ct0;
+        double _ct1 = otherX * otherX + otherY * otherY + otherZ * otherZ + otherW * otherW;
+        if (!(_ct1 > 2.2250738585072014E-308 && _ct1 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        double _t15 = _ct1;
+        double _t18 = Math.sqrt(_t14);
+        double _t16 = 1.0 / _t18;
+        double _t19 = (1.0 / Math.sqrt(_t15));
+        double _t20 = this.x * _t16;
+        double _t21 = otherX * _t19;
+        double _t22 = otherY * _t19;
+        double _t23 = this.y * _t16;
+        double _t24 = otherZ * _t19;
+        double _t25 = this.z * _t16;
+        double _t26 = otherW * _t19;
+        double _t27 = this.w * _t16;
+        double _t34 = t * (Math.sqrt(_t15) - _t18) + _t18;
+        double _t37 = _t21 * _t20 + _t22 * _t23 + _t24 * _t25 + _t26 * _t27;
+        double _t42 = _t21 - _t37 * _t20;
+        double _t43 = _t22 - _t37 * _t23;
+        double _t44 = _t24 - _t37 * _t25;
+        double _t45 = _t26 - _t37 * _t27;
+        double _t52 = _t42 * _t20 + _t43 * _t23 + _t44 * _t25 + _t45 * _t27;
+        double _t57 = _t42 - _t52 * _t20;
+        double _t58 = _t43 - _t52 * _t23;
+        double _t59 = _t44 - _t52 * _t25;
+        double _t60 = _t45 - _t52 * _t27;
+        double _ct2 = _t57 * _t57 + _t58 * _t58 + _t59 * _t59 + _t60 * _t60;
+        if (!(_ct2 > 2.2250738585072014E-308 && _ct2 < Double.POSITIVE_INFINITY)) return slerp_degenerate(otherX, otherY, otherZ, otherW, t, dest);
+        double _t68 = _ct2;
+        double _t72 = t * Math.atan2(Math.sqrt(_t68), _t37);
+        double _t73 = Math.sin(_t72);
+        double _sp0 = _t34 * _t73 * (1.0 / Math.sqrt(_t68));
+        double _t76 = _t34 * Math.cosFromSin(_t73, _t72);
+        d.x = _t20 * _t76 + _sp0 * _t57;
+        d.y = _t23 * _t76 + _sp0 * _t58;
+        d.z = _t25 * _t76 + _sp0 * _t59;
+        d.w = _t27 * _t76 + _sp0 * _t60;
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double4 slerp_degenerate(Double4R other, double t, @Mutated Double4 dest) {
+        return slerp_degenerate(other.x(), other.y(), other.z(), other.w(), t, dest);
+    }
+
+    /** Private store group 0 of {@code slerp_degenerate}: computes and stores it; reached only through it. */
+    private void slerp_degenerate_s5e1be5aa_c0(Double4Impl _dst, double _t52, double _t112, double _t106, double _t108, double _t96, double _t47, double _t114, double _t45, double t, double otherX, double _r2, double _t97, double otherY, double _r3, double _t98, double _t51, double _t49, double otherZ, double _r0, double _t99, double otherW, double _r1) {
+        _dst.x = _t52 > 0.0 ? _t112 * (_t106 > 0.0 ? _t108 * _t96 : -_t47) + _t114 * _t45 : t * (otherX - _r2) + _r2;
+        _dst.y = _t52 > 0.0 ? _t112 * (_t106 > 0.0 ? _t108 * _t97 : _t45) + _t114 * _t47 : t * (otherY - _r3) + _r3;
+        _dst.z = _t52 > 0.0 ? _t112 * (_t106 > 0.0 ? _t108 * _t98 : -_t51) + _t114 * _t49 : t * (otherZ - _r0) + _r0;
+        _dst.w = _t52 > 0.0 ? _t112 * (_t106 > 0.0 ? _t108 * _t99 : _t49) + _t114 * _t51 : t * (otherW - _r1) + _r1;
+    }
+
+    /** Private tail of {@code slerp_degenerate}; reached only through it. */
+    private void slerp_degenerate_s5e1be5aa_tail(Double4Impl _dst, double _t37, double _t7, double _t40, double _t16, double _t41, double _t20, double _t17, double _t21, double _t18, double _t22, double _t19, double _t23, double _t36, double t, double _t6, double otherX, double _r2, double otherY, double _r3, double otherZ, double _r0, double otherW, double _r1) {
+        double _t43 = Math.sqrt(_t37) / _t7;
+        double _t44 = _t40 * _t16;
+        double _t45 = _t41 * _t20;
+        double _t46 = _t40 * _t17;
+        double _t47 = _t41 * _t21;
+        double _t48 = _t40 * _t18;
+        double _t49 = _t41 * _t22;
+        double _t50 = _t40 * _t19;
+        double _t51 = _t41 * _t23;
+        double _t52 = _t36 * _t37;
+        double _t59 = t * (Math.sqrt(_t36) / _t6 - _t43) + _t43;
+        double _t62 = _t44 * _t45 + _t46 * _t47 + _t48 * _t49 + _t50 * _t51;
+        double _t67 = _t44 - _t62 * _t45;
+        double _t68 = _t46 - _t62 * _t47;
+        double _t69 = _t48 - _t62 * _t49;
+        double _t70 = _t50 - _t62 * _t51;
+        double _t77 = _t67 * _t45 + _t68 * _t47 + _t69 * _t49 + _t70 * _t51;
+        double _t82 = _t67 - _t77 * _t45;
+        double _t83 = _t69 - _t77 * _t49;
+        slerp_degenerate_s5e1be5aa_tail2(_dst, _t70, _t77, _t51, _t68, _t47, _t83, _t82, t, _t62, _t59, _t52, _t45, otherX, _r2, otherY, _r3, _t49, otherZ, _r0, otherW, _r1);
+    }
+
+    /** Private tail of {@code slerp_degenerate}; reached only through it. */
+    private void slerp_degenerate_s5e1be5aa_tail2(Double4Impl _dst, double _t70, double _t77, double _t51, double _t68, double _t47, double _t83, double _t82, double t, double _t62, double _t59, double _t52, double _t45, double otherX, double _r2, double otherY, double _r3, double _t49, double otherZ, double _r0, double otherW, double _r1) {
+        double _t84 = _t70 - _t77 * _t51;
+        double _t85 = _t68 - _t77 * _t47;
+        double _t89 = unitScale(_t83, _t84, Math.max(Math.abs(_t82), Math.abs(_t85)));
+        double _t96 = _t82 * _t89;
+        double _t97 = _t85 * _t89;
+        double _t98 = _t83 * _t89;
+        double _t99 = _t84 * _t89;
+        double _t106 = _t96 * _t96 + _t97 * _t97 + _t98 * _t98 + _t99 * _t99;
+        double _t108 = (1.0 / Math.sqrt(_t106));
+        double _t110 = t * Math.atan2(Math.sqrt(_t106), _t62 * _t89);
+        double _t111 = Math.sin(_t110);
+        double _t112 = _t59 * _t111;
+        double _t114 = _t59 * Math.cosFromSin(_t111, _t110);
+        slerp_degenerate_s5e1be5aa_c0(_dst, _t52, _t112, _t106, _t108, _t96, _t47, _t114, _t45, t, otherX, _r2, _t97, otherY, _r3, _t98, _t51, _t49, otherZ, _r0, _t99, otherW, _r1);
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    private Double4 slerp_degenerate(double otherX, double otherY, double otherZ, double otherW, double t, @Mutated Double4 dest) {
+        Double4Impl d = (Double4Impl) dest;
+        double _r0 = this.z;
+        double _r1 = this.w;
+        double _r2 = this.x;
+        double _r3 = this.y;
+        double _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        double _t7 = unitScale(_r0, _r1, Math.max(Math.abs(_r2), Math.abs(_r3)));
+        double _t16 = otherX * _t6;
+        double _t17 = otherY * _t6;
+        double _t18 = otherZ * _t6;
+        double _t19 = otherW * _t6;
+        double _t20 = _r2 * _t7;
+        double _t21 = _r3 * _t7;
+        double _t22 = _r0 * _t7;
+        double _t23 = _r1 * _t7;
+        double _t36 = _t16 * _t16 + _t17 * _t17 + _t18 * _t18 + _t19 * _t19;
+        double _t37 = _t20 * _t20 + _t21 * _t21 + _t22 * _t22 + _t23 * _t23;
+        double _t40 = (1.0 / Math.sqrt(_t36));
+        double _t41 = (1.0 / Math.sqrt(_t37));
+        slerp_degenerate_s5e1be5aa_tail(d, _t37, _t7, _t40, _t16, _t41, _t20, _t17, _t21, _t18, _t22, _t19, _t23, _t36, t, _t6, otherX, _r2, otherY, _r3, otherZ, _r0, otherW, _r1);
+        return d;
+    }
+
+
+    /**
+     * Degenerate-input path of {@code slerp}: its methods leave here when their input spans no
+     * proper basis (a zero direction, an up vector parallel to it or zero, NaN); reached only
+     * through them.
+     */
+    @Mutated private Double4 slerp_degenerate(double otherX, double otherY, double otherZ, double otherW, double t) {
+        return slerp_degenerate(otherX, otherY, otherZ, otherW, t, Joml.RETURN_NEW ? Joml.double4() : this);
+    }
+
+
+    /**
      * Compute the absolute value of each component of this vector and store the result in
      * {@code dest}.
      *
@@ -1739,6 +1965,68 @@ public final class Double4Impl implements Double4 {
         d.y = Math.cosh(this.y);
         d.z = Math.cosh(this.z);
         d.w = Math.cosh(this.w);
+        return d;
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, {@code v} and {@code w}, in that
+     * order: the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, {@code v} and {@code w} (the
+     * zero vector when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param v the second operand of the cross product
+     * @param w the third operand of the cross product
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 cross(Double4R v, Double4R w, @Mutated Double4 dest) {
+        return cross(v.x(), v.y(), v.z(), v.w(), w.x(), w.y(), w.z(), w.w(), dest);
+    }
+
+
+    /**
+     * Compute the four-dimensional cross product of this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}), in that order:
+     * the vector orthogonal to all three whose dot product with any vector {@code x} is the
+     * determinant of the matrix with the rows {@code x}, this vector, ({@code vX}, {@code vY},
+     * {@code vZ}, {@code vW}) and ({@code wX}, {@code wY}, {@code wZ}, {@code wW}) (the zero vector
+     * when the three are linearly dependent) and store the result in {@code dest}.
+     *
+     * @param vX the {@code x} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vY the {@code y} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vZ the {@code z} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param vW the {@code w} component of the second operand of the cross product
+     *        {@code (vX, vY, vZ, vW)}
+     * @param wX the {@code x} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wY the {@code y} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wZ the {@code z} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param wW the {@code w} component of the third operand of the cross product
+     *        {@code (wX, wY, wZ, wW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public Double4 cross(double vX, double vY, double vZ, double vW, double wX, double wY, double wZ, double wW, @Mutated Double4 dest) {
+        Double4Impl d = (Double4Impl) dest;
+        double _t12 = vZ * wW - vW * wZ;
+        double _t13 = vY * wW - vW * wY;
+        double _t14 = vY * wZ - vZ * wY;
+        double _t15 = vX * wW - vW * wX;
+        double _t16 = vX * wZ - vZ * wX;
+        double _t17 = vX * wY - vY * wX;
+        double _buf0 = this.y * _t12 - this.z * _t13 + this.w * _t14;
+        double _buf1 = this.z * _t15 - this.x * _t12 - this.w * _t16;
+        double _buf2 = this.x * _t13 - this.y * _t15 + this.w * _t17;
+        d.w = this.y * _t16 - this.x * _t14 - this.z * _t17;
+        d.x = _buf0;
+        d.y = _buf1;
+        d.z = _buf2;
         return d;
     }
 

@@ -9149,6 +9149,116 @@ public class Double3x4Impl implements Double3x4 {
 
 
     /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * {@code pivot} and then translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param pivot the pivot point
+     * @return this
+     */
+    public @Mutated Double3x4 composeTRSAround(Double3R translation, DoubleQuatR rotation, Double3R scale, Double3R pivot) {
+        return composeTRSAround(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), pivot.x(), pivot.y(), pivot.z());
+    }
+
+    /** Private column 0 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s1a45949d_c0(Double3x4Impl _dst, double _t30, double _t24, double _t27) {
+        _dst.m00 = _t30;
+        _dst.m10 = _t24;
+        _dst.m20 = _t27;
+    }
+
+    /** Private column 1 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s1a45949d_c1(Double3x4Impl _dst, double _t22, double _t31, double _t28) {
+        _dst.m01 = _t22;
+        _dst.m11 = _t31;
+        _dst.m21 = _t28;
+    }
+
+    /** Private column 2 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s1a45949d_c2(Double3x4Impl _dst, double _t23, double _t26, double _t32) {
+        _dst.m02 = _t23;
+        _dst.m12 = _t26;
+        _dst.m22 = _t32;
+    }
+
+    /** Private column 3 of {@code composeTRSAround}: computes and stores it; reached only through it. */
+    private void composeTRSAround_s1a45949d_c3(Double3x4Impl _dst, double pivotX, double translationX, double pivotZ, double _t23, double pivotY, double _t22, double _t30, double translationY, double _t26, double _t31, double _t24, double translationZ, double _t32, double _t28, double _t27) {
+        _dst.m03 = pivotX + translationX - pivotZ * _t23 - pivotY * _t22 - pivotX * _t30;
+        _dst.m13 = pivotY + translationY - pivotZ * _t26 - pivotY * _t31 - pivotX * _t24;
+        _dst.m23 = pivotZ + translationZ - pivotZ * _t32 - pivotY * _t28 - pivotX * _t27;
+    }
+
+
+    /**
+     * Set this matrix to a transformation that scales and rotates about the pivot point
+     * ({@code pivotX}, {@code pivotY}, {@code pivotZ}) and then translates by
+     * ({@code translationX}, {@code translationY}, {@code translationZ}), i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return this
+     */
+    @Mutated public Double3x4 composeTRSAround(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        Double3x4Impl d = this;
+        double _t0 = scaleX + scaleX;
+        double _t1 = scaleY + scaleY;
+        double _t2 = scaleZ + scaleZ;
+        double _t3 = rotationY * rotationY;
+        double _t4 = rotationZ * rotationZ;
+        double _t5 = rotationX * rotationY;
+        double _t6 = rotationZ * rotationW;
+        double _t7 = rotationX * rotationZ;
+        double _t8 = rotationY * rotationW;
+        double _t9 = rotationX * rotationX;
+        double _t10 = rotationY * rotationZ;
+        double _t11 = rotationX * rotationW;
+        double _t22 = (_t5 - _t6) * _t1;
+        double _t23 = (_t7 + _t8) * _t2;
+        double _t24 = (_t5 + _t6) * _t0;
+        double _t26 = (_t10 - _t11) * _t2;
+        double _t27 = (_t7 - _t8) * _t0;
+        double _t28 = (_t11 + _t10) * _t1;
+        double _t30 = scaleX - (_t3 + _t4) * _t0;
+        double _t31 = scaleY - (_t9 + _t4) * _t1;
+        double _t32 = scaleZ - (_t9 + _t3) * _t2;
+        composeTRSAround_s1a45949d_c0(d, _t30, _t24, _t27);
+        composeTRSAround_s1a45949d_c1(d, _t22, _t31, _t28);
+        composeTRSAround_s1a45949d_c2(d, _t23, _t26, _t32);
+        composeTRSAround_s1a45949d_c3(d, pivotX, translationX, pivotZ, _t23, pivotY, _t22, _t30, translationY, _t26, _t31, _t24, translationZ, _t32, _t28, _t27);
+        d.properties = Joml.BIT_AFFINE;
+        return d;
+    }
+
+
+    /**
      * Set this matrix to a transformation composed of the given translation, rotation and scale
      * (applied in scale-rotation-translation order), post-multiplied by the given matrix.
      *

@@ -411,6 +411,37 @@ public final class Float2x2OpsKernelsSegment {
         return dest;
     }
 
+    public static java.lang.foreign.MemorySegment decomposeLDU_unsafe(java.lang.foreign.MemorySegment lower, long lowerOffset, java.lang.foreign.MemorySegment diagonal, long diagonalOffset, java.lang.foreign.MemorySegment upper, long upperOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        long _lowerBase = lower.address() + lowerOffset;
+        long _diagonalBase = diagonal.address() + diagonalOffset;
+        long _upperBase = upper.address() + upperOffset;
+        long _srcBase = src.address() + srcOffset;
+        Float2x2OpsKernelsAddress.decomposeLDU_unsafe(_lowerBase, _diagonalBase, _upperBase, _srcBase);
+        return lower;
+    }
+
+    public static java.lang.foreign.MemorySegment decomposeLDU_api(java.lang.foreign.MemorySegment lower, long lowerOffset, java.lang.foreign.MemorySegment diagonal, long diagonalOffset, java.lang.foreign.MemorySegment upper, long upperOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
+        float _self00 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 0L);
+        float _self10 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 4L);
+        float _self01 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 8L);
+        float _self11 = src.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, srcOffset + 12L);
+        float _rcp0 = 1.0f / _self00;
+        float _sp0 = _self10 * _rcp0;
+        lower.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, lowerOffset + 0L, 1.0f);
+        lower.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, lowerOffset + 4L, _sp0);
+        lower.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, lowerOffset + 8L, 0.0f);
+        lower.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, lowerOffset + 12L, 1.0f);
+        diagonal.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, diagonalOffset + 0L, _self00);
+        diagonal.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, diagonalOffset + 4L, 0.0f);
+        diagonal.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, diagonalOffset + 8L, 0.0f);
+        diagonal.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, diagonalOffset + 12L, _self11 - _self01 * _sp0);
+        upper.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, upperOffset + 0L, 1.0f);
+        upper.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, upperOffset + 4L, 0.0f);
+        upper.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, upperOffset + 8L, _self01 * _rcp0);
+        upper.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, upperOffset + 12L, 1.0f);
+        return lower;
+    }
+
     public static java.lang.foreign.MemorySegment makeIdentity_unsafe(java.lang.foreign.MemorySegment dest, long destOffset) {
         long _destBase = dest.address() + destOffset;
         Float2x2OpsKernelsAddress.makeIdentity_unsafe(_destBase);

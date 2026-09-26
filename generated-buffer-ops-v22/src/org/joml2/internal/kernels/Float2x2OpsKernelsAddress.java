@@ -275,6 +275,28 @@ public final class Float2x2OpsKernelsAddress {
         return dest;
     }
 
+    public static long decomposeLDU_unsafe(long lower, long diagonal, long upper, long src) {
+        float _self00 = UnsafeOpsHolder.U.getFloat(src + 0L);
+        float _self10 = UnsafeOpsHolder.U.getFloat(src + 4L);
+        float _self01 = UnsafeOpsHolder.U.getFloat(src + 8L);
+        float _self11 = UnsafeOpsHolder.U.getFloat(src + 12L);
+        float _rcp0 = 1.0f / _self00;
+        float _sp0 = _self10 * _rcp0;
+        UnsafeOpsHolder.U.putFloat(lower + 0L, 1.0f);
+        UnsafeOpsHolder.U.putFloat(lower + 4L, _sp0);
+        UnsafeOpsHolder.U.putFloat(lower + 8L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(lower + 12L, 1.0f);
+        UnsafeOpsHolder.U.putFloat(diagonal + 0L, _self00);
+        UnsafeOpsHolder.U.putFloat(diagonal + 4L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(diagonal + 8L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(diagonal + 12L, _self11 - _self01 * _sp0);
+        UnsafeOpsHolder.U.putFloat(upper + 0L, 1.0f);
+        UnsafeOpsHolder.U.putFloat(upper + 4L, 0.0f);
+        UnsafeOpsHolder.U.putFloat(upper + 8L, _self01 * _rcp0);
+        UnsafeOpsHolder.U.putFloat(upper + 12L, 1.0f);
+        return lower;
+    }
+
     public static long makeIdentity_unsafe(long dest) {
         UnsafeOpsHolder.U.putFloat(dest + 0L, 1.0f);
         UnsafeOpsHolder.U.putFloat(dest + 4L, 0.0f);

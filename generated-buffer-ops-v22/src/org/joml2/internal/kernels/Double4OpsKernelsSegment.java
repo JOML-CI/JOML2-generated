@@ -337,6 +337,26 @@ public final class Double4OpsKernelsSegment {
         return dest;
     }
 
+    public static java.lang.foreign.MemorySegment makeUniformDirection_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, double u, double v, double w) {
+        long _destBase = dest.address() + destOffset;
+        Double4OpsKernelsAddress.makeUniformDirection_unsafe(_destBase, u, v, w);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment makeUniformDirection_api(java.lang.foreign.MemorySegment dest, long destOffset, double u, double v, double w) {
+        double _t0 = Math.sqrt(u);
+        double _t1 = v * 6.283185307179586;
+        double _t3 = w * 6.283185307179586;
+        double _t4 = Math.sin(_t1);
+        double _t5 = Math.sqrt(1.0 - u);
+        double _t6 = Math.sin(_t3);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.cosFromSin(_t4, _t1) * _t5);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, _t4 * _t5);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.cosFromSin(_t6, _t3) * _t0);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, _t6 * _t0);
+        return dest;
+    }
+
     public static java.lang.foreign.MemorySegment set_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, double vX, double vY, double vZ, double vW) {
         long _destBase = dest.address() + destOffset;
         Double4OpsKernelsAddress.set_unsafe(_destBase, vX, vY, vZ, vW);
@@ -965,6 +985,276 @@ public final class Double4OpsKernelsSegment {
         return dest;
     }
 
+    public static java.lang.foreign.MemorySegment slerp_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW, double t) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Double4OpsKernelsAddress.slerp_unsafe(_destBase, _srcBase, otherX, otherY, otherZ, otherW, t);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW, double t) {
+        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
+        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
+        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
+        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
+        double _ct0 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsSegment.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        double _t8 = _ct0;
+        double _ct1 = Math.fma(otherW, otherW, Math.fma(otherZ, otherZ, Math.fma(otherX, otherX, otherY * otherY)));
+        if (!(_ct1 > 2.2250738585072014E-308 && _ct1 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsSegment.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        double _t9 = _ct1;
+        double _t12 = Math.sqrt(_t8);
+        double _t10 = 1.0 / _t12;
+        double _t13 = (1.0 / Math.sqrt(_t9));
+        double _t14 = _selfx * _t10;
+        double _t16 = _selfw * _t10;
+        double _t18 = _selfz * _t10;
+        double _t21 = _selfy * _t10;
+        double _t24 = Math.fma(t, Math.sqrt(_t9) - _t12, _t12);
+        double _t27 = Math.fma(otherW * _t13, _t16, Math.fma(otherZ * _t13, _t18, Math.fma(otherX * _t13, _t14, otherY * _t13 * _t21)));
+        double _t36 = Math.fma(otherW, _t13, -(_t27 * _t16));
+        double _t37 = Math.fma(otherZ, _t13, -(_t27 * _t18));
+        double _t38 = Math.fma(otherX, _t13, -(_t27 * _t14));
+        double _t39 = Math.fma(otherY, _t13, -(_t27 * _t21));
+        double _t44 = -Math.fma(_t36, _t16, Math.fma(_t37, _t18, Math.fma(_t38, _t14, _t39 * _t21)));
+        double _t45 = Math.fma(_t44, _t16, _t36);
+        double _t46 = Math.fma(_t44, _t18, _t37);
+        double _t47 = Math.fma(_t44, _t14, _t38);
+        double _t48 = Math.fma(_t44, _t21, _t39);
+        double _ct2 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, Math.fma(_t47, _t47, _t48 * _t48)));
+        if (!(_ct2 > 2.2250738585072014E-308 && _ct2 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsSegment.slerp_degenerate(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        double _t53 = _ct2;
+        double _t57 = t * Math.atan2(Math.sqrt(_t53), _t27);
+        double _t58 = Math.sin(_t57);
+        double _sp0 = _t24 * _t58 * (1.0 / Math.sqrt(_t53));
+        double _t61 = _t24 * Math.cosFromSin(_t58, _t57);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_t14, _t61, _sp0 * _t47));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_t21, _t61, _sp0 * _t48));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_t18, _t61, _sp0 * _t46));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(_t16, _t61, _sp0 * _t45));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW, double t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative()) return Double4OpsKernelsSegment.slerp_degenerate_unsafe(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+        return Double4OpsKernelsSegment.slerp_degenerate_api(dest, destOffset, src, srcOffset, otherX, otherY, otherZ, otherW, t);
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW, double t) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Double4OpsKernelsAddress.slerp_degenerate_unsafe(_destBase, _srcBase, otherX, otherY, otherZ, otherW, t);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double otherX, double otherY, double otherZ, double otherW, double t) {
+        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
+        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
+        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
+        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
+        double _t6 = unitScale(otherZ, otherW, Math.max(Math.abs(otherX), Math.abs(otherY)));
+        double _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        double _t16 = otherW * _t6;
+        double _t17 = otherZ * _t6;
+        double _t18 = otherX * _t6;
+        double _t19 = otherY * _t6;
+        double _t20 = _selfw * _t7;
+        double _t21 = _selfz * _t7;
+        double _t22 = _selfx * _t7;
+        double _t23 = _selfy * _t7;
+        double _t30 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t19 * _t19)));
+        double _t31 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23)));
+        double _t34 = (1.0 / Math.sqrt(_t30));
+        double _t35 = (1.0 / Math.sqrt(_t31));
+        double _t37 = Math.sqrt(_t31) / _t7;
+        double _t39 = _t35 * _t20;
+        double _t41 = _t35 * _t21;
+        double _t43 = _t35 * _t22;
+        double _t45 = _t35 * _t23;
+        double _t46 = _t30 * _t31;
+        double _t49 = Math.fma(t, Math.sqrt(_t30) / _t6 - _t37, _t37);
+        double _t52 = Math.fma(_t34 * _t16, _t39, Math.fma(_t34 * _t17, _t41, Math.fma(_t34 * _t18, _t43, _t34 * _t19 * _t45)));
+        double _t61 = Math.fma(_t34, _t16, -(_t52 * _t39));
+        double _t62 = Math.fma(_t34, _t17, -(_t52 * _t41));
+        double _t63 = Math.fma(_t34, _t18, -(_t52 * _t43));
+        double _t64 = Math.fma(_t34, _t19, -(_t52 * _t45));
+        double _t69 = -Math.fma(_t61, _t39, Math.fma(_t62, _t41, Math.fma(_t63, _t43, _t64 * _t45)));
+        double _t70 = Math.fma(_t69, _t39, _t61);
+        double _t71 = Math.fma(_t69, _t41, _t62);
+        double _t72 = Math.fma(_t69, _t43, _t63);
+        double _t73 = Math.fma(_t69, _t45, _t64);
+        double _t77 = unitScale(_t71, _t70, Math.max(Math.abs(_t72), Math.abs(_t73)));
+        double _t84 = _t70 * _t77;
+        double _t85 = _t71 * _t77;
+        double _t86 = _t72 * _t77;
+        double _t87 = _t73 * _t77;
+        double _t91 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, Math.fma(_t86, _t86, _t87 * _t87)));
+        double _t93 = (1.0 / Math.sqrt(_t91));
+        double _t95 = t * Math.atan2(Math.sqrt(_t91), _t52 * _t77);
+        double _t96 = Math.sin(_t95);
+        double _t97 = _t49 * _t96;
+        double _t99 = _t49 * Math.cosFromSin(_t96, _t95);
+        if (_t46 > 0.0) {
+            if (_t91 > 0.0) {
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_t97, _t93 * _t86, _t99 * _t43));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_t97, _t93 * _t87, _t99 * _t45));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_t97, _t93 * _t85, _t99 * _t41));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(_t97, _t93 * _t84, _t99 * _t39));
+            } else {
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_t97, -_t45, _t99 * _t43));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_t97, _t43, _t99 * _t45));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_t97, -_t39, _t99 * _t41));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(_t97, _t41, _t99 * _t39));
+            }
+        } else {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(t, otherX - _selfx, _selfx));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(t, otherY - _selfy, _selfy));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(t, otherZ - _selfz, _selfz));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(t, otherW - _selfw, _selfw));
+        }
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double t) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _otherBase = other.address() + otherOffset;
+        Double4OpsKernelsAddress.slerp_unsafe(_destBase, _srcBase, _otherBase, t);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double t) {
+        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
+        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
+        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
+        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
+        double _otherx = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 0L);
+        double _othery = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 8L);
+        double _otherz = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 16L);
+        double _otherw = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 24L);
+        double _ct0 = Math.fma(_selfw, _selfw, Math.fma(_selfz, _selfz, Math.fma(_selfx, _selfx, _selfy * _selfy)));
+        if (!(_ct0 > 2.2250738585072014E-308 && _ct0 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsSegment.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        double _t8 = _ct0;
+        double _ct1 = Math.fma(_otherw, _otherw, Math.fma(_otherz, _otherz, Math.fma(_otherx, _otherx, _othery * _othery)));
+        if (!(_ct1 > 2.2250738585072014E-308 && _ct1 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsSegment.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        double _t9 = _ct1;
+        double _t12 = Math.sqrt(_t8);
+        double _t10 = 1.0 / _t12;
+        double _t13 = (1.0 / Math.sqrt(_t9));
+        double _t14 = _selfx * _t10;
+        double _t16 = _selfw * _t10;
+        double _t18 = _selfz * _t10;
+        double _t21 = _selfy * _t10;
+        double _t24 = Math.fma(t, Math.sqrt(_t9) - _t12, _t12);
+        double _t27 = Math.fma(_otherw * _t13, _t16, Math.fma(_otherz * _t13, _t18, Math.fma(_otherx * _t13, _t14, _othery * _t13 * _t21)));
+        double _t36 = Math.fma(_otherw, _t13, -(_t27 * _t16));
+        double _t37 = Math.fma(_otherz, _t13, -(_t27 * _t18));
+        double _t38 = Math.fma(_otherx, _t13, -(_t27 * _t14));
+        double _t39 = Math.fma(_othery, _t13, -(_t27 * _t21));
+        double _t44 = -Math.fma(_t36, _t16, Math.fma(_t37, _t18, Math.fma(_t38, _t14, _t39 * _t21)));
+        double _t45 = Math.fma(_t44, _t16, _t36);
+        double _t46 = Math.fma(_t44, _t18, _t37);
+        double _t47 = Math.fma(_t44, _t14, _t38);
+        double _t48 = Math.fma(_t44, _t21, _t39);
+        double _ct2 = Math.fma(_t45, _t45, Math.fma(_t46, _t46, Math.fma(_t47, _t47, _t48 * _t48)));
+        if (!(_ct2 > 2.2250738585072014E-308 && _ct2 < Double.POSITIVE_INFINITY)) return Double4OpsKernelsSegment.slerp_degenerate(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        double _t53 = _ct2;
+        double _t57 = t * Math.atan2(Math.sqrt(_t53), _t27);
+        double _t58 = Math.sin(_t57);
+        double _sp0 = _t24 * _t58 * (1.0 / Math.sqrt(_t53));
+        double _t61 = _t24 * Math.cosFromSin(_t58, _t57);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_t14, _t61, _sp0 * _t47));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_t21, _t61, _sp0 * _t48));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_t18, _t61, _sp0 * _t46));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(_t16, _t61, _sp0 * _t45));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_degenerate(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double t) {
+        if (Joml.STORE_LOAD_BACKEND == StoreLoadBackend.UNSAFE && dest.isNative() && !dest.isReadOnly() && src.isNative() && other.isNative()) return Double4OpsKernelsSegment.slerp_degenerate_unsafe(dest, destOffset, src, srcOffset, other, otherOffset, t);
+        return Double4OpsKernelsSegment.slerp_degenerate_api(dest, destOffset, src, srcOffset, other, otherOffset, t);
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_degenerate_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double t) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _otherBase = other.address() + otherOffset;
+        Double4OpsKernelsAddress.slerp_degenerate_unsafe(_destBase, _srcBase, _otherBase, t);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment slerp_degenerate_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment other, long otherOffset, double t) {
+        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
+        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
+        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
+        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
+        double _otherx = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 0L);
+        double _othery = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 8L);
+        double _otherz = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 16L);
+        double _otherw = other.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, otherOffset + 24L);
+        double _t6 = unitScale(_otherz, _otherw, Math.max(Math.abs(_otherx), Math.abs(_othery)));
+        double _t7 = unitScale(_selfz, _selfw, Math.max(Math.abs(_selfx), Math.abs(_selfy)));
+        double _t16 = _otherw * _t6;
+        double _t17 = _otherz * _t6;
+        double _t18 = _otherx * _t6;
+        double _t19 = _othery * _t6;
+        double _t20 = _selfw * _t7;
+        double _t21 = _selfz * _t7;
+        double _t22 = _selfx * _t7;
+        double _t23 = _selfy * _t7;
+        double _t30 = Math.fma(_t16, _t16, Math.fma(_t17, _t17, Math.fma(_t18, _t18, _t19 * _t19)));
+        double _t31 = Math.fma(_t20, _t20, Math.fma(_t21, _t21, Math.fma(_t22, _t22, _t23 * _t23)));
+        double _t34 = (1.0 / Math.sqrt(_t30));
+        double _t35 = (1.0 / Math.sqrt(_t31));
+        double _t37 = Math.sqrt(_t31) / _t7;
+        double _t39 = _t35 * _t20;
+        double _t41 = _t35 * _t21;
+        double _t43 = _t35 * _t22;
+        double _t45 = _t35 * _t23;
+        double _t46 = _t30 * _t31;
+        double _t49 = Math.fma(t, Math.sqrt(_t30) / _t6 - _t37, _t37);
+        double _t52 = Math.fma(_t34 * _t16, _t39, Math.fma(_t34 * _t17, _t41, Math.fma(_t34 * _t18, _t43, _t34 * _t19 * _t45)));
+        double _t61 = Math.fma(_t34, _t16, -(_t52 * _t39));
+        double _t62 = Math.fma(_t34, _t17, -(_t52 * _t41));
+        double _t63 = Math.fma(_t34, _t18, -(_t52 * _t43));
+        double _t64 = Math.fma(_t34, _t19, -(_t52 * _t45));
+        double _t69 = -Math.fma(_t61, _t39, Math.fma(_t62, _t41, Math.fma(_t63, _t43, _t64 * _t45)));
+        double _t70 = Math.fma(_t69, _t39, _t61);
+        double _t71 = Math.fma(_t69, _t41, _t62);
+        double _t72 = Math.fma(_t69, _t43, _t63);
+        double _t73 = Math.fma(_t69, _t45, _t64);
+        double _t77 = unitScale(_t71, _t70, Math.max(Math.abs(_t72), Math.abs(_t73)));
+        double _t84 = _t70 * _t77;
+        double _t85 = _t71 * _t77;
+        double _t86 = _t72 * _t77;
+        double _t87 = _t73 * _t77;
+        double _t91 = Math.fma(_t84, _t84, Math.fma(_t85, _t85, Math.fma(_t86, _t86, _t87 * _t87)));
+        double _t93 = (1.0 / Math.sqrt(_t91));
+        double _t95 = t * Math.atan2(Math.sqrt(_t91), _t52 * _t77);
+        double _t96 = Math.sin(_t95);
+        double _t97 = _t49 * _t96;
+        double _t99 = _t49 * Math.cosFromSin(_t96, _t95);
+        if (_t46 > 0.0) {
+            if (_t91 > 0.0) {
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_t97, _t93 * _t86, _t99 * _t43));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_t97, _t93 * _t87, _t99 * _t45));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_t97, _t93 * _t85, _t99 * _t41));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(_t97, _t93 * _t84, _t99 * _t39));
+            } else {
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_t97, -_t45, _t99 * _t43));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(_t97, _t43, _t99 * _t45));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_t97, -_t39, _t99 * _t41));
+                dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(_t97, _t41, _t99 * _t39));
+            }
+        } else {
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(t, _otherx - _selfx, _selfx));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(t, _othery - _selfy, _selfy));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(t, _otherz - _selfz, _selfz));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(t, _otherw - _selfw, _selfw));
+        }
+        return dest;
+    }
+
     public static java.lang.foreign.MemorySegment absolute_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset) {
         long _destBase = dest.address() + destOffset;
         long _srcBase = src.address() + srcOffset;
@@ -1582,6 +1872,66 @@ public final class Double4OpsKernelsSegment {
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.cosh(_selfy));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.cosh(_selfz));
         dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.cosh(_selfw));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment cross_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double vX, double vY, double vZ, double vW, double wX, double wY, double wZ, double wW) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        Double4OpsKernelsAddress.cross_unsafe(_destBase, _srcBase, vX, vY, vZ, vW, wX, wY, wZ, wW);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment cross_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, double vX, double vY, double vZ, double vW, double wX, double wY, double wZ, double wW) {
+        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
+        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
+        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
+        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
+        double _t12 = Math.fma(vY, wZ, -(vZ * wY));
+        double _t13 = Math.fma(vZ, wW, -(vW * wZ));
+        double _t14 = Math.fma(vY, wW, -(vW * wY));
+        double _t15 = Math.fma(vX, wZ, -(vZ * wX));
+        double _t16 = Math.fma(vX, wW, -(vW * wX));
+        double _t17 = Math.fma(vX, wY, -(vY * wX));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_selfw, _t12, Math.fma(_selfy, _t13, -(_selfz * _t14))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(-_selfw, _t15, Math.fma(_selfz, _t16, -(_selfx * _t13))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_selfw, _t17, Math.fma(_selfx, _t14, -(_selfy * _t16))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(-_selfz, _t17, Math.fma(_selfy, _t15, -(_selfx * _t12))));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment cross_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset, java.lang.foreign.MemorySegment w, long wOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _srcBase = src.address() + srcOffset;
+        long _vBase = v.address() + vOffset;
+        long _wBase = w.address() + wOffset;
+        Double4OpsKernelsAddress.cross_unsafe(_destBase, _srcBase, _vBase, _wBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment cross_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment src, long srcOffset, java.lang.foreign.MemorySegment v, long vOffset, java.lang.foreign.MemorySegment w, long wOffset) {
+        double _selfx = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 0L);
+        double _selfy = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 8L);
+        double _selfz = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 16L);
+        double _selfw = src.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, srcOffset + 24L);
+        double _vx = v.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, vOffset + 0L);
+        double _vy = v.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, vOffset + 8L);
+        double _vz = v.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, vOffset + 16L);
+        double _vw = v.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, vOffset + 24L);
+        double _wx = w.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, wOffset + 0L);
+        double _wy = w.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, wOffset + 8L);
+        double _wz = w.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, wOffset + 16L);
+        double _ww = w.get(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, wOffset + 24L);
+        double _t12 = Math.fma(_vy, _wz, -(_vz * _wy));
+        double _t13 = Math.fma(_vz, _ww, -(_vw * _wz));
+        double _t14 = Math.fma(_vy, _ww, -(_vw * _wy));
+        double _t15 = Math.fma(_vx, _wz, -(_vz * _wx));
+        double _t16 = Math.fma(_vx, _ww, -(_vw * _wx));
+        double _t17 = Math.fma(_vx, _wy, -(_vy * _wx));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 0L, Math.fma(_selfw, _t12, Math.fma(_selfy, _t13, -(_selfz * _t14))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 8L, Math.fma(-_selfw, _t15, Math.fma(_selfz, _t16, -(_selfx * _t13))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 16L, Math.fma(_selfw, _t17, Math.fma(_selfx, _t14, -(_selfy * _t16))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_DOUBLE_UNALIGNED, destOffset + 24L, Math.fma(-_selfz, _t17, Math.fma(_selfy, _t15, -(_selfx * _t12))));
         return dest;
     }
 

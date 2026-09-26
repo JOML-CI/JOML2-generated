@@ -1582,6 +1582,52 @@ public value record Float2x2(float m00, float m01, float m10, float m11, int pro
         return to3x3_general();
     }
 
+    /**
+     * Result value of {@code decomposeLDU}.
+     *
+     * @param lower the unit lower-triangular factor
+     * @param diagonal the diagonal factor
+     * @param upper the unit upper-triangular factor
+     */
+    @jdk.internal.vm.annotation.LooselyConsistentValue
+    public value record DecomposeLDUResult(Float2x2 lower, Float2x2 diagonal, Float2x2 upper) {
+        /**
+         * Canonical constructor.
+         *
+         * @param lower the unit lower-triangular factor
+         * @param diagonal the diagonal factor
+         * @param upper the unit upper-triangular factor
+         */
+        public DecomposeLDUResult(Float2x2 lower, Float2x2 diagonal, Float2x2 upper) {
+            this.lower = lower;
+            this.diagonal = diagonal;
+            this.upper = upper;
+        }
+        /** {@return the {@code lower} component} */
+        public Float2x2 lower() { return lower; }
+        /** {@return the {@code diagonal} component} */
+        public Float2x2 diagonal() { return diagonal; }
+        /** {@return the {@code upper} component} */
+        public Float2x2 upper() { return upper; }
+    }
+
+
+    /**
+     * Decompose this matrix into a unit lower-triangular matrix, a diagonal matrix and a unit
+     * upper-triangular matrix whose product, in that order, is this matrix.
+     * <p>
+     * This is Doolittle elimination without pivoting: {@code m00} is the first pivot, and a matrix
+     * whose {@code m00} is zero has no such decomposition (the factors are then not finite).
+     *
+     * @return a new result value holding the lower-triangular, diagonal and upper-triangular
+     *        factors
+     */
+    public DecomposeLDUResult decomposeLDU() {
+        float _rcp0 = 1.0f / this.m00;
+        float _sp0 = this.m10 * _rcp0;
+        return new DecomposeLDUResult(new Float2x2(1.0f, 0.0f, _sp0, 1.0f), new Float2x2(this.m00, 0.0f, 0.0f, this.m11 - this.m01 * _sp0), new Float2x2(1.0f, this.m01 * _rcp0, 0.0f, 1.0f));
+    }
+
 
     /**
      * Create an identity matrix.

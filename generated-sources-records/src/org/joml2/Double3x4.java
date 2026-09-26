@@ -2422,7 +2422,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3x4(this.m00, this.m10, this.m20, Math.fma(-this.m20, this.m23, Math.fma(-this.m10, this.m13, -(this.m00 * this.m03))), this.m01, this.m11, this.m21, Math.fma(-this.m21, this.m23, Math.fma(-this.m11, this.m13, -(this.m01 * this.m03))), this.m02, this.m12, this.m22, Math.fma(-this.m22, this.m23, Math.fma(-this.m12, this.m13, -(this.m02 * this.m03))), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code invert_general}; reached only through it. */
     /** Private per-column body of {@code invert_general_s0_tail}; reached only through it. */
     private Double3 invert_general_s0_tail_s2cefc2df_c0(double _t20, double _t33_inv, double _t25, double _t21) {
         return new Double3(_t20 * _t33_inv, _t25 * _t33_inv, _t21 * _t33_inv);
@@ -2443,6 +2442,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-(Math.fma(this.m23, _t24, Math.fma(this.m03, _t20, this.m13 * _t23)) * _t33_inv), -(Math.fma(this.m23, _t27, Math.fma(this.m03, _t25, this.m13 * _t26)) * _t33_inv), -(Math.fma(this.m23, _t29, Math.fma(this.m03, _t21, this.m13 * _t28)) * _t33_inv));
     }
 
+    /** Private tail of {@code invert_general}; reached only through it. */
     private Double3x4 invert_general_s0_tail(double _t21, double _t20, double _t23, double _t24, double _t25, double _t26, double _t27, double _t28, double _t29, int _props) {
         double _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
         double _t33_inv = 1.0 / _t33;
@@ -2496,7 +2496,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return invertProduct_general_s69fa5a44_tail2(_t30, _t27, _t29, _t25, _t31, _t28, _t32, _t26, _t24, _t57, _t56, _t59, _t60, _t33, _t34, _t35, _props);
     }
 
-    /** Private tail of {@code invertProduct_general}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_s69fa5a44_tail2}; reached only through it. */
     private Double3 invertProduct_general_s69fa5a44_tail2_s1de8c15d_c0(double _t56, double _t69_inv, double _t61, double _t57) {
         return new Double3(_t56 * _t69_inv, _t61 * _t69_inv, _t57 * _t69_inv);
@@ -2517,6 +2516,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv), -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv), -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv));
     }
 
+    /** Private tail of {@code invertProduct_general}; reached only through it. */
     private Double3x4 invertProduct_general_s69fa5a44_tail2(double _t30, double _t27, double _t29, double _t25, double _t31, double _t28, double _t32, double _t26, double _t24, double _t57, double _t56, double _t59, double _t60, double _t33, double _t34, double _t35, int _props) {
         double _t61 = Math.fma(_t30, _t27, -(_t29 * _t25));
         double _t62 = Math.fma(_t31, _t25, -(_t30 * _t28));
@@ -2544,7 +2544,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return invertProduct_general_s69fa5a44_tail(other, _t24, _t25, _t26, _t27, _t29, _t30, _t28, _props);
     }
 
-    /** Private tail of {@code invertProduct_identity}; reached only through it. */
     /** Private per-column body of {@code invertProduct_identity_s29abb90e_tail}; reached only through it. */
     private Double3 invertProduct_identity_s29abb90e_tail_s6c20c79d_c0(double _t20, double _t33_inv, double _t25, double _t21) {
         return new Double3(_t20 * _t33_inv, _t25 * _t33_inv, _t21 * _t33_inv);
@@ -2565,6 +2564,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-(Math.fma(other.m23(), _t24, Math.fma(other.m03(), _t20, other.m13() * _t23)) * _t33_inv), -(Math.fma(other.m23(), _t27, Math.fma(other.m03(), _t25, other.m13() * _t26)) * _t33_inv), -(Math.fma(other.m23(), _t29, Math.fma(other.m03(), _t21, other.m13() * _t28)) * _t33_inv));
     }
 
+    /** Private tail of {@code invertProduct_identity}; reached only through it. */
     private Double3x4 invertProduct_identity_s29abb90e_tail(Double3x4 other, double _t21, double _t20, double _t23, double _t24, double _t25, double _t26, double _t27, double _t28, double _t29, int _props) {
         double _t33 = Math.fma(other.m02(), _t21, Math.fma(other.m00(), _t20, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
         double _t33_inv = 1.0 / _t33;
@@ -2589,7 +2589,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return invertProduct_identity_s29abb90e_tail(other, _t21, _t20, _t23, _t24, _t25, _t26, _t27, _t28, _t29, other.properties());
     }
 
-    /** Private tail of {@code invertProduct_translation}; reached only through it. */
     /** Private per-column body of {@code invertProduct_translation_s29abb90e_tail}; reached only through it. */
     private Double3 invertProduct_translation_s29abb90e_tail_s3f393878_c0(double _t23, double _t36_inv, double _t28, double _t24) {
         return new Double3(_t23 * _t36_inv, _t28 * _t36_inv, _t24 * _t36_inv);
@@ -2610,6 +2609,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-(Math.fma(_t5, _t27, Math.fma(_t6, _t23, _t7 * _t26)) * _t36_inv), -(Math.fma(_t5, _t30, Math.fma(_t6, _t28, _t7 * _t29)) * _t36_inv), -(Math.fma(_t5, _t32, Math.fma(_t6, _t24, _t7 * _t31)) * _t36_inv));
     }
 
+    /** Private tail of {@code invertProduct_translation}; reached only through it. */
     private Double3x4 invertProduct_translation_s29abb90e_tail(Double3x4 other, double _t24, double _t23, double _t26, double _t27, double _t5, double _t6, double _t7, double _t28, double _t29, double _t30, double _t31, int _props) {
         double _t32 = Math.fma(other.m00(), other.m11(), -(other.m01() * other.m10()));
         double _t36 = Math.fma(other.m02(), _t24, Math.fma(other.m00(), _t23, -(other.m01() * Math.fma(other.m10(), other.m22(), -(other.m12() * other.m20())))));
@@ -2691,7 +2691,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3x4(this.m00, this.m10, this.m20, Math.fma(-this.m00, this.m03, Math.fma(-this.m10, this.m13, Math.fma(-this.m20, this.m23, -other.m03()))), this.m01, this.m11, this.m21, Math.fma(-this.m01, this.m03, Math.fma(-this.m11, this.m13, Math.fma(-this.m21, this.m23, -other.m13()))), this.m02, this.m12, this.m22, Math.fma(-this.m02, this.m03, Math.fma(-this.m12, this.m13, Math.fma(-this.m22, this.m23, -other.m23()))), Joml.BIT_ORTHOGONAL & other.properties());
     }
 
-    /** Private tail of {@code invertProduct_general_identity}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_identity_s29abb90e_tail}; reached only through it. */
     private Double3 invertProduct_general_identity_s29abb90e_tail_s2cefc2df_c0(double _t20, double _t33_inv, double _t25, double _t21) {
         return new Double3(_t20 * _t33_inv, _t25 * _t33_inv, _t21 * _t33_inv);
@@ -2712,6 +2711,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-(Math.fma(this.m23, _t24, Math.fma(this.m03, _t20, this.m13 * _t23)) * _t33_inv), -(Math.fma(this.m23, _t27, Math.fma(this.m03, _t25, this.m13 * _t26)) * _t33_inv), -(Math.fma(this.m23, _t29, Math.fma(this.m03, _t21, this.m13 * _t28)) * _t33_inv));
     }
 
+    /** Private tail of {@code invertProduct_general_identity}; reached only through it. */
     private Double3x4 invertProduct_general_identity_s29abb90e_tail(double _t21, double _t20, double _t23, double _t24, double _t25, double _t26, double _t27, double _t28, double _t29, int _props) {
         double _t33 = Math.fma(this.m02, _t21, Math.fma(this.m00, _t20, -(this.m01 * Math.fma(this.m10, this.m22, -(this.m12 * this.m20)))));
         double _t33_inv = 1.0 / _t33;
@@ -2736,7 +2736,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return invertProduct_general_identity_s29abb90e_tail(_t21, _t20, _t23, _t24, _t25, _t26, _t27, _t28, _t29, Joml.BIT_AFFINE & other.properties());
     }
 
-    /** Private tail of {@code invertProduct_general_translation}; reached only through it. */
     /** Private per-column body of {@code invertProduct_general_translation_s29abb90e_tail}; reached only through it. */
     private Double3 invertProduct_general_translation_s29abb90e_tail_s3f6d0a15_c0(double _t23, double _t42_inv, double _t28, double _t24) {
         return new Double3(_t23 * _t42_inv, _t28 * _t42_inv, _t24 * _t42_inv);
@@ -2757,6 +2756,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-(Math.fma(_t38, _t27, Math.fma(_t39, _t23, _t40 * _t26)) * _t42_inv), -(Math.fma(_t38, _t30, Math.fma(_t39, _t28, _t40 * _t29)) * _t42_inv), -(Math.fma(_t38, _t32, Math.fma(_t39, _t24, _t40 * _t31)) * _t42_inv));
     }
 
+    /** Private tail of {@code invertProduct_general_translation}; reached only through it. */
     private Double3x4 invertProduct_general_translation_s29abb90e_tail(Double3x4 other, double _t24, double _t23, double _t26, double _t27, double _t28, double _t29, double _t30, double _t31, double _t32, int _props) {
         double _t38 = Math.fma(other.m03(), this.m20, Math.fma(other.m13(), this.m21, Math.fma(other.m23(), this.m22, this.m23)));
         double _t39 = Math.fma(other.m03(), this.m00, Math.fma(other.m13(), this.m01, Math.fma(other.m23(), this.m02, this.m03)));
@@ -2841,7 +2841,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return invertProduct_s1582a7ea_tail2(_t28, _t57, _t31, _t56, _t32, _t29, _t25, _t30, _t27, _t59, _t60, _t33, _t34, _t35, _t61, _t62, _t63, _t64, _t65, _props);
     }
 
-    /** Private tail of {@code invertProduct}; reached only through it. */
     /** Private per-column body of {@code invertProduct_s1582a7ea_tail2}; reached only through it. */
     private Double3 invertProduct_s1582a7ea_tail2_s56d837d0_c0(double _t56, double _t69_inv, double _t61, double _t57) {
         return new Double3(_t56 * _t69_inv, _t61 * _t69_inv, _t57 * _t69_inv);
@@ -2862,6 +2861,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-(Math.fma(_t33, _t60, Math.fma(_t34, _t56, _t35 * _t59)) * _t69_inv), -(Math.fma(_t33, _t63, Math.fma(_t34, _t61, _t35 * _t62)) * _t69_inv), -(Math.fma(_t33, _t65, Math.fma(_t34, _t57, _t35 * _t64)) * _t69_inv));
     }
 
+    /** Private tail of {@code invertProduct}; reached only through it. */
     private Double3x4 invertProduct_s1582a7ea_tail2(double _t28, double _t57, double _t31, double _t56, double _t32, double _t29, double _t25, double _t30, double _t27, double _t59, double _t60, double _t33, double _t34, double _t35, double _t61, double _t62, double _t63, double _t64, double _t65, int _props) {
         double _t69 = Math.fma(_t28, _t57, Math.fma(_t31, _t56, -(_t32 * Math.fma(_t29, _t25, -(_t30 * _t27)))));
         double _t69_inv = 1.0 / _t69;
@@ -5762,6 +5762,104 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
 
 
     /**
+     * Create a transformation that scales and rotates about the pivot point {@code pivot} and then
+     * translates by {@code translation}, i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translation the translation
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param scale the scale factors
+     * @param pivot the pivot point
+     * @return the resulting matrix
+     */
+    public static Double3x4 composeTRSAround(Double3 translation, DoubleQuat rotation, Double3 scale, Double3 pivot) {
+        return composeTRSAround(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), pivot.x(), pivot.y(), pivot.z());
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s1a45949d_tail}; reached only through it. */
+    private static Double3 composeTRSAround_s1a45949d_tail_s4891262_c0(double _t33, double _t28, double _t32) {
+        return new Double3(_t33, _t28, _t32);
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s1a45949d_tail}; reached only through it. */
+    private static Double3 composeTRSAround_s1a45949d_tail_s4891262_c1(double _t30, double _t34, double _t29) {
+        return new Double3(_t30, _t34, _t29);
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s1a45949d_tail}; reached only through it. */
+    private static Double3 composeTRSAround_s1a45949d_tail_s4891262_c2(double _t27, double _t31, double _t35) {
+        return new Double3(_t27, _t31, _t35);
+    }
+
+    /** Private per-column body of {@code composeTRSAround_s1a45949d_tail}; reached only through it. */
+    private static Double3 composeTRSAround_s1a45949d_tail_s4891262_c3(double _t0, double _t33, double _t1, double _t30, double _t2, double _t27, double pivotX, double translationX, double _t28, double _t34, double _t31, double pivotY, double translationY, double _t32, double _t29, double _t35, double pivotZ, double translationZ) {
+        return new Double3(Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX))), Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY))), Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ))));
+    }
+
+    /** Private tail of {@code composeTRSAround}; reached only through it. */
+    private static Double3x4 composeTRSAround_s1a45949d_tail(double rotationX, double rotationY, double _t5, double scaleZ, double _t33, double _t30, double _t27, double _t0, double _t1, double _t2, double pivotX, double translationX, double _t28, double _t34, double _t31, double pivotY, double translationY, double _t32, double _t29, double pivotZ, double translationZ, int _props) {
+        double _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        return new Double3x4(composeTRSAround_s1a45949d_tail_s4891262_c0(_t33, _t28, _t32), composeTRSAround_s1a45949d_tail_s4891262_c1(_t30, _t34, _t29), composeTRSAround_s1a45949d_tail_s4891262_c2(_t27, _t31, _t35), composeTRSAround_s1a45949d_tail_s4891262_c3(_t0, _t33, _t1, _t30, _t2, _t27, pivotX, translationX, _t28, _t34, _t31, pivotY, translationY, _t32, _t29, _t35, pivotZ, translationZ), _props);
+    }
+
+
+    /**
+     * Create a transformation that scales and rotates about the pivot point ({@code pivotX},
+     * {@code pivotY}, {@code pivotZ}) and then translates by ({@code translationX},
+     * {@code translationY}, {@code translationZ}), i.e.
+     * {@code T(translation) * T(pivot) * R(rotation) * S(scale) * T(-pivot)}: the pivot point
+     * itself only moves by the translation.
+     *
+     * @param translationX the {@code x} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationY the {@code y} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param translationZ the {@code z} component of the vector
+     *        {@code (translationX, translationY, translationZ)}
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param scaleX the {@code x} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleY the {@code y} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param scaleZ the {@code z} component of the vector {@code (scaleX, scaleY, scaleZ)}
+     * @param pivotX the {@code x} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotY the {@code y} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @param pivotZ the {@code z} component of the vector {@code (pivotX, pivotY, pivotZ)}
+     * @return the resulting matrix
+     */
+    public static Double3x4 composeTRSAround(double translationX, double translationY, double translationZ, double rotationX, double rotationY, double rotationZ, double rotationW, double scaleX, double scaleY, double scaleZ, double pivotX, double pivotY, double pivotZ) {
+        double _t0 = -pivotX;
+        double _t1 = -pivotY;
+        double _t2 = -pivotZ;
+        double _t3 = scaleX + scaleX;
+        double _t4 = scaleY + scaleY;
+        double _t5 = scaleZ + scaleZ;
+        double _t6 = rotationZ * rotationZ;
+        double _t7 = rotationZ * rotationW;
+        double _t8 = rotationY * rotationW;
+        double _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        double _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        double _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        double _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        double _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        double _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        double _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        double _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        return composeTRSAround_s1a45949d_tail(rotationX, rotationY, _t5, scaleZ, _t33, _t30, _t27, _t0, _t1, _t2, pivotX, translationX, _t28, _t34, _t31, pivotY, translationY, _t32, _t29, pivotZ, translationZ, Joml.BIT_AFFINE);
+    }
+
+
+    /**
      * Create a transformation composed of the given translation, rotation and scale (applied in
      * scale-rotation-translation order), post-multiplied by the given matrix.
      *
@@ -5775,7 +5873,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return composeTRSMul(translation.x(), translation.y(), translation.z(), rotation.x(), rotation.y(), rotation.z(), rotation.w(), scale.x(), scale.y(), scale.z(), m);
     }
 
-    /** Private tail of {@code composeTRSMul}; reached only through it. */
     /** Private per-column body of {@code composeTRSMul_s6e279b82_tail}; reached only through it. */
     private static Double3 composeTRSMul_s6e279b82_tail_s53b7bf0c_c0(Double3x4 m, double _t24, double _t30, double _t27, double _t28, double _t25, double _t31, double _t32, double _t29, double _t26) {
         return new Double3(Math.fma(m.m20(), _t24, Math.fma(m.m00(), _t30, m.m10() * _t27)), Math.fma(m.m20(), _t28, Math.fma(m.m00(), _t25, m.m10() * _t31)), Math.fma(m.m20(), _t32, Math.fma(m.m00(), _t29, m.m10() * _t26)));
@@ -5796,6 +5893,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(m.m03(), _t30, Math.fma(m.m13(), _t27, Math.fma(m.m23(), _t24, translationX))), Math.fma(m.m03(), _t25, Math.fma(m.m13(), _t31, Math.fma(m.m23(), _t28, translationY))), Math.fma(m.m03(), _t29, Math.fma(m.m13(), _t26, Math.fma(m.m23(), _t32, translationZ))));
     }
 
+    /** Private tail of {@code composeTRSMul}; reached only through it. */
     private static Double3x4 composeTRSMul_s6e279b82_tail(double rotationX, double rotationY, double _t0, double scaleZ, Double3x4 m, double _t24, double _t30, double _t27, double translationX, double _t28, double _t25, double _t31, double translationY, double _t29, double _t26, double translationZ, int _props) {
         double _t32 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t0, scaleZ);
         return new Double3x4(composeTRSMul_s6e279b82_tail_s53b7bf0c_c0(m, _t24, _t30, _t27, _t28, _t25, _t31, _t32, _t29, _t26), composeTRSMul_s6e279b82_tail_s53b7bf0c_c1(m, _t24, _t30, _t27, _t28, _t25, _t31, _t32, _t29, _t26), composeTRSMul_s6e279b82_tail_s53b7bf0c_c2(m, _t24, _t30, _t27, _t28, _t25, _t31, _t32, _t29, _t26), composeTRSMul_s6e279b82_tail_s53b7bf0c_c3(m, _t30, _t27, _t24, translationX, _t25, _t31, _t28, translationY, _t29, _t26, _t32, translationZ), _props);
@@ -6045,7 +6143,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAlong_degenerate_identity}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_identity_s6a304d84_tail}; reached only through it. */
     private Double3 lookAlong_degenerate_identity_s6a304d84_tail_s752c1777_c0(double _t41, double _t42, double _t40) {
         return new Double3(_t41, _t42, _t40);
@@ -6066,6 +6163,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return Double3.ZERO;
     }
 
+    /** Private tail of {@code lookAlong_degenerate_identity}; reached only through it. */
     private Double3x4 lookAlong_degenerate_identity_s6a304d84_tail(double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t10, double _t12, double _t11, int _props) {
         double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         double _t39, _t40, _t41, _t42;
@@ -6126,7 +6224,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAlong_degenerate_identity_s6a304d84_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAlong_degenerate_translation}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_translation_s6a304d84_tail}; reached only through it. */
     private Double3 lookAlong_degenerate_translation_s6a304d84_tail_s752c1777_c0(double _t41, double _t42, double _t40) {
         return new Double3(_t41, _t42, _t40);
@@ -6147,6 +6244,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(this.m03, this.m13, this.m23);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_translation}; reached only through it. */
     private Double3x4 lookAlong_degenerate_translation_s6a304d84_tail(double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t10, double _t12, double _t11, int _props) {
         double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         double _t39, _t40, _t41, _t42;
@@ -6207,7 +6305,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAlong_degenerate_translation_s6a304d84_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t10, _t12, _t11, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAlong_degenerate_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_orthogonal_s6a304d84_tail}; reached only through it. */
     private Double3 lookAlong_degenerate_orthogonal_s6a304d84_tail_s16d1ac59_c0(double _t40, double _t41, double _t42) {
         return new Double3(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)));
@@ -6228,6 +6325,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(this.m03, this.m13, this.m23);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_orthogonal}; reached only through it. */
     private Double3x4 lookAlong_degenerate_orthogonal_s6a304d84_tail(double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t12, double _t11, double _t10, int _props) {
         double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         double _t39, _t40, _t41, _t42;
@@ -6291,7 +6389,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAlong_degenerate_orthogonal_s6a304d84_tail(_t25, _t26, _t27, _t23, _t24, _t28, _t12, _t11, _t10, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAlong_degenerate_general}; reached only through it. */
     /** Private per-column body of {@code lookAlong_degenerate_general_s6a304d84_tail}; reached only through it. */
     private Double3 lookAlong_degenerate_general_s6a304d84_tail_s16d1ac59_c0(double _t40, double _t41, double _t42) {
         return new Double3(Math.fma(this.m02, _t40, Math.fma(this.m00, _t41, this.m01 * _t42)), Math.fma(this.m12, _t40, Math.fma(this.m10, _t41, this.m11 * _t42)), Math.fma(this.m22, _t40, Math.fma(this.m20, _t41, this.m21 * _t42)));
@@ -6312,6 +6409,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(this.m03, this.m13, this.m23);
     }
 
+    /** Private tail of {@code lookAlong_degenerate_general}; reached only through it. */
     private Double3x4 lookAlong_degenerate_general_s6a304d84_tail(double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t12, double _t11, double _t10, int _props) {
         double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         double _t39, _t40, _t41, _t42;
@@ -6446,7 +6544,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3x4(lookAt_lh_identity_s387ababb_c0(_t24, _t33, _t9), lookAt_lh_identity_s387ababb_c1(_t25, _t34, _t8), lookAt_lh_identity_s387ababb_c2(_t26, _t35, _t7), lookAt_lh_identity_s387ababb_c3(eyeZ, _t26, eyeX, _t24, eyeY, _t25, _t35, _t33, _t34, _t7, _t9, _t8), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_translation_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_lh_translation_s387ababb_tail_s51150d40_c0(double _t27, double _t36, double _t12) {
         return new Double3(_t27, _t36, _t12);
@@ -6467,6 +6564,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(_t0, _t27, Math.fma(_t1, _t28, Math.fma(_t2, _t29, this.m03))), Math.fma(_t0, _t36, Math.fma(_t1, _t37, Math.fma(_t2, _t38, this.m13))), Math.fma(_t0, _t12, Math.fma(_t1, _t11, Math.fma(_t2, _t10, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_lh_translation}; reached only through it. */
     private Double3x4 lookAt_lh_translation_s387ababb_tail(double _t12, double _t28, double _t11, double _t27, double _t29, double _t0, double _t1, double _t2, double _t36, double _t37, double _t10, int _props) {
         double _t38 = Math.fma(_t12, _t28, -(_t11 * _t27));
         return new Double3x4(lookAt_lh_translation_s387ababb_tail_s51150d40_c0(_t27, _t36, _t12), lookAt_lh_translation_s387ababb_tail_s51150d40_c1(_t28, _t37, _t11), lookAt_lh_translation_s387ababb_tail_s51150d40_c2(_t29, _t38, _t10), lookAt_lh_translation_s387ababb_tail_s51150d40_c3(_t0, _t27, _t1, _t28, _t2, _t29, _t36, _t37, _t38, _t12, _t11, _t10), _props);
@@ -6502,7 +6600,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_lh_translation_s387ababb_tail(_t12, _t28, _t11, _t27, _t29, _t0, _t1, _t2, _t36, _t37, _t10, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_orthogonal_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_lh_orthogonal_s387ababb_tail_s1378316b_c0(double _t7, double _t27, double _t38) {
         return new Double3(Math.fma(this.m02, _t7, Math.fma(this.m00, _t27, this.m01 * _t38)), Math.fma(this.m12, _t7, Math.fma(this.m10, _t27, this.m11 * _t38)), Math.fma(this.m22, _t7, Math.fma(this.m20, _t27, this.m21 * _t38)));
@@ -6523,6 +6620,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t42, Math.fma(-this.m01, _t44, Math.fma(-this.m02, _t21, this.m03))), Math.fma(-this.m10, _t42, Math.fma(-this.m11, _t44, Math.fma(-this.m12, _t21, this.m13))), Math.fma(-this.m20, _t42, Math.fma(-this.m21, _t44, Math.fma(-this.m22, _t21, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_lh_orthogonal}; reached only through it. */
     private Double3x4 lookAt_lh_orthogonal_s387ababb_tail(double eyeZ, double _t40, double eyeX, double _t38, double eyeY, double _t39, double _t7, double _t27, double _t9, double _t29, double _t8, double _t28, double _t42, double _t21, int _props) {
         double _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
         return new Double3x4(lookAt_lh_orthogonal_s387ababb_tail_s1378316b_c0(_t7, _t27, _t38), lookAt_lh_orthogonal_s387ababb_tail_s1378316b_c1(_t9, _t29, _t39), lookAt_lh_orthogonal_s387ababb_tail_s1378316b_c2(_t8, _t28, _t40), lookAt_lh_orthogonal_s387ababb_tail_s1378316b_c3(_t42, _t44, _t21), _props);
@@ -6558,7 +6656,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_lh_orthogonal_s387ababb_tail(eyeZ, _t40, eyeX, _t38, eyeY, _t39, _t7, _t27, _t9, _t29, _t8, _t28, _t42, _t21, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_general_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_lh_general_s387ababb_tail_s1378316b_c0(double _t7, double _t27, double _t38) {
         return new Double3(Math.fma(this.m02, _t7, Math.fma(this.m00, _t27, this.m01 * _t38)), Math.fma(this.m12, _t7, Math.fma(this.m10, _t27, this.m11 * _t38)), Math.fma(this.m22, _t7, Math.fma(this.m20, _t27, this.m21 * _t38)));
@@ -6579,6 +6676,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t42, Math.fma(-this.m01, _t44, Math.fma(-this.m02, _t21, this.m03))), Math.fma(-this.m10, _t42, Math.fma(-this.m11, _t44, Math.fma(-this.m12, _t21, this.m13))), Math.fma(-this.m20, _t42, Math.fma(-this.m21, _t44, Math.fma(-this.m22, _t21, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_lh_general}; reached only through it. */
     private Double3x4 lookAt_lh_general_s387ababb_tail(double eyeZ, double _t40, double eyeX, double _t38, double eyeY, double _t39, double _t7, double _t27, double _t9, double _t29, double _t8, double _t28, double _t42, double _t21, int _props) {
         double _t44 = Math.fma(eyeZ, _t40, Math.fma(eyeX, _t38, eyeY * _t39));
         return new Double3x4(lookAt_lh_general_s387ababb_tail_s1378316b_c0(_t7, _t27, _t38), lookAt_lh_general_s387ababb_tail_s1378316b_c1(_t9, _t29, _t39), lookAt_lh_general_s387ababb_tail_s1378316b_c2(_t8, _t28, _t40), lookAt_lh_general_s387ababb_tail_s1378316b_c3(_t42, _t44, _t21), _props);
@@ -6637,7 +6735,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_identity}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_identity_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_lh_degenerate_identity_s387ababb_tail_s64841e6c_c0(double _t44, double _t53, double _t14) {
         return new Double3(_t44, _t53, _t14);
@@ -6658,6 +6755,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), -Math.fma(eyeZ, _t15, Math.fma(eyeX, _t14, eyeY * _t13)));
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_identity}; reached only through it. */
     private Double3x4 lookAt_lh_degenerate_identity_s387ababb_tail(double _t16, double _t17, double _t13, double _t14, double _t15, double _t26, double _t27, double _t28, double eyeZ, double eyeX, double eyeY, int _props) {
         double _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -6724,7 +6822,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_lh_degenerate_identity_s387ababb_tail(_t16, _t17, _t13, _t14, _t15, _t26, _t27, _t28, eyeZ, eyeX, eyeY, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_translation_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_lh_degenerate_translation_s387ababb_tail_s5e24ac1d_c0(double _t47, double _t56, double _t17) {
         return new Double3(_t47, _t56, _t17);
@@ -6745,6 +6842,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(_t0, _t47, Math.fma(_t1, _t48, Math.fma(_t2, _t46, this.m03))), Math.fma(_t0, _t56, Math.fma(_t1, _t55, Math.fma(_t2, _t57, this.m13))), Math.fma(_t0, _t17, Math.fma(_t1, _t16, Math.fma(_t2, _t18, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_translation}; reached only through it. */
     private Double3x4 lookAt_lh_degenerate_translation_s387ababb_tail(double _t19, double _t20, double _t16, double _t17, double _t18, double _t29, double _t30, double _t31, double _t0, double _t1, double _t2, int _props) {
         double _t32, _t33, _t34;
         if (_t19 > _t20) {
@@ -6846,7 +6944,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_lh_degenerate_orthogonal_s387ababb_tail2(eyeZ, _t46, eyeX, _t47, eyeY, _t48, _t60, _t59, _t57, _t13, _t14, _t15, _t33, _props);
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_orthogonal_s387ababb_tail2}; reached only through it. */
     private Double3 lookAt_lh_degenerate_orthogonal_s387ababb_tail2_s2b6e389f_c0(double _t13, double _t47, double _t59) {
         return new Double3(Math.fma(this.m02, _t13, Math.fma(this.m00, _t47, this.m01 * _t59)), Math.fma(this.m12, _t13, Math.fma(this.m10, _t47, this.m11 * _t59)), Math.fma(this.m22, _t13, Math.fma(this.m20, _t47, this.m21 * _t59)));
@@ -6867,6 +6964,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t61, Math.fma(-this.m01, _t63, Math.fma(-this.m02, _t33, this.m03))), Math.fma(-this.m10, _t61, Math.fma(-this.m11, _t63, Math.fma(-this.m12, _t33, this.m13))), Math.fma(-this.m20, _t61, Math.fma(-this.m21, _t63, Math.fma(-this.m22, _t33, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_orthogonal}; reached only through it. */
     private Double3x4 lookAt_lh_degenerate_orthogonal_s387ababb_tail2(double eyeZ, double _t46, double eyeX, double _t47, double eyeY, double _t48, double _t60, double _t59, double _t57, double _t13, double _t14, double _t15, double _t33, int _props) {
         double _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
         double _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
@@ -6941,7 +7039,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_lh_degenerate_general_s387ababb_tail2(eyeZ, _t46, eyeX, _t47, eyeY, _t48, _t60, _t59, _t57, _t13, _t14, _t15, _t33, _props);
     }
 
-    /** Private tail of {@code lookAt_lh_degenerate_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_lh_degenerate_general_s387ababb_tail2}; reached only through it. */
     private Double3 lookAt_lh_degenerate_general_s387ababb_tail2_s2b6e389f_c0(double _t13, double _t47, double _t59) {
         return new Double3(Math.fma(this.m02, _t13, Math.fma(this.m00, _t47, this.m01 * _t59)), Math.fma(this.m12, _t13, Math.fma(this.m10, _t47, this.m11 * _t59)), Math.fma(this.m22, _t13, Math.fma(this.m20, _t47, this.m21 * _t59)));
@@ -6962,6 +7059,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t61, Math.fma(-this.m01, _t63, Math.fma(-this.m02, _t33, this.m03))), Math.fma(-this.m10, _t61, Math.fma(-this.m11, _t63, Math.fma(-this.m12, _t33, this.m13))), Math.fma(-this.m20, _t61, Math.fma(-this.m21, _t63, Math.fma(-this.m22, _t33, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_lh_degenerate_general}; reached only through it. */
     private Double3x4 lookAt_lh_degenerate_general_s387ababb_tail2(double eyeZ, double _t46, double eyeX, double _t47, double eyeY, double _t48, double _t60, double _t59, double _t57, double _t13, double _t14, double _t15, double _t33, int _props) {
         double _t61 = Math.fma(eyeZ, _t46, Math.fma(eyeX, _t47, eyeY * _t48));
         double _t63 = Math.fma(eyeZ, _t60, Math.fma(eyeX, _t59, eyeY * _t57));
@@ -7075,7 +7173,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3x4(lookAt_rh_identity_s387ababb_c0(_t24, _t33, _t9), lookAt_rh_identity_s387ababb_c1(_t25, _t34, _t7), lookAt_rh_identity_s387ababb_c2(_t26, _t35, _t8), lookAt_rh_identity_s387ababb_c3(eyeZ, _t26, eyeX, _t24, eyeY, _t25, _t35, _t33, _t34, _t8, _t9, _t7), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_translation_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_rh_translation_s387ababb_tail_s48421bad_c0(double _t27, double _t36, double _t12) {
         return new Double3(_t27, _t36, -_t12);
@@ -7096,6 +7193,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(_t0, _t27, Math.fma(_t1, _t28, Math.fma(_t2, _t29, this.m03))), Math.fma(_t0, _t36, Math.fma(_t1, _t37, Math.fma(_t2, _t38, this.m13))), Math.fma(eyeX, _t12, Math.fma(eyeY, _t10, Math.fma(eyeZ, _t11, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_rh_translation}; reached only through it. */
     private Double3x4 lookAt_rh_translation_s387ababb_tail(double _t10, double _t27, double _t12, double _t28, double _t29, double _t0, double _t1, double _t2, double _t36, double _t37, double _t11, double eyeX, double eyeY, double eyeZ, int _props) {
         double _t38 = Math.fma(_t10, _t27, -(_t12 * _t28));
         return new Double3x4(lookAt_rh_translation_s387ababb_tail_s48421bad_c0(_t27, _t36, _t12), lookAt_rh_translation_s387ababb_tail_s48421bad_c1(_t28, _t37, _t10), lookAt_rh_translation_s387ababb_tail_s48421bad_c2(_t29, _t38, _t11), lookAt_rh_translation_s387ababb_tail_s48421bad_c3(_t0, _t27, _t1, _t28, _t2, _t29, _t36, _t37, _t38, eyeX, _t12, eyeY, _t10, eyeZ, _t11), _props);
@@ -7131,7 +7229,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_rh_translation_s387ababb_tail(_t10, _t27, _t12, _t28, _t29, _t0, _t1, _t2, _t36, _t37, _t11, eyeX, eyeY, eyeZ, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_orthogonal_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_rh_orthogonal_s387ababb_tail_s767f5be_c0(double _t0, double _t10, double _t30, double _t41, double _t1, double _t2) {
         return new Double3(Math.fma(_t0, _t10, Math.fma(this.m00, _t30, this.m01 * _t41)), Math.fma(_t1, _t10, Math.fma(this.m10, _t30, this.m11 * _t41)), Math.fma(_t2, _t10, Math.fma(this.m20, _t30, this.m21 * _t41)));
@@ -7152,6 +7249,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t45, Math.fma(-this.m01, _t47, Math.fma(this.m02, _t24, this.m03))), Math.fma(-this.m10, _t45, Math.fma(-this.m11, _t47, Math.fma(this.m12, _t24, this.m13))), Math.fma(-this.m20, _t45, Math.fma(-this.m21, _t47, Math.fma(this.m22, _t24, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_rh_orthogonal}; reached only through it. */
     private Double3x4 lookAt_rh_orthogonal_s387ababb_tail(double eyeZ, double _t32, double eyeX, double _t30, double eyeY, double _t31, double _t43, double _t41, double _t42, double _t0, double _t10, double _t11, double _t12, double _t24, double _t1, double _t2, int _props) {
         double _t45 = Math.fma(eyeZ, _t32, Math.fma(eyeX, _t30, eyeY * _t31));
         double _t47 = Math.fma(eyeZ, _t43, Math.fma(eyeX, _t41, eyeY * _t42));
@@ -7190,7 +7288,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_rh_orthogonal_s387ababb_tail(eyeZ, _t32, eyeX, _t30, eyeY, _t31, _t43, _t41, _t42, _t0, _t10, _t11, _t12, _t24, _t1, _t2, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_general_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_rh_general_s387ababb_tail_s767f5be_c0(double _t0, double _t10, double _t30, double _t41, double _t1, double _t2) {
         return new Double3(Math.fma(_t0, _t10, Math.fma(this.m00, _t30, this.m01 * _t41)), Math.fma(_t1, _t10, Math.fma(this.m10, _t30, this.m11 * _t41)), Math.fma(_t2, _t10, Math.fma(this.m20, _t30, this.m21 * _t41)));
@@ -7211,6 +7308,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t45, Math.fma(-this.m01, _t47, Math.fma(this.m02, _t24, this.m03))), Math.fma(-this.m10, _t45, Math.fma(-this.m11, _t47, Math.fma(this.m12, _t24, this.m13))), Math.fma(-this.m20, _t45, Math.fma(-this.m21, _t47, Math.fma(this.m22, _t24, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_rh_general}; reached only through it. */
     private Double3x4 lookAt_rh_general_s387ababb_tail(double eyeZ, double _t32, double eyeX, double _t30, double eyeY, double _t31, double _t43, double _t41, double _t42, double _t0, double _t10, double _t11, double _t12, double _t24, double _t1, double _t2, int _props) {
         double _t45 = Math.fma(eyeZ, _t32, Math.fma(eyeX, _t30, eyeY * _t31));
         double _t47 = Math.fma(eyeZ, _t43, Math.fma(eyeX, _t41, eyeY * _t42));
@@ -7272,7 +7370,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_identity}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_identity_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_rh_degenerate_identity_s387ababb_tail_s7e5c0fc5_c0(double _t44, double _t53, double _t13) {
         return new Double3(_t44, _t53, -_t13);
@@ -7293,6 +7390,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14)));
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_identity}; reached only through it. */
     private Double3x4 lookAt_rh_degenerate_identity_s387ababb_tail(double _t16, double _t17, double _t14, double _t18, double _t13, double _t19, double _t26, double _t27, double _t28, double _t15, double eyeZ, double eyeX, double eyeY, int _props) {
         double _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -7361,7 +7459,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_rh_degenerate_identity_s387ababb_tail(_t16, _t17, _t14, _t18, _t13, _t19, _t26, _t27, _t28, _t15, eyeZ, eyeX, eyeY, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_translation}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_translation_s387ababb_tail}; reached only through it. */
     private Double3 lookAt_rh_degenerate_translation_s387ababb_tail_sf27d3e1_c0(double _t47, double _t56, double _t16) {
         return new Double3(_t47, _t56, -_t16);
@@ -7382,6 +7479,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(_t0, _t47, Math.fma(_t1, _t48, Math.fma(_t2, _t46, this.m03))), Math.fma(_t0, _t56, Math.fma(_t1, _t55, Math.fma(_t2, _t57, this.m13))), Math.fma(eyeX, _t16, Math.fma(eyeY, _t17, Math.fma(eyeZ, _t18, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_translation}; reached only through it. */
     private Double3x4 lookAt_rh_degenerate_translation_s387ababb_tail(double _t19, double _t20, double _t17, double _t21, double _t16, double _t22, double _t29, double _t30, double _t31, double _t18, double _t0, double _t1, double _t2, double eyeX, double eyeY, double eyeZ, int _props) {
         double _t32, _t33, _t34;
         if (_t19 > _t20) {
@@ -7484,7 +7582,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_rh_degenerate_orthogonal_s387ababb_tail2(_t50, _t17, _t51, _t16, eyeZ, _t49, eyeX, eyeY, _t62, _t60, _t0, _t18, _t36, _t1, _t2, _props);
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_orthogonal}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_orthogonal_s387ababb_tail2}; reached only through it. */
     private Double3 lookAt_rh_degenerate_orthogonal_s387ababb_tail2_s192405_c0(double _t0, double _t16, double _t50, double _t62, double _t1, double _t2) {
         return new Double3(Math.fma(_t0, _t16, Math.fma(this.m00, _t50, this.m01 * _t62)), Math.fma(_t1, _t16, Math.fma(this.m10, _t50, this.m11 * _t62)), Math.fma(_t2, _t16, Math.fma(this.m20, _t50, this.m21 * _t62)));
@@ -7505,6 +7602,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t64, Math.fma(-this.m01, _t66, Math.fma(this.m02, _t36, this.m03))), Math.fma(-this.m10, _t64, Math.fma(-this.m11, _t66, Math.fma(this.m12, _t36, this.m13))), Math.fma(-this.m20, _t64, Math.fma(-this.m21, _t66, Math.fma(this.m22, _t36, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_orthogonal}; reached only through it. */
     private Double3x4 lookAt_rh_degenerate_orthogonal_s387ababb_tail2(double _t50, double _t17, double _t51, double _t16, double eyeZ, double _t49, double eyeX, double eyeY, double _t62, double _t60, double _t0, double _t18, double _t36, double _t1, double _t2, int _props) {
         double _t63 = Math.fma(_t50, _t17, -(_t51 * _t16));
         double _t64 = Math.fma(eyeZ, _t49, Math.fma(eyeX, _t50, eyeY * _t51));
@@ -7582,7 +7680,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return lookAt_rh_degenerate_general_s387ababb_tail2(_t50, _t17, _t51, _t16, eyeZ, _t49, eyeX, eyeY, _t62, _t60, _t0, _t18, _t36, _t1, _t2, _props);
     }
 
-    /** Private tail of {@code lookAt_rh_degenerate_general}; reached only through it. */
     /** Private per-column body of {@code lookAt_rh_degenerate_general_s387ababb_tail2}; reached only through it. */
     private Double3 lookAt_rh_degenerate_general_s387ababb_tail2_s192405_c0(double _t0, double _t16, double _t50, double _t62, double _t1, double _t2) {
         return new Double3(Math.fma(_t0, _t16, Math.fma(this.m00, _t50, this.m01 * _t62)), Math.fma(_t1, _t16, Math.fma(this.m10, _t50, this.m11 * _t62)), Math.fma(_t2, _t16, Math.fma(this.m20, _t50, this.m21 * _t62)));
@@ -7603,6 +7700,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(-this.m00, _t64, Math.fma(-this.m01, _t66, Math.fma(this.m02, _t36, this.m03))), Math.fma(-this.m10, _t64, Math.fma(-this.m11, _t66, Math.fma(this.m12, _t36, this.m13))), Math.fma(-this.m20, _t64, Math.fma(-this.m21, _t66, Math.fma(this.m22, _t36, this.m23))));
     }
 
+    /** Private tail of {@code lookAt_rh_degenerate_general}; reached only through it. */
     private Double3x4 lookAt_rh_degenerate_general_s387ababb_tail2(double _t50, double _t17, double _t51, double _t16, double eyeZ, double _t49, double eyeX, double eyeY, double _t62, double _t60, double _t0, double _t18, double _t36, double _t1, double _t2, int _props) {
         double _t63 = Math.fma(_t50, _t17, -(_t51 * _t16));
         double _t64 = Math.fma(eyeZ, _t49, Math.fma(eyeX, _t50, eyeY * _t51));
@@ -7853,7 +7951,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return makeBillboardCylindrical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeBillboardCylindrical_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeBillboardCylindrical_degenerate_s3a37db2b_tail}; reached only through it. */
     private static Double3 makeBillboardCylindrical_degenerate_s3a37db2b_tail_s28aee380_c0(double _t31, double _t32, double _t30) {
         return new Double3(_t31, _t32, _t30);
@@ -7874,6 +7971,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(objPosX, objPosY, objPosZ);
     }
 
+    /** Private tail of {@code makeBillboardCylindrical_degenerate}; reached only through it. */
     private static Double3x4 makeBillboardCylindrical_degenerate_s3a37db2b_tail(double upX, double _t30, double upZ, double _t31, double _t32, double upY, double objPosX, double objPosY, double objPosZ, int _props) {
         double _t39 = Math.fma(upX, _t30, -(upZ * _t31));
         double _t40 = Math.fma(upZ, _t32, -(upY * _t30));
@@ -8059,7 +8157,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return makeBillboardSpherical_degenerate(objPos.x(), objPos.y(), objPos.z(), targetPos.x(), targetPos.y(), targetPos.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeBillboardSpherical_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeBillboardSpherical_degenerate_s3a37db2b_tail}; reached only through it. */
     private static Double3 makeBillboardSpherical_degenerate_s3a37db2b_tail_s8f0e068_c0(double _t44, double _t45, double _t43) {
         return new Double3(_t44, _t45, _t43);
@@ -8080,6 +8177,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(objPosX, objPosY, objPosZ);
     }
 
+    /** Private tail of {@code makeBillboardSpherical_degenerate}; reached only through it. */
     private static Double3x4 makeBillboardSpherical_degenerate_s3a37db2b_tail(double _t16, double _t17, double _t13, double _t14, double _t15, double _t26, double _t27, double _t28, double objPosX, double objPosY, double objPosZ, int _props) {
         double _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -8332,7 +8430,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return makeLookAt_lh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeLookAt_lh_degenerate_s387ababb_tail}; reached only through it. */
     private static Double3 makeLookAt_lh_degenerate_s387ababb_tail_s64841e6c_c0(double _t44, double _t53, double _t14) {
         return new Double3(_t44, _t53, _t14);
@@ -8353,6 +8450,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), -Math.fma(eyeZ, _t15, Math.fma(eyeX, _t14, eyeY * _t13)));
     }
 
+    /** Private tail of {@code makeLookAt_lh_degenerate}; reached only through it. */
     private static Double3x4 makeLookAt_lh_degenerate_s387ababb_tail(double _t16, double _t17, double _t13, double _t14, double _t15, double _t26, double _t27, double _t28, double eyeZ, double eyeX, double eyeY, int _props) {
         double _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -8486,7 +8584,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return makeLookAt_rh_degenerate(eye.x(), eye.y(), eye.z(), center.x(), center.y(), center.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeLookAt_rh_degenerate_s387ababb_tail}; reached only through it. */
     private static Double3 makeLookAt_rh_degenerate_s387ababb_tail_s7e5c0fc5_c0(double _t44, double _t53, double _t13) {
         return new Double3(_t44, _t53, -_t13);
@@ -8507,6 +8604,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(-Math.fma(eyeZ, _t43, Math.fma(eyeX, _t44, eyeY * _t45)), -Math.fma(eyeZ, _t54, Math.fma(eyeX, _t53, eyeY * _t52)), Math.fma(eyeZ, _t15, Math.fma(eyeX, _t13, eyeY * _t14)));
     }
 
+    /** Private tail of {@code makeLookAt_rh_degenerate}; reached only through it. */
     private static Double3x4 makeLookAt_rh_degenerate_s387ababb_tail(double _t16, double _t17, double _t14, double _t18, double _t13, double _t19, double _t26, double _t27, double _t28, double _t15, double eyeZ, double eyeX, double eyeY, int _props) {
         double _t29, _t30, _t31;
         if (_t16 > _t17) {
@@ -9284,7 +9382,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return makeRotationLookAlong_degenerate(dir.x(), dir.y(), dir.z(), up.x(), up.y(), up.z());
     }
 
-    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     /** Private per-column body of {@code makeRotationLookAlong_degenerate_s6a304d84_tail}; reached only through it. */
     private static Double3 makeRotationLookAlong_degenerate_s6a304d84_tail_s752c1777_c0(double _t41, double _t42, double _t40) {
         return new Double3(_t41, _t42, _t40);
@@ -9305,6 +9402,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return Double3.ZERO;
     }
 
+    /** Private tail of {@code makeRotationLookAlong_degenerate}; reached only through it. */
     private static Double3x4 makeRotationLookAlong_degenerate_s6a304d84_tail(double _t25, double _t26, double _t27, double _t23, double _t24, double _t28, double _t10, double _t12, double _t11, int _props) {
         double _t33 = Math.fma(_t25, _t25, Math.fma(_t26, _t26, _t27 * _t27));
         double _t39, _t40, _t41, _t42;
@@ -12130,7 +12228,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3x4(preRotateAround_translation_s4fddc248_c0(_t22, _t17, _t21), preRotateAround_translation_s4fddc248_c1(_t19, _t23, _t18), preRotateAround_translation_s4fddc248_c2(_t16, _t20, _t24), preRotateAround_translation_s4fddc248_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t4, _t9, pivotY, _t20, _t17, _t23, rotX, _t6, _t24, _t21, _t18, pivotZ), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code preRotateAround_orthogonal}; reached only through it. */
     /** Private per-column body of {@code preRotateAround_orthogonal_s4fddc248_tail}; reached only through it. */
     private Double3 preRotateAround_orthogonal_s4fddc248_tail_s2c4e438_c0(double _t16, double _t22, double _t19, double _t20, double _t17, double _t23, double _t24, double _t21, double _t18) {
         return new Double3(Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19)), Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23)), Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18)));
@@ -12151,6 +12248,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19))), Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17))), Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21))));
     }
 
+    /** Private tail of {@code preRotateAround_orthogonal}; reached only through it. */
     private Double3x4 preRotateAround_orthogonal_s4fddc248_tail(double _t3, double _t4, double _t0, double _t5, double _t16, double _t22, double _t19, double _t2, double pivotX, double rotY, double _t9, double pivotY, double _t20, double _t17, double _t23, double rotX, double _t21, double _t18, double pivotZ, int _props) {
         double _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0));
         return new Double3x4(preRotateAround_orthogonal_s4fddc248_tail_s2c4e438_c0(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s4fddc248_tail_s2c4e438_c1(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s4fddc248_tail_s2c4e438_c2(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_orthogonal_s4fddc248_tail_s2c4e438_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ), _props);
@@ -12184,7 +12282,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return preRotateAround_orthogonal_s4fddc248_tail(_t3, _t4, _t0, _t5, _t16, _t22, _t19, _t2, pivotX, rotY, _t9, pivotY, _t20, _t17, _t23, rotX, _t21, _t18, pivotZ, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code preRotateAround_general}; reached only through it. */
     /** Private per-column body of {@code preRotateAround_general_s4fddc248_tail}; reached only through it. */
     private Double3 preRotateAround_general_s4fddc248_tail_s2c4e438_c0(double _t16, double _t22, double _t19, double _t20, double _t17, double _t23, double _t24, double _t21, double _t18) {
         return new Double3(Math.fma(this.m20, _t16, Math.fma(this.m00, _t22, this.m10 * _t19)), Math.fma(this.m20, _t20, Math.fma(this.m00, _t17, this.m10 * _t23)), Math.fma(this.m20, _t24, Math.fma(this.m00, _t21, this.m10 * _t18)));
@@ -12205,6 +12302,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(this.m23, _t16, Math.fma(this.m03, _t22, this.m13 * _t19)) + Math.fma(_t2, _t16, Math.fma(pivotX, Math.fma(rotY, _t5, _t9), -(pivotY * _t19))), Math.fma(this.m23, _t20, Math.fma(this.m03, _t17, this.m13 * _t23)) + Math.fma(_t2, _t20, Math.fma(pivotY, Math.fma(rotX, _t4, _t9), -(pivotX * _t17))), Math.fma(this.m23, _t24, Math.fma(this.m03, _t21, this.m13 * _t18)) + Math.fma(-pivotY, _t18, Math.fma(pivotZ, Math.fma(rotX, _t4, rotY * _t5), -(pivotX * _t21))));
     }
 
+    /** Private tail of {@code preRotateAround_general}; reached only through it. */
     private Double3x4 preRotateAround_general_s4fddc248_tail(double _t3, double _t4, double _t0, double _t5, double _t16, double _t22, double _t19, double _t2, double pivotX, double rotY, double _t9, double pivotY, double _t20, double _t17, double _t23, double rotX, double _t21, double _t18, double pivotZ, int _props) {
         double _t24 = Math.fma(_t3, _t4, Math.fma(_t0, _t5, 1.0));
         return new Double3x4(preRotateAround_general_s4fddc248_tail_s2c4e438_c0(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_general_s4fddc248_tail_s2c4e438_c1(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_general_s4fddc248_tail_s2c4e438_c2(_t16, _t22, _t19, _t20, _t17, _t23, _t24, _t21, _t18), preRotateAround_general_s4fddc248_tail_s2c4e438_c3(_t16, _t22, _t19, _t2, pivotX, rotY, _t5, _t9, pivotY, _t20, _t17, _t23, rotX, _t4, _t24, _t21, _t18, pivotZ), _props);
@@ -13333,7 +13431,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3x4(rotateAround_translation_s4fddc248_c0(_t0, _t6, _t16, _t18, _t22), rotateAround_translation_s4fddc248_c1(_t20, _t4, _t8, _t16, _t19), rotateAround_translation_s4fddc248_c2(_t17, _t21, _t4, _t8, _t0, _t6), rotateAround_translation_s4fddc248_c3(pivotX, rotY, _t6, _t11, _t2, _t20, _t3, _t17, pivotY, rotX, _t8, _t5, _t18, _t21, pivotZ, _t22, _t19), Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code rotateAround_orthogonal}; reached only through it. */
     /** Private per-column body of {@code rotateAround_orthogonal_s4fddc248_tail}; reached only through it. */
     private Double3 rotateAround_orthogonal_s4fddc248_tail_s31b84f60_c0(double _t24, double _t27, double _t18) {
         return new Double3(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)));
@@ -13354,6 +13451,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))));
     }
 
+    /** Private tail of {@code rotateAround_orthogonal}; reached only through it. */
     private Double3x4 rotateAround_orthogonal_s4fddc248_tail(double pivotY, double _t19, double pivotZ, double rotX, double _t5, double rotY, double _t6, double pivotX, double _t24, double _t27, double _t18, double _t25, double _t28, double _t29, double _t20, double _t26, double _t39, double _t40, int _props) {
         double _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
         return new Double3x4(rotateAround_orthogonal_s4fddc248_tail_s31b84f60_c0(_t24, _t27, _t18), rotateAround_orthogonal_s4fddc248_tail_s31b84f60_c1(_t19, _t25, _t28), rotateAround_orthogonal_s4fddc248_tail_s31b84f60_c2(_t29, _t20, _t26), rotateAround_orthogonal_s4fddc248_tail_s31b84f60_c3(_t39, _t40, _t41), _props);
@@ -13390,7 +13488,6 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return rotateAround_orthogonal_s4fddc248_tail(pivotY, _t19, pivotZ, rotX, _t5, rotY, _t6, pivotX, _t24, _t27, _t18, _t25, _t28, _t29, _t20, _t26, _t39, _t40, Joml.BIT_ORTHOGONAL);
     }
 
-    /** Private tail of {@code rotateAround_general}; reached only through it. */
     /** Private per-column body of {@code rotateAround_general_s4fddc248_tail}; reached only through it. */
     private Double3 rotateAround_general_s4fddc248_tail_s31b84f60_c0(double _t24, double _t27, double _t18) {
         return new Double3(Math.fma(this.m02, _t24, Math.fma(this.m00, _t27, this.m01 * _t18)), Math.fma(this.m12, _t24, Math.fma(this.m10, _t27, this.m11 * _t18)), Math.fma(this.m22, _t24, Math.fma(this.m20, _t27, this.m21 * _t18)));
@@ -13411,6 +13508,7 @@ public record Double3x4(double m00, double m01, double m02, double m03, double m
         return new Double3(Math.fma(this.m00, _t39, Math.fma(this.m01, _t40, Math.fma(this.m02, _t41, this.m03))), Math.fma(this.m10, _t39, Math.fma(this.m11, _t40, Math.fma(this.m12, _t41, this.m13))), Math.fma(this.m20, _t39, Math.fma(this.m21, _t40, Math.fma(this.m22, _t41, this.m23))));
     }
 
+    /** Private tail of {@code rotateAround_general}; reached only through it. */
     private Double3x4 rotateAround_general_s4fddc248_tail(double pivotY, double _t19, double pivotZ, double rotX, double _t5, double rotY, double _t6, double pivotX, double _t24, double _t27, double _t18, double _t25, double _t28, double _t29, double _t20, double _t26, double _t39, double _t40, int _props) {
         double _t41 = Math.fma(-pivotY, _t19, Math.fma(pivotZ, Math.fma(rotX, _t5, rotY * _t6), -(pivotX * _t24)));
         return new Double3x4(rotateAround_general_s4fddc248_tail_s31b84f60_c0(_t24, _t27, _t18), rotateAround_general_s4fddc248_tail_s31b84f60_c1(_t19, _t25, _t28), rotateAround_general_s4fddc248_tail_s31b84f60_c2(_t29, _t20, _t26), rotateAround_general_s4fddc248_tail_s31b84f60_c3(_t39, _t40, _t41), _props);

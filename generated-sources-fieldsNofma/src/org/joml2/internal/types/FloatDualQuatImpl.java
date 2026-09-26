@@ -3741,6 +3741,214 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
 
 
     /**
+     * Set the dual half of this dual quaternion to {@code dual}, keeping the real (rotation) half
+     * as it is and store the result in {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param dual the new dual half
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatDualQuat setDual(FloatQuatR dual, @Mutated FloatDualQuat dest) {
+        return setDual(dual.x(), dual.y(), dual.z(), dual.w(), dest);
+    }
+
+
+    /**
+     * Set the dual half of this dual quaternion to {@code dual}, keeping the real (rotation) half
+     * as it is and store the result in {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dual the new dual half
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setDual(FloatQuatR dual, @Mutated DoubleDualQuat dest) {
+        return setDual(dual.x(), dual.y(), dual.z(), dual.w(), dest);
+    }
+
+
+    /**
+     * Set the dual half of this dual quaternion to ({@code dualX}, {@code dualY}, {@code dualZ},
+     * {@code dualW}), keeping the real (rotation) half as it is and store the result in
+     * {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     *
+     * @param dualX the {@code x} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualY the {@code y} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualZ the {@code z} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualW the {@code w} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatDualQuat setDual(float dualX, float dualY, float dualZ, float dualW, @Mutated FloatDualQuat dest) {
+        FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        d.rX = this.rX;
+        d.rY = this.rY;
+        d.rZ = this.rZ;
+        d.rW = this.rW;
+        d.dX = dualX;
+        d.dY = dualY;
+        d.dZ = dualZ;
+        d.dW = dualW;
+        return d;
+    }
+
+
+    /**
+     * Set the dual half of this dual quaternion to ({@code dualX}, {@code dualY}, {@code dualZ},
+     * {@code dualW}), keeping the real (rotation) half as it is and store the result in
+     * {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} follows the new dual half; use
+     * {@code setTranslation} to set the translation itself.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param dualX the {@code x} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualY the {@code y} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualZ the {@code z} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dualW the {@code w} component of the new dual half
+     *        {@code (dualX, dualY, dualZ, dualW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setDual(float dualX, float dualY, float dualZ, float dualW, @Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        d.rX = this.rX;
+        d.rY = this.rY;
+        d.rZ = this.rZ;
+        d.rW = this.rW;
+        d.dX = dualX;
+        d.dY = dualY;
+        d.dZ = dualZ;
+        d.dW = dualW;
+        return d;
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to {@code real}, keeping the dual half
+     * as it is and store the result in {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param real the new real (rotation) half
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatDualQuat setReal(FloatQuatR real, @Mutated FloatDualQuat dest) {
+        return setReal(real.x(), real.y(), real.z(), real.w(), dest);
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to {@code real}, keeping the dual half
+     * as it is and store the result in {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param real the new real (rotation) half
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setReal(FloatQuatR real, @Mutated DoubleDualQuat dest) {
+        return setReal(real.x(), real.y(), real.z(), real.w(), dest);
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to ({@code realX}, {@code realY},
+     * {@code realZ}, {@code realW}), keeping the dual half as it is and store the result in
+     * {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     *
+     * @param realX the {@code x} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realY the {@code y} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realZ the {@code z} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realW the {@code w} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatDualQuat setReal(float realX, float realY, float realZ, float realW, @Mutated FloatDualQuat dest) {
+        FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        d.rX = realX;
+        d.rY = realY;
+        d.rZ = realZ;
+        d.rW = realW;
+        d.dX = this.dX;
+        d.dY = this.dY;
+        d.dZ = this.dZ;
+        d.dW = this.dW;
+        return d;
+    }
+
+
+    /**
+     * Set the real (rotation) half of this dual quaternion to ({@code realX}, {@code realY},
+     * {@code realZ}, {@code realW}), keeping the dual half as it is and store the result in
+     * {@code dest}.
+     * <p>
+     * The encoded translation {@code 2 * dual * conj(real)} changes with the real half; use
+     * {@code setRotation} to replace the rotation and keep the translation.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param realX the {@code x} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realY the {@code y} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realZ the {@code z} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param realW the {@code w} component of the new real (rotation) half
+     *        {@code (realX, realY, realZ, realW)}
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat setReal(float realX, float realY, float realZ, float realW, @Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        d.rX = realX;
+        d.rY = realY;
+        d.rZ = realZ;
+        d.rW = realW;
+        d.dX = this.dX;
+        d.dY = this.dY;
+        d.dZ = this.dZ;
+        d.dW = this.dW;
+        return d;
+    }
+
+
+    /**
      * Set the rotation of this dual quaternion to {@code rotation} and store the result in
      * {@code dest}.
      *
@@ -5342,6 +5550,134 @@ public final class FloatDualQuatImpl implements FloatDualQuat {
         this.dZ = 0.0f;
         this.dW = 0.0f;
         return this;
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion {@code rotation} onto this dual
+     * quaternion and store the result in {@code dest}.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatDualQuat preRotate(FloatQuatR rotation, @Mutated FloatDualQuat dest) {
+        return preRotate(rotation.x(), rotation.y(), rotation.z(), rotation.w(), dest);
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion {@code rotation} onto this dual
+     * quaternion and store the result in {@code dest}.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param rotation the rotation (must be a unit quaternion)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat preRotate(FloatQuatR rotation, @Mutated DoubleDualQuat dest) {
+        return preRotate(rotation.x(), rotation.y(), rotation.z(), rotation.w(), dest);
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion ({@code rotationX},
+     * {@code rotationY}, {@code rotationZ}, {@code rotationW}) onto this dual quaternion and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     *
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public FloatDualQuat preRotate(float rotationX, float rotationY, float rotationZ, float rotationW, @Mutated FloatDualQuat dest) {
+        FloatDualQuatImpl d = (FloatDualQuatImpl) dest;
+        float _buf0 = rotationX * this.rW + rotationW * this.rX + (rotationY * this.rZ - rotationZ * this.rY);
+        float _buf1 = rotationY * this.rW + rotationZ * this.rX + (rotationW * this.rY - rotationX * this.rZ);
+        float _buf2 = rotationX * this.rY + rotationW * this.rZ + (rotationZ * this.rW - rotationY * this.rX);
+        d.rW = rotationW * this.rW - rotationX * this.rX - (rotationY * this.rY + rotationZ * this.rZ);
+        float _buf3 = rotationX * this.dW + rotationW * this.dX + (rotationY * this.dZ - rotationZ * this.dY);
+        float _buf4 = rotationY * this.dW + rotationZ * this.dX + (rotationW * this.dY - rotationX * this.dZ);
+        float _buf5 = rotationX * this.dY + rotationW * this.dZ + (rotationZ * this.dW - rotationY * this.dX);
+        d.dW = rotationW * this.dW - rotationX * this.dX - (rotationY * this.dY + rotationZ * this.dZ);
+        d.rX = _buf0;
+        d.rY = _buf1;
+        d.rZ = _buf2;
+        d.dX = _buf3;
+        d.dY = _buf4;
+        d.dZ = _buf5;
+        return d;
+    }
+
+
+    /**
+     * Pre-multiply the rotation represented by the quaternion ({@code rotationX},
+     * {@code rotationY}, {@code rotationZ}, {@code rotationW}) onto this dual quaternion and store
+     * the result in {@code dest}.
+     * <p>
+     * If {@code Q} is {@code this} dual quaternion and {@code R} the rotation dual quaternion, then
+     * the new dual quaternion will be {@code R * Q}. So when transforming a vector {@code v} with
+     * the new dual quaternion by using {@code R * Q * v}, the rotation will be applied last.
+     * <p>
+     * The computation is performed at {@code float} precision; each result component is widened to
+     * {@code double} only when stored.
+     *
+     * @param rotationX the {@code x} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationY the {@code y} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationZ the {@code z} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param rotationW the {@code w} component of the quaternion
+     *        {@code (rotationX, rotationY, rotationZ, rotationW)} (the quaternion must have unit
+     *        length)
+     * @param dest will hold the result
+     * @return dest
+     */
+    public DoubleDualQuat preRotate(float rotationX, float rotationY, float rotationZ, float rotationW, @Mutated DoubleDualQuat dest) {
+        DoubleDualQuatImpl d = (DoubleDualQuatImpl) dest;
+        float _buf0 = rotationX * this.rW + rotationW * this.rX + (rotationY * this.rZ - rotationZ * this.rY);
+        float _buf1 = rotationY * this.rW + rotationZ * this.rX + (rotationW * this.rY - rotationX * this.rZ);
+        float _buf2 = rotationX * this.rY + rotationW * this.rZ + (rotationZ * this.rW - rotationY * this.rX);
+        d.rW = rotationW * this.rW - rotationX * this.rX - (rotationY * this.rY + rotationZ * this.rZ);
+        float _buf3 = rotationX * this.dW + rotationW * this.dX + (rotationY * this.dZ - rotationZ * this.dY);
+        float _buf4 = rotationY * this.dW + rotationZ * this.dX + (rotationW * this.dY - rotationX * this.dZ);
+        float _buf5 = rotationX * this.dY + rotationW * this.dZ + (rotationZ * this.dW - rotationY * this.dX);
+        d.dW = rotationW * this.dW - rotationX * this.dX - (rotationY * this.dY + rotationZ * this.dZ);
+        d.rX = _buf0;
+        d.rY = _buf1;
+        d.rZ = _buf2;
+        d.dX = _buf3;
+        d.dY = _buf4;
+        d.dZ = _buf5;
+        return d;
     }
 
 

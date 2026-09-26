@@ -26,6 +26,8 @@ inline operator fun Double2.unaryMinus(): Double2 = negate()
 inline operator fun Double2.minus(other: Double2): Double2 = sub(other)
 /** [Double2.angleBetween] as an infix function, so `a angleBetween b` parses. */
 inline infix fun Double2.angleBetween(other: Double2): Double = angleBetween(other)
+/** [Double2.cross] as an infix function, so `a cross b` parses. */
+inline infix fun Double2.cross(other: Double2): Double = cross(other)
 /** [Double2.distance] as an infix function, so `a distance b` parses. */
 inline infix fun Double2.distance(other: Double2): Double = distance(other)
 /** [Double2.dot] as an infix function, so `a dot b` parses. */
@@ -36,6 +38,8 @@ inline infix fun Double2.mod(y: Double): Double2 = mod(y)
 inline infix fun Double2.mod(y: Double2): Double2 = mod(y)
 /** [Double2.rotate] taking a type-safe [Angle] in place of the angle in radians. */
 inline fun Double2.rotate(angle: Angle): Double2 = rotate(angle.radians)
+/** [Double2.rotateAround] taking a type-safe [Angle] in place of the angle in radians. */
+inline fun Double2.rotateAround(angle: Angle, pivot: Double2): Double2 = rotateAround(angle.radians, pivot)
 /** Component 1 of this Double2 (`x()`), for destructuring declarations. */
 inline operator fun Double2.component1(): Double = x()
 /** Component 2 of this Double2 (`y()`), for destructuring declarations. */

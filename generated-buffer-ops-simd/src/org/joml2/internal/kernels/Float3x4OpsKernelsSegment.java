@@ -2917,6 +2917,103 @@ public final class Float3x4OpsKernelsSegment {
         return dest;
     }
 
+    public static java.lang.foreign.MemorySegment composeTRSAround_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        long _destBase = dest.address() + destOffset;
+        Float3x4OpsKernelsAddress.composeTRSAround_unsafe(_destBase, translationX, translationY, translationZ, rotationX, rotationY, rotationZ, rotationW, scaleX, scaleY, scaleZ, pivotX, pivotY, pivotZ);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment composeTRSAround_api(java.lang.foreign.MemorySegment dest, long destOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ, float pivotX, float pivotY, float pivotZ) {
+        float _t0 = -pivotX;
+        float _t1 = -pivotY;
+        float _t2 = -pivotZ;
+        float _t3 = scaleX + scaleX;
+        float _t4 = scaleY + scaleY;
+        float _t5 = scaleZ + scaleZ;
+        float _t6 = rotationZ * rotationZ;
+        float _t7 = rotationZ * rotationW;
+        float _t8 = rotationY * rotationW;
+        float _t27 = Math.fma(rotationX, rotationZ, _t8) * _t5;
+        float _t28 = Math.fma(rotationX, rotationY, _t7) * _t3;
+        float _t29 = Math.fma(rotationX, rotationW, rotationY * rotationZ) * _t4;
+        float _t30 = Math.fma(rotationX, rotationY, -_t7) * _t4;
+        float _t31 = Math.fma(rotationY, rotationZ, -(rotationX * rotationW)) * _t5;
+        float _t32 = Math.fma(rotationX, rotationZ, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(rotationY, rotationY, _t6), _t3, scaleX);
+        float _t34 = Math.fma(-Math.fma(rotationX, rotationX, _t6), _t4, scaleY);
+        float _t35 = Math.fma(-Math.fma(rotationX, rotationX, rotationY * rotationY), _t5, scaleZ);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t33);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t27);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, pivotX + translationX))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t28);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _t34);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, pivotY + translationY))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _t32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _t29);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _t35);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, pivotZ + translationZ))));
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment composeTRSAround_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset) {
+        long _destBase = dest.address() + destOffset;
+        long _translationBase = translation.address() + translationOffset;
+        long _rotationBase = rotation.address() + rotationOffset;
+        long _scaleBase = scale.address() + scaleOffset;
+        long _pivotBase = pivot.address() + pivotOffset;
+        Float3x4OpsKernelsAddress.composeTRSAround_unsafe(_destBase, _translationBase, _rotationBase, _scaleBase, _pivotBase);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment composeTRSAround_api(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment translation, long translationOffset, java.lang.foreign.MemorySegment rotation, long rotationOffset, java.lang.foreign.MemorySegment scale, long scaleOffset, java.lang.foreign.MemorySegment pivot, long pivotOffset) {
+        float _translationx = translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 0L);
+        float _translationy = translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 4L);
+        float _translationz = translation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, translationOffset + 8L);
+        float _rotationx = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 0L);
+        float _rotationy = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 4L);
+        float _rotationz = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 8L);
+        float _rotationw = rotation.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, rotationOffset + 12L);
+        float _scalex = scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 0L);
+        float _scaley = scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 4L);
+        float _scalez = scale.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, scaleOffset + 8L);
+        float _pivotx = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 0L);
+        float _pivoty = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 4L);
+        float _pivotz = pivot.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, pivotOffset + 8L);
+        float _t0 = -_pivotx;
+        float _t1 = -_pivoty;
+        float _t2 = -_pivotz;
+        float _t3 = _scalex + _scalex;
+        float _t4 = _scaley + _scaley;
+        float _t5 = _scalez + _scalez;
+        float _t6 = _rotationz * _rotationz;
+        float _t7 = _rotationz * _rotationw;
+        float _t8 = _rotationy * _rotationw;
+        float _t27 = Math.fma(_rotationx, _rotationz, _t8) * _t5;
+        float _t28 = Math.fma(_rotationx, _rotationy, _t7) * _t3;
+        float _t29 = Math.fma(_rotationx, _rotationw, _rotationy * _rotationz) * _t4;
+        float _t30 = Math.fma(_rotationx, _rotationy, -_t7) * _t4;
+        float _t31 = Math.fma(_rotationy, _rotationz, -(_rotationx * _rotationw)) * _t5;
+        float _t32 = Math.fma(_rotationx, _rotationz, -_t8) * _t3;
+        float _t33 = Math.fma(-Math.fma(_rotationy, _rotationy, _t6), _t3, _scalex);
+        float _t34 = Math.fma(-Math.fma(_rotationx, _rotationx, _t6), _t4, _scaley);
+        float _t35 = Math.fma(-Math.fma(_rotationx, _rotationx, _rotationy * _rotationy), _t5, _scalez);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 0L, _t33);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 4L, _t30);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 8L, _t27);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 12L, Math.fma(_t0, _t33, Math.fma(_t1, _t30, Math.fma(_t2, _t27, _pivotx + _translationx))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 16L, _t28);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 20L, _t34);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 24L, _t31);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 28L, Math.fma(_t0, _t28, Math.fma(_t1, _t34, Math.fma(_t2, _t31, _pivoty + _translationy))));
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 32L, _t32);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 36L, _t29);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 40L, _t35);
+        dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, destOffset + 44L, Math.fma(_t0, _t32, Math.fma(_t1, _t29, Math.fma(_t2, _t35, _pivotz + _translationz))));
+        return dest;
+    }
+
     public static java.lang.foreign.MemorySegment composeTRSMul_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment m, long mOffset, float translationX, float translationY, float translationZ, float rotationX, float rotationY, float rotationZ, float rotationW, float scaleX, float scaleY, float scaleZ) {
         long _destBase = dest.address() + destOffset;
         long _mBase = m.address() + mOffset;
@@ -9020,6 +9117,38 @@ public final class Float3x4OpsKernelsSegment {
         return dest;
     }
 
+    public static java.lang.foreign.MemorySegment transformPosition_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, long destStride, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, long pointsStride, int count) {
+        long _destBase = dest.address() + destOffset;
+        long _matrixBase = matrix.address() + matrixOffset;
+        long _pointsBase = points.address() + pointsOffset;
+        Float3x4OpsKernelsAddress.transformPosition_unsafe(_destBase, destStride, _matrixBase, _pointsBase, pointsStride, count);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment transformPosition_api(java.lang.foreign.MemorySegment dest, long destOffset, long destStride, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, long pointsStride, int count) {
+        float _m00 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 0L);
+        float _m01 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 4L);
+        float _m02 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 8L);
+        float _m03 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 12L);
+        float _m10 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 16L);
+        float _m11 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 20L);
+        float _m12 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 24L);
+        float _m13 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 28L);
+        float _m20 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 32L);
+        float _m21 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 36L);
+        float _m22 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 40L);
+        float _m23 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 44L);
+        for (int _i = 0; _i < count; _i++) {
+            long _po = pointsOffset + _i * pointsStride;
+            long _do = destOffset + _i * destStride;
+            float px = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 0L), py = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 4L), pz = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 8L);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 0L, Math.fma(_m00, px, Math.fma(_m01, py, Math.fma(_m02, pz, _m03))));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 4L, Math.fma(_m10, px, Math.fma(_m11, py, Math.fma(_m12, pz, _m13))));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 8L, Math.fma(_m20, px, Math.fma(_m21, py, Math.fma(_m22, pz, _m23))));
+        }
+        return dest;
+    }
+
     public static java.lang.foreign.MemorySegment transformDirection_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, int count) {
         long _destBase = dest.address() + destOffset;
         long _matrixBase = matrix.address() + matrixOffset;
@@ -9041,6 +9170,35 @@ public final class Float3x4OpsKernelsSegment {
         for (int _i = 0; _i < count; _i++) {
             long _po = pointsOffset + _i * 12L;
             long _do = destOffset + _i * 12L;
+            float px = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 0L), py = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 4L), pz = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 8L);
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 0L, Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py)));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 4L, Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py)));
+            dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 8L, Math.fma(_m22, pz, Math.fma(_m20, px, _m21 * py)));
+        }
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment transformDirection_unsafe(java.lang.foreign.MemorySegment dest, long destOffset, long destStride, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, long pointsStride, int count) {
+        long _destBase = dest.address() + destOffset;
+        long _matrixBase = matrix.address() + matrixOffset;
+        long _pointsBase = points.address() + pointsOffset;
+        Float3x4OpsKernelsAddress.transformDirection_unsafe(_destBase, destStride, _matrixBase, _pointsBase, pointsStride, count);
+        return dest;
+    }
+
+    public static java.lang.foreign.MemorySegment transformDirection_api(java.lang.foreign.MemorySegment dest, long destOffset, long destStride, java.lang.foreign.MemorySegment matrix, long matrixOffset, java.lang.foreign.MemorySegment points, long pointsOffset, long pointsStride, int count) {
+        float _m00 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 0L);
+        float _m01 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 4L);
+        float _m02 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 8L);
+        float _m10 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 16L);
+        float _m11 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 20L);
+        float _m12 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 24L);
+        float _m20 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 32L);
+        float _m21 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 36L);
+        float _m22 = matrix.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, matrixOffset + 40L);
+        for (int _i = 0; _i < count; _i++) {
+            long _po = pointsOffset + _i * pointsStride;
+            long _do = destOffset + _i * destStride;
             float px = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 0L), py = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 4L), pz = points.get(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _po + 8L);
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 0L, Math.fma(_m02, pz, Math.fma(_m00, px, _m01 * py)));
             dest.set(java.lang.foreign.ValueLayout.JAVA_FLOAT_UNALIGNED, _do + 4L, Math.fma(_m12, pz, Math.fma(_m10, px, _m11 * py)));

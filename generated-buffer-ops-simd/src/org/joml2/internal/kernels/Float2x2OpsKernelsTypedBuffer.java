@@ -563,6 +563,45 @@ public final class Float2x2OpsKernelsTypedBuffer {
         return dest;
     }
 
+    public static java.nio.FloatBuffer decomposeLDU_unsafe(java.nio.FloatBuffer lower, int lowerOffset, java.nio.FloatBuffer diagonal, int diagonalOffset, java.nio.FloatBuffer upper, int upperOffset, java.nio.FloatBuffer src, int srcOffset) {
+        long _lowerBase = UnsafeOpsHolder.U.getLong(lower, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) lowerOffset * 4L;
+        long _diagonalBase = UnsafeOpsHolder.U.getLong(diagonal, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) diagonalOffset * 4L;
+        long _upperBase = UnsafeOpsHolder.U.getLong(upper, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) upperOffset * 4L;
+        long _srcBase = UnsafeOpsHolder.U.getLong(src, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) srcOffset * 4L;
+        Float2x2OpsKernelsAddress.decomposeLDU_unsafe(_lowerBase, _diagonalBase, _upperBase, _srcBase);
+        return lower;
+    }
+
+    public static java.nio.FloatBuffer decomposeLDU_api(java.nio.FloatBuffer lower, int lowerOffset, java.nio.FloatBuffer diagonal, int diagonalOffset, java.nio.FloatBuffer upper, int upperOffset, java.nio.FloatBuffer src, int srcOffset) {
+        if (lower.hasArray() && lowerOffset >= 0 && lowerOffset <= lower.limit() - 4 && diagonal.hasArray() && diagonalOffset >= 0 && diagonalOffset <= diagonal.limit() - 4 && upper.hasArray() && upperOffset >= 0 && upperOffset <= upper.limit() - 4 && src.hasArray() && srcOffset >= 0 && srcOffset <= src.limit() - 4) {
+            Float2x2Ops.decomposeLDU(lower.array(), lower.arrayOffset() + lowerOffset, diagonal.array(), diagonal.arrayOffset() + diagonalOffset, upper.array(), upper.arrayOffset() + upperOffset, src.array(), src.arrayOffset() + srcOffset);
+            return lower;
+        }
+        if (lower.order() == java.nio.ByteOrder.nativeOrder() && diagonal.order() == java.nio.ByteOrder.nativeOrder() && upper.order() == java.nio.ByteOrder.nativeOrder() && src.order() == java.nio.ByteOrder.nativeOrder()) {
+            Float2x2OpsKernelsSegment.decomposeLDU_api(java.lang.foreign.MemorySegment.ofBuffer(lower.duplicate().position(0)), (long) lowerOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(diagonal.duplicate().position(0)), (long) diagonalOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(upper.duplicate().position(0)), (long) upperOffset * 4L, java.lang.foreign.MemorySegment.ofBuffer(src.duplicate().position(0)), (long) srcOffset * 4L);
+            return lower;
+        }
+        float _self00 = src.get(srcOffset + 0);
+        float _self10 = src.get(srcOffset + 1);
+        float _self01 = src.get(srcOffset + 2);
+        float _self11 = src.get(srcOffset + 3);
+        float _rcp0 = 1.0f / _self00;
+        float _sp0 = _self10 * _rcp0;
+        lower.put(lowerOffset + 0, 1.0f);
+        lower.put(lowerOffset + 1, _sp0);
+        lower.put(lowerOffset + 2, 0.0f);
+        lower.put(lowerOffset + 3, 1.0f);
+        diagonal.put(diagonalOffset + 0, _self00);
+        diagonal.put(diagonalOffset + 1, 0.0f);
+        diagonal.put(diagonalOffset + 2, 0.0f);
+        diagonal.put(diagonalOffset + 3, _self11 - _self01 * _sp0);
+        upper.put(upperOffset + 0, 1.0f);
+        upper.put(upperOffset + 1, 0.0f);
+        upper.put(upperOffset + 2, _self01 * _rcp0);
+        upper.put(upperOffset + 3, 1.0f);
+        return lower;
+    }
+
     public static java.nio.FloatBuffer makeIdentity_unsafe(java.nio.FloatBuffer dest, int destOffset) {
         long _destBase = UnsafeOpsHolder.U.getLong(dest, UnsafeCopy.BB_ADDRESS_OFFSET) + (long) destOffset * 4L;
         Float2x2OpsKernelsAddress.makeIdentity_unsafe(_destBase);
